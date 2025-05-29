@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Make New Offer - Sponsor Sorter">
+  <title>Offer to Sponsee</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section class="sponsee-info">
+  <section class="userprofile">
+   <fieldset>
+        <legend>Profile Details</legend>
+      <div class="profile-header">
+        <div class="profile-picture">
+          <img id="sponsee-profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
+          <p>Account Type: <span id="user-account-type">Sponsee</span></p>
+          <div id="overall-rating" style="margin-top: 10px;">
+            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+          </div>
+        </div>
+        <div class="profile-info">
+          <p>Username: <span id="user-username">[Username]</span></p>
+          <p>Location: <span id="user-location">[Location]</span></p>
+          <p>Title: <span id="user-gender">[Title]</span></p>
+          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+          <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
+        </div>
+      </div>
+      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
+    </fieldset>
+  </section>
+</section>
+
+<form id="offerForm" enctype="multipart/form-data">
+  <section>
+    <fieldset>
+      <legend>Basic details</legend>
+      <div>
+        <label for="templateSelector"><b>Use Offer Template:</b></label>
+        <select id="templateSelector">
+          <option value="">--Select Offer Template--</option>
+        </select>
+        <br><br>
+        <label for="offerTitle">Offer Title / Product Name:</label>
+        <input type="text" id="offerTitle" name="offerTitle" required><br><br>
+        <div id="offer-platforms-section"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Price Offer (USD):</label>
+          <input type="number" id="price" name="price" step="10" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="payment">Payment:</label>
+          <select id="payment" name="payment" required>
+            <option value="">--Select--</option>
+            <option value="weekly">Weekly</option>
+            <option value="fortnightly">Fortnightly</option>
+            <option value="monthly">Monthly</option>
+            <option value="full_on_completion">FULL - On Completion</option>
+          </select>
+        </div>
+      </div><br>
+      <label for="productImage">Product Images:</label>
+      <input type="file" id="productImage" name="productImage" accept="image/*" multiple><br><br>
+      <div id="dropZone" class="drop-zone">
+        <p>Drag & drop images here, or click "Choose Files"</p>
+      </div><br>
+      <div id="productImagePreviewContainer" class="image-preview-container">
+        <div id="mainPreview" class="main-preview">
+          <p><em>Preview will appear here.</em></p>
+        </div>
+        <div id="thumbnailGallery" class="thumbnail-gallery"></div>
+      </div><br>
+      <label for="offerDescription">Product Description:</label><br>
+      <textarea id="offerDescription" name="offerDescription" rows="4" cols="50" required></textarea><br><br>
+    </fieldset>
+    <fieldset>
+      <legend>Job Specifics</legend>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="jobType">Type of Job:</label>
+          <select id="jobType" name="jobType" required>
+            <option value="">--Select Type--</option>
+            <option value="Shoutout">Shoutout</option>
+            <option value="Product Placement">Product Placement</option>
+            <option value="Dedicated Video">Dedicated Video</option>
+            <option value="Story Mention">Story Mention</option>
+            <option value="Event Sponsorship">Event Sponsorship</option>
+            <option value="Ongoing Deal">Ongoing Deal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="deliverableType">Deliverable Type:</label>
+          <select id="deliverableType" name="deliverableType" required>
+            <option value="">--Select Deliverable--</option>
+            <option value="Include in next video">Include in Next Video</option>
+            <option value="Standalone Post">Standalone Post</option>
+            <option value="Story Mention">Story Mention</option>
+            <option value="Product Review">Product Review</option>
+            <option value="Custom Content">Custom Content</option>
+          </select>
+        </div>
+      </div><br>
+      <label>Template Clauses / Suggestions:</label>
+      <div class="clause-insert-row">
+        <select id="clauseTemplatePicker">
+          <option value="">-- Select a template --</option>
+          <option value="Content must be original, not repurposed from previous campaigns.">Content must be original, not repurposed from previous campaigns.</option>
+          <option value="All posts must clearly disclose sponsorship in accordance with platform guidelines.">All posts must clearly disclose sponsorship in accordance with platform guidelines.</option>
+          <option value="Sponsor reserves right to review content before publication.">Sponsor reserves right to review content before publication.</option>
+          <option value="Payment will be made upon completion and approval of deliverables.">Payment will be made upon completion and approval of deliverables.</option>
+          <option value="Content must remain published for at least 30 days from posting.">Content must remain published for at least 30 days from posting.</option>
+          <option value="Deliverables include: [define deliverables]">Deliverables include: [define deliverables]</option>
+          <option value="Creator will provide proof of post via screenshot or link within 24 hours of posting.">Creator will provide proof of post via screenshot or link within 24 hours of posting.</option>
+          <option value="Sponsor owns rights to content for marketing purposes.">Sponsor owns rights to content for marketing purposes.</option>
+        </select>
+        <button type="button" id="insertClauseBtn">Insert Clause</button>
+      </div>
+      <label for="instructions">Detailed Instructions:</label><br>
+      <textarea id="instructions" name="instructions" rows="4" cols="50"></textarea><br><br>
+      <label for="optionalFile">Optional File Upload (e.g., sample video, ad clip):</label>
+      <input type="file" id="optionalFile" name="optionalFile"><br><br>
+      <label for="sponsorshipDuration">Sponsorship Duration:</label>
+      <select id="sponsorshipDuration" name="sponsorshipDuration" required>
+        <option value="">--Select Duration--</option>
+        <option value="One Off">One-off</option>
+        <option value="1 Month">1 Month</option>
+        <option value="3 Months">3 Months</option>
+        <option value="6 Months">6 Months</option>
+        <option value="1 Year">1 Year</option>
+      </select><br><br>
+      <label for="deadline">Deadline (Date by which job should be completed):</label>
+      <input type="date" id="deadline" name="deadline" required><br><br>
+      <button type="button" id="previewAgreementBtn" style="margin-bottom:12px;">Preview Agreement</button>
+      <div id="agreement-preview"></div>
+      <button type="submit">Submit Offer and Pay</button>
+    </fieldset>
+  </section>
+</form>
+
+<section class="userprofile">
+  <fieldset>
+    <legend>Your details</legend>
+    <div class="profile-header">
+      <div class="profile-picture">
+        <img id="sponsor-profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
+        <p>Account Type: <span id="account-type">Sponsor</span></p>
+        <div id="sponsor-overall-rating" style="margin-top: 10px;">
+          <strong>Overall Rating:</strong> <span id="sponsor-average-stars">☆☆☆☆☆</span>
+        </div>
+      </div>
+      <div class="profile-info">
+        <p>Email: <span id="sponsor-email">[Email]</span></p>
+        <p>Company: <span id="company">[Company]</span></p>
+        <p>Location: <span id="sponsor-location">[Location]</span></p>
+      </div>
+    </div>
+  </fieldset>
+</section>
+
+<footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+<script type="module">
+// ==== IMPORTS ====
+import { supabase } from '/public/js/supabaseClient.js';
+import { notifyNewOffer } from '/public/js/alerts.js';
+const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
+const STRIPE_BACKEND = 'http://localhost:4242/create-checkout-session';
+
+// ==== PROFILE + PLATFORM BADGES ====
+function setElementText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.innerText = value || "[Unknown]";
+}
+function extractPlatformBadges(social_handles) {
+  if (!social_handles) return 'N/A';
+  let handlesObj;
+  try {
+    handlesObj = typeof social_handles === 'string' ? JSON.parse(social_handles) : social_handles;
+  } catch (e) {
+    console.error('Error parsing social handles JSON:', e);
+    return 'N/A';
+  }
+  const platformLogos = {
+    instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+    tiktok: 'tiktoklogo.png',
+    youtube: 'youtubelogo.png',
+    twitter: 'twitterlogo.png',
+    facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+    twitch: 'twitchlogo.png',
+    snapchat: 'snaplogo.png',
+  };
+  const platformUrls = {
+    instagram: h => `https://instagram.com/${h.replace('@', '')}`,
+    tiktok: h => `https://tiktok.com/@${h.replace('@', '')}`,
+    youtube: h => `https://youtube.com/@${h.replace('@', '')}`,
+    twitter: h => `https://twitter.com/${h.replace('@', '')}`,
+    facebook: h => `https://facebook.com/${h.replace('@', '')}`,
+    twitch: h => `https://twitch.tv/${h.replace('@', '')}`,
+    snapchat: h => `https://snapchat.com/add/${h.replace('@', '')}`,
+  };
+  return Object.keys(handlesObj).map(platform => {
+    const handle = handlesObj[platform];
+    if (!handle) return '';
+    const logo = platformLogos[platform] || '';
+    const link = platformUrls[platform] ? platformUrls[platform](handle) : '#';
+    return `
+      <a href="${link}" target="_blank" class="social-badge">
+        <img src="${logo}" alt="${platform}" title="${platform}" class="platform-logo-icon">
+        <span class="handle-text">${handle}</span>
+      </a>
+    `;
+  }).join(' ');
+}
+
+// ==== IMAGE HANDLERS, CLAUSE INSERT ====
+let cachedSponsorData, cachedSponseeData;
+let imageFiles = [];
+let currentPreviewIndex = 0;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // --- Get sponsee from querystring ---
+  const params = new URLSearchParams(window.location.search);
+  const username = params.get('username');
+  if (!username) {
+    alert('No sponsee specified!');
+    return;
+  }
+  // --- Sponsee info ---
+  const { data: sponseeData, error: sponseeError } = await supabase
+    .from('users_extended_data')
+    .select('*')
+    .ilike('username', username)
+    .single();
+  if (sponseeError || !sponseeData) {
+    alert('Sponsee not found.');
+    console.error(sponseeError);
+    return;
+  }
+  setElementText('user-username', sponseeData.username);
+  setElementText('user-location', sponseeData.location);
+  setElementText('user-gender', sponseeData.title);
+  setElementText('about-yourself', sponseeData.about_yourself);
+  setElementText('contenttype', sponseeData.contenttype);
+  const sponseePicUrl = sponseeData.profile_pic
+    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponseeData.profile_pic}`
+    : 'logos.png';
+  const sponseePicElement = document.getElementById('sponsee-profile-pic');
+  if (sponseePicElement) sponseePicElement.src = sponseePicUrl;
+  document.getElementById('social_handles').innerHTML = extractPlatformBadges(sponseeData.social_handles);
+  function getPlatformsFromSocialHandles(social_handles) {
+    let handlesObj;
+    try {
+      handlesObj = typeof social_handles === 'string' ? JSON.parse(social_handles) : social_handles;
+    } catch {
+      return [];
+    }
+    return Object.keys(handlesObj).filter(key => handlesObj[key]);
+  }
+  function renderOfferPlatforms(platforms) {
+    const section = document.getElementById('offer-platforms-section');
+    section.innerHTML = '';
+    if (!platforms.length) {
+      section.innerHTML = '<span>No linked platforms found for this sponsee.</span>';
+      return;
+    }
+    platforms.forEach(platform => {
+      section.innerHTML += `
+        <label style="margin-right: 12px;">
+          <input type="checkbox" name="offer_platforms" value="${platform}">
+          ${platform.charAt(0).toUpperCase() + platform.slice(1)}
+        </label>
+      `;
+    });
+  }
+  const linkedPlatforms = getPlatformsFromSocialHandles(sponseeData.social_handles);
+  renderOfferPlatforms(linkedPlatforms);
+
+  // --- Sponsor info ---
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    alert('Please log in first.');
+    return;
+  }
+  const { data: sponsorData, error: sponsorError } = await supabase
+    .from('users_extended_data')
+    .select('*')
+    .eq('email', user.email)
+    .single();
+  if (sponsorError || !sponsorData) {
+    alert('Sponsor data not found.');
+    console.error(sponsorError);
+    return;
+  }
+  setElementText('sponsor-email', sponsorData.email);
+  setElementText('company', sponsorData.company_name);
+  setElementText('sponsor-location', sponsorData.location);
+  const sponsorPicElement = document.getElementById('sponsor-profile-pic');
+  if (sponsorPicElement) {
+    sponsorPicElement.src = sponsorData.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`
+      : 'logos.png';
+  }
+  cachedSponsorData = sponsorData;
+  cachedSponseeData = sponseeData;
+
+  // --- OFFER TEMPLATES ---
+  const offerTemplates = [
+    {
+      name: "Shoutout Sponsorship",
+      offerTitle: "Brand Shoutout",
+      jobType: "Shoutout",
+      deliverableType: "Standalone Post",
+      payment: "full_on_completion",
+      price: 100,
+      offerDescription: "A sponsored shoutout mentioning our brand in your next post or story.",
+      instructions: "Clearly mention our brand for at least 10 seconds. Tag our account and use our hashtag.",
+      sponsorshipDuration: "One Off",
+      deadline: ""
+    },
+    {
+      name: "Product Placement Video",
+      offerTitle: "Product Placement Collaboration",
+      jobType: "Product Placement",
+      deliverableType: "Include in next video",
+      payment: "monthly",
+      price: 250,
+      offerDescription: "Feature our product naturally in your next YouTube or TikTok video.",
+      instructions: "Show product in use, speak about key features, and encourage your audience to check us out.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "Dedicated Sponsored Video",
+      offerTitle: "Full Sponsored Video",
+      jobType: "Dedicated Video",
+      deliverableType: "Standalone Post",
+      payment: "monthly",
+      price: 500,
+      offerDescription: "Create a dedicated video focused entirely on our brand or product.",
+      instructions: "At least 2-4 minutes about our brand, include product benefits, call-to-action, and a link in the description.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "Instagram Story Campaign",
+      offerTitle: "Instagram Story Feature",
+      jobType: "Story Mention",
+      deliverableType: "Story Mention",
+      payment: "weekly",
+      price: 75,
+      offerDescription: "Mention us in your Instagram Story with swipe-up or link sticker.",
+      instructions: "Post 1-3 stories in a single week featuring our product, tagging our handle, and using our promo code.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "TikTok Challenge",
+      offerTitle: "TikTok Challenge Collaboration",
+      jobType: "Dedicated Video",
+      deliverableType: "Standalone Post",
+      payment: "fortnightly",
+      price: 200,
+      offerDescription: "Participate in our TikTok challenge or trend, using our audio and hashtag.",
+      instructions: "Create a video using our branded audio and include the campaign hashtag. Mention our brand in the caption.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "Event Sponsorship",
+      offerTitle: "Brand Sponsorship at Live Event",
+      jobType: "Event Sponsorship",
+      deliverableType: "Custom Content",
+      payment: "fortnightly",
+      price: 800,
+      offerDescription: "Promote our brand at your upcoming live or virtual event.",
+      instructions: "Display our logo prominently at the event and mention our brand during the opening and closing remarks.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "Product Review",
+      offerTitle: "Product Review Partnership",
+      jobType: "Product Placement",
+      deliverableType: "Product Review",
+      payment: "full_on_completion",
+      price: 150,
+      offerDescription: "Provide an honest, in-depth review of our product on your main platform.",
+      instructions: "Show unboxing, discuss features, highlight your experience, and include a link in the description/bio.",
+      sponsorshipDuration: "One Off",
+      deadline: ""
+    },
+    {
+      name: "Brand Ambassador (3 Months)",
+      offerTitle: "Brand Ambassador Program",
+      jobType: "Ongoing Deal",
+      deliverableType: "Custom Content",
+      payment: "monthly",
+      price: 300,
+      offerDescription: "Act as our brand ambassador for three months, promoting us across your main channels.",
+      instructions: "Minimum 2 posts and 2 stories/reels per month mentioning our brand and using our tags/hashtags.",
+      sponsorshipDuration: "3 Months",
+      deadline: ""
+    },
+    {
+      name: "Story & Post Combo",
+      offerTitle: "Story and Feed Combo Deal",
+      jobType: "Shoutout",
+      deliverableType: "Standalone Post",
+      payment: "monthly",
+      price: 180,
+      offerDescription: "Promote our brand in both an Instagram story and a main feed post within the same week.",
+      instructions: "Story must tag us and include a swipe-up or link sticker. Feed post must mention us and include our hashtag.",
+      sponsorshipDuration: "1 Month",
+      deadline: ""
+    },
+    {
+      name: "Custom/Negotiated Offer",
+      offerTitle: "",
+      jobType: "",
+      deliverableType: "",
+      payment: "",
+      price: "",
+      offerDescription: "",
+      instructions: "",
+      sponsorshipDuration: "",
+      deadline: ""
+    }
+  ];
+  const templateSelector = document.getElementById('templateSelector');
+  offerTemplates.forEach((tpl, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = tpl.name;
+    templateSelector.appendChild(opt);
+  });
+  templateSelector.addEventListener('change', function() {
+    const tpl = offerTemplates[this.value];
+    if (!tpl) return;
+    document.getElementById('offerTitle').value = tpl.offerTitle || '';
+    document.getElementById('jobType').value = tpl.jobType || '';
+    document.getElementById('deliverableType').value = tpl.deliverableType || '';
+    document.getElementById('payment').value = tpl.payment || '';
+    document.getElementById('price').value = tpl.price || '';
+    document.getElementById('offerDescription').value = tpl.offerDescription || '';
+    document.getElementById('instructions').value = tpl.instructions || '';
+    document.getElementById('sponsorshipDuration').value = tpl.sponsorshipDuration || '';
+  });
+
+  // === IMAGE UPLOAD ===
+  imageFiles = [];
+  currentPreviewIndex = 0;
+  const productImageInput = document.getElementById('productImage');
+  const dropZone = document.getElementById('dropZone');
+  const mainPreview = document.getElementById('mainPreview');
+  const thumbnailGallery = document.getElementById('thumbnailGallery');
+  productImageInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length) addImages(files);
+  });
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) addImages(files);
+  });
+  dropZone.addEventListener('click', () => {
+    productImageInput.click();
+  });
+  function addImages(files) {
+    const remainingSlots = 5 - imageFiles.length;
+    const filesToAdd = files.slice(0, remainingSlots);
+    if (filesToAdd.length < files.length) {
+      alert('You can only upload up to 5 images.');
+    }
+    filesToAdd.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageFiles.push({ file, dataUrl: e.target.result });
+        renderThumbnails();
+        showPreview(imageFiles.length - 1);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function renderThumbnails() {
+    thumbnailGallery.innerHTML = '';
+    imageFiles.forEach((imgObj, index) => {
+      const thumbContainer = document.createElement('div');
+      thumbContainer.classList.add('thumbnail-container');
+      const thumb = document.createElement('img');
+      thumb.src = imgObj.dataUrl;
+      thumb.classList.add('thumbnail');
+      thumb.addEventListener('click', () => showPreview(index));
+      const removeBtn = document.createElement('button');
+      removeBtn.innerText = '✖';
+      removeBtn.classList.add('remove-thumb-btn');
+      removeBtn.title = 'Remove this image';
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeImage(index);
+      });
+      thumbContainer.appendChild(thumb);
+      thumbContainer.appendChild(removeBtn);
+      thumbnailGallery.appendChild(thumbContainer);
+    });
+  }
+  function showPreview(index) {
+    if (imageFiles.length === 0 || index < 0) {
+      mainPreview.innerHTML = '<p><em>No images selected.</em></p>';
+      return;
+    }
+    const img = document.createElement('img');
+    img.src = imageFiles[index].dataUrl;
+    mainPreview.innerHTML = '';
+    mainPreview.appendChild(img);
+    currentPreviewIndex = index;
+  }
+  function removeImage(index) {
+    imageFiles.splice(index, 1);
+    renderThumbnails();
+    if (currentPreviewIndex === index) {
+      showPreview(imageFiles.length ? 0 : -1);
+    } else if (currentPreviewIndex > index) {
+      currentPreviewIndex--;
+    }
+  }
+
+  // === Template Clause Insert ===
+  document.getElementById('insertClauseBtn').addEventListener('click', function() {
+    const picker = document.getElementById('clauseTemplatePicker');
+    const textarea = document.getElementById('instructions');
+    if (!picker.value) return;
+    insertAtCursor(textarea, picker.value + "\n");
+    picker.selectedIndex = 0;
+  });
+  function insertAtCursor(textarea, text) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = textarea.value.substring(0, start);
+    const after = textarea.value.substring(end);
+    textarea.value = before + text + after;
+    textarea.selectionStart = textarea.selectionEnd = start + text.length;
+    textarea.focus();
+  }
+
+  // === Agreement Preview ===
+  function generateOfferAgreement(offer, sponsor, sponsee) {
+    return `
+      <button class="close-btn" title="Close Preview">&times;</button>
+      <h3>Sponsorship Offer Agreement</h3>
+      <p><b>Offer Title:</b> ${offer.offerTitle}</p>
+      <p><b>Deliverable:</b> ${offer.deliverableType}</p>
+      <p><b>Job Type:</b> ${offer.jobType}</p>
+      <p><b>Description:</b><br>${(offer.offerDescription || '').replace(/\n/g, '<br>')}</p>
+      <p><b>Platforms:</b> ${(offer.platforms || []).join(', ')}</p>
+      <p><b>Payment:</b> $${offer.price} (${offer.payment})</p>
+      <p><b>Deadline:</b> ${offer.deadline}</p>
+      <p><b>Duration:</b> ${offer.sponsorshipDuration}</p>
+      <br>
+      <p class="brand-accent"><b>By agreeing, both parties accept these terms and Sponsor Sorter’s platform rules.</b></p>
+    `;
+  }
+  document.getElementById('previewAgreementBtn').addEventListener('click', function () {
+    const offer = {
+      offerTitle: document.getElementById('offerTitle').value,
+      deliverableType: document.getElementById('deliverableType').value,
+      jobType: document.getElementById('jobType').value,
+      offerDescription: document.getElementById('offerDescription').value,
+      platforms: Array.from(document.querySelectorAll('input[name="offer_platforms"]:checked')).map(cb => cb.value),
+      price: document.getElementById('price').value,
+      payment: document.getElementById('payment').value,
+      deadline: document.getElementById('deadline').value,
+      sponsorshipDuration: document.getElementById('sponsorshipDuration').value
+    };
+    const sponsor = cachedSponsorData || { username: '', email: '' };
+    const sponsee = cachedSponseeData || { username: '', email: '' };
+    const agreementPreview = document.getElementById('agreement-preview');
+    agreementPreview.innerHTML = generateOfferAgreement(offer, sponsor, sponsee);
+    agreementPreview.style.display = 'block';
+    const closeBtn = agreementPreview.querySelector('.close-btn');
+    if (closeBtn) {
+      closeBtn.onclick = function () {
+        agreementPreview.style.display = 'none';
+      };
+    }
+  });
+
+  // === FORM SUBMIT + STRIPE PAYMENT ===
+  const offerForm = document.getElementById('offerForm');
+  offerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Gather all form data and validate
+    const title = document.getElementById('offerTitle').value.trim();
+    const description = document.getElementById('offerDescription').value.trim();
+    const amount = parseFloat(document.getElementById('price').value);
+    const payment = document.getElementById('payment').value;
+    const jobType = document.getElementById('jobType').value;
+    const deliverableType = document.getElementById('deliverableType').value;
+    const instructions = document.getElementById('instructions').value;
+    const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
+    const deadline = document.getElementById('deadline').value;
+    const selectedPlatforms = Array.from(document.querySelectorAll('input[name="offer_platforms"]:checked')).map(cb => cb.value);
+    if (!title || isNaN(amount)) {
+      alert('Please provide a valid title and amount.');
+      return;
+    }
+
+    // 1. Upload product images
+    const uploadedImageNames = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+      const { file } = imageFiles[i];
+      const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+      const { error: uploadError } = await supabase
+        .storage
+        .from('offers')
+        .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
+      if (uploadError) {
+        alert(`Failed to upload ${file.name}`);
+        console.error(uploadError);
+        return;
+      }
+      uploadedImageNames.push(uniqueName);
+    }
+    // 2. Upload optional file (if any)
+    const optionalFileInput = document.getElementById('optionalFile');
+    const optionalFile = optionalFileInput.files[0];
+    let optionalFileName = null;
+    if (optionalFile) {
+      const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
+      const { error: optionalUploadError } = await supabase
+        .storage
+        .from('offers')
+        .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
+      if (optionalUploadError) {
+        alert('Optional file upload failed.');
+        console.error(optionalUploadError);
+        return;
+      }
+      optionalFileName = uniqueOptFileName;
+    }
+
+    // 3. Prepare offer data and save to sessionStorage for after payment
+   const offerData = {
+      sponsee_username: cachedSponseeData.username,
+      sponsee_email: cachedSponseeData.email,
+      sponsee_id: cachedSponseeData.user_id,  // <--- THIS LINE IS MISSING AND REQUIRED!
+      sponsor_email: cachedSponsorData.email,
+      sponsor_username: cachedSponsorData.username,
+      sponsor_id: cachedSponsorData.id,
+      sponsor_company: cachedSponsorData.company_name,
+      offer_title: title,
+      offer_description: description,
+      offer_amount: amount,
+      payment_schedule: payment,
+      job_type: jobType,
+      deliverable_type: deliverableType,
+      instructions: instructions,
+      sponsorship_duration: sponsorshipDuration,
+      deadline: deadline,
+      offer_images: uploadedImageNames,
+      optional_file: optionalFileName,
+      platforms: selectedPlatforms,
+    };
+
+localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+
+    // 4. Start Stripe Checkout
+    try {
+      const sessionRes = await fetch(STRIPE_BACKEND, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amount,
+          offerId: title + '-' + Date.now()
+        })
+      });
+      const sessionData = await sessionRes.json();
+      if (!sessionData.sessionId) {
+        alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
+        return;
+      }
+      const stripe = Stripe(STRIPE_PK);
+      const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+      if (error) {
+        alert('Stripe redirect failed: ' + error.message);
+        return;
+      }
+    } catch (err) {
+      alert('Failed to initiate payment: ' + err.message);
+      return;
+    }
+    // After payment, user is redirected to /payment-success.html
+  });
+});
+</script>
+</body>
+</html>

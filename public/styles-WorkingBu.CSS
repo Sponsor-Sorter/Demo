@@ -1,0 +1,3888 @@
+body 
+   {background: black;
+    color: white;
+    margin: 1px;
+    border-radius: 0%;
+    padding: 15px;
+    text-align: center;
+    display: 100%;
+    
+    }
+    .StartNow.button {
+        background-color: #04AA6D; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 300px;
+        width: 50px;
+        
+    }
+
+
+    fieldset label {
+        padding: 17px;
+
+    }
+    .upllogo {
+        height: 220px;
+    }
+     li {
+        display: inline-block;
+        margin: auto;
+        
+        
+     }
+     .navbar1{
+        font-size: large;
+
+     }
+     header {
+        padding: 10px;
+        padding-top: 1%;
+        font-size: xxx-large;
+        text-align: center;
+        
+     }
+     
+     section {
+        padding: 5px;
+        display: inline-block
+     }
+
+     nav {
+        
+        display: inline-flex;
+        text-align: center;
+        margin-bottom: 8px;
+        width: auto;
+        margin: auto;
+        
+            
+     }
+
+     
+    .upllogo {
+        width: 93%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    .logo-upload-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+    }
+
+    .upload-section {
+        flex: 1;
+        margin-right: 10px; /* Space between the upload section and preview */
+    }
+
+    .preview-section {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-section label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .upload-section input[type="file"] {
+        margin-top: 8px;
+    }
+
+    .picc {
+        max-width: 100%;
+        max-height: 200px;
+        object-fit: contain;
+    }
+
+
+     .navii{
+        width: 100%;
+        background-image: url(handslogo.jpg);
+        height: 139px;
+        background-repeat: no-repeat;
+        align-items: center;
+        background-position: center;
+        background-position-y: bottom;
+        padding: 5px;
+        border-radius: 100px;
+        
+     }
+    .navimg {
+        width: auto;
+        border-radius: 25px;
+        height: 30px;
+        margin: auto;
+        background-image: url(navimg.png);
+        background-size: 151.5px 35px;
+        background-position: center;
+        background-position-x: left;
+        align-items: 25%;
+        display: inline-flex;
+        padding: 1.5px;
+        
+        
+        
+        }
+
+    
+     nav-2 {
+        background-color: rgb(0, 0, 0);
+        display: inline-block;
+        text-align: center;
+     }
+     footer {
+        text-align: center;
+     }
+
+    .finder1 {
+    font-size: x-large;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+
+
+    
+}
+
+
+    .Findertext {
+        display: inline-block;
+    background-color: rgb(20, 20, 20);
+    padding: 5px;
+    color: rgb(226, 226, 226);
+    margin: auto;
+    text-align: center;
+    border-radius: 20px;
+    
+    }
+
+  
+
+    .user-profiles {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);  /* 3 columns per row */
+        gap: 20px;
+        margin-top: 0px;
+        
+        
+    }
+   
+
+    .finder1 input {
+        width: 300px ;
+        height: 25px;
+    }
+    .finder1 button {
+        width: 100px;
+        height: 25px
+    }
+    section li {
+    
+    display: inline-block;
+    background-color: rgb(0, 0, 0);
+    padding: 1px;
+    color: rgb(226, 226, 226);
+    margin: auto;
+    text-align: center;
+    border-radius: 20px;
+    
+    }
+
+    .custom-select {
+        min-width: 350px;
+      }
+      
+      .custom-select select {
+        appearance: none;
+        width: 100%;
+        font-size: 1.15rem;
+        padding: 0.675em 6em 0.675em 1em;
+        background-color: #fff;
+        border: 1px solid #caced1;
+        border-radius: 0.25rem;
+        color: #000;
+        cursor: pointer;
+      }
+    .dialog {
+        margin: auto;
+        padding: auto;
+        background-position: center;
+        background-image: url(navimg.png);
+        background-size: 550px 200px;
+        background-repeat: no-repeat;
+        border-radius: 25%;
+        background-position-y: -8px;
+    }
+    .search button {
+        width: 100px;
+    }
+
+    .StartNow{
+    height:50px;
+    width:200px;
+    font-size: large;
+    border-radius: 50px;
+    
+    }
+
+    .checkbox {
+        width: 5px;
+        height: 5px;
+        
+    }
+
+    div section  {
+    margin-top: 5px;
+    
+    
+    }
+
+    section section div p {
+        margin: auto;
+        font-size: smaller;
+    }
+
+    section.dialog {
+        margin-bottom: 20px;
+        padding: 30px;
+    }
+
+    section li figure img {
+        width: 50px;
+        align-self: auto;
+    }
+
+    div input {
+        margin: 5px;
+    }
+
+    section section section li {
+        padding: 8px;
+        margin: auto;
+    }
+section.Sponser {
+    margin: 5px;
+    display: block;
+    padding: 5px;
+
+}
+section.userpass {
+    background-color: gray;
+    border-radius: 50px;
+}
+    a {
+            text-decoration: none;
+            color: white;
+            margin: 50px;
+            background-color: black;
+
+        }
+
+        section section li {
+            margin: auto;
+            text-align: left;
+            text-decoration: solid;
+            font-size: large;
+            
+        }
+.signupchain2 {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    
+}
+
+.opener {
+padding-left: 80px;
+padding-right: 80px;
+}
+.sponser {
+    display: inline-block;
+}
+
+.shtb input {
+    width: 5px;
+}
+.loginbox {
+    background-color: rgb(111, 110, 157);
+    color: black;
+    border-radius: 20px;
+    padding: 15px;
+    border-width: 10px;
+    border-color: rgb(87, 87, 87);
+    border-style:groove;
+    
+        
+}
+
+.uploadLogo {
+    background-color: gray;
+    padding: 20px;
+    border-radius: 25px;
+    
+}
+
+.footerb {
+    
+        width: 100%;
+        border-radius: 25px;
+        height: 30px;
+        margin: auto;
+        display: inline-flex;
+        background-image: url(navimg.png);
+        background-size: contain;
+        align-items: center;
+        display: flex;
+        padding: 5px;
+        background-size: 58px 30px;
+        background-position: center;
+        background-position-x: left;
+        background-repeat: repeat-x;
+        background-color: #000;
+            
+        
+}
+.footera {
+    width: 100%;
+    height: 80px;
+}
+
+.footercomplete {
+    width: 100%;
+    background-color: #000;
+    z-index: -1; 
+    
+}
+.footercomplete li {
+    width: 100%;
+
+    
+}
+.navtop {
+    width: 100%;
+}
+
+.pibox input {
+    margin-top: 5px;
+    
+}
+
+/* Initial setup for the sliding effect */
+#sponsor-options, #besponsored-options {
+    
+    position: absolute;
+    width: 100%;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+/* When sliding off, move to the left or right */
+#sponsor-options.slide-off {
+    transform: translateX(-100%); /* Move to the left */
+    opacity: 0;  /* Fade out */
+}
+
+#besponsored-options.slide-off {
+    transform: translateX(100%); /* Move to the right */
+    opacity: 0;  /* Fade out */
+}
+
+/* When sliding in, move to normal position */
+#sponsor-options.slide-on {
+    transform: translateX(0);
+    opacity: 1;  /* Fade in */
+}
+
+#besponsored-options.slide-on {
+    transform: translateX(0);
+    opacity: 1;  /* Fade in */
+}
+
+/* Optional: You can make the container have a position relative to allow absolute positioning of the options */
+fieldset {
+    position: relative;
+}
+
+.lookingfor {
+    height: 1300px;
+    padding-bottom: 20px;
+    margin-bottom: 80px;
+}
+
+.lookingfor button {
+
+    padding: 20px;
+    margin: 10px;
+}
+
+
+/* Styling for Preferred Platforms section */
+#preferred-platforms, #preferred-platforms-besponsored {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between checkboxes */
+}
+
+/* Style for each checkbox label */
+#preferred-platforms label, #preferred-platforms-besponsored label {
+    margin-bottom: 5px; /* Adds space between the checkboxes */
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the platform logos */
+.platform-logo {
+    width: 10px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+/* General Styles for the Platform Section */
+#preferred-platforms-besponsored {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    
+}
+
+#preferred-platforms-besponsored label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.platform-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.platform-logo {
+    width: 25px;  /* Adjust logo size */
+    height: auto;
+    margin-right: 10px; /* Space between logo and input */
+}
+
+/* Social Handle Input */
+.social-handle {
+     /* Takes up the remaining space */
+    padding: 8px;
+    padding-right: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Checkboxes */
+.platform-checkbox {
+     /* Align checkbox to the right */
+     margin-left: 30px;
+}
+
+/* Add some space between checkboxes */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    padding: auto;
+}
+
+/* Styles for displaying follower/subscriber count */
+.counts {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+/* Adjust checkbox size if needed */
+#preferred-platforms input[type="checkbox"], #preferred-platforms-besponsored input[type="checkbox"] {
+    margin-right: 5px; /* Space between checkbox and label text */
+    transform: scale(1.2); /* Optional: slightly increase the size of the checkboxes */
+}
+
+/* Optional: Add some padding or margin around the preferred platforms section */
+#preferred-platforms, #preferred-platforms-besponsored {
+    margin-top: 20px;
+}
+
+/* Styling for Preferred Platforms section */
+#preferred-platforms, #preferred-platforms-besponsored {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px; /* Space between checkboxes */
+}
+
+/* Style for each checkbox label */
+#preferred-platforms label, #preferred-platforms-besponsored label {
+    margin-bottom: 15px; /* Adds space between the checkboxes */
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the platform logos */
+.platform-logo {
+    width: 20px; /* Set the size of the logo */
+    height: 20px; /* Set the height of the logo */
+    margin-right: 10px; /* Space between the logo and text */
+}
+
+/* Adjust checkbox size if needed */
+#preferred-platforms input[type="checkbox"], #preferred-platforms-besponsored input[type="checkbox"] {
+    margin-right: 10px; /* Space between checkbox and label text */
+    transform: scale(1.2); /* Optional: slightly increase the size of the checkboxes */
+}
+
+/* Optional: Add some padding or margin around the preferred platforms section */
+#preferred-platforms, #preferred-platforms-besponsored {
+    margin-top: 20px;
+}
+
+
+.dialog1 {
+    margin: auto;
+    padding: auto;
+    background-position: center;
+    background-image: url(navimg.png);
+    background-size: 1000px 190px;
+    background-repeat: no-repeat;
+    border-radius: 25%;
+    background-position-y: -10px;
+}
+
+.why-choose {
+    
+    margin: auto;
+    padding: auto;
+    background-position: center;
+    background-image: url(navimg.png);
+    background-size: 1000px 240px;
+    background-repeat: no-repeat;
+    border-radius: 25%;
+    background-position-y: -16px;
+}
+
+.case-studies {
+    margin: auto;
+    padding: auto;
+    background-position: center;
+    background-image: url(navimg.png);
+    background-size: 1000px 580px;
+    background-repeat: no-repeat;
+    border-radius: 25%;
+    background-position-y: -24px;
+    color: gold;
+}
+.intro {
+    margin: auto;
+    padding: auto;
+    background-position: center;
+    background-image: url(navimg.png);
+    background-size: 1000px 200px;
+    background-repeat: no-repeat;
+    border-radius: 25%;
+    background-position-y: -10px;
+}
+
+
+.images div img {
+    height: 250px;
+    width: 350px;
+    border-radius: 25px;
+    border-color: aqua;
+    border-style: ridge;
+    border-bottom-color: purple;
+    border-left-color: purple;
+    border-width: 5px;
+    
+
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: black; /* Set background color to black */
+    color: white; /* Ensure text is white for contrast */
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.cta-button {
+    background-color: #5622be;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Case Studies Section */
+.case-studies {
+    margin-top: -10px;
+    padding: 20px 20px;
+    
+    background-color: #333; /* Dark background for case studies section */
+}
+
+.case-studies p {
+    padding-right: 12px;
+}
+
+.case-study {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.842);
+    color: #000;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.case-study img {
+    width: 100px;
+    height: 150px;
+    margin-right: 20px;
+    padding-left: 10px;
+}
+
+.case-study button {
+    background-color: #5622be;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark background */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    margin: 15% auto;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+    color: #000;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-family: Arial, sans-serif;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Footer Section */
+.footercomplete {
+    background-color: #333; /* Dark footer background */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-logo {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
+/* Sponsorship Calculator */
+.calculator {
+    padding: 40px 20px;
+    background-color: #000000; /* Dark background for calculator section */
+}
+
+.calculator form {
+    margin-bottom: 20px;
+}
+
+.calculator input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.calculator button {
+    background-color: #5622be;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#earningsResult {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+
+.images div h3 {
+    font-style: italic;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+    color: aqua;
+    background-color: purple;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: x-large;
+
+    
+}
+
+.account {
+    width: 15px; 
+}
+
+.two {
+    display: inline-block;
+    width: 200px;
+    padding: 5px;
+    
+}
+
+.three {
+    width: 300px;
+    display: inline-block;
+    background-color: gray;
+    height: 400px;
+    margin: auto;
+    align-content: flex-end;
+    border-radius: 25px;
+    
+}
+
+#sidebar {
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    width: 250px;
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+#sidebar .overall-subscriber-count {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#sidebar h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#sidebar canvas {
+    max-width: 100%;
+    margin-bottom: 30px;
+}
+
+
+/* Base Button Styling */
+button {
+    margin-top: 5px;
+    background-color: #0e4597; /* Blue background color */
+    color: white;  /* White text */
+    font-size: 16px;  /* Larger text size */
+    font-weight: bold;  /* Bold text */
+    padding: 8px 20px;  /* Padding for top/bottom and left/right */
+    border-radius: 8px;  /* Rounded corners */
+    border: none;  /* Remove default border */
+    cursor: pointer;  /* Show pointer cursor on hover */
+    transition: all 0.3s ease-in-out;  /* Smooth transition on hover/focus */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);  /* Soft shadow */
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background-color: #0268d6;  /* Darker blue when hovered */
+    transform: translateY(-2px);  /* Slight lift effect */
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.479);  /* Deeper shadow */
+}
+
+
+
+/* Focus Effect for Buttons */
+button:focus {
+    outline: none;  /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(251, 253, 255, 0.6);  /* Blue glow on focus */
+}
+
+/* Disabled Button Styling */
+button:disabled {
+    background-color: #e0e0e0;  /* Light gray background */
+    color: #999999;  /* Light gray text */
+    cursor: not-allowed;  /* Disabled cursor */
+    box-shadow: none;  /* Remove shadow */
+}
+
+/* Specific Styling for the Sign-Up Button */
+.signup-btn {
+    background-color: #28a745; /* Green background color for sign up */
+    border-radius: 50px;  /* Make it more rounded */
+    font-size: 18px;  /* Slightly larger text */
+    
+}
+
+.signup-form button {
+    margin-top: auto; /* Pushes the button to the bottom */
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hover Effect for Sign-Up Button */
+.signup-btn:hover {
+    background-color: #218838;  /* Darker green for hover */
+    box-shadow: 0 8px 12px rgba(40, 167, 69, 0.4);  /* Deeper green shadow */
+}
+
+/* Styling for the Toggle Checkbox */
+input[type="checkbox"] {
+    margin-right: 10px;  /* Space between checkbox and label */
+    transform: scale(1.2);  /* Make the checkbox slightly larger */
+}
+
+/* Label Styling for Better Readability */
+label {
+    font-size: 16px;  /* Same size as buttons for consistency */
+    cursor: pointer;  /* Pointer cursor */
+    transition: color 0.2s ease;  /* Smooth color change on hover */
+}
+
+
+
+/* Targeting labels of checkboxes specifically */
+input[type="checkbox"]:hover + label {
+    color: #007BFF; /* Change the color only when hovering over the checkbox */
+}
+
+/* For better control, apply hover effect only to specific labels */
+.platform-container label:hover {
+    color: #007BFF;  /* Change color to blue for labels inside platform containers */
+}
+
+
+/* Style for the Fieldset Elements */
+fieldset {
+    padding: 20px;
+    border: 2px solid #4747c1;  /* Light blue border */
+    
+    border-radius: 10px;
+    margin-bottom: 20px;
+    
+}
+
+legend {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.pptb {
+    padding: 15px;
+    border: 2px solid #c0c0c8;  /* Light blue border */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 90%;
+  
+}
+
+
+
+
+/* Making the labels and radio buttons smaller */
+.titlebox label {
+    font-size: 10px; /* Makes the label text smaller */
+    margin-left: 5px; /* Space between radio button and label */
+}
+
+.titlebox input[type="radio"] {
+    width: 15px; /* Makes the radio button smaller */
+    height: 15px; /* Makes the radio button smaller */
+}
+
+
+
+
+/* General Profile Section Styling */
+.user-profile {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
+}
+
+/* Personal info container (wraps both left and right sections) */
+.personal-info-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Space between the left and right side */
+}
+
+/* Title section (left side) */
+.titlebox {
+    width: 48%;/* Ensure it takes up 45% of the space */
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between title radio buttons */
+}
+
+/* Right side section for Birthdate, Company Name, and Location */
+.right-side {
+    width: 48%; /* Ensure it takes up 45% of the space */
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    
+}
+
+/* Set the parent container to flex */
+.personal-info-container {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+    justify-content: flex-start; /* Align to the left */
+}
+
+
+
+/* Make the title fieldset behave like a flex item */
+.titleb {
+    margin-right: 15px; /* Space between title fieldset and other fields */
+    padding: 0 10px; /* Padding to make the fieldset content look better */
+    border-color: white;
+    margin-left: 15px;
+    margin-top: 10px;
+    
+}
+
+/* Set the radio button labels to display inline, keeping them on one line */
+.title1 label {
+    display: inline-block;
+    margin-right: px; /* Add some spacing between the radio buttons */
+}
+
+/* Make sure inputs inside the fieldset and other fields are aligned */
+input[type="radio"], input[type="text"], input[type="date"] {
+    margin: 0 5px;
+}
+
+.submit-sec {
+    padding: auto;
+    margin-bottom: 70px;
+    margin-top: -100px;
+}
+
+
+
+/* Optional: Styling for the right-side section */
+.right-side {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styling the input fields for consistency */
+input[type="text"], input[type="date"] {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* Optional: If you want to add some spacing to each section */
+#birthdate-container, #company-name-container, .location {
+    margin-bottom: 15px;
+    
+    margin-left: -30px;
+}
+
+.pibox input {
+    padding: 5px;
+}
+
+
+/* Input fields styling */
+.right-side input, .titlebox input {
+    width: 60%; /* Make inputs take full width of their container */
+    margin-bottom: 10px;
+}
+
+
+/* Label styling for better spacing */
+.right-side label, .titlebox label {
+    margin-bottom: 5px;
+}
+
+/* Ensuring that the company name is hidden by default */
+#company-name-container {
+    display: none;
+}
+
+
+/* Dynamically showing the company name when selected */
+input[type="radio"][id="Company"]:checked ~ .right-side #company-name-container {
+    display: block;
+}
+
+/* Birthdate field should be shown by default */
+#birthdate-container {
+    display: block;
+}
+
+/* Hiding birthdate when "Company" is selected */
+input[type="radio"][id="Company"]:checked ~ .right-side #birthdate-container {
+    display: none;
+}
+
+.profile-header .profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.titleb {
+ width: 45%;
+ align-self: left;
+    
+}
+
+.profile-header .profile-info h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 40px;
+    
+    
+}
+
+.profile-info {
+    flex: 1;
+    text-align: center;
+    min-width: 200px;
+    padding-left: 20px;
+    
+}
+
+.profile-header .profile-info p {
+    margin: 10px 0;
+    font-size: 16px;
+    margin-left: 60px;
+    
+}
+
+.subscription-status {
+    margin-bottom: 20px;
+}
+
+.subscription-status h4 {
+    color: #4caf50;
+}
+
+.linked-accounts ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.linked-accounts li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.linked-accounts span {
+    font-weight: bold;
+}
+
+.active-listings {
+    margin-bottom: 20px;
+}
+
+.graph-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.graph-section .pie-chart,
+.graph-section .bar-chart {
+    width: 60%;
+}
+
+.graph-section canvas {
+    width: 100%;
+    height: 300px;
+}
+
+.company-profiles ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
+
+.company-profiles li {
+    margin-right: 15px;
+}
+
+.company-profiles figure {
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.company-profiles img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+/* Footer container */
+.footercomplete {
+    position: relative;
+    width: 100%;
+    height: 150px; /* Adjust as needed for your design */
+    text-align: center;
+    color: white;
+    background-color: #000;
+}
+
+/* Footer container */
+.footercomplete {
+    position: relative; /* Ensure positioning context for child elements */
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Footer logo (behind text) */
+.footpic {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* Center the logo */
+    width: 100%; /* Logo will span the full width of the footer */
+    height: auto; /* Keep aspect ratio */
+    z-index: 0; /* Ensure logo stays behind the text */
+    background-color: #000;
+    z-index: 0;
+}
+
+
+
+/* Footer text (on top of logo) */
+.footer-text {
+    position: relative;
+    margin-top: 105px;
+    z-index: 1; /* Ensure text is on top of the logo */
+    padding: 20px;
+    font-size: 18px;  /* Default font size, adjust as needed */
+    z-index: 2;
+}
+
+/* Make footer text look good on small screens */
+.footer-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;  /* Space between links */
+}
+
+/* Make links look better */
+.footer-text a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive footer logo size and text adjustment */
+@media (max-width: 768px) {
+    .footercomplete {
+        height: 120px;  /* Adjust height for smaller screens */
+    }
+
+    .footer-logo {
+        width: 60%; /* Resize logo */
+    }
+
+    .footer-text {
+        font-size: 14px;  /* Smaller text on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .footercomplete {
+        height: 100px;  /* Further adjust height for very small screens */
+    }
+
+    .footer-logo {
+        width: 50%; /* Further reduce logo width */
+    }
+
+    .footer-text {
+        font-size: 12px;  /* Smaller text size on very small screens */
+    }
+}
+
+/* Linked Accounts Section Styling */
+.linked-accounts {
+    margin: 20px 0;
+}
+
+.linked-accounts h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Row for grouping two platforms per line */
+.platform-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Styling each platform container */
+.platform {
+    width: 48%; /* Take up roughly half the row */
+    text-align: center;
+    font-size: 16px;
+}
+
+.platform .social-logo {
+    width: 40px; /* Adjust size of logos */
+    height: 40px;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.platform span {
+    display: block;
+    margin-bottom: 5px; /* Space between handle and follower count */
+}
+
+.platform div {
+    font-size: 14px;
+    color: #555; /* Color for follower count */
+}
+
+
+
+
+/* Searchable Status Styling */
+#searchable-status {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#searchable-status img {
+    width: 50px;
+    height: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
+    align-items: center;
+}
+
+.premium-status {
+    align-items: center;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+#searchable-status .status-icon {
+    object-fit: contain;
+    align-items: center;
+}
+
+
+/* Login Section */
+.loginbox-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #000000;
+}
+
+/* Wrapper for Sponsors and Login */
+.login-wrapper {
+    display: flex;
+    justify-content: space-between; /* This will space the items out */
+    width: 100%; /* Ensures the wrapper takes full width */
+    max-width: 1200px; /* Limit the max width */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Sponsor List */
+.sponsor-list-left, .sponsor-list-right {
+    width: 25%; /* Increase the width to 25% for each sponsor list */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 15px; /* Add some padding for spacing */
+}
+
+.sponsor-list-left {
+    padding-right: 50px;
+
+
+}
+
+.total-followers {
+    margin-left: 120px
+
+}
+    
+
+.sponsor-list-left ul, .sponsor-list-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sponsor-list-left li, .sponsor-list-right li {
+    margin-bottom: 10px;
+}
+
+.sponsor-list-left figure, .sponsor-list-right figure {
+    text-align: center;
+}
+
+.sponsor-list-left img, .sponsor-list-right img {
+    width: 100%;
+    height: auto;
+}
+
+/* Login Form Styling */
+.loginbox {
+    width: 60%;
+    background-color: rgb(133, 133, 133);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+}
+
+.loginbox .logo {
+    text-align: center;
+    width: auto;
+    margin-bottom: 20px;
+}
+
+.loginbox-section {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Take up the full height of the viewport */
+    background-color: #000000;
+    margin-top: -90px;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    width: 80%; /* You can adjust this value as needed */
+    max-width: 1200px; /* Limit the maximum width */
+    margin-left: 0; /* Remove any left margin */
+    margin-right: 0; /* Remove any right margin */
+    flex-direction: row; /* Ensure the sponsors and login box are side by side */
+    align-items: center; /* Align content vertically */
+}
+
+.sponsor-list-left, .sponsor-list-right {
+    width: 20%; /* Keep this as it is or adjust as needed */
+    display: flex;
+
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0 5px; /* Optional: adds space between the login box and sponsors */
+}
+
+.accept-but button {
+background-color:  #28a745;
+
+}
+
+.loginbox {
+    width: 60%; /* Adjust this width to keep it in proportion */
+    background-color: rgb(133, 133, 133);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content inside the login box */
+}
+
+
+.loginbox h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.login-form input {
+    width: 80%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #45a049;
+}
+
+/* Footer */
+.footercomplete {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.footercomplete a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footercomplete a:hover {
+    text-decoration: underline;
+}
+
+.active-listings {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.listing-stage {
+    margin-bottom: 30px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+}
+
+h4 {
+    margin-top: 0;
+}
+
+.sponsorship-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .stage {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+  }
+  .logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .stage-content {
+    flex: 1;
+    margin-top: -20px !important;
+  }
+  .stage-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+  }
+  .stage-description {
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .details {
+    font-size: 0.9em;
+    color: #666;
+  }
+  .time-left {
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  .value {
+    color: #28a745;
+    font-weight: bold;
+  }
+
+.company-logo img {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+
+strong {
+    font-weight: bold;
+}
+
+/* Flexbox layout for each listing stage */
+.listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Adds some space between the header and progress bar */
+}
+
+.company-logo {
+    flex: 1;
+}
+
+.ocprofiles {
+margin-bottom: 10px;
+z-index: 2;
+
+
+}
+
+.graph-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.pie-chart, .bar-chart {
+    width: 80%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+canvas {
+    width: 100% !important;  /* Ensure the canvas scales properly */
+    height: auto !important; /* Keep aspect ratio */
+}
+
+.listing-details {
+    flex: 2;
+    text-align: right;
+}
+
+/* Styling for progress bar */
+.progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 5px;
+}
+
+/* Job Description */
+.listing-stage p {
+    margin: 10px 0; /* Adds space between paragraphs */
+}
+
+.listing-stage p strong {
+    font-weight: bold; /* Bold for job description label */
+}
+
+.potential-sponsors-home img {
+    width: 100px;
+    height: auto;
+}
+
+/* Container for the entire section */
+.potential-sponsors-home {
+    padding: 30px;
+    background-color: #000000;
+}
+
+/* Style for the sponsor logos section */
+.sponsor-logos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Create two equal-width columns */
+    gap: 20px; /* Space between the figures */
+    justify-items: center; /* Center the content in each grid cell */
+}
+
+/* Style for each sponsor group */
+.sponsor-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Figure Styling */
+.sponsor-group figure {
+    margin: 0;
+    text-align: center;
+}
+
+/* Image Styling */
+.sponsor-group img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Caption Styling */
+.sponsor-group figcaption {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* Styling for the About Yourself Section */
+fieldset.about-yourself {
+   border-color: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px; /* Rounded corners */
+    background-color: #000000; /* Light background for better contrast */
+}
+
+legend {
+    font-size: 1.2em; /* Larger legend for better visibility */
+    font-weight: bold;
+    color: #ffffff; /* Dark color for readability */
+}
+
+textarea {
+    width: 100%; /* Full width of the parent container */
+    padding: 12px;
+    
+    font-size: 1em;
+    border: 1px solid #cccccc; /* Soft border */
+    border-radius: 8px; /* Rounded corners for the textarea */
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text for contrast */
+    resize: vertical; /* Allows the user to resize vertically */
+    box-sizing: border-box; /* Makes sure padding is included in the width/height */
+    transition: border-color 0.3s ease; /* Smooth border transition */
+}
+
+/* Focus State for Textarea */
+textarea:focus {
+    outline: none;
+    border-color: #007bff; /* Blue border when focused */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2); /* Soft blue glow */
+}
+
+/* Placeholder Styling */
+textarea::placeholder {
+    color: #ffffff; /* Lighter gray color for placeholder text */
+    font-style: italic;
+}
+
+/* Optional: Make the legend and textarea align properly with other form elements */
+fieldset {
+    margin-bottom: 15px;
+  
+}
+
+.searchpref {
+    width: 89%;
+    margin-left: -10px;
+    
+    
+}
+
+
+
+    /* Style for form rows */
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    
+    /* Style for each label and input/select within the form-row */
+    .form-row label {
+        width: 45%;
+        margin-bottom: 20px;
+        height: 5px;
+        
+    }
+    
+    .form-row select {
+        width: 45%;
+        
+        margin-top: 15px;
+        height: 25px;
+    }
+
+    /* Ensure labels and inputs stay aligned */
+    .form-row select, .form-row input {
+        box-sizing: border-box;
+    }
+
+    .payfield {
+        width: 89%;
+        height: 330px
+    }
+    /* Initial hidden state with sliding animation */
+#sponsor-options, #besponsored-options {
+    margin-top: 100px;
+    
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+}
+
+/* Slide from the left (for sponsor options) */
+.slide-in-left {
+    transform: translateX(0); /* Move to original position */
+}
+
+/* Slide to the left (for sponsor options) */
+.slide-out-left {
+    transform: translateX(-100%); /* Move out to the left */
+}
+
+/* Slide from the right (for be sponsored options) */
+.slide-in-right {
+    transform: translateX(0); /* Move to original position */
+}
+
+/* Slide to the right (for be sponsored options) */
+.slide-out-right {
+    transform: translateX(100%); /* Move out to the right */
+}
+
+/* Make sure they are hidden initially */
+#sponsor-options {
+    transform: translateX(-100%); /* Initially hidden off-screen to the left */
+}
+
+#besponsored-options {
+    transform: translateX(100%); /* Initially hidden off-screen to the right */
+}
+
+.progress-container {
+    background: #eee;
+    border-radius: 10px;
+    height: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: #28a745;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .logo-container {
+    margin-right: 20px;
+  }
+
+  .stage-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .listing-stage {
+    display: flex;
+    background: #1f1f1f;
+    border: 2px solid #9c9c9c;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(48, 48, 48, 0.05);
+    align-items: flex-start;
+  }
+
+  .progress-container {
+    background-color: #e0e0e0; /* light gray bar */
+    border-radius: 10px;
+    height: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #1e8005; /* darker gray fill */
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  
+
+
+  .faqshelp {
+    padding: 30px;
+    background-color: #000000;
+    border-color: #007bff; /* Blue border when focused */
+    border-radius: 8px;
+    margin: 40px auto;
+    max-width: 1000px;
+    margin-bottom: 60px;
+}
+
+.help-intro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.help-intro h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.help-block {
+    background: rgb(75, 75, 75);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.help-block h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.help-block p, .help-block li {
+    font-size: 0.95rem;
+    color: #f9f9f9;
+}
+
+.help-block a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+
+
+
+.contact-page {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 30px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.about-ceo {
+    background-color: #000000;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.about-ceo h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    color: #fffdfd;
+}
+
+.about-ceo p {
+    font-size: 1rem;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.contact-fieldset {
+    border: 2px solid #ddd;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #353535;
+}
+
+.contact-fieldset legend {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.contact-info h3 {
+    margin-bottom: 10px;
+    color: #dcdcdc;
+}
+
+.contact-info p, .contact-info a {
+    color: #dfdfdf;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.contact-info a {
+    color: #0077cc;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.social-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-links li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.social-links img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form input,
+.contact-form textarea {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.contact-form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.contact-form button:hover {
+    background-color: #005fa3;
+}
+
+.form-response {
+    margin-top: 10px;
+    color: green;
+    font-size: 0.9rem;
+}
+
+.social-followers .social-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-top: 15px;
+    
+}
+
+.follow {
+    color: white;
+}
+
+.social-box {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #676767;
+    width: 100px;
+    color: white;
+    
+}
+
+.social-box img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.social-box p {
+    margin: 0;
+    font-weight: bold;
+    
+}
+
+.social-box span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #e9e9e9;
+}
+
+.followus  {
+    margin-bottom: 65px;
+    color: #f4f4f4;
+
+}
+
+.privacy-policy {
+    margin-bottom: 50px;
+}
+
+
+.cookie-banner {
+    display: none; /* hidden by default unless shown by JS */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1e1e1e;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 14px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+  }
+  
+  .cookie-banner.show {
+    display: flex;
+  }
+  
+  
+  .cookie-banner p {
+    margin: 0;
+    flex: 1;
+  }
+  
+  .cookie-banner a {
+    color: #4fc3f7;
+    text-decoration: underline;
+  }
+  
+  .cookie-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .cookie-buttons button {
+    padding: 8px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .cookie-buttons button#decline-cookies {
+    background-color: #f44336;
+  }
+  
+
+  /* === Terms Page Styling === */
+.terms-page {
+    padding: 40px 10%;
+    background-color: #000000;
+    font-family: 'Segoe UI', sans-serif;
+    color: #d4d4d4;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  
+  .terms-page h1 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+  
+  .terms-page h2 {
+    margin-top: 30px;
+    font-size: 1.4rem;
+    color: #ffffff;
+  }
+  
+  .terms-page p {
+    margin: 12px 0;
+    font-size: 1rem;
+  }
+  
+  .terms-content a {
+    color: #0077cc;
+    text-decoration: underline;
+  }
+  
+  .terms-content a:hover {
+    text-decoration: none;
+  }
+  
+
+  .dashboard-cards {
+    margin: 2rem auto;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .card {
+    flex: 1;
+    background: #4c4c4c;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+    
+  }
+
+  .brand-logo {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+    border-radius: 4px;
+    object-fit: contain;
+  }
+  
+  
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2d8cf0;
+  }
+
+  .review-stars {
+    font-size: 1.2em;
+    color: #f5c518; /* golden yellow like IMDB stars */
+  }
+  
+  nav li a {
+    text-decoration: none;
+    color: #ffffff; /* or whatever your base text color is */
+    padding: 2px 0px;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  nav li a:hover {
+    color: #fff;
+    box-shadow: 0 0 10px #f6f6f6, 0 0 20px #ffffff, 0 0 30px #00ffff;
+    background-color: rgba(0, 255, 255, 0.1);
+  }
+  
+  .recent-activity th {
+    padding: 5px;
+
+  }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
+/* Make search results display in a 2-column grid */
+#searchResults {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  /* Style each user profile card */
+  .user-profile {
+    display: flex;
+    align-items: center;
+    background: #111; /* Dark card */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0.5rem;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  }
+  
+  /* Profile image styling */
+  .user-profile img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  
+  /* Profile text block */
+  .user-profile figcaption {
+    color: white;
+    text-align: center !important;
+    line-height: 1.3;
+  }
+  
+  /* Button styling inside card (optional, improves fit) */
+  .user-profile .view-profile .make-offer-btn {
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+    /* Button styling inside card (optional, improves fit) */
+    .SponsorOffer {
+        margin-top: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+    }
+  
+  .platform-badge {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 2px 6px;
+    margin: 2px 2px 0 0;
+    border-radius: 5px;
+    font-size: 0.75rem;
+  }
+  
+  
+  
+  /* Ensure user profile "card" layout stacks cleanly */
+  .user-profile {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    
+  }
+  
+  /* The left column (profile image + platforms) */
+  .user-profile figure {
+    margin: 0;
+    text-align: center;
+  }
+  
+/* Profile image styling (only profile pic now) */
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 5px;
+  }
+  
+  .user-profile figure > img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+ }
+ 
+ /* Don't affect other <img> in platforms-row! */
+ .platform-logo-icon {
+    width: 20px !important;
+    height: 20px !important;
+    gap: 1px !important;
+    margin: 2px;
+    vertical-align: middle;
+    border-radius: 4px;
+    object-fit: contain !important;
+  }
+  
+
+  
+  
+  /* Platforms row under profile image */
+  .platforms-row {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    max-width: 120px; /* Optional cap to prevent spreading too wide */
+  }
+  
+  /* Right column (info + button) */
+  .user-profile-content {
+    flex: 1;
+    padding-left: 10px;
+  }
+  
+  .user-profile-content button {
+    margin-top: 5px;
+  }
+  
+  .platform-logo-icon {
+    width: 8px;
+    height: 8px;
+    margin: 2px !important;
+    vertical-align: middle;
+    border-radius: 4px;
+    object-fit: contain !important;
+  }
+
+  .company-profiles-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+  }
+  
+  .scroll-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .scroll-row .user-profile {
+    flex: 0 0 auto;
+    width: 50px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 5px;
+    background: #fff;
+  }
+  .user-profiles {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory; /* optional but smoothens scroll behavior */
+  }
+  
+  .user-profile {
+    flex: 0 0 auto; /* Prevent shrinking, keep items side by side */
+    scroll-snap-align: start; /* optional */
+  }
+  
+  /* Optional: make scroll smoother  on touch devices */
+  .user-profiles::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .user-profiles::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+  }
+  
+.accountsearchsec {
+    width: 100% !important;
+}
+      
+.social-badge {
+    display: inline-flex;
+    align-items: center;
+    margin: 4px;
+    text-decoration: none;
+    padding: 4px 6px;
+    border: 1px solid #393939;
+    border-radius: 8px;
+    background-color: #454545;
+    
+  }
+  
+  .platform-logo-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+  
+  .handle-text {
+    font-size: 0.9rem;
+    color: #dddddd;
+  }
+
+  .userprofile  {
+    width: 95%;
+  }
+
+ 
+
+  .form-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .image-preview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #676767;
+  }
+  
+  .image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .image-preview-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .main-preview {
+    width: 300px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: rgb(39, 39, 39);
+  }
+  
+  .main-preview img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .thumbnail-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100px;
+  }
+  
+  .thumbnail-item {
+    position: relative;
+  }
+  
+  .thumbnail-gallery img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border 0.2s;
+  }
+  
+  .thumbnail-gallery img.selected {
+    border-color: #007bff;
+  }
+  
+  .remove-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    line-height: 18px;
+    text-align: center;
+  }
+  
+  .drop-zone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(39, 39, 39);
+    cursor: pointer;
+  }
+  
+  .drop-zone.dragover {
+    border-color: #007bff;
+    background-color: #eef6ff;
+  }
+  
+  .drop-zone.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  .thumbnail-container {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .remove-thumb-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .reject-offer {
+    background: rgb(154, 6, 6);
+  }
+
+  .cancel-offer-btn {
+    background: rgb(154, 6, 6);
+  }
+
+  .delete-offer-btn {
+    background: rgb(154, 6, 6);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    min-width: 555px;
+   
+
+  }
+  
+  .logo-container {
+    flex: 0 0 80px;
+    margin-right: 10px;
+    text-align: center;
+    min-width: 100px;
+  }
+  
+  .stage-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5px;
+  }
+  
+
+  
+  .progress-container {
+    background-color: #444;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #00c853;
+    border-radius: 4px;
+  }
+  
+  .card-bottom {
+    margin-top: 10px;
+  }
+  
+  .expand-btn {
+    background-color: #0a5db3;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .expand-btn:hover {
+    background-color: #084c8d;
+  }
+  
+  .details-section {
+    margin-top: 10px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+  }
+  
+  .job-deliverable-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  .job-deliverable-row span {
+    flex: 1;
+  }
+  
+  .job-deliverable-row span:first-child {
+    text-align: left;
+  }
+  
+  .job-deliverable-row span:last-child {
+    text-align: right;
+  }
+  
+  .offer-details-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .offer-left, .offer-right {
+    flex: 1;
+  }
+  
+  .offer-left {
+    text-align: left;
+  }
+  
+  .offer-right {
+    text-align: right;
+  }
+  
+  .confirm-offer {
+    background-color: green;
+  }
+
+  /*comment section style. */
+
+  /* General styles for the comments section */
+.comments-section {
+    background-color: #303030;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #000cab;
+    margin-top: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Comment bubble styles */
+  .comments-section .existing-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .comment-bubble {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 14px;
+    background-color: #f1f1f1;
+    margin: 0 auto;
+  }
+  
+  .comment-bubble.sponsee {
+    background-color: #e0f7fa;
+    border-left: 5px solid #00796b;
+    align-self: flex-start;
+  }
+  
+  .comment-bubble.sponsor {
+    background-color: #fff3e0;
+    border-left: 5px solid #ff5722;
+    align-self: flex-end;
+  }
+  
+  /* User name and time styling */
+  .comment-bubble .username {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .comment-bubble .timestamp {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  /* Profile image styling for the comment author */
+  .comment-bubble .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+  
+  /* Text area for writing new comments */
+  .comment-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    resize: vertical;
+  }
+  
+  /* Submit button style */
+  .submit-comment {
+    background-color: #00796b;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  .submit-comment:hover {
+    background-color: #004d40;
+  }
+  
+  /* Scrollbar styling for the comments section */
+  .comments-section::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .comments-section::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+  
+  .comments-section::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  .creation-scheduling  {
+    padding-top: 8px;
+  }
+
+  .live-scheduling {
+    padding-top: 8px;
+  }
+
+
+  /* styling for offer card tab buttons */
+
+  /* Tabs Container */
+#offer-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 4px;
+    gap: 4px;
+  }
+  
+  /* Individual Tab */
+  #offer-tabs button {
+    appearance: none;
+    border: 1px solid transparent;
+    background: #555555;
+    padding: 8px 10px;
+    margin: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, border 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  /* Hover state */
+  #offer-tabs button:hover {
+    background-color: #707070;
+  }
+  
+  /* Active tab */
+  #offer-tabs button.active {
+    background: #a1a1a1;
+    border-bottom: 2px solid #e4e4e4;
+    z-index: 2;
+    font-weight: bold;
+  }
+  
+  /* Ensure it fits on one line with scrolling if overflow */
+  #offer-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  #offer-tabs::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  
+  td {
+    gap: 8px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  /* review style stuff */
+
+  .profile-display {
+    display: flex;
+    gap: 2rem;         /* Space between the profiles */
+    justify-content: center; /* Center them horizontally */
+    align-items: flex-start;  /* Align fieldsets to the top */
+    margin-bottom: 8px;
+    flex-wrap: wrap;   /* Allows them to stack on small screens */
+    
+  }
+  
+  .profile-display fieldset {
+    flex: 1 1 250px;   /* Each profile can shrink/grow, minimum 320px */
+    min-width: 250px;
+    max-width: 400px;
+    max-height: 500px;
+    min-height: 500px;
+    justify-content: center; /* Center them horizontally */
+
+  }
+  .offer-details-left {
+    margin-bottom: 12px;
+  }
+  .offer-details fieldset {
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 12px rgba(0, 16, 110, 0.06);
+    background: #222222;
+    margin: 0 auto 2rem auto;
+    max-width: 820px;
+    border: 2px solid #3300d9;
+  }
+  .fieldset1 {
+    max-width: 91% !important;
+  }
+  .offer-row {
+    width: 100%;
+    margin-bottom: 1.2rem;
+  }
+  
+  .offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+  }
+  
+  .offer-title {
+    margin: 0;
+    font-size: 1.3em;
+    flex: 2;
+  }
+  
+  .offer-amount {
+    font-size: 1.2em;
+    flex: 1;
+    text-align: right;
+    color: #4caf50;
+    margin-right: 20px;
+  }
+  
+  .offer-description {
+    margin-bottom: 1rem;
+  }
+  
+  .offer-details-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .blue {
+    min-width: 45%;
+    max-height: 140px;
+  }
+
+  .offer-details-left p,
+  .offer-details-right p {
+    margin: 8px 0;
+  }
+  
+  @media (max-width: 700px) {
+    .offer-details-bottom {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .offer-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .offer-amount {
+      text-align: left;
+    }
+  }
+  
+  .review-input {
+    width: 95% !important;
+  }
+
+  
+  .review-rating-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1.5rem;
+  }
+  .review-rating-row label {
+    width: 170px;
+  }
+  .review-rating-row input {
+    width: 60px;
+  }
+  .review-comment-row label {
+    display: block;
+    margin-bottom: .4rem;
+  }
+  
+  .star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  
+  .star-rating span {
+    color: #e0e0e0;
+    transition: color 0.2s;
+  }
+  
+  .star-rating .selected,
+  .star-rating .hovered {
+    color: #FFD700;
+  }
+  
+  .star-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.3rem 2.2rem;
+    align-items: center;
+    margin-bottom: 1.6rem;
+    
+
+  }
+  
+  .star-grid-label {
+    font-size: 1em;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    justify-self: center; 
+
+  }
+  
+  .star-rating {
+    grid-column: span 1;
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+    justify-self: center; 
+    display: inline-block;
+    direction: ltr;       /* Force left-to-right */
+    unicode-bidi: bidi-override; /* Ensure correct order */
+  }
+  
+  .star.filled {     /* Gold */
+     color: #FFD700; 
+  }   
+  .star.unfilled  {     /* Gray or use #ccc for lighter */
+     color: #bbb; 
+      }   
+
+
+
+  .star {
+    font-size: 1.2em;
+    color: #ccc;  /* default gray for empty */
+    margin: 0 1px;
+    vertical-align: middle;
+  }
+  .gold-star {
+    color: gold !important;
+    text-shadow: 0 0 2px #bfa100;
+  }
+  
+  #sponsee-review-stars .stars .gold-star,
+#sponsee-review-stars .stars .star {
+  font-size: 2.1rem;   /* Make these as big as you want! */
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Notification bell button and badge styling */
+.notification-bell-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    right: 20px;
+    top: -5px;
+    vertical-align: middle;
+    padding: 0;
+  }
+  
+  .bell-icon {
+    width: 28px;
+    height: 28px;
+    filter: invert(1) drop-shadow(0 1px 3px #000a); /* white for dark bg */
+    transition: filter 0.2s;
+  }
+  
+  .notification-bell-btn:hover .bell-icon {
+    filter: invert(0.7) sepia(1) hue-rotate(30deg) saturate(2);
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: 13px;
+    background: #e74c3c;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 13px;
+    min-width: 15px;
+    padding: 1px 6px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px #0006;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+    transition: background 0.2s;
+  }
+  
+/*user badges identifiers */
+  .badge {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+  box-shadow: 0 0 3px #0003;
+}
+.badge-bronze {
+  background: linear-gradient(145deg, #cd7f32 70%, #ad6c2b 100%);
+  border: 2px solid #a0522d;
+}
+.badge-silver {
+  background: linear-gradient(145deg, #c0c0c0 70%, #b0b0b0 100%);
+  border: 2px solid #808080;
+}
+.badge-gold {
+  background: linear-gradient(145deg, #ffd700 70%, #ffb700 100%);
+  border: 2px solid #daa520;
+}
+.badge-moddev {
+  background: linear-gradient(135deg, #b16cea, #50a7f7 70%);
+  border: 2px solid #6a5acd;
+}
+
+
+/*------ review thread -----*/
+   .review-thread-container { max-width: 780px; margin: 40px auto 36px auto; padding: 0 14px; }
+    .review-thread-header { text-align: center; margin-bottom: 22px; }
+    .review-card {
+      background: #4c4c4c;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(25, 12, 99, 0.763);
+      margin-bottom: 24px;
+      padding: 20px 24px 10px 24px;
+      position: relative;
+      transition: box-shadow 0.3s;
+    }
+    .review-card.expanded { box-shadow: 0 8px 32px rgba(48,5,180,0.13); }
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .profile-badge {
+      width: 46px; height: 46px;
+      border-radius: 50%; object-fit: cover;
+      border: 2px solid #3100d2;
+      background: #fff;
+    }
+    .review-meta { flex: 1; }
+    .reviewer-role { font-size: 0.94em; color: #d9d9d9; margin-left: 6px; }
+    .stars { font-size: 1.3em; color: #FFD700; letter-spacing: 0.08em; }
+    .review-title { font-size: 1.09em; font-weight: 600; color: #717171; }
+  
+    .expand-btn:hover { color: #1755e6; }
+    .review-details {
+      margin-top: 13px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+      animation: dropDown .27s;
+    }
+    @keyframes dropDown { from { opacity: 0; transform: translateY(-13px); } to { opacity: 1; transform: none; } }
+    .category-stars-row { display: flex; gap: 28px; margin-bottom: 7px; }
+    .category-label { min-width: 100px; font-weight: 500; color: #333; }
+    .review-comment, .review-reply { margin: 9px 0 8px 0; }
+    .reply-box {
+      margin: 12px 0 0 0;
+      background: #f3f3fe;
+      padding: 11px 14px;
+      border-radius: 8px;
+      border: 1px solid #dad0fc;
+    }
+    .reply-input-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 12px 0 0 0;
+    }
+    .rev {
+  margin: 0 auto !important;         /* Center horizontally */
+  display: block;                    /* Fieldsets are block elements by default, but good to be explicit */
+  max-width: 720px;                  /* Keeps it readable on desktop */
+  width: 98vw;                       /* Responsive on mobile */
+  margin-top: 10px !important;
+  border-radius: 14px;
+  box-shadow: 0 4px 22px rgba(60,20,120,0.07);
+  padding: 28px 18px 20px 18px;
+ 
+}
+   
+    .reply-input-row textarea {
+      width: 100%; min-height: 36px; max-height: 88px;
+      border-radius: 6px; padding: 7px 10px;
+      border: 1px solid #b8a5ee;
+      resize: vertical; font-size: 1em;
+      background: #fff;
+      transition: border 0.18s;
+    }
+    .reply-input-row button {
+      background: #3100d2; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 8px 15px;
+      font-weight: 600; font-size: 1em;
+      cursor: pointer;
+      transition: background 0.16s;
+    }
+    .reply-input-row button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .review-datetime {
+      font-size: 0.95em; color: #8a8a8a;
+      margin-top: 2px;
+    }
+    @media (max-width: 700px) {
+      .review-thread-container { margin: 10px auto 20px auto; }
+      .review-card { padding: 10px 4px 6px 4px; }
+      .review-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .profile-badge { width: 36px; height: 36px; }
+    }
+    .navbar1 { z-index: 99; }
+    .footercomplete { margin-top: 36px; }
+
+    /*PAGINATION CENTRAL */
+  
+#reviews-pagination {
+  margin: 16px 0 4px 0;
+}
+.pagination-btn {
+  background: #3100d2;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  margin: 0 3px;
+  padding: 7px 13px;
+  font-weight: 500;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.17s;
+}
+.pagination-btn.active,
+.pagination-btn:active {
+  background: #6845e9;
+}
+.pagination-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #bbb;
+  color: #eee;
+}
+
+
+/* admin stuff */
+
+.admin-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0 auto 2rem auto;
+  background: #181c27;
+  padding: 0.4rem 1vw;
+  border-radius: 8px;
+  justify-content: center;
+  position: sticky;
+  top: 20px;
+  z-index: 888;
+  overflow-x: auto;
+  width: 90%;
+}
+.admin-tab {
+  border: none;
+  background: #23293b;
+  color: #f6c62e;
+  font-weight: 500;
+  padding: 0.6em 1.4em;
+  border-radius: 7px;
+  font-size: 1.08em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.admin-tab:hover, .admin-tab.active {
+  background: #f6c62e;
+  color: #181c27;
+}
+.reported-tabs {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 1.3rem;
+}
+.reported-tab {
+  border: none;
+  background: #242f45;
+  color: #f00;
+  font-weight: 600;
+  padding: 0.5em 1.2em;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.reported-tab.active {
+  background: #f6c62e;
+  color: #181c27;
+}
+
+ .main-container {
+      max-width: 1100px;
+      margin: 2rem auto 2rem auto;
+      padding: 0 1vw;
+      margin-right: 50px;
+    }
+    .admin-section {
+      margin: 2rem auto;
+      background: #222222;
+      padding: 2rem 2.5vw;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px #0002;
+      max-width: 900px;
+      width: 100%;
+      overflow: visible;
+      display: block;
+    }
+    .admin-section h2 {
+      margin-bottom: 1rem;
+      color: #F6C62E;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+    .admin-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      overflow-x: auto;
+      justify-content: center;
+    }
+    .admin-stat-card {
+      background: #222837;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      color: #f6c62e;
+      font-size: 1.12rem;
+      box-shadow: 0 2px 6px #0002;
+      min-width: 100px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+      background: transparent;
+    }
+    .admin-table {
+      min-width: 650px;
+      max-width: 90vw;
+      margin: 0 auto 1.2rem auto;
+      border-collapse: collapse;
+      background: #23293b;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 12px #0002;
+    }
+    .admin-table th, .admin-table td {
+      border: 1px solid #2c3240;
+      padding: 0.45em 0.8em;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .admin-table th {
+      background: #1e2230;
+      color: #f6c62e;
+      font-size: 1em;
+      letter-spacing: 0.03em;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .admin-table td { background: #23263a; }
+    .admin-table tr:nth-child(even) td { background: #222837; }
+    .admin-table tr:hover td { background: #2c3352; }
+    .admin-actions button {
+      margin-right: 0.2rem;
+      margin-bottom: 2px;
+      border: none;
+      border-radius: 6px;
+      background: #353c51;
+      color: #F6C62E;
+      padding: 0.2em 0.8em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 0.96em;
+    }
+    .admin-actions button:hover {
+      background: #f6c62e;
+      color: #23293b;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top:0; left:0; width:100vw; height:100vh;
+      background: rgb(0, 0, 0);
+      z-index: 9998;
+    }
+    .modal-content {
+  background: #222;
+  color: rgb(185, 185, 187);
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 0 16px #0006;
+  max-width: 600px;
+  width: 96vw;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+    .modal-header {
+      font-size: 1.5rem;
+      color:#F6C62E;
+      margin-bottom:1rem;
+    }
+    .admin-flex-row {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .admin-flex-left {
+      width: 32%;
+      min-width: 40px;
+      max-width: 300px;
+    }
+    .admin-flex-right {
+      width: 66%;
+      min-width: 280px;
+    }
+    @media (max-width: 700px) {
+      .main-container { max-width: 98vw; }
+      .admin-section { max-width: 99vw; }
+      .admin-flex-row { flex-direction: column; gap: 1rem; }
+      .admin-flex-left, .admin-flex-right { width: 100%; min-width: 0; max-width: 100vw;}
+    }
+    @media (max-width: 550px) {
+      .admin-section { padding: 1rem 0.4rem; }
+      .admin-table { font-size: 0.93rem; min-width: 400px; }
+    }
+    @media (max-width: 400px) {
+      .admin-stats { flex-direction: column; gap: 1rem; }
+      .admin-section { padding: 0.8rem 0.2rem; }
+      .admin-table { font-size: 0.91rem; min-width: 340px;}
+      .modal-content { padding: 0.8rem; }
+    }
+
+button.report-btn:focus,
+button.report-btn:active,
+button.report-btn:focus-visible,
+.report-btn:focus,
+.report-btn:active,
+.report-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+
+.admin-table thead {
+  background: #24243a;
+  color: #F6C62E;
+}
+
+.admin-table th:last-child, .admin-table td:last-child {
+  text-align: center;
+}
+.admin-table tbody tr:nth-child(even) {
+  background: #1a2133;
+}
+.admin-table tbody tr:hover {
+  background: #283251;
+}
+.admin-table button {
+  background: #e03232;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.admin-table button:hover {
+  background: #b70000;
+}
+
+/*---- mobile handler -----*/
+
+/* --- FINAL MOBILE POLISH FOR SPONSOR SORTER --- */
+
+
+
+/* Force all main dashboard sections/cards to max width of the screen */
+.dashboard-card, .profile-card, .review-card, .summary-card, .dashboard-content, .profile-section, .main-section {
+    width: 100% !important;
+    max-width: 99vw !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+
+/* --- Responsive Sponsor Sorter Admin Dashboard --- */
+
+.admin-table-scroll {
+  overflow-x: auto;
+  max-width: 100vw;
+  -webkit-overflow-scrolling: touch;
+}
+.admin-table {
+  min-width: 650px;
+  width: 100%;
+}
+body, .admin-table, .admin-tab, .pagination-btn {
+  font-size: 1rem;
+}
+@media (max-width: 700px) {
+  body { font-size: 0.95rem; }
+  .admin-table th, .admin-table td { padding: 6px 2px; }
+  .admin-stat-card { font-size: 0.9rem; }
+  .admin-tab { padding: 6px 8px; font-size: 0.95rem; }
+  .pagination-btn { padding: 4px 8px; font-size: 0.95rem; }
+}
+.modal-content {
+  max-width: 98vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1rem;
+}
+@media (max-width: 600px) {
+  .modal-content { padding: 0.5rem; font-size: 0.96rem; }
+  input, select, textarea, button {
+    width: 100% !important;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+  }
+  .profile-pic, .admin-table img {
+    width: 26px; height: 26px;
+  }
+}
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+.admin-tab {
+  flex: 1 1 auto;
+  min-width: 80px;
+  font-size: 1rem;
+  padding: 8px 10px;
+  border-radius: 6px 6px 0 0;
+}
+@media (max-width: 700px) {
+  .admin-tab {
+    min-width: 110px;
+    font-size: 0.97rem;
+  }
+}
+.profile-pic, .admin-table img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.badge-row {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+@media (max-width: 500px) {
+  .admin-table th:nth-child(3),
+  .admin-table td:nth-child(3) { display: none; }
+  .admin-table th:nth-child(6),
+  .admin-table td:nth-child(6) { display: none; }
+}
+
+/* Table min-width for mobile */
+@media (max-width: 550px) {
+  .admin-table, .admin-table-scroll table {
+    min-width: 340px !important;
+    font-size: 0.92rem;
+  }
+  .card, .sponsorship-card, .review-card, .modal-content {
+    padding: 10px 5px !important;
+  }
+  .card h3, .modal-header, .hero-text, .footer-text {
+    font-size: 1rem !important;
+  }
+}
+
+/* Grid to single column */
+@media (max-width: 600px) {
+  .user-profiles, .sponsor-logos, .company-profiles ul, .dashboard-cards, .card-row {
+    display: block !important;
+  }
+  .user-profile, .sponsor-group, .card, .card-row > * {
+    width: 100% !important;
+    max-width: 98vw !important;
+    margin: 0 auto 1rem auto !important;
+  }
+  .footer-logo, .profile-pic, .admin-table img {
+    width: 50px !important; height: 50px !important;
+  }
+  .footercomplete {
+    height: 90px !important;
+  }
+}
+
+/* Reduce logo/image size for mobile */
+@media (max-width: 420px) {
+  .profile-pic, .admin-table img, .footer-logo {
+    width: 38px !important; height: 38px !important;
+  }
+  .modal-content, .review-card, .sponsorship-card {
+    padding: 3vw !important;
+  }
+  .hero-text {
+    font-size: 0.92rem !important;
+  }
+  .footer-text {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+    .dashboard-row, .profile-row, .summary-row, .reviews-row, .columns, .row {
+        display: block !important;
+        width: 100% !important;
+    }
+}
+@media (max-width: 600px) {
+    .profile-pic, .logo, .dashboard-logo {
+        width: 60px !important;
+        height: 60px !important;
+        max-width: 20vw !important;
+        margin: 0 auto !important;
+        display: block !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-card, .profile-card, .review-card, .summary-card {
+        padding: 8px 3vw !important;
+        font-size: 0.98rem !important;
+    }
+    .dashboard-header, .profile-header, .welcome-title {
+        font-size: 1.15rem !important;
+        text-align: center !important;
+    }
+}
+@media (max-width: 500px) {
+    .admin-table, .summary-card, .dashboard-card {
+        min-width: 320px !important;
+    }
+}
+
+@media (max-width: 600px) {
+  .hero-img, .dashboard-header-image, .dashboard-banner {
+    height: 90px !important;
+    min-height: 70px !important;
+    object-fit: cover !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-card, .dashboard-card, .summary-card {
+    padding: 8px 5vw !important;
+    margin: 12px 0 !important;
+    width: 99vw !important;
+    box-sizing: border-box !important;
+    border-radius: 12px;
+  }
+  .profile-card p, .dashboard-card p {
+    text-align: left !important;
+    word-break: break-word !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .stat-card, .summary-card, .dashboard-card, .offer-card {
+    width: 100% !important;
+    min-width: unset !important;
+    margin: 10px 0 !important;
+    display: block !important;
+  }
+  .stat-card .value, .summary-card .value {
+    font-size: 1.1rem !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-details-row, .info-row, .contact-row {
+    display: block !important;
+  }
+  .profile-details-row > *, .info-row > *, .contact-row > * {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 6px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .summary-card, .stat-card, .dashboard-card {
+    padding: 8px 6px !important;
+    margin: 8px 0 !important;
+    border-radius: 14px !important;
+    background: rgba(30,30,40,0.90) !important;
+    box-shadow: none !important;
+  }
+  .stat-card .value, .summary-card .value {
+    font-size: 1.0rem !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 500px) {
+  body, .welcome-title, .section-header, h2, h3, .dashboard-header {
+    font-size: 0.96rem !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .profile-card, .summary-card, .dashboard-card {
+    margin-top: 9px !important;
+    margin-bottom: 9px !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .profile-card {
+    border: 1.2px solid #444 !important;
+    background: rgba(25,25,30,0.96) !important;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.11) !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .stat-card, .summary-card {
+    cursor: default !important;
+    background: rgba(30,30,40,0.95) !important;
+    color: #dbeafe !important;
+    border: 1px solid #333 !important;
+    box-shadow: none !important;
+  }
+}
+

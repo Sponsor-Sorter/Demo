@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Leave Review - Sponsor Sorter">
+  <title>Offer Review</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script type="module" src="/public/js/reviewPage.js" defer></script>
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>          
+      </div>
+    </div>
+  </section>
+</header>
+
+<main class="review-wrapper">
+  <section class="profile-display" id="profile-display">
+    <fieldset>
+      <legend>Sponsee Profile</legend>
+      <img id="sponsee-pic" class="profile-img" alt="Sponsee Picture" onerror="this.src='logos.png';"/>
+      <p><strong>Username:</strong> <span id="sponsee-username"></span></p>
+      <p><strong>Email:</strong> <span id="sponsee-email"></span></p>
+      <p><strong>Location:</strong> <span id="sponsee-location"></span></p>
+      <p><strong>About:</strong> <span id="sponsee-about"></span></p>
+    </fieldset>
+    
+    <fieldset>
+      <legend>Sponsor Profile</legend>
+      <img id="sponsor-pic" class="profile-img" alt="Sponsor Picture" onerror="this.src='logos.png';"/>
+      <p><strong>Username:</strong> <span id="sponsor-username"></span></p>
+      <p><strong>Email:</strong> <span id="sponsor-email"></span></p>
+      <p><strong>Company:</strong> <span id="sponsor-company"></span></p>
+      <p><strong>Location:</strong> <span id="sponsor-location"></span></p>
+      <p><strong>About:</strong> <span id="sponsor-about"></span></p>
+    </fieldset>
+  </section>
+
+  <section class="offer-details">
+    <fieldset class="fieldset1">
+      <legend>Offer Details</legend>
+      <!-- Top Row: Title and Amount -->
+      <div class="offer-row offer-header">
+        <h3 class="offer-title">
+          <strong>Title:</strong> <span id="offer-title"></span>
+        </h3>
+        <div class="offer-amount">
+          <strong>Amount:</strong> $<span id="offer-amount"></span> <br>
+          <strong>Payment Schedule:</strong> <span id="payment_schedule"></span>
+        </div>
+      </div>
+  
+      <!-- Description: Full width -->
+      <div class="offer-row">
+        <div class="offer-description">
+          <strong>Description:</strong>
+          <p id="offer-description"></p>
+        </div>
+          <div class="offer-instruction">
+            <strong>Instructions:</strong>
+            <p id="offer-instruction"></p>
+          
+        </div>
+      </div>
+  
+      <!-- Bottom Section: Two Columns -->
+      <div class="offer-row offer-details-bottom">
+       
+        <div class="offer-details-left">
+            <fieldset class="blue">
+          <p><strong>Type:</strong> <br> <span id="deliverable-type"></span></p>
+          <p><strong>Duration:</strong> <span id="duration"></span></p>
+          <p><strong>Status:</strong> <span id="offer-status"></span></p>
+          <p><strong>Live URL:</strong> <a id="offer-live-url" href="#" target="_blank">View Content</a></p>
+        </fieldset>
+        </div>
+        <fieldset class="blue">
+        <div class="offer-details-right">
+          <p><strong>Offer Created:</strong> <span id="offer-created-at"></span></p>
+          <p><strong>Offer Deadline:</strong> <br> <span id="offer-deadline"></span></p>
+          <p><strong>Live Date:</strong> <br> <span id="offer-live-date"></span></p>
+        </div>
+        </fieldset>
+      </div>
+    </fieldset>
+  </section>
+  
+
+  <section class="review-input">
+    <fieldset>
+      <legend>Leave Your Review</legend>
+  
+      <!-- Top row: Communication & Punctuality -->
+      <div class="star-grid">
+        <div class="star-grid-label"><strong>Communication:</strong>
+        <br> How well did they communicate with you?</div>
+        <div class="star-grid-label"><strong>Punctuality:</strong>
+        <br> Were Dates Adhered to? </div>
+        <div class="star-rating" data-category="communication"></div>
+        <div class="star-rating" data-category="punctuality"></div>
+      </div>
+  
+      <!-- Next row: Work Output & Overall -->
+      <div class="star-grid">
+        <div class="star-grid-label"><strong>Work Output:</strong>
+        <br> Quality of Content. </div>
+        <div class="star-grid-label"><strong>Overall:</strong>
+        <br> Overall how was you experience?</div>
+        <div class="star-rating" data-category="work_output"></div>
+        <div class="star-rating" data-category="overall"></div>
+      </div>
+  
+      <div class="review-comment-row">
+        <label for="review-text"><strong>Comments:</strong></label>
+        <textarea id="review-text" rows="4"></textarea>
+      </div>
+      <button id="submit-review">Submit Review</button>
+    </fieldset>
+  </section>
+  
+  
+  
+</main>
+
+<footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+
+
+</body>
+</html>

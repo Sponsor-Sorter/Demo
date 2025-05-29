@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up to Sponsor Sorter and connect with brands for sponsorship opportunities. Join now to unlock a range of opportunities for influencers, streamers, and creators!">
+    <title>Sign Up - Sponsor Sorter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script type="module" src="js/main.js"></script>
+
+
+  
+
+
+</head>
+<body>
+
+    <header class="navbar1">
+        <section class="navbar"> 
+         <div class="navii">
+             <h5>  <header>Sponsor Sorter</header> </h5>
+             <div>
+                <background-img class="navimg" src="navimg.png" alt="">
+                <nav> 
+                   <li><a href="index.html">Home</a></li>
+                   <li><a href="finder.html">Finder</a></li>
+                </nav>
+                <nav>
+                <li class="navr"><a href="signup.html">Signup</a></li>
+                <li><a href="login.html">Login</a></li>
+             </div>
+       </div> 
+                </ul>
+             </nav>
+             </h5>
+       <p></p>  
+
+       <div id="admin-panel"></div>
+
+ 
+     </header>
+
+   <!-- Signup Section -->
+<section class="signup-section">
+    <fieldset>
+        
+        <legend>Welcome to Sponsor Sorter</legend>
+        <div class="intro-text">
+           
+            <p>Join the platform that connects influencers, streamers, and creators with the best sponsorship opportunities available! Whether you are looking to sponsor content or be sponsored, Sponsor Sorter is your gateway to the perfect match.</p>
+            <p>Thousands of influencers and brands trust us to help them grow, collaborate, and succeed. Bring your Success to the next level with Sponor Sorter.</p>
+        </div>
+    </fieldset>
+
+   
+
+    <!-- Form Container (Your original form code) -->
+    <div class="form-container">
+        <!-- The rest of the form follows as is -->
+        <!-- Personal Information, Sponsorship Preferences, and the Submit Button -->
+    </div>
+
+</section>
+
+  
+<form id="registrationForm" enctype="multipart/form-data">
+    <!-- Personal Information and Company/Location Fields (right side) -->
+    
+        <!-- Personal Information Fields -->
+            <!-- Logo Upload -->
+<fieldset class="upllogo">
+    <legend>Upload Your Logo</legend>
+    <label for="logo">Upload a Logo:</label>
+    <input type="file" id="logofile" name="logofile" accept="image/png, image/jpeg" onchange="previewLogo()">
+    <img id="pici" class="picc" height="200px" width="200px" src="logos.png" alt="Uploaded Logo" />
+</fieldset>
+        <fieldset class="pibox">
+            <legend>Personal Information</legend>
+            
+
+            <!-- Username -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+
+            <!-- Email Address -->
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+            <!-- Password -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="********" required>
+
+            <!-- Confirm Password -->
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm_password" placeholder="********" required>
+
+           
+
+            <!-- Birthdate or Company Name -->
+            <div class="personal-info-container">
+                <fieldset class="titleb">
+                    <legend>Title</legend>
+                    <!-- Title (left side) -->
+                    <div class="title1">
+                        <label for="Mr.">Mr.</label>
+                        <input type="radio" id="Mr." value="Mr." name="title" onclick="toggleTitleFields()">
+                        <label for="Mrs.">Mrs.</label>
+                        <input type="radio" id="Mrs." value="Mrs." name="title" onclick="toggleTitleFields()">
+                        <label for="phD.">PhD.</label>
+                        <input type="radio" id="phD." value="PhD." name="title" onclick="toggleTitleFields()">
+                        <label for="Company">Company</label>
+                        <input type="radio" id="Company" value="Company" name="title" onclick="toggleTitleFields()">
+                    </div>
+                </fieldset>
+            
+                <!-- The following fields will be outside of the Title fieldset -->
+                <div class="right-side">
+                    <div id="birthdate-container">
+                        <!-- Birthdate -->
+                        <label for="bday">Birthdate:</label>
+                        <input type="date" id="bday" name="bday">
+                    </div>
+            
+                    <div id="company-name-container" style="display: none;">
+                        <!-- Company Name -->
+                        <label for="company-name">Company Name:</label>
+                        <input type="text" id="company-name" name="company_name" placeholder="Enter your company name">
+                    </div>
+            
+                    <div class="location">
+                        <!-- Location -->
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" name="location" placeholder="Earth" required>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="about-yourself">
+                <legend>About You</legend>
+                <textarea id="about-yourself" name="about-yourself" rows="4" placeholder="Share your story, background, and what you're passionate about..." required></textarea>
+            </fieldset>
+            
+            
+            </fieldset>
+            
+          
+            
+<script>
+
+function toggleTitleFields() {
+    const title = document.querySelector('input[name="title"]:checked').value;
+    
+    if (title === 'Company') {
+        // Hide birthdate and show company name
+        document.getElementById('birthdate-container').style.display = 'none';
+        document.getElementById('company-name-container').style.display = 'block';
+    } else {
+        // Show birthdate and hide company name
+        document.getElementById('birthdate-container').style.display = 'block';
+        document.getElementById('company-name-container').style.display = 'none';
+    }
+}
+
+</script>
+
+       
+
+<script>
+    function previewLogo() {
+        const fileInput = document.getElementById('logofile');
+        const previewImage = document.getElementById('pici');
+        
+        // Check if a file is selected
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            
+            // Set up the function that will run after file is loaded
+            reader.onload = function(e) {
+                // Set the image src to the uploaded file
+                previewImage.src = e.target.result;
+            }
+            
+            // Read the selected file as a data URL
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            // If no file is selected, show the default image
+            previewImage.src = "default-image.jpg"; // Change this to your default image URL
+        }
+    }
+</script>
+
+
+
+<input type="hidden" id="userType" name="userType" value="">
+
+
+            <!-- Sponsorship Preferences -->
+            <fieldset class="lookingfor">
+                <legend>What Are You Looking For?</legend>
+                <button type="button" onclick="toggleSponsorType('sponsor')">To Sponsor</button>
+                <button type="button" onclick="toggleSponsorType('besponsored')">To Be Sponsored</button>
+
+                <div id="sponsor-options" class="slide-off">
+                    
+                   
+                    <p></p>
+            
+                   <!-- Preferred Platforms Section -->
+                    <fieldset class="pptb"> <label for="preferred-platforms">Preferred Platforms:</label>
+                        <div id="preferred-platforms">
+                            <label><input type="checkbox" name="platforms" value="Instagram"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" class="platform-logo"> Instagram</label><br>
+                            <label><input type="checkbox" name="platforms" value="TikTok"><img src="tiktoklogo.png" alt="TikTok" class="platform-logo"> TikTok</label><br>
+                            <label><input type="checkbox" name="platforms" value="YouTube"><img src="youtubelogo.png" alt="YouTube" class="platform-logo"> YouTube</label><br>
+                            <label><input type="checkbox" name="platforms" value="Twitter"><img src="twitterlogo.png" alt="Twitter" class="platform-logo"> Twitter</label><br>
+                            <label><input type="checkbox" name="platforms" value="Facebook"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="platform-logo"> Facebook</label><br>
+                            <label><input type="checkbox" name="platforms" value="Twitch"><img src="twitchlogo.png" alt="Twitch" class="platform-logo"> Twitch</label><br>
+                            <label><input type="checkbox" name="platforms" value="Snapchat"><img src="snaplogo.png" alt="Snapchat" class="platform-logo"> Snapchat</label><br>
+                        </div></fieldset>
+<!-- Additional Questions for Sponsors -->
+<fieldset class="searchpref">
+    <legend>Search Preferences</legend>
+    
+    <div class="form-row">
+        <!-- Target Audience -->
+        <label for="target-audience">Target Audience:</label>
+        <select name="target-audience" id="target-audience" required>
+            <option value="">Select Target Audience</option>
+            <option value="Teens">Teens</option>
+            <option value="Tech Enthusiasts">Tech Enthusiasts</option>
+            <option value="Fitness Enthusiasts">Fitness Enthusiasts</option>
+            <option value="Parents">Parents</option>
+            <option value="Millennials">Millennials</option>
+            <option value="Gen Z">Gen Z</option>
+            <option value="Small Business Owners">Small Business Owners</option>
+            <option value="Beauty Enthusiasts">Beauty Enthusiasts</option>
+            <option value="Travel Enthusiasts">Travel Enthusiasts</option>
+            <option value="Food Lovers">Food Lovers</option>
+            <option value="Seniors">Seniors</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <!-- Age Range -->
+        <label class="form-row" for="age-range">Preferred Age Range:</label>
+        <select name="age-range" id="age-range">
+            <option value="">Select Age Range</option>
+            <option value="18-24">18-24</option>
+            <option value="25-34">25-34</option>
+            <option value="35-44">35-44</option>
+            <option value="45-54">45-54</option>
+            <option value="55+">55+</option>
+            <option value="All Ages">All Ages</option>
+        </select>
+        
+        
+    </div>
+
+    <div class="form-row">
+        <!-- Preferred Content Format -->
+        <label for="preferred-content-format">Preferred Content Format:</label>
+        <select name="preferred-content-format" id="preferred-content-format">
+            <option>Video</option>
+            <option>Blog Posts</option>
+            <option>Social Media Posts</option>
+            <option>Sponsored Articles</option>
+            <option>Influencer Stories</option>
+            <option>Other</option>
+        </select>
+
+        <!-- Preferred Partnership Type -->
+        <label for="partnership-type">Preferred Partnership Type:</label>
+        <select name="partnership-type" id="partnership-type">
+            <option>One-Time Campaign</option>
+            <option>Long-Term Partnership</option>
+            <option>Ambassadorship</option>
+            <option>Project-Based</option>
+        </select>
+        
+        
+    </div>
+
+    <div class="form-row">
+        <!-- Location -->
+        <label class="form-row" for="location">Preferred Location:</label>
+        <select name="location" id="location">
+            <option value="">Select Location</option>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <option value="UK">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="Global">Global</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <!-- Minimum Followers -->
+        <label for="minfollowers">Minimum Followers:</label>
+        <select name="minfollowers" id="minfollowers">
+            <option>500-1,000</option>
+            <option>1,000-10,000</option>
+            <option>10,000-50,000</option>
+            <option>50k-100k</option>
+            <option>100k-250k</option>
+            <option>250k-500k</option>
+            <option>500k-1m</option>
+            <option>1m-2m</option>
+            <option>2m-5m</option>
+            <option>5m-10m</option>
+            <option>10m+</option>
+        </select>
+        
+        
+    </div>
+
+</fieldset>
+
+<!-- Pay Fieldset for Payment Options -->
+<fieldset class="payfield">
+    <legend>Payment Details</legend>
+
+    <p><strong>Cost: $19.99 USD</strong></p>
+    <p>Please select your preferred payment method:</p>
+
+    <!-- Payment Method Selection -->
+    <div class="form-row">
+        <label for="payment-method">Payment Method:</label>
+        <select name="payment-method" id="payment-method" required>
+            <option value="">Select Payment Method</option>
+            <option value="paypal">PayPal</option>
+            <option value="credit-card">Credit Card</option>
+            <option value="bank-transfer">Bank Transfer</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <!-- PayPal Email -->
+    <div class="form-row" id="paypal-info" style="display: none;">
+        <label for="paypal-email">PayPal Email:</label>
+        <input type="email" id="paypal-email" name="paypal-email" placeholder="Enter PayPal Email">
+    </div>
+
+    <!-- Credit Card Info -->
+    <div class="form-row" id="credit-card-info" style="display: none;">
+        <label for="card-number">Card Number:</label>
+        <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" pattern="\d{4} \d{4} \d{4} \d{4}" maxlength="19">
+
+        <label for="expiry-date">Expiry Date:</label>
+        <input type="month" id="expiry-date" name="expiry-date">
+    </div>
+
+    <!-- Billing Address -->
+    <div class="form-row">
+        <label for="billing-address">Billing Address:</label>
+        <input type="text" id="billing-address" name="billing-address" placeholder="Enter your billing address">
+    </div>
+
+    <!-- Payment Confirmation -->
+    <div class="form-row">
+        <label for="confirm-payment">
+            <input type="checkbox" id="confirm-payment" name="confirm-payment" required> I confirm that the payment of $19.99 USD is correct and will be processed.
+        </label>
+    </div>
+</fieldset>
+
+<!-- JavaScript -->
+<script>
+    const paymentSelect = document.getElementById('payment-method');
+    const paypalInfo = document.getElementById('paypal-info');
+    const creditCardInfo = document.getElementById('credit-card-info');
+
+    paymentSelect.addEventListener('change', function () {
+        const selected = this.value;
+
+        // Reset all conditional fields
+        paypalInfo.style.display = 'none';
+        creditCardInfo.style.display = 'none';
+
+        // Show the appropriate field
+        if (selected === 'paypal') {
+            paypalInfo.style.display = 'block';
+        } else if (selected === 'credit-card') {
+            creditCardInfo.style.display = 'block';
+        }
+    });
+</script>
+
+                </div>
+
+
+                <div id="besponsored-options" class="slide-off">
+                    <label for="socialhandle">Social Handle Name:</label>
+                    <input type="text" id="socialhandle" name="socialhandle" placeholder="Your Social Handle" required>
+            
+                    <label for="contenttype">Content Type:</label>
+                    <input type="text" id="contenttype" name="contenttype" placeholder="Gaming, Fashion, etc." required>
+            <p></p>
+         <!-- Preferred Platforms Section -->
+<label for="preferred-platforms-besponsored">Active Platforms:</label>
+<div id="preferred-platforms-besponsored">
+    <!-- Instagram -->
+    <div class="platform-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-instagram" name="instagram_handle" placeholder="@YourInstagramHandle" >
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="Instagram" id="instagram" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-instagram">0 Followers</span>
+            <span class="interactions-count" id="interactions-instagram">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- TikTok -->
+    <div class="platform-container">
+        <img src="tiktoklogo.png" alt="TikTok" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-tiktok" name="tiktok_handle" placeholder="@YourTikTokHandle">
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="TikTok" id="tiktok" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-tiktok">0 Followers</span>
+            <span class="interactions-count" id="interactions-tiktok">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- YouTube -->
+    <div class="platform-container">
+        <img src="youtubelogo.png" alt="YouTube" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-youtube" name="youtube_handle" placeholder="@YourYouTubeHandle">
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="YouTube" id="youtube" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-youtube">0 Subscribers</span>
+            <span class="interactions-count" id="interactions-youtube">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- Twitter -->
+    <div class="platform-container">
+        <img src="twitterlogo.png" alt="Twitter" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-twitter" name="twitter_handle" placeholder="@YourTwitterHandle" >
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="Twitter" id="twitter" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-twitter">0 Followers</span>
+            <span class="interactions-count" id="interactions-twitter">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- Facebook -->
+    <div class="platform-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-facebook" name="facebook_handle" placeholder="@YourFacebookHandle" >
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="Facebook" id="facebook" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-facebook">0 Likes</span>
+            <span class="interactions-count" id="interactions-facebook">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- Twitch -->
+    <div class="platform-container">
+        <img src="twitchlogo.png" alt="Twitch" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-twitch" name="twitch_handle" placeholder="@YourTwitchHandle" >
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="Twitch" id="twitch" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-twitch">0 Followers</span>
+            <span class="interactions-count" id="interactions-twitch">0 Interactions</span>
+        </div>
+    </div>
+
+    <!-- Snapchat -->
+    <div class="platform-container">
+        <img src="snaplogo.png" alt="Snapchat" class="platform-logo">
+        <input type="text" class="social-handle" id="socialhandle-snapchat" name="snapchat_handle" placeholder="@YourSnapchatHandle" >
+        <input type="checkbox" class="platform-checkbox" name="platforms" value="Snapchat" id="snapchat" onclick="updateFollowerCount(this)">
+        <div class="counts">
+            <span class="follower-count" id="follower-snapchat">0 Friends</span>
+            <span class="interactions-count" id="interactions-snapchat">0 Interactions</span>
+        </div>
+    </div>
+</div>
+
+
+    
+
+    </section>
+
+    <!-- Additional Questions for Sponsors -->
+<fieldset class="searchpref">
+    <legend>Sponser Preferences</legend>
+    <p>Gives a brief overview of your Social media Pressence for sponsors to search for you. </p>
+    
+    <div class="form-row">
+        <!-- Target Audience -->
+        <label for="target-audience">Target Audience:</label>
+        <select name="target-audience" id="target-audience" required>
+            <option value="">Select Target Audience</option>
+            <option value="Teens">Teens</option>
+            <option value="Tech Enthusiasts">Tech Enthusiasts</option>
+            <option value="Fitness Enthusiasts">Fitness Enthusiasts</option>
+            <option value="Parents">Parents</option>
+            <option value="Millennials">Millennials</option>
+            <option value="Gen Z">Gen Z</option>
+            <option value="Small Business Owners">Small Business Owners</option>
+            <option value="Beauty Enthusiasts">Beauty Enthusiasts</option>
+            <option value="Travel Enthusiasts">Travel Enthusiasts</option>
+            <option value="Food Lovers">Food Lovers</option>
+            <option value="Seniors">Seniors</option>
+            <option value="Other">Other</option>
+        </select>
+        
+<!-- Age Range -->
+        <label for="age-range">Preferred Age Range:</label>
+        <select name="age-range" id="age-range">
+            <option value="">Select Age Range</option>
+            <option value="18-24">18-24</option>
+            <option value="25-34">25-34</option>
+            <option value="35-44">35-44</option>
+            <option value="45-54">45-54</option>
+            <option value="55+">55+</option>
+            <option value="All Ages">All Ages</option>
+        </select>
+
+       
+    </div>
+
+    <div class="form-row">
+        <!-- Preferred Content Format -->
+        <label class="form-row" for="preferred-content-format">Preferred Content Format:</label>
+        <select name="preferred-content-format" id="preferred-content-format">
+            <option>Video</option>
+            <option>Blog Posts</option>
+            <option>Social Media Posts</option>
+            <option>Sponsored Articles</option>
+            <option>Influencer Stories</option>
+            <option>Other</option>
+        </select>
+        
+         <!-- Preferred Partnership Type -->
+         <label class="form-row" for="partnership-type">Preferred Partnership Type:</label>
+         <select name="partnership-type" id="partnership-type">
+             <option>One-Time Campaign</option>
+             <option>Long-Term Partnership</option>
+             <option>Ambassadorship</option>
+             <option>Project-Based</option>
+         </select>
+    </div>
+
+    <div class="form-row">
+        <!-- Location -->
+        <label for="location">Preferred Location:</label>
+        <select name="location" id="location">
+            <option value="">Select Location</option>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <option value="UK">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="Global">Global</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+    <div>
+
+        <!-- New Preferred Sponsor Platform Dropdown -->
+        <div class="form-row" id="preferred-sponsor-platform-container" style="display: none;">
+        <label for="preferred-sponsor-platform">Preferred Sponsored Platform:</label>
+        <select name="preferred-sponsor-platform" id="preferred-sponsor-platform">
+        <option value="">Select Sponsor Platform</option>
+        </select>
+        </div>
+</div>
+</fieldset>
+
+
+        
+        <!-- Pay Fieldset for Payment Options -->
+<fieldset class="payfield">
+    <legend>Payment Details</legend>
+    
+    <p><strong>Cost: $9.99 USD</strong></p>
+    <p>Please select your preferred payment method:</p>
+    
+    <!-- Payment Method Selection -->
+    <div class="form-row">
+        <label for="payment-method">Payment Method:</label>
+        <select name="payment-method" id="payment-method" required>
+            <option value="">Select Payment Method</option>
+            <option value="paypal">PayPal</option>
+            <option value="credit-card">Credit Card</option>
+            <option value="bank-transfer">Bank Transfer</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <!-- PayPal Email (Visible if PayPal is selected) -->
+        <label for="paypal-email" id="paypal-email-label" style="display: none;">PayPal Email:</label>
+        <input type="email" id="paypal-email" name="paypal-email" placeholder="Enter PayPal Email" style="display: none;">
+    </div>
+
+    <div class="form-row" id="credit-card-info" style="display: none;">
+        <!-- Credit Card Information -->
+        <label for="card-number">Card Number:</label>
+        <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" pattern="\d{4} \d{4} \d{4} \d{4}" maxlength="19">
+        
+        <label for="expiry-date">Expiry Date:</label>
+        <input type="month" id="expiry-date" name="expiry-date">
+    </div>
+    
+    <div class="form-row">
+        <!-- Billing Address (General for all payment methods) -->
+        <label for="billing-address">Billing Address:</label>
+        <input type="text" id="billing-address" name="billing-address" placeholder="Enter your billing address">
+    </div>
+
+    <div class="form-row">
+        <!-- Payment Confirmation -->
+        <label for="confirm-payment">
+            <input type="checkbox" id="confirm-payment" name="confirm-payment" required> I confirm that the payment of $19.99 USD is correct and will be processed.
+        </label>
+    </div>
+</fieldset>
+    
+
+</fieldset>
+
+
+
+
+</div>
+    <section id="extra-qs">
+
+
+    </section>
+                    
+                
+                  <!-- Right Sidebar with Overall Subscriber Count and Graphs -->
+    <section id="sidebar">
+        <div class="overall-subscriber-count">
+            <h3>Overall Subscriber Count</h3>
+            <p id="total-subscriber-count">0</p>
+        </div>
+
+       
+    </section>
+                
+            </fieldset>
+
+            <section class="submit-sec">
+
+                <!-- Submit Button (placed at the bottom) -->
+                <fieldset class="submit-container">
+                    <div class="submit">
+
+                        <div class="tos-agreement" style="margin: 18px 0;">
+  <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+    <input type="checkbox" id="agreeTOS" name="agreeTOS" required style="width: 18px; height: 18px; accent-color: #5eead4; cursor: pointer;">
+    <span>
+      I agree to the
+      <a href="/public/terms.html" target="_blank" style="color: #5eead4; text-decoration: underline; font-weight: 600;">
+        Terms of Service
+      </a>
+    </span>
+  </label>
+</div>
+
+                      <button type="submit" id="submitBtn">
+                        <span class="btn-text">Sign Up</span>
+                        <span class="spinner" style="display: none;"></span>
+                      </button>
+                    </div>
+                  </fieldset>
+                  
+           </section>
+    
+</form>
+
+
+
+       
+    </section>
+   
+
+      <!-- Footer Section -->
+      <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+  
+    <script>
+        function toggleSponsorType(type) {
+          const sponsorOptions = document.getElementById("sponsor-options");
+          const beSponsoredOptions = document.getElementById("besponsored-options");
+      
+          document.getElementById("userType").value = type;
+
+          if (type === "sponsor") {
+            sponsorOptions.classList.remove("slide-off");
+            sponsorOptions.classList.add("slide-on");
+      
+            beSponsoredOptions.classList.remove("slide-on");
+            beSponsoredOptions.classList.add("slide-off");
+          } else if (type === "besponsored") {
+            beSponsoredOptions.classList.remove("slide-off");
+            beSponsoredOptions.classList.add("slide-on");
+      
+            sponsorOptions.classList.remove("slide-on");
+            sponsorOptions.classList.add("slide-off");
+          }
+      
+          // Enable/disable inputs accordingly
+          document.querySelectorAll('#sponsor-options input, #sponsor-options select, #sponsor-options textarea').forEach(el => {
+            el.disabled = (type !== 'sponsor');
+          });
+      
+          document.querySelectorAll('#besponsored-options input, #besponsored-options select, #besponsored-options textarea').forEach(el => {
+            el.disabled = (type !== 'besponsored');
+          });
+        }
+      
+        // Optional: Set default on load
+        window.addEventListener('DOMContentLoaded', () => toggleSponsorType('sponsor'));
+      </script>
+        
+
+    <script>
+        // Example: Save user data after signup/login
+function saveUserData() {
+  const userData = {
+    name: "JohnDoe",
+    email: "johndoe@example.com",
+    username: "johnnyD",
+    location: "New York, USA",
+    gender: "Male",
+    accountType: "Sponsee",
+    profilePic: "defaultprofile.png", // Change if user uploads a pic
+    isSearchable: true,
+    stats: {
+      activeSponsorships: 3,
+      completedDeals: 8,
+      totalFollowers: 12000,
+      totalEarnings: 1500
+    },
+    linkedAccounts: [
+      { platform: "Instagram", handle: "@johnnyD", icon: "instagram.png" },
+      { platform: "YouTube", handle: "JohnD Vlogs", icon: "youtube.png" }
+    ],
+    recentActivity: [
+      { brand: "Nike", status: "Completed", date: "2024-11-10", earnings: "$300" },
+      { brand: "Adidas", status: "Pending", date: "2025-03-21", earnings: "$200" }
+    ]
+  };
+
+  localStorage.setItem("sponseeProfile", JSON.stringify(userData));
+}
+
+    </script>
+      
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script type="module" src="/public/js/formSubmit.js"></script>
+
+        <script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+// This handles registration and records agreed_tos in Supabase users_extended_data
+const form = document.getElementById('registrationForm');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    // Prevent duplicate logic if formSubmit.js already handles this.
+    // If you have TOS logic in formSubmit.js, combine this there instead!
+    if (window.__alreadyHandledTOS) return;
+    window.__alreadyHandledTOS = true;
+
+    const agreedTOS = document.getElementById('agreeTOS')?.checked;
+    if (!agreedTOS) {
+      alert("You must agree to the Terms of Service to sign up.");
+      e.preventDefault();
+      window.__alreadyHandledTOS = false;
+      return;
+    }
+    setTimeout(() => { window.__alreadyHandledTOS = false; }, 3000);
+  });
+}
+</script>
+
+</body>
+</html>

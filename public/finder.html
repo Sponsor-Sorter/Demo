@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Find and view active users, discover sponsorship opportunities, and connect with influencers and creators.">
+  <title>SponsorFinder - Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script type="module" src="auth.js" defer></script>
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="dashboard-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Login</a></li>
+          <!-- Notification Bell here -->
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<fieldset>
+  <section class="search-section">
+    <h2>Welcome, <span id="sponsorName"></span>!</h2>
+    <h3>Find Active Users and Influencers</h3>
+    <p>Use the search form below to find active users who match your sponsorship criteria. Filter by category, location, and more.</p>
+    <form id="searchForm">
+      <input type="text" id="search-name" placeholder="Name (e.g., JohnDoe)">
+      <input type="text" id="search-contenttype" placeholder="Content Type (e.g., Gaming)">
+      <input type="text" id="search-location" placeholder="Location (e.g., UK)">
+      <select id="search-platform">
+        <option value="">Select Platform (optional)</option>
+        <option value="youtube">YouTube</option>
+        <option value="instagram">Instagram</option>
+        <option value="twitch">Twitch</option>
+        <option value="tiktok">TikTok</option>
+        <option value="twitter">Twitter</option>
+        <option value="facebook">Facebook</option>
+        <option value="snapchat">Snapchat</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+    <div id="searchResults"></div>
+    <div id="searchPagination" class="pagination-controls">
+      <button id="prevPage">Previous</button>
+      <span id="currentPage">Page 1</span>
+      <button id="nextPage">Next</button>
+    </div>
+  </section>
+</fieldset>
+
+<fieldset class="otheraccounts">
+  <legend><h3>Other Accounts:</h3></legend>
+  <div class="accounts-scroll-viewport" style="max-width:100%;overflow-x:auto;padding-bottom:2px;">
+    <div class="user-profiles" id="otherAccountsProfiles" style="display:flex;flex-wrap:nowrap;gap:18px;"></div>
+  </div>
+</fieldset>
+
+<fieldset class="ocprofiles">
+  <legend>Other Company Profiles</legend>
+  <div class="company-profiles">
+    <ul>
+      <li>
+        <figure>
+          <img src="youtubelogo.png" alt="Company Logo 1">
+          <figcaption>YouTube</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure>
+          <img src="twitchlogo.png" alt="Company Logo 2">
+          <figcaption>Twitch</figcaption>
+        </figure>
+      </li>
+      <li>
+        <figure>
+          <img src="tiktoklogo.png" alt="Company Logo 3">
+          <figcaption>TikTok</figcaption>
+        </figure>
+      </li>
+    </ul>
+  </div>
+</fieldset>
+
+<footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+<!-- Cookie Consent Banner -->
+<div id="cookie-banner" class="cookie-banner">
+  <p>
+    🍪 We use cookies to personalize content, provide social media features, and analyze our traffic. By clicking “Accept”, you consent to the use of all cookies in accordance with our 
+    <a href="privacy.html" target="_blank">Privacy Policy</a>.
+  </p>
+  <div class="cookie-buttons">
+    <button id="accept-cookies">Accept</button>
+    <button id="decline-cookies">Decline</button>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const sponsorNameElem = document.getElementById('sponsorName');
+  const searchHeader = document.querySelector('.search-section h3');
+  const resultsDiv = document.getElementById('searchResults');
+  const currentPageLabel = document.getElementById('currentPage');
+  const searchForm = document.getElementById('searchForm');
+  const nextPageBtn = document.getElementById('nextPage');
+  const prevPageBtn = document.getElementById('prevPage');
+  const otherProfilesContainer = document.getElementById('otherAccountsProfiles');
+  let currentPage = 1;
+  const resultsPerPage = 20;
+
+  function extractPlatformBadges(socialHandles) {
+    if (!socialHandles) return 'N/A';
+    let handlesObj = socialHandles;
+    if (typeof handlesObj === 'string') {
+      try {
+        handlesObj = JSON.parse(handlesObj);
+      } catch (e) {
+        console.error('Invalid JSON in social_handles:', socialHandles);
+        return 'N/A';
+      }
+    }
+    const platformLogos = {
+      instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+      tiktok: 'tiktoklogo.png',
+      youtube: 'youtubelogo.png',
+      twitter: 'twitterlogo.png',
+      facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+      twitch: 'twitchlogo.png',
+      snapchat: 'snaplogo.png',
+    };
+    const platformsArray = Object.keys(handlesObj).filter(platform => {
+      const handle = handlesObj[platform];
+      return handle && handle.trim() !== '';
+    });
+    if (platformsArray.length === 0) return 'N/A';
+    return platformsArray.map(p => {
+      const logoSrc = platformLogos[p.toLowerCase()];
+      return logoSrc
+        ? `<img src="${logoSrc}" alt="${p}" title="${p}" class="platform-logo-icon">`
+        : `<span class="platform-badge">${p}</span>`;
+    }).join(' ');
+  }
+
+  // Auth + profile info
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    console.error('Error fetching auth user:', authError);
+    window.location.href = '/login.html';
+    return;
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from('users_extended_data')
+    .select('username, userType')
+    .eq('user_id', user.id)
+    .single();
+
+  if (profileError) {
+    console.error('Error fetching profile:', profileError);
+    return;
+  }
+
+  const isSponsor = profile.userType === 'sponsor';
+  const targetType = isSponsor ? 'besponsored' : 'sponsor';
+  const targetLabel = isSponsor ? 'Find Potential Sponsees' : 'Find Active Sponsors';
+
+  sponsorNameElem.innerText = profile.username ?? user.email;
+  searchHeader.innerText = targetLabel;
+
+  // Nav update (just dashboard link, bell stays!)
+  const dashboardLink = document.getElementById('dashboard-link');
+  if (dashboardLink && dashboardLink.firstElementChild) {
+    dashboardLink.firstElementChild.href = isSponsor ? "dashboardsponsor.html" : "dashboardsponsee.html";
+    dashboardLink.firstElementChild.innerText = "Dashboard";
+  }
+
+  // --- Helper to route to correct profile page
+  async function viewProfileByUserType(username) {
+    const { data: targetUser, error } = await supabase
+      .from('users_extended_data')
+      .select('userType')
+      .ilike('username', username)
+      .single();
+    if (!targetUser || error) {
+      alert('Profile type not found.');
+      return;
+    }
+    const page = targetUser.userType === 'sponsor' ? 'viewprofiles.html' : 'viewprofile.html';
+    window.location.href = `${page}?username=${encodeURIComponent(username)}`;
+  }
+
+  // -- Load Other Accounts (random 5 profiles)
+  async function loadOtherAccounts() {
+    otherProfilesContainer.innerHTML = '';
+    const { data: allUsers, error } = await supabase
+      .from('users_extended_data')
+      .select('username, location, profile_pic, contenttype, social_handles, userType')
+      .eq('userType', targetType);
+
+    if (error || !allUsers?.length) {
+      otherProfilesContainer.innerHTML = '<div style="padding:18px 8px;">No other accounts found.</div>';
+      return;
+    }
+    // Shuffle and take 4
+    const shuffled = allUsers.sort(() => 0.4 - Math.random()).slice(0, 4);
+    shuffled.forEach(user => {
+      const div = document.createElement('div');
+      div.classList.add('user-profile');
+
+      const imgSrc = user.profile_pic
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+        : 'logos.png';
+
+      const platformsHTML = extractPlatformBadges(user.social_handles);
+
+      div.innerHTML = `
+        <figure>
+          <img src="${imgSrc}" alt="${user.username}" class="profile-pic">
+          <div class="platforms-row">${platformsHTML}</div>
+        </figure>
+        <div class="user-profile-content">
+          <figcaption><strong>${user.username}</strong><br>
+          ${user.contenttype}<br>
+          ${user.location}</figcaption>
+          <button class="view-profile">View Profile</button>
+        </div>
+      `;
+      otherProfilesContainer.appendChild(div);
+      div.querySelector('.view-profile').addEventListener('click', () => {
+        viewProfileByUserType(user.username);
+      });
+    });
+  }
+  loadOtherAccounts();
+
+  // Render search results (vertical list, paginated)
+  async function fetchAndRenderResults(isSearch = false) {
+    if (!isSearch) currentPage = 1;
+    const name = document.getElementById('search-name').value.trim();
+    const contenttype = document.getElementById('search-contenttype').value.trim();
+    const location = document.getElementById('search-location').value.trim();
+    const platform = document.getElementById('search-platform').value.trim();
+
+    // -------- Main Search Query --------
+    let query = supabase
+      .from('users_extended_data')
+      .select('username, location, profile_pic, contenttype, social_handles')
+      .eq('userType', targetType);
+
+    if (name) query = query.ilike('username', `%${name}%`);
+    if (contenttype) query = query.ilike('contenttype', `%${contenttype}%`);
+    if (location) query = query.ilike('location', `%${location}%`);
+
+   if (platform) {
+  query = query
+    .filter(`social_handles->>${platform}`, 'not.is', null)
+    .filter(`social_handles->>${platform}`, 'neq', '');
+}
+
+    const from = (currentPage - 1) * resultsPerPage;
+    const to = from + resultsPerPage - 1;
+    query = query.range(from, to);
+
+    const { data, error } = await query;
+
+    resultsDiv.innerHTML = '';
+
+    if (error) {
+      resultsDiv.textContent = 'Error fetching results';
+      console.error(error);
+      return;
+    }
+
+    if (!data.length) {
+      resultsDiv.textContent = 'No matching users found.';
+    } else {
+      data.forEach(user => {
+        const div = document.createElement('div');
+        div.classList.add('user-profile');
+        const imgSrc = user.profile_pic
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+          : 'logos.png';
+        const platformsHTML = extractPlatformBadges(user.social_handles);
+
+        div.innerHTML = `
+          <figure>
+            <img src="${imgSrc}" alt="${user.username}" class="profile-pic">
+            <div class="platforms-row">${platformsHTML}</div>
+          </figure>
+          <div class="user-profile-content">
+            <figcaption><strong>${user.username}</strong><br>
+            ${user.contenttype}<br>
+            ${user.location}</figcaption>
+            <button class="view-profile">View Profile</button>
+            <button class="make-offer-btn" data-username="${user.username}">Make Offer</button>
+          </div>
+        `;
+        resultsDiv.appendChild(div);
+
+        // Universal View Profile Handler
+        const viewBtn = div.querySelector('.view-profile');
+        viewBtn.addEventListener('click', () => {
+          viewProfileByUserType(user.username);
+        });
+
+        // Attach Make Offer button listener
+        const offerBtn = div.querySelector('.make-offer-btn');
+        offerBtn.addEventListener('click', () => {
+          const encodedUsername = encodeURIComponent(user.username);
+          window.location.href = `newoffer.html?username=${encodedUsername}`;
+        });
+      });
+    }
+
+    currentPageLabel.textContent = `Page ${currentPage}`;
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = data.length < resultsPerPage;
+  }
+
+  // Initial profiles load
+  fetchAndRenderResults();
+
+  // Search + pagination handlers
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    currentPage = 1;
+    fetchAndRenderResults(true);
+  });
+
+  nextPageBtn.addEventListener('click', () => {
+    currentPage++;
+    fetchAndRenderResults(true);
+  });
+
+  prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchAndRenderResults(true);
+    }
+  });
+});
+</script>
+
+<!-- ALERTS BELL/DROPDOWN LOGIC HERE -->
+<script type="module" src="/public/js/alerts.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Review Threads - Sponsor Sorter">
+  <title>Review Thread | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+ 
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="javascript:history.back()">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <!-- Notification Bell here -->
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<main>
+  <fieldset class="rev">
+    <div class="review-thread-container">
+      <div class="review-thread-header">
+        <h2>All Reviews Received</h2>
+        <p style="color:#afafaf;">Click any review to expand, view details, reply or report.</p>
+        <a href="javascript:history.back()" style="font-size:1em;color:#3100d2;text-decoration:underline;">← Back to Dashboard</a>
+      </div>
+      <div id="reviews-pagination-controls" style="margin-bottom:10px;">
+        <label for="page-size-select" style="font-size:1em; margin-right:5px;">Reviews per page:</label>
+        <select id="page-size-select" style="font-size:1em; padding:3px 9px; border-radius:5px;">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <fieldset>
+        <div id="reviews-container"></div>
+        <div id="reviews-pagination" style="text-align:center;margin:20px 0;"></div>
+      </fieldset>
+    </div>
+  </fieldset>
+</main>
+
+<footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+// Minimal Notification Bell logic
+async function setupNotificationBell() {
+  const bell = document.getElementById('notification-bell');
+  const badge = document.getElementById('notification-count');
+  if (!bell || !badge) return;
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) {
+    badge.style.display = 'none';
+    return;
+  }
+  const userId = session.user.id;
+
+  // Get notification_uuid for this user
+  const { data: userRow } = await supabase
+    .from('users_extended_data')
+    .select('notification_uuid')
+    .eq('user_id', userId)
+    .single();
+
+  const notification_uuid = userRow?.notification_uuid;
+  if (!notification_uuid) {
+    badge.style.display = 'none';
+    return;
+  }
+
+  async function loadNotifications() {
+    const { data, error } = await supabase
+      .from('user_notifications')
+      .select('*')
+      .eq('notification_uuid', notification_uuid)
+      .order('created_at', { ascending: false })
+      .limit(30);
+    if (error) {
+      badge.style.display = 'none';
+      return;
+    }
+    const unread = (data || []).filter(n => !n.read);
+    badge.textContent = unread.length > 0 ? unread.length : '';
+    badge.style.display = unread.length > 0 ? 'inline-block' : 'none';
+  }
+  await loadNotifications();
+  setInterval(loadNotifications, 60000);
+}
+
+// --- Dynamic Nav Bar (role aware, with notification bell) ---
+async function updateNavBar() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const navDynamic = document.getElementById('nav-dynamic');
+  if (!navDynamic) return;
+
+  let dashboardHref = "signup.html";
+  let dashboardLabel = "Signup";
+
+  if (session && session.user) {
+    let userType = session.user.user_metadata?.userType;
+    // If not present in metadata, get from users_extended_data (using user_id)
+    if (!userType) {
+      const { data: userRow } = await supabase
+        .from('users_extended_data')
+        .select('userType')
+        .eq('user_id', session.user.id)
+        .single();
+      if (userRow?.userType) userType = userRow.userType;
+    }
+    if (userType === "besponsored" || userType === "sponsee") {
+      dashboardHref = "dashboardsponsee.html";
+      dashboardLabel = "Dashboard";
+    } else if (userType === "sponsor") {
+      dashboardHref = "dashboardsponsor.html";
+      dashboardLabel = "Dashboard";
+    }
+  }
+
+  let navHtml = `
+    <background-img class="navimg" src="navimg.png" alt="">
+    <nav>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="finder.html">Finder</a></li>
+    </nav>
+    <nav>
+      <li class="navr" id="auth-link"><a href="${dashboardHref}">${dashboardLabel}</a></li>
+      <li><a href="login.html">Logout</a></li>
+      <li class="notification-bell-wrap">
+        <button id="notification-bell" class="notification-bell-btn">
+          <img src="bell.png" alt="Notifications" style="width:28px;">
+          <span id="notification-count" class="notification-badge">0</span>
+        </button>
+      </li>
+    </nav>
+  `;
+  navDynamic.innerHTML = navHtml;
+  await setupNotificationBell();
+}
+updateNavBar();
+
+// -- Helper to render stars --
+function renderStars(score) {
+  let out = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= score) {
+      out += `<span class="star filled">★</span>`;
+    } else {
+      out += `<span class="star unfilled">☆</span>`;
+    }
+  }
+  return out;
+}
+
+// Loads profile pic for a user, fallback to logos.png
+async function getProfilePic(usernameOrEmail, field) {
+  let { data } = await supabase
+    .from('users_extended_data')
+    .select('profile_pic')
+    .eq(field, usernameOrEmail)
+    .single();
+  return data?.profile_pic
+    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${data.profile_pic}`
+    : 'logos.png';
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  let { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) {
+    alert('Please login first!');
+    window.location.href = 'login.html';
+    return;
+  }
+  let userEmail = session.user.email;
+  let userId = session.user.id;
+
+  // Get logged in user's role and username (FIX: use correct column names)
+  let { data: userData } = await supabase
+    .from('users_extended_data')
+    .select('userType,username,email')
+    .eq('user_id', userId)
+    .single();
+  let myRole = userData?.userType;
+  let myUsername = userData?.username;
+
+  // Fetch all reviews and offers (using correct keys)
+  let { data: reviews, error } = await supabase
+    .from('private_offer_reviews')
+    .select('*, offer_id')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    document.getElementById('reviews-container').innerHTML =
+      `<div style="color:red;">Error loading reviews: ${error.message}</div>`;
+    return;
+  }
+
+  // Filter reviews received by the current user
+  let receivedReviews = [];
+  for (let review of reviews) {
+    const { data: offer } = await supabase
+      .from('private_offers')
+      .select('sponsor_email,sponsee_email,sponsor_username,sponsee_username')
+      .eq('id', review.offer_id)
+      .single();
+
+    if (!offer) continue;
+
+    let isRecipient = false;
+    if (review.reviewer_role === 'sponsor') {
+      isRecipient = (offer.sponsee_email === userEmail || offer.sponsee_username === myUsername);
+    } else if (review.reviewer_role === 'sponsee') {
+      isRecipient = (offer.sponsor_email === userEmail || offer.sponsor_username === myUsername);
+    }
+    if (isRecipient) {
+      review._reviewer_username = review.reviewer_role === 'sponsor' ? offer.sponsor_username : offer.sponsee_username;
+      review._reviewer_email = review.reviewer_role === 'sponsor' ? offer.sponsor_email : offer.sponsee_email;
+      receivedReviews.push(review);
+    }
+  }
+
+  // --- PAGINATION LOGIC ---
+  const container = document.getElementById('reviews-container');
+  const paginationContainer = document.getElementById('reviews-pagination');
+  const pageSizeSelect = document.getElementById('page-size-select');
+
+  let PAGE_SIZE = parseInt(pageSizeSelect.value, 10) || 5;
+  let currentPage = 1;
+  let totalPages = Math.ceil(receivedReviews.length / PAGE_SIZE);
+
+  pageSizeSelect.addEventListener('change', function() {
+    PAGE_SIZE = parseInt(this.value, 10);
+    totalPages = Math.ceil(receivedReviews.length / PAGE_SIZE);
+    currentPage = 1;
+    renderPage(currentPage);
+  });
+
+  async function renderPage(page) {
+    container.innerHTML = "";
+    const start = (page - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    const pageReviews = receivedReviews.slice(start, end);
+
+    if (pageReviews.length === 0) {
+      container.innerHTML = `<div style="color:#888;padding:22px;text-align:center;">No reviews found yet.</div>`;
+      return;
+    }
+
+    for (let idx = 0; idx < pageReviews.length; idx++) {
+      const review = pageReviews[idx];
+      const reviewerPic = await getProfilePic(review._reviewer_username, 'username');
+
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="review-header" data-idx="${start + idx}">
+          <img src="${reviewerPic}" class="profile-badge" alt="Reviewer pic"/>
+          <div class="review-meta">
+            <span class="reviewer-name">${review._reviewer_username}</span>
+            <span class="reviewer-role">(${review.reviewer_role.charAt(0).toUpperCase() + review.reviewer_role.slice(1)})</span>
+            <div class="stars">${renderStars(Math.round(review.overall || 0))}</div>
+          </div>
+          <button class="expand-btn" aria-label="Expand Review">▼</button>
+        </div>
+        <div class="review-details" style="display:none;">
+          <div class="category-stars-block-row">
+            <div class="category-stars-block">
+              <span class="category-label">Communication</span>
+              <div class="stars">${renderStars(Math.round(review.communication || 0))}</div>
+            </div>
+            <div class="category-stars-block">
+              <span class="category-label">Punctuality</span>
+              <div class="stars">${renderStars(Math.round(review.punctuality || 0))}</div>
+            </div>
+            <div class="category-stars-block">
+              <span class="category-label">Work Output</span>
+              <div class="stars">${renderStars(Math.round(review.work_output || 0))}</div>
+            </div>
+          </div>
+          <div class="review-datetime">${review.created_at ? new Date(review.created_at).toLocaleString() : ''}</div>
+          <div class="review-comment"><strong>Review:</strong> ${review.review_text ? review.review_text : '<em>No comment left.</em>'}</div>
+          <div class="review-reply">
+            <button class="report-btn" onclick="window.openReportModal && window.openReportModal('review', '${review.id}')">Report</button>
+            ${
+              review.reply
+                ? `<div class="reply-box"><strong>Your Reply:</strong> ${review.reply}</div>`
+                : `
+                  <div class="reply-input-row">
+                    <textarea placeholder="Write a reply..."></textarea>
+                    <button class="reply-btn">Reply</button>
+                  </div>
+                `
+            }
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+
+      // Expand/collapse logic
+      const header = card.querySelector('.review-header');
+      const details = card.querySelector('.review-details');
+      const expandBtn = card.querySelector('.expand-btn');
+      header.addEventListener('click', (e) => {
+        if (e.target.classList.contains('reply-btn') || e.target.classList.contains('report-btn') || e.target.tagName === 'TEXTAREA') return;
+        details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        card.classList.toggle('expanded');
+        expandBtn.innerHTML = details.style.display === 'none' ? '▼' : '▲';
+      });
+
+      // Reply logic
+      if (!review.reply) {
+        const replyBtn = card.querySelector('.reply-btn');
+        const textarea = card.querySelector('textarea');
+        replyBtn.addEventListener('click', async (ev) => {
+          ev.stopPropagation();
+          const text = textarea.value.trim();
+          if (!text) {
+            textarea.style.border = '1.5px solid #e94747';
+            textarea.focus();
+            return;
+          }
+          replyBtn.disabled = true;
+          let { error: updateErr } = await supabase
+            .from('private_offer_reviews')
+            .update({ reply: text })
+            .eq('id', review.id);
+          if (updateErr) {
+            alert('Failed to submit reply: ' + updateErr.message);
+            replyBtn.disabled = false;
+          } else {
+            card.querySelector('.review-reply').innerHTML =
+              `<button class="report-btn" onclick="window.openReportModal && window.openReportModal('review', '${review.id}')">Report</button>
+              <div class="reply-box"><strong>Your Reply:</strong> ${text}</div>`;
+          }
+        });
+      }
+    }
+
+    // Render Pagination Controls
+    paginationContainer.innerHTML = '';
+    if (totalPages > 1) {
+      if (currentPage > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = "pagination-btn";
+        prevBtn.textContent = "Previous";
+        prevBtn.onclick = () => { currentPage--; renderPage(currentPage); };
+        paginationContainer.appendChild(prevBtn);
+      }
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = "pagination-btn" + (i === currentPage ? ' active' : '');
+        pageBtn.textContent = i;
+        if (i !== currentPage) {
+          pageBtn.onclick = () => { currentPage = i; renderPage(currentPage); };
+        } else {
+          pageBtn.disabled = true;
+        }
+        paginationContainer.appendChild(pageBtn);
+      }
+      if (currentPage < totalPages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = "pagination-btn";
+        nextBtn.textContent = "Next";
+        nextBtn.onclick = () => { currentPage++; renderPage(currentPage); };
+        paginationContainer.appendChild(nextBtn);
+      }
+    }
+  }
+
+  // Calculate total pages and render the first page
+  totalPages = Math.ceil(receivedReviews.length / PAGE_SIZE);
+  renderPage(currentPage);
+});
+</script>
+<script type="module" src="/public/js/alerts.js"></script>
+<script type="module" src="/public/js/userReports.js"></script>
+</body>
+</html>

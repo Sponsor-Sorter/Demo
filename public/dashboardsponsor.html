@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sponsor Dashboard - Sponsor Sorter">
+  <title>Sponsor Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="/public/js/sponsorCharts.js"></script>
+
+</head>
+
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <!-- Notification Bell here -->
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+            
+          </li>
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+  <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+    <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+  </button>
+  <div id="settings-dropdown" class="settings-dropdown">
+    <div class="dropdown-arrow"></div>
+    <ul>
+      <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+      <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+      <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+      <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+    </ul>
+  </div>
+</li>
+
+          
+        </nav>
+        
+      </div>
+    </div>
+  </section>
+</header>
+
+<section class="dashboard">
+
+<!-- Sponsor Profile Info -->
+<section class="userprofile">
+    <h2>Welcome, <span id="sponsorName">[Sponsor Name]</span></h2>
+    
+    
+    <fieldset>
+      <div class="profile-header">
+        <div class="profile-picture">
+          <img id="profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
+          <p>Account Type: <span id="account-type">Sponsor</span></p>
+          <div id="overall-rating" style="margin-top: 10px;">
+            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+            <div id="profile-badge-slot" style="margin-top: 8px;"></div>
+        </div>
+        </div>
+        <div class="profile-info">
+          <p>Email: <span id="sponsor-email">[Email]</span></p>
+          <p>Company: <span id="company">[Company]</span></p>
+          <p>Location: <span id="sponsor-location">[Location]</span></p>
+        </div>
+      </div>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Your Sponsor Profile</strong><br>
+          This section displays your public sponsor information (company, location, badges, etc.). Creators will see this info when you make offers, so keep it up-to-date for best results.
+        </em>
+      </div>
+      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
+
+      
+
+      <div id="sponsee-review-stars" class="review-stars-block">
+        <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
+          <div class="stars-row" style="display: flex; gap: 32px;">
+          <div class="star-item">
+            <span class="star-label">Communication</span>
+            <span id="communication-stars" class="stars"></span>
+          </div>
+          <div class="star-item">
+            <span class="star-label">Punctuality</span>
+            <span id="punctuality-stars" class="stars"></span>
+          </div>
+          <div class="star-item">
+            <span class="star-label">Work Output</span>
+            <span id="work-output-stars" class="stars"></span>
+          </div>
+        </div>
+      </div>
+      
+    </fieldset>
+
+  <fieldset>
+    <div class="dashboard-cards">
+        <div class="card-row">
+        <div class="card"><h3>Total Active Offers</h3><p id="sponsored-deals">0</p></div>
+        <div class="card"><h3>Ongoing Campaigns</h3><p id="ongoing-campaigns">0</p></div>
+      </div>
+      <div class="card-row">
+        <div class="card"><h3>Total Spend</h3><p id="total-spend">$0</p></div>
+        <div class="card"><h3>Lifetime Success Ratio</h3><p id="success-ratio">0:0</p></div>
+      </div>
+    </div>
+    <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>What do these numbers mean?</strong><br>
+          <ul style="margin-left:16px;">
+            <em><strong>Total Active Offers</strong>: All offers you have created that are currently in progress, accepted, or live.</em><br>
+            <em><strong>Ongoing Campaigns</strong>: Offers currently in the "in progress" or "live" stage.</em><br>
+            <em><strong>Total Spend</strong>: The total amount spent on completed sponsorships.</em><br>
+            <em><strong>Lifetime Success Ratio</strong>: The number and percentage of successful offers vs. total offers made.</em>
+          </ul>
+        </em>
+      </div>
+  </fieldset>
+
+<!-- Active Listings -->
+<fieldset class="listings-sec">
+    <legend>🎯 Active Listings for Sponsorship</legend>
+    
+    <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
+    <div class="active-listings" id="listing-container">
+      <!-- JS will populate sponsorship stages here -->
+    </div>
+    <div class="help-block" style="margin-bottom:8px;">
+      <em>
+        <strong>Active Listings:</strong>
+        This is where you manage and monitor your current sponsorship offers. Use the tabs to filter by offer status/stage, and click into any listing for detailed info or to take action.
+      </em>
+    </div>
+  </fieldset>
+  
+  <fieldset class="recent-deals">
+    <h2>Recent Sponsorship Deals</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Sponsee</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Offer Date</th>
+          <th>Deadline</th>
+          <th>live</th>
+        </tr>
+      </thead>
+      <tbody id="deals-table-body"></tbody>
+    </table>
+    <div class="help-block" style="margin-bottom:8px;">
+      <em>
+        <strong>Recent Deals:</strong>
+        This table summarizes your latest sponsorship activity, showing sponsee names, deal amounts, status, offer dates, and more. Use it to quickly review your most recent campaigns.
+      </em>
+    </div>
+  </fieldset>
+
+  <fieldset class="Archived-deals">
+    <legend><h2>Sponsorship History</h2></legend>
+   
+    <table>
+        <thead>
+            <tr>
+              <th>Sponsee</th>
+              <th>Amount</th>
+              <th>Offer Date</th>
+              <th>Live</th>
+              <th>Deadline</th>
+              <th>Sponsor → Sponsee</th>
+              <th>Sponsee → Sponsor</th>
+            </tr>
+          </thead>
+      <tbody id="archived-table-body"></tbody>
+    </table>
+<a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
+     <div class="help-block" style="margin-bottom:8px;">
+      <em>
+        <strong>Sponsorship History:</strong>
+        View all your past (archived) sponsorships here. Ratings for both you and your sponsees are displayed, and you can view and reply to reviews for completed campaigns.
+      </em>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Notification Preferences</legend>
+    <div class="help-block" style="margin-bottom:8px;">
+      <em>
+        <strong>Notification Preferences:</strong>
+        Choose how you want to be notified about new offers, updates, or messages. Enable email or SMS alerts and keep your phone number updated for SMS notifications.
+      </em>
+    </div>
+    <label>
+      <input type="checkbox" id="alert-email" /> Email Alerts
+    </label>
+    <label style="margin-left: 16px;">
+      <input type="checkbox" id="alert-sms" /> SMS Alerts
+      <input type="tel" id="phone-number" placeholder="Mobile number" style="margin-left: 8px;" />
+    </label>
+    <button id="save-alert-prefs">Save</button>
+  </fieldset>
+  
+  <fieldset>
+    <div class="help-block" style="margin-bottom:8px;">
+      <em>
+        <strong>Analytics:</strong>
+        These charts visualize your campaign and spending performance as a sponsor, and show the platforms where your sponsored creators are most active.
+      </em>
+    </div>
+    <div class="graph-section">
+      <div class="bar-chart"><h4>Campaign Performance</h4><canvas id="campaign-bar-chart" width="350" height="230" ></canvas></div>
+      <div class="line-chart"><h4>Spending Over Time</h4><canvas id="spending-line-chart" width="350" height="230" ></canvas></div>
+      <div class="pie-chart"><h4>Platform Distribution</h4><canvas id="platform-pie-chart" width="350" height="230"></canvas></div>
+    </div>
+  </fieldset>
+</section>
+
+<section>
+  <fieldset>
+    <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
+    <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
+    <div id="privacy-request-status"></div>
+    <div class="help-block" style="margin-top:8px;">
+      <em>
+        <strong>Your Privacy Controls:</strong><br>
+        Download all your personal data or permanently delete your Sponsor Sorter account. All privacy requests are handled securely in accordance with GDPR and CCPA.
+      </em>
+    </div>
+  </fieldset>
+</section>
+
+ <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+<script type="module">
+  import { supabase } from '/public/js/supabaseClient.js';
+  import { injectUserBadge } from '/public/js/badges.js';
+  import { getActiveUser } from '/public/js/impersonationHelper.js';
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const user = await getActiveUser();
+
+    if (!user) {
+      alert("You must be logged in to view this page.");
+      window.location.href = '/login.html';
+      return;
+    }
+
+    const authLink = document.getElementById('auth-link');
+    authLink.innerHTML = `<a href="dashboardsponsor.html">Dashboard</a>`;
+
+    // Safely populate fields with fallback
+    const safe = (v, fallback = 'N/A') => (v !== null && v !== undefined ? v : fallback);
+
+    document.getElementById('sponsorName').innerText = user.username;
+    document.getElementById("sponsor-email").textContent = user.email || "[Email]";
+    document.getElementById('company').innerText = user.company_name;
+    document.getElementById("sponsor-location").textContent = user.location || "[Location]";
+    document.getElementById("profile-pic").src = 
+      "https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/" + user.profile_pic;
+    document.getElementById("about-yourself").innerText = user.about_yourself;
+
+       // Recent Deals
+    const dealsTable = document.getElementById("deals-table-body");
+    if (dealsTable) {
+      (user.recent_deals || []).forEach(deal => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${deal.sponsee}</td>
+          <td>${deal.platform}</td>
+          <td>${deal.status}</td>
+          <td>$${deal.amount}</td>
+          <td>${deal.date}</td>
+        `;
+        dealsTable.appendChild(row);
+      });
+    }
+
+   
+   
+
+    // Inject badge
+    injectUserBadge(user.email, "#profile-badge-slot");
+    
+    // Notification Preferences
+    document.getElementById('alert-email').checked = !!user.alert_email;
+    document.getElementById('alert-sms').checked = !!user.alert_sms;
+    document.getElementById('phone-number').value = user.phone_number || '';
+  });
+
+  document.getElementById('save-alert-prefs').onclick = async () => {
+    const alert_email = document.getElementById('alert-email').checked;
+    const alert_sms = document.getElementById('alert-sms').checked;
+    const phone_number = document.getElementById('phone-number').value.trim();
+
+    const { getActiveUser } = await import('/public/js/impersonationHelper.js');
+    const user = await getActiveUser();
+    if (!user) return;
+
+    const { error } = await supabase
+      .from('users_extended_data')
+      .update({ alert_email, alert_sms, phone_number })
+      .eq('user_id', user.user_id);
+
+    if (!error) alert('Preferences saved!');
+    else alert('Error saving preferences.');
+  };
+</script>
+
+<script type="module" src="/public/js/alerts.js"></script>
+<script type="module">
+    import  '/public/js/sponsorOffers.js'
+</script>
+<script type="module">
+    import  '/public/js/sponsorLogic.js'
+</script>
+<script type="module">
+  import '/public/js/userReports.js';
+</script>
+<style>
+  /* Make sure no blue glow or border on report flag button (offer & comments) */
+button.report-btn,
+button.report-btn:focus,
+button.report-btn:active,
+button.report-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+button.report-btn::-moz-focus-inner,
+button.report-btn::-webkit-focus-inner {
+  border: 0 !important;
+}
+
+</style>
+<script type="module" src="/public/js/settings.js"></script>
+<!-- Change Profile Logo Modal -->
+<div id="profile-logo-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="close-profile-logo-modal">&times;</span>
+    <h3>Change Profile Logo</h3>
+    <form id="profile-logo-form">
+      <label for="profile-logo-input" id="drop-zone" style="display:block;border:2px dashed #36a2eb;padding:24px;text-align:center;cursor:pointer;border-radius:13px;">
+        <span id="drop-zone-text">Click or Drag & Drop image here</span>
+        <input type="file" id="profile-logo-input" accept="image/*" style="display:none;">
+      </label>
+      <button type="submit" style="margin-top:12px;">Upload</button>
+    </form>
+    <div id="profile-logo-modal-msg" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Edit Profile Description Modal -->
+<div id="profile-desc-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="close-profile-desc-modal">&times;</span>
+    <h3>Edit Profile Description</h3>
+    <textarea id="profile-desc-textarea" rows="5" style="width:98%;"></textarea>
+    <button id="save-profile-desc-btn" style="margin-top:10px;">Save</button>
+    <div id="profile-desc-modal-msg" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Relink Social Media Handles Modal -->
+<div id="social-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="close-social-modal">&times;</span>
+    <h3>Relink Social Media Handles</h3>
+    <form id="social-form" autocomplete="off">
+      <label for="platform-select">Platform:</label>
+      <select id="platform-select" style="margin:0 0 12px 10px;">
+        <option value="">Choose platform</option>
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+        <option value="youtube">YouTube</option>
+        <option value="twitter">Twitter</option>
+        <option value="facebook">Facebook</option>
+        <option value="twitch">Twitch</option>
+        <option value="snapchat">Snapchat</option>
+      </select>
+      <input type="text" id="platform-handle-input" placeholder="@handle" style="margin-bottom:8px;width:180px;">
+      <button type="button" id="add-platform-btn">Add/Update</button>
+      <div id="current-social-list" style="margin:12px 0 8px 0;"></div>
+      <button type="submit" style="margin-top:12px;">Save All</button>
+    </form>
+    <div id="social-modal-msg" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+</body>
+</html>

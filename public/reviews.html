@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="User Reviews - Sponsor Sorter">
+  <title>User Reviews | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    
+  </style>
+</head>
+<body>
+  <header class="navbar1">
+    <section class="navbar">
+      <div class="navii">
+        <h5><header>Sponsor Sorter</header></h5>
+        <div>
+          <background-img class="navimg" src="navimg.png" alt="">
+          <nav>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Finder</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Signup</a></li>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </header>
+  <div class="review-page-container">
+    <h1 style="margin-bottom:18px;">User Reviews of Sponsor Sorter</h1>
+    <div id="reviews-summary" class="reviews-summary-block"></div>
+    <div id="review-form-section" class="review-form-block" style="display:none;">
+      <h3>Leave a Review</h3>
+      <form id="user-review-form">
+        <label for="review-rating">Your Rating:</label>
+        <div id="star-input" class="star-rating">
+          <span data-star="1">&#9733;</span>
+          <span data-star="2">&#9733;</span>
+          <span data-star="3">&#9733;</span>
+          <span data-star="4">&#9733;</span>
+          <span data-star="5">&#9733;</span>
+        </div>
+        <label for="review-text">Your Review:</label>
+        <textarea id="review-text" maxlength="420" required placeholder="Share your experience with Sponsor Sorter..."></textarea>
+        <button type="submit" id="review-submit-btn" disabled>Submit Review</button>
+        <div id="review-error" class="review-error-msg"></div>
+        <div id="review-success" class="review-success-msg"></div>
+      </form>
+    </div>
+    <div class="suggest-section">
+      <h3>Suggest a Feature or Report a Problem</h3>
+      <form class="suggest-form" id="user-suggest-form">
+        <label for="suggest-text">Your Suggestion or Feedback:</label>
+        <textarea id="suggest-text" maxlength="420" required placeholder="Have an idea or found a bug? Let us know!"></textarea>
+        <button type="submit" id="suggest-submit-btn">Submit Suggestion</button>
+        <div id="suggest-error" class="suggest-error-msg"></div>
+        <div id="suggest-success" class="suggest-success-msg"></div>
+      </form>
+    </div>
+    <div class="review-divider"></div>
+    <h2 style="margin-bottom:8px;">What users are saying:</h2>
+    <div id="reviews-list" class="reviews-list"></div>
+  </div>
+  <footer class="footercomplete" style="margin-top:30px;">
+    <div class="footer-text">
+      <ul>
+        <li><a href="/public/help.html">Help</a></li>
+        <li><a href="/public/contact.html">Contact</a></li>
+        <li><a href="/public/privacy.html">Privacy Policy</a></li>
+        <li><a href="/public/terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+  </footer>
+  <script type="module">
+    import { supabase } from '/public/js/supabaseClient.js';
+    import { getActiveUser } from '/public/js/impersonationHelper.js';
+
+    const ADMIN_EMAILS = [
+      'admin@example.com',
+      // Add other admin emails here, or use a Supabase is_admin field
+    ];
+
+    let currentRating = 0, currentUser = null;
+
+    function updateStars(rating) {
+      const stars = document.querySelectorAll('#star-input span');
+      stars.forEach((star, idx) => {
+        if (idx < rating) star.classList.add('filled');
+        else star.classList.remove('filled');
+      });
+      document.getElementById('review-submit-btn').disabled = rating === 0;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // --- Setup User ---
+      try { currentUser = await getActiveUser(); } catch {}
+      // --- Show/hide review form if logged in ---
+      if (currentUser) document.getElementById('review-form-section').style.display = '';
+      // --- Star rating events ---
+      const starInput = document.getElementById('star-input');
+      starInput.querySelectorAll('span').forEach(star => {
+        star.addEventListener('click', () => {
+          currentRating = Number(star.getAttribute('data-star'));
+          updateStars(currentRating);
+        });
+        star.addEventListener('mouseenter', () => {
+          updateStars(Number(star.getAttribute('data-star')));
+        });
+      });
+      starInput.addEventListener('mouseleave', () => updateStars(currentRating));
+
+      // --- Review Submission ---
+      const reviewForm = document.getElementById('user-review-form');
+      const reviewText = document.getElementById('review-text');
+      const reviewError = document.getElementById('review-error');
+      const reviewSuccess = document.getElementById('review-success');
+      if (reviewForm) {
+        reviewForm.onsubmit = async (e) => {
+          e.preventDefault();
+          reviewError.textContent = '';
+          reviewSuccess.textContent = '';
+          if (!currentUser) {
+            reviewError.textContent = "You must be logged in to submit a review.";
+            return;
+          }
+          if (currentRating < 1 || currentRating > 5) {
+            reviewError.textContent = "Please select a rating.";
+            return;
+          }
+          if (!reviewText.value.trim()) {
+            reviewError.textContent = "Please enter your review text.";
+            return;
+          }
+          // Prevent duplicate reviews
+          const { data: existing } = await supabase
+            .from('user_reviews')
+            .select('id')
+            .eq('user_id', currentUser.user_id)
+            .maybeSingle();
+          if (existing) {
+            reviewError.textContent = "You've already submitted a review!";
+            return;
+          }
+          const { error } = await supabase.from('user_reviews').insert({
+            user_id: currentUser.user_id,
+            username: currentUser.username || currentUser.email || 'User',
+            rating: currentRating,
+            review_text: reviewText.value.trim(),
+          });
+          if (error) {
+            reviewError.textContent = "Could not submit review.";
+          } else {
+            reviewSuccess.textContent = "Thank you for your review!";
+            reviewForm.reset();
+            currentRating = 0;
+            updateStars(0);
+            setTimeout(() => location.reload(), 1200);
+          }
+        };
+      }
+
+      // --- Suggestions Submission ---
+      const suggestForm = document.getElementById('user-suggest-form');
+      const suggestText = document.getElementById('suggest-text');
+      const suggestError = document.getElementById('suggest-error');
+      const suggestSuccess = document.getElementById('suggest-success');
+      if (suggestForm) {
+        suggestForm.onsubmit = async (e) => {
+          e.preventDefault();
+          suggestError.textContent = '';
+          suggestSuccess.textContent = '';
+          if (!currentUser) {
+            suggestError.textContent = "You must be logged in to submit a suggestion.";
+            return;
+          }
+          if (!suggestText.value.trim()) {
+            suggestError.textContent = "Suggestion cannot be empty.";
+            return;
+          }
+          const { error } = await supabase.from('user_suggestions').insert({
+            user_id: currentUser.user_id,
+            username: currentUser.username || currentUser.email || 'User',
+            suggestion: suggestText.value.trim()
+          });
+          if (error) {
+            suggestError.textContent = "Could not submit suggestion.";
+          } else {
+            suggestSuccess.textContent = "Thank you for your suggestion!";
+            suggestForm.reset();
+            setTimeout(() => { suggestSuccess.textContent = ""; }, 2000);
+          }
+        };
+      }
+
+      // --- Load and render reviews and summary ---
+      async function loadReviews() {
+        const { data: reviews } = await supabase
+          .from('user_reviews')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        // Ratings Summary
+        if (reviews && reviews.length > 0) {
+          const ratings = reviews.map(r => r.rating);
+          const avg = (ratings.reduce((a,b) => a+b,0) / ratings.length).toFixed(2);
+          let starDisplay = '';
+          for (let i = 1; i <= 5; ++i) {
+            starDisplay += `<span class="summary-star">${i <= Math.round(avg) ? "★" : "☆"}</span>`;
+          }
+          document.getElementById('reviews-summary').innerHTML = `
+            <div class="summary-title">User Ratings</div>
+            <div class="summary-avg">${avg} ${starDisplay}</div>
+            <div class="summary-count">${ratings.length} review${ratings.length > 1 ? 's' : ''} submitted</div>
+          `;
+        } else {
+          document.getElementById('reviews-summary').innerHTML = `<span style="color:#bbb;">No ratings yet.</span>`;
+        }
+
+        // All reviews
+        const listDiv = document.getElementById('reviews-list');
+        if (!reviews || reviews.length === 0) {
+          listDiv.innerHTML = '<div style="color:#bbb;padding:20px;">No reviews yet. Be the first to leave one!</div>';
+          return;
+        }
+
+        listDiv.innerHTML = reviews.map(r => `
+          <div class="single-review" id="review-${r.id}">
+            <div class="review-header">
+              <span class="review-author">${r.username ? r.username : 'User'}</span>
+              <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+              <span class="review-date">${(new Date(r.created_at)).toLocaleDateString()} ${(new Date(r.created_at)).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+            </div>
+            <div class="review-text">${r.review_text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+            <div class="review-action-btns">
+              ${currentUser && (ADMIN_EMAILS.includes(currentUser.email) || (r.user_id === currentUser.user_id)) ? `
+                <button class="review-action-btn" data-delete="${r.id}">Delete</button>
+              ` : ''}
+              <button class="review-action-btn" data-report="${r.id}">Report</button>
+            </div>
+          </div>
+        `).join('');
+
+        // --- Action buttons (Delete, Report) ---
+        document.querySelectorAll('[data-delete]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Delete this review?')) return;
+            const reviewId = btn.getAttribute('data-delete');
+            await supabase.from('user_reviews').delete().eq('id', reviewId);
+            document.getElementById('review-' + reviewId).remove();
+            loadReviews();
+          });
+        });
+
+        document.querySelectorAll('[data-report]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const reviewId = btn.getAttribute('data-report');
+            let reason = prompt('Please describe the issue with this review (e.g., spam, abuse):');
+            if (!reason || !reason.trim()) return;
+            await supabase.from('user_review_reports').insert({
+              review_id: reviewId,
+              user_id: currentUser ? currentUser.user_id : null,
+              username: currentUser ? (currentUser.username || currentUser.email) : 'Guest',
+              reason: reason.trim(),
+            });
+            btn.innerText = "Reported!";
+            btn.disabled = true;
+          });
+        });
+      }
+      await loadReviews();
+    });
+  </script>
+</body>
+</html>

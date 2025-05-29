@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sponsee Dashboard - Sponsor Sorter">
+  <title>Sponsee Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="/public/js/sponseeCharts.js"></script>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <!-- Notification Bell here -->
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+          <!-- Settings Cog -->
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+              </ul>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+      
+<section class="dashboard">
+
+  <!-- User Profile -->
+  <section class="userprofile">
+    <h2>Welcome, <span id="user-name">[Username]</span></h2>
+    <fieldset>
+      <legend>Profile Details</legend>
+      <div class="profile-header">
+        <div class="profile-picture">
+          <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
+          <p>Account Type: <span id="user-account-type">Sponsee</span></p>
+          <div id="overall-rating" style="margin-top: 10px;">
+            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+            <div id="profile-badge-slot" style="margin-top: 8px;"></div>
+          </div>
+        </div>
+        <div class="profile-info">
+          <p>Email: <span id="user-email">[Email]</span></p>
+          <p>Username: <span id="user-username">[Username]</span></p>
+          <p>Location: <span id="user-location">[Location]</span></p>
+          <p>Title: <span id="user-gender">[Title]</span></p>
+          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+          <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
+        </div>
+      </div>
+      <div class="help-block">
+        <em>
+          <strong>What is this section?</strong><br>
+          This area shows your public profile as sponsors see it: your username, email, location, profile picture, badges, content type, social accounts, and bio.  
+          Make sure to keep your info and linked platforms up to date for more sponsorship opportunities.
+        </em>
+      </div>
+      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
+      <div id="sponsee-review-stars" class="review-stars-block">
+        <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
+        <div class="stars-row" style="display: flex; gap: 32px;">
+          <div class="star-item">
+            <span class="star-label">Communication</span>
+            <span id="communication-stars" class="stars"></span>
+          </div>
+          <div class="star-item">
+            <span class="star-label">Punctuality</span>
+            <span id="punctuality-stars" class="stars"></span>
+          </div>
+          <div class="star-item">
+            <span class="star-label">Work Output</span>
+            <span id="work-output-stars" class="stars"></span>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Summary Cards -->
+    <fieldset>
+      <div class="dashboard-cards">
+        <div class="card-row">
+          <div class="card">
+            <h3>Active Sponsorships</h3>
+            <p id="active-sponsorships">0</p>
+          </div>
+          <div class="card">
+            <h3>Completed Deals</h3>
+            <p id="completed-deals">0</p>
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="card">
+            <h3>Total Followers</h3>
+            <p id="total-followers">0</p>
+          </div>
+          <div class="card">
+            <h3>Total Earnings</h3>
+            <p id="total-earnings">$0</p>
+          </div>
+        </div>
+      </div>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>What do these numbers mean?</strong><br>
+          <ul style="margin-left:16px;">
+            <em><strong>Active Sponsorships</strong>: The number of sponsorship offers you're currently involved with (in progress or not yet completed).</em><br>
+            <em><strong>Completed Deals</strong>: All sponsorships you’ve finished with sponsors.</em><br>
+            <em><strong>Total Followers</strong>: The sum of followers from your connected social platforms (sync or update your platforms for accuracy).<strong>(Coming Soon)</strong></em><br>
+            <em><strong>Total Earnings</strong>: The total amount you've earned through completed sponsorships on Sponsor Sorter.</em>
+          </ul>
+        </em>
+      </div>
+    </fieldset>
+
+    <!-- Active Listings -->
+    <fieldset>
+      <legend>🎯 Active Listings for Sponsorship</legend>
+      <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
+      <div class="active-listings" id="listing-container"></div>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Active Listings:</strong>  
+          Here you can view and manage all your ongoing sponsorship offers. Use the tabs to filter by deal stage. Click into any listing for details or to interact with sponsors.
+        </em>
+      </div>
+    </fieldset>
+
+    <fieldset class="recent-deals">
+      <h2>Recent Sponsorship Deals</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sponsee</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Offer Date</th>
+            <th>Deadline</th>
+            <th>Created By</th>
+            <th>live</th>
+          </tr>
+        </thead>
+        <tbody id="activity-table-body"></tbody>
+      </table>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Recent Deals:</strong>  
+          This table shows your latest sponsorships, their status, amounts, dates, and sponsor details. Use it to track your most recent activity.
+        </em>
+      </div>
+    </fieldset>
+  
+    <fieldset class="Archived-deals">
+      <legend><h2>Sponsorship History</h2></legend>
+      <table>
+        <thead>
+          <tr>
+            <th>Sponsee</th>
+            <th>Amount</th>
+            <th>Offer Date</th>
+            <th>Live</th>
+            <th>Deadline</th>
+            <th>Sponsor → Sponsee</th>
+            <th>Sponsee → Sponsor</th>
+          </tr>
+        </thead>
+        <tbody id="archived-table-body"></tbody>
+      </table>
+      <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Sponsorship History:</strong>  
+          All past/archived sponsorships are listed here, including your and your sponsor’s ratings for each deal. Click “View & Respond to All Reviews” to see feedback and reply.
+        </em>
+      </div>
+    </fieldset>
+
+    <!-- Linked Accounts -->
+    <fieldset>
+      <legend>Linked Accounts</legend>
+      <div class="linked-accounts" id="linked-accounts"></div>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Linked Accounts:</strong>  
+          This section shows your currently linked social media accounts. Connecting and verifying your real platforms helps sponsors trust your stats and boosts your chances for offers! If something's missing, make sure the handle is correct or relink it.
+        </em>
+      </div>
+    </fieldset>
+
+    <!-- Graph Section -->
+    <fieldset>
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Analytics:</strong><br>
+          The charts below visualize your sponsorship activity and offer breakdowns.
+          <ul style="margin-left:16px;">
+            <em><strong>Offer Amount by Campaign</strong>: See how much each of your campaigns is worth.</em><br>
+            <em><strong>Earnings Over Time</strong>: Track your income from sponsorships, month by month.</em><br>
+            <em><strong>Platform Distribution</strong>: View which platforms your offers are on.</em><br>
+          </ul>
+        </em>
+      </div>
+      <div class="graph-section" style="display: flex; flex-wrap: wrap; gap: 28px;">
+        <div>
+          <h4>Offer Amount by Campaign</h4>
+          <canvas id="campaign-bar-chart" width="350" height="230"></canvas>
+        </div>
+        <div>
+          <h4>Earnings Over Time</h4>
+          <canvas id="earnings-line-chart" width="350" height="230"></canvas>
+        </div>
+        <div>
+          <h4>Platform Distribution</h4>
+          <canvas id="platform-pie-chart" width="350" height="230"></canvas>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Profile Settings Modals -->
+    <div id="profile-logo-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <span class="close-modal" id="close-profile-logo-modal">&times;</span>
+        <h3>Change Profile Logo</h3>
+        <form id="profile-logo-form">
+          <input type="file" id="profile-logo-input" accept="image/*" required />
+          <button type="submit">Upload</button>
+        </form>
+        <div id="profile-logo-modal-msg" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <div id="profile-desc-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <span class="close-modal" id="close-profile-desc-modal">&times;</span>
+        <h3>Edit Profile Description</h3>
+        <textarea id="profile-desc-textarea" rows="5" style="width:98%;"></textarea>
+        <button id="save-profile-desc-btn" style="margin-top:10px;">Save</button>
+        <div id="profile-desc-modal-msg" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <div id="social-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <span class="close-modal" id="close-social-modal">&times;</span>
+        <h3>Relink Social Media Handles</h3>
+        <form id="social-form">
+          <div id="social-fields"></div>
+          <button type="submit" style="margin-top:10px;">Save</button>
+        </form>
+        <div id="social-modal-msg" style="margin-top:10px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <fieldset>
+      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
+      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
+      <div id="privacy-request-status"></div>
+      <div class="help-block" style="margin-top:8px;">
+        <em>
+          <strong>Your Privacy Controls:</strong><br>
+          Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
+        </em>
+      </div>
+    </fieldset>
+  </section>
+
+</section>
+
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="/public/help.html">Help</a></li>
+      <li><a href="/public/contact.html">Contact</a></li>
+      <li><a href="/public/privacy.html">Privacy Policy</a></li>
+      <li><a href="/public/terms.html">Terms of Service</a></li>
+      <li><a href="/public/reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+
+<script type="module">
+  import { supabase } from '/public/js/supabaseClient.js';
+  import { injectUserBadge } from '/public/js/badges.js';
+  import { getActiveUser } from '/public/js/impersonationHelper.js';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const authLink = document.getElementById('auth-link');
+    // Use impersonation-aware user fetch:
+    const user = await getActiveUser();
+    if (!user) {
+      alert("You must be logged in to view this page.");
+      window.location.href = '/login.html';
+      return;
+    }
+    // Set nav auth link correctly
+    authLink.innerHTML = `<a href="dashboardsponsee.html">Dashboard</a>`;
+    // Populate fields
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value ?? "[Unknown]";
+    }
+    setText('user-name', user.username);
+    setText('user-email', user.email);
+    setText('user-username', user.username);
+    setText('user-location', user.location);
+    setText('user-gender', user.title);
+    setText('about-yourself', user.about_yourself);
+    setText('contenttype', user.contenttype);
+
+    // Profile pic fallback
+    const profilePic = user.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+      : "logos.png";
+    document.getElementById("profile-pic").src = profilePic;
+
+    // ==== BADGE LOGIC FOR SPONSEE ====
+    injectUserBadge(user.email, '#profile-badge-slot', 'sponsee_email');
+
+    // LINKED PLATFORMS BADGES
+    const socialHandlesSpan = document.getElementById("social_handles");
+    const linkedAccountsDiv = document.getElementById("linked-accounts");
+
+    function extractPlatformBadges(social_handles) {
+      if (!social_handles) return 'N/A';
+      let handlesObj = social_handles;
+      if (typeof handlesObj === 'string') {
+        try { handlesObj = JSON.parse(handlesObj); }
+        catch (e) { console.error('Invalid JSON in social_handles:', social_handles); return 'N/A'; }
+      }
+      const platformLogos = {
+        instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+        tiktok: 'tiktoklogo.png',
+        youtube: 'youtubelogo.png',
+        twitter: 'twitterlogo.png',
+        facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+        twitch: 'twitchlogo.png',
+        snapchat: 'snaplogo.png',
+      };
+      const platformUrls = {
+        instagram: handle => `https://instagram.com/${handle.replace('@', '')}`,
+        tiktok: handle => `https://tiktok.com/@${handle.replace('@', '')}`,
+        youtube: handle => `https://youtube.com/@${handle.replace('@', '')}`,
+        twitter: handle => `https://twitter.com/${handle.replace('@', '')}`,
+        facebook: handle => `https://facebook.com/${handle.replace('@', '')}`,
+        twitch: handle => `https://twitch.tv/${handle.replace('@', '')}`,
+        snapchat: handle => `https://snapchat.com/add/${handle.replace('@', '')}`,
+      };
+      const platformsArray = Object.keys(handlesObj).filter(platform => {
+        const handle = handlesObj[platform];
+        return handle && handle.trim() !== '';
+      });
+      if (platformsArray.length === 0) return 'N/A';
+      return platformsArray.map(platform => {
+        const handle = handlesObj[platform].trim();
+        const logoSrc = platformLogos[platform];
+        const profileUrl = platformUrls[platform] ? platformUrls[platform](handle) : '#';
+        return `
+          <a href="${profileUrl}" target="_blank" class="social-badge">
+            <img src="${logoSrc}" alt="${platform}" title="${platform}" class="platform-logo-icon">
+            <span class="handle-text">${handle}</span>
+          </a>
+        `;
+      }).join(' ');
+    }
+    const linkedPlatformsHTML = extractPlatformBadges(user.social_handles);
+    socialHandlesSpan.innerHTML = linkedPlatformsHTML;
+    linkedAccountsDiv.innerHTML = linkedPlatformsHTML;
+
+    // RECENT ACTIVITY TABLE (populate with your logic as needed)
+    const activityTable = document.getElementById("activity-table-body");
+    (user.recent_activity || []).forEach(act => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${act.brand}</td>
+        <td>${act.status}</td>
+        <td>${act.date}</td>
+        <td>${act.earnings}</td>
+      `;
+      activityTable.appendChild(row);
+    });
+  });
+</script>
+<script type="module" src="/public/js/settings.js"></script>
+<script type="module">import '/public/js/sponseeOffers.js';</script>
+<script type="module">import '/public/js/sponseeLogic.js';</script>
+<script type="module">import '/public/js/userReports.js';</script>
+<script type="module">import '/public/js/privacy.js';</script>
+<script type="module">import '/public/js/alerts.js';</script>
+</body>
+</html>
