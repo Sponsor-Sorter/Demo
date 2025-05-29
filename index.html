@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sponsor Sorter connects creators and brands for sponsorship success. Find the perfect partnership and grow your influence!">
+    <title>Sponsor Sorter – Creators Meet Brands</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+</head>
+<body>
+    <header class="navbar1">
+        <section class="navbar"> 
+            <div class="navii">
+                <h5><header>Sponsor Sorter</header></h5>
+                <div>
+                    <background-img class="navimg" src="navimg.png" alt="Sponsor Sorter logo">
+                    <nav> 
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="finder.html">Finder</a></li>
+                    </nav>
+                    <nav>
+                        <li class="navr"><a href="signup.html">Signup</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </nav>
+                </div>
+            </div> 
+        </section>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h1>Sponsor Sorter</h1>
+        <p><strong>The modern way to connect creators & brands.</strong>  
+        Instantly match with sponsors, manage campaigns, and guarantee payment security—no spam, no bots, just real partnerships.</p>
+        <div class="cta-main">
+            <a href="signup.html" class="cta-button">Get Started Free</a>
+        </div>
+        <!-- Animated Carousel: Who Uses Sponsor Sorter? -->
+    <div class="section-title">Who Uses Sponsor Sorter?</div>
+    <section class="who-uses">
+        <p style="text-align:center;">From YouTubers and Streamers to event organizers and sports teams—everyone grows here.</p>
+        <div class="carousel" style="margin-bottom:28px;">
+            <button class="carousel-prev" style="font-size:2.2em;background:none;border:none;cursor:pointer;">&#8592;</button>
+            <div class="carousel-slide" style="text-align:center;">
+                <h3 id="carousel-title"></h3>
+                <img id="carousel-img" src="" alt="" style="width:420px;max-width:85vw;height: 250px;border-radius:32px;box-shadow:0 8px 32px #222b;">
+            </div>
+            <button class="carousel-next" style="font-size:2.2em;background:none;border:none;cursor:pointer;">&#8594;</button>
+        </div>
+    </section>
+    <script>
+        const slides = [
+            { title: "YouTubers", img: "youtuber.jpeg" },
+            { title: "Streamers", img: "streamer.jpeg" },
+            { title: "Influencers", img: "socialmediainfluencer.jpeg" },
+            { title: "Social Event Organizers", img: "socialevent.jpeg" },
+            { title: "Team Sports", img: "teamsports.jpeg" },
+            { title: "Content Creators", img: "youtuber1.jpeg" }
+        ];
+        let currentSlide = 0;
+        let autoAdvance;
+        function showSlide(index) {
+            const slide = slides[index];
+            document.getElementById("carousel-title").textContent = slide.title;
+            const img = document.getElementById("carousel-img");
+            img.style.opacity = "0";
+            setTimeout(() => {
+                img.src = slide.img;
+                img.alt = slide.title;
+                img.style.opacity = "1";
+            }, 260);
+        }
+        function goToPrev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); resetAutoAdvance(); }
+        function goToNext() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); resetAutoAdvance(); }
+        function resetAutoAdvance() { clearInterval(autoAdvance); autoAdvance = setInterval(goToNext, 3800); }
+        document.querySelector(".carousel-prev").onclick = goToPrev;
+        document.querySelector(".carousel-next").onclick = goToNext;
+        showSlide(currentSlide);
+        autoAdvance = setInterval(goToNext, 3800);
+    </script>
+    </section>
+    
+
+    <!-- How It Works -->
+     <fieldset class="home-cont">
+    <div class="section-title">How Sponsor Sorter Works</div>
+    <section class="how-it-works">
+        <div class="step-card">
+            <h3>1. Join & Set Up Profile</h3>
+            <p>Sign up as a creator or sponsor. Build your verified profile—takes less than 3 minutes!</p>
+        </div>
+        <div class="step-card">
+            <h3>2. Discover or List Offers</h3>
+            <p>Creators browse matching deals. Brands can post offers and connect instantly with interested talent.</p>
+        </div>
+        <div class="step-card">
+            <h3>3. Secure Collaboration</h3>
+            <p>Use our messaging, contracts, and escrow to ensure safe, hassle-free sponsorship for both sides.</p>
+        </div>
+    </section>
+    </fieldset>
+
+    <!-- TRUSTED LOGOS (Randomized real users) -->
+     <fieldset class="home-cont">
+    <div class="section-title">Trusted by Real Creators & Brands</div>
+    <div class="trusted-logos" id="sponsor-logos"></div>
+    </fieldset>
+    <script type="module">
+        import { supabase } from '/public/js/supabaseClient.js';
+        async function loadSponsorLogos() {
+            const { data: users, error } = await supabase
+                .from('users_extended_data')
+                .select('profile_pic, username')
+                .limit(30);
+            const container = document.getElementById('sponsor-logos');
+            if (error || !users || users.length === 0) {
+                container.innerHTML = '<p>No sponsors to show yet.</p>';
+                return;
+            }
+            // Randomize and select 8
+            const shuffled = users.sort(() => Math.random() - 0.5);
+            const selection = shuffled.slice(0, 6);
+            let html = '';
+            for (const user of selection) {
+                const picUrl = user.profile_pic
+                    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+                    : 'logos.png';
+                html += `
+                  <figure>
+                    <img src="${picUrl}" alt="${user.username || 'Sponsor'}">
+                    <figcaption>@${user.username || 'Sponsor'}</figcaption>
+                  </figure>
+                `;
+            }
+            container.innerHTML = html;
+        }
+        window.addEventListener('DOMContentLoaded', loadSponsorLogos);
+    </script>
+
+    <!-- Case Studies Section -->
+    <section class="case-studies">
+        <h2>Success Stories</h2>
+        <div class="case-study">
+            <h3>John's YouTube Journey</h3>
+            <img src="johns-story.jpg" alt="John's Story">
+            <p>John started with only 5,000 subscribers, but after joining Sponsor Sorter, he landed a partnership with a global brand. His revenue grew by 200%, and his channel's visibility skyrocketed!</p>
+            <button>Read Full Story</button>
+        </div>
+        <div class="case-study">
+            <h3>Jane's Influencer Success</h3>
+            <img src="janes-story.jpg" alt="Jane's Story">
+            <p>Jane used Sponsor Sorter to connect with businesses aligned with her niche. In just three months, she secured 3 major partnerships that boosted her profile and revenue by over 50%.</p>
+            <button>Read Full Story</button>
+        </div>
+        
+    </section>
+
+    <!-- FEATURES -->
+     
+    <div class="section-title">Why Creators & Brands Love Sponsor Sorter</div>
+    <section class="features-grid">
+        <div class="feature-card">
+            <h4>🎯 Smart Matching</h4>
+            <p>Our algorithm pairs you with perfect-fit sponsors or creators in seconds, saving you hours of searching and outreach.</p>
+        </div>
+        <div class="feature-card">
+            <h4>🔒 Escrow Payment Protection</h4>
+            <p>All payments are held securely in escrow until the campaign is completed and both parties are satisfied.</p>
+        </div>
+        <div class="feature-card">
+            <h4>🚀 Effortless Onboarding</h4>
+            <p>Start in under 3 minutes. No complex paperwork, no hidden fees. Creators join for just $10/month!</p>
+        </div>
+        <div class="feature-card">
+            <h4>📊 Real-Time Analytics</h4>
+            <p>Track every campaign's performance, ROI, and impact with built-in analytics dashboards.</p>
+        </div>
+        <div class="feature-card">
+            <h4>🤝 Built-In Messaging & Contracts</h4>
+            <p>Communicate directly with sponsors and finalize agreements, all inside the platform.</p>
+        </div>
+        <div class="feature-card">
+            <h4>💬 24/7 Human Support</h4>
+            <p>Questions? Our team is always here via live chat or email—no bots, just real help.</p>
+        </div>
+    </section>
+
+    
+
+    <!-- Calculator -->
+     <fieldset class="home-cont">
+    <div class="section-title">Estimate Your Sponsorship Earnings</div>
+    <section class="calculator">
+        <h2>Calculate Your Earnings</h2>
+        <form onsubmit="return false;">
+            <label for="followers">Followers:</label>
+            <input type="number" id="followers" name="followers" placeholder="e.g. 10000" min="0">
+            <label for="engagement">Engagement Rate (%):</label>
+            <input type="number" id="engagement" name="engagement" placeholder="e.g. 5" min="0" max="100">
+            <button type="button" onclick="calculateEarnings()">Calculate</button>
+        </form>
+        <div id="earningsResult"></div>
+    </section>
+    </fieldset>
+    <script>
+        function calculateEarnings() {
+            var followers = document.getElementById('followers').value;
+            var engagement = document.getElementById('engagement').value;
+            if (!followers || !engagement) {
+                document.getElementById('earningsResult').innerHTML = "<span style='color:red;'>Please enter both values.</span>";
+                return;
+            }
+            var earnings = (followers * engagement * 0.01);
+            document.getElementById('earningsResult').innerHTML = "Estimated Earnings: <strong>$" + earnings.toFixed(2) + "</strong>";
+        }
+    </script>
+
+    <!-- Testimonials (Optional, for trust) -->
+    <section class="testimonial-section">
+    <div class="testimonial">
+        <span style="color:gold; font-size:1.5em; vertical-align:middle;">★★★★★</span><br>
+        “Sponsor Sorter helped us find our first brand partnership. The escrow system and chat made everything feel safe and professional. I can’t recommend it enough!”
+        <cite>— Emily, Influencer</cite>
+    </div>
+</section>
+
+<section class="testimonial-section">
+    <div class="testimonial" style="margin-top:22px;">
+        <span style="color:gold; font-size:1.5em; vertical-align:middle;">★★★★★</span><br>
+        “As a sponsor, I appreciate how quickly I can find creators who match my campaign goals. Sponsor Sorter is a game-changer.”
+        <cite>— Alex, Brand Manager</cite>
+    </div>
+</section>
+
+
+    <!-- CTA Section -->
+    <section class="cta" style="text-align:center;">
+        <h3>Ready to grow your brand or creator career?</h3>
+        <p><a href="signup.html" class="cta-button" style="padding:16px 44px;border-radius:16px;font-size:1.2em;font-weight:bold;">Join Sponsor Sorter</a></p>
+    </section>
+
+    <!-- Pop-up Subscription Modal -->
+    <div class="modal" id="subscriptionModal">
+        <div class="modal-content">
+            <h2>Stay Updated with Sponsor Sorter!</h2>
+            <p>Sign up for our newsletter to get the latest deals, updates, and opportunities.</p>
+            <input type="email" placeholder="Enter your email" id="emailInput" />
+            <button onclick="submitEmail()">Subscribe</button>
+            <span onclick="closeModal()" class="close">&times;</span>
+        </div>
+    </div>
+    <script>
+        function showModal() { document.getElementById('subscriptionModal').style.display = 'block'; }
+        function closeModal() { document.getElementById('subscriptionModal').style.display = 'none'; }
+        function submitEmail() {
+            var email = document.getElementById('emailInput').value;
+            if (!email || !email.includes('@')) { alert("Enter a valid email."); return; }
+            // Here, you could send the email to your server or add to a mailing list
+            alert('Thank you for subscribing!'); closeModal();
+        }
+        setTimeout(showModal, 60000);
+    </script>
+
+    <!-- Chatbot Placeholder (swap for real live chat as needed) -->
+    <script type="text/javascript">
+        // window.tawkTo = new Tawk_API();
+        // Tawk_API.visitor = { name: 'Visitor', email: 'visitor@example.com' };
+    </script>
+
+    <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+   
+</body>
+</html>

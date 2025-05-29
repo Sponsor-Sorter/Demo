@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard | Sponsor Sorter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="/public/js/adminLogic.js"></script>
+  <style>
+    body {
+      background: #000000;
+      color: #f6f6f6;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 30px;
+      padding: 0px;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar1">
+    <section class="navbar">
+      <div class="navii">
+        <h1 style="margin-bottom: 55px;box-shadow: blue;">Sponsor Sorter <span  style="color:#F6C62E; ">Admin Panel</span></h1>
+        <nav>
+          <li><a href="dashboardsponsor.html">Sponsor Dashboard</a></li>
+          <li><a href="dashboardsponsee.html">Sponsee Dashboard</a></li>
+          <li><a href="roadmap.html" id="road-map">🗺️</a></li>
+          <li><a href="dashboardAdmin.html" style="color:#F6C62E; ">Admin</a></li>
+          <li><a href="login.html" id="logout-link">Logout</a></li>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <!-- Admin Section Tab Bar -->
+  <nav class="admin-tabs">
+    <button class="admin-tab" data-target="#admin-stats-section">📊 Stats</button>
+    <button class="admin-tab" data-target="#admin-users-section">👤 Users</button>
+    <button class="admin-tab" data-target="#admin-offers-section">💼 Offers</button>
+    <button class="admin-tab" data-target="#admin-reviews-section">⭐ Reviews</button>
+    <button class="admin-tab" data-target="#admin-reported-section">🚩 Reported</button>
+    <button class="admin-tab" data-target="#admin-notify-section">🔔 Notify</button>
+    <button class="admin-tab" data-target="#admin-log-section">📜 Log</button>
+    <button class="admin-tab" data-target="#admin-payouts-section">💸 Payouts</button>
+    <button class="admin-tab" data-target="#admin-privacy-section">🔒 Privacy Requests</button>
+    <button class="admin-tab" data-target="#admin-advanced-analytics-section">📈 Analytics</button>
+  </nav>
+
+  <!-- Place after header or wherever you like in admin dashboard -->
+  <div id="stop-impersonate-row" style="display:none; text-align:center; margin:18px 0 0 0;">
+    <button id="stop-impersonate-btn" style="background:#F6C62E;color:#111;padding:0.7em 2em;font-weight:700;border-radius:8px;border:none;cursor:pointer;font-size:1.09em;">
+      ⛔️ Stop Impersonating
+    </button>
+  </div>
+
+  <div class="main-container">
+
+    <!-- ADVANCED ANALYTICS CARDS (Funnels, Leaderboards, DAU, Engagement, etc) -->
+    <section class="admin-section" id="admin-advanced-analytics-section"></section>
+
+    <!-- Analytics Charts (Chart.js line charts) -->
+    <section class="admin-section" id="admin-analytics-section">
+      <h2>📈 Analytics</h2>
+      <div style="display: flex; flex-wrap: wrap; gap:2rem; justify-content:center;">
+        <div>
+          <canvas id="chart-users" width="340" height="120"></canvas>
+          <div style="text-align:center;">Signups (last 30d)</div>
+        </div>
+        <div>
+          <canvas id="chart-offers" width="340" height="120"></canvas>
+          <div style="text-align:center;">Offers (last 30d)</div>
+        </div>
+        <div>
+          <canvas id="chart-reviews" width="340" height="120"></canvas>
+          <div style="text-align:center;">Reviews (last 30d)</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-section" id="admin-stats-section">
+      <h2>📊 Site Statistics</h2>
+      <div class="admin-stats" id="admin-stats-cards"></div>
+    </section>
+
+    <!-- USER MANAGEMENT -->
+    <section class="admin-section" id="admin-users-section">
+      <h2>👤 User Management</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:1rem 1.5rem; align-items:center; margin-bottom:8px;">
+        <input id="admin-user-search" placeholder="Search users..." style="width:180px;">
+        <select id="userType-filter">
+          <option value="">All Roles</option>
+          <option value="sponsor">Sponsor</option>
+          <option value="sponsee">Sponsee</option>
+        </select>
+        <select id="admin-status-filter">
+          <option value="">All Users</option>
+          <option value="admins">Admins</option>
+          <option value="notadmins">Not Admins</option>
+        </select>
+        <button onclick="window.showBannedUsers()">Show Banned Only</button>
+        <button onclick="window.loadAdminUsers('')">Show All</button>
+        <button id="export-users-csv">Export Users CSV</button>
+        <button id="ban-selected-users">Ban Selected</button>
+        <button id="unban-selected-users">Unban Selected</button>
+      </div>
+      <div id="admin-users-table"></div>
+      <div class="table-responsive"><div id="admin-users-table"></div></div>
+      <div style="font-size:0.97em;color:#ffb347;">Tip: Use "Impersonate" to troubleshoot as any user. <b>Don't forget to stop impersonation to return to your admin account.</b></div>
+    </section>
+
+    <!-- OFFER MANAGEMENT -->
+    <section class="admin-section" id="admin-offers-section">
+      <h2>💼 Offer Management</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:1rem 1.5rem; align-items:center; margin-bottom:8px;">
+        <label for="offer-status-filter">Status:</label>
+        <select id="offer-status-filter">
+          <option value="">All</option>
+          <option value="pending">Pending</option>
+          <option value="accepted">Accepted</option>
+          <option value="in_progress">In Progress</option>
+          <option value="live">Live</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+          <option value="cancelled">Cancelled</option>
+          <option value="review_completed">Review Completed</option>
+        </select>
+        <input id="admin-offer-search" placeholder="Search offers..." style="width:170px;">
+        <label>Date:</label>
+        <input type="date" id="admin-offer-date-start" style="width:135px;">
+        <span style="color:#F6C62E;font-size:1.2em;">–</span>
+        <input type="date" id="admin-offer-date-end" style="width:135px;">
+        <button id="export-offers-csv">Export Offers CSV</button>
+        <button id="delete-selected-offers">Delete Selected</button>
+      </div>
+      <div class="table-responsive"><div id="admin-offers-table"></div></div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="admin-section" id="admin-reviews-section">
+      <h2>⭐ Review Moderation</h2>
+      <button id="export-reviews-csv" style="margin-bottom:8px;">Export Reviews CSV</button>
+      <div class="table-responsive"><div id="admin-reviews-table"></div></div>
+    </section>
+
+    <!-- PAYOUTS -->
+    <section class="admin-section" id="admin-payouts-section">
+      <h2>💸 Payouts / Transactions</h2>
+      <button id="export-payout-csv" style="margin-bottom:8px;">Export Payouts CSV</button>
+      <div class="table-responsive"><div id="admin-payout-table"></div></div>
+    </section>
+
+    <!-- REPORTED SECTION-->
+    <section class="admin-section" id="admin-reported-section">
+      <h2>🚩 Reported Items</h2>
+      <div id="admin-reported-tabs" class="reported-tabs">
+        <button class="reported-tab" data-type="users">Users</button>
+        <button class="reported-tab" data-type="offers">Offers</button>
+        <button class="reported-tab" data-type="reviews">Reviews</button>
+        <button class="reported-tab" data-type="comments">Reported Comments</button>
+      </div>
+      <div id="reported-content"></div>
+    </section>
+
+    <!-- LOGS & NOTIFICATIONS (side-by-side) -->
+    <section class="admin-section admin-flex-row" id="admin-log-section" style="margin-top:3rem;">
+      <div class="admin-flex-left">
+        <h2 style="margin-top:0;">🔔 Send Notification</h2>
+        <form id="admin-notify-form" autocomplete="off">
+          <input type="text" id="notify-title" placeholder="Notification Title" required style="margin-bottom:0.4rem;width:98%;" /><br />
+          <textarea id="notify-message" placeholder="Message (will be sent to all users or target email)" rows="3" required style="margin-bottom:0.4rem;width:98%;"></textarea><br />
+          <input id="notify-email" placeholder="Target email (optional, blank = all users)" style="margin-bottom:0.4rem;width:98%;"><br>
+          <button type="submit" style="background:#F6C62E; color:#222;width:98%;">Send Notification</button>
+        </form>
+        <div id="admin-notify-status" style="margin-top:10px;"></div>
+      </div>
+      <div class="admin-flex-right">
+        <h2 style="margin-top:0;">📜 Admin Activity Log</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1rem; align-items:center; margin-bottom:8px;">
+          <input id="log-action-filter" placeholder="Action filter" style="width:120px;">
+          <input id="log-admin-filter" placeholder="Admin user id" style="width:120px;">
+          <input id="log-type-filter" placeholder="Target type" style="width:120px;">
+          <input type="date" id="log-date-start">
+          <span style="color:#F6C62E;font-size:1.2em;">–</span>
+          <input type="date" id="log-date-end">
+          <button id="export-log-csv">Export Log CSV</button>
+        </div>
+        <div class="table-responsive"><div id="admin-log-table"></div></div>
+      </div>
+    </section>
+    <section class="admin-section" id="admin-privacy-section">
+      <h2>🔒 User Privacy Requests (GDPR/CCPA)</h2>
+      <div class="table-responsive">
+        <div id="admin-privacy-table"></div>
+      </div>
+    </section>
+  </div>
+  <div id="admin-modal-root"></div>
+
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul>
+        <li><a href="/public/help.html">Help</a></li>
+        <li><a href="/public/contact.html">Contact</a></li>
+        <li><a href="/public/privacy.html">Privacy Policy</a></li>
+        <li><a href="/public/terms.html">Terms of Service</a></li>
+        <li><a href="/public/reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2024 Sponsor Sorter. All rights reserved.</div>
+  </footer>
+</body>
+</html>

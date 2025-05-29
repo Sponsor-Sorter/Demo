@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sponsor Sorter — 2025 Super Roadmap</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    :root {
+      --accent: #5eead4;
+      --accent-hover: #2dd4bf;
+      --bg: #18181b;
+      --bg-card: #232329;
+      --border: #313139;
+      --text: #f4f4f5;
+      --text-soft: #d4d4d8;
+      --done: #22c55e;
+      --pending: #facc15;
+      --danger: #f87171;
+      --optional: #60a5fa;
+      --shadow: 0 2px 12px 0 rgba(0,0,0,0.16);
+      --radius: 1.25rem;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 2.5rem auto 2rem auto;
+      padding: 2rem 1.5rem 2.5rem 1.5rem;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    h1 {
+      letter-spacing: 0.02em;
+      font-size: 2.6rem;
+      margin-bottom: .2em;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent) 30%, var(--optional) 100%);
+        background-clip: text;             
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--text-soft);
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .tab-btn {
+      background: none;
+      border: 2px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.5rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .15s, color .15s, border .15s;
+      margin-bottom: 2px;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--accent);
+      color: var(--bg-card);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .roadmap-section {
+      display: none;
+      animation: fadein .4s;
+    }
+    .roadmap-section.active {
+      display: block;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(10px);}
+      to   { opacity: 1; transform: translateY(0);}
+    }
+    .roadmap-section h2 {
+      margin-top: 0;
+      font-size: 1.33em;
+      margin-bottom: 1.2em;
+      color: var(--accent);
+      background: linear-gradient(90deg, var(--accent) 30%, var(--optional) 100%);
+        background-clip: text;             
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.01em;
+      font-weight: 700;
+    }
+    .add-feature-form {
+      margin-bottom: 1.2em;
+      display: flex;
+      gap: 0.5em;
+      flex-wrap: wrap;
+    }
+    .add-feature-form input, .add-feature-form select {
+      flex: 1 0 140px;
+      min-width: 120px;
+      padding: 0.5em 1em;
+      border-radius: 0.8em;
+      border: 1.5px solid var(--border);
+      font-size: 1em;
+      background: var(--bg);
+      color: var(--text);
+      margin-bottom: 0.3em;
+    }
+    .add-feature-form button {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5em 1.2em;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background .18s;
+      box-shadow: 0 1px 8px 0 rgba(0,0,0,0.10);
+    }
+    .add-feature-form button:hover { background: var(--accent-hover); }
+    .card-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.7rem;
+      margin-bottom: 2rem;
+    }
+    .card-table th, .card-table td {
+      padding: 1rem 1.2rem;
+      background: var(--bg);
+      border-radius: var(--radius);
+      text-align: left;
+      vertical-align: middle;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .card-table th {
+      color: var(--text-soft);
+      font-size: 1.07rem;
+      letter-spacing: .02em;
+      font-weight: 500;
+      background: var(--bg-card);
+    }
+    .status {
+      font-weight: bold;
+      padding: 0.35em 0.85em;
+      border-radius: 999px;
+      font-size: 0.96em;
+      letter-spacing: 0.02em;
+      display: inline-block;
+    }
+    .status.done { background: var(--done); color: #fff; }
+    .status.pending { background: var(--pending); color: #000;}
+    .status.danger { background: var(--danger); color: #fff;}
+    .status.optional { background: var(--optional); color: #fff;}
+    .move-btn, .del-btn, .mark-completed-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 1.15em;
+      padding: 0.2em 0.5em;
+      border-radius: 0.5em;
+      color: var(--accent);
+      transition: background 0.18s, color 0.14s;
+      margin-right: 2px;
+    }
+    .del-btn { color: var(--danger);}
+    .mark-completed-btn { color: var(--done); font-weight: bold;}
+    .move-btn:hover, .del-btn:hover, .mark-completed-btn:hover { background: var(--accent); color: #000; }
+    .card-table [contenteditable] {
+      outline: none;
+      border-radius: 0.5em;
+      min-width: 60px;
+      background: transparent;
+      transition: background 0.1s;
+    }
+    .card-table [contenteditable]:focus {
+      background: var(--bg-card);
+    }
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 1.15em; height: 1.15em;
+      vertical-align: middle;
+      margin-right: 0.8em;
+      border-radius: 0.2em;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: outline .2s;
+      outline: 2px solid transparent;
+    }
+    input[type="checkbox"]:focus { outline: 2px solid var(--accent); }
+    @media (max-width: 900px) {
+      .container { padding: 1rem 0.5rem;}
+      .card-table th, .card-table td { padding: 0.7rem 0.5rem; font-size: 0.97rem;}
+      h1 { font-size: 1.6rem; }
+      .add-feature-form { flex-direction: column; }
+    }
+    ::-webkit-scrollbar {
+      width: 7px;
+      background: var(--bg-card);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .tab-count {
+  display: inline-block;
+  margin-left: 0.33em;
+  min-width: 1.5em;
+  padding: 0.12em 0.5em;
+  font-size: 0.98em;
+  font-weight: 500;
+  background: var(--border);
+  color: var(--accent);
+  border-radius: 1em;
+}
+.tab-btn.active .tab-count {
+  background: var(--accent);
+  color: var(--bg-card);
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚦 Sponsor Sorter — 2025 Super Roadmap</h1>
+    <div class="subtitle">
+      Everything you see is live from the database. Add, edit, move, and tick features. All saves instantly.
+    </div>
+    <div class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="phases">Phases <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="completed">Completed <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="planned">Planned <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="advanced">Advanced Ideas <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="compliance">Compliance <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="growth">Growth <span class="tab-count"></span></button>
+  <button class="tab-btn" data-tab="templates">Templates <span class="tab-count"></span></button>
+
+</div>
+
+    <div id="roadmap-sections">
+      <!-- JS will dynamically populate sections here -->
+    </div>
+  </div>
+  <script type="module" src="/public/js/roadmap-dynamic.js"></script>
+</body>
+</html>

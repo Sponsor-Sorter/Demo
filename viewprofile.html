@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sponsee Public Profile - Sponsor Sorter">
+  <title>Sponsee Profile | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar"> 
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+<div>
+  <background-img class="navimg" src="navimg.png" alt="">
+  <nav>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="finder.html">Finder</a></li>
+  </nav>
+ <nav>
+  <li class="navr" id="dashboard-link"><a href="dashboardsponsee.html">Dashboard</a></li>
+  <li><a href="login.html">Logout</a></li>
+  <li id="notification-bell-li" style="display:inline;">
+    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+    </button>
+  </li>
+</nav>
+
+</div>
+    </div> 
+  </section>
+</header>
+
+<section class="dashboard">
+  <!-- User Profile -->
+  <section class="userprofile">
+   <fieldset style="position:relative;">
+        <legend>Profile Details</legend>
+        <!-- Report button will be inserted by JS after username loads -->
+
+      <div class="profile-header" style="display: flex; align-items: flex-start; gap: 32px;">
+        <div class="profile-picture">
+          <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
+          <p style="margin-top: 8px;">Account Type: <span id="user-account-type">Sponsee</span></p>
+          <div id="overall-rating" style="margin-top: 10px;">
+            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+            <div id="profile-badge-slot" style="margin-top:8px;"></div>
+          </div>
+        </div>
+        <div class="profile-info">
+          <p>Username: <span id="user-username">[Username]</span></p>
+          <p>Location: <span id="user-location">[Location]</span></p>
+          <p>Title: <span id="user-gender">[Title]</span></p>
+          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+          <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
+        </div>
+      </div>
+      <p style="margin-top: 14px;">Description: <span id="about-yourself">[about yourself]</span> </p>
+
+      <fieldset>
+        <legend><h3>User Ratings</h3></legend>
+        <div id="profile-review-stars" class="review-stars-block">
+          <div class="stars-row" style="display: flex; gap: 32px;">
+            <div class="star-item">
+              <span class="star-label">Communication</span>
+              <span id="communication-stars" class="stars"></span>
+            </div>
+            <div class="star-item">
+              <span class="star-label">Punctuality</span>
+              <span id="punctuality-stars" class="stars"></span>
+            </div>
+            <div class="star-item">
+              <span class="star-label">Work Output</span>
+              <span id="work-output-stars" class="stars"></span>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </fieldset>
+
+    <!-- Summary Cards -->
+    <fieldset>
+      <div class="dashboard-cards">
+        <div class="card-row">
+          <div class="card">
+            <h3>Active Sponsorships</h3>
+            <p id="active-sponsorships">0</p>
+          </div>
+          <div class="card">
+            <h3>Completed Deals</h3>
+            <p id="completed-deals">0</p>
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="card">
+            <h3>Total Followers</h3>
+            <p id="total-followers">0</p>
+          </div>
+          <div class="card">
+            <h3>Accepted : Rejected offers </h3>
+            <p id="ratio-earnings">0:0 0%</p>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Recent Activity -->
+    <fieldset>
+      <legend><h3>Recent Sponsorship Activity</h3></legend>
+      <div class="recent-activity">
+        <table>
+          <thead>
+            <tr>
+              <th>Brand</th>
+              <th>Status</th>
+              <th>Offer Date</th>
+              <th>Live Date</th>
+              <th>Deadline</th>
+            </tr>
+          </thead>
+          <tbody id="profile-activity-table-body">
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+
+    <!-- Sponsorship History -->
+    <fieldset>
+      <legend><h3>Sponsorship History</h3></legend>
+      <table>
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Offer Date</th>
+            <th>Live Date</th>
+            <th>Deadline</th>
+            <th>Sponsor Review</th>
+            <th>User Review</th>
+          </tr>
+        </thead>
+        <tbody id="profile-archived-table-body"></tbody>
+      </table>
+    </fieldset>
+  </section>
+</section>
+
+<footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+    </footer>
+
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+import { injectUserBadge } from '/public/js/badges.js';
+import '/public/js/userReports.js';
+
+// --- Dynamic Nav Bar: Dashboard link based on userType (user_metadata or users_extended_data) ---
+async function updateNavBar() {
+  const { data: { session } } = await supabase.auth.getSession();
+  const navDynamic = document.getElementById('nav-dynamic');
+  if (!navDynamic) return;
+
+  let dashboardHref = "signup.html";
+  let dashboardLabel = "Signup";
+
+  if (session && session.user) {
+    let userType = session.user.user_metadata?.userType;
+    if (!userType) {
+      // fallback: fetch from users_extended_data if not in user_metadata
+      const { data: userRow } = await supabase
+        .from('users_extended_data')
+        .select('userType')
+        .eq('user_id', session.user.id)
+        .single();
+      if (userRow?.userType) userType = userRow.userType;
+    }
+    if (userType === "besponsored") {
+      dashboardHref = "dashboardsponsee.html";
+      dashboardLabel = "Dashboard";
+    } else if (userType === "sponsor") {
+      dashboardHref = "dashboardsponsor.html";
+      dashboardLabel = "Dashboard";
+    }
+  }
+
+  let navHtml = `
+    <background-img class="navimg" src="navimg.png" alt="">
+    <nav> 
+      <li><a href="index.html">Home</a></li>
+      <li><a href="finder.html">Finder</a></li>
+    </nav>
+    <nav>
+      <li class="navr" id="auth-link"><a href="${dashboardHref}">${dashboardLabel}</a></li>
+      <li><a href="login.html">Logout</a></li>
+      <li class="notification-bell-wrap">
+        <button id="notification-bell" class="notification-bell-btn">
+          <img src="bell.png" alt="Notifications" style="width:28px;">
+          <span id="notification-count" class="notification-badge">0</span>
+        </button>
+      </li>
+    </nav>
+  `;
+
+  navDynamic.innerHTML = navHtml;
+  setupNotificationBell();
+}
+updateNavBar();
+
+async function setupNotificationBell() {
+  const bell = document.getElementById('notification-bell');
+  const badge = document.getElementById('notification-count');
+  if (!bell || !badge) return;
+
+  let dropdown = document.getElementById('notification-dropdown');
+  if (!dropdown) {
+    dropdown = document.createElement('div');
+    dropdown.id = 'notification-dropdown';
+    dropdown.className = 'notification-dropdown';
+    dropdown.style.display = 'none';
+    document.body.appendChild(dropdown);
+  }
+  let notifications = [];
+
+  function positionDropdown() {
+    const rect = bell.getBoundingClientRect();
+    dropdown.style.right = (window.innerWidth - rect.right + 12) + 'px';
+    dropdown.style.top = (rect.bottom + 8) + 'px';
+  }
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) {
+    badge.style.display = 'none';
+    return;
+  }
+  const userId = session.user.id;
+  const { data: userRow } = await supabase
+    .from('users_extended_data')
+    .select('notification_uuid, email')
+    .eq('user_id', userId)
+    .single();
+
+  const notification_uuid = userRow?.notification_uuid;
+  if (!notification_uuid) {
+    badge.style.display = 'none';
+    return;
+  }
+
+  async function loadNotifications() {
+    const { data, error } = await supabase
+      .from('user_notifications')
+      .select('*')
+      .eq('notification_uuid', notification_uuid)
+      .order('created_at', { ascending: false })
+      .limit(30);
+    if (error) {
+      badge.style.display = 'none';
+      return;
+    }
+    notifications = data || [];
+    const unread = notifications.filter(n => !n.read);
+    badge.textContent = unread.length > 0 ? unread.length : '';
+    badge.style.display = unread.length > 0 ? 'inline-block' : 'none';
+    renderDropdown();
+  }
+
+  async function clearReadNotifications() {
+    const readNotifs = notifications.filter(n => n.read);
+    if (!readNotifs.length) return;
+    const idsToDelete = readNotifs.map(n => n.id);
+    if (idsToDelete.length > 0) {
+      await supabase
+        .from('user_notifications')
+        .delete()
+        .in('id', idsToDelete);
+      await loadNotifications();
+    }
+  }
+
+  function renderDropdown() {
+    dropdown.innerHTML = '';
+    const readCount = notifications.filter(n => n.read).length;
+    if (readCount > 0) {
+      const clearBtn = document.createElement('button');
+      clearBtn.innerText = `Clear Read (${readCount})`;
+      clearBtn.className = 'clear-btn';
+      clearBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await clearReadNotifications();
+      };
+      dropdown.appendChild(clearBtn);
+    }
+    if (!notifications.length) {
+      dropdown.innerHTML += `<div class="notif-empty">No notifications.</div>`;
+      return;
+    }
+    notifications.forEach(n => {
+      const notif = document.createElement('div');
+      notif.className = 'notif-item' + (!n.read ? ' unread' : '');
+      notif.innerHTML = `
+        <div style="font-weight:bold;font-size:1em;color:${n.read ? '#fff' : '#3498fd'}">${n.title || '[No Title]'}</div>
+        <div style="font-size:0.95em;line-height:1.5;">${n.message || ''}</div>
+        <div style="font-size:0.85em;color:#aaa;margin-top:3px;">${n.created_at ? new Date(n.created_at).toLocaleString() : ''}</div>
+      `;
+      notif.onclick = async () => {
+        if (!n.read) {
+          await supabase.from('user_notifications').update({ read: true }).eq('id', n.id);
+          n.read = true;
+          loadNotifications();
+        }
+        dropdown.style.display = 'none';
+      };
+      dropdown.appendChild(notif);
+    });
+  }
+
+  bell.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (dropdown.style.display === 'none') {
+      positionDropdown();
+      dropdown.style.display = 'block';
+    } else {
+      dropdown.style.display = 'none';
+    }
+  });
+  window.addEventListener('resize', () => { if (dropdown.style.display === 'block') positionDropdown(); });
+  document.addEventListener('click', () => { if (dropdown.style.display === 'block') dropdown.style.display = 'none'; });
+  dropdown.addEventListener('click', e => e.stopPropagation());
+  await loadNotifications();
+  setInterval(loadNotifications, 60000);
+}
+
+// Badge helper: injects badge into profile slot after loading stats
+function injectBadge(username, email) {
+  injectUserBadge(email, '#profile-badge-slot', 'sponsee_email');
+}
+
+function renderStars(rating) {
+  let out = '';
+  for (let i = 1; i <= 5; i++) {
+    out += `<span class="star${i <= rating ? ' gold-star' : ''}">${i <= rating ? '★' : '☆'}</span>`;
+  }
+  return out;
+}
+
+function extractPlatformBadges(social_handles) {
+  if (!social_handles) return 'N/A';
+  let handlesObj = social_handles;
+  if (typeof handlesObj === 'string') {
+    try {
+      handlesObj = JSON.parse(handlesObj);
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+  const platformLogos = {
+    instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+    tiktok: 'tiktoklogo.png',
+    youtube: 'youtubelogo.png',
+    twitter: 'twitterlogo.png',
+    facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+    twitch: 'twitchlogo.png',
+    snapchat: 'snaplogo.png',
+  };
+  const platformUrls = {
+    instagram: handle => `https://instagram.com/${handle.replace('@', '')}`,
+    tiktok: handle => `https://tiktok.com/@${handle.replace('@', '')}`,
+    youtube: handle => `https://youtube.com/@${handle.replace('@', '')}`,
+    twitter: handle => `https://twitter.com/${handle.replace('@', '')}`,
+    facebook: handle => `https://facebook.com/${handle.replace('@', '')}`,
+    twitch: handle => `https://twitch.tv/${handle.replace('@', '')}`,
+    snapchat: handle => `https://snapchat.com/add/${handle.replace('@', '')}`,
+  };
+  const platformsArray = Object.keys(handlesObj).filter(platform => {
+    const handle = handlesObj[platform];
+    return handle && handle.trim() !== '';
+  });
+  if (platformsArray.length === 0) return 'N/A';
+  return platformsArray.map(platform => {
+    const handle = handlesObj[platform].trim();
+    const logoSrc = platformLogos[platform];
+    const profileUrl = platformUrls[platform] ? platformUrls[platform](handle) : '#';
+    return `
+      <a href="${profileUrl}" target="_blank" class="social-badge">
+        <img src="${logoSrc}" alt="${platform}" title="${platform}" class="platform-logo-icon">
+        <span class="handle-text">${handle}</span>
+      </a>
+    `;
+  }).join(' ');
+}
+
+async function loadProfileAndStats(username) {
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('*')
+    .ilike('username', username)
+    .single();
+  if (error || !data) {
+    alert('User not found.');
+    return;
+  }
+  function setElementText(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.innerText = value || "[Unknown]";
+    }
+  }
+  setElementText('user-username', data.username);
+  setElementText('user-location', data.location);
+  setElementText('user-gender', data.title);
+  setElementText('about-yourself', data.about_yourself);
+  setElementText('contenttype', data.contenttype);
+  const profilePic = data.profile_pic
+    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${data.profile_pic}`
+    : "logos.png";
+  const profilePicElement = document.getElementById("profile-pic");
+  if (profilePicElement) profilePicElement.src = profilePic;
+  document.getElementById("social_handles").innerHTML = extractPlatformBadges(data.social_handles);
+
+  // Badge: after getting email, call badge injector
+  injectBadge(username, data.email);
+
+  // --- Dynamically insert the Report Profile button ---
+  const fieldset = document.querySelector('.userprofile fieldset');
+  if (fieldset && !document.querySelector('.report-profile-btn')) {
+    const reportBtn = document.createElement('button');
+    reportBtn.className = 'report-profile-btn';
+    reportBtn.title = 'Report this profile';
+    reportBtn.type = 'button';
+    reportBtn.innerHTML = '🚩';
+    reportBtn.style.position = 'absolute';
+    reportBtn.style.top = '8px';
+    reportBtn.style.left = '8px';
+    reportBtn.style.background = 'none';
+    reportBtn.style.border = 'none';
+    reportBtn.style.outline = 'none';
+    reportBtn.style.boxShadow = 'none';
+    reportBtn.style.color = '#e03232';
+    reportBtn.style.fontSize = '1.4em';
+    reportBtn.style.cursor = 'pointer';
+    reportBtn.style.zIndex = '3';
+    reportBtn.onfocus = function() { this.style.outline = 'none'; this.style.boxShadow = 'none'; };
+    reportBtn.onclick = () => window.openReportModal && window.openReportModal('profile', data.username);
+    fieldset.insertBefore(reportBtn, fieldset.firstChild.nextSibling); // after legend
+  }
+  // ----------------------------------------------------
+
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('status, offer_amount')
+    .eq('sponsee_username', username);
+  let active = 0, completed = 0, totalEarnings = 0, rejected = 0, accepted = 0;
+  if (offers && offers.length) {
+    for (const o of offers) {
+      if (['accepted', 'in_progress', 'live'].includes(o.status)) active++;
+      if (['completed', 'review_completed'].includes(o.status)) completed++;
+      if (!['rejected', 'Offer Cancelled'].includes(o.status)) totalEarnings += Number(o.offer_amount || 0);
+      if (['accepted', 'in_progress', 'live', 'completed', 'review_completed'].includes(o.status)) accepted++;
+      if (['rejected', 'Offer Cancelled'].includes(o.status)) rejected++;
+    }
+  }
+  setElementText('active-sponsorships', active);
+  setElementText('completed-deals', completed);
+  setElementText('total-followers', data.total_followers);
+  const ratioText = `${accepted}:${rejected} ${accepted + rejected > 0 ? Math.round((accepted / (accepted + rejected)) * 100) : 0}%`;
+  const ratioEl = document.getElementById('ratio-earnings');
+  if (ratioEl) ratioEl.innerText = ratioText;
+  const earningsEl = document.getElementById('total-earnings');
+  if (earningsEl) earningsEl.innerText = `$${totalEarnings.toFixed(2)}`;
+  await updateOverallStars(username);
+  await updateProfileCategoryStars(username);
+}
+
+// (The rest of your code is unchanged...)
+
+async function updateOverallStars(username) {
+  // ... unchanged ...
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('id')
+    .eq('sponsee_username', username);
+  if (!offers || offers.length === 0) {
+    document.getElementById('average-stars').innerHTML = renderStars(0);
+    return;
+  }
+  const offerIds = offers.map(o => o.id);
+  let allOverall = [];
+  for (let i = 0; i < offerIds.length; i += 100) {
+    const batchIds = offerIds.slice(i, i + 100);
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select('overall')
+      .in('offer_id', batchIds)
+      .eq('reviewer_role', 'sponsor');
+    if (reviews) allOverall = allOverall.concat(reviews);
+  }
+  const el = document.getElementById('average-stars');
+  if (!allOverall.length) {
+    if (el) el.innerHTML = renderStars(0);
+    return;
+  }
+  const avg = allOverall.reduce((sum, r) => sum + (r.overall || 0), 0) / allOverall.length;
+  if (el) el.innerHTML = renderStars(Math.round(avg));
+}
+
+async function updateProfileCategoryStars(username) {
+  // ... unchanged ...
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('id')
+    .eq('sponsee_username', username);
+  if (!offers || offers.length === 0) {
+    ['communication', 'punctuality', 'work_output'].forEach(cat => {
+      const el = document.getElementById(`${cat}-stars`);
+      if (el) el.innerHTML = renderStars(0);
+    });
+    return;
+  }
+  const offerIds = offers.map(o => o.id);
+  async function fillStar(category, elId) {
+    let allRatings = [];
+    for (let i = 0; i < offerIds.length; i += 100) {
+      const batchIds = offerIds.slice(i, i + 100);
+      const { data: reviews } = await supabase
+        .from('private_offer_reviews')
+        .select(category)
+        .in('offer_id', batchIds)
+        .eq('reviewer_role', 'sponsor');
+      if (reviews) allRatings = allRatings.concat(reviews);
+    }
+    const el = document.getElementById(elId);
+    if (!allRatings.length) {
+      if (el) el.innerHTML = renderStars(0);
+      return;
+    }
+    const avg = allRatings.reduce((sum, r) => sum + (r[category] || 0), 0) / allRatings.length;
+    if (el) el.innerHTML = renderStars(Math.round(avg));
+  }
+  await fillStar('communication', 'communication-stars');
+  await fillStar('punctuality', 'punctuality-stars');
+  await fillStar('work_output', 'work-output-stars');
+}
+
+async function loadProfileRecentActivity(username) {
+  // ... unchanged ...
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('sponsor_username, status, created_at, offer_amount, live_date, deadline')
+    .eq('sponsee_username', username)
+    .order('created_at', { ascending: false });
+  const tableBody = document.getElementById('profile-activity-table-body');
+  if (!tableBody) return;
+  tableBody.innerHTML = '';
+  if (!offers || offers.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="6">No activity found.</td></tr>';
+    return;
+  }
+  let displayed = 0;
+  for (const offer of offers) {
+    if (offer.status === 'review_completed') continue;
+    if (displayed >= 10) break;
+    let sponsorPicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+    if (offer.sponsor_username) {
+      const { data: sponsorData } = await supabase
+        .from('users_extended_data')
+        .select('profile_pic')
+        .eq('username', offer.sponsor_username)
+        .single();
+      if (sponsorData?.profile_pic) {
+        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`;
+      }
+    }
+    const statusColor =
+      offer.status === 'pending' ? 'orange' :
+      offer.status === 'accepted' ? 'green' :
+      offer.status === 'live' ? 'blue' :
+      offer.status === 'completed' ? 'gray' :
+      ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
+      'inherit';
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td style="text-align: center;">
+        <img src="${sponsorPicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsor Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+        ${offer.sponsor_username}
+      </td>
+      <td style="color: ${statusColor}">${offer.status}</td>
+      <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
+      <td>${offer.live_date ? new Date(offer.live_date + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
+      <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
+    `;
+    tableBody.appendChild(row);
+    displayed++;
+  }
+  if (displayed === 0) {
+    tableBody.innerHTML = '<tr><td colspan="6">No activity found.</td></tr>';
+  }
+}
+
+async function loadProfileArchivedDeals(username) {
+  // ... unchanged ...
+  const { data: offers } = await supabase
+    .from("private_offers")
+    .select("*")
+    .eq("archived", true)
+    .eq("sponsee_username", username)
+    .order("created_at", { ascending: false });
+  const archivedTableBody = document.getElementById("profile-archived-table-body");
+  if (!archivedTableBody) return;
+  archivedTableBody.innerHTML = "";
+  if (!offers || offers.length === 0) {
+    archivedTableBody.innerHTML = `<tr><td colspan="7">No archived deals yet.</td></tr>`;
+    return;
+  }
+  for (const offer of offers) {
+    let sponsorPicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+    if (offer.sponsor_username) {
+      const { data: sponsorData } = await supabase
+        .from('users_extended_data')
+        .select('profile_pic')
+        .eq('username', offer.sponsor_username)
+        .single();
+      if (sponsorData?.profile_pic) {
+        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`;
+      }
+    }
+    let sponsorRatingDisplay = "—";
+    const { data: sponsorReview } = await supabase
+      .from("private_offer_reviews")
+      .select("overall")
+      .eq("offer_id", offer.id)
+      .eq("reviewer_role", "sponsor")
+      .single();
+    if (sponsorReview && sponsorReview.overall) {
+      sponsorRatingDisplay = renderStars(Math.round(sponsorReview.overall));
+    }
+    let sponseeRatingDisplay = "—";
+    const { data: sponseeReview } = await supabase
+      .from("private_offer_reviews")
+      .select("overall")
+      .eq("offer_id", offer.id)
+      .eq("reviewer_role", "sponsee")
+      .single();
+    if (sponseeReview && sponseeReview.overall) {
+      sponseeRatingDisplay = renderStars(Math.round(sponseeReview.overall));
+    }
+    archivedTableBody.innerHTML += `
+      <tr>
+        <td style="text-align: center;">
+          <img src="${sponsorPicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsor Pic"
+               style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          ${offer.sponsor_username}
+        </td>
+        <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
+        <td>${offer.live_date ? new Date(offer.live_date + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
+        <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
+        <td>${sponsorRatingDisplay}</td>
+        <td>${sponseeRatingDisplay}</td>
+      </tr>
+    `;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const username = params.get('username');
+  if (!username) return;
+  await loadProfileAndStats(username);
+  await loadProfileRecentActivity(username);
+  await loadProfileArchivedDeals(username);
+});
+</script> 
+<script type="module" src="/public/js/alerts.js"></script>
+<script type="module">
+  import { supabase } from '/public/js/supabaseClient.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const dashboardLink = document.getElementById('dashboard-link');
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (session && session.user) {
+    let userType = session.user.user_metadata?.userType;
+    if (!userType) {
+      // fallback: get from users_extended_data
+      const { data: userRow } = await supabase
+        .from('users_extended_data')
+        .select('userType')
+        .eq('user_id', session.user.id)
+        .single();
+      if (userRow?.userType) userType = userRow.userType;
+    }
+    let href = "dashboardsponsee.html";
+    if (userType === "sponsor") href = "dashboardsponsor.html";
+    dashboardLink.firstElementChild.href = href;
+    dashboardLink.firstElementChild.textContent = "Dashboard";
+  } else {
+    dashboardLink.firstElementChild.href = "login.html";
+    dashboardLink.firstElementChild.textContent = "Login";
+  }
+});
+
+</script>
+</body>
+</html>

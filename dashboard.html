@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to your Sponsor Sorter account to manage your profile, linked accounts, and sponsorship opportunities.">
+    <title>Login - Sponsor Sorter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <script src="main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="auth.js" defer></script>
+
+    
+</head>
+
+<body>
+    
+
+<header class="navbar1">
+    <section class="navbar"> 
+     <div class="navii">
+         <h5>  <header>Sponsor Sorter</header> </h5>
+         <div>
+            <background-img class="navimg" src="navimg.png" alt="">
+            <nav> 
+               <li><a href="index.html">Home</a></li>
+               <li><a href="finder.html">Finder</a></li>
+            </nav>
+            <nav>
+            <li class="navr"><a href="signup.html">Signup</a></li>
+            <li><a href="login.html">Logout</a></li>
+         </div>
+   </div> 
+            </ul>
+         </nav>
+         </h5>
+   <p></p>  
+
+ </header>
+
+  <!-- Dashboard Section -->
+  <section class="dashboard">
+
+
+      <!-- User Profile Section -->
+      <section class="user-profile">
+        <h2>Welcome, <span id="user-name">JohnDoe</span></h2>
+        <fieldset>
+            <div class="profile-header">
+                <div class="profile-picture">
+                    <img src="johndoe.png" alt="User Profile Picture" class="profile-img">
+                    <p>Account Type: <span id="user-account-type">Sponsee</span></p>
+                </div>
+                <div class="profile-info">
+                    <p>Email: <span id="user-email">johndoe@example.com</span></p>
+                    <p>Username: <span id="user-username">JohnDoe</span></p>
+                    <p>Location: <span id="user-location">New York, USA</span></p>
+                    <p>Gender: <span id="user-gender">Male</span></p>
+                    <p>
+                        <div>
+
+                            <div id="overall-rating" style="margin-top: 10px;">
+                                <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+                              </div>
+                              
+                        </div>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Searchable Status -->
+            <div id="searchable-status" class="premium-status">
+                <img id="searchable-status-icon" src="greentick.png" alt="Status Icon" class="status-icon">
+                <h3>Your profile is <strong id="searchable-text">searchable</strong> by sponsors!</h3>
+            </div>
+
+           
+        </fieldset>
+
+        <fieldset>
+
+            <!-- Dashboard Summary Cards -->
+         <div class="dashboard-cards">
+         
+          <!-- Row 1 -->
+<div class="card-row">
+    <div class="card">
+      <h3>Active Sponsorships</h3>
+      <p id="active-sponsorships">0</p>
+    </div>
+    <div class="card">
+      <h3>Completed Deals</h3>
+      <p id="completed-deals">0</p>
+    </div>
+  </div>
+  
+  <!-- Row 2 -->
+  <div class="card-row">
+    <div class="card">
+      <h3>Total Followers</h3>
+      <p>6.9M</p> <!-- leave this static -->
+    </div>
+    <div class="card">
+      <h3>Total Earnings</h3>
+      <p id="total-earnings">$0</p>
+    </div>
+  </div>
+  
+           </div>
+          </fieldset> 
+
+          <fieldset>
+            <legend>🎯 Active Listings for Sponsorship</legend>
+            <div class="active-listings">
+          
+              <!-- Repeat this block for each stage -->
+              <div class="listing-stage">
+                <div class="logo-container">
+                    <img src="logos.png" alt="User Logo" class="stage-logo">
+                </div>
+                <div class="stage-content">
+                  <h3>Stage 1: Offer Sent</h3>
+                  <p><strong>Description:</strong> Initial sponsorship offer sent for brand review and planning.</p>
+                  <p><strong>Completion Date:</strong> April 5, 2025</p>
+                  <p><strong>Offered:</strong> $800 (Pending Acception)</p>
+                  <button class="accept-but">Accept</button>
+                  <button class="decline-but">Decline</button>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="listing-stage">
+                <div class="logo-container">
+                    <img src="logos.png" alt="User Logo" class="stage-logo">
+                </div>
+                <div class="stage-content">
+                  <h3>Stage 2: Offer Accepted</h3>
+                  <p><strong>Description:</strong> The influencer features a brand's product in their content. The product is either showcased during a video, integrated into photos, or mentioned during live streams.</p>
+                  <p><strong>Completion Date:</strong> April 7, 2025</p>
+                  <p><strong>Earned:</strong> $500 (50% upfront)</p>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="listing-stage">
+                <div class="logo-container">
+                    <img src="logos.png" alt="User Logo" class="stage-logo">
+                </div>
+                <div class="stage-content">
+                  <h3>Stage 3: Sponsorship Active</h3>
+                  <p><strong>Description:</strong> The influencer is hired by a brand to create specific types of content (e.g., a TikTok challenge, Instagram carousel post, or YouTube tutorial) that highlights the brand’s products or services.</p>
+                  <p><strong>Completion Date:</strong> April 10, 2025</p>
+                  <p><strong>Earned:</strong> $1,000</p>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 60%;"></div>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="listing-stage">
+                <div class="logo-container">
+                    <img src="logos.png" alt="User Logo" class="stage-logo">
+                </div>
+                <div class="stage-content">
+                  <h3>Stage 4: Completed – Awaiting Payment</h3>
+                  <p><strong>Description:</strong> The influencer is paid to attend or cover an event, conference, concert, or product launch, often with live coverage, posts, or stories made about the event itself.</p>
+                  <p><strong>Completion Date:</strong> April 12, 2025</p>
+                  <p><strong>Earned:</strong> $1,500</p>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="listing-stage">
+                <div class="logo-container">
+                  <img src="logos.png" alt="User Logo" class="stage-logo">
+                </div>
+                <div class="stage-content">
+                  <h3>Stage 5: Ongoing Sponsorship</h3>
+                  <p><strong>Description:</strong> The influencer enters into a long-term partnership with a brand to promote their products consistently across social media platforms. This typically includes multiple posts, videos, or live streams over a set period.</p>
+                  <p><strong>Next Due:</strong> May 10, 2025</p>
+                  <p><strong>Total Earned:</strong> $3,000</p>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+          
+            </div>
+          </fieldset>
+          
+   
+
+          <!-- Recent Activity Table -->
+      <fieldset>
+        <div class="recent-activity">
+          <h2>Recent Sponsorship Activity</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Earnings</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+          
+
+        <fieldset>
+            <legend>Linked Accounts</legend>
+            <p><h4>Here you will find all of your linked Socials. This will gather your follower stats and alike and show you interesting data. If one doesnt appear please relink, ensuring you have handle spelt correctly.</h4> </p>
+            <div class="linked-accounts">
+                <!-- Linked Accounts with Logos and Subcount/Followers -->
+                <div class="platform-row">
+                    <div class="platform">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram Logo" class="social-logo">
+                        <span id="instagram-handle">@john_doe_insta</span>
+                        <div id="instagram-followers">2M Followers</div>
+                    </div>
+                    <div class="platform">
+                        <img src="tiktoklogo.png" alt="TikTok Logo" class="social-logo">
+                        <span id="tiktok-handle">@JohnDoeTikTok</span>
+                        <div id="tiktok-followers">1.5M Followers</div>
+                    </div>
+                </div>
+                <div class="platform-row">
+                    <div class="platform">
+                        <img src="youtubelogo.png" alt="YouTube Logo" class="social-logo">
+                        <span id="youtube-handle">@JohnDoeYT</span>
+                        <div id="youtube-followers">1M Subscribers</div>
+                    </div>
+                    <div class="platform">
+                        <img src="twitterlogo.png" alt="Twitter Logo" class="social-logo">
+                        <span id="twitter-handle">@JohnDoeTweets</span>
+                        <div id="twitter-followers">500K Followers</div>
+                    </div>
+                </div>
+                <div class="platform-row">
+                    <div class="platform">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" class="social-logo">
+                        <span id="facebook-handle">@JohnDoeFB</span>
+                        <div id="facebook-followers">800K Followers</div>
+                    </div>
+                    <div class="platform">
+                        <img src="twitchlogo.png" alt="Twitch Logo" class="social-logo">
+                        <span id="twitch-handle">@JohnDoeTwitch</span>
+                        <div id="twitch-followers">200K Followers</div>
+                    </div>
+                </div>
+                <div class="platform-row">
+                    <div class="platform">
+                        <img src="snaplogo.png" alt="Snapchat Logo" class="social-logo">
+                        <span id="snapchat-handle">@JohnDoeSnap</span>
+                        <div id="snapchat-followers">900K Followers</div>
+                    </div>
+                </div>
+
+                <!-- Total Followers -->
+                 <section class="total-followers">
+                <div class="total-followers">
+                    <div class="platform total-followers">
+                        <h4>Total Followers:</h4>
+                        <div id="total-followers">6.9M Followers</div>
+                    </div>
+                </div>
+            </section>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <!-- Sponsor Graphs & Stats -->
+            <div class="graph-section">
+                <!-- Follower Distribution Pie Chart -->
+                <div class="pie-chart">
+                    <h4>Follower Distribution</h4>
+                    <canvas id="follower-pie-chart"></canvas>
+                </div>
+        
+                <!-- Sponsorship Deals Statistics Bar Chart -->
+                <div class="bar-chart">
+                    <h4>Sponsorship Deals Statistics</h4>
+                    <canvas id="sponsorship-bar-chart"></canvas>
+                </div>
+                
+                <!-- Active Listings Sponsorship Stats Bar Chart -->
+                <div class="bar-chart">
+                    <h4>Active Listings Sponsorship Deals</h4>
+                    <canvas id="active-listings-bar-chart"></canvas>
+                </div>
+
+                                <!-- Charts Section -->
+                <div class="charts-container">
+                    <div class="chart">
+                    <h3>Earnings Over Time</h3>
+                    <canvas id="earningsChart"></canvas>
+                    </div>
+                </div>
+
+
+            </div>
+        </fieldset>
+
+        <script>
+
+            
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Follower Distribution Pie Chart
+                const followerPieChart = document.getElementById('follower-pie-chart').getContext('2d');
+                const pieChart = new Chart(followerPieChart, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Instagram', 'TikTok', 'YouTube', 'Twitter', 'Facebook', 'Twitch'], // Categories
+                        datasets: [{
+                            label: 'Follower Distribution',
+                            data: [2, 1.5, 1, 0.5, 0.8, 0.2], // Follower count for each platform in millions
+                            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4caf50', '#ff9800', '#9c27b0'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw + 'M Followers';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+        
+                // Sponsorship Deals Statistics Bar Chart
+                const sponsorshipBarChart = document.getElementById('sponsorship-bar-chart').getContext('2d');
+                const barChart = new Chart(sponsorshipBarChart, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5'], // Stages of the Sponsorship
+                        datasets: [{
+                            label: 'Sponsorship Deal Value (in $)',
+                            data: [500, 1000, 1500, 2000, 2500], // Amount of the sponsorship deal at each stage
+                            backgroundColor: '#36a2eb',
+                            borderColor: '#36a2eb',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return '$' + tooltipItem.raw;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+        
+                // Active Listings Sponsorship Deals Bar Chart
+                const activeListingsBarChart = document.getElementById('active-listings-bar-chart').getContext('2d');
+                const activeListingsChart = new Chart(activeListingsBarChart, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Active Listing 1', 'Active Listing 2', 'Active Listing 3'], // Active listings
+                        datasets: [{
+                            label: 'Active Listing Deal Value (in $)',
+                            data: [3000, 5000, 7000], // Earnings for each active listing
+                            backgroundColor: '#ff9800',
+                            borderColor: '#ff9800',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return '$' + tooltipItem.raw;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+
+ 
+
+
+  
+
+   
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul>
+        <li><a href="help.html">Help</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  </footer>
+
+
+  
+
+  <script>
+
+    // Check if user is logged in
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  
+  if (!user) {
+    // Not logged in, redirect to login
+    window.location.href = "login.html";
+  } else {
+    // Insert username dynamically
+    document.querySelector(".dashboard-header h1").textContent = `Welcome back, ${user.username}!`;
+  }
+});
+
+  </script>
+
+
+
+
+
+
+
+    
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tbody = document.querySelector('.recent-activity tbody');
+  let activeCount = 0;
+  let completedCount = 0;
+  let totalEarnings = 0;
+  const earningsByMonth = {};
+
+  tbody.innerHTML = ''; // Clear rows
+
+  sponsorshipData.forEach(entry => {
+    if (entry.status === 'Completed') {
+      completedCount++;
+    } else if (entry.status === 'In Progress' || entry.status === 'Pending') {
+      activeCount++;
+    }
+
+    totalEarnings += entry.earnings;
+
+    const dateObj = new Date(entry.date);
+    const monthKey = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    if (!earningsByMonth[monthKey]) earningsByMonth[monthKey] = 0;
+    earningsByMonth[monthKey] += entry.earnings;
+
+    const stars = '★'.repeat(entry.rating || 0) + '☆'.repeat(5 - (entry.rating || 0));
+
+    const row = document.createElement('tr');
+row.innerHTML = `
+  <td><img src="${entry.logo}" alt="${entry.brand} Logo" class="brand-logo"> ${entry.brand}</td>
+  <td>${entry.status}</td>
+  <td>${entry.date}</td>
+  <td>$${entry.earnings.toLocaleString()}</td>
+  <td class="review-stars">${stars}</td>
+`;
+tbody.appendChild(row);
+
+  });
+
+  // Update summary cards
+  document.getElementById('active-sponsorships').textContent = activeCount;
+  document.getElementById('completed-deals').textContent = completedCount;
+  document.getElementById('total-earnings').textContent = `$${totalEarnings.toLocaleString()}`;
+
+  // Chart - Monthly Earnings
+  const sortedMonths = Object.keys(earningsByMonth).sort((a, b) => new Date(`1 ${a}`) - new Date(`1 ${b}`));
+  const chartLabels = sortedMonths;
+  const chartData = sortedMonths.map(month => earningsByMonth[month]);
+
+  const ctx = document.getElementById('earningsChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Monthly Earnings ($)',
+        data: chartData,
+        backgroundColor: 'rgba(54,162,235,0.2)',
+        borderColor: '#36a2eb',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: context => `$${context.raw}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: value => `$${value}`
+          }
+        }
+      }
+    }
+  });
+
+  // Set average stars
+  const rated = sponsorshipData.filter(e => e.rating > 0);
+  const average = rated.length ? rated.reduce((acc, e) => acc + e.rating, 0) / rated.length : 0;
+  const avgRounded = Math.round(average);
+  const avgStars = '★'.repeat(avgRounded) + '☆'.repeat(5 - avgRounded);
+  document.getElementById('average-stars').textContent = avgStars;
+});
+</script>
+
+
+    <!-- JS: Data + Table + Summary + Chart -->
+  <script>
+const sponsorshipData = [
+  { brand: 'EnergyPro', logo: 'logos/energypro.png', status: 'Completed', date: 'April 8, 2025', earnings: 1200, rating: 4 },
+  { brand: 'FitStyle Gear', logo: 'logos/fitstyle.png', status: 'In Progress', date: 'April 10, 2025', earnings: 800, rating: 0 },
+  { brand: 'Glow Cosmetics', logo: 'logos/glow.png', status: 'Pending', date: 'April 12, 2025', earnings: 500, rating: 0 },
+  { brand: 'NutriBoost', logo: 'logos/nutriboost.png', status: 'Completed', date: 'March 19, 2025', earnings: 1500, rating: 5 },
+  { brand: 'TechTonic', logo: 'logos/techtonic.png', status: 'Completed', date: 'March 4, 2025', earnings: 900, rating: 3 },
+  { brand: 'StreamKit', logo: 'logos/streamkit.png', status: 'Completed', date: 'February 22, 2025', earnings: 1000, rating: 4 },
+  { brand: 'Glow Cosmetics', logo: 'logos/glow.png', status: 'Completed', date: 'February 14, 2025', earnings: 600, rating: 2 },
+  { brand: 'EnergyPro', logo: 'logos/energypro.png', status: 'Completed', date: 'January 27, 2025', earnings: 1100, rating: 5 },
+  { brand: 'GamerFuel', logo: 'logos/gamerfuel.png', status: 'Completed', date: 'January 12, 2025', earnings: 1300, rating: 4 }
+];
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.querySelector('.recent-activity tbody');
+      let activeCount = 0;
+      let completedCount = 0;
+      let totalEarnings = 0;
+      const earningsByMonth = {};
+
+      tbody.innerHTML = '';
+
+      sponsorshipData.forEach(entry => {
+        if (entry.status === 'Completed') {
+          completedCount++;
+        } else {
+          activeCount++;
+        }
+
+        totalEarnings += entry.earnings;
+
+        const dateObj = new Date(entry.date);
+        const monthKey = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        if (!earningsByMonth[monthKey]) earningsByMonth[monthKey] = 0;
+        earningsByMonth[monthKey] += entry.earnings;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><img src="${entry.logo}" alt="${entry.brand} Logo" class="brand-logo"> ${entry.brand}</td>
+          <td>${entry.status}</td>
+          <td>${entry.date}</td>
+          <td>$${entry.earnings.toLocaleString()}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      document.getElementById('active-sponsorships').textContent = activeCount;
+      document.getElementById('completed-deals').textContent = completedCount;
+      document.getElementById('total-earnings').textContent = `$${totalEarnings.toLocaleString()}`;
+
+      // Chart
+      const sortedMonths = Object.keys(earningsByMonth).sort((a, b) => new Date(`1 ${a}`) - new Date(`1 ${b}`));
+      const chartLabels = sortedMonths;
+      const chartData = sortedMonths.map(month => earningsByMonth[month]);
+
+      const ctx = document.getElementById('earningsChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartLabels,
+          datasets: [{
+            label: 'Monthly Earnings ($)',
+            data: chartData,
+            backgroundColor: 'rgba(54,162,235,0.2)',
+            borderColor: '#36a2eb',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: context => `$${context.raw}`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: value => `$${value}`
+              }
+            }
+          }
+        }
+      });
+    });
+
+    const rated = sponsorshipData.filter(e => e.rating > 0);
+const average = rated.length ? rated.reduce((acc, e) => acc + e.rating, 0) / rated.length : 0;
+const avgRounded = Math.round(average);
+const avgStars = '★'.repeat(avgRounded) + '☆'.repeat(5 - avgRounded);
+
+document.getElementById('average-stars').textContent = avgStars;
+
+  </script>
+
+    
+    
+    
+
+</body>
+</html>
