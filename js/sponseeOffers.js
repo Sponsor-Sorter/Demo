@@ -90,9 +90,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = `<p style="color:red;">Error loading offers: ${error.message}</p>`;
       return;
     }
-    allSponseeOffers = (offers || []).filter(
-      offer => offer.status !== '_'
-    );
+    // Remove the filter that excluded review_completed
+    allSponseeOffers = (offers || []);
     if (allSponseeOffers.length === 0) {
       listingContainer.innerHTML = '<p>No sponsorship offers yet.</p>';
       return;
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ];
   const knownStage = [1, 2, 3, 4, 5];
 
-  function renderSponseeOffersByFilter(filter) {
+  async function renderSponseeOffersByFilter(filter) {
     listingContainer.innerHTML = '';
     let filteredOffers = [];
     if (filter === 'all') filteredOffers = allSponseeOffers;
@@ -124,7 +123,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = '<p>No offers found for this filter.</p>';
       return;
     }
-    filteredOffers.forEach(renderSingleOfferCard);
+
+    // Only render cards the sponsee is allowed to review (or hasn't reviewed yet if review_completed)
+    for (const offer of filteredOffers) {
+      if (offer.status === 'review_completed' && offer.stage === 5) {
+        // Check if sponsee already reviewed this offer
+        const { data: sponseeReview, error: reviewErr } = await supabase
+          .from('private_offer_reviews')
+          .select('id')
+          .eq('offer_id', offer.id)
+          .eq('reviewer_id', sponsee_id)
+          .maybeSingle();
+        if (!sponseeReview) {
+          await renderSingleOfferCard(offer, false); // Not yet reviewed: render card with button
+        }
+        // If reviewed, do not render card at all
+      } else {
+        await renderSingleOfferCard(offer, false); // Not review_completed, always render
+      }
+    }
   }
 
   async function getSponsorId(username) {
@@ -138,7 +155,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch { return ''; }
   }
 
-  async function renderSingleOfferCard(offer) {
+  // Add `forceShowReview` argument (not used, but keep signature for future-proofing)
+  async function renderSingleOfferCard(offer, forceShowReview = false) {
     let sponsorPicUrl = 'logos.png';
     let sponsor_id = '';
     try {
@@ -214,6 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
       }
     } else if (offer.stage === 5) {
+      // Always show the review button for stage 5, unless called from a skip (see above in renderSponseeOffersByFilter)
       actionButtons = `
         <div class="stage-5-summary">
           <p><strong>✅ Sponsorship complete. Thank you!</strong></p>
@@ -583,100 +602,86 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Accept Payment (triggers payout)
-if (e.target.classList.contains('receive-payment')) {
-  // Show modal to select payout method and enter reference
-  let modal = document.createElement('div');
-  modal.innerHTML = `
-    <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
-    <div class="modal-content" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
-      <h3 style="margin-top:0">Payout Information</h3>
-      <label><strong>Payout Method:</strong>
-        <select id="payout-method" style="margin-left:7px;padding:3px 8px;">
-          <option value="">Select</option>
-          <option value="Bank">Bank Transfer</option>
-          <option value="PayPal">PayPal</option>
-          <option value="Stripe">Stripe</option>
-          
+    if (e.target.classList.contains('receive-payment')) {
+      let modal = document.createElement('div');
+      modal.innerHTML = `
+        <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
+        <div class="modal-content" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+          background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
+          <h3 style="margin-top:0">Payout Information</h3>
+          <label><strong>Payout Method:</strong>
+            <select id="payout-method" style="margin-left:7px;padding:3px 8px;">
+              <option value="">Select</option>
+              <option value="Bank">Bank Transfer</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Stripe">Stripe</option>
+            </select>
+          </label>
+          <div style="margin:10px 0 5px 0;">
+            <label><strong>Payout Reference:</strong></label>
+            <input id="payout-reference" style="width:100%;padding:5px;" placeholder="e.g. bank: BSB-ACC, PayPal email, Stripe Connect">
+          </div>
+          <div style="margin-top:18px;display:flex;gap:10px;">
+            <button id="confirm-payout" style="background:#28a745;color:#fff;">Confirm</button>
+            <button id="cancel-payout" style="background:#ddd;">Cancel</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
 
-        </select>
-      </label>
-      <div style="margin:10px 0 5px 0;">
-        <label><strong>Payout Reference:</strong></label>
-        <input id="payout-reference" style="width:100%;padding:5px;" placeholder="e.g. bank: BSB-ACC, PayPal email, Stripe Connect">
-      </div>
-      <div style="margin-top:18px;display:flex;gap:10px;">
-        <button id="confirm-payout" style="background:#28a745;color:#fff;">Confirm</button>
-        <button id="cancel-payout" style="background:#ddd;">Cancel</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+      modal.querySelector('#cancel-payout').onclick = () => modal.remove();
 
-  // Cancel button
-  modal.querySelector('#cancel-payout').onclick = () => modal.remove();
-
-  // Confirm payout logic
-  modal.querySelector('#confirm-payout').onclick = async () => {
-    const method = modal.querySelector('#payout-method').value;
-    const reference = modal.querySelector('#payout-reference').value.trim();
-    if (!method || !reference) {
-      alert("Please select a payout method and enter the reference details.");
+      modal.querySelector('#confirm-payout').onclick = async () => {
+        const method = modal.querySelector('#payout-method').value;
+        const reference = modal.querySelector('#payout-reference').value.trim();
+        if (!method || !reference) {
+          alert("Please select a payout method and enter the reference details.");
+          return;
+        }
+        const { error: updateError } = await supabase
+          .from('private_offers')
+          .update({ stage: 5 })
+          .eq('id', offerId);
+        if (updateError) {
+          alert(`Failed to mark payment received: ${updateError.message}`);
+          return;
+        }
+        const { data: existingPayouts, error: payoutError } = await supabase
+          .from('payouts')
+          .select('id')
+          .eq('offer_id', offerId)
+          .limit(1);
+        if (!payoutError && (!existingPayouts || existingPayouts.length === 0)) {
+          const offerAmount = offerCard.querySelector('.offer-right').textContent.match(/\$(\d+(\.\d+)?)/)?.[1] || "0";
+          await supabase.from('payouts').insert([{
+            offer_id: offerId,
+            sponsee_id: sponsee_id,
+            sponsee_email: sponsee_email,
+            payout_amount: offerAmount,
+            payout_method: method,
+            payout_reference: reference,
+            status: 'pending'
+          }]);
+        }
+        await notifyOfferUpdate({
+          to_user_id: sponsorId,
+          offer_id: offerId,
+          type: 'payment_received',
+          title: 'Payment Marked as Received',
+          message: `${sponsee_username} marked payment as received.`
+        });
+        await notifyPayout({
+          to_user_id: sponsee_id,
+          payout_amount: offerCard.querySelector('.offer-right').textContent.match(/\$\d+/)?.[0] || 'Amount',
+          payout_currency: 'USD',
+          payout_status: 'pending',
+          offer_id: offerId
+        });
+        modal.remove();
+        await loadSponseeOffers();
+      };
       return;
     }
-
-    // 1. Move offer to stage 5
-    const { error: updateError } = await supabase
-      .from('private_offers')
-      .update({ stage: 5 })
-      .eq('id', offerId);
-    if (updateError) {
-      alert(`Failed to mark payment received: ${updateError.message}`);
-      return;
-    }
-
-    // 2. Check if payout already exists for this offer
-    const { data: existingPayouts, error: payoutError } = await supabase
-      .from('payouts')
-      .select('id')
-      .eq('offer_id', offerId)
-      .limit(1);
-    if (!payoutError && (!existingPayouts || existingPayouts.length === 0)) {
-      // 3. Insert new payout (pending)
-      const offerAmount = offerCard.querySelector('.offer-right').textContent.match(/\$(\d+(\.\d+)?)/)?.[1] || "0";
-      await supabase.from('payouts').insert([{
-        offer_id: offerId,
-        sponsee_id: sponsee_id,
-        sponsee_email: sponsee_email,
-        payout_amount: offerAmount,
-        payout_method: method,
-        payout_reference: reference,
-        status: 'pending'
-      }]);
-    }
-
-    await notifyOfferUpdate({
-      to_user_id: sponsorId,
-      offer_id: offerId,
-      type: 'payment_received',
-      title: 'Payment Marked as Received',
-      message: `${sponsee_username} marked payment as received.`
-    });
-
-    await notifyPayout({
-      to_user_id: sponsee_id,
-      payout_amount: offerCard.querySelector('.offer-right').textContent.match(/\$\d+/)?.[0] || 'Amount',
-      payout_currency: 'USD',
-      payout_status: 'pending',
-      offer_id: offerId
-    });
-
-    modal.remove();
-    await loadSponseeOffers();
-  };
-
-  return;
-}
 
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
