@@ -1,12 +1,12 @@
 // public/js/sponseeOffers.js
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 import {
   notifyComment,
   notifyOfferStatus,
   notifyOfferUpdate,
   notifyPayout
-} from '/public/js/alerts.js';
-import '/public/js/userReports.js'; // For global report modal logic
+} from './alerts.js';
+import './userReports.js'; // For global report modal logic
 
 let allSponseeOffers = []; // Stores all loaded offers
 
