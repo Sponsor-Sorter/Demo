@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" src="js/sponsorCharts.js"></script>
+  <script type="module" src="./js/sponsorCharts.js"></script>
 
 </head>
 
@@ -251,11 +251,11 @@
  <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="/public/help.html">Help</a></li>
-                <li><a href="/public/contact.html">Contact</a></li>
-                <li><a href="/public/privacy.html">Privacy Policy</a></li>
-                <li><a href="/public/terms.html">Terms of Service</a></li>
-                <li><a href="/public/reviews.html">Reviews</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -264,9 +264,9 @@
     </footer>
 
 <script type="module">
-  import { supabase } from '/public/js/supabaseClient.js';
-  import { injectUserBadge } from '/public/js/badges.js';
-  import { getActiveUser } from '/public/js/impersonationHelper.js';
+  import { supabase } from './js/supabaseClient.js';
+  import { injectUserBadge } from './js/badges.js';
+  import { getActiveUser } from './js/impersonationHelper.js';
 
   document.addEventListener("DOMContentLoaded", async () => {
     const user = await getActiveUser();
@@ -338,15 +338,15 @@
   };
 </script>
 
-<script type="module" src="js/alerts.js"></script>
+<script type="module" src="./js/alerts.js"></script>
 <script type="module">
-    import  'js/sponsorOffers.js'
+    import  './js/sponsorOffers.js'
 </script>
 <script type="module">
-    import  'js/sponsorLogic.js'
+    import  './js/sponsorLogic.js'
 </script>
 <script type="module">
-  import 'js/userReports.js';
+  import './js/userReports.js';
 </script>
 <style>
   /* Make sure no blue glow or border on report flag button (offer & comments) */
