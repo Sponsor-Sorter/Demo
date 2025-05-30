@@ -165,9 +165,9 @@
     </footer>
 
 <script type="module">
-import { supabase } from '/public/js/supabaseClient.js';
-import { injectUserBadge } from '/public/js/badges.js';
-import '/public/js/userReports.js';
+import { supabase } from './js/supabaseClient.js';
+import { injectUserBadge } from './js/badges.js';
+import './js/userReports.js';
 
 // --- Dynamic Nav Bar: Dashboard link based on userType (user_metadata or users_extended_data) ---
 async function updateNavBar() {
@@ -683,9 +683,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadProfileArchivedDeals(username);
 });
 </script> 
-<script type="module" src="/public/js/alerts.js"></script>
+<script type="module" src="./js/alerts.js"></script>
 <script type="module">
-  import { supabase } from '/public/js/supabaseClient.js';
+  import { supabase } from './js/supabaseClient.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const dashboardLink = document.getElementById('dashboard-link');
