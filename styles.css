@@ -4803,3 +4803,24 @@ fieldset:focus-within, fieldset:hover {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+@media (min-width: 900px) {
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 60px; /* or whatever gap looks best */
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    justify-content: center; /* Ensures centering */
+  }
+  .dashboard-cards .card {
+    max-width: 300px;
+    min-width: 250px;
+    width: 100%;
+    margin: 0;
+  }
+  .dashboard-cards .card-row {
+    display: contents;
+  }
+}
