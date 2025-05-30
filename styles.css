@@ -4781,3 +4781,25 @@ fieldset:focus-within, fieldset:hover {
 
     .analytics-row { display: flex; flex-wrap: wrap; gap: 22px; margin: 25px 0; }
 .analytics-card { background: #4d4d4d; border-radius: 14px; box-shadow: 0 2px 8px #0001; padding: 20px; min-width: 160px; flex: 1 1 190px; }
+
+#listing-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Default: single column (mobile) */
+  gap: 32px 28px; /* vertical and horizontal spacing between cards */
+  justify-items: center; /* Center cards horizontally */
+  margin: 0 auto;
+  max-width: 1200px; /* Optional: to center the grid on very large screens */
+}
+
+.offer-card {
+  width: 100%;
+  max-width: 650px;   /* Keep cards a nice size */
+  box-sizing: border-box;
+}
+
+/* On screens wider than 1100px, use two columns */
+@media (min-width: 1100px) {
+  #listing-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
