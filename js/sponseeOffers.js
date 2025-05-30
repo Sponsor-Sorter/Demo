@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const knownStatus = [
-    'pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled'
+    'pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled', 'review-completed'
   ];
   const knownStage = [1, 2, 3, 4, 5];
 
