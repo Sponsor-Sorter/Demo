@@ -1,7 +1,7 @@
-import { supabase } from '/public/js/supabaseClient.js';
-import { handleRemoveOffer } from '/public/js/sponsorLogic.js';
-import { notifyComment, notifyOfferUpdate } from '/public/js/alerts.js';
-import '/public/js/userReports.js'; // Import the reporting logic
+import { supabase } from './supabaseClient.js';
+import { handleRemoveOffer } from './sponsorLogic.js';
+import { notifyComment, notifyOfferUpdate } from './alerts.js';
+import './userReports.js'; // Import the reporting logic
 
 let allSponsorOffers = [];
 let sponsor_username = '';
