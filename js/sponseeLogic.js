@@ -1,5 +1,5 @@
 // sponseeLogic.js
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // ----- RENDER GOLD STARS -----
 function renderStars(rating) {
