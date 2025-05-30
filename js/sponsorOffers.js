@@ -96,7 +96,7 @@ async function renderSingleOffer(offer) {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
       if (offerId) {
-        window.location.href = `/public/review.html?offer_id=${offerId}`;
+        window.location.href = `review.html?offer_id=${offerId}`;
       }
     }
   });
