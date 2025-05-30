@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     allSponseeOffers = (offers || []).filter(
-      offer => offer.status !== 'review_completed'
+      offer => offer.status !== '_'
     );
     if (allSponseeOffers.length === 0) {
       listingContainer.innerHTML = '<p>No sponsorship offers yet.</p>';
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const knownStatus = [
-    'pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled', 'review-completed'
+    'pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled', 'review-completed', 'review_completed'
   ];
   const knownStage = [1, 2, 3, 4, 5];
 
