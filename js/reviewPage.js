@@ -1,5 +1,5 @@
-import { supabase } from '/public/js/supabaseClient.js';
-import { notifyReview } from '/public/js/alerts.js'; // Make sure this is correct
+import { supabase } from './supabaseClient.js';
+import { notifyReview } from './alerts.js'; // Make sure this is correct
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
