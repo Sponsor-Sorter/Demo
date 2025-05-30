@@ -4824,3 +4824,23 @@ fieldset:focus-within, fieldset:hover {
     display: contents;
   }
 }
+
+@media (min-width: 1200px) {
+  .deals-history-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto 36px auto;
+  }
+  .deals-history-row fieldset {
+    flex: 1 1 0px;
+    min-width: 440px;
+    max-width: 700px;
+    margin: 0;
+    max-height: 600px;
+    overflow-y: auto;         /* Enable vertical scrollbar if needed */
+    overflow-x: hidden;       /* Prevent horizontal scroll */
+    box-sizing: border-box;   /* Just in case */
+  }
+}
