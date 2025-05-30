@@ -680,7 +680,7 @@ if (e.target.classList.contains('receive-payment')) {
 
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
-      if (offerId) window.location.href = `/public/review.html?offer_id=${offerId}`;
+      if (offerId) window.location.href = `review.html?offer_id=${offerId}`;
       return;
     }
   });
