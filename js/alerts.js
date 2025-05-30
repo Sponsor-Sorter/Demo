@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // === UI notification dropdown logic ===
 
