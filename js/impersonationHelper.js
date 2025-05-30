@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 /**
  * Returns the user object to use for all data access and display.
