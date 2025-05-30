@@ -1,5 +1,5 @@
 // sponsorLogic.js
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // ----- REMOVE OFFER (with comments) -----
 export async function handleRemoveOffer(offerId) {
