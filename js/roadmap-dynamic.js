@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 const SECTIONS = [
   { id: "phases", label: "Project Phases & Key Milestones" },
