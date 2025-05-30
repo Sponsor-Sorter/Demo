@@ -1,7 +1,7 @@
 // /public/js/settings.js
 
-import { supabase } from '/public/js/supabaseClient.js';
-import { getActiveUser } from '/public/js/impersonationHelper.js';
+import { supabase } from './supabaseClient.js';
+import { getActiveUser } from './impersonationHelper.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- User & Vars ---
