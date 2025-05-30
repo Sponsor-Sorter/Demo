@@ -1,5 +1,5 @@
 // public/js/sponseeOffers.js
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 import {
   notifyComment,
   notifyOfferStatus,
