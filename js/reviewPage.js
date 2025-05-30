@@ -142,10 +142,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let redirectPath;
     if (userEmail === offer.sponsor_email) {
       reviewer_role = 'sponsor';
-      redirectPath = "/public/dashboardsponsor.html";
+      redirectPath = "dashboardsponsor.html";
     } else if (userEmail === offer.sponsee_email) {
       reviewer_role = 'sponsee';
-      redirectPath = "/public/dashboardsponsee.html";
+      redirectPath = "dashboardsponsee.html";
     } else {
       reviewer_role = null;
     }
