@@ -1,6 +1,6 @@
 // /public/js/badges.js
 
-import { supabase } from '/public/js/supabaseClient.js'
+import { supabase } from './supabaseClient.js'
 
 /**
  * Injects all unlocked badges (bronze, silver, gold) for review-completed offers.
