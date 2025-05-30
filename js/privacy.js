@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 document.getElementById('privacy-export-btn').onclick = async () => {
   const { data: { session } } = await supabase.auth.getSession();
