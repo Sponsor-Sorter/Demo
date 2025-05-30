@@ -4844,3 +4844,7 @@ fieldset:focus-within, fieldset:hover {
     box-sizing: border-box;   /* Just in case */
   }
 }
+
+legend {
+   padding-bottom: 20px;
+}
