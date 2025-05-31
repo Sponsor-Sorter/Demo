@@ -4091,6 +4091,14 @@ body, .admin-table, .admin-tab, .pagination-btn {
   gap: 32px;
 }
 
+.offer-detail {
+  width: 90%;
+  max-width: 900px;          /* Or whatever size you want */
+  margin: 0 auto 1rem auto;
+  margin-left: 90px;
+  padding: 10px;
+  box-sizing: border-box;    /* Ensures padding doesn't exceed max-width */
+}
 .footer-text li {
   display: inline-block;
 }
