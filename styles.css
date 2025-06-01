@@ -520,6 +520,25 @@ input[type="checkbox"] {
 #preferred-platforms, #preferred-platforms-besponsored {
     margin-top: 20px;
 }
+/* Offer cards always same width */
+.listing-stage {
+  box-sizing: border-box;
+  min-width: 670px;    /* Or whatever minimum you want */
+  max-width: 480px;    /* Prevents cards getting too huge */
+  width: 100%;         /* Fills up grid/flex cell */
+  margin: 18px auto;   /* Center horizontally in container */
+  flex: 1 1 440px;     /* Flex-basis matches min-width for flex layouts */
+}
+
+/* Container flex/grid rules */
+.active-listings,
+#listing-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  align-items: flex-start;
+}
 
 /* Styling for Preferred Platforms section */
 #preferred-platforms, #preferred-platforms-besponsored {
