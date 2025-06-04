@@ -143,7 +143,15 @@ const reportBtnHtml = `
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img 
+        src="${sponseePicUrl}" 
+        onerror="this.src='/public/logos.png'" 
+        alt="Sponsee Profile Pic" 
+        class="stage-logo sponsee-profile-link"
+        data-username="${sponsee?.username || offer.sponsee_username}"
+        style="cursor:pointer;"
+      >
+
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -509,3 +517,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+document.addEventListener('click', function(e) {
+  const target = e.target;
+  if (target.classList.contains('sponsee-profile-link') && target.dataset.username) {
+    const username = encodeURIComponent(target.dataset.username);
+    window.location.href = `/public/viewprofile.html?username=${username}`;
+  }
+});
+
