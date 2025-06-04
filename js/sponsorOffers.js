@@ -522,7 +522,7 @@ document.addEventListener('click', function(e) {
   const target = e.target;
   if (target.classList.contains('sponsee-profile-link') && target.dataset.username) {
     const username = encodeURIComponent(target.dataset.username);
-    window.location.href = `/public/viewprofile.html?username=${username}`;
+    window.location.href = `/Demo/viewprofile.html?username=${username}`;
   }
 });
 
