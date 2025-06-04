@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${reportBtnHtml}
         <div class="card-top">
           <div class="logo-container">
-            <img src="${sponsorPicUrl}" alt="Sponsor Profile Pic" class="stage-logo">
+            <img src="${sponsorPicUrl}" alt="Sponsor Profile Pic" class="stage-logo profile-link" data-username="${offer.sponsor_username}">
             <p><strong>From:</strong> ${offer.sponsor_username}</p>
             <p><strong>At:</strong> ${offer.sponsor_company}</p>
           </div>
@@ -691,4 +691,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   await loadSponseeOffers();
+});
+
+// Make all profile logos with .profile-link open the user's profile
+document.addEventListener('click', function(e) {
+  const profileImg = e.target.closest('.profile-link');
+  if (profileImg && profileImg.dataset.username) {
+    window.location.href = `/public/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
+  }
 });
