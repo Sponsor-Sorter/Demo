@@ -697,6 +697,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
   if (profileImg && profileImg.dataset.username) {
-    window.location.href = `/public/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
+    window.location.href = `/Demo/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
