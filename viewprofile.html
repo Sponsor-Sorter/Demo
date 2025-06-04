@@ -58,6 +58,28 @@
           <p>Title: <span id="user-gender">[Title]</span></p>
           <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
           <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
+          <button class="make-offer-btn">Make Offer</button>
+<script>
+  // Parse the username from the URL
+  function getQueryParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const username = getQueryParam("username");
+    const offerBtn = document.querySelector('.make-offer-btn');
+    if (offerBtn && username) {
+      offerBtn.dataset.username = username;
+      offerBtn.addEventListener('click', () => {
+        // You can also use username directly here
+        const encodedUsername = encodeURIComponent(username);
+        window.location.href = `newoffer.html?username=${encodedUsername}`;
+      });
+    }
+  });
+</script>
+
         </div>
       </div>
       <p style="margin-top: 14px;">Description: <span id="about-yourself">[about yourself]</span> </p>
