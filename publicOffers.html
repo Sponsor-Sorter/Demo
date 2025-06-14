@@ -21,7 +21,7 @@
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
           <li><a href="login.html">Logout</a></li>
         </nav>
       </div>
@@ -208,11 +208,11 @@
 <footer class="footercomplete">
   <div class="footer-text">
     <ul>
-      <li><a href="/public/help.html">Help</a></li>
-      <li><a href="/public/contact.html">Contact</a></li>
-      <li><a href="/public/privacy.html">Privacy Policy</a></li>
-      <li><a href="/public/terms.html">Terms of Service</a></li>
-      <li><a href="/public/reviews.html">Reviews</a></li>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
     </ul>
   </div>
   <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
@@ -220,7 +220,7 @@
 </footer>
 
 <script type="module">
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 // ====== Offer Presets ======
 const PRESETS = {
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sponsorPicElement = document.getElementById('sponsor-profile-pic');
   if (sponsorPicElement) {
     sponsorPicElement.src = sponsorData.profile_pic
-      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsorData.profile_pic}`
       : 'logos.png';
   }
 
@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     alert('Public offer submitted successfully!');
     offerForm.reset();
-    window.location.href = "/public/dashboardsponsor.html";
+    window.location.href = "./dashboardsponsor.html";
   });
 });
 
