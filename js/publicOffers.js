@@ -1,5 +1,5 @@
-import { supabase } from '/public/js/supabaseClient.js';
-import { notifyOfferUpdate } from '/public/js/alerts.js';
+import { supabase } from './js/supabaseClient.js';
+import { notifyOfferUpdate } from './js/alerts.js';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
 if (!window.sponsorOfferStatusFilter) window.sponsorOfferStatusFilter = "";
