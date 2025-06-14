@@ -78,7 +78,7 @@ async function renderSponsorOfferCard(offer) {
   div.className = 'public-offer-card';
   div.setAttribute('data-offer-id', offer.id);
   div.style = `
-    background: #23232a;
+    background: #232323;
     border-radius: 14px;
     padding: 18px 20px 16px 20px;
     margin: 24px 0 0 0;
@@ -488,7 +488,7 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
     if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
     const div = document.createElement("div");
     div.className = "public-offer-card";
-    div.style.background = "#23232a";
+    div.style.background = "#232323";
     div.style.borderRadius = "14px";
     div.style.padding = "18px 20px 16px 20px";
     div.style.margin = "24px 0 0 0";
@@ -501,7 +501,7 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
     div.innerHTML = `
       <div style="display:flex;align-items:flex-start;gap:24px;">
         <div style="flex-shrink:0;text-align:center;">
-          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
+          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
           <div style="margin-top:7px;font-size:0.99em;">
             <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
             <div style="margin-bottom:3px;"><strong>At:</strong> ${offer.sponsor_company || '-'}</div>
