@@ -7,7 +7,25 @@
   <title>SponsorFinder - Sponsor Sorter</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script type="module" src="./auth.js" defer></script>
+  <script type="module" src="auth.js" defer></script>
+  <style>
+    #recent-offers-list {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      min-height: 70px;
+      overflow-x: auto;
+      flex-wrap: nowrap !important;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+    #recent-offers-list::-webkit-scrollbar {
+      height: 9px;
+    }
+    #recent-offers-list::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
 <header class="navbar1">
@@ -23,7 +41,6 @@
         <nav>
           <li class="navr" id="dashboard-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html">Login</a></li>
-          <!-- Notification Bell here -->
           <li id="notification-bell-li" style="display:inline;">
             <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
               <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
@@ -39,29 +56,102 @@
 <fieldset>
   <section class="search-section">
     <h2>Welcome, <span id="sponsorName"></span>!</h2>
-    <h3>Find Active Users and Influencers</h3>
-    <p>Use the search form below to find active users who match your sponsorship criteria. Filter by category, location, and more.</p>
-    <form id="searchForm">
-      <input type="text" id="search-name" placeholder="Name (e.g., JohnDoe)">
-      <input type="text" id="search-contenttype" placeholder="Content Type (e.g., Gaming)">
-      <input type="text" id="search-location" placeholder="Location (e.g., UK)">
-      <select id="search-platform">
-        <option value="">Select Platform (optional)</option>
-        <option value="youtube">YouTube</option>
-        <option value="instagram">Instagram</option>
-        <option value="twitch">Twitch</option>
-        <option value="tiktok">TikTok</option>
-        <option value="twitter">Twitter</option>
-        <option value="facebook">Facebook</option>
-        <option value="snapchat">Snapchat</option>
-      </select>
-      <button type="submit">Search</button>
-    </form>
-    <div id="searchResults"></div>
-    <div id="searchPagination" class="pagination-controls">
-      <button id="prevPage">Previous</button>
-      <span id="currentPage">Page 1</span>
-      <button id="nextPage">Next</button>
+    <div class="search-toggle-row" style="margin-bottom:18px;">
+      <button id="user-search-toggle" class="active-toggle">User Search</button>
+      <button id="offer-search-toggle">Offer Search</button>
+      <button id="create-public-offer-btn" style="margin-left:auto;display:none;">+ Create Public Offer</button>
+    </div>
+    <div class="help-block" style="margin-bottom:14px;">
+  <em>
+    <strong>Sponsor Sorter Finder Help:</strong><br>
+    Use this page to <b>search for creators/influencers</b> or <b>browse open sponsorship offers</b>.  
+    <ul style="margin:6px 0 0 20px; padding:0; list-style:disc;">
+     <b>User Search:</b> Find creators/influencers by name, content type, location, or platform. <br>
+      <b>Offer Search:</b> Browse and apply for active public sponsorship offers.
+      Switch between searches using the toggle buttons above.
+    </ul>
+  </em>
+</div>
+
+    <div id="user-search-form-block">
+      <h3>Find Active Users and Influencers</h3>
+
+      <form id="searchForm">
+        <input type="text" id="search-name" placeholder="Name (e.g., JohnDoe)">
+        <input type="text" id="search-contenttype" placeholder="Content Type (e.g., Gaming)">
+        <input type="text" id="search-location" placeholder="Location (e.g., UK)">
+        <select id="search-platform">
+          <option value="">Select Platform (optional)</option>
+          <option value="youtube">YouTube</option>
+          <option value="instagram">Instagram</option>
+          <option value="twitch">Twitch</option>
+          <option value="tiktok">TikTok</option>
+          <option value="twitter">Twitter</option>
+          <option value="facebook">Facebook</option>
+          <option value="snapchat">Snapchat</option>
+        </select>
+        <button type="submit">Search</button>
+        <div class="help-block" style="margin-bottom:8px;">
+  <em>
+    <strong>Find Active Users and Influencers:</strong><br>
+    Fill out one or more fields to filter users.  
+    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+      Enter <b>Name</b> for specific users. <br>
+      Use <b>Content Type</b> (e.g., Gaming, Fitness, Fashion). <br>
+      Filter by <b>Location</b> or choose a <b>Platform</b> (YouTube, Instagram, etc.). <br>
+      Click <b>Search</b> to see matching user profiles below. <br>
+      Use <b>Previous/Next</b> to browse more results. 
+    </ul>
+  </em>
+</div>
+      </form>
+      <div id="searchResults"></div>
+      <div id="searchPagination" class="pagination-controls">
+        <button id="prevPage">Previous</button>
+        <span id="currentPage">Page 1</span>
+        <button id="nextPage">Next</button>
+      </div>
+    </div>
+
+    <div id="offer-search-form-block" style="display:none;">
+      <h3>Browse Open Sponsorship Offers</h3>
+      <div class="help-block" style="margin-bottom:8px;">
+  <em>
+    <strong>Browse Sponsorship Offers:</strong><br>
+    Use the form to filter open offers by title, sponsor, platform, or amount.<br>
+    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+      Enter keywords for <b>Offer Title</b> or <b>Sponsor Username</b>. 
+      Filter by <b>Platform</b> or set a <b>Min/Max Amount</b>. <br>
+      Click <b>Search</b> to see available offers below.
+      Use <b>Previous/Next</b> to paginate through results. <br>
+    </ul>
+  </em>
+</div>
+
+      <form id="offerSearchForm" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <input type="text" id="offer-search-title" placeholder="Offer Title" style="flex:1;">
+        <input type="text" id="offer-search-sponsor" placeholder="Sponsor Username" style="flex:1;">
+        <select id="offer-search-platform">
+          <option value="">Platform (Any)</option>
+          <option value="youtube">YouTube</option>
+          <option value="instagram">Instagram</option>
+          <option value="twitch">Twitch</option>
+          <option value="tiktok">TikTok</option>
+          <option value="twitter">Twitter</option>
+          <option value="facebook">Facebook</option>
+          <option value="snapchat">Snapchat</option>
+        </select>
+        <input type="number" min="0" id="offer-search-minamount" placeholder="Min $" style="width:80px;">
+        <input type="number" min="0" id="offer-search-maxamount" placeholder="Max $" style="width:80px;">
+        <button type="submit" style="padding:7px 22px;">Search</button>    
+      </form>
+      <div id="offers-container" class="public-offers-container"></div>
+      <div id="offers-error" style="color:red;"></div>
+      <div id="offerSearchPagination" class="pagination-controls" style="margin-top:8px;">
+        <button id="offer-prevPage">Previous</button>
+        <span id="offer-currentPage">Page 1</span>
+        <button id="offer-nextPage">Next</button>
+      </div>
     </div>
   </section>
 </fieldset>
@@ -71,50 +161,121 @@
   <div class="accounts-scroll-viewport" style="max-width:100%;overflow-x:auto;padding-bottom:2px;">
     <div class="user-profiles" id="otherAccountsProfiles" style="display:flex;flex-wrap:nowrap;gap:18px;"></div>
   </div>
+  <div class="help-block" style="margin-bottom:10px;">
+  <em>
+    <strong>Other Accounts:</strong><br>
+    Here are a few random <b id="help-accounts-label"></b> you may wish to view or connect with.<br>
+    Click <b>View Profile</b> for more details.
+  </em>
+</div>
 </fieldset>
 
-<fieldset class="ocprofiles">
-  <legend>Other Company Profiles</legend>
-  <div class="company-profiles">
-    <ul>
-      <li>
-        <figure>
-          <img src="youtubelogo.png" alt="Company Logo 1">
-          <figcaption>YouTube</figcaption>
-        </figure>
-      </li>
-      <li>
-        <figure>
-          <img src="twitchlogo.png" alt="Company Logo 2">
-          <figcaption>Twitch</figcaption>
-        </figure>
-      </li>
-      <li>
-        <figure>
-          <img src="tiktoklogo.png" alt="Company Logo 3">
-          <figcaption>TikTok</figcaption>
-        </figure>
-      </li>
+<fieldset class="recentoffers">
+  <legend><h3>Recently Added Offers</h3></legend>
+  <div id="recent-offers-list"></div>
+  <div class="help-block" style="margin-bottom:10px;">
+  <em>
+    <strong>Recently Added Offers:</strong><br>
+    Here you’ll find the latest sponsorship opportunities posted by sponsors.<br>
+    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+      <li>Click <b>View All Offers</b> to browse or apply for more sponsorships.</li>
+      <li>Switch between user and offer searches using the tabs above.</li>
     </ul>
-  </div>
+  </em>
+</div>
+
 </fieldset>
+
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+
+async function renderRecentOffers() {
+  const container = document.getElementById('recent-offers-list');
+  if (!container) return;
+  container.innerHTML = '<span style="opacity:.7;">Loading recent offers...</span>';
+
+  const { data: offers, error } = await supabase
+    .from('public_offers')
+    .select('id, offer_title, offer_amount, sponsor_username, sponsor_id, max_applicants, deadline, creation_date')
+    .eq('status', 'open')
+    .order('creation_date', { ascending: false })
+    .limit(8);
+
+  if (error || !offers?.length) {
+    container.innerHTML = '<span>No recent offers available.</span>';
+    return;
+  }
+
+  const cards = await Promise.all(offers.map(async offer => {
+    let sponsorLogo = 'logos.png';
+    try {
+      const { data: sponsor } = await supabase
+        .from('users_extended_data')
+        .select('profile_pic')
+        .eq('user_id', offer.sponsor_id)
+        .maybeSingle();
+      if (sponsor && sponsor.profile_pic)
+        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsor.profile_pic}`;
+    } catch {}
+
+    let applicantCount = 0, successfulCount = 0;
+    try {
+      const { data: applications } = await supabase
+        .from('public_offer_applications')
+        .select('status')
+        .eq('offer_id', offer.id);
+
+      if (applications?.length) {
+        applicantCount = applications.length;
+        successfulCount = applications.filter(a => a.status === 'accepted').length;
+      }
+    } catch {}
+
+    const dateStr = offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-';
+    const deadlineStr = offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-';
+    const maxApplicants = offer.max_applicants || '∞';
+
+    return `
+      <div style="background:#222;padding:18px 16px 16px 16px;border-radius:14px;min-width:260px;max-width:330px;flex:0 0 270px;display:flex;flex-direction:column;align-items:stretch;box-shadow:0 3px 18px #1117;">
+        <div style="font-weight:700;font-size:1.13em;line-height:1.25;text-align:center;margin-bottom:10px;letter-spacing:0.01em;color:#fff;">
+          ${offer.offer_title}
+        </div>
+        <div style="display:flex;flex-direction:row;gap:16px;">
+          <div style="flex-shrink:0;text-align:center;">
+            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;">
+            <div style="font-size:.95em;opacity:.85;color:#e4e9fc;">By<br><span style="font-weight:500;color:#d5d5ff">${offer.sponsor_username}</span></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:.99em;color:#fff;">
+            <span><b>Amount:</b> $${offer.offer_amount}</span>
+            <span><b>Posted:</b> ${dateStr}</span>
+            <span><b>Deadline:</b> ${deadlineStr}</span>
+            <span><b>Applicants:</b> <b>${applicantCount}</b>/${maxApplicants} <span style="color:#9bf59b;">(${successfulCount} accepted)</span></span>
+          </div>
+        </div>
+      </div>
+    `;
+  }));
+
+  container.innerHTML = cards.join('');
+}
+
+document.addEventListener('DOMContentLoaded', renderRecentOffers);
+</script>
 
 <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="/Demo/help.html">Help</a></li>
-                <li><a href="/Demo/contact.html">Contact</a></li>
-                <li><a href="/Demo/privacy.html">Privacy Policy</a></li>
-                <li><a href="/Demo/terms.html">Terms of Service</a></li>
-                <li><a href="/Demo/reviews.html">Reviews</a></li>
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
 
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
-    </footer>
-
-<!-- Cookie Consent Banner -->
 <div id="cookie-banner" class="cookie-banner">
   <p>
     🍪 We use cookies to personalize content, provide social media features, and analyze our traffic. By clicking “Accept”, you consent to the use of all cookies in accordance with our 
@@ -128,8 +289,52 @@
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
+import { notifySponsorOnApplication } from './js/publicOffers.js';
+
+window.currentUser = null;
+window.isSponsee = false;
+
+let offerPage = 1;
+const offersPerPage = 6;
+let currentOfferSearch = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
+  function setFinderHelpBlocksVisible(show) {
+    document.querySelectorAll('.help-block').forEach(div => {
+      div.style.display = show ? '' : 'none';
+    });
+  }
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    window.location.href = '/login.html';
+    return;
+  }
+  window.currentUser = user;
+
+  const { data: profile, error: profileError } = await supabase
+    .from('users_extended_data')
+    .select('username, userType')
+    .eq('user_id', user.id)
+    .single();
+  if (profileError) return;
+  const isSponsor = profile.userType === 'sponsor';
+  const isSponsee = profile.userType === 'besponsored';
+  window.isSponsee = isSponsee;
+  const helpAccountsLabel = document.getElementById('help-accounts-label');
+  if (helpAccountsLabel) helpAccountsLabel.textContent = isSponsor ? "creators/influencers" : "sponsors";
+
+  const { data: settingsRow, error: settingsError } = await supabase
+    .from('user_settings')
+    .select('hide_help_blocks')
+    .eq('user_id', user.id)
+    .maybeSingle();
+  let hideHelp = false;
+  if (!settingsError && settingsRow && typeof settingsRow.hide_help_blocks === 'boolean') {
+    hideHelp = !!settingsRow.hide_help_blocks;
+  }
+  setFinderHelpBlocksVisible(!hideHelp);
+
   const sponsorNameElem = document.getElementById('sponsorName');
   const searchHeader = document.querySelector('.search-section h3');
   const resultsDiv = document.getElementById('searchResults');
@@ -145,12 +350,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!socialHandles) return 'N/A';
     let handlesObj = socialHandles;
     if (typeof handlesObj === 'string') {
-      try {
-        handlesObj = JSON.parse(handlesObj);
-      } catch (e) {
-        console.error('Invalid JSON in social_handles:', socialHandles);
-        return 'N/A';
-      }
+      try { handlesObj = JSON.parse(handlesObj); } catch (e) { return 'N/A'; }
     }
     const platformLogos = {
       instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
@@ -174,40 +374,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     }).join(' ');
   }
 
-  // Auth + profile info
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) {
-    console.error('Error fetching auth user:', authError);
-    window.location.href = './login.html';
-    return;
-  }
-
-  const { data: profile, error: profileError } = await supabase
-    .from('users_extended_data')
-    .select('username, userType')
-    .eq('user_id', user.id)
-    .single();
-
-  if (profileError) {
-    console.error('Error fetching profile:', profileError);
-    return;
-  }
-
-  const isSponsor = profile.userType === 'sponsor';
   const targetType = isSponsor ? 'besponsored' : 'sponsor';
   const targetLabel = isSponsor ? 'Find Potential Sponsees' : 'Find Active Sponsors';
-
   sponsorNameElem.innerText = profile.username ?? user.email;
   searchHeader.innerText = targetLabel;
 
-  // Nav update (just dashboard link, bell stays!)
   const dashboardLink = document.getElementById('dashboard-link');
   if (dashboardLink && dashboardLink.firstElementChild) {
     dashboardLink.firstElementChild.href = isSponsor ? "dashboardsponsor.html" : "dashboardsponsee.html";
     dashboardLink.firstElementChild.innerText = "Dashboard";
   }
 
-  // --- Helper to route to correct profile page
+  const createOfferBtn = document.getElementById('create-public-offer-btn');
+  if (isSponsor && createOfferBtn) {
+    createOfferBtn.style.display = '';
+    createOfferBtn.onclick = () => {
+      window.location.href = 'publicOffers.html';
+    };
+  } else if (createOfferBtn) {
+    createOfferBtn.style.display = 'none';
+  }
+
   async function viewProfileByUserType(username) {
     const { data: targetUser, error } = await supabase
       .from('users_extended_data')
@@ -222,7 +409,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.location.href = `${page}?username=${encodeURIComponent(username)}`;
   }
 
-  // -- Load Other Accounts (random 5 profiles)
   async function loadOtherAccounts() {
     otherProfilesContainer.innerHTML = '';
     const { data: allUsers, error } = await supabase
@@ -234,16 +420,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       otherProfilesContainer.innerHTML = '<div style="padding:18px 8px;">No other accounts found.</div>';
       return;
     }
-    // Shuffle and take 4
     const shuffled = allUsers.sort(() => 0.4 - Math.random()).slice(0, 4);
     shuffled.forEach(user => {
       const div = document.createElement('div');
       div.classList.add('user-profile');
-
       const imgSrc = user.profile_pic
-        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${user.profile_pic}`
         : 'logos.png';
-
       const platformsHTML = extractPlatformBadges(user.social_handles);
 
       div.innerHTML = `
@@ -266,7 +449,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   loadOtherAccounts();
 
-  // Render search results (vertical list, paginated)
   async function fetchAndRenderResults(isSearch = false) {
     if (!isSearch) currentPage = 1;
     const name = document.getElementById('search-name').value.trim();
@@ -274,7 +456,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const location = document.getElementById('search-location').value.trim();
     const platform = document.getElementById('search-platform').value.trim();
 
-    // -------- Main Search Query --------
     let query = supabase
       .from('users_extended_data')
       .select('username, location, profile_pic, contenttype, social_handles')
@@ -283,12 +464,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (name) query = query.ilike('username', `%${name}%`);
     if (contenttype) query = query.ilike('contenttype', `%${contenttype}%`);
     if (location) query = query.ilike('location', `%${location}%`);
-
-   if (platform) {
-  query = query
-    .filter(`social_handles->>${platform}`, 'not.is', null)
-    .filter(`social_handles->>${platform}`, 'neq', '');
-}
+    if (platform) {
+      query = query
+        .filter(`social_handles->>${platform}`, 'not.is', null)
+        .filter(`social_handles->>${platform}`, 'neq', '');
+    }
 
     const from = (currentPage - 1) * resultsPerPage;
     const to = from + resultsPerPage - 1;
@@ -300,7 +480,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (error) {
       resultsDiv.textContent = 'Error fetching results';
-      console.error(error);
       return;
     }
 
@@ -311,7 +490,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const div = document.createElement('div');
         div.classList.add('user-profile');
         const imgSrc = user.profile_pic
-          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${user.profile_pic}`
           : 'logos.png';
         const platformsHTML = extractPlatformBadges(user.social_handles);
 
@@ -325,23 +504,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             ${user.contenttype}<br>
             ${user.location}</figcaption>
             <button class="view-profile">View Profile</button>
-            <button class="make-offer-btn" data-username="${user.username}">Make Offer</button>
+            ${isSponsor ? `<button class="make-offer-btn" data-username="${user.username}">Make Offer</button>` : ''}
           </div>
         `;
         resultsDiv.appendChild(div);
 
-        // Universal View Profile Handler
         const viewBtn = div.querySelector('.view-profile');
         viewBtn.addEventListener('click', () => {
           viewProfileByUserType(user.username);
         });
 
-        // Attach Make Offer button listener
-        const offerBtn = div.querySelector('.make-offer-btn');
-        offerBtn.addEventListener('click', () => {
-          const encodedUsername = encodeURIComponent(user.username);
-          window.location.href = `newoffer.html?username=${encodedUsername}`;
-        });
+        if (isSponsor) {
+          const offerBtn = div.querySelector('.make-offer-btn');
+          if (offerBtn) {
+            offerBtn.addEventListener('click', () => {
+              const encodedUsername = encodeURIComponent(user.username);
+              window.location.href = `newoffer.html?username=${encodedUsername}`;
+            });
+          }
+        }
       });
     }
 
@@ -350,10 +531,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     nextPageBtn.disabled = data.length < resultsPerPage;
   }
 
-  // Initial profiles load
   fetchAndRenderResults();
 
-  // Search + pagination handlers
   searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     currentPage = 1;
@@ -371,11 +550,299 @@ document.addEventListener('DOMContentLoaded', async () => {
       fetchAndRenderResults(true);
     }
   });
+
+  const offerSearchForm = document.getElementById('offerSearchForm');
+  const offerTitleInput = document.getElementById('offer-search-title');
+  const offerSponsorInput = document.getElementById('offer-search-sponsor');
+  const offerPlatformInput = document.getElementById('offer-search-platform');
+  const offerMinAmountInput = document.getElementById('offer-search-minamount');
+  const offerMaxAmountInput = document.getElementById('offer-search-maxamount');
+  const offersContainer = document.getElementById('offers-container');
+  const offersError = document.getElementById('offers-error');
+  const offerPrevPageBtn = document.getElementById('offer-prevPage');
+  const offerNextPageBtn = document.getElementById('offer-nextPage');
+  const offerCurrentPageLabel = document.getElementById('offer-currentPage');
+
+  async function loadPublicOffers(search = {}) {
+    offersContainer.innerHTML = '';
+    offersError.textContent = '';
+    let query = supabase
+      .from('public_offers')
+      .select('*')
+      .eq('status', 'open')
+      .order('creation_date', { ascending: false });
+
+    if (search.title) query = query.ilike('offer_title', `%${search.title}%`);
+    if (search.sponsor) query = query.ilike('sponsor_username', `%${search.sponsor}%`);
+    if (search.platform) query = query.filter('platforms', 'cs', `["${search.platform}"]`);
+    if (search.minAmount) query = query.gte('offer_amount', search.minAmount);
+    if (search.maxAmount) query = query.lte('offer_amount', search.maxAmount);
+
+    const from = (offerPage - 1) * offersPerPage;
+    const to = from + offersPerPage - 1;
+    query = query.range(from, to);
+
+    const { data: offers, error } = await query;
+
+    if (error || !offers) {
+      offersError.textContent = 'Could not load public offers.';
+      return;
+    }
+    if (!offers.length) {
+      offersContainer.innerHTML = '<p>No open sponsorship offers found. Please check back soon.</p>';
+      offerCurrentPageLabel.textContent = `Page ${offerPage}`;
+      offerPrevPageBtn.disabled = offerPage === 1;
+      offerNextPageBtn.disabled = true;
+      return;
+    }
+    for (const offer of offers) {
+      offersContainer.appendChild(await window.renderOfferCard(offer));
+    }
+    offerCurrentPageLabel.textContent = `Page ${offerPage}`;
+    offerPrevPageBtn.disabled = offerPage === 1;
+    offerNextPageBtn.disabled = offers.length < offersPerPage;
+  }
+
+  window.loadPublicOffers = function() {
+    offerPage = 1;
+    currentOfferSearch = {};
+    offerTitleInput.value = '';
+    offerSponsorInput.value = '';
+    offerPlatformInput.value = '';
+    offerMinAmountInput.value = '';
+    offerMaxAmountInput.value = '';
+    loadPublicOffers({});
+  };
+
+  offerSearchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    offerPage = 1;
+    currentOfferSearch = {
+      title: offerTitleInput.value.trim(),
+      sponsor: offerSponsorInput.value.trim(),
+      platform: offerPlatformInput.value,
+      minAmount: offerMinAmountInput.value ? parseFloat(offerMinAmountInput.value) : undefined,
+      maxAmount: offerMaxAmountInput.value ? parseFloat(offerMaxAmountInput.value) : undefined,
+    };
+    loadPublicOffers(currentOfferSearch);
+  });
+
+  offerPrevPageBtn.addEventListener('click', () => {
+    if (offerPage > 1) {
+      offerPage--;
+      loadPublicOffers(currentOfferSearch);
+    }
+  });
+  offerNextPageBtn.addEventListener('click', () => {
+    offerPage++;
+    loadPublicOffers(currentOfferSearch);
+  });
+
+  window.loadPublicOffersTab = () => {
+    offerPage = 1;
+    currentOfferSearch = {};
+    loadPublicOffers({});
+  };
+
 });
+
+const userSearchToggle = document.getElementById('user-search-toggle');
+const offerSearchToggle = document.getElementById('offer-search-toggle');
+const userSearchBlock = document.getElementById('user-search-form-block');
+const offerSearchBlock = document.getElementById('offer-search-form-block');
+
+userSearchToggle.onclick = () => {
+  userSearchToggle.classList.add('active-toggle');
+  offerSearchToggle.classList.remove('active-toggle');
+  userSearchBlock.style.display = '';
+  offerSearchBlock.style.display = 'none';
+};
+offerSearchToggle.onclick = () => {
+  offerSearchToggle.classList.add('active-toggle');
+  userSearchToggle.classList.remove('active-toggle');
+  userSearchBlock.style.display = 'none';
+  offerSearchBlock.style.display = '';
+  if (window.loadPublicOffersTab) window.loadPublicOffersTab();
+};
+
+window.renderOfferCard = async function(offer) {
+  let sponsorLogo = 'logos.png';
+  let sponsor_company = offer.sponsor_company || '';
+  try {
+    const { data: sponsor } = await supabase
+      .from('users_extended_data')
+      .select('profile_pic, company_name')
+      .eq('username', offer.sponsor_username)
+      .single();
+    if (sponsor && sponsor.profile_pic)
+      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsor.profile_pic}`;
+    if (sponsor && sponsor.company_name)
+      sponsor_company = sponsor.company_name;
+  } catch {}
+
+  let platformBadge = '';
+  if (offer.platforms && offer.platforms.length) {
+    const p = offer.platforms[0];
+    const logos = {
+      youtube: 'youtubelogo.png',
+      instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+      tiktok: 'tiktoklogo.png',
+      twitter: 'twitterlogo.png',
+      facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+      twitch: 'twitchlogo.png',
+      snapchat: 'snaplogo.png'
+    };
+    platformBadge = `<img src="${logos[p] || ''}" alt="${p}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${p}">`;
+  }
+  let detailsId = `details-${offer.id}`;
+  let imagesId = `images-${offer.id}`;
+  let constraintsHtml = '';
+  if (offer.max_applicants) constraintsHtml += `<strong>Max Applicants:</strong> ${offer.max_applicants} <br>`;
+  if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+  if (offer.audience_country) constraintsHtml += `<strong>Audience Country:</strong> ${offer.audience_country} <br>`;
+
+  let alreadyApplied = false;
+  if (window.currentUser && window.isSponsee) {
+    const { data: existing } = await supabase
+      .from('public_offer_applications')
+      .select('id')
+      .eq('offer_id', offer.id)
+      .eq('sponsee_id', window.currentUser.id)
+      .maybeSingle();
+    alreadyApplied = !!existing;
+  }
+
+  const div = document.createElement('div');
+  div.className = 'public-offer-card';
+  div.style.background = '#343434';
+  div.style.borderRadius = '16px';
+  div.style.padding = '24px 28px 18px 28px';
+  div.style.margin = '32px 0 0 0';
+  div.style.maxWidth = '730px';
+  div.style.marginLeft = 'auto';
+  div.style.marginRight = 'auto';
+  div.style.boxShadow = '0 4px 24px #0008';
+
+  div.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:28px;">
+      <div style="flex-shrink:0;text-align:center;">
+        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
+        <div style="margin-top:7px;font-size:1em;line-height:1.2;">
+          <div style="margin-bottom:5px;"><strong>By:</strong> ${offer.sponsor_username}</div>
+          <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${platformBadge}
+          <span style="font-size:1.24em;font-weight:700;letter-spacing:0.01em;">Offer: ${offer.offer_title}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:13px 46px;margin:14px 0 7px 0;">
+          <div><strong>Status:</strong> OPEN</div>
+          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+          <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
+          <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
+          <div><strong>Payment Schedule:</strong> ${offer.payment_schedule}</div>
+          <div><strong>Duration:</strong> ${offer.sponsorship_duration}</div>
+        </div>
+        ${constraintsHtml ? `<div style="font-size:0.96em;margin:0 0 8px 0;">${constraintsHtml}</div>` : ''}
+        <div style="margin:9px 0 5px 0;">
+          <button style="background:#4061b3;color:#fff;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${detailsId}').style.display = (document.getElementById('${detailsId}').style.display==='block') ? 'none' : 'block';">View Details</button>
+          <button style="background:#ccbb22;color:#222;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${imagesId}').style.display = (document.getElementById('${imagesId}').style.display==='block') ? 'none' : 'block';">Offer Images</button>
+          ${window.currentUser && window.isSponsee && window.currentUser.id !== offer.sponsor_id
+  ? alreadyApplied
+    ? `<button style="background:#888;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:not-allowed;" disabled>Applied!</button>`
+    : `<button style="background:#13b257;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:pointer;" onclick="window.showApplicationModal('${offer.id}', this)">Apply to Offer</button>`
+  : ''}
+        </div>
+        <div id="${detailsId}" class="public-offer-details" style="display:none;margin:12px 0 6px 0;">
+          <strong>Description:</strong><br>${offer.offer_description || ''}
+          <br><strong>Instructions:</strong><br>${offer.instructions || ''}
+          <br><strong>Job Type:</strong> ${offer.job_type || ''} <br>
+          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+        </div>
+        <div id="${imagesId}" class="public-offer-images" style="display:none;margin:12px 0;">
+          ${(offer.offer_images && offer.offer_images.length)
+            ? offer.offer_images.map(img =>
+              `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:110px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid #222;margin-right:7px;margin-bottom:7px;">`
+            ).join('')
+            : '<i>No offer images.</i>'
+          }
+        </div>
+      </div>
+    </div>
+  `;
+  return div;
+};
+
+window.showApplicationModal = function(offerId, btn) {
+  let modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
+  modal.style.background = 'rgba(0,0,0,0.65)';
+  modal.style.zIndex = '9999';
+  modal.innerHTML = `
+    <div style="background:#232333;padding:28px 28px 18px 28px;max-width:420px;border-radius:18px;box-shadow:0 4px 24px #0008;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+      <h3 style="margin-bottom:14px;">Application Message</h3>
+      <textarea id="application-message" style="width:100%;height:90px;border-radius:7px;border:1px solid #444;padding:7px;resize:vertical;background:#18181c;color:#fff;"></textarea>
+      <div style="margin-top:16px;text-align:right;">
+        <button id="cancel-modal" style="background:#444;color:#fff;padding:7px 16px;margin-right:7px;border-radius:6px;border:none;cursor:pointer;">Cancel</button>
+        <button id="submit-application" style="background:#13b257;color:#fff;padding:7px 16px;border-radius:6px;border:none;cursor:pointer;">Apply</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById('cancel-modal').onclick = () => modal.remove();
+
+  document.getElementById('submit-application').onclick = async () => {
+    const msg = document.getElementById('application-message').value.trim();
+    modal.remove();
+    await window.applyToOffer(offerId, btn, msg);
+  };
+};
+
+window.applyToOffer = async function(offerId, btn, applicationText = '') {
+  btn.disabled = true;
+  btn.innerText = 'Applying...';
+  const userId = window.currentUser.id;
+  const { data: userExt, error: userExtErr } = await supabase
+    .from('users_extended_data')
+    .select('username, email')
+    .eq('user_id', userId)
+    .single();
+  if (userExtErr || !userExt) {
+    btn.innerText = 'Error';
+    btn.disabled = false;
+    return;
+  }
+  const { error: applyErr } = await supabase
+    .from('public_offer_applications')
+    .insert([{
+      offer_id: offerId,
+      sponsee_id: userId,
+      sponsee_username: userExt.username,
+      sponsee_email: userExt.email,
+      status: 'pending',
+      application_text: applicationText,
+      created_at: new Date().toISOString()
+    }]);
+  if (applyErr) {
+    btn.innerText = 'Error';
+    btn.disabled = false;
+    return;
+  }
+  btn.innerText = 'Applied!';
+  btn.style.background = '#13b257';
+
+  await notifySponsorOnApplication({
+    offer_id: offerId,
+    sponsee_user_id: userId,
+    sponsee_username: userExt.username
+  });
+};
+
 </script>
-
-<!-- ALERTS BELL/DROPDOWN LOGIC HERE -->
 <script type="module" src="./js/alerts.js"></script>
-
 </body>
 </html>
