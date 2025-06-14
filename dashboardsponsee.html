@@ -155,6 +155,34 @@
       </div>
     </fieldset>
 
+    <fieldset>
+  <legend>Public Offers You've Applied For</legend>
+  <div style="margin-bottom:14px;">
+    <label for="public-offer-status-filter">Filter by Status:</label>
+    <select id="public-offer-status-filter">
+      <option value="">All</option>
+      <option value="pending">Pending</option>
+      <option value="accepted">Accepted</option>
+      <option value="rejected">Rejected</option>
+      <option value="withdrawn">Withdrawn</option>
+    </select>
+  </div>
+  <div id="sponsee-public-offers-container"></div>
+  <div style="display:flex;justify-content:center;gap:16px;margin:18px 0;">
+    <button id="public-offer-prev-page">Previous</button>
+    <span id="public-offer-pagination-label">Page 1</span>
+    <button id="public-offer-next-page">Next</button>
+  </div>
+   <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Active Public Applications:</strong>  
+          Here you can view your public offer Applications. See your applications status, message and date. View offer details, images and more.  
+        </em>
+      </div>
+</fieldset>
+
+
+
     <fieldset class="recent-deals">
       <h2>Recent Sponsorship Deals</h2>
       <table>
@@ -300,11 +328,11 @@
 <footer class="footercomplete">
   <div class="footer-text">
     <ul>
-      <li><a href="help.html">Help</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="privacy.html">Privacy Policy</a></li>
-      <li><a href="terms.html">Terms of Service</a></li>
-      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
     </ul>
   </div>
   <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
@@ -411,7 +439,9 @@
       `;
       activityTable.appendChild(row);
     });
+    
   });
+
 </script>
 <script type="module" src="./js/settings.js"></script>
 <script type="module">import './js/sponseeOffers.js';</script>
@@ -419,5 +449,13 @@
 <script type="module">import './js/userReports.js';</script>
 <script type="module">import './js/privacy.js';</script>
 <script type="module">import './js/alerts.js';</script>
+<script type="module">
+  import { renderSponseePublicOffers } from './js/publicOffers.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderSponseePublicOffers();
+  });
+</script>
+
 </body>
 </html>
