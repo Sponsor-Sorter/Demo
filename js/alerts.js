@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 // === UI notification dropdown logic ===
 
@@ -138,62 +138,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (n.related_offer_id) {
           dropdown.style.display = 'none';
-          if (n.type === "review") {
-            setTimeout(() => {
-              const archiveRow = document.querySelector(`#archived-table-body tr[data-offer-id="${n.related_offer_id}"]`);
-              if (archiveRow) {
-                archiveRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                archiveRow.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
-                const prevBg = archiveRow.style.background;
-                const prevBorder = archiveRow.style.border;
-                const prevBoxShadow = archiveRow.style.boxShadow;
-                archiveRow.style.background = '#3b3b3b';
-                archiveRow.style.border = '3px solid #0096FF';
-                archiveRow.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
-                setTimeout(() => {
-                  archiveRow.style.background = prevBg || '';
-                  archiveRow.style.border = prevBorder || '';
-                  archiveRow.style.boxShadow = prevBoxShadow || '';
-                }, 1500);
-              } else {
-                const card = document.querySelector(`.listing-stage[data-offer-id="${n.related_offer_id}"]`);
-                if (card) {
-                  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  card.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
-                  const prevBg = card.style.background;
-                  const prevBorder = card.style.border;
-                  const prevBoxShadow = card.style.boxShadow;
-                  card.style.background = '#3b3b3b';
-                  card.style.border = '3px solid #0096FF';
-                  card.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
-                  setTimeout(() => {
-                    card.style.background = prevBg || '';
-                    card.style.border = prevBorder || '';
-                    card.style.boxShadow = prevBoxShadow || '';
-                  }, 1500);
-                }
-              }
-            }, 120);
-          } else {
-            setTimeout(() => {
-              const card = document.querySelector(`.listing-stage[data-offer-id="${n.related_offer_id}"]`);
-              if (card) {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                card.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
-                const prevBg = card.style.background;
-                const prevBorder = card.style.border;
-                const prevBoxShadow = card.style.boxShadow;
-                card.style.background = '#3b3b3b';
-                card.style.border = '3px solid #0096FF';
-                card.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
-                setTimeout(() => {
-                  card.style.background = prevBg || '';
-                  card.style.border = prevBorder || '';
-                  card.style.boxShadow = prevBoxShadow || '';
-                }, 1500);
-              }
-            }, 80);
-          }
+          setTimeout(() => {
+            // --- Try jump to public offer card first ---
+            let card = document.querySelector(`.public-offer-card[data-offer-id="${n.related_offer_id}"]`);
+            // --- Fallback: Try jump to active/private offer card ---
+            if (!card) card = document.querySelector(`.listing-stage[data-offer-id="${n.related_offer_id}"]`);
+            // --- Fallback: Try archived offer row ---
+            if (!card) card = document.querySelector(`#archived-table-body tr[data-offer-id="${n.related_offer_id}"]`);
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              card.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
+              const prevBg = card.style.background;
+              const prevBorder = card.style.border;
+              const prevBoxShadow = card.style.boxShadow;
+              card.style.background = '#3b3b3b';
+              card.style.border = '3px solid #0096FF';
+              card.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
+              setTimeout(() => {
+                card.style.background = prevBg || '';
+                card.style.border = prevBorder || '';
+                card.style.boxShadow = prevBoxShadow || '';
+              }, 1500);
+            }
+          }, 100);
         }
       };
       dropdown.appendChild(notif);
@@ -244,7 +211,7 @@ export async function insertNotification({ notification_uuid, email, type, title
     .from('user_notifications')
     .insert([{
       notification_uuid,
-      email, // new email field
+      email,
       type,
       title,
       message,
@@ -259,7 +226,6 @@ export async function insertNotification({ notification_uuid, email, type, title
 
 // --- COMMENT NOTIFICATION ---
 export async function notifyComment({ offer_id, from_user_id, to_user_id, from_username, message }) {
-  // Get recipient's notification_uuid and email
   const { notification_uuid, email } = await getNotificationInfo(to_user_id);
   if (!notification_uuid || !email) return;
   await insertNotification({
@@ -342,7 +308,6 @@ export async function notifyPayout({ to_user_id, payout_amount, payout_currency,
 
 // --- NEW OFFER NOTIFICATION ---
 export async function notifyNewOffer({ offer_id, to_user_id, from_username, offer_title }) {
-  // Get recipient's notification_uuid and email
   const { notification_uuid, email } = await getNotificationInfo(to_user_id);
   if (!notification_uuid || !email) return;
   await insertNotification({
