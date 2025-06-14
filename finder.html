@@ -215,7 +215,7 @@ async function renderRecentOffers() {
         .eq('user_id', offer.sponsor_id)
         .maybeSingle();
       if (sponsor && sponsor.profile_pic)
-        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsor.profile_pic}`;
+        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
     } catch {}
 
     let applicantCount = 0, successfulCount = 0;
@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const div = document.createElement('div');
       div.classList.add('user-profile');
       const imgSrc = user.profile_pic
-        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${user.profile_pic}`
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
         : 'logos.png';
       const platformsHTML = extractPlatformBadges(user.social_handles);
 
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const div = document.createElement('div');
         div.classList.add('user-profile');
         const imgSrc = user.profile_pic
-          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${user.profile_pic}`
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
           : 'logos.png';
         const platformsHTML = extractPlatformBadges(user.social_handles);
 
@@ -675,7 +675,7 @@ window.renderOfferCard = async function(offer) {
       .eq('username', offer.sponsor_username)
       .single();
     if (sponsor && sponsor.profile_pic)
-      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsor.profile_pic}`;
+      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
     if (sponsor && sponsor.company_name)
       sponsor_company = sponsor.company_name;
   } catch {}
