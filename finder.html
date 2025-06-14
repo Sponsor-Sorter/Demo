@@ -47,6 +47,21 @@
               <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
             </button>
           </li>
+          <!-- Settings Cog -->
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+              </ul>
+            </div>
+          </li>
         </nav>
       </div>
     </div>
@@ -844,5 +859,7 @@ window.applyToOffer = async function(offerId, btn, applicationText = '') {
 
 </script>
 <script type="module" src="./js/alerts.js"></script>
+<script type="module" src="./js/settings.js"></script>
+
 </body>
 </html>
