@@ -137,7 +137,7 @@
 
 <!-- Active Listings -->
 <fieldset class="listings-sec">
-    <legend><h2>🎯 Active Listings for Sponsorship </h2></legend>
+    <legend>🎯 Active Listings for Sponsorship</legend>
     
     <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
     <div class="active-listings" id="listing-container">
@@ -151,9 +151,39 @@
     </div>
   </fieldset>
 
+  <fieldset>
+    <legend>Open Public Offers</legend>
+    Filter by Status:<select id="sponsor-offer-status-filter">
+  <option value="">All</option>
+  <option value="open">Open</option>
+  <option value="closed">Closed</option>
+  <!-- Add more statuses as needed -->
+</select>
+ <div id="offers-container"></div>
+<button id="sponsor-offer-prev-page">Previous</button>
+<span id="sponsor-offer-pagination-label">Page 1</span>
+<button id="sponsor-offer-next-page">Next</button>
+
+    </div>
+    <div class="help-block" style="margin-bottom:8px; margin-top:12px;">
+  <em>
+    <strong>Your Public Offers:</strong><br>
+    Manage your active public offers, track applicants, and update or remove offers as needed.<br>
+    <strong>Use the buttons to:</strong>
+    <ul style="margin:5px 0 0 16px;padding:0;list-style:disc;">
+      <strong>View Applicants</strong> — Review and accept or remove applicants.<br>
+      <strong>View Details</strong> — See full offer description, requirements, and terms.<br>
+      <strong>View Images</strong> — Preview all images attached to the offer.<br>
+      <strong>Remove Offer</strong> — Permanently delete this public offer.
+    </ul>
+  </em>
+</div>
+
+  </fieldset>
+
   <div class="deals-history-row">
   <fieldset class="recent-deals">
-    <legend><h2>Recent Sponsorship Deals</h2></legend>
+    <h2>Recent Sponsorship Deals</h2>
     
     <table>
       <thead>
@@ -253,11 +283,11 @@
  <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="help.html">Help</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -326,7 +356,7 @@
     const alert_sms = document.getElementById('alert-sms').checked;
     const phone_number = document.getElementById('phone-number').value.trim();
 
-    const { getActiveUser } = await import('/public/js/impersonationHelper.js');
+    const { getActiveUser } = await import('./js/impersonationHelper.js');
     const user = await getActiveUser();
     if (!user) return;
 
@@ -368,7 +398,12 @@ button.report-btn::-webkit-focus-inner {
 }
 
 </style>
-<script type="module" src="js/settings.js"></script>
+<script type="module" src="./js/settings.js"></script>
+<script type="module">
+  import { renderSponsorPublicOffers } from './js/publicOffers.js';
+  document.addEventListener('DOMContentLoaded', () => renderSponsorPublicOffers('offers-container'));
+</script>
+
 <!-- Change Profile Logo Modal -->
 <div id="profile-logo-modal" class="modal" style="display:none;">
   <div class="modal-content">
