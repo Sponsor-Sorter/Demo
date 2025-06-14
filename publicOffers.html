@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sponsorPicElement = document.getElementById('sponsor-profile-pic');
   if (sponsorPicElement) {
     sponsorPicElement.src = sponsorData.profile_pic
-      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object./logos/${sponsorData.profile_pic}`
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`
       : 'logos.png';
   }
 
