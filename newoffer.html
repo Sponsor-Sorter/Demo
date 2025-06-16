@@ -719,6 +719,7 @@ localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
         body: JSON.stringify({
           amount: amount,
           offerId: title + '-' + Date.now()
+          offerType: 'private'
         })
       });
       const sessionData = await sessionRes.json();
