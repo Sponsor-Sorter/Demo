@@ -7,6 +7,8 @@
   <title>Post Public Offer | Sponsor Sorter</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+<script src="https://js.stripe.com/v3/"></script>
+
 </head>
 <body>
 
@@ -58,7 +60,7 @@
 <form id="offerForm" enctype="multipart/form-data">
   <section>
     <fieldset>
-      <legend>Offer Details</legend>
+      <legend>Create Public Offer Below</legend>
       <div class="help-block" id="offer-help-block" style="margin-bottom:12px;">
         <em>
           <strong>Offer Creation Help:</strong><br>
@@ -75,54 +77,57 @@
         <option value="event">Event Sponsorship</option>
       </select>
       <button type="button" id="applyPresetBtn" style="margin-left:8px;">Apply Preset</button>
+      <span class="info-icon" data-tooltip="Use presets to autofill common Locations.">🛈</span>
       <br><br>
+      <fieldset>
+      <label for="offerTitle"></label>Offer Title / Campaign Name:</label>
+      <input type="text" id="offerTitle" name="offerTitle" required>
+      <span class="info-icon" data-tooltip="Give your offer a catchy campaign name. This is what creators will see first.">🛈</span><br><br>
 
-      <label for="offerTitle">Offer Title / Campaign Name:</label>
-      <input type="text" id="offerTitle" name="offerTitle" required><br><br>
+      <div class="form-group">
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline" required>
+    <span class="info-icon" data-tooltip="Date by which job must be completed by.">🛈</span>
+  </div>
+
       <label for="offerDescription">Offer Description:</label><br>
       <textarea id="offerDescription" name="offerDescription" rows="4" cols="50" required></textarea><br><br>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="price">Offer Amount (USD):</label>
-          <input type="number" id="price" name="price" step="10" min="0" required>
-        </div>
-        <div class="form-group">
-          <label for="payment">Payment:</label>
-          <select id="payment" name="payment" required>
-            <option value="">--Select--</option>
-            <option value="weekly">Weekly</option>
-            <option value="fortnightly">Fortnightly</option>
-            <option value="monthly">Monthly</option>
-            <option value="full_on_completion">FULL - On Completion</option>
-          </select>
-        </div>
-      </div><br>
+       
+<div class="form-double-row">
+  <div class="form-group">
+    <label for="jobType">Type of Job:</label>
+    <select id="jobType" name="jobType" required>
+      <option value="">--Select Type--</option>
+      <option value="Shoutout">Shoutout</option>
+      <option value="Product Placement">Product Placement</option>
+      <option value="Dedicated Video">Dedicated Video</option>
+      <option value="Story Mention">Story Mention</option>
+      <option value="Event Sponsorship">Event Sponsorship</option>
+      <option value="Ongoing Deal">Ongoing Deal</option>
+    </select>
+    <span class="info-icon" data-tooltip="The type of Offer you are asking for.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="deliverableType">Deliverable Type:</label>
+        <span class="info-icon" data-tooltip="How the offers job will be delivered to the public.">🛈</span>
+    <select id="deliverableType" name="deliverableType" required>
+      <option value="">--Select Deliverable--</option>
+      <option value="Include in next video">Include in Next Video</option>
+      <option value="Standalone Post">Standalone Post</option>
+      <option value="Story Mention">Story Mention</option>
+      <option value="Product Review">Product Review</option>
+      <option value="Custom Content">Custom Content</option>
+    </select>
+  </div>
+</div>
 
-      <label for="jobType">Type of Job:</label>
-      <select id="jobType" name="jobType" required>
-        <option value="">--Select Type--</option>
-        <option value="Shoutout">Shoutout</option>
-        <option value="Product Placement">Product Placement</option>
-        <option value="Dedicated Video">Dedicated Video</option>
-        <option value="Story Mention">Story Mention</option>
-        <option value="Event Sponsorship">Event Sponsorship</option>
-        <option value="Ongoing Deal">Ongoing Deal</option>
-      </select><br><br>
-
-      <label for="deliverableType">Deliverable Type:</label>
-      <select id="deliverableType" name="deliverableType" required>
-        <option value="">--Select Deliverable--</option>
-        <option value="Include in next video">Include in Next Video</option>
-        <option value="Standalone Post">Standalone Post</option>
-        <option value="Story Mention">Story Mention</option>
-        <option value="Product Review">Product Review</option>
-        <option value="Custom Content">Custom Content</option>
-      </select><br><br>
 
       <label for="instructions">Instructions:</label><br>
       <textarea id="instructions" name="instructions" rows="4" cols="50"></textarea><br><br>
+    </fieldset>
 
+    <fieldset>
       <label for="sponsorshipDuration">Sponsorship Duration:</label>
       <select id="sponsorshipDuration" name="sponsorshipDuration" required>
         <option value="">--Select Duration--</option>
@@ -131,23 +136,86 @@
         <option value="3 Months">3 Months</option>
         <option value="6 Months">6 Months</option>
         <option value="1 Year">1 Year</option>
-      </select><br><br>
+      </select>
+      <span class="info-icon" data-tooltip="How long sponsorship will last.">🛈</span>
+      <br><br>
 
-      <label for="deadline">Deadline (Date by which job should be completed):</label>
-      <input type="date" id="deadline" name="deadline" required><br><br>
+       <div class="form-double-row">
+  <div class="form-group">
+    <label for="price">Offer Amount (USD):</label>
+    <input type="number" id="price" name="price" step="1" min="1" required>
+    <span class="info-icon" data-tooltip="How much each Sponsee will recieve upon completion.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="payment">Payment Cycle:</label>
+        <span class="info-icon" data-tooltip="Frequency at which Sponsee will be paid.">🛈</span>
+    <select id="payment" name="payment" required>
+      <option value="">--Select--</option>
+      <option value="weekly">Weekly</option>
+      <option value="fortnightly">Fortnightly</option>
+      <option value="monthly">Monthly</option>
+      <option value="full on completion">FULL - On Completion</option>
+    </select>
+  </div>
+</div>
 
-      <!-- NEW FIELDS -->
-      <label for="maxApplicants">Max Applicants:</label>
-      <input type="number" id="maxApplicants" name="maxApplicants" min="1" placeholder="E.g. 100"><br><br>
+<div class="form-double-row">
+  <div class="form-group">
+  <label for="cycleCount"># of Cycles:</label>
+  <input type="number" id="cycleCount" name="cycleCount" min="1" value="1" style="width: 90px;" required>
+  <span class="info-icon" data-tooltip="How many times this payment cycle will repeat. For a 3-month deal, enter 3. For a one-off deal, leave at 1.">🛈</span>
+</div>
 
-      <label for="minFollowers">Min Followers Required:</label>
-      <input type="number" id="minFollowers" name="minFollowers" min="0" placeholder="E.g. 5000"><br><br>
+  
+  <div class="form-group">
+    <label for="maxApplicants">Max Applicants:</label>
+        <span class="info-icon" data-tooltip="The max number of successful Applicants.">🛈</span>
+    <input type="number" id="maxApplicants" name="maxApplicants" min="1" placeholder="E.g. 100">
+  </div>
+</div>
 
-      <label for="audienceCountry">Audience Country (primary):</label>
-      <input type="text" id="audienceCountry" name="audienceCountry" maxlength="80" placeholder="E.g. Australia"><br><br>
+<fieldset style="border-color: aliceblue; margin-top: 20px;">
+  <legend>Cost:</legend>
+  <div id="offer-cost-summary" style="font-size: 1.12em; color: #e0eaff; margin-bottom: 6px; font-weight: 500;">
+    Total Cost: <span id="offer-cost-amount" style="color: #6fe3d9;">$0.00</span>
+    <span id="cost-cycle-label" style="color:#fff; opacity:.7;"></span>
+  </div>
+  <div id="listing-fee-line" style="font-size: 1.04em; color: #FFD600; margin-bottom: 4px;">
+    Listing Fee (10% or $5/applicant/cycle): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
+  </div>
+  <div id="total-cost-line" style="font-size: 1.14em; color: #99f1b8;">
+    Total Including Fee: <span id="total-cost-amount" style="color:#50ffa4;">$0.00</span>
+  </div>
+  <div id="cost-details" style="font-size: .99em; color: #c7dcfc;">
+    The sponsor pays the Offer Amount × Max Applicants × # of Cycles.<br>
+    <b>Listing Fee:</b> 10% of this amount or $5 per applicant per cycle (whichever is lower for each applicant/cycle).<br>
+    This fee covers secure payment processing and platform operations.
+  </div>
+</fieldset>
+
+</fieldset>
+
+
+
+
+<fieldset>
+<div class="form-double-row">
+  <div class="form-group">
+    <label for="minFollowers">Min Followers Required:</label>
+    <input type="number" id="minFollowers" name="minFollowers" min="0" placeholder="E.g. 5000">
+    <span class="info-icon" data-tooltip="Minimum amount of followers on platform.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="audienceCountry">Audience Country (primary):</label>
+        <span class="info-icon" data-tooltip="Primary country you want to direct the offer to. (This can be helpful if your looking for a sponsee in a specific demographic area)">🛈</span>
+    <input type="text" id="audienceCountry" name="audienceCountry" maxlength="80" placeholder="E.g. Australia">
+  </div>
+</div>
+
       <!-- END NEW FIELDS -->
 
       <label>Offer Platforms:</label>
+      <span class="info-icon" data-tooltip="Select 1 or more platforms where your Sponsee(s) will deliver your offer. ">🛈</span>
       <div id="platformCheckboxes" style="margin-bottom:12px;">
         <label><input type="checkbox" name="offerPlatforms" value="instagram">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" title="Instagram" style="width:22px;vertical-align:middle;margin-right:3px;">
@@ -179,6 +247,10 @@
         </label>
       </div>
 
+      </fieldset>
+
+      <fieldset>
+
       <div class="help-block" id="images-help-block" style="margin-bottom:10px;">
         <em>
           <strong>Offer Images & Media:</strong><br>
@@ -188,6 +260,7 @@
       </div>
 
       <label for="productImage">Offer Images:</label>
+      <span class="info-icon" data-tooltip="Add Images relating to your Offer. Things like products.">🛈</span>
       <input type="file" id="productImage" name="productImage" accept="image/*" multiple><br><br>
       <div id="dropZone" class="drop-zone">
         <p>Drag & drop images here, or click "Choose Files"</p>
@@ -203,6 +276,7 @@
       <button type="submit">Submit Public Offer</button>
     </fieldset>
   </section>
+  </fieldset>
 </form>
 
 <footer class="footercomplete">
@@ -222,13 +296,16 @@
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 
+const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
+const STRIPE_BACKEND = 'http://localhost:4242/create-checkout-session';
+
 // ====== Offer Presets ======
 const PRESETS = {
   shoutout: {
     offerTitle: "Instagram Shoutout",
     offerDescription: "Get your brand noticed with an Instagram shoutout to my engaged followers.",
     price: 100,
-    payment: "full_on_completion",
+    payment: "full on completion",
     jobType: "Shoutout",
     deliverableType: "Standalone Post",
     instructions: "Please provide your post copy, preferred hashtags, and mention accounts.",
@@ -239,7 +316,7 @@ const PRESETS = {
     offerTitle: "YouTube Product Review",
     offerDescription: "I will feature your product in a dedicated YouTube review video.",
     price: 300,
-    payment: "full_on_completion",
+    payment: "full on completion",
     jobType: "Product Placement",
     deliverableType: "Product Review",
     instructions: "Send your product to my PO box. Review will be honest and detailed.",
@@ -261,7 +338,7 @@ const PRESETS = {
     offerTitle: "Instagram Story Mention",
     offerDescription: "I'll mention your brand in a story for 24 hours with a swipe-up link.",
     price: 50,
-    payment: "full_on_completion",
+    payment: "full on completion",
     jobType: "Story Mention",
     deliverableType: "Story Mention",
     instructions: "Provide story assets and swipe-up link.",
@@ -272,7 +349,7 @@ const PRESETS = {
     offerTitle: "Event Sponsorship",
     offerDescription: "Become an official sponsor for my upcoming live event.",
     price: 1000,
-    payment: "full_on_completion",
+    payment: "full on completion",
     jobType: "Event Sponsorship",
     deliverableType: "Custom Content",
     instructions: "Your logo and brand will be promoted across all event materials and streams.",
@@ -285,27 +362,22 @@ let imageFiles = [];
 let currentPreviewIndex = 0;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // --- Show/hide help blocks based on global user_settings ---
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     alert('Please log in first.');
     window.location.href = 'login.html';
     return;
   }
-  const { data: settingsRow, error: settingsError } = await supabase
+  const { data: settingsRow } = await supabase
     .from('user_settings')
     .select('hide_help_blocks')
     .eq('user_id', user.id)
     .maybeSingle();
-  let hideHelp = false;
-  if (!settingsError && settingsRow && typeof settingsRow.hide_help_blocks === 'boolean') {
-    hideHelp = !!settingsRow.hide_help_blocks;
-  }
+  let hideHelp = !!(settingsRow && typeof settingsRow.hide_help_blocks === 'boolean' && settingsRow.hide_help_blocks);
   document.querySelectorAll('.help-block').forEach(div => {
     div.style.display = hideHelp ? 'none' : '';
   });
 
-  // --- Sponsor info (must be logged in) ---
   const { data: sponsorData, error: sponsorError } = await supabase
     .from('users_extended_data')
     .select('*')
@@ -325,7 +397,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       : 'logos.png';
   }
 
-  // ====== Load Sponsor Overall Rating ======
   await loadSponsorOverallStars(sponsorData.username);
 
   // === Offer Preset Logic ===
@@ -437,7 +508,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // === SUBMIT PUBLIC OFFER ===
+  // === FORM SUBMIT + STRIPE PAYMENT ===
   const offerForm = document.getElementById('offerForm');
   offerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -452,10 +523,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const instructions = document.getElementById('instructions').value;
     const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
     const deadline = document.getElementById('deadline').value;
-    const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || null;
+    const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || 1;
     const minFollowers = parseInt(document.getElementById('minFollowers').value) || null;
     const audienceCountry = document.getElementById('audienceCountry').value.trim() || null;
     const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked')).map(cb => cb.value.toLowerCase());
+    const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
 
     // 1. Upload images
     const uploadedImageNames = [];
@@ -490,40 +562,70 @@ document.addEventListener('DOMContentLoaded', async () => {
       optionalFileName = uniqueOptFileName;
     }
 
-    // 3. Save to public_offers
-    const { error: insertError } = await supabase
-      .from('public_offers')
-      .insert([{
-        sponsor_id: sponsorData.user_id || sponsorData.id,
-        sponsor_email: sponsorData.email,
-        sponsor_username: sponsorData.username,
-        sponsor_company: sponsorData.company_name,
-        offer_title: title,
-        offer_description: description,
-        offer_amount: amount,
-        payment_schedule: payment,
-        job_type: jobType,
-        deliverable_type: deliverableType,
-        instructions: instructions,
-        sponsorship_duration: sponsorshipDuration,
-        deadline: deadline,
-        offer_images: uploadedImageNames,
-        optional_file: optionalFileName,
-        platforms: platforms,
-        status: 'open',
-        max_applicants: maxApplicants,
-        min_followers: minFollowers,
-        audience_country: audienceCountry
-      }]);
-    if (insertError) {
-      alert('Failed to submit public offer.');
+    // 3. Prepare offer data and save to localStorage for after payment
+    const offerData = {
+      sponsor_id: sponsorData.user_id || sponsorData.id,
+      sponsor_email: sponsorData.email,
+      sponsor_username: sponsorData.username,
+      sponsor_company: sponsorData.company_name,
+      offer_title: title,
+      offer_description: description,
+      offer_amount: amount,
+      payment_schedule: payment,
+      job_type: jobType,
+      deliverable_type: deliverableType,
+      instructions: instructions,
+      sponsorship_duration: sponsorshipDuration,
+      deadline: deadline,
+      offer_images: uploadedImageNames,
+      optional_file: optionalFileName,
+      platforms: platforms,
+      status: 'open',
+      max_applicants: maxApplicants,
+      min_followers: minFollowers,
+      audience_country: audienceCountry,
+      cycles: cycles,
+    };
+
+    localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+
+    // 4. Calculate totalWithFee
+    let total = amount * maxApplicants * cycles;
+    let perAppFee = Math.min(amount * 0.10, 5);
+    let fee = Math.min(total * 0.10, perAppFee * maxApplicants * cycles);
+    let totalWithFee = total + fee;
+
+    // 5. Start Stripe Checkout
+    try {
+      const sessionRes = await fetch(STRIPE_BACKEND, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: totalWithFee,
+          offerId: title + '-' + Date.now(),
+          offerType: 'public'
+        })
+      });
+      const sessionData = await sessionRes.json();
+      if (!sessionData.sessionId) {
+        alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
+        return;
+      }
+      const stripe = Stripe(STRIPE_PK);
+      const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+      if (error) {
+        alert('Stripe redirect failed: ' + error.message);
+        return;
+      }
+    } catch (err) {
+      alert('Failed to initiate payment: ' + err.message);
       return;
     }
-    alert('Public offer submitted successfully!');
-    offerForm.reset();
-    window.location.href = "./dashboardsponsor.html";
+    // After payment, user is redirected to /public/payment-success-public.html
   });
 });
+
+// Helper functions (renderStars, loadSponsorOverallStars, calcCost, autoFillCycles, etc.)
 
 function renderStars(rating) {
   let out = '';
@@ -564,6 +666,85 @@ async function loadSponsorOverallStars(sponsorUsername) {
   const ratingAvg = Math.round(avg(overall));
   avgStarsElem.innerHTML = renderStars(ratingAvg);
 }
+
+function calcCost() {
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const applicants = parseInt(document.getElementById('maxApplicants').value) || 1;
+  const payment = document.getElementById('payment').value || '';
+  const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
+
+  // Main payout calculation
+  let total = price * applicants * cycles;
+
+  // Calculate fee per applicant/cycle
+  let tenPercentFee = total * 0.10;
+  let fiveDollarPerAppCycle = Math.min(5, price * 0.10) * applicants * cycles;
+  // The correct per-applicant/cycle logic: 10% of price or $5 per app/cycle, whichever is LESS for each applicant/cycle
+  let perAppFee = Math.min(price * 0.10, 5);
+  let fee = perAppFee * applicants * cycles;
+
+  // Make sure it's capped at 10% total if that's less than the per-app fee
+  fee = Math.min(tenPercentFee, fee);
+
+  let totalWithFee = total + fee;
+
+  let cycle = '';
+  if (payment === 'weekly') cycle = `per week × ${cycles} week${cycles>1?'s':''}`;
+  else if (payment === 'fortnightly') cycle = `per fortnight × ${cycles} fortnight${cycles>1?'s':''}`;
+  else if (payment === 'monthly') cycle = `per month × ${cycles} month${cycles>1?'s':''}`;
+  else if (payment === 'full on completion') cycle = `(one-off, on completion)`;
+
+  document.getElementById('offer-cost-amount').textContent = '$' + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('cost-cycle-label').textContent = cycle ? ` ${cycle}` : '';
+  document.getElementById('listing-fee-amount').textContent = '$' + fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('total-cost-amount').textContent = '$' + totalWithFee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+// Attach listeners for all involved fields:
+['price', 'maxApplicants', 'payment', 'cycleCount'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcCost);
+  document.getElementById(id).addEventListener('change', calcCost);
+});
+
+calcCost();
+
+function autoFillCycles() {
+  const duration = document.getElementById('sponsorshipDuration').value;
+  const payment = document.getElementById('payment').value;
+  let cycles = 1;
+
+  // Normalize strings for comparison
+  const d = (duration || '').toLowerCase();
+  const p = (payment || '').toLowerCase();
+
+  if (d === 'one off' || p === 'full on completion') {
+    cycles = 1;
+  } else if (p === 'monthly') {
+    if (d === '1 month') cycles = 1;
+    else if (d === '3 months') cycles = 3;
+    else if (d === '6 months') cycles = 6;
+    else if (d === '1 year') cycles = 12;
+  } else if (p === 'weekly') {
+    if (d === '1 month') cycles = 4;
+    else if (d === '3 months') cycles = 12;
+    else if (d === '6 months') cycles = 24;
+    else if (d === '1 year') cycles = 52;
+  } else if (p === 'fortnightly') {
+    if (d === '1 month') cycles = 2;
+    else if (d === '3 months') cycles = 6;
+    else if (d === '6 months') cycles = 12;
+    else if (d === '1 year') cycles = 26;
+  }
+
+  document.getElementById('cycleCount').value = cycles;
+  calcCost(); // Recalc total with new cycles value
+}
+
+// Attach event listeners after DOMContentLoaded
+document.getElementById('sponsorshipDuration').addEventListener('change', autoFillCycles);
+document.getElementById('payment').addEventListener('change', autoFillCycles);
+
+
 </script>
 </body>
 </html>
