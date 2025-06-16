@@ -1,4 +1,3 @@
-// /public/js/onboarding.js
 import { supabase } from './supabaseClient.js';
 
 const onboardingFlows = {
@@ -123,6 +122,15 @@ async function setOnboardingComplete(val = true) {
   const userId = await getCurrentUserId();
   if (userId) {
     await supabase.from('users_extended_data').update({ onboarded: val }).eq('user_id', userId);
+  }
+}
+
+async function setHideHelpBlocks(val = true) {
+  const userId = await getCurrentUserId();
+  if (userId) {
+    await supabase.from('user_settings').upsert([
+      { user_id: userId, hide_help_blocks: val }
+    ], { onConflict: 'user_id' });
   }
 }
 
@@ -300,9 +308,10 @@ function showStep(step, totalSteps) {
         window.location.href = './finder.html';
       };
     } else if (isLast && isFinder) {
-      bubble.querySelector('.onboarding-btn-next').onclick = () => {
+      bubble.querySelector('.onboarding-btn-next').onclick = async () => {
         onboardingActive = false;
-        setOnboardingComplete();
+        await setOnboardingComplete();
+        await setHideHelpBlocks(true);
         hideOnboardingOverlay();
       };
     } else {
