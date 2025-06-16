@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Payment Success - Sponsor Sorter">
+  <title>Payment Success | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+<main style="min-height:40vh;">
+  <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
+    <h2 style="color:green;">🎉 Payment successful!</h2>
+    <div id="insert-status">Creating your public offer...</div>
+  </div>
+</main>
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="/public/help.html">Help</a></li>
+      <li><a href="/public/contact.html">Contact</a></li>
+      <li><a href="/public/privacy.html">Privacy Policy</a></li>
+      <li><a href="/public/terms.html">Terms of Service</a></li>
+      <li><a href="/public/reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+import { notifyOfferUpdate } from '/public/js/alerts.js'; // This uses your universal notification logic!
+
+async function createPublicOfferFromSession() {
+  const statusDiv = document.getElementById('insert-status');
+  const url = new URL(window.location.href);
+  const session_id = url.searchParams.get('session_id');
+  const payment_status = url.searchParams.get('payment_status');
+  if (!session_id || payment_status !== 'success') {
+    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
+    return;
+  }
+
+  let offerData = localStorage.getItem('pendingOfferData');
+  if (!offerData) {
+    statusDiv.innerHTML = `<span style="color:red;">No offer data found. Please resubmit your offer.</span>`;
+    return;
+  }
+  offerData = JSON.parse(offerData);
+  offerData.stripe_session_id = session_id;
+  offerData.stripe_payment_status = payment_status;
+
+  // Insert offer to public_offers
+  const { data: insertedOffers, error: insertError } = await supabase
+    .from('public_offers')
+    .insert([offerData])
+    .select();
+
+  if (insertError || !insertedOffers || insertedOffers.length === 0) {
+    statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${insertError?.message || 'Unknown error.'}</span>`;
+    return;
+  }
+
+  // --- Notify sponsor (themselves) that their public offer is live
+  try {
+    await notifyOfferUpdate({
+      to_user_id: offerData.sponsor_id || offerData.user_id,
+      offer_id: insertedOffers[0].id,
+      type: 'public_offer_live',
+      title: 'Your public offer is now live!',
+      message: `Your public offer "${offerData.offer_title}" is live and accepting applicants!`
+    });
+  } catch (e) {
+    // Notification error is non-critical; do nothing here
+  }
+
+  statusDiv.innerHTML = `<span style="color:green;">Public offer posted successfully! You'll be notified when applicants apply.<br>Your offer is now live. Redirecting to dashboard...</span>`;
+  localStorage.removeItem('pendingOfferData');
+  setTimeout(() => window.location.href = '/public/dashboardsponsor.html', 2400);
+}
+
+document.addEventListener('DOMContentLoaded', createPublicOfferFromSession);
+</script>
+
+
+</body>
+</html>
