@@ -1,4 +1,4 @@
-// /public/js/settings.js
+// ./settings.js
 
 import { supabase } from './supabaseClient.js';
 import { getActiveUser } from './impersonationHelper.js';
@@ -56,6 +56,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
   await loadHelpSetting();
+
+  // --- Onboarding Show/Hide Toggle (DB-persisted) ---
+  const toggleOnboardingBtn = document.getElementById('toggle-onboarding-btn');
+  let onboardingHidden = false;
+
+  async function loadOnboardingSetting() {
+    currentUser = await getActiveUser();
+    if (!currentUser) return;
+    // 'onboarded' TRUE means completed (so onboarding should be hidden)
+    // 'onboarded' FALSE/null means NOT completed (so onboarding should show)
+    onboardingHidden = !!currentUser.onboarded;
+    updateOnboardingToggleUI();
+  }
+  async function saveOnboardingSetting(val) {
+    currentUser = await getActiveUser();
+    if (!currentUser) return;
+    // val: true = onboarding is done/hide, false = show onboarding
+    await supabase
+      .from('users_extended_data')
+      .update({ onboarded: val })
+      .eq('user_id', currentUser.user_id);
+  }
+  function updateOnboardingToggleUI() {
+    if (toggleOnboardingBtn)
+      toggleOnboardingBtn.innerText = onboardingHidden ? 'Show Guided Onboarding' : 'Hide Guided Onboarding';
+  }
+  if (toggleOnboardingBtn) {
+    toggleOnboardingBtn.addEventListener('click', async () => {
+      onboardingHidden = !onboardingHidden;
+      updateOnboardingToggleUI();
+      await saveOnboardingSetting(onboardingHidden);
+      // You could also trigger onboarding.js to run here if needed
+    });
+  }
+  await loadOnboardingSetting();
 
   // --- Modal Open/Close helpers ---
   function openModal(id) {
