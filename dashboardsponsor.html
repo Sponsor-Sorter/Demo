@@ -9,6 +9,8 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="./js/sponsorCharts.js"></script>
+  <script type="module" src="./js/onboarding.js"></script>
+
 
 </head>
 
@@ -46,6 +48,8 @@
       <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
       <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
       <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+      <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn"  >Show Guided Onboarding</button>
+
     </ul>
   </div>
 </li>
@@ -305,7 +309,7 @@
 
     if (!user) {
       alert("You must be logged in to view this page.");
-      window.location.href = 'login.html';
+      window.location.href = '/login.html';
       return;
     }
 
