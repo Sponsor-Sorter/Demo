@@ -2,7 +2,7 @@
 import { supabase } from './supabaseClient.js';
 
 const onboardingFlows = {
-  './dashboardsponsee.html': [
+  './Demo/dashboardsponsee.html': [
     {
       selector: '.profile-header',
       message: 'Here you can view your sponsee profile, overall stats, and ratings. Make sure your profile is up-to-date!',
@@ -25,7 +25,7 @@ const onboardingFlows = {
       message: 'Access your settings, change your profile info, connect platforms, or restart onboarding at any time.',
     }
   ],
-  './dashboardsponsor.html': [
+  './Demo/dashboardsponsor.html': [
     {
       selector: '.profile-header',
       message: 'This is your sponsor profile. Keep your company info and logo updated for best results.',
@@ -48,7 +48,7 @@ const onboardingFlows = {
       message: 'Adjust your account settings, company profile, or restart onboarding at any time from here.',
     }
   ],
-  './finder.html': [
+  './Demo/finder.html': [
     {
       selector: '.search-toggle-row',
       message: 'Switch between searching for users or offers using these buttons.',
