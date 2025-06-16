@@ -268,7 +268,8 @@ function showStep(step, totalSteps) {
     let isLast = (currentStepIdx + 1 === totalSteps);
     let isSponseeDash = window.location.pathname === './dashboardsponsee.html';
     let isSponsorDash = window.location.pathname === './dashboardsponsor.html';
-    let isFinder = window.location.pathname === './finder.html';
+    let isFinder = window.location.pathname.endsWith('/finder.html');
+
 
     let nextBtnLabel = isLast
       ? ((isSponseeDash || isSponsorDash) ? 'Continue' : 'Finish')
