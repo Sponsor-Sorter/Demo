@@ -217,7 +217,7 @@ function showStep(step, totalSteps) {
   if (step.selector === '#offers-container' || step.selector === '#offerSearchForm') {
     addOnboardingPublicOfferCard();
     // Finder page: Ensure Offer Search tab is active
-    if (window.location.pathname === 'Demo/finder.html') {
+    if (window.location.pathname === '/Demo/finder.html') {
       const offerSearchToggle = document.getElementById('offer-search-toggle');
       const offerSearchBlock = document.getElementById('offer-search-form-block');
       if (offerSearchToggle && offerSearchBlock && offerSearchBlock.style.display === 'none') {
