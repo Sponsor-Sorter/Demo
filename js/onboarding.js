@@ -1,8 +1,8 @@
 // /public/js/onboarding.js
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 const onboardingFlows = {
-  '/public/dashboardsponsee.html': [
+  './dashboardsponsee.html': [
     {
       selector: '.profile-header',
       message: 'Here you can view your sponsee profile, overall stats, and ratings. Make sure your profile is up-to-date!',
@@ -25,7 +25,7 @@ const onboardingFlows = {
       message: 'Access your settings, change your profile info, connect platforms, or restart onboarding at any time.',
     }
   ],
-  '/public/dashboardsponsor.html': [
+  './dashboardsponsor.html': [
     {
       selector: '.profile-header',
       message: 'This is your sponsor profile. Keep your company info and logo updated for best results.',
@@ -48,7 +48,7 @@ const onboardingFlows = {
       message: 'Adjust your account settings, company profile, or restart onboarding at any time from here.',
     }
   ],
-  '/public/finder.html': [
+  './finder.html': [
     {
       selector: '.search-toggle-row',
       message: 'Switch between searching for users or offers using these buttons.',
@@ -217,7 +217,7 @@ function showStep(step, totalSteps) {
   if (step.selector === '#offers-container' || step.selector === '#offerSearchForm') {
     addOnboardingPublicOfferCard();
     // Finder page: Ensure Offer Search tab is active
-    if (window.location.pathname === '/public/finder.html') {
+    if (window.location.pathname === './finder.html') {
       const offerSearchToggle = document.getElementById('offer-search-toggle');
       const offerSearchBlock = document.getElementById('offer-search-form-block');
       if (offerSearchToggle && offerSearchBlock && offerSearchBlock.style.display === 'none') {
@@ -258,9 +258,9 @@ function showStep(step, totalSteps) {
     bubble.className = 'onboarding-bubble';
 
     let isLast = (currentStepIdx + 1 === totalSteps);
-    let isSponseeDash = window.location.pathname === '/public/dashboardsponsee.html';
-    let isSponsorDash = window.location.pathname === '/public/dashboardsponsor.html';
-    let isFinder = window.location.pathname === '/public/finder.html';
+    let isSponseeDash = window.location.pathname === './dashboardsponsee.html';
+    let isSponsorDash = window.location.pathname === './dashboardsponsor.html';
+    let isFinder = window.location.pathname === './finder.html';
 
     let nextBtnLabel = isLast
       ? ((isSponseeDash || isSponsorDash) ? 'Continue' : 'Finish')
@@ -297,7 +297,7 @@ function showStep(step, totalSteps) {
     // Next logic
     if (isLast && (isSponseeDash || isSponsorDash)) {
       bubble.querySelector('.onboarding-btn-next').onclick = () => {
-        window.location.href = '/public/finder.html';
+        window.location.href = './finder.html';
       };
     } else if (isLast && isFinder) {
       bubble.querySelector('.onboarding-btn-next').onclick = () => {
