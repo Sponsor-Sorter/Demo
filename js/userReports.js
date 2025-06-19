@@ -1,6 +1,6 @@
-// /public/js/userReports.js
+// ./js/userReports.js
 
-import { supabase } from './supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 function closeReportModal() {
   const modal = document.getElementById('report-modal-root');
@@ -126,18 +126,42 @@ async function openReportModal(reportType, targetId) {
         status: 'pending'
       };
     } else if (type === 'comment') {
-      table = 'reported_comments';
-      // Optionally you can fetch the comment author's username here if you want
-      insertObj = {
-        comment_id: target,
-        reporter_id: reporter_id,
-        reporter_username,
-        // reported_username: ... (if you fetch the comment author)
-        reason,
-        details,
-        created_at: new Date().toISOString(),
-        status: 'pending'
-      };
+  table = 'reported_comments';
+
+  // First lookup: Get the comment details from private_offer_comments
+  const { data: commentData, error: commentError } = await supabase
+    .from('private_offer_comments')
+    .select('user_id, comment_text')
+    .eq('id', target)
+    .single();
+
+  let reported_username = '(Unknown)';
+  let reported_message = '(Unknown)';
+
+  if (!commentError && commentData) {
+    // Lookup reported user's username
+    const { data: userData, error: userError } = await supabase
+      .from('users_extended_data')
+      .select('username')
+      .eq('user_id', commentData.user_id)
+      .single();
+
+    reported_username = (!userError && userData) ? userData.username : '(Unknown)';
+    reported_message = commentData.comment_text ?? '(Unknown)';
+  }
+
+  insertObj = {
+    comment_id: target,
+    reporter_id: reporter_id,
+    reporter_username,
+    reported_username,
+    reported_message,
+    reason,
+    details,
+    created_at: new Date().toISOString(),
+    status: 'pending'
+  };
+
     } else if (type === 'profile') {
       table = 'reported_users';
       // Accept username or user_id for target
