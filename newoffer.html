@@ -22,7 +22,7 @@
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
           <li><a href="login.html">Logout</a></li>
         </nav>
       </div>
@@ -186,11 +186,11 @@
 <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="help.html">Help</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -202,6 +202,7 @@
 // ==== IMPORTS ====
 import { supabase } from './js/supabaseClient.js';
 import { notifyNewOffer } from './js/alerts.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
 const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
 const STRIPE_BACKEND = 'http://localhost:4242/create-checkout-session';
 
@@ -652,6 +653,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
+    // --- FAMBOT MODERATION STEP ---
+    const modInputs = [
+      { field: "Title", value: title },
+      { field: "Description", value: description },
+      { field: "Instructions", value: instructions }
+    ];
+    for (const input of modInputs) {
+      if (input.value) {
+        const { data: { session } } = await supabase.auth.getSession();
+        const user_id = session?.user?.id;
+        const jwt = session?.access_token;
+        const result = await famBotModerateWithModal({
+          user_id,
+          content: input.value,
+          jwt,
+          type: 'offer'
+        });
+        if (!result.allowed) return;
+      }
+    }
+
     // 1. Upload product images
     const uploadedImageNames = [];
     for (let i = 0; i < imageFiles.length; i++) {
@@ -687,10 +709,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 3. Prepare offer data and save to sessionStorage for after payment
-   const offerData = {
+    const offerData = {
       sponsee_username: cachedSponseeData.username,
       sponsee_email: cachedSponseeData.email,
-      sponsee_id: cachedSponseeData.user_id,  // <--- THIS LINE IS MISSING AND REQUIRED!
+      sponsee_id: cachedSponseeData.user_id,
       sponsor_email: cachedSponsorData.email,
       sponsor_username: cachedSponsorData.username,
       sponsor_id: cachedSponsorData.id,
@@ -709,7 +731,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       platforms: selectedPlatforms,
     };
 
-localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+    localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
 
     // 4. Start Stripe Checkout
     try {
@@ -718,7 +740,7 @@ localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: amount,
-          offerId: title + '-' + Date.now()
+          offerId: title + '-' + Date.now(),
           offerType: 'private'
         })
       });
@@ -741,5 +763,6 @@ localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
   });
 });
 </script>
+
 </body>
 </html>
