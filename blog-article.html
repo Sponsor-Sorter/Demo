@@ -8,9 +8,9 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" src="/public/auth.js"></script>
-  <script type="module" src="/public/js/alerts.js"></script>
-  <script type="module" src="/public/js/settings.js"></script>
+  <script type="module" src="./auth.js"></script>
+  <script type="module" src="./js/alerts.js"></script>
+  <script type="module" src="./js/settings.js"></script>
 </head>
 <body>
 <header class="navbar1">
@@ -67,12 +67,12 @@
   <div class="footer-branding">
     <div class="footer-text">
       <ul>
-        <li><a href="/public/help.html">Help</a></li>
-        <li><a href="/public/contact.html">Contact</a></li>
-        <li><a href="/public/privacy.html">Privacy Policy</a></li>
-        <li><a href="/public/terms.html">Terms of Service</a></li>
-        <li><a href="/public/reviews.html">Reviews</a></li>
-        <li><a href="/public/blog.html">Blog</a></li>
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
+        <li><a href="./blog.html">Blog</a></li>
       </ul>
     </div>
   </div>
@@ -159,7 +159,7 @@
 </style>
 
 <script type="module">
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 // 1. Nav "Dashboard/Signup" logic – always accurate to schema
 document.addEventListener("DOMContentLoaded", async () => {
@@ -216,7 +216,7 @@ async function renderArticle() {
   }
 
   // Profile picture per schema (relative or absolute path)
-  let authorImg = '/public/logos.png';
+  let authorImg = './logos.png';
   if (post.author?.profile_pic) {
     // If profile_pic is a file name, use bucket; else fallback
     authorImg = post.author.profile_pic.startsWith('http')
@@ -256,12 +256,12 @@ async function renderArticle() {
 
   container.innerHTML = `
     ${post.cover_image 
-      ? `<img src="${post.cover_image}" alt="" class="blog-article-cover" loading="lazy" onerror="handleImgError(event, '/public/logos.png')">` 
+      ? `<img src="${post.cover_image}" alt="" class="blog-article-cover" loading="lazy" onerror="handleImgError(event, './logos.png')">` 
       : ''}
     <div class="blog-article-title">${escapeHtml(post.title)}</div>
     <div class="blog-article-meta">
       <img src="${authorImg}" class="blog-article-author-img" title="${escapeHtml(authorName)}"
-           onerror="handleImgError(event, '/public/logos.png')"/>
+           onerror="handleImgError(event, './logos.png')"/>
       <span>${escapeHtml(authorName)}</span>
       <span>🗓️ ${date}</span>
       <span>📂 ${escapeHtml(post.category || "General")}</span>
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', renderArticle);
 </script>
 <script>
   // Fallback image handler for ALL images
-  window.handleImgError = function(event, fallback = '/public/logos.png') {
+  window.handleImgError = function(event, fallback = './logos.png') {
     if (!event.target.src.endsWith(fallback)) {
       event.target.src = fallback;
     }
