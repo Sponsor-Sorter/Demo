@@ -3,32 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find and view active users, discover sponsorship opportunities, and connect with influencers and creators.">
-    <title>SponsorFinder - Sponsor Sorter</title>
+    <meta name="description" content="Find answers, read guides, and access our Resource Center for creators and brands.">
+    <title>Help & Resource Center - Sponsor Sorter</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./js/settings.js"></script>
+    <script type="module" src="./js/alerts.js"></script>
 </head>
 <body>
     <!-- Navbar and Header -->
-    <header class="navbar1">
-        <section class="navbar"> 
-            <div class="navii">
-                <h5><header>Sponsor Sorter</header></h5>
-                <div>
-                    <background-img class="navimg" src="navimg.png" alt="">
-                    <nav> 
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="finder.html">Finder</a></li>
-                    </nav>
-                    <li class="navr"><a href="signup.html">Signup</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </div>
-            </div> 
-        </section>
-    </header>
+   <header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
+              </ul>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
 
-     <!-- CEO Intro & Company Story -->
-     <div class="about-ceo">
+    <!-- Resource Center / Blog Section -->
+    <section>
+        <fieldset class="resource-center" style="margin-bottom: 28px;">
+            <legend>📚 Blog & Resource Center</legend>
+            <div class="resource-intro">
+                <h2>Grow with Sponsor Sorter's Resource Center</h2>
+                <p>
+                    Discover expert articles, guides, and tips for both sponsors and creators. Our Resource Center is your hub for <b>best practices</b>, <b>case studies</b>, and platform updates.
+                    <br>
+                    <a href="blog.html" style="color:#36a2eb;font-weight:600;">Visit the full Blog & Resource Center &rarr;</a>
+                </p>
+            </div>
+            <div class="resource-grid">
+                <div class="resource-article">
+                    <h4>🚀 Getting Your First Brand Deal</h4>
+                    <p>Step-by-step guide for creators new to sponsorships, including media kits and outreach templates.</p>
+                    <a href="blog.html#getting-first-deal" class="resource-link">Read More</a>
+                </div>
+                <div class="resource-article">
+                    <h4>🤝 What Makes a Great Offer?</h4>
+                    <p>Insights for sponsors: crafting irresistible offers that attract quality creators.</p>
+                    <a href="blog.html#great-offers" class="resource-link">Read More</a>
+                </div>
+                <div class="resource-article">
+                    <h4>💡 Creator Success Stories</h4>
+                    <p>Real-life case studies of creators and brands growing together on Sponsor Sorter.</p>
+                    <a href="blog.html#success-stories" class="resource-link">Read More</a>
+                </div>
+                <div class="resource-article">
+                    <h4>📈 Sponsorship Analytics 101</h4>
+                    <p>How to track, measure, and optimize your sponsorship campaigns using our platform tools.</p>
+                    <a href="blog.html#analytics-101" class="resource-link">Read More</a>
+                </div>
+            </div>
+        </fieldset>
+    </section>
+
+    <!-- CEO Intro & Company Story -->
+    <div class="about-ceo">
         <h1>About Sponsor Sorter</h1>
         <p>
             Founded by visionary entrepreneur <strong>Johnathan Buschman</strong> in 2021, Sponsor Sorter was born out of a simple idea:
@@ -44,88 +106,314 @@
         </p>
     </div>
 
+     <!-- Platform Statistics (Live) -->
+    <fieldset class="platform-stats-section" style="margin: 36px auto 38px auto;max-width:860px;">
+        <legend>📊 Platform Statistics <span style="font-size:0.9em;font-weight:normal;color:#aaf;">(Live)</span></legend>
+        <div class="stats-card-row">
+            <div class="stat-card">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value" id="stat-users">Loading…</div>
+                <canvas id="chart-users" height="52"></canvas>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Sponsorships</div>
+                <div class="stat-value" id="stat-active">Loading…</div>
+                <canvas id="chart-active" height="52"></canvas>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Brands on Platform</div>
+                <div class="stat-value" id="stat-brands">Loading…</div>
+                <canvas id="chart-brands" height="52"></canvas>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Average Deal Value</div>
+                <div class="stat-value" id="stat-dealvalue">Loading…</div>
+                <canvas id="chart-dealvalue" height="52"></canvas>
+            </div>
+        </div>
+    </fieldset>
+
     <section>
         <fieldset class="faqshelp">
             <legend>📘 FAQs & Help Center</legend>
-    
             <div class="help-intro">
                 <h2>Welcome to Sponsor Sorter's Help Center</h2>
                 <p>Need assistance? Browse our frequently asked questions or contact our support team. We're here to help you get the most out of your sponsorship journey!</p>
             </div>
-    
             <div class="help-grid">
-                <!-- General Stats -->
-                <div class="help-block">
-                    <h3>📊 Platform Statistics</h3>
-                    <ul>
-                        <li><strong>Total Users:</strong> 52,430+</li>
-                        <li><strong>Active Sponsorships:</strong> 1,845</li>
-                        <li><strong>Brands on Platform:</strong> 790+</li>
-                        <li><strong>Average Deal Value:</strong> $1,250</li>
-                    </ul>
-                </div>
-    
+ 
+
                 <!-- Account Setup -->
                 <div class="help-block">
                     <h3>📝 How do I create an account?</h3>
                     <p>Click on the <strong>Sign Up</strong> button in the top right corner, select whether you're a Sponsor or Sponsee, and fill in your details. Verify your email to activate your account.</p>
                 </div>
-    
                 <!-- Account Issues -->
                 <div class="help-block">
                     <h3>🔒 I’m having trouble logging in</h3>
                     <p>Double-check your email and password. If you’ve forgotten your credentials, use the <strong>Forgot Password</strong> link on the login page to reset.</p>
                 </div>
-    
                 <!-- Sponsorship Process -->
                 <div class="help-block">
                     <h3>📬 How do sponsorships work?</h3>
                     <p>Sponsors send proposals through the platform. Once a sponsee accepts the offer, deliverables are agreed upon and tracked through our integrated workflow system.</p>
                 </div>
-    
-                <!-- Linked Accounts -->
-                <div class="help-block">
-                    <h3>🔗 Can I connect my social media accounts?</h3>
-                    <p>Yes! Navigate to your profile and use the “Linked Accounts” section to connect your Instagram, TikTok, YouTube, and more. We use this data to show sponsors your reach.</p>
-                </div>
-    
-                <!-- Earnings -->
+                 <!-- Earnings -->
                 <div class="help-block">
                     <h3>💰 When do I get paid?</h3>
                     <p>Payments are released after deliverables are marked as complete and the sponsor has confirmed satisfactory results. Some deals also offer 50% upfront payments.</p>
                 </div>
-    
                 <!-- Searchability -->
                 <div class="help-block">
                     <h3>🔍 Is my profile searchable?</h3>
                     <p>Yes, if your profile meets our minimum verification and activity standards. A green check mark will appear on your dashboard when you're eligible.</p>
                 </div>
-    
+                <div class="help-block">
+                    <h3>📝 Creating Your Account</h3>
+                    <p>Sign up as either a sponsor (brand/company) or sponsee (creator/influencer) using your email and a secure password. You'll need to verify your email to activate your account and unlock all features.</p>
+                </div>
+                <!-- Profile and Discovery -->
+                <div class="help-block">
+                    <h3>🔍 How do I get discovered?</h3>
+                    <p>Complete your profile, link your social platforms, and stay active. Verified and active profiles are featured more prominently in search results.</p>
+                </div>
+                <!-- Making or Receiving Offers -->
+                <div class="help-block">
+                    <h3>🤝 How do offers work?</h3>
+                    <p>Sponsors can create public or private offers. Creators apply (public) or receive direct invitations (private). Both sides negotiate and track offers within their dashboard.</p>
+                </div>
+                <!-- Payments and Earnings -->
+                <div class="help-block">
+                    <h3>💰 How does payment work?</h3>
+                    <p>Once deliverables are marked complete by the creator and confirmed by the sponsor, payments are processed via your selected payout method. Some offers support split or upfront payments.</p>
+                </div>
+                <!-- Verification & Safety -->
+                <div class="help-block">
+                    <h3>✅ Profile Verification & Safety</h3>
+                    <p>Verified users enjoy increased visibility and trust. Always use Sponsor Sorter's messaging and contract features to stay safe from scams or fake deals.</p>
+                </div>
+                <!-- Platform Support -->
+                <div class="help-block">
+                    <h3>🔗 Connecting Social Platforms</h3>
+                    <p>Link your Instagram, TikTok, YouTube, and other platforms from your profile page to display your audience reach and unlock more sponsorship opportunities.</p>
+                </div>
+                <!-- Moderation / Reporting -->
+                <div class="help-block">
+                    <h3>🚩 Reporting & Moderation</h3>
+                    <p>If you encounter abusive behavior or scams, use the report buttons on profiles, offers, or messages. Our team (and FamBot) reviews all reports promptly.</p>
+                </div>
+                <!-- Privacy -->
+                <div class="help-block">
+                    <h3>🔒 Privacy & Data Requests</h3>
+                    <p>You can request a data export or permanent account deletion from your dashboard at any time. We are fully GDPR/CCPA compliant.</p>
+                </div>
                 <!-- Contact -->
                 <div class="help-block">
-                    <h3>📧 Still need help?</h3>
-                    <p>If your question isn't answered here, reach out to us at <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> or visit our <a href="contact.html">Contact Page</a>.</p>
+                    <h3>📧 Need more help?</h3>
+                    <p>Contact our support team at <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> or visit our <a href="contact.html">Contact Page</a>.</p>
                 </div>
             </div>
         </fieldset>
     </section>
-    
-
 
     <!-- Footer Section -->
     <footer class="footercomplete">
         <div class="footer-branding">
             <div class="footer-text">
                 <ul>
-                    <li><a href="help.html">Help</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
-                    <li><a href="terms.html">Terms of Service</a></li>
-                </ul>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="./blog.html">Blog</a></li>
+
+            </ul>
             </div>
         </div>
         <img src="Logo1.jpg" class="footpic" alt="">
     </footer>
+
+    <style>
+    /* Resource Center Styles */
+    .resource-intro h2 { margin-bottom:7px;color:#36a2eb;font-size:1.3em; }
+    .resource-intro p { margin:0 0 20px 0; }
+    .resource-grid { display:flex;flex-wrap:wrap;gap:24px;margin:0 0 12px 0; }
+    .resource-article {
+        flex:1 1 240px; background:#3a3a3a;border-radius:11px;padding:18px 16px;box-shadow:0 1px 6px #0001;
+        display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .resource-article h4 { margin:0 0 7px 0;font-size:1.08em;color:#f6c62e; }
+    .resource-article p { margin:0 0 11px 0;font-size:0.97em;color:#ddd; }
+    .resource-link { color:#36a2eb;text-decoration:none;font-weight:500; }
+    .resource-link:hover { text-decoration:underline; }
+    @media (max-width: 900px) {
+        .resource-grid { flex-direction:column;gap:18px; }
+        .resource-article { min-width:unset; }
+    }
+    </style>
+
+      <!-- CHARTS & LIVE STATS SCRIPT -->
+    <script type="module">
+import { supabase } from './js/supabaseClient.js';
+
+async function loadPlatformStatsAndCharts() {
+    // Elements
+    const usersEl = document.getElementById('stat-users');
+    const activeEl = document.getElementById('stat-active');
+    const brandsEl = document.getElementById('stat-brands');
+    const avgDealEl = document.getElementById('stat-dealvalue');
+    // Cards
+    [usersEl, activeEl, brandsEl, avgDealEl].forEach(el => { el.textContent = 'Loading…'; });
+
+    // --- COUNTS (current)
+    // Users
+    let { count: usersCount } = await supabase
+        .from('users_extended_data').select('user_id', { count: 'exact', head: true });
+    usersEl.textContent = usersCount ? usersCount.toLocaleString() : 'N/A';
+    // Brands
+    let { count: brandsCount } = await supabase
+        .from('users_extended_data').select('user_id', { count: 'exact', head: true })
+        .eq('userType', 'sponsor');
+    brandsEl.textContent = brandsCount ? brandsCount.toLocaleString() : 'N/A';
+    // Active Sponsorships
+    let { count: activeCount } = await supabase
+        .from('private_offers').select('id', { count: 'exact', head: true })
+        .in('status', ['accepted', 'in_progress', 'live']);
+    activeEl.textContent = activeCount ? activeCount.toLocaleString() : 'N/A';
+    // Average Deal Value (completed offers)
+    let { data: completed } = await supabase
+        .from('private_offers').select('offer_amount').eq('status', 'completed');
+    if (!completed || completed.length === 0) {
+        avgDealEl.textContent = 'N/A';
+    } else {
+        let sum = completed.reduce((acc, row) => acc + (Number(row.offer_amount) || 0), 0);
+        let avg = Math.round(sum / completed.length);
+        avgDealEl.textContent = `$${avg.toLocaleString()}`;
+    }
+
+    // --- HISTORICAL DATA for CHARTS ---
+    // Signups by day
+    let { data: signupsByDay } = await supabase.rpc('signup_stats_by_day');
+    // Offers by day (active+completed)
+    let { data: offersByDay } = await supabase.rpc('offer_stats_by_day');
+    // Sponsors by day
+    let { data: brandsByDay } = await supabase
+        .from('users_extended_data')
+        .select('created_at')
+        .eq('userType', 'sponsor');
+    // Average deal value by day
+    let { data: dealsByDay } = await supabase
+        .from('private_offers')
+        .select('created_at,offer_amount')
+        .eq('status', 'completed');
+
+    // --- CHARTS: Prepare Data ---
+    // USERS OVER TIME
+    let signupLabels = [], signupData = [];
+    if (signupsByDay && Array.isArray(signupsByDay)) {
+        signupsByDay.forEach(row => {
+            signupLabels.push(row.day); // e.g. "2024-06-16"
+            signupData.push(row.count);
+        });
+    }
+    // ACTIVE OVER TIME
+    let offerLabels = [], offerData = [];
+    if (offersByDay && Array.isArray(offersByDay)) {
+        offersByDay.forEach(row => {
+            offerLabels.push(row.day);
+            offerData.push(row.count);
+        });
+    }
+    // BRANDS OVER TIME (cumulative)
+    let brandsLabels = [], brandsCumulative = [];
+    if (brandsByDay && brandsByDay.length > 0) {
+        // Sort by date
+        brandsByDay.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+        let dateMap = {};
+        brandsByDay.forEach(row=>{
+            let day = row.created_at.substr(0,10);
+            dateMap[day]=(dateMap[day]||0)+1;
+        });
+        let running = 0;
+        Object.keys(dateMap).sort().forEach(day=>{
+            running += dateMap[day];
+            brandsLabels.push(day);
+            brandsCumulative.push(running);
+        });
+    }
+    // AVG DEAL VALUE OVER TIME
+    let dealValueLabels = [], dealValueData = [];
+    if (dealsByDay && dealsByDay.length > 0) {
+        // Group by day
+        let dayMap = {};
+        dealsByDay.forEach(row=>{
+            let day = row.created_at.substr(0,10);
+            if (!dayMap[day]) dayMap[day]=[];
+            dayMap[day].push(Number(row.offer_amount)||0);
+        });
+        Object.keys(dayMap).sort().forEach(day=>{
+            dealValueLabels.push(day);
+            let arr = dayMap[day];
+            dealValueData.push(arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0);
+        });
+    }
+
+    // --- RENDER CHARTS ---
+    // Destroy if exists
+    if(window.usersChart) window.usersChart.destroy();
+    if(window.activeChart) window.activeChart.destroy();
+    if(window.brandsChart) window.brandsChart.destroy();
+    if(window.dealValueChart) window.dealValueChart.destroy();
+
+    // Users Chart
+    if(document.getElementById('chart-users')){
+        window.usersChart = new Chart(document.getElementById('chart-users').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: signupLabels,
+                datasets: [{ label: 'Signups', data: signupData, borderColor:'#4cf', fill:false, tension:0.3 }]
+            },
+            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
+        });
+    }
+    // Active Sponsorships Chart
+    if(document.getElementById('chart-active')){
+        window.activeChart = new Chart(document.getElementById('chart-active').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: offerLabels,
+                datasets: [{ label: 'Active Offers', data: offerData, borderColor:'#f6c62e', fill:false, tension:0.3 }]
+            },
+            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
+        });
+    }
+    // Brands Chart
+    if(document.getElementById('chart-brands')){
+        window.brandsChart = new Chart(document.getElementById('chart-brands').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: brandsLabels,
+                datasets: [{ label: 'Brands', data: brandsCumulative, borderColor:'#9e6aff', fill:false, tension:0.3 }]
+            },
+            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
+        });
+    }
+    // Average Deal Value Chart
+    if(document.getElementById('chart-dealvalue')){
+        window.dealValueChart = new Chart(document.getElementById('chart-dealvalue').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: dealValueLabels,
+                datasets: [{ label: 'Avg Deal Value', data: dealValueData, borderColor:'#5fbf8f', fill:false, tension:0.3 }]
+            },
+            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadPlatformStatsAndCharts);
+    </script>
 
 </body>
 </html>
