@@ -1,5 +1,8 @@
 import { supabase } from './supabaseClient.js';
 
+const SUPABASE_ANON_KEY = '024636ea4f7d172f905c02347888f84e405b115a0255326a0b185bf767d2baf0';
+const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBotSignup';
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registrationForm');
   const submitButton = document.getElementById('submitBtn');
@@ -9,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Extra: Block if TOS not checked (HTML required, but JS is backup)
     const tosCheckbox = document.getElementById('agreeTOS');
     if (!tosCheckbox || !tosCheckbox.checked) {
       alert("You must agree to the Terms of Service to sign up.");
@@ -26,7 +28,37 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = data.email;
       const password = data.password;
 
-      // Step 1: Sign up user
+      // Run FamBotSignup moderation BEFORE any inserts
+      const famBotContent = {
+        username: data.username,
+        about_yourself: data['about-yourself'],
+        title: data.title,
+        company_name: data.company_name,
+        contenttype: data.contenttype
+      };
+
+      const combinedContent = Object.values(famBotContent).filter(Boolean).join(" ");
+
+      const famResponse = await fetch(FAMBOT_SIGNUP_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ user_id: null, content: combinedContent })
+      });
+
+      const famResult = await famResponse.json();
+
+      if (famResult.flagged) {
+        showFamBotModal(famResult);
+        submitButton.disabled = false;
+        btnText.textContent = 'Sign Up';
+        spinner.style.display = 'none';
+        return;
+      }
+
+      // Step 1: Sign up user in Supabase Auth
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -40,17 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const userId = authData?.user?.id;
       if (!userId) {
-        console.error('User ID not found after signup.');
         alert('Sign-up successful! Please verify your email before logging in.');
-        
-        // Redirect to login
         const basePath = window.location.pathname.includes('/public') ? '/public' : '';
         window.location.href = `${basePath}/login.html`;
-        
         return;
       }
 
-      // Step 2: Handle extra form fields
+      // Handle extra form fields
       data.platforms = formData.getAll('platforms') || [];
       data.social_handles = {
         instagram: formData.get('instagram_handle'),
@@ -64,19 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log('Captured social handles:', data.social_handles);
 
-      // Step 3: Upload logo if provided
+      // Upload logo if provided
       const logoFile = formData.get('logofile');
       if (logoFile && logoFile.size > 0) {
         const logoUploadResult = await uploadLogo(userId, logoFile);
         if (logoUploadResult.success) {
-          data.profile_pic = logoUploadResult.path;  // ✅ Save just file path, not URL
+          data.profile_pic = logoUploadResult.path;
         } else {
           console.error('Logo upload failed:', logoUploadResult.error);
           alert('Logo upload failed, continuing without logo...');
         }
       }
 
-      // Step 4: Insert extra user profile data into 'users_extended_data'
+      // Insert into users_extended_data
       const insertData = {
         username: data.username,
         email: data.email,
@@ -99,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         user_id: userId,
         email_verified: false,
         contenttype: data.contenttype,
-        // 🔥 Save TOS agreement (ALWAYS TRUE if form passed)
         agreed_tos: tosCheckbox.checked === true
       };
 
@@ -113,9 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Step 5: Success - redirect to login
       alert('Sign-up successful! Please verify your email before logging in.');
-      
       const basePath = window.location.pathname.includes('/public') ? '/public' : '';
       window.location.href = `${basePath}/login.html`;
 
@@ -130,16 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ---------------------------
-// 🛠️ Helper Functions Below
-// ---------------------------
-
+// Upload Logo Helper
 async function uploadLogo(userId, file) {
-  // 🛠️ Sanitize file name (no spaces or weird characters)
   const sanitizedFilename = file.name
     .toLowerCase()
-    .replace(/\s+/g, '_')               // Replace spaces with underscores
-    .replace(/[^a-z0-9._-]/g, '');      // Remove unsafe characters except . _ -
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9._-]/g, '');
 
   const filePath = `${userId}-${sanitizedFilename}`;
 
@@ -149,9 +170,7 @@ async function uploadLogo(userId, file) {
       cacheControl: '3600',
       upsert: true,
       contentType: file.type,
-      metadata: {
-        owner: userId
-      }
+      metadata: { owner: userId }
     });
 
   if (error) {
@@ -159,12 +178,10 @@ async function uploadLogo(userId, file) {
     return { success: false, error };
   }
 
-  return { success: true, path: filePath };  // ✅ Just return path
+  return { success: true, path: filePath };
 }
 
-// ---------------------------
-// 🖼️ Logo Preview Locally
-// ---------------------------
+// Preview Logo Locally
 window.previewLogo = function () {
   const fileInput = document.getElementById('logofile');
   const file = fileInput.files[0];
@@ -176,3 +193,28 @@ window.previewLogo = function () {
   };
   reader.readAsDataURL(file);
 };
+
+// FamBot Modal Renderer
+function showFamBotModal(result) {
+  const existing = document.getElementById('fambot-modal');
+  if (existing) existing.remove();
+
+  const categories = (result.flaggedCategories || []).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)).join(', ');
+
+  const modal = document.createElement('div');
+  modal.id = 'fambot-modal';
+  modal.innerHTML = `
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:10000;display:flex;align-items:center;justify-content:center;">
+      <div style="background:white;padding:2.5rem 2rem 1.5rem 2rem;max-width:430px;border-radius:18px;box-shadow:0 6px 32px 4px rgba(0,0,0,.12);text-align:center;">
+        <h2 style="margin-bottom:12px;color:#C41A1A;">Profile Details Unacceptable</h2>
+        <p style="color:#222;font-size:1.04em;margin-bottom:1em;">
+          ${result.message || 'This content was blocked by moderation. Please try again with different wording.'}
+        </p>
+        ${categories ? `<div style="color:#b44;margin-bottom:.7em;"><b>Flagged Category:</b> ${categories}</div>` : ''}
+        <button id="fambot-close" style="margin-top:8px;background:#0c7a1a;color:#fff;padding:7px 28px;border:none;border-radius:9px;font-weight:600;cursor:pointer;">Close</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.getElementById('fambot-close').onclick = () => modal.remove();
+}
