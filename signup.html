@@ -654,7 +654,7 @@ function toggleTitleFields() {
     <input type="checkbox" id="agreeTOS" name="agreeTOS" required style="width: 18px; height: 18px; accent-color: #5eead4; cursor: pointer;">
     <span>
       I agree to the
-      <a href="/public/terms.html" target="_blank" style="color: #5eead4; text-decoration: underline; font-weight: 600;">
+      <a href="./terms.html" target="_blank" style="color: #5eead4; text-decoration: underline; font-weight: 600;">
         Terms of Service
       </a>
     </span>
@@ -682,11 +682,11 @@ function toggleTitleFields() {
       <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="/Demo/help.html">Help</a></li>
-                <li><a href="/Demo/contact.html">Contact</a></li>
-                <li><a href="/Demo/privacy.html">Privacy Policy</a></li>
-                <li><a href="/Demo/terms.html">Terms of Service</a></li>
-                <li><a href="/Demo/reviews.html">Reviews</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -766,10 +766,10 @@ function saveUserData() {
       
 
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-        <script type="module" src="js/formSubmit.js"></script>
+        <script type="module" src="./js/formSubmit.js"></script>
 
         <script type="module">
-import { supabase } from 'js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 // This handles registration and records agreed_tos in Supabase users_extended_data
 const form = document.getElementById('registrationForm');
