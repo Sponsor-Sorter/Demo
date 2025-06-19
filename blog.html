@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sponsor Sorter Blog & Resource Center – tips, guides, case studies for sponsors and creators">
+    <title>Blog & Resource Center - Sponsor Sorter</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Auth and settings are imported FIRST so session is ready -->
+    <script type="module" src="/public/js/settings.js"></script>
+    <script type="module" src="/public/js/alerts.js"></script>
+</head>
+
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
+              </ul>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section>
+    <div class="blog-hero">
+        <h1>📚 Blog & Resource Center</h1>
+        <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
+    </div>
+    <div class="blog-controls">
+        <input type="text" id="blog-search" placeholder="Search articles, guides, authors..." />
+        <select id="blog-category">
+            <option value="">All Categories</option>
+            <option value="guides">Guides</option>
+            <option value="case_study">Case Studies</option>
+            <option value="platform">Platform News</option>
+            <option value="tips">Tips</option>
+            <option value="analytics">Analytics</option>
+        </select>
+        <button id="blog-add-btn" style="display:none;">➕ New Article</button>
+    </div>
+    <div id="blog-list" class="blog-list">
+        <div class="blog-loading">Loading articles...</div>
+    </div>
+</section>
+
+<!-- Blog Modal (hidden by default) -->
+<div id="blog-modal-root"></div>
+
+<footer class="footercomplete">
+    <div class="footer-branding">
+        <div class="footer-text">
+            <ul>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+                <li><a href="/public/blog.html">Blog</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <img src="Logo1.jpg" class="footpic" alt="">
+</footer>
+
+<style>
+.blog-hero { margin: 40px auto 14px auto; max-width: 760px; text-align: center; }
+.blog-hero h1 { color: #36a2eb; margin-bottom: 8px; font-size: 2.3em; }
+.blog-hero p { color: #ccc; font-size: 1.12em; font-weight: 400; }
+
+.blog-controls {
+    display: flex; gap: 16px; max-width: 830px;
+    margin: 0 auto 22px auto; align-items: center; justify-content: center;
+}
+#blog-search { flex: 2; padding: 8px 13px; border-radius: 7px; border: none;
+    background: #23232b; color: #f8f8ff; font-size: 1em; outline: none; }
+#blog-category { flex: 1; padding: 8px 13px; border-radius: 7px; border: none;
+    background: #23232b; color: #36a2eb; font-size: 1em; }
+#blog-add-btn { padding: 7px 19px; border-radius: 7px; background: #f6c62e; color: #23232b; font-weight:700; border:none; cursor:pointer; }
+
+.blog-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+    gap: 22px; max-width: 1200px; margin: 0 auto 48px auto; padding: 0 12px;
+}
+.blog-loading { grid-column: 1/-1; color: #aaa; text-align: center; margin: 40px 0; font-size: 1.15em; }
+.blog-card { background: #23232b; border-radius: 14px; box-shadow: 0 2px 16px #0002; padding: 0 0 18px 0;
+    display: flex; flex-direction: column; min-height: 280px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; }
+.blog-card:hover { transform: translateY(-4px) scale(1.018); border-color: #36a2eb; }
+.blog-img { width: 100%; height: 158px; object-fit: cover; border-radius: 14px 14px 0 0; background: #151522; }
+.blog-meta { padding: 13px 18px 0 18px; color: #bbb; font-size: 0.96em; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 4px; }
+.blog-author-img { width:33px; height:33px; border-radius:50%; object-fit:cover; margin-right:7px; background:#292941;}
+.blog-title { font-size: 1.18em; font-weight: 700; margin: 0 0 6px 0; color: #f6c62e; }
+.blog-excerpt { color: #f8f8ff; margin: 0 0 10px 0; font-size: 1.07em; line-height: 1.6; padding: 0 18px; }
+.blog-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0 0; padding: 0 18px; }
+.blog-tag { background: #36a2eb33; color: #36a2eb; font-size: 0.85em; border-radius: 8px; padding: 2.5px 9px; font-weight: 500; }
+.blog-link { display: inline-block; margin: 12px 0 0 18px; color: #36a2eb; font-weight: 600; font-size: 1em; text-decoration: none; }
+.blog-link:hover { text-decoration: underline; }
+.blog-chart-canvas { max-width:98%; margin: 20px auto 6px auto; display: block; background: #23232b; border-radius: 8px; }
+#blog-modal-root { position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:9000; display:none; }
+#blog-modal-root.active { display:block; }
+.blog-modal-backdrop { position:absolute; left:0; top:0; width:100vw; height:100vh; background:#000c; }
+.blog-modal {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    background: #222436; border-radius: 12px; max-width: 480px; width: 97vw; padding: 34px 26px 22px 26px; box-shadow: 0 7px 40px #0009;
+    color: #f8f8ff;
+}
+.blog-modal h2 { color:#36a2eb; margin:0 0 18px 0; }
+.blog-modal label { display:block; margin:10px 0 3px 0; color:#ccc; }
+.blog-modal input, .blog-modal textarea, .blog-modal select {
+    width:100%; margin-bottom:14px; padding:8px 10px; border-radius:7px; border:none; background:#23232b; color:#f8f8ff; font-size:1em;
+}
+.blog-modal textarea { min-height:80px; }
+.blog-modal-btns { display:flex; justify-content: flex-end; gap:10px; margin-top:10px;}
+.blog-modal-btns button { padding:7px 17px; border-radius:7px; border:none; font-weight:600; cursor:pointer;}
+.blog-modal-cancel { background:#23232b; color:#fff;}
+.blog-modal-save { background:#f6c62e; color:#222;}
+@media (max-width: 950px) { .blog-list { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } .blog-hero { padding: 0 8px; } }
+@media (max-width: 600px) { .blog-list { grid-template-columns: 1fr; } .blog-hero h1 { font-size: 1.3em;} .blog-controls { flex-direction: column; gap: 10px; } }
+</style>
+
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+let blogPosts = [];
+let filteredPosts = [];
+let userIsAdmin = false;
+let userProfile = null;
+
+// --- NAV: Show Dashboard/Signup Link ---
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  const authLink = document.getElementById('auth-link');
+  if (authLink) {
+    if (session && session.user) {
+      // Default to sponsee dashboard
+      let dashboardUrl = "dashboardsponsee.html";
+      let userType = null;
+      try {
+        const { data: ext } = await supabase
+          .from('users_extended_data')
+          .select('userType')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        if (ext && ext.user_type) userType = ext.user_type;
+      } catch {}
+      if (userType === "sponsor") dashboardUrl = "dashboardsponsor.html";
+      if (userType === "admin") dashboardUrl = "admindashboard.html";
+      authLink.innerHTML = `<a href="${dashboardUrl}">Dashboard</a>`;
+    } else {
+      authLink.innerHTML = `<a href="signup.html">Signup</a>`;
+    }
+  }
+});
+
+// --- SESSION/ADMIN LOGIC FOR BLOG ---
+async function initBlogWithSession(sessionUser) {
+  if (!sessionUser) {
+    return;
+  }
+  // Now fetch profile and check admin
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('user_id, username, profile_pic, is_admin')
+    .eq('user_id', sessionUser.id)
+    .single();
+
+  if (error || !data) return;
+  userProfile = data;
+  userIsAdmin = !!data.is_admin;
+  if (userIsAdmin) document.getElementById('blog-add-btn').style.display = '';
+  await fetchBlogPosts();
+}
+
+supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session && session.user) {
+    initBlogWithSession(session.user);
+  } else {
+    supabase.auth.onAuthStateChange((event, sess) => {
+      if (sess && sess.user) initBlogWithSession(sess.user);
+    });
+  }
+});
+
+async function fetchBlogPosts() {
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('*, author:author_id(user_id, username, profile_pic)')
+    .eq('published', true)
+    .order('created_at', { ascending: false });
+
+  blogPosts = Array.isArray(data) ? data : [];
+  renderBlogPosts(blogPosts);
+}
+
+function renderBlogPosts(posts) {
+  const container = document.getElementById('blog-list');
+  if (!container) return;
+  if (!posts.length) {
+    container.innerHTML = `<div class="blog-loading">No articles found. Check back soon!</div>`;
+    return;
+  }
+  container.innerHTML = posts.map(post => {
+    let authorImg = post.author?.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
+      : '/public/logos.png'; // fallback if profile_pic missing
+
+    let authorName = post.author?.username || post.author_name || "Sponsor Sorter Team";
+    let chartHtml = '';
+    if (post.custom_chart) {
+      chartHtml = `<canvas class="blog-chart-canvas" id="chart-${post.id}"></canvas>`;
+    }
+    return `
+      <div class="blog-card">
+        ${post.cover_image ?
+          `<img src="${post.cover_image}" alt="" class="blog-img" loading="lazy"
+            onerror="handleImgError(event, '/public/logos.png')">`
+          : ''
+        }
+        <div class="blog-meta">
+          <img src="${authorImg}" class="blog-author-img" title="${escapeHtml(authorName)}"
+            onerror="handleImgError(event, '/public/logos.png')">
+          <span>${escapeHtml(authorName)}</span>
+          <span>🗓️ ${formatDate(post.created_at)}</span>
+          <span>📂 ${escapeHtml(post.category || "General")}</span>
+        </div>
+        <div class="blog-title">${escapeHtml(post.title)}</div>
+        <div class="blog-excerpt">${escapeHtml(post.excerpt || truncate(post.content, 160))}</div>
+        <div class="blog-tags">
+          ${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHtml(tag)}</span>`).join('')}
+        </div>
+        <a href="blog-article.html?id=${encodeURIComponent(post.id)}" class="blog-link">Read More &rarr;</a>
+        ${chartHtml}
+        ${userIsAdmin ? `<div style="text-align:right;padding-right:14px;">
+          <button class="blog-edit-btn" data-id="${post.id}" style="margin-top:4px;">Edit</button>
+        </div>` : ''}
+      </div>`;
+  }).join('');
+  posts.forEach(post => {
+    if (post.custom_chart) {
+      try {
+        const ctx = document.getElementById(`chart-${post.id}`);
+        if (ctx) new Chart(ctx, post.custom_chart);
+      } catch {}
+    }
+  });
+  if (userIsAdmin) {
+    document.querySelectorAll('.blog-edit-btn').forEach(btn => {
+      btn.onclick = () => openBlogModal(btn.getAttribute('data-id'));
+    });
+  }
+}
+
+// Modal, helpers, and filter logic remain unchanged
+async function openBlogModal(editId = null) {
+  const root = document.getElementById('blog-modal-root');
+  let editing = !!editId;
+  let data = {
+    title: '', content: '', excerpt: '', tags: '', category: 'general', published: false,
+    cover_image: '', custom_chart: '', is_featured: false
+  };
+  if (editing) {
+    const { data: posts } = await supabase.from('blog_posts').select('*').eq('id', editId).limit(1);
+    if (posts && posts.length) data = posts[0];
+  }
+  root.classList.add('active');
+  root.innerHTML = `
+    <div class="blog-modal-backdrop" onclick="document.getElementById('blog-modal-root').classList.remove('active');document.getElementById('blog-modal-root').innerHTML=''"></div>
+    <div class="blog-modal">
+      <h2>${editing ? 'Edit Article' : 'New Article'}</h2>
+      <form id="blog-edit-form">
+        <label>Title</label>
+        <input name="title" value="${escapeHtml(data.title)}" required maxlength="140"/>
+        <label>Excerpt</label>
+        <input name="excerpt" value="${escapeHtml(data.excerpt || '')}" maxlength="200"/>
+        <label>Content (Markdown/HTML)</label>
+        <textarea name="content" required>${escapeHtml(data.content || '')}</textarea>
+        <label>Tags (comma separated)</label>
+        <input name="tags" value="${(Array.isArray(data.tags) ? data.tags.join(', ') : '')}" />
+        <label>Category</label>
+        <select name="category">
+          <option value="guides" ${data.category==="guides"?"selected":""}>Guides</option>
+          <option value="case_study" ${data.category==="case_study"?"selected":""}>Case Study</option>
+          <option value="platform" ${data.category==="platform"?"selected":""}>Platform News</option>
+          <option value="tips" ${data.category==="tips"?"selected":""}>Tips</option>
+          <option value="analytics" ${data.category==="analytics"?"selected":""}>Analytics</option>
+          <option value="general" ${!data.category||data.category==="general"?"selected":""}>General</option>
+        </select>
+        <label>Cover Image URL</label>
+        <input name="cover_image" value="${escapeHtml(data.cover_image||'')}" />
+        <label>Custom Chart JSON (optional)</label>
+        <textarea name="custom_chart" placeholder='{"type":"bar","data":...}'>${data.custom_chart ? JSON.stringify(data.custom_chart, null, 2) : ''}</textarea>
+        <label>Featured?</label>
+        <select name="is_featured"><option value="false">No</option><option value="true" ${data.is_featured?"selected":""}>Yes</option></select>
+        <label>Publish?</label>
+        <select name="published"><option value="false">No</option><option value="true" ${data.published?"selected":""}>Yes</option></select>
+        <div class="blog-modal-btns">
+          <button type="button" class="blog-modal-cancel" onclick="document.getElementById('blog-modal-root').classList.remove('active');document.getElementById('blog-modal-root').innerHTML=''">Cancel</button>
+          <button type="submit" class="blog-modal-save">${editing ? 'Save' : 'Publish'}</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.getElementById('blog-edit-form').onsubmit = async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const values = {
+      title: form.title.value.trim(),
+      excerpt: form.excerpt.value.trim(),
+      content: form.content.value.trim(),
+      tags: form.tags.value.split(',').map(x=>x.trim()).filter(Boolean),
+      category: form.category.value,
+      cover_image: form.cover_image.value.trim(),
+      custom_chart: null,
+      is_featured: form.is_featured.value === "true",
+      published: form.published.value === "true"
+    };
+    if (form.custom_chart.value.trim()) {
+      try { values.custom_chart = JSON.parse(form.custom_chart.value); }
+      catch { alert('Invalid chart JSON'); return; }
+    }
+    if (userProfile) {
+      values.author_id = userProfile.user_id;
+      values.author_name = userProfile.username;
+      values.author_image = userProfile.profile_pic || '';
+    }
+    if (editing) {
+      await supabase.from('blog_posts').update(values).eq('id', editId);
+    } else {
+      await supabase.from('blog_posts').insert([values]);
+    }
+    document.getElementById('blog-modal-root').classList.remove('active');
+    document.getElementById('blog-modal-root').innerHTML = '';
+    await fetchBlogPosts();
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('blog-search').addEventListener('input', filterPosts);
+  document.getElementById('blog-category').addEventListener('change', filterPosts);
+  document.getElementById('blog-add-btn').addEventListener('click', () => openBlogModal());
+});
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+function formatDate(dt) {
+  if (!dt) return '';
+  const date = new Date(dt);
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
+function truncate(str, n) {
+  if (!str) return '';
+  return str.length > n ? str.slice(0, n) + '…' : str;
+}
+function filterPosts() {
+  const searchVal = (document.getElementById('blog-search').value || '').toLowerCase();
+  const catVal = (document.getElementById('blog-category').value || '').toLowerCase();
+  filteredPosts = blogPosts.filter(post => {
+    const inCat = !catVal || (post.category && post.category.toLowerCase() === catVal);
+    const inSearch = !searchVal ||
+      (post.title && post.title.toLowerCase().includes(searchVal)) ||
+      (post.content && post.content.toLowerCase().includes(searchVal)) ||
+      (post.author?.username && post.author.username.toLowerCase().includes(searchVal)) ||
+      (post.author_name && post.author_name.toLowerCase().includes(searchVal)) ||
+      (Array.isArray(post.tags) && post.tags.join(' ').toLowerCase().includes(searchVal));
+    return inCat && inSearch;
+  });
+  renderBlogPosts(filteredPosts);
+}
+
+// Universal image error handler for blog covers and author pics
+window.handleImgError = function(event, fallback = '/public/logos.png') {
+  if (!event.target.src.endsWith(fallback)) {
+    event.target.src = fallback;
+  }
+}
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sponsor Sorter Blog Article – deep dives, tips, and platform updates for creators and sponsors">
+  <title>Blog Article - Sponsor Sorter</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="/public/auth.js"></script>
+  <script type="module" src="/public/js/alerts.js"></script>
+  <script type="module" src="/public/js/settings.js"></script>
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+          <li id="settings-cog-li" style="display:inline;position:relative;">
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button></li>
+              </ul>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<main>
+  <div class="blog-article-container" id="blog-article-container">
+    <div class="blog-article-loading">Loading article...</div>
+  </div>
+  <div class="blog-back-link">
+    <a href="blog.html">&larr; Back to Blog</a>
+  </div>
+</main>
+
+<footer class="footercomplete">
+  <div class="footer-branding">
+    <div class="footer-text">
+      <ul>
+        <li><a href="/public/help.html">Help</a></li>
+        <li><a href="/public/contact.html">Contact</a></li>
+        <li><a href="/public/privacy.html">Privacy Policy</a></li>
+        <li><a href="/public/terms.html">Terms of Service</a></li>
+        <li><a href="/public/reviews.html">Reviews</a></li>
+        <li><a href="/public/blog.html">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="">
+</footer>
+
+<style>
+/* --- Share Buttons --- */
+.blog-article-share {
+  margin-top: 24px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 18px 7px 13px;
+  border-radius: 28px;
+  border: none;
+  background: #232e43;
+  color: #36a2eb;
+  font-weight: 600;
+  font-size: 0.98em;
+  cursor: pointer;
+  transition: background .13s, color .13s;
+  outline: none;
+  box-shadow: 0 2px 10px #0002;
+  margin-left: 0;
+}
+.share-btn svg {
+  width: 1.22em; height: 1.22em; vertical-align:middle; margin-right:5px;
+}
+.share-btn.copy   { background: #262626; color: #fff; }
+.share-btn.copy:hover { background: #555; color: #ffe877;}
+.share-btn.x      { background: #17181c; color: #1da1f2;}
+.share-btn.x:hover { background: #1da1f2; color:#fff;}
+.share-btn.linkedin { background: #18354b; color: #29b6f6;}
+.share-btn.linkedin:hover { background: #29b6f6; color: #fff;}
+@media (max-width:600px) { .blog-article-share { flex-direction:column; align-items:flex-end; gap:0.4em; } }
+
+.blog-article-container {
+  max-width: 740px;
+  margin: 44px auto 34px auto;
+  background: #23232b;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px #0003;
+  padding: 32px 22px 40px 22px;
+}
+.blog-article-loading { text-align: center; color: #bbb; font-size: 1.25em; }
+.blog-article-cover {
+  width: 100%; max-height: 330px; object-fit: cover; border-radius: 13px;
+  background: #151522;
+  margin-bottom: 24px;
+}
+.blog-article-title { color: #36a2eb; font-size: 2.2em; font-weight: 800; margin-bottom: 9px; line-height: 1.2;}
+.blog-article-meta {
+  display: flex; align-items: center; gap: 12px; font-size: 1em; color: #bcbcbc; margin-bottom: 13px;
+  flex-wrap: wrap;
+}
+.blog-article-author-img {
+  width: 39px; height: 39px; border-radius: 50%; object-fit: cover; background: #2a2a40;
+  margin-right: 6px; border:2px solid #23232b;
+}
+.blog-article-excerpt { color: #ffed9d; font-size: 1.15em; font-style: italic; margin-bottom: 16px; }
+.blog-article-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.blog-article-tag { background: #36a2eb33; color: #36a2eb; font-size: 0.9em; border-radius: 8px; padding: 3px 11px; font-weight: 500; }
+.blog-article-content {
+  color: #fff;
+  font-size: 1.14em;
+  line-height: 1.75;
+  margin-bottom: 20px;
+  word-break: break-word;
+}
+.blog-chart-canvas { margin: 30px 0 22px 0; background:#23232b; border-radius:9px; max-width:100%; }
+.blog-back-link { margin: 0 auto 22px auto; text-align: center; }
+.blog-back-link a { color: #36a2eb; font-weight: 600; font-size: 1.12em; text-decoration: none; }
+.blog-back-link a:hover { text-decoration: underline; }
+@media (max-width: 800px) { .blog-article-container { max-width:97vw; padding:20px 3vw 30px 3vw; } .blog-article-title { font-size:1.4em; } }
+</style>
+
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+// 1. Nav "Dashboard/Signup" logic – always accurate to schema
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  const authLink = document.getElementById('auth-link');
+  if (!authLink) return;
+
+  if (session && session.user) {
+    let dashboardUrl = "dashboardsponsee.html";
+    let userType = null;
+    try {
+      // Per your schema, user_type is the column in users_extended_data
+      const { data: ext } = await supabase
+        .from('users_extended_data')
+        .select('userType')
+        .eq('user_id', session.user.id)
+        .maybeSingle();
+      if (ext && ext.user_type) userType = ext.user_type;
+    } catch (e) {}
+    if (userType === "sponsor") dashboardUrl = "dashboardsponsor.html";
+    if (userType === "admin") dashboardUrl = "admindashboard.html";
+    authLink.innerHTML = `<a href="${dashboardUrl}">Dashboard</a>`;
+  } else {
+    authLink.innerHTML = `<a href="signup.html">Signup</a>`;
+  }
+});
+
+// 2. Blog Article Load/Render (with schema-correct author image logic)
+const container = document.getElementById('blog-article-container');
+
+function getQueryParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function renderContent(raw) {
+  return (raw || '').replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+}
+
+async function renderArticle() {
+  const articleId = getQueryParam('id');
+  if (!articleId) {
+    container.innerHTML = `<div class="blog-article-loading">Invalid article ID.</div>`;
+    return;
+  }
+  const { data: post, error } = await supabase
+    .from('blog_posts')
+    .select('*, author:author_id(user_id, username, profile_pic)')
+    .eq('id', articleId)
+    .maybeSingle();
+
+  if (error || !post) {
+    container.innerHTML = `<div class="blog-article-loading">Article not found.</div>`;
+    return;
+  }
+
+  // Profile picture per schema (relative or absolute path)
+  let authorImg = '/public/logos.png';
+  if (post.author?.profile_pic) {
+    // If profile_pic is a file name, use bucket; else fallback
+    authorImg = post.author.profile_pic.startsWith('http')
+      ? post.author.profile_pic
+      : `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`;
+  } else if (post.author_image) {
+    authorImg = post.author_image;
+  }
+  let authorName = post.author?.username || post.author_name || "Sponsor Sorter Team";
+  let date = post.created_at ? new Date(post.created_at).toLocaleDateString(undefined, {year:'numeric', month:'short', day:'numeric'}) : '';
+
+  let chartHtml = '';
+  if (post.custom_chart) chartHtml = `<canvas id="blog-chart" class="blog-chart-canvas"></canvas>`;
+
+  let tagsHtml = Array.isArray(post.tags) && post.tags.length
+    ? `<div class="blog-article-tags">${post.tags.map(tag => `<span class="blog-article-tag">${escapeHtml(tag)}</span>`).join('')}</div>`
+    : '';
+
+  let shareHtml = `
+    <div class="blog-article-share">
+      <button class="share-btn copy" onclick="navigator.clipboard.writeText(window.location.href);this.innerText='Copied!';setTimeout(()=>this.innerHTML='<svg viewBox=\\'0 0 20 20\\'><path fill=\\'currentColor\\' d=\\'M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z\\'/></svg>Copy Link',1000)">
+        <svg viewBox="0 0 20 20"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg>
+        Copy Link
+      </button>
+      <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}"
+         class="share-btn x" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 5.924a8.188 8.188 0 0 1-2.357.646A4.116 4.116 0 0 0 21.448 4.1a8.223 8.223 0 0 1-2.606.996A4.107 4.107 0 0 0 15.448 3c-2.266 0-4.104 1.838-4.104 4.104 0 .32.036.632.105.931C7.728 7.876 4.1 6.124 1.671 3.149c-.353.607-.556 1.312-.556 2.066 0 1.426.726 2.683 1.832 3.421a4.092 4.092 0 0 1-1.858-.514v.052c0 1.993 1.418 3.655 3.298 4.035a4.099 4.099 0 0 1-1.853.07c.522 1.631 2.037 2.819 3.833 2.851A8.233 8.233 0 0 1 2 19.545c-.646 0-1.277-.038-1.894-.111A11.59 11.59 0 0 0 8.026 21c7.547 0 11.675-6.255 11.675-11.675 0-.178-.004-.355-.012-.531A8.368 8.368 0 0 0 22 5.924z"/></svg>
+        Post to X
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}" 
+         class="share-btn linkedin" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452H17.2V15.4c0-1.206-.022-2.759-1.683-2.759-1.684 0-1.941 1.318-1.941 2.676v5.136H10.329V9h3.123v1.561h.044c.434-.82 1.494-1.683 3.073-1.683 3.285 0 3.89 2.163 3.89 4.978v6.596zM5.337 7.433A1.833 1.833 0 1 1 5.335 3.77a1.833 1.833 0 0 1 .002 3.663zm1.761 13.019H3.573V9h3.525v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.209 24 24 23.229 24 22.271V1.723C24 .771 23.209 0 22.225 0z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  `;
+
+  container.innerHTML = `
+    ${post.cover_image 
+      ? `<img src="${post.cover_image}" alt="" class="blog-article-cover" loading="lazy" onerror="handleImgError(event, '/public/logos.png')">` 
+      : ''}
+    <div class="blog-article-title">${escapeHtml(post.title)}</div>
+    <div class="blog-article-meta">
+      <img src="${authorImg}" class="blog-article-author-img" title="${escapeHtml(authorName)}"
+           onerror="handleImgError(event, '/public/logos.png')"/>
+      <span>${escapeHtml(authorName)}</span>
+      <span>🗓️ ${date}</span>
+      <span>📂 ${escapeHtml(post.category || "General")}</span>
+    </div>
+    <div class="blog-article-excerpt">${escapeHtml(post.excerpt || '')}</div>
+    ${tagsHtml}
+    <div class="blog-article-content">${renderContent(post.content)}</div>
+    ${chartHtml}
+    ${shareHtml}
+  `;
+
+  if (post.custom_chart) {
+    try {
+      const ctx = document.getElementById('blog-chart');
+      if (ctx) new Chart(ctx, post.custom_chart);
+    } catch {}
+  }
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+document.addEventListener('DOMContentLoaded', renderArticle);
+
+</script>
+<script>
+  // Fallback image handler for ALL images
+  window.handleImgError = function(event, fallback = '/public/logos.png') {
+    if (!event.target.src.endsWith(fallback)) {
+      event.target.src = fallback;
+    }
+  }
+</script>
+
+</body>
+</html>
