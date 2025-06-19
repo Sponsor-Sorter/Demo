@@ -7,7 +7,6 @@
   <title>Review Thread | Sponsor Sorter</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
- 
 </head>
 <body>
 <header class="navbar1">
@@ -65,12 +64,11 @@
 <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="/Demo/help.html">Help</a></li>
-                <li><a href="/Demo/contact.html">Contact</a></li>
-                <li><a href="/Demo/privacy.html">Privacy Policy</a></li>
-                <li><a href="/Demo/terms.html">Terms of Service</a></li>
-                <li><a href="/Demo/reviews.html">Reviews</a></li>
-
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
             </ul>
         </div>
         <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
@@ -79,33 +77,29 @@
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 // Minimal Notification Bell logic
 async function setupNotificationBell() {
   const bell = document.getElementById('notification-bell');
   const badge = document.getElementById('notification-count');
   if (!bell || !badge) return;
-
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) {
     badge.style.display = 'none';
     return;
   }
   const userId = session.user.id;
-
-  // Get notification_uuid for this user
   const { data: userRow } = await supabase
     .from('users_extended_data')
     .select('notification_uuid')
     .eq('user_id', userId)
     .single();
-
   const notification_uuid = userRow?.notification_uuid;
   if (!notification_uuid) {
     badge.style.display = 'none';
     return;
   }
-
   async function loadNotifications() {
     const { data, error } = await supabase
       .from('user_notifications')
@@ -136,7 +130,6 @@ async function updateNavBar() {
 
   if (session && session.user) {
     let userType = session.user.user_metadata?.userType;
-    // If not present in metadata, get from users_extended_data (using user_id)
     if (!userType) {
       const { data: userRow } = await supabase
         .from('users_extended_data')
@@ -210,6 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   let userEmail = session.user.email;
   let userId = session.user.id;
+  let jwt = session.access_token;
 
   // Get logged in user's role and username (FIX: use correct column names)
   let { data: userData } = await supabase
@@ -344,7 +338,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         expandBtn.innerHTML = details.style.display === 'none' ? '▼' : '▲';
       });
 
-      // Reply logic
+      // --- REPLY LOGIC W/ FAMBOT ---
       if (!review.reply) {
         const replyBtn = card.querySelector('.reply-btn');
         const textarea = card.querySelector('textarea');
@@ -357,6 +351,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
           }
           replyBtn.disabled = true;
+
+          // FAMBOT MODERATION STEP
+          const { data: { session } } = await supabase.auth.getSession();
+          const user_id = session?.user?.id;
+          const jwt = session?.access_token;
+          const modResult = await famBotModerateWithModal({
+            user_id,
+            content: text,
+            jwt,
+            type: 'review_reply'
+          });
+          if (!modResult.allowed) {
+            replyBtn.disabled = false;
+            return; // Do not submit if blocked
+          }
+
+          // Submit reply if passed moderation
           let { error: updateErr } = await supabase
             .from('private_offer_reviews')
             .update({ reply: text })
