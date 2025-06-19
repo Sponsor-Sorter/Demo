@@ -20,7 +20,7 @@
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav>
-            <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+            <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
           <li><a href="login.html">Logout</a></li>
         </nav>
       </div>
@@ -36,11 +36,11 @@
 <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="/public/help.html">Help</a></li>
-                <li><a href="/public/contact.html">Contact</a></li>
-                <li><a href="/public/privacy.html">Privacy Policy</a></li>
-                <li><a href="/public/terms.html">Terms of Service</a></li>
-                <li><a href="/public/reviews.html">Reviews</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -48,8 +48,8 @@
         <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
     </footer>
 <script type="module">
-import { supabase } from '/public/js/supabaseClient.js';
-import { notifyNewOffer } from '/public/js/alerts.js';
+import { supabase } from './js/supabaseClient.js';
+import { notifyNewOffer } from './js/alerts.js';
 
 async function createOfferFromSession() {
   const statusDiv = document.getElementById('insert-status');
@@ -102,7 +102,7 @@ let offerData = localStorage.getItem('pendingOfferData');
   // Success!
   statusDiv.innerHTML = `<span style="color:green;">Offer created successfully! Redirecting...</span>`;
   localStorage.removeItem('pendingOfferData');
-  setTimeout(() => window.location.href = '/public/dashboardsponsor.html', 2200);
+  setTimeout(() => window.location.href = './dashboardsponsor.html', 2200);
 }
 
 document.addEventListener('DOMContentLoaded', createOfferFromSession);
