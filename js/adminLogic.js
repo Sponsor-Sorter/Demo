@@ -1,4 +1,4 @@
-import { supabase } from '.js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // ========== Chart.js loader ==========
 if (!window.Chart) {
