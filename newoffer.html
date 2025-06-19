@@ -738,15 +738,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 4. Start Stripe Checkout
     try {
-      const sessionRes = await fetch(STRIPE_BACKEND, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: amount,
-          offerId: title + '-' + Date.now(),
-          offerType: 'private'
-        })
-      });
+     const session = (await supabase.auth.getSession()).data.session;
+const jwt = session?.access_token;
+
+const sessionRes = await fetch(STRIPE_BACKEND, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
+  },
+  body: JSON.stringify({
+    amount: amount,
+    offerId: title + '-' + Date.now(),
+    offerType: 'private'
+  })
+});
       const sessionData = await sessionRes.json();
       if (!sessionData.sessionId) {
         alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
