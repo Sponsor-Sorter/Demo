@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .eq('username', offer.sponsor_username)
         .single();
       if (sponsor && sponsor.profile_pic) {
-        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
+        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/objectlogos/${sponsor.profile_pic}`;
       }
       sponsor_id = sponsor?.user_id || '';
     } catch { }
