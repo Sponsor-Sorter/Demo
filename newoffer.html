@@ -204,7 +204,10 @@ import { supabase } from './js/supabaseClient.js';
 import { notifyNewOffer } from './js/alerts.js';
 import { famBotModerateWithModal } from './js/FamBot.js';
 const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
-const STRIPE_BACKEND = 'http://localhost:4242/create-checkout-session';
+const IS_LOCAL = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const STRIPE_BACKEND = IS_LOCAL
+  ? "http://localhost:4242/create-checkout-session"
+  : "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
 
 // ==== PROFILE + PLATFORM BADGES ====
 function setElementText(id, value) {
