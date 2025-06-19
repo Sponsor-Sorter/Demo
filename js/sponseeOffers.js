@@ -7,6 +7,7 @@ import {
   notifyPayout
 } from './alerts.js';
 import './userReports.js'; // For global report modal logic
+import { famBotModerateWithModal } from './FamBot.js';
 
 let allSponseeOffers = []; // Stores all loaded offers
 
@@ -90,7 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = `<p style="color:red;">Error loading offers: ${error.message}</p>`;
       return;
     }
-    // Remove the filter that excluded review_completed
     allSponseeOffers = (offers || []);
     if (allSponseeOffers.length === 0) {
       listingContainer.innerHTML = '<p>No sponsorship offers yet.</p>';
@@ -123,23 +123,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = '<p>No offers found for this filter.</p>';
       return;
     }
-
-    // Only render cards the sponsee is allowed to review (or hasn't reviewed yet if review_completed)
     for (const offer of filteredOffers) {
       if (offer.status === 'review_completed' && offer.stage === 5) {
-        // Check if sponsee already reviewed this offer
-        const { data: sponseeReview, error: reviewErr } = await supabase
+        const { data: sponseeReview } = await supabase
           .from('private_offer_reviews')
           .select('id')
           .eq('offer_id', offer.id)
           .eq('reviewer_id', sponsee_id)
           .maybeSingle();
         if (!sponseeReview) {
-          await renderSingleOfferCard(offer, false); // Not yet reviewed: render card with button
+          await renderSingleOfferCard(offer, false);
         }
-        // If reviewed, do not render card at all
       } else {
-        await renderSingleOfferCard(offer, false); // Not review_completed, always render
+        await renderSingleOfferCard(offer, false);
       }
     }
   }
@@ -155,7 +151,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch { return ''; }
   }
 
-  // Add `forceShowReview` argument (not used, but keep signature for future-proofing)
   async function renderSingleOfferCard(offer, forceShowReview = false) {
     let sponsorPicUrl = 'logos.png';
     let sponsor_id = '';
@@ -232,7 +227,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         `;
       }
     } else if (offer.stage === 5) {
-      // Always show the review button for stage 5, unless called from a skip (see above in renderSponseeOffersByFilter)
       actionButtons = `
         <div class="stage-5-summary">
           <p><strong>✅ Sponsorship complete. Thank you!</strong></p>
@@ -428,49 +422,61 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if (e.target.classList.contains('submit-comment')) {
-      const textarea = commentsSection.querySelector('.comment-input');
-      const commentText = textarea.value.trim();
-      if (!commentText) {
-        alert('Comment cannot be empty.');
-        return;
-      }
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData?.user) {
-        alert('Could not fetch user.');
-        return;
-      }
-      const user_id = userData.user.id;
-      const sender = sponsee_username;
+   if (e.target.classList.contains('submit-comment')) {
+  const textarea = commentsSection.querySelector('.comment-input');
+  const commentText = textarea.value.trim();
+  if (!commentText) {
+    alert('Comment cannot be empty.');
+    return;
+  }
+  // Get JWT for the current user session
+  const { data: { session } } = await supabase.auth.getSession();
+  const user_id = session?.user?.id;
+  const jwt = session?.access_token;
+  if (!jwt || !user_id) {
+    alert("Not authenticated. Please log in again.");
+    return;
+  }
+  // Moderation step
+  const modResult = await famBotModerateWithModal({
+    user_id,
+    content: commentText,
+    jwt,
+    type: 'comment'
+  });
+  if (!modResult.allowed) return; // Block if flagged
 
-      const { error } = await supabase
-        .from('private_offer_comments')
-        .insert([{
-          offer_id: offerId,
-          user_id: user_id,
-          sponsor_id: sponsorId,
-          sponsor_email: sponsorEmail,
-          sponsee_id: sponsee_id,
-          sponsee_email: sponsee_email,
-          sender: sender,
-          comment_text: commentText
-        }]);
-      if (error) {
-        alert('Failed to submit comment.');
-      } else {
-        textarea.value = '';
-        await reloadOfferComments();
+  // If passed moderation, insert comment
+  const sender = sponsee_username;
+  const { error } = await supabase
+    .from('private_offer_comments')
+    .insert([{
+      offer_id: offerId,
+      user_id: user_id,
+      sponsor_id: sponsorId,
+      sponsor_email: sponsorEmail,
+      sponsee_id: sponsee_id,
+      sponsee_email: sponsee_email,
+      sender: sender,
+      comment_text: commentText
+    }]);
+  if (error) {
+    alert('Failed to submit comment.');
+  } else {
+    textarea.value = '';
+    await reloadOfferComments();
 
-        await notifyComment({
-          offer_id: offerId,
-          from_user_id: sponsee_id,
-          to_user_id: sponsorId,
-          from_username: sender,
-          message: commentText
-        });
-      }
-      return;
-    }
+    await notifyComment({
+      offer_id: offerId,
+      from_user_id: sponsee_id,
+      to_user_id: sponsorId,
+      from_username: sender,
+      message: commentText
+    });
+  }
+  return;
+}
+
 
     async function reloadOfferComments() {
       const existingComments = commentsSection.querySelector('.existing-comments');
@@ -697,6 +703,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
   if (profileImg && profileImg.dataset.username) {
-    window.location.href = `/Demo/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
+    window.location.href = `./viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
