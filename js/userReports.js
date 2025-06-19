@@ -1,6 +1,6 @@
 // ./js/userReports.js
 
-import { supabase } from './js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 function closeReportModal() {
   const modal = document.getElementById('report-modal-root');
