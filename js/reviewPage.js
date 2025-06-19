@@ -1,6 +1,6 @@
-import { supabase } from './js/supabaseClient.js';
-import { notifyReview } from './js/alerts.js'; // Make sure this is correct
-import { famBotModerateWithModal } from './js/FamBot.js'; // <-- ADD FamBot import
+import { supabase } from './supabaseClient.js';
+import { notifyReview } from './alerts.js'; // Make sure this is correct
+import { famBotModerateWithModal } from './FamBot.js'; // <-- ADD FamBot import
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
