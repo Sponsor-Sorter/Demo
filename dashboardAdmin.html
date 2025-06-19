@@ -37,7 +37,7 @@
   </header>
 
   <!-- Admin Section Tab Bar -->
-  <nav class="admin-tabs">
+   <nav class="admin-tabs">
     <button class="admin-tab" data-target="#admin-stats-section">📊 Stats</button>
     <button class="admin-tab" data-target="#admin-users-section">👤 Users</button>
     <button class="admin-tab" data-target="#admin-offers-section">💼 Offers</button>
@@ -46,8 +46,9 @@
     <button class="admin-tab" data-target="#admin-notify-section">🔔 Notify</button>
     <button class="admin-tab" data-target="#admin-log-section">📜 Log</button>
     <button class="admin-tab" data-target="#admin-payouts-section">💸 Payouts</button>
-    <button class="admin-tab" data-target="#admin-privacy-section">🔒 Privacy Requests</button>
+    <button class="admin-tab" data-target="#admin-privacy-section">🔒 Privacy</button>
     <button class="admin-tab" data-target="#admin-advanced-analytics-section">📈 Analytics</button>
+    <button class="admin-tab" data-target="#admin-moderation-section">🛡️ Moderation</button>
   </nav>
 
   <!-- Place after header or wherever you like in admin dashboard -->
@@ -174,7 +175,10 @@
           <textarea id="notify-message" placeholder="Message (will be sent to all users or target email)" rows="3" required style="margin-bottom:0.4rem;width:98%;"></textarea><br />
           <input id="notify-email" placeholder="Target email (optional, blank = all users)" style="margin-bottom:0.4rem;width:98%;"><br>
           <button type="submit" style="background:#F6C62E; color:#222;width:98%;">Send Notification</button>
+          <div id="admin-notify-table"></div>
+
         </form>
+        
         <div id="admin-notify-status" style="margin-top:10px;"></div>
       </div>
       <div class="admin-flex-right">
@@ -200,14 +204,39 @@
   </div>
   <div id="admin-modal-root"></div>
 
+  <!-- NEW: Moderation Section -->
+    <section style="width: auto;" class="admin-section" id="admin-moderation-section">
+      <h2>🛡️ Moderation Logs</h2>
+
+      <div class="moderation-tabs" style="margin-bottom:16px;">
+        <button onclick="document.getElementById('fambot-logs').scrollIntoView()">FamBot Logs</button>
+        <button onclick="document.getElementById('ip-logs').scrollIntoView()">IP Moderation Logs</button>
+      </div>
+
+      <div id="fambot-logs">
+        <h3>FamBot Moderation Logs</h3>
+        <div id="admin-fambot-table"></div>
+      </div>
+
+      <div id="ip-logs" style="margin-top:40px;">
+        <h3>New User Moderation Logs</h3>
+        <div id="admin-ip-table"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="admin-modal-root"></div>
+
+
   <footer class="footercomplete">
     <div class="footer-text">
       <ul>
-        <li><a href="help.html">Help</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Service</a></li>
-        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
       </ul>
     </div>
     <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
