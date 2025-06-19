@@ -1,5 +1,5 @@
-import { supabase } from './supabaseClient.js';
-import { notifyOfferUpdate } from './alerts.js';
+import { supabase } from './js/supabaseClient.js';
+import { notifyOfferUpdate } from './js/alerts.js';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
 if (!window.sponsorOfferStatusFilter) window.sponsorOfferStatusFilter = "";
@@ -74,6 +74,9 @@ async function renderSponsorOfferCard(offer) {
   const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(offer.platforms)}</div>`;
   const detailsId = `details-${offer.id}`;
   const imagesId = `images-${offer.id}`;
+  const shareUrl = `${window.location.origin}/publicOfferDetail.html?id=${offer.id}`;
+
+  // Main card container
   const div = document.createElement('div');
   div.className = 'public-offer-card';
   div.setAttribute('data-offer-id', offer.id);
@@ -87,8 +90,73 @@ async function renderSponsorOfferCard(offer) {
     box-shadow: 0 2px 10px #0006;
     border: 1.2px solid #26263a;
     overflow-wrap: anywhere;
+    position: relative;
   `;
+
   div.innerHTML = `
+    <!-- Share Dropdown Button (Top Right) -->
+    <div style="position:absolute;top:15px;right:20px;z-index:2;">
+      <button class="share-main-btn" style="z-index:1!important;background:none;border:none;cursor:pointer;padding:6px;box-shadow:none;">
+        <svg width="28" height="28" viewBox="0 0 24 24" style="fill:#36a2eb;"><path d="M18 8.59V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.59l3.29 3.3a1 1 0 0 0 1.42-1.42l-5-5a1 1 0 0 0-1.42 0l-5 5a1 1 0 1 0 1.42 1.42L18 15.41V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v3.59l-3.3-3.3A1 1 0 0 0 13.3 5.7l5 5a1 1 0 0 0 1.4 0l5-5a1 1 0 1 0-1.42-1.42L18 8.59z"/></svg>
+      </button>
+      <div class="share-dropdown" 
+      ">
+        <button class="share-btn copy" data-link="${shareUrl}" style="
+          background:none;
+          border:none;
+          color:#eaf6ff;
+          padding:7px 5px;
+          text-align:left;
+          width:100%;
+          font-size:1.08em;
+          box-shadow:none;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          gap:11px;
+          transition:background 0.16s;
+        ">
+          <svg width="19" height="19" viewBox="0 0 20 20"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg>
+          Copy Link
+        </button>
+        <a class="share-btn x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('Check out this sponsorship offer on Sponsor Sorter!')}" style="
+          background:none;
+          border:none;
+          color:#1da1f2;
+          padding:7px 5px;
+          text-align:left;
+          width:100%;
+          font-size:1.08em;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          gap:11px;
+          transition:background 0.16s;
+          text-decoration:none;
+        ">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="currentColor" d="M22 5.924a8.188 8.188 0 0 1-2.357.646A4.116 4.116 0 0 0 21.448 4.1a8.223 8.223 0 0 1-2.606.996A4.107 4.107 0 0 0 15.448 3c-2.266 0-4.104 1.838-4.104 4.104 0 .32.036.632.105.931C7.728 7.876 4.1 6.124 1.671 3.149c-.353.607-.556 1.312-.556 2.066 0 1.426.726 2.683 1.832 3.421a4.092 4.092 0 0 1-1.858-.514v.052c0 1.993 1.418 3.655 3.298 4.035a4.099 4.099 0 0 1-1.853.07c.522 1.631 2.037 2.819 3.833 2.851A8.233 8.233 0 0 1 2 19.545c-.646 0-1.277-.038-1.894-.111A11.59 11.59 0 0 0 8.026 21c7.547 0 11.675-6.255 11.675-11.675 0-.178-.004-.355-.012-.531A8.368 8.368 0 0 0 22 5.924z"/></svg>
+          Share on X
+        </a>
+        <a class="share-btn linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}" style="
+          background:none;
+          border:none;
+          color:#29b6f6;
+          
+          text-align:left;
+          width:100%;
+          font-size:1.08em;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          transition:background 0.16s;
+          text-decoration:none;
+        ">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452H17.2V15.4c0-1.206-.022-2.759-1.683-2.759-1.684 0-1.941 1.318-1.941 2.676v5.136H10.329V9h3.123v1.561h.044c.434-.82 1.494-1.683 3.073-1.683 3.285 0 3.89 2.163 3.89 4.978v6.596zM5.337 7.433A1.833 1.833 0 1 1 5.335 3.77a1.833 1.833 0 0 1 .002 3.663zm1.761 13.019H3.573V9h3.525v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.209 24 24 23.229 24 22.271V1.723C24 .771 23.209 0 22.225 0z"/></svg>
+          Share on LinkedIn
+        </a>
+      </div>
+    </div>
+    <!-- Rest of your card, unchanged -->
     <div style="display: flex; align-items: flex-start; gap: 24px;">
       <div style="flex-shrink: 0; text-align: center;">
         <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
@@ -140,6 +208,33 @@ async function renderSponsorOfferCard(offer) {
       </div>
     </div>
   `;
+
+  // Dropdown logic:
+  const shareMainBtn = div.querySelector('.share-main-btn');
+  const shareDropdown = div.querySelector('.share-dropdown');
+  shareMainBtn.onclick = (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.share-dropdown').forEach(dd => {
+      if (dd !== shareDropdown) dd.style.display = 'none';
+    });
+    shareDropdown.style.display = shareDropdown.style.display === 'block' ? 'none' : 'block';
+  };
+  document.addEventListener('click', function closeShare(e) {
+    if (!div.contains(e.target)) shareDropdown.style.display = 'none';
+  });
+
+  // Copy button
+  shareDropdown.querySelector('.copy').onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      this.innerText = 'Copied!';
+      setTimeout(() => {
+        this.innerHTML = `<svg width="19" height="19" viewBox="0 0 20 20"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg> Copy Link`;
+      }, 1200);
+    });
+  };
+
   div.querySelector('.view-applicants-btn').onclick = () => showApplicantsModal(offer.id);
   div.querySelector('.view-details-btn').onclick = () => {
     const details = div.querySelector(`#${detailsId}`);
@@ -156,6 +251,8 @@ async function renderSponsorOfferCard(offer) {
   };
   return div;
 }
+
+
 
 async function removePublicOffer(offerId, cardDiv) {
   const { error } = await supabase
@@ -246,6 +343,7 @@ async function showApplicantsModal(offerId) {
 }
 
 window.acceptApplicant = async function(appId, btn) {
+  // 1. Mark as accepted
   const { error: updateError } = await supabase
     .from('public_offer_applications')
     .update({ status: 'accepted' })
@@ -254,6 +352,8 @@ window.acceptApplicant = async function(appId, btn) {
     alert('Failed to update application status: ' + updateError.message);
     return;
   }
+
+  // 2. Get application + offer
   let { data: app, error: appError } = await supabase
     .from('public_offer_applications')
     .select('*, public_offers(*)')
@@ -263,39 +363,78 @@ window.acceptApplicant = async function(appId, btn) {
     alert('Could not find application!');
     return;
   }
-  const { data: sponsee } = await supabase
-    .from('users_extended_data')
-    .select('email, username, user_id')
-    .eq('user_id', app.sponsee_id)
-    .single();
+
+  // 3. Try get sponsee's correct user_id
+  let sponseeUserId = null, sponseeUsername = '', sponseeEmail = '';
+  // (a) Try direct from application
+  if (app.sponsee_id) sponseeUserId = app.sponsee_id;
+
+  // (b) Query users_extended_data by sponsee_id as user_id
+  let sponseeRow = null;
+  if (sponseeUserId) {
+    const { data: userData } = await supabase
+      .from('users_extended_data')
+      .select('user_id, username, email')
+      .eq('user_id', sponseeUserId)
+      .maybeSingle();
+    if (userData) {
+      sponseeUserId = userData.user_id;
+      sponseeUsername = userData.username;
+      sponseeEmail = userData.email;
+      sponseeRow = userData;
+    }
+  }
+  // (c) If not found, fallback to application fields (should only happen on very old records)
+  if (!sponseeUserId && app.sponsee_username) {
+    const { data: userData } = await supabase
+      .from('users_extended_data')
+      .select('user_id, username, email')
+      .eq('username', app.sponsee_username)
+      .maybeSingle();
+    if (userData) {
+      sponseeUserId = userData.user_id;
+      sponseeUsername = userData.username;
+      sponseeEmail = userData.email;
+      sponseeRow = userData;
+    }
+  }
+  if (!sponseeUserId) {
+    alert("Cannot determine sponsee user_id! Please check that user exists.");
+    return;
+  }
+
+  // 4. Sponsor details
   const sponsor = await getActiveSponsor();
   if (!sponsor) {
     alert("Can't verify sponsor identity.");
     return;
   }
   const offer = app.public_offers;
-  const sponseeEmail = sponsee ? sponsee.email : '';
-  const offerTitle = offer.offer_title;
+
+  // 5. Prevent duplicate private offer thread
   const { data: existing } = await supabase
     .from('private_offers')
     .select('id')
     .eq('sponsor_id', sponsor.user_id)
     .eq('sponsee_email', sponseeEmail)
-    .eq('offer_title', offerTitle);
+    .eq('offer_title', offer.offer_title);
   if (existing && existing.length > 0) {
     btn.innerText = "Accepted";
     btn.disabled = true;
     alert("You have already accepted this applicant for this offer.");
     return;
   }
+
+  // 6. Prepare insert object
   const insertObj = {
     sponsor_email: sponsor.email,
     sponsor_company: sponsor.company_name || offer.sponsor_company || '',
     sponsor_id: sponsor.user_id,
     sponsor_username: sponsor.username,
-    sponsee_username: sponsee ? sponsee.username : app.sponsee_username,
-    sponsee_email: sponseeEmail,
-    offer_title: offerTitle,
+    sponsee_username: sponseeUsername || app.sponsee_username || '',
+    sponsee_email: sponseeEmail || app.sponsee_email || '',
+    sponsee_id: sponseeUserId,
+    offer_title: offer.offer_title,
     offer_description: offer.offer_description,
     offer_amount: offer.offer_amount,
     offer_images: offer.offer_images,
@@ -318,6 +457,8 @@ window.acceptApplicant = async function(appId, btn) {
     live_url: null,
     archived: false
   };
+
+  // 7. Insert private offer thread
   const { data: newOfferRows, error: insertError } = await supabase
     .from('private_offers')
     .insert([insertObj])
@@ -330,15 +471,19 @@ window.acceptApplicant = async function(appId, btn) {
   btn.innerText = "Accepted";
   btn.disabled = true;
   alert('Private offer thread created successfully!');
-  if (insertedPrivateOfferId) {
+
+  // 8. Notify sponsee
+  if (insertedPrivateOfferId && sponseeUserId) {
     await notifyOfferUpdate({
-      to_user_id: sponsee.user_id,
+      to_user_id: sponseeUserId,
       offer_id: insertedPrivateOfferId,
       type: 'offer_acceptance',
       title: 'Offer Accepted!',
       message: `Congratulations! You have been accepted for "${insertObj.offer_title}".`
     });
   }
+
+  // 9. If offer is now full, remove public offer and notify sponsor
   const { count: acceptedCount, error: countError } = await supabase
     .from('public_offer_applications')
     .select('*', { count: 'exact', head: true })
@@ -506,6 +651,7 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
             <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
             <div style="margin-bottom:3px;"><strong>At:</strong> ${offer.sponsor_company || '-'}</div>
             <button class="view-profile-btn" style="margin-top:7px;background:#4061b3;color:#fff;padding:4px 15px;border-radius:7px;border:none;cursor:pointer;">View Profile</button>
+            
           </div>
           ${platformsRow}
         </div>
@@ -650,4 +796,16 @@ export async function notifySponsorOnApplication({ offer_id, sponsee_user_id, sp
       message: `${sponsee_username} applied for your public offer: "${offerRow.offer_title}".`
     });
   }
+}
+
+if (typeof window !== "undefined") {
+  document.addEventListener("click", function(e) {
+    if (e.target && e.target.classList.contains("share-btn") && e.target.classList.contains("copy")) {
+      const link = e.target.getAttribute("data-link");
+      navigator.clipboard.writeText(link).then(() => {
+        e.target.innerText = "Copied!";
+        setTimeout(() => { e.target.innerHTML = `<svg viewBox="0 0 20 20" width="18" height="18"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg> Copy Link`; }, 1200);
+      });
+    }
+  });
 }
