@@ -98,7 +98,7 @@ async function renderSingleOffer(offer) {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
       if (offerId) {
-        window.location.href = `/public/review.html?offer_id=${offerId}`;
+        window.location.href = `./review.html?offer_id=${offerId}`;
       }
     }
   });
@@ -143,7 +143,7 @@ const reportBtnHtml = `
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
