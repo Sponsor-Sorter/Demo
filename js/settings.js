@@ -1,7 +1,8 @@
-// ./settings.js
+// ./js/settings.js
 
-import { supabase } from './supabaseClient.js';
-import { getActiveUser } from './impersonationHelper.js';
+import { supabase } from './js/supabaseClient.js';
+import { getActiveUser } from './js/impersonationHelper.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- User & Vars ---
@@ -64,15 +65,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadOnboardingSetting() {
     currentUser = await getActiveUser();
     if (!currentUser) return;
-    // 'onboarded' TRUE means completed (so onboarding should be hidden)
-    // 'onboarded' FALSE/null means NOT completed (so onboarding should show)
     onboardingHidden = !!currentUser.onboarded;
     updateOnboardingToggleUI();
   }
   async function saveOnboardingSetting(val) {
     currentUser = await getActiveUser();
     if (!currentUser) return;
-    // val: true = onboarding is done/hide, false = show onboarding
     await supabase
       .from('users_extended_data')
       .update({ onboarded: val })
@@ -87,7 +85,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       onboardingHidden = !onboardingHidden;
       updateOnboardingToggleUI();
       await saveOnboardingSetting(onboardingHidden);
-      // You could also trigger onboarding.js to run here if needed
     });
   }
   await loadOnboardingSetting();
@@ -172,6 +169,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (descMsg) descMsg.textContent = "Description cannot be empty.";
         return;
       }
+      // --- FAMBOT moderation before save ---
+      const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
+      const jwt = session?.access_token;
+      const famRes = await famBotModerateWithModal({
+        user_id,
+        content: descTextarea.value.trim(),
+        jwt,
+        type: 'profile'
+      });
+      if (!famRes.allowed) return;
+
       currentUser = await getActiveUser();
       const { error } = await supabase.from('users_extended_data')
         .update({ about_yourself: descTextarea.value.trim() })
@@ -220,10 +229,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
   if (addPlatformBtn && platformSelect && platformInput) {
-    addPlatformBtn.onclick = () => {
+    addPlatformBtn.onclick = async () => {
       const plat = platformSelect.value;
       const handle = platformInput.value.trim();
       if (!plat || !handle) { socialMsg.textContent = "Choose a platform and enter a handle."; return; }
+      // --- FAMBOT moderation for new handle ---
+      const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
+      const jwt = session?.access_token;
+      const famRes = await famBotModerateWithModal({
+        user_id,
+        content: handle,
+        jwt,
+        type: 'social_handle'
+      });
+      if (!famRes.allowed) return;
+
       socials[plat] = handle;
       renderSocialList();
       platformSelect.selectedIndex = 0;
