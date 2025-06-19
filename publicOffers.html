@@ -295,6 +295,7 @@
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
 const STRIPE_BACKEND = 'http://localhost:4242/create-checkout-session';
@@ -529,6 +530,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked')).map(cb => cb.value.toLowerCase());
     const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
 
+    // ==== FamBot Moderation ====
+    const { data: { session } } = await supabase.auth.getSession();
+    const user_id = session?.user.id;
+    const jwt = session?.access_token;
+
+    // Moderate key user fields. Block if any are flagged.
+    const fieldsToModerate = [
+      { content: title, type: 'offer' },
+      { content: description, type: 'offer' },
+      { content: instructions, type: 'offer' }
+    ];
+    for (const field of fieldsToModerate) {
+      if (field.content && field.content.length > 0) {
+        const result = await famBotModerateWithModal({
+          user_id,
+          content: field.content,
+          jwt,
+          type: field.type
+        });
+        if (!result.allowed) return;
+      }
+    }
+    // ==== End FamBot Moderation ====
+
     // 1. Upload images
     const uploadedImageNames = [];
     for (let i = 0; i < imageFiles.length; i++) {
@@ -744,7 +769,7 @@ function autoFillCycles() {
 document.getElementById('sponsorshipDuration').addEventListener('change', autoFillCycles);
 document.getElementById('payment').addEventListener('change', autoFillCycles);
 
-
 </script>
+
 </body>
 </html>
