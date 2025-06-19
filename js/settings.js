@@ -1,8 +1,8 @@
-// ./js/settings.js
+// ./settings.js
 
-import { supabase } from './js/supabaseClient.js';
-import { getActiveUser } from './js/impersonationHelper.js';
-import { famBotModerateWithModal } from './js/FamBot.js';
+import { supabase } from './supabaseClient.js';
+import { getActiveUser } from './impersonationHelper.js';
+import { famBotModerateWithModal } from './FamBot.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // --- User & Vars ---
