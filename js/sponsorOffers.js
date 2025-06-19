@@ -1,9 +1,9 @@
 // public/js/sponsorOffers.js
-import { supabase } from './js/supabaseClient.js';
-import { handleRemoveOffer } from './js/sponsorLogic.js';
-import { notifyComment, notifyOfferUpdate } from './js/alerts.js';
-import './js/userReports.js'; // Import the reporting logic
-import { famBotModerateWithModal } from './js/FamBot.js';
+import { supabase } from './supabaseClient.js';
+import { handleRemoveOffer } from './sponsorLogic.js';
+import { notifyComment, notifyOfferUpdate } from './alerts.js';
+import './userReports.js'; // Import the reporting logic
+import { famBotModerateWithModal } from './FamBot.js';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
@@ -98,7 +98,7 @@ async function renderSingleOffer(offer) {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
       if (offerId) {
-        window.location.href = `./review.html?offer_id=${offerId}`;
+        window.location.href = `/public/review.html?offer_id=${offerId}`;
       }
     }
   });
@@ -143,7 +143,7 @@ const reportBtnHtml = `
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
