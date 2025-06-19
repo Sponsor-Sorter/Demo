@@ -1,7 +1,9 @@
-import { supabase } from './supabaseClient.js';
-import { handleRemoveOffer } from './sponsorLogic.js';
-import { notifyComment, notifyOfferUpdate } from './alerts.js';
-import './userReports.js'; // Import the reporting logic
+// public/js/sponsorOffers.js
+import { supabase } from './js/supabaseClient.js';
+import { handleRemoveOffer } from './js/sponsorLogic.js';
+import { notifyComment, notifyOfferUpdate } from './js/alerts.js';
+import './js/userReports.js'; // Import the reporting logic
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
@@ -96,7 +98,7 @@ async function renderSingleOffer(offer) {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
       if (offerId) {
-        window.location.href = `review.html?offer_id=${offerId}`;
+        window.location.href = `./review.html?offer_id=${offerId}`;
       }
     }
   });
@@ -115,7 +117,6 @@ async function renderSingleOffer(offer) {
   }
 
  // ================== REPORT BUTTON (OFFER) ======================
-// Bottom-left flag button
 const reportBtnHtml = `
   <button 
     class="report-btn" 
@@ -137,21 +138,12 @@ const reportBtnHtml = `
   >🚩</button>
 `;
 
-
   listing.innerHTML = `
     <div class="card-content" style="position:relative;">
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img 
-        src="${sponseePicUrl}" 
-        onerror="this.src='/public/logos.png'" 
-        alt="Sponsee Profile Pic" 
-        class="stage-logo sponsee-profile-link"
-        data-username="${sponsee?.username || offer.sponsee_username}"
-        style="cursor:pointer;"
-      >
-
+          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -442,6 +434,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       const commentText = textarea.value.trim();
       if (!commentText) return alert('Comment cannot be empty.');
 
+      // Get JWT for the current user session
+      const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
+      const jwt = session?.access_token;
+      if (!jwt || !user_id) {
+        alert("Not authenticated. Please log in again.");
+        return;
+      }
+      // Moderation step
+      const modResult = await famBotModerateWithModal({
+        user_id,
+        content: commentText,
+        jwt,
+        type: 'comment'
+      });
+      if (!modResult.allowed) return; // Block if flagged
+
       // Fetch the latest sponsor username just like sponsee side
       const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
 
@@ -463,7 +472,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert('Failed to submit comment.');
       } else {
         textarea.value = '';
-        alert('Comment submitted.');
         // Notify sponsee
         await notifyComment({
           to_user_id: sponseeUserId,
@@ -517,12 +525,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
-
-document.addEventListener('click', function(e) {
-  const target = e.target;
-  if (target.classList.contains('sponsee-profile-link') && target.dataset.username) {
-    const username = encodeURIComponent(target.dataset.username);
-    window.location.href = `/Demo/viewprofile.html?username=${username}`;
-  }
-});
-
