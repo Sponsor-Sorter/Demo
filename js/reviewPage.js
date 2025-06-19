@@ -1,5 +1,6 @@
-import { supabase } from './supabaseClient.js';
-import { notifyReview } from './alerts.js'; // Make sure this is correct
+import { supabase } from './js/supabaseClient.js';
+import { notifyReview } from './js/alerts.js'; // Make sure this is correct
+import { famBotModerateWithModal } from './js/FamBot.js'; // <-- ADD FamBot import
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -142,10 +143,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let redirectPath;
     if (userEmail === offer.sponsor_email) {
       reviewer_role = 'sponsor';
-      redirectPath = "dashboardsponsor.html";
+      redirectPath = "./dashboardsponsor.html";
     } else if (userEmail === offer.sponsee_email) {
       reviewer_role = 'sponsee';
-      redirectPath = "dashboardsponsee.html";
+      redirectPath = "./dashboardsponsee.html";
     } else {
       reviewer_role = null;
     }
@@ -154,6 +155,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Could not determine your role for this offer. Please contact support.");
       return;
     }
+
+    // ========== FAMBOT MODERATION (before review insert) ==========
+    const jwt = session?.access_token;
+    if (!jwt) {
+      alert("Not authenticated. Please log in again.");
+      return;
+    }
+    const modResult = await famBotModerateWithModal({
+      user_id: userId,
+      content: reviewText,
+      jwt,
+      type: 'review'
+    });
+    if (!modResult.allowed) return; // Block if flagged
 
     // 1. Submit review
     const { error: insertError } = await supabase
