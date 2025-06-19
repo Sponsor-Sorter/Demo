@@ -417,7 +417,7 @@ fieldset {
 }
 
 .lookingfor {
-    height: 1300px;
+    height: 1500px;
     padding-bottom: 20px;
     margin-bottom: 80px;
 }
@@ -1941,8 +1941,6 @@ fieldset {
 
   .faqshelp {
     padding: 30px;
-    background-color: #000000;
-    border-color: #007bff; /* Blue border when focused */
     border-radius: 8px;
     margin: 40px auto;
     max-width: 1000px;
@@ -4275,8 +4273,11 @@ body, .admin-table, .admin-tab, .pagination-btn {
 }
 
      .hero {
-            background: linear-gradient(120deg, #312ef644 40%, #fff 100%);
-            padding: 44px 0 36px 0;
+ background: linear-gradient(
+    180deg,           /* vertical */
+    #000000 0%,       /* deep black top */
+    #232323 60%,      /* existing dark mid */
+    #535353 100%         /* white at bottom */);            padding: 44px 0 36px 0;
             text-align: center;
             border-radius: 2.5rem;
             margin-bottom: 24px;
@@ -5005,3 +5006,101 @@ fieldset.recentoffers {
 .recentoffers {
   margin-top: 36px !important;
 }
+
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 0;
+  top: 110%;
+  min-width: 200px;
+  max-width: 320px;
+  padding: 8px 14px;
+  background: #181b2c;
+  color: #fff;
+  border-radius: 9px;
+  box-shadow: 0 4px 16px #0006;
+  font-size: 0.97em;
+  z-index: 9999;
+  white-space: pre-line;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.16s;
+}
+
+[data-tooltip]:hover {
+  color: #0096FF;
+}
+
+ .form-double-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .form-double-row .form-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: 1 1 0;
+    min-width: 220px;
+  }
+  @media (max-width: 700px) {
+    .form-double-row { flex-direction: column; gap: 12px; }
+    .form-double-row .form-group { min-width: unset; }
+  }
+
+  /* --- Share Dropdown Styling --- */
+.share-dropdown {
+  min-width: 180px !important;
+  width: 230px !important;
+  background: #212a38 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 36px #000c !important;
+  padding: 0 !important;
+  position: absolute !important;
+  top: 100% !important;   /* Directly under the button */
+  margin-top: 3px !important; /* Tiny gap if you want, or 0 */  right: 35px !important;     /* Right aligned with the button */
+  z-index: 999 !important;
+  overflow: hidden !important;
+  display: none;           /* Default hidden, JS toggles to block */
+}
+
+.share-main-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  z-index: 2 !important;
+}
+
+.share-btn.copy, .share-btn.x, .share-btn.linkedin {
+  width: 100% !important;
+  border: none !important;
+  margin-left: 20px !important;
+  outline: none !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: left !important;
+  gap: 0px !important;
+  font-size: 1.1em !important;
+  padding: 2px 5px !important;
+  background: none !important;
+  cursor: pointer !important;
+  transition: background 0.16s;
+}
+
+.share-btn.copy:hover    { background: #273144 !important; color: #ffe877 !important; }
+.share-btn.x:hover       { background: #192534 !important; color: #fff !important; }
+.share-btn.linkedin:hover{ background: #173c53 !important; color: #fff !important; }
+.share-btn:active        { background: #2d384c !important; }
