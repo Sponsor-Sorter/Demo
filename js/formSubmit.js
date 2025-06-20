@@ -1,13 +1,42 @@
+// /public/js/formSubmit.js
 import { supabase } from './supabaseClient.js';
 
 const SUPABASE_ANON_KEY = '024636ea4f7d172f905c02347888f84e405b115a0255326a0b185bf767d2baf0';
 const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBotSignup';
 
+// Always use deployed Edge Function for signup
+const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
+const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
+const STRIPE_SUBSCRIPTION_PRICE_ID = "price_1RTjwk2eA1800fRNzvisgTuO";
+
+// Loud error logging utility
+function logError(label, err) {
+  console.error(`[Signup][${label}]`, err);
+  alert(`[Signup][${label}] ${err?.message || err}`);
+}
+
+// Load Stripe.js if not already present
+async function loadStripeJS() {
+  if (window.Stripe) return;
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://js.stripe.com/v3/';
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Failed to load Stripe.js'));
+    document.head.appendChild(script);
+  });
+}
+
+function getPendingUserId(email) {
+  return `${btoa(email)}-${Date.now()}`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registrationForm');
   const submitButton = document.getElementById('submitBtn');
-  const btnText = submitButton.querySelector('.btn-text');
-  const spinner = submitButton.querySelector('.spinner');
+  const btnText = submitButton?.querySelector('.btn-text');
+  const spinner = submitButton?.querySelector('.spinner');
+  if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -18,67 +47,59 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    submitButton.disabled = true;
-    btnText.textContent = 'Signing up...';
-    spinner.style.display = 'inline-block';
+    if (submitButton) {
+      submitButton.disabled = true;
+      if (btnText) btnText.textContent = 'Signing up...';
+      if (spinner) spinner.style.display = 'inline-block';
+    }
 
     try {
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
-      const email = data.email;
       const password = data.password;
+      const confirm_password = data.confirm_password;
 
-      // Run FamBotSignup moderation BEFORE any inserts
-      const famBotContent = {
-        username: data.username,
-        about_yourself: data['about-yourself'],
-        title: data.title,
-        company_name: data.company_name,
-        contenttype: data.contenttype
-      };
-
-      const combinedContent = Object.values(famBotContent).filter(Boolean).join(" ");
-
-      const famResponse = await fetch(FAMBOT_SIGNUP_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({ user_id: null, content: combinedContent })
-      });
-
-      const famResult = await famResponse.json();
-
-      if (famResult.flagged) {
-        showFamBotModal(famResult);
+      if (password !== confirm_password) {
+        logError("Password", "Passwords do not match.");
         submitButton.disabled = false;
         btnText.textContent = 'Sign Up';
         spinner.style.display = 'none';
         return;
       }
 
-      // Step 1: Sign up user in Supabase Auth
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (signUpError) {
-        console.error('Sign-up error:', signUpError);
-        alert('Failed to sign up. Try again.');
-        return;
+      // FamBot moderation
+      let famResult;
+      try {
+        const famBotContent = {
+          username: data.username,
+          about_yourself: data['about-yourself'],
+          title: data.title,
+          company_name: data.company_name,
+          contenttype: data.contenttype
+        };
+        const combinedContent = Object.values(famBotContent).filter(Boolean).join(" ");
+        const famResponse = await fetch(FAMBOT_SIGNUP_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ user_id: null, content: combinedContent })
+        });
+        famResult = await famResponse.json();
+        if (!famResponse.ok) {
+          throw new Error(`[FamBot] ${famResult.error || famResponse.statusText}`);
+        }
+        if (famResult.flagged) {
+          showFamBotModal(famResult);
+          throw new Error("FamBot blocked this signup.");
+        }
+      } catch (err) {
+        logError("FamBot", err);
+        throw err;
       }
 
-      const userId = authData?.user?.id;
-      if (!userId) {
-        alert('Sign-up successful! Please verify your email before logging in.');
-        const basePath = window.location.pathname.includes('/public') ? '/public' : '';
-        window.location.href = `${basePath}/login.html`;
-        return;
-      }
-
-      // Handle extra form fields
+      // Platforms and socials
       data.platforms = formData.getAll('platforms') || [];
       data.social_handles = {
         instagram: formData.get('instagram_handle'),
@@ -90,95 +111,109 @@ document.addEventListener('DOMContentLoaded', () => {
         snapchat: formData.get('snapchat_handle')
       };
 
-      console.log('Captured social handles:', data.social_handles);
-
-      // Upload logo if provided
+      // Logo pre-upload
+      let pendingLogoPath = null;
+      let pendingLogoToDelete = false;
       const logoFile = formData.get('logofile');
-      if (logoFile && logoFile.size > 0) {
-        const logoUploadResult = await uploadLogo(userId, logoFile);
-        if (logoUploadResult.success) {
-          data.profile_pic = logoUploadResult.path;
-        } else {
-          console.error('Logo upload failed:', logoUploadResult.error);
-          alert('Logo upload failed, continuing without logo...');
+      if (logoFile && logoFile.size > 0 && data.email) {
+        try {
+          const tempUserId = getPendingUserId(data.email);
+          const sanitized = logoFile.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9._-]/g, '');
+          pendingLogoPath = `${tempUserId}-${sanitized}`;
+          const { error: uploadErr } = await supabase.storage
+            .from('logos')
+            .upload(pendingLogoPath, logoFile, {
+              cacheControl: '3600',
+              upsert: true,
+              contentType: logoFile.type,
+              metadata: { owner: tempUserId, pending: true }
+            });
+          if (uploadErr) throw uploadErr;
+          localStorage.setItem('pendingLogoPath', pendingLogoPath);
+          pendingLogoToDelete = true;
+          data.logo_path = pendingLogoPath;
+          data.hasLogo = true;
+        } catch (err) {
+          logError("LogoUpload", err);
         }
       }
 
-      // Insert into users_extended_data
-      const insertData = {
-        username: data.username,
-        email: data.email,
-        title: data.title,
-        bday: data.bday,
-        company_name: data.company_name,
-        location: data.location,
-        about_yourself: data['about-yourself'],
-        userType: data.userType,
-        platforms: data.platforms,
-        target_audience: data['target-audience'],
-        age_range: data['age-range'],
-        preferred_content_format: data['preferred-content-format'],
-        partnership_type: data['partnership-type'],
-        minfollowers: data.minfollowers,
-        payment_method: data['payment-method'],
-        paypal_email: data['paypal-email'],
-        social_handles: data.social_handles,
-        profile_pic: data.profile_pic || null,
-        user_id: userId,
-        email_verified: false,
-        contenttype: data.contenttype,
-        agreed_tos: tosCheckbox.checked === true
-      };
+      // Store registration data for after payment
+      const registration = {};
+      for (const k in data) {
+        if (k !== 'password' && k !== 'confirm_password') registration[k] = data[k];
+      }
+      window.__signupPassword = password;
+      window.__signupConfirmPassword = confirm_password;
+      localStorage.setItem('pendingRegistration', JSON.stringify(registration));
 
-      const { error: insertError } = await supabase
-        .from('users_extended_data')
-        .insert([insertData]);
+      if (window.__signupProcessing) return;
+      window.__signupProcessing = true;
 
-      if (insertError) {
-        console.error('Insert error:', insertError);
-        alert('Account created, but failed to save extra profile info.');
-        return;
+      // ---- Start Stripe subscription for signup ----
+      let sessionRes, sessionData;
+      try {
+        // Compute the correct frontendBaseUrl
+        const frontendBaseUrl = window.location.origin.includes('github.io')
+          ? 'https://sponsor-sorter.github.io/Demo'
+          : window.location.origin + '/public';
+
+        sessionRes = await fetch(STRIPE_BACKEND, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mode: "subscription",
+            subscriptionPriceId: STRIPE_SUBSCRIPTION_PRICE_ID,
+            offerId: registration.email + '-' + Date.now(),
+            offerType: 'signup',
+            frontendBaseUrl
+          })
+        });
+        sessionData = await sessionRes.json();
+        if (!sessionRes.ok) throw new Error(`[Stripe] ${sessionData.error || sessionRes.statusText}`);
+        if (!sessionData.sessionId) throw new Error(`[Stripe] No sessionId returned`);
+      } catch (err) {
+        logError("StripeCheckout", err);
+        if (pendingLogoToDelete && pendingLogoPath) {
+          await supabase.storage.from('logos').remove([pendingLogoPath]);
+          localStorage.removeItem('pendingLogoPath');
+        }
+        throw err;
       }
 
-      alert('Sign-up successful! Please verify your email before logging in.');
-      const basePath = window.location.pathname.includes('/public') ? '/public' : '';
-      window.location.href = `${basePath}/login.html`;
-
+      // Start Stripe redirect
+      try {
+        await loadStripeJS();
+        const stripe = window.Stripe(STRIPE_PK);
+        const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+        if (error) throw error;
+      } catch (err) {
+        logError("StripeRedirect", err);
+        if (pendingLogoToDelete && pendingLogoPath) {
+          await supabase.storage.from('logos').remove([pendingLogoPath]);
+          localStorage.removeItem('pendingLogoPath');
+        }
+        throw err;
+      }
     } catch (error) {
-      console.error('Unexpected error:', error);
-      alert('Something went wrong. Please try again.');
+      // All errors already shown via logError
     } finally {
-      submitButton.disabled = false;
-      btnText.textContent = 'Sign Up';
-      spinner.style.display = 'none';
+      window.__signupProcessing = false;
+      if (submitButton) {
+        submitButton.disabled = false;
+        if (btnText) btnText.textContent = 'Sign Up';
+        if (spinner) spinner.style.display = 'none';
+      }
     }
   });
 });
 
-// Upload Logo Helper
-async function uploadLogo(userId, file) {
-  const sanitizedFilename = file.name
-    .toLowerCase()
-    .replace(/\s+/g, '_')
-    .replace(/[^a-z0-9._-]/g, '');
-
-  const filePath = `${userId}-${sanitizedFilename}`;
-
-  const { error } = await supabase.storage
-    .from('logos')
-    .upload(filePath, file, {
-      cacheControl: '3600',
-      upsert: true,
-      contentType: file.type,
-      metadata: { owner: userId }
-    });
-
-  if (error) {
-    console.error('Upload error:', error.message);
-    return { success: false, error };
+export async function cleanupPendingLogo() {
+  const pendingLogoPath = localStorage.getItem('pendingLogoPath');
+  if (pendingLogoPath) {
+    await supabase.storage.from('logos').remove([pendingLogoPath]);
+    localStorage.removeItem('pendingLogoPath');
   }
-
-  return { success: true, path: filePath };
 }
 
 // Preview Logo Locally
@@ -186,7 +221,6 @@ window.previewLogo = function () {
   const fileInput = document.getElementById('logofile');
   const file = fileInput.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = function (e) {
     document.getElementById('pici').src = e.target.result;
@@ -198,9 +232,7 @@ window.previewLogo = function () {
 function showFamBotModal(result) {
   const existing = document.getElementById('fambot-modal');
   if (existing) existing.remove();
-
   const categories = (result.flaggedCategories || []).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)).join(', ');
-
   const modal = document.createElement('div');
   modal.id = 'fambot-modal';
   modal.innerHTML = `
