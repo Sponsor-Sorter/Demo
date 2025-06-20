@@ -29,6 +29,9 @@ function renderPlatformLogos(platforms = []) {
   return html;
 }
 
+const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
+
+
 async function getActiveSponsor() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return null;
