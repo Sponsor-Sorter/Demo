@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Payment Failed - Sponsor Sorter">
+  <title>Payment Failed | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<style>
+    .supporta a {
+        background-color: #fff7f7;color: #2429bc;text-decoration: underline;
+    }
+</style>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+<main style="min-height:40vh;">
+  <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#fff7f7;border-radius:14px;box-shadow:0 2px 24px 0 #f8d7da;">
+    <h2 style="color:#c9302c;">❌ Payment Failed</h2>
+    <div id="fail-status" style="margin-bottom:16px;color:#c9302c;">
+      Unfortunately, your payment did not complete.<br>
+      <strong>No money was charged and your account/offer was not created.</strong>
+    </div>
+    <div class="supporta" style="margin-bottom:18px;color:black">
+      You can try again below or contact <a href="mailto:support@sponsorsorter.com">support</a> if you need help.
+    </div>
+    <button onclick="window.location.href='signup.html'" style="padding:9px 28px;background:#c9302c;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">Back to Sign Up</button>
+    <button onclick="window.location.href='./index.html'" style="padding:9px 28px;background:#2429bc;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-left:10px;">Back to Home</button>
+  </div>
+</main>
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="/public/help.html">Help</a></li>
+      <li><a href="/public/contact.html">Contact</a></li>
+      <li><a href="/public/privacy.html">Privacy Policy</a></li>
+      <li><a href="/public/terms.html">Terms of Service</a></li>
+      <li><a href="/public/reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+// Remove any pending uploaded logo
+async function cleanupPendingLogo() {
+  const pendingLogoPath = localStorage.getItem('pendingLogoPath');
+  if (pendingLogoPath) {
+    try {
+      await supabase.storage.from('logos').remove([pendingLogoPath]);
+    } catch (e) {/* Ignore */}
+    localStorage.removeItem('pendingLogoPath');
+  }
+}
+
+// Remove any pending registration/offer data
+function cleanupPendingData() {
+  localStorage.removeItem('pendingRegistration');
+  localStorage.removeItem('pendingOfferData');
+}
+
+// Clean everything on load
+document.addEventListener('DOMContentLoaded', async () => {
+  cleanupPendingData();
+  await cleanupPendingLogo();
+});
+</script>
+</body>
+</html>
