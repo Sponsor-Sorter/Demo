@@ -1,814 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Create Public Offer - Sponsor Sorter">
+  <title>Post Public Offer | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+<script src="https://js.stripe.com/v3/"></script>
+
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section class="userprofile">
+  <fieldset>
+    <legend>Your Sponsor Profile</legend>
+    <div class="profile-header">
+      <div class="profile-picture">
+        <img id="sponsor-profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
+        <p>Account Type: <span id="account-type">Sponsor</span></p>
+        <div id="sponsor-overall-rating" style="margin-top: 10px;">
+          <strong>Overall Rating:</strong> <span id="sponsor-average-stars">☆☆☆☆☆</span>
+        </div>
+      </div>
+      <div class="profile-info">
+        <p>Email: <span id="sponsor-email">[Email]</span></p>
+        <p>Company: <span id="company">[Company]</span></p>
+        <p>Location: <span id="sponsor-location">[Location]</span></p>
+      </div>
+    </div>
+    <div class="help-block" id="profile-help-block" style="margin-top:10px;margin-bottom:8px;">
+      <em>
+        <strong>Profile Information:</strong><br>
+        This section displays your sponsor account details as seen by sponsees on public offers. Please keep your info up to date in your account settings for trust and visibility.
+      </em>
+    </div>
+  </fieldset>
+</section>
+
+<form id="offerForm" enctype="multipart/form-data">
+  <section>
+    <fieldset>
+      <legend>Create Public Offer Below</legend>
+      <div class="help-block" id="offer-help-block" style="margin-bottom:12px;">
+        <em>
+          <strong>Offer Creation Help:</strong><br>
+          Fill out this form to create a new public sponsorship offer. You can use the presets to autofill common offers, or enter your own details. Make sure to include a clear title, description, and set relevant requirements. Fields marked <b>required</b> must be filled in.
+        </em>
+      </div>
+      <label for="preset">Offer Preset:</label>
+      <select id="preset" name="preset">
+        <option value="">-- Select a Preset --</option>
+        <option value="shoutout">Instagram Shoutout</option>
+        <option value="youtube_review">YouTube Product Review</option>
+        <option value="ongoing_monthly">Ongoing Monthly Sponsorship</option>
+        <option value="story_mention">Instagram Story Mention</option>
+        <option value="event">Event Sponsorship</option>
+      </select>
+      <button type="button" id="applyPresetBtn" style="margin-left:8px;">Apply Preset</button>
+      <span class="info-icon" data-tooltip="Use presets to autofill common Locations.">🛈</span>
+      <br><br>
+      <fieldset>
+      <label for="offerTitle"></label>Offer Title / Campaign Name:</label>
+      <input type="text" id="offerTitle" name="offerTitle" required>
+      <span class="info-icon" data-tooltip="Give your offer a catchy campaign name. This is what creators will see first.">🛈</span><br><br>
+
+      <div class="form-group">
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" name="deadline" required>
+    <span class="info-icon" data-tooltip="Date by which job must be completed by.">🛈</span>
+  </div>
+
+      <label for="offerDescription">Offer Description:</label><br>
+      <textarea id="offerDescription" name="offerDescription" rows="4" cols="50" required></textarea><br><br>
+
+       
+<div class="form-double-row">
+  <div class="form-group">
+    <label for="jobType">Type of Job:</label>
+    <select id="jobType" name="jobType" required>
+      <option value="">--Select Type--</option>
+      <option value="Shoutout">Shoutout</option>
+      <option value="Product Placement">Product Placement</option>
+      <option value="Dedicated Video">Dedicated Video</option>
+      <option value="Story Mention">Story Mention</option>
+      <option value="Event Sponsorship">Event Sponsorship</option>
+      <option value="Ongoing Deal">Ongoing Deal</option>
+    </select>
+    <span class="info-icon" data-tooltip="The type of Offer you are asking for.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="deliverableType">Deliverable Type:</label>
+        <span class="info-icon" data-tooltip="How the offers job will be delivered to the public.">🛈</span>
+    <select id="deliverableType" name="deliverableType" required>
+      <option value="">--Select Deliverable--</option>
+      <option value="Include in next video">Include in Next Video</option>
+      <option value="Standalone Post">Standalone Post</option>
+      <option value="Story Mention">Story Mention</option>
+      <option value="Product Review">Product Review</option>
+      <option value="Custom Content">Custom Content</option>
+    </select>
+  </div>
+</div>
+
+
+      <label for="instructions">Instructions:</label><br>
+      <textarea id="instructions" name="instructions" rows="4" cols="50"></textarea><br><br>
+    </fieldset>
+
+    <fieldset>
+      <label for="sponsorshipDuration">Sponsorship Duration:</label>
+      <select id="sponsorshipDuration" name="sponsorshipDuration" required>
+        <option value="">--Select Duration--</option>
+        <option value="One Off">One-off</option>
+        <option value="1 Month">1 Month</option>
+        <option value="3 Months">3 Months</option>
+        <option value="6 Months">6 Months</option>
+        <option value="1 Year">1 Year</option>
+      </select>
+      <span class="info-icon" data-tooltip="How long sponsorship will last.">🛈</span>
+      <br><br>
+
+       <div class="form-double-row">
+  <div class="form-group">
+    <label for="price">Offer Amount (USD):</label>
+    <input type="number" id="price" name="price" step="1" min="1" required>
+    <span class="info-icon" data-tooltip="How much each Sponsee will recieve upon completion.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="payment">Payment Cycle:</label>
+        <span class="info-icon" data-tooltip="Frequency at which Sponsee will be paid.">🛈</span>
+    <select id="payment" name="payment" required>
+      <option value="">--Select--</option>
+      <option value="weekly">Weekly</option>
+      <option value="fortnightly">Fortnightly</option>
+      <option value="monthly">Monthly</option>
+      <option value="full on completion">FULL - On Completion</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-double-row">
+  <div class="form-group">
+  <label for="cycleCount"># of Cycles:</label>
+  <input type="number" id="cycleCount" name="cycleCount" min="1" value="1" style="width: 90px;" required>
+  <span class="info-icon" data-tooltip="How many times this payment cycle will repeat. For a 3-month deal, enter 3. For a one-off deal, leave at 1.">🛈</span>
+</div>
+
+  
+  <div class="form-group">
+    <label for="maxApplicants">Max Applicants:</label>
+        <span class="info-icon" data-tooltip="The max number of successful Applicants.">🛈</span>
+    <input type="number" id="maxApplicants" name="maxApplicants" min="1" placeholder="E.g. 100">
+  </div>
+</div>
+
+<fieldset style="border-color: aliceblue; margin-top: 20px;">
+  <legend>Cost:</legend>
+  <div id="offer-cost-summary" style="font-size: 1.12em; color: #e0eaff; margin-bottom: 6px; font-weight: 500;">
+    Total Cost: <span id="offer-cost-amount" style="color: #6fe3d9;">$0.00</span>
+    <span id="cost-cycle-label" style="color:#fff; opacity:.7;"></span>
+  </div>
+  <div id="listing-fee-line" style="font-size: 1.04em; color: #FFD600; margin-bottom: 4px;">
+    Listing Fee (10% or $5/applicant/cycle): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
+  </div>
+  <div id="total-cost-line" style="font-size: 1.14em; color: #99f1b8;">
+    Total Including Fee: <span id="total-cost-amount" style="color:#50ffa4;">$0.00</span>
+  </div>
+  <div id="cost-details" style="font-size: .99em; color: #c7dcfc;">
+    The sponsor pays the Offer Amount × Max Applicants × # of Cycles.<br>
+    <b>Listing Fee:</b> 10% of this amount or $5 per applicant per cycle (whichever is lower for each applicant/cycle).<br>
+    This fee covers secure payment processing and platform operations.
+  </div>
+</fieldset>
+
+</fieldset>
+
+
+
+
+<fieldset>
+<div class="form-double-row">
+  <div class="form-group">
+    <label for="minFollowers">Min Followers Required:</label>
+    <input type="number" id="minFollowers" name="minFollowers" min="0" placeholder="E.g. 5000">
+    <span class="info-icon" data-tooltip="Minimum amount of followers on platform.">🛈</span>
+  </div>
+  <div class="form-group">
+    <label for="audienceCountry">Audience Country (primary):</label>
+        <span class="info-icon" data-tooltip="Primary country you want to direct the offer to. (This can be helpful if your looking for a sponsee in a specific demographic area)">🛈</span>
+    <input type="text" id="audienceCountry" name="audienceCountry" maxlength="80" placeholder="E.g. Australia">
+  </div>
+</div>
+
+      <!-- END NEW FIELDS -->
+
+      <label>Offer Platforms:</label>
+      <span class="info-icon" data-tooltip="Select 1 or more platforms where your Sponsee(s) will deliver your offer. ">🛈</span>
+      <div id="platformCheckboxes" style="margin-bottom:12px;">
+        <label><input type="checkbox" name="offerPlatforms" value="instagram">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" title="Instagram" style="width:22px;vertical-align:middle;margin-right:3px;">
+          Instagram
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="youtube">
+          <img src="youtubelogo.png" alt="YouTube" title="YouTube" style="width:22px;vertical-align:middle;margin-right:3px;">
+          YouTube
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="tiktok">
+          <img src="tiktoklogo.png" alt="Tiktok" title="Tiktok" style="width:22px;vertical-align:middle;margin-right:3px;">
+          TikTok
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="twitch">
+          <img src="twitchlogo.png" alt="Twitch" title="Twitch" style="width:22px;vertical-align:middle;margin-right:3px;">
+          Twitch
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="twitter">
+          <img src="twitterlogo.png" alt="Twitter" title="Twitter" style="width:22px;vertical-align:middle;margin-right:3px;">
+          Twitter
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="facebook">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" title="Facebook" style="width:22px;vertical-align:middle;margin-right:3px;">
+          Facebook
+        </label>
+        <label><input type="checkbox" name="offerPlatforms" value="snapchat">
+          <img src="snaplogo.png" alt="Snapchat" title="Snapchat" style="width:22px;vertical-align:middle;margin-right:3px;">
+          Snapchat
+        </label>
+      </div>
+
+      </fieldset>
+
+      <fieldset>
+
+      <div class="help-block" id="images-help-block" style="margin-bottom:10px;">
+        <em>
+          <strong>Offer Images & Media:</strong><br>
+          Upload up to 5 images to showcase your offer. Drag & drop or click to select files. You may also upload an optional supporting file (sample video, brief, etc).<br>
+          Thumbnails can be removed or previewed before submitting.
+        </em>
+      </div>
+
+      <label for="productImage">Offer Images:</label>
+      <span class="info-icon" data-tooltip="Add Images relating to your Offer. Things like products.">🛈</span>
+      <input type="file" id="productImage" name="productImage" accept="image/*" multiple><br><br>
+      <div id="dropZone" class="drop-zone">
+        <p>Drag & drop images here, or click "Choose Files"</p>
+      </div><br>
+      <div id="productImagePreviewContainer" class="image-preview-container">
+        <div id="mainPreview" class="main-preview">
+          <p><em>Preview will appear here.</em></p>
+        </div>
+        <div id="thumbnailGallery" class="thumbnail-gallery"></div>
+      </div><br>
+      <label for="optionalFile">Optional File Upload (e.g., sample video, ad clip):</label>
+      <input type="file" id="optionalFile" name="optionalFile"><br><br>
+      <button type="submit">Submit Public Offer</button>
+    </fieldset>
+  </section>
+  </fieldset>
+</form>
+
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+
+<script type="module">
 import { supabase } from './js/supabaseClient.js';
-import { notifyOfferUpdate } from './js/alerts.js';
-
-if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
-if (!window.sponsorOfferStatusFilter) window.sponsorOfferStatusFilter = "";
-if (!window.sponseePublicOfferPage) window.sponseePublicOfferPage = 1;
-if (!window.sponseePublicOfferStatusFilter) window.sponseePublicOfferStatusFilter = "";
-
-function renderPlatformLogos(platforms = []) {
-  if (!Array.isArray(platforms) || platforms.length === 0) return '';
-  const logos = {
-    youtube: 'youtubelogo.png',
-    instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
-    tiktok: 'tiktoklogo.png',
-    twitter: 'twitterlogo.png',
-    facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
-    twitch: 'twitchlogo.png',
-    snapchat: 'snaplogo.png'
-  };
-  let html = '<div style="display:inline-block;text-align:center;width:100%;">';
-  for (let i = 0; i < platforms.length; i += 4) {
-    html += '<div style="margin:3px 0;">';
-    html += platforms.slice(i, i+4).map(p =>
-      `<img src="${logos[p] || ''}" alt="${p}" style="width:22px;height:22px;vertical-align:middle;margin-right:5px;border-radius:6px;" title="${p}">`
-    ).join('');
-    html += '</div>';
-  }
-  html += '</div>';
-  return html;
-}
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
 
+const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3'; // swap for your live key when live
 
-async function getActiveSponsor() {
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error || !user) return null;
-  const { data, error: err2 } = await supabase
+// ====== Offer Presets ======
+const PRESETS = {
+  shoutout: {
+    offerTitle: "Instagram Shoutout",
+    offerDescription: "Get your brand noticed with an Instagram shoutout to my engaged followers.",
+    price: 100,
+    payment: "full on completion",
+    jobType: "Shoutout",
+    deliverableType: "Standalone Post",
+    instructions: "Please provide your post copy, preferred hashtags, and mention accounts.",
+    sponsorshipDuration: "One Off",
+    offerPlatforms: ["instagram"],
+  },
+  youtube_review: {
+    offerTitle: "YouTube Product Review",
+    offerDescription: "I will feature your product in a dedicated YouTube review video.",
+    price: 300,
+    payment: "full on completion",
+    jobType: "Product Placement",
+    deliverableType: "Product Review",
+    instructions: "Send your product to my PO box. Review will be honest and detailed.",
+    sponsorshipDuration: "One Off",
+    offerPlatforms: ["youtube"],
+  },
+  ongoing_monthly: {
+    offerTitle: "Ongoing Monthly Sponsorship",
+    offerDescription: "Monthly brand mention in every video, story, and social post.",
+    price: 500,
+    payment: "monthly",
+    jobType: "Ongoing Deal",
+    deliverableType: "Include in next video",
+    instructions: "Your brand will be included in ongoing content for the sponsorship period.",
+    sponsorshipDuration: "1 Month",
+    offerPlatforms: ["youtube", "instagram"],
+  },
+  story_mention: {
+    offerTitle: "Instagram Story Mention",
+    offerDescription: "I'll mention your brand in a story for 24 hours with a swipe-up link.",
+    price: 50,
+    payment: "full on completion",
+    jobType: "Story Mention",
+    deliverableType: "Story Mention",
+    instructions: "Provide story assets and swipe-up link.",
+    sponsorshipDuration: "One Off",
+    offerPlatforms: ["instagram"],
+  },
+  event: {
+    offerTitle: "Event Sponsorship",
+    offerDescription: "Become an official sponsor for my upcoming live event.",
+    price: 1000,
+    payment: "full on completion",
+    jobType: "Event Sponsorship",
+    deliverableType: "Custom Content",
+    instructions: "Your logo and brand will be promoted across all event materials and streams.",
+    sponsorshipDuration: "One Off",
+    offerPlatforms: ["youtube", "instagram", "twitch"],
+  }
+};
+
+let imageFiles = [];
+let currentPreviewIndex = 0;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    alert('Please log in first.');
+    window.location.href = 'login.html';
+    return;
+  }
+  const { data: settingsRow } = await supabase
+    .from('user_settings')
+    .select('hide_help_blocks')
+    .eq('user_id', user.id)
+    .maybeSingle();
+  let hideHelp = !!(settingsRow && typeof settingsRow.hide_help_blocks === 'boolean' && settingsRow.hide_help_blocks);
+  document.querySelectorAll('.help-block').forEach(div => {
+    div.style.display = hideHelp ? 'none' : '';
+  });
+
+  const { data: sponsorData, error: sponsorError } = await supabase
     .from('users_extended_data')
     .select('*')
     .eq('user_id', user.id)
     .single();
-  if (err2) return null;
-  return { ...data, email: user.email, id: user.id, user_id: user.id };
-}
-
-async function getApplicantStats(offerId) {
-  const { count: total = 0 } = await supabase
-    .from('public_offer_applications')
-    .select('*', { count: 'exact', head: true })
-    .eq('offer_id', offerId);
-  const { count: accepted = 0 } = await supabase
-    .from('public_offer_applications')
-    .select('*', { count: 'exact', head: true })
-    .eq('offer_id', offerId)
-    .eq('status', 'accepted');
-  return { total, accepted };
-}
-
-async function renderSponsorOfferCard(offer) {
-  let sponsorLogo = 'logos.png';
-  let sponsor_company = offer.sponsor_company || '';
-  try {
-    const { data: sponsor } = await supabase
-      .from('users_extended_data')
-      .select('profile_pic, company_name')
-      .eq('username', offer.sponsor_username)
-      .single();
-    if (sponsor && sponsor.profile_pic)
-      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
-    if (sponsor && sponsor.company_name)
-      sponsor_company = sponsor.company_name;
-  } catch {}
-  const { total, accepted } = await getApplicantStats(offer.id);
-  let constraintsHtml = '';
-  if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
-  const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(offer.platforms)}</div>`;
-  const detailsId = `details-${offer.id}`;
-  const imagesId = `images-${offer.id}`;
-  const shareUrl = `${window.location.origin}/publicOfferDetail.html?id=${offer.id}`;
-
-  // Main card container
-  const div = document.createElement('div');
-  div.className = 'public-offer-card';
-  div.setAttribute('data-offer-id', offer.id);
-  div.style = `
-    background: #232323;
-    border-radius: 14px;
-    padding: 18px 20px 16px 20px;
-    margin: 24px 0 0 0;
-    max-width: 730px;
-    margin-left: auto; margin-right: auto;
-    box-shadow: 0 2px 10px #0006;
-    border: 1.2px solid #26263a;
-    overflow-wrap: anywhere;
-    position: relative;
-  `;
-
-  div.innerHTML = `
-    <!-- Share Dropdown Button (Top Right) -->
-    <div style="position:absolute;top:15px;right:20px;z-index:2;">
-      <button class="share-main-btn" style="z-index:1!important;background:none;border:none;cursor:pointer;padding:6px;box-shadow:none;">
-        <svg width="28" height="28" viewBox="0 0 24 24" style="fill:#36a2eb;"><path d="M18 8.59V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.59l3.29 3.3a1 1 0 0 0 1.42-1.42l-5-5a1 1 0 0 0-1.42 0l-5 5a1 1 0 1 0 1.42 1.42L18 15.41V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v3.59l-3.3-3.3A1 1 0 0 0 13.3 5.7l5 5a1 1 0 0 0 1.4 0l5-5a1 1 0 1 0-1.42-1.42L18 8.59z"/></svg>
-      </button>
-      <div class="share-dropdown" 
-      ">
-        <button class="share-btn copy" data-link="${shareUrl}" style="
-          background:none;
-          border:none;
-          color:#eaf6ff;
-          padding:7px 5px;
-          text-align:left;
-          width:100%;
-          font-size:1.08em;
-          box-shadow:none;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          gap:11px;
-          transition:background 0.16s;
-        ">
-          <svg width="19" height="19" viewBox="0 0 20 20"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg>
-          Copy Link
-        </button>
-        <a class="share-btn x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('Check out this sponsorship offer on Sponsor Sorter!')}" style="
-          background:none;
-          border:none;
-          color:#1da1f2;
-          padding:7px 5px;
-          text-align:left;
-          width:100%;
-          font-size:1.08em;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          gap:11px;
-          transition:background 0.16s;
-          text-decoration:none;
-        ">
-          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="currentColor" d="M22 5.924a8.188 8.188 0 0 1-2.357.646A4.116 4.116 0 0 0 21.448 4.1a8.223 8.223 0 0 1-2.606.996A4.107 4.107 0 0 0 15.448 3c-2.266 0-4.104 1.838-4.104 4.104 0 .32.036.632.105.931C7.728 7.876 4.1 6.124 1.671 3.149c-.353.607-.556 1.312-.556 2.066 0 1.426.726 2.683 1.832 3.421a4.092 4.092 0 0 1-1.858-.514v.052c0 1.993 1.418 3.655 3.298 4.035a4.099 4.099 0 0 1-1.853.07c.522 1.631 2.037 2.819 3.833 2.851A8.233 8.233 0 0 1 2 19.545c-.646 0-1.277-.038-1.894-.111A11.59 11.59 0 0 0 8.026 21c7.547 0 11.675-6.255 11.675-11.675 0-.178-.004-.355-.012-.531A8.368 8.368 0 0 0 22 5.924z"/></svg>
-          Share on X
-        </a>
-        <a class="share-btn linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}" style="
-          background:none;
-          border:none;
-          color:#29b6f6;
-          
-          text-align:left;
-          width:100%;
-          font-size:1.08em;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          transition:background 0.16s;
-          text-decoration:none;
-        ">
-          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452H17.2V15.4c0-1.206-.022-2.759-1.683-2.759-1.684 0-1.941 1.318-1.941 2.676v5.136H10.329V9h3.123v1.561h.044c.434-.82 1.494-1.683 3.073-1.683 3.285 0 3.89 2.163 3.89 4.978v6.596zM5.337 7.433A1.833 1.833 0 1 1 5.335 3.77a1.833 1.833 0 0 1 .002 3.663zm1.761 13.019H3.573V9h3.525v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.209 24 24 23.229 24 22.271V1.723C24 .771 23.209 0 22.225 0z"/></svg>
-          Share on LinkedIn
-        </a>
-      </div>
-    </div>
-    <!-- Rest of your card, unchanged -->
-    <div style="display: flex; align-items: flex-start; gap: 24px;">
-      <div style="flex-shrink: 0; text-align: center;">
-        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
-        <div style="margin-top:7px; font-size:0.99em;">
-          <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
-          <div style="margin-bottom:3px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
-        </div>
-        ${platformsRow}
-      </div>
-      <div style="flex:1; min-width:0;">
-        <div style="font-size:1.23em;font-weight:700;margin-bottom:2px;">Offer: ${offer.offer_title}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
-          <div><strong>Status:</strong> ${offer.status}</div>
-          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
-          <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-          <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
-          <div><strong>Payment Schedule:</strong> ${offer.payment_schedule || '-'}</div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-          <div><strong>Audience Country:</strong> ${offer.audience_country || '-'}</div>
-          <div><strong>Duration:</strong> ${offer.sponsorship_duration || '-'}</div>
-        </div>
-        <div style="font-size:1.03em;margin-bottom:5px;">
-          <strong>Applicants:</strong> ${total} applied / ${accepted} accepted${offer.max_applicants ? ' / Max: ' + offer.max_applicants : ''}
-        </div>
-        ${constraintsHtml ? `<div style="font-size:0.96em;margin-bottom:5px;">${constraintsHtml}</div>` : ''}
-        <div style="margin:9px 0 0 0;display:flex;gap:10px;">
-          <button style="flex:1 1 0;background:#13b257;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" data-offerid="${offer.id}" class="view-applicants-btn">View Applicants</button>
-          <button style="flex:1 1 0;background:#4061b3;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="view-details-btn" data-detailsid="${detailsId}">View Details</button>
-          <button style="flex:1 1 0;background:#684ad1;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="view-images-btn" data-imagesid="${imagesId}">View Images</button>
-          <button style="flex:1 1 0;background:#c90b3e;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="remove-offer-btn" data-offerid="${offer.id}">Remove Offer</button>
-        </div>
-        <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
-          <strong>Description:</strong> ${offer.offer_description || ''}<br>
-          <strong>Instructions:</strong> ${offer.instructions || ''}<br>
-          <strong>Job Type:</strong> ${offer.job_type || ''}<br>
-          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
-        </div>
-        <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
-          ${(offer.offer_images && offer.offer_images.length)
-            ? offer.offer_images.map(img =>
-                `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`
-              ).join('')
-            : '<i>No offer images.</i>'
-          }
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Dropdown logic:
-  const shareMainBtn = div.querySelector('.share-main-btn');
-  const shareDropdown = div.querySelector('.share-dropdown');
-  shareMainBtn.onclick = (e) => {
-    e.stopPropagation();
-    document.querySelectorAll('.share-dropdown').forEach(dd => {
-      if (dd !== shareDropdown) dd.style.display = 'none';
-    });
-    shareDropdown.style.display = shareDropdown.style.display === 'block' ? 'none' : 'block';
-  };
-  document.addEventListener('click', function closeShare(e) {
-    if (!div.contains(e.target)) shareDropdown.style.display = 'none';
-  });
-
-  // Copy button
-  shareDropdown.querySelector('.copy').onclick = function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      this.innerText = 'Copied!';
-      setTimeout(() => {
-        this.innerHTML = `<svg width="19" height="19" viewBox="0 0 20 20"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg> Copy Link`;
-      }, 1200);
-    });
-  };
-
-  div.querySelector('.view-applicants-btn').onclick = () => showApplicantsModal(offer.id);
-  div.querySelector('.view-details-btn').onclick = () => {
-    const details = div.querySelector(`#${detailsId}`);
-    details.style.display = details.style.display === 'block' ? 'none' : 'block';
-  };
-  div.querySelector('.view-images-btn').onclick = () => {
-    const images = div.querySelector(`#${imagesId}`);
-    images.style.display = images.style.display === 'block' ? 'none' : 'block';
-  };
-  div.querySelector('.remove-offer-btn').onclick = () => {
-    if (confirm("Are you sure you want to remove this offer? This cannot be undone.")) {
-      removePublicOffer(offer.id, div);
-    }
-  };
-  return div;
-}
-
-
-
-async function removePublicOffer(offerId, cardDiv) {
-  const { error } = await supabase
-    .from('public_offers')
-    .delete()
-    .eq('id', offerId);
-  if (error) {
-    alert("Failed to remove offer: " + (error.message || "Unknown error"));
+  if (sponsorError || !sponsorData) {
+    alert('Sponsor data not found.');
     return;
   }
-  if (cardDiv) cardDiv.remove();
-  alert("Offer removed.");
-  if (typeof renderSponsorPublicOffers === "function") renderSponsorPublicOffers();
-}
-
-async function showApplicantsModal(offerId) {
-  const { data: applicants, error } = await supabase
-    .from('public_offer_applications')
-    .select('*')
-    .eq('offer_id', offerId)
-    .order('created_at', { ascending: false });
-
-  let modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,0.75)';
-  modal.style.zIndex = '9999';
-  modal.innerHTML = `
-    <div style="background:#232333;padding:30px 24px 18px 24px;max-width:540px;border-radius:18px;box-shadow:0 6px 32px #000a;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:360px;">
-      <h2>Applicants for Offer</h2>
-      <div id="applicants-list"></div>
-      <div style="text-align:right;">
-        <button id="close-modal" style="margin-top:18px;background:#888;color:#fff;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;">Close</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  document.getElementById('close-modal').onclick = () => modal.remove();
-
-  const list = modal.querySelector('#applicants-list');
-  if (error || !applicants || !applicants.length) {
-    list.innerHTML = '<p>No applicants for this offer yet.</p>';
-    return;
+  document.getElementById('sponsor-email').innerText = sponsorData.email || '';
+  document.getElementById('company').innerText = sponsorData.company_name || '';
+  document.getElementById('sponsor-location').innerText = sponsorData.location || '';
+  const sponsorPicElement = document.getElementById('sponsor-profile-pic');
+  if (sponsorPicElement) {
+    sponsorPicElement.src = sponsorData.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`
+      : 'logos.png';
   }
 
-  for (const a of applicants) {
-    let sponseeData = {};
-    if (a.sponsee_id) {
-      const { data } = await supabase
-        .from('users_extended_data')
-        .select('username, profile_pic')
-        .eq('user_id', a.sponsee_id)
-        .single();
-      sponseeData = data || {};
-    }
-    let applicationText = a.application_text ? `<div style="margin:8px 0;font-size:0.98em;"><strong>Message:</strong> ${a.application_text}</div>` : '';
-    let acceptBtnHtml = '';
-    if (a.status === 'accepted') {
-      acceptBtnHtml = `<button disabled style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:not-allowed;">Accepted</button>`;
-    } else {
-      acceptBtnHtml = `<button style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:pointer;" onclick="this.disabled=true;this.innerText='Accepted';window.acceptApplicant('${a.id}', this)">Accept</button>`;
-    }
-    let withdrawBtnHtml = `<button style="background:#c90b3e;color:#fff;padding:5px 14px;border-radius:7px;border:none;cursor:pointer;margin-left:5px;" onclick="window.deleteApplicant('${a.id}', this)" ${a.status === "withdrawn" ? "disabled" : ""}>Remove</button>`;
+  await loadSponsorOverallStars(sponsorData.username);
 
-    const rowId = `app-row-${a.id}`;
-    list.innerHTML += `
-      <div id="${rowId}" style="display:flex;align-items:center;gap:18px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #393963;">
-        <div style="text-align:center;">
-          <img src="${sponseeData.profile_pic ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponseeData.profile_pic}` : 'logos.png'}" alt="Pic" style="width:54px;height:54px;border-radius:50%;border:1.5px solid #18181c;object-fit:cover;">
-          <div style="font-size:0.92em;color:#c9c9c9;margin-top:3px;">${a.sponsee_username}</div>
-        </div>
-        <div style="flex:1;">
-          <div style="font-weight:600;font-size:1.05em;color:${
-            a.status === 'accepted' ? '#13b257' :
-            a.status === 'withdrawn' ? '#c90b3e' :
-            a.status === 'pending' ? '#ff9800' : '#fff'
-          };margin-bottom:5px;">
-            ${a.status ? a.status.charAt(0).toUpperCase() + a.status.slice(1) : ''}
-          </div>
-          ${applicationText}
-        </div>
-        <button style="background:#4061b3;color:#fff;padding:5px 12px;border-radius:7px;border:none;cursor:pointer;margin-right:7px;" onclick="window.location.href='viewprofile.html?username=${encodeURIComponent(a.sponsee_username)}'">View Profile</button>
-        ${acceptBtnHtml}
-        ${withdrawBtnHtml}
-      </div>
-    `;
-  }
-}
-
-window.acceptApplicant = async function(appId, btn) {
-  // 1. Mark as accepted
-  const { error: updateError } = await supabase
-    .from('public_offer_applications')
-    .update({ status: 'accepted' })
-    .eq('id', appId);
-  if (updateError) {
-    alert('Failed to update application status: ' + updateError.message);
-    return;
-  }
-
-  // 2. Get application + offer
-  let { data: app, error: appError } = await supabase
-    .from('public_offer_applications')
-    .select('*, public_offers(*)')
-    .eq('id', appId)
-    .single();
-  if (appError || !app) {
-    alert('Could not find application!');
-    return;
-  }
-
-  // 3. Try get sponsee's correct user_id
-  let sponseeUserId = null, sponseeUsername = '', sponseeEmail = '';
-  // (a) Try direct from application
-  if (app.sponsee_id) sponseeUserId = app.sponsee_id;
-
-  // (b) Query users_extended_data by sponsee_id as user_id
-  let sponseeRow = null;
-  if (sponseeUserId) {
-    const { data: userData } = await supabase
-      .from('users_extended_data')
-      .select('user_id, username, email')
-      .eq('user_id', sponseeUserId)
-      .maybeSingle();
-    if (userData) {
-      sponseeUserId = userData.user_id;
-      sponseeUsername = userData.username;
-      sponseeEmail = userData.email;
-      sponseeRow = userData;
-    }
-  }
-  // (c) If not found, fallback to application fields (should only happen on very old records)
-  if (!sponseeUserId && app.sponsee_username) {
-    const { data: userData } = await supabase
-      .from('users_extended_data')
-      .select('user_id, username, email')
-      .eq('username', app.sponsee_username)
-      .maybeSingle();
-    if (userData) {
-      sponseeUserId = userData.user_id;
-      sponseeUsername = userData.username;
-      sponseeEmail = userData.email;
-      sponseeRow = userData;
-    }
-  }
-  if (!sponseeUserId) {
-    alert("Cannot determine sponsee user_id! Please check that user exists.");
-    return;
-  }
-
-  // 4. Sponsor details
-  const sponsor = await getActiveSponsor();
-  if (!sponsor) {
-    alert("Can't verify sponsor identity.");
-    return;
-  }
-  const offer = app.public_offers;
-
-  // 5. Prevent duplicate private offer thread
-  const { data: existing } = await supabase
-    .from('private_offers')
-    .select('id')
-    .eq('sponsor_id', sponsor.user_id)
-    .eq('sponsee_email', sponseeEmail)
-    .eq('offer_title', offer.offer_title);
-  if (existing && existing.length > 0) {
-    btn.innerText = "Accepted";
-    btn.disabled = true;
-    alert("You have already accepted this applicant for this offer.");
-    return;
-  }
-
-  // 6. Prepare insert object
-  const insertObj = {
-    sponsor_email: sponsor.email,
-    sponsor_company: sponsor.company_name || offer.sponsor_company || '',
-    sponsor_id: sponsor.user_id,
-    sponsor_username: sponsor.username,
-    sponsee_username: sponseeUsername || app.sponsee_username || '',
-    sponsee_email: sponseeEmail || app.sponsee_email || '',
-    sponsee_id: sponseeUserId,
-    offer_title: offer.offer_title,
-    offer_description: offer.offer_description,
-    offer_amount: offer.offer_amount,
-    offer_images: offer.offer_images,
-    active: true,
-    stage: 2,
-    created_at: new Date().toISOString(),
-    deadline: offer.deadline,
-    deliverable_type: offer.deliverable_type,
-    instructions: offer.instructions,
-    job_type: offer.job_type,
-    optional_file: offer.optional_file,
-    payment_schedule: offer.payment_schedule,
-    sponsorship_duration: offer.sponsorship_duration,
-    status: 'accepted',
-    creation_date: new Date().toISOString().slice(0,10),
-    platforms: offer.platforms,
-    sponsee_live_confirmed: false,
-    sponsor_live_confirmed: false,
-    live_date: null,
-    live_url: null,
-    archived: false
-  };
-
-  // 7. Insert private offer thread
-  const { data: newOfferRows, error: insertError } = await supabase
-    .from('private_offers')
-    .insert([insertObj])
-    .select('id');
-  if (insertError) {
-    alert('Failed to create private offer: ' + insertError.message);
-    return;
-  }
-  const insertedPrivateOfferId = newOfferRows && newOfferRows[0] ? newOfferRows[0].id : null;
-  btn.innerText = "Accepted";
-  btn.disabled = true;
-  alert('Private offer thread created successfully!');
-
-  // 8. Notify sponsee
-  if (insertedPrivateOfferId && sponseeUserId) {
-    await notifyOfferUpdate({
-      to_user_id: sponseeUserId,
-      offer_id: insertedPrivateOfferId,
-      type: 'offer_acceptance',
-      title: 'Offer Accepted!',
-      message: `Congratulations! You have been accepted for "${insertObj.offer_title}".`
-    });
-  }
-
-  // 9. If offer is now full, remove public offer and notify sponsor
-  const { count: acceptedCount, error: countError } = await supabase
-    .from('public_offer_applications')
-    .select('*', { count: 'exact', head: true })
-    .eq('offer_id', offer.id)
-    .eq('status', 'accepted');
-  const maxApplicants = offer.max_applicants || 0;
-  if (!countError && acceptedCount >= maxApplicants && maxApplicants > 0) {
-    await notifyOfferUpdate({
-      to_user_id: sponsor.user_id,
-      offer_id: offer.id,
-      type: 'public_offer_full',
-      title: 'Offer Filled',
-      message: `Your public offer "${offer.offer_title}" has reached the maximum number of accepted applicants and has now been removed.`
-    });
-    removePublicOffer(offer.id);
-    if (typeof renderSponsorPublicOffers === "function") renderSponsorPublicOffers();
-  }
-};
-
-window.deleteApplicant = async function(appId, btn) {
-  if (!confirm("Are you sure you want to withdraw and delete this application? This cannot be undone.")) return;
-  btn.disabled = true;
-  btn.innerText = "Deleting...";
-  const rowDiv = document.getElementById(`app-row-${appId}`);
-  const { error } = await supabase
-    .from('public_offer_applications')
-    .delete()
-    .eq('id', appId);
-  if (!error) {
-    if (rowDiv) rowDiv.remove();
-  } else {
-    alert('Failed to delete application.');
-    btn.innerText = "Error";
-    btn.disabled = false;
-  }
-};
-
-export async function renderSponsorPublicOffers(containerId = "offers-container") {
-  const sponsor = await getActiveSponsor();
-  if (!sponsor) return;
-  const page = window.sponsorOfferPage;
-  const pageSize = 10;
-  const filter = window.sponsorOfferStatusFilter;
-  let query = supabase
-    .from('public_offers')
-    .select('*')
-    .eq('sponsor_id', sponsor.user_id)
-    .order('creation_date', { ascending: false })
-    .range((page-1)*pageSize, page*pageSize-1);
-  if (filter) query = query.eq('status', filter);
-  const { data: offers, error } = await query;
-  let totalCount = 0;
-  if (!filter) {
-    const { count } = await supabase
-      .from('public_offers')
-      .select('*', { count: 'exact', head: true })
-      .eq('sponsor_id', sponsor.user_id);
-    totalCount = count || 0;
-  } else {
-    const { count } = await supabase
-      .from('public_offers')
-      .select('*', { count: 'exact', head: true })
-      .eq('sponsor_id', sponsor.user_id)
-      .eq('status', filter);
-    totalCount = count || 0;
-  }
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  if (error || !offers || !offers.length) {
-    container.innerHTML = `<div style="padding:18px 8px;">No public offers found.</div>`;
-    return;
-  }
-  for (const offer of offers) {
-    container.appendChild(await renderSponsorOfferCard(offer));
-  }
-  const prevBtn = document.getElementById("sponsor-offer-prev-page");
-  const nextBtn = document.getElementById("sponsor-offer-next-page");
-  const pageLabel = document.getElementById("sponsor-offer-pagination-label");
-  if (pageLabel) pageLabel.textContent = `Page ${page}`;
-  if (prevBtn) prevBtn.disabled = page === 1;
-  if (nextBtn) nextBtn.disabled = (page * pageSize >= totalCount);
-}
-
-export async function renderSponseePublicOffers(containerId = "sponsee-public-offers-container") {
-  const page = window.sponseePublicOfferPage;
-  const pageSize = 10;
-  const filter = window.sponseePublicOfferStatusFilter;
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = "<p>Loading your public offer applications...</p>";
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    container.innerHTML = '<p style="color:red;">Not logged in.</p>';
-    return;
-  }
-  let query = supabase
-    .from("public_offer_applications")
-    .select("*, public_offers(*)")
-    .eq("sponsee_id", user.id)
-    .order("created_at", { ascending: false })
-    .range((page-1)*pageSize, page*pageSize-1);
-  if (filter) query = query.eq("status", filter);
-  const { data: apps, error } = await query;
-  let totalCount = 0;
-  if (!filter) {
-    const { count } = await supabase
-      .from("public_offer_applications")
-      .select("*", { count: "exact", head: true })
-      .eq("sponsee_id", user.id);
-    totalCount = count || 0;
-  } else {
-    const { count } = await supabase
-      .from("public_offer_applications")
-      .select("*", { count: "exact", head: true })
-      .eq("sponsee_id", user.id)
-      .eq("status", filter);
-    totalCount = count || 0;
-  }
-  const prevBtn = document.getElementById("public-offer-prev-page");
-  const nextBtn = document.getElementById("public-offer-next-page");
-  const pageLabel = document.getElementById("public-offer-pagination-label");
-  if (pageLabel) pageLabel.textContent = `Page ${page}`;
-  if (prevBtn) prevBtn.disabled = page === 1;
-  if (nextBtn) nextBtn.disabled = (page * pageSize >= totalCount);
-  if (error || !apps || !apps.length) {
-    container.innerHTML = "<p>No public offers found for this page/filter.</p>";
-    return;
-  }
-  container.innerHTML = "";
-  for (const app of apps) {
-    const offer = app.public_offers;
-    if (!offer) continue;
-    let sponsorLogo = "logos.png";
-    try {
-      const { data: sponsor } = await supabase
-        .from("users_extended_data")
-        .select("profile_pic")
-        .eq("username", offer.sponsor_username)
-        .single();
-      if (sponsor && sponsor.profile_pic)
-        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
-    } catch {}
-    const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(offer.platforms)}</div>`;
-    const detailsId = `details-${app.id}`;
-    const imagesId = `images-${app.id}`;
-    let constraintsHtml = '';
-    if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
-    const div = document.createElement("div");
-    div.className = "public-offer-card";
-    div.style.background = "#232323";
-    div.style.borderRadius = "14px";
-    div.style.padding = "18px 20px 16px 20px";
-    div.style.margin = "24px 0 0 0";
-    div.style.maxWidth = "730px";
-    div.style.marginLeft = "auto";
-    div.style.marginRight = "auto";
-    div.style.boxShadow = "0 2px 10px #0006";
-    div.style.border = "1.2px solid #26263a";
-    div.style.overflowWrap = "anywhere";
-    div.innerHTML = `
-      <div style="display:flex;align-items:flex-start;gap:24px;">
-        <div style="flex-shrink:0;text-align:center;">
-          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
-          <div style="margin-top:7px;font-size:0.99em;">
-            <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
-            <div style="margin-bottom:3px;"><strong>At:</strong> ${offer.sponsor_company || '-'}</div>
-            <button class="view-profile-btn" style="margin-top:7px;background:#4061b3;color:#fff;padding:4px 15px;border-radius:7px;border:none;cursor:pointer;">View Profile</button>
-            
-          </div>
-          ${platformsRow}
-        </div>
-        <div style="flex:1; min-width:0;">
-          <span style="font-size:1.18em;font-weight:700;">Offer: ${offer.offer_title}</span>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
-            <div><strong>Status:</strong> ${app.status || "pending"}</div>
-            <div><strong>Amount:</strong> $${offer.offer_amount}</div>
-            <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-            <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
-            <div><strong>Payment Schedule:</strong> ${offer.payment_schedule || '-'}</div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-            <div><strong>Audience Country:</strong> ${offer.audience_country || '-'}</div>
-            <div><strong>Duration:</strong> ${offer.sponsorship_duration || '-'}</div>
-          </div>
-          ${constraintsHtml ? `<div style="font-size:0.96em;margin-bottom:5px;">${constraintsHtml}</div>` : ''}
-          <div style="margin:9px 0 0 0; display:flex; gap:10px;">
-            <button class="view-details-btn" style="background:#4061b3;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-detailsid="${detailsId}">View Details</button>
-            <button class="view-images-btn" style="background:#684ad1;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-imagesid="${imagesId}">View Images</button>
-            <button class="withdraw-btn" style="background:#c90b3e;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" ${app.status==="withdrawn"?"disabled":""}>
-              ${app.status==="withdrawn"?"Withdrawn":"Withdraw"}
-            </button>
-          </div>
-          <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
-            <strong>Description:</strong> ${offer.offer_description || ''}<br>
-            <strong>Instructions:</strong> ${offer.instructions || ''}<br>
-            <strong>Payment Schedule:</strong> ${offer.payment_schedule || ''}<br>
-            <strong>Duration:</strong> ${offer.sponsorship_duration || ''}<br>
-            <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
-          </div>
-          <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
-            ${(offer.offer_images && offer.offer_images.length)
-              ? offer.offer_images.map(img =>
-                `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`
-              ).join('')
-              : '<i>No offer images.</i>'
-            }
-          </div>
-        </div>
-      </div>
-    `;
-    div.querySelector('.view-profile-btn').onclick = () => {
-      window.location.href = `viewprofiles.html?username=${encodeURIComponent(offer.sponsor_username)}`;
-    };
-    div.querySelector('.view-details-btn').onclick = () => {
-      const details = div.querySelector(`#${detailsId}`);
-      details.style.display = details.style.display === 'block' ? 'none' : 'block';
-    };
-    div.querySelector('.view-images-btn').onclick = () => {
-      const images = div.querySelector(`#${imagesId}`);
-      images.style.display = images.style.display === 'block' ? 'none' : 'block';
-    };
-    div.querySelector('.withdraw-btn').onclick = async () => {
-      if (app.status === "withdrawn") return;
-      if (!confirm("Are you sure you want to withdraw your application?")) return;
-      const { error } = await supabase
-        .from("public_offer_applications")
-        .update({ status: "withdrawn" })
-        .eq("id", app.id);
-      if (!error) {
-        renderSponseePublicOffers(containerId);
-      } else {
-        alert("Error withdrawing: " + error.message);
+  // === Offer Preset Logic ===
+  const presetSelect = document.getElementById('preset');
+  const applyPresetBtn = document.getElementById('applyPresetBtn');
+  if (presetSelect && applyPresetBtn) {
+    applyPresetBtn.onclick = () => {
+      const key = presetSelect.value;
+      if (key && PRESETS[key]) {
+        const p = PRESETS[key];
+        document.getElementById('offerTitle').value = p.offerTitle;
+        document.getElementById('offerDescription').value = p.offerDescription;
+        document.getElementById('price').value = p.price;
+        document.getElementById('payment').value = p.payment;
+        document.getElementById('jobType').value = p.jobType;
+        document.getElementById('deliverableType').value = p.deliverableType;
+        document.getElementById('instructions').value = p.instructions;
+        document.getElementById('sponsorshipDuration').value = p.sponsorshipDuration;
+        document.querySelectorAll('input[name="offerPlatforms"]').forEach(cb => {
+          cb.checked = (p.offerPlatforms.map(x => x.toLowerCase())).includes(cb.value.toLowerCase());
+        });
       }
     };
-    container.appendChild(div);
   }
-}
 
-if (typeof window !== "undefined") {
-  window.addEventListener('DOMContentLoaded', () => {
-    const sfilterSel = document.getElementById("sponsor-offer-status-filter");
-    const sprevBtn = document.getElementById("sponsor-offer-prev-page");
-    const snextBtn = document.getElementById("sponsor-offer-next-page");
-    window.sponsorOfferPage = 1;
-    window.sponsorOfferStatusFilter = "";
-    if (sfilterSel) {
-      sfilterSel.onchange = function() {
-        window.sponsorOfferPage = 1;
-        window.sponsorOfferStatusFilter = this.value;
-        renderSponsorPublicOffers();
-      };
-    }
-    if (sprevBtn) {
-      sprevBtn.onclick = () => {
-        if (window.sponsorOfferPage > 1) {
-          window.sponsorOfferPage--;
-          renderSponsorPublicOffers();
-        }
-      };
-    }
-    if (snextBtn) {
-      snextBtn.onclick = () => {
-        window.sponsorOfferPage++;
-        renderSponsorPublicOffers();
-      };
-    }
-    const filterSel = document.getElementById("public-offer-status-filter");
-    const prevBtn = document.getElementById("public-offer-prev-page");
-    const nextBtn = document.getElementById("public-offer-next-page");
-    window.sponseePublicOfferPage = 1;
-    window.sponseePublicOfferStatusFilter = "";
-    if (filterSel) {
-      filterSel.onchange = function() {
-        window.sponseePublicOfferPage = 1;
-        window.sponseePublicOfferStatusFilter = this.value;
-        renderSponseePublicOffers();
-      };
-    }
-    if (prevBtn) {
-      prevBtn.onclick = () => {
-        if (window.sponseePublicOfferPage > 1) {
-          window.sponseePublicOfferPage--;
-          renderSponseePublicOffers();
-        }
-      };
-    }
-    if (nextBtn) {
-      nextBtn.onclick = () => {
-        window.sponseePublicOfferPage++;
-        renderSponseePublicOffers();
-      };
-    }
+  // === IMAGE UPLOAD LOGIC ===
+  imageFiles = [];
+  currentPreviewIndex = 0;
+  const productImageInput = document.getElementById('productImage');
+  const dropZone = document.getElementById('dropZone');
+  const mainPreview = document.getElementById('mainPreview');
+  const thumbnailGallery = document.getElementById('thumbnailGallery');
+  productImageInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length) addImages(files);
   });
-}
-
-export async function notifySponsorOnApplication({ offer_id, sponsee_user_id, sponsee_username }) {
-  const { data: offerRow } = await supabase
-    .from('public_offers')
-    .select('sponsor_id, offer_title, id')
-    .eq('id', offer_id)
-    .single();
-  if (offerRow && offerRow.sponsor_id) {
-    await notifyOfferUpdate({
-      to_user_id: offerRow.sponsor_id,
-      offer_id: offer_id,
-      type: 'public_offer_application',
-      title: 'New Applicant',
-      message: `${sponsee_username} applied for your public offer: "${offerRow.offer_title}".`
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) addImages(files);
+  });
+  dropZone.addEventListener('click', () => {
+    productImageInput.click();
+  });
+  function addImages(files) {
+    const remainingSlots = 5 - imageFiles.length;
+    const filesToAdd = files.slice(0, remainingSlots);
+    if (filesToAdd.length < files.length) {
+      alert('You can only upload up to 5 images.');
+    }
+    filesToAdd.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageFiles.push({ file, dataUrl: e.target.result });
+        renderThumbnails();
+        showPreview(imageFiles.length - 1);
+      };
+      reader.readAsDataURL(file);
     });
   }
+  function renderThumbnails() {
+    thumbnailGallery.innerHTML = '';
+    imageFiles.forEach((imgObj, index) => {
+      const thumbContainer = document.createElement('div');
+      thumbContainer.classList.add('thumbnail-container');
+      const thumb = document.createElement('img');
+      thumb.src = imgObj.dataUrl;
+      thumb.classList.add('thumbnail');
+      thumb.addEventListener('click', () => showPreview(index));
+      const removeBtn = document.createElement('button');
+      removeBtn.innerText = '✖';
+      removeBtn.classList.add('remove-thumb-btn');
+      removeBtn.title = 'Remove this image';
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeImage(index);
+      });
+      thumbContainer.appendChild(thumb);
+      thumbContainer.appendChild(removeBtn);
+      thumbnailGallery.appendChild(thumbContainer);
+    });
+  }
+  function showPreview(index) {
+    if (imageFiles.length === 0 || index < 0) {
+      mainPreview.innerHTML = '<p><em>No images selected.</em></p>';
+      return;
+    }
+    const img = document.createElement('img');
+    img.src = imageFiles[index].dataUrl;
+    mainPreview.innerHTML = '';
+    mainPreview.appendChild(img);
+    currentPreviewIndex = index;
+  }
+  function removeImage(index) {
+    imageFiles.splice(index, 1);
+    renderThumbnails();
+    if (currentPreviewIndex === index) {
+      showPreview(imageFiles.length ? 0 : -1);
+    } else if (currentPreviewIndex > index) {
+      currentPreviewIndex--;
+    }
+  }
+
+  // === FORM SUBMIT + STRIPE PAYMENT ===
+  const offerForm = document.getElementById('offerForm');
+  offerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Gather all form data
+    const title = document.getElementById('offerTitle').value.trim();
+    const description = document.getElementById('offerDescription').value.trim();
+    const amount = parseFloat(document.getElementById('price').value);
+    const payment = document.getElementById('payment').value;
+    const jobType = document.getElementById('jobType').value;
+    const deliverableType = document.getElementById('deliverableType').value;
+    const instructions = document.getElementById('instructions').value;
+    const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
+    const deadline = document.getElementById('deadline').value;
+    const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || 1;
+    const minFollowers = parseInt(document.getElementById('minFollowers').value) || null;
+    const audienceCountry = document.getElementById('audienceCountry').value.trim() || null;
+    const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked')).map(cb => cb.value.toLowerCase());
+    const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
+
+    // ==== FamBot Moderation ====
+    const { data: { session } } = await supabase.auth.getSession();
+    const user_id = session?.user.id;
+    const jwt = session?.access_token;
+
+    // Moderate key user fields. Block if any are flagged.
+    const fieldsToModerate = [
+      { content: title, type: 'offer' },
+      { content: description, type: 'offer' },
+      { content: instructions, type: 'offer' }
+    ];
+    for (const field of fieldsToModerate) {
+      if (field.content && field.content.length > 0) {
+        const result = await famBotModerateWithModal({
+          user_id,
+          content: field.content,
+          jwt,
+          type: field.type
+        });
+        if (!result.allowed) return;
+      }
+    }
+    // ==== End FamBot Moderation ====
+
+    // 1. Upload images
+    const uploadedImageNames = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+      const { file } = imageFiles[i];
+      const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+      const { error: uploadError } = await supabase
+        .storage
+        .from('offers')
+        .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
+      if (uploadError) {
+        alert(`Failed to upload ${file.name}`);
+        return;
+      }
+      uploadedImageNames.push(uniqueName);
+    }
+
+    // 2. Upload optional file (if any)
+    const optionalFileInput = document.getElementById('optionalFile');
+    const optionalFile = optionalFileInput.files[0];
+    let optionalFileName = null;
+    if (optionalFile) {
+      const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
+      const { error: optionalUploadError } = await supabase
+        .storage
+        .from('offers')
+        .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
+      if (optionalUploadError) {
+        alert('Optional file upload failed.');
+        return;
+      }
+      optionalFileName = uniqueOptFileName;
+    }
+
+    // 3. Prepare offer data and save to localStorage for after payment
+    const offerData = {
+      sponsor_id: sponsorData.user_id || sponsorData.id,
+      sponsor_email: sponsorData.email,
+      sponsor_username: sponsorData.username,
+      sponsor_company: sponsorData.company_name,
+      offer_title: title,
+      offer_description: description,
+      offer_amount: amount,
+      payment_schedule: payment,
+      job_type: jobType,
+      deliverable_type: deliverableType,
+      instructions: instructions,
+      sponsorship_duration: sponsorshipDuration,
+      deadline: deadline,
+      offer_images: uploadedImageNames,
+      optional_file: optionalFileName,
+      platforms: platforms,
+      status: 'open',
+      max_applicants: maxApplicants,
+      min_followers: minFollowers,
+      audience_country: audienceCountry,
+      cycles: cycles,
+    };
+
+    localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+
+    // 4. Calculate totalWithFee
+    let total = amount * maxApplicants * cycles;
+    let perAppFee = Math.min(amount * 0.10, 5);
+    let fee = Math.min(total * 0.10, perAppFee * maxApplicants * cycles);
+    let totalWithFee = total + fee;
+
+   // 5. Start Stripe Checkout
+try {
+  // Get JWT for Edge Function auth
+  const { data: { session } } = await supabase.auth.getSession();
+  const jwt = session?.access_token;
+
+  // Calculate frontendBaseUrl
+  const frontendBaseUrl = window.location.origin.includes('github.io')
+    ? 'https://sponsor-sorter.github.io/Demo'
+    : window.location.origin + '/public';
+
+  const sessionRes = await fetch(STRIPE_BACKEND, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
+    },
+    body: JSON.stringify({
+      amount: totalWithFee,
+      offerId: title + '-' + Date.now(),
+      offerType: 'public',
+      frontendBaseUrl   // <--- Pass it!
+    })
+  });
+
+
+  const sessionData = await sessionRes.json();
+  if (!sessionData.sessionId) {
+    alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
+    return;
+  }
+  const stripe = Stripe(STRIPE_PK);
+  const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+  if (error) {
+    alert('Stripe redirect failed: ' + error.message);
+    return;
+  }
+} catch (err) {
+  alert('Failed to initiate payment: ' + err.message);
+  return;
 }
 
-if (typeof window !== "undefined") {
-  document.addEventListener("click", function(e) {
-    if (e.target && e.target.classList.contains("share-btn") && e.target.classList.contains("copy")) {
-      const link = e.target.getAttribute("data-link");
-      navigator.clipboard.writeText(link).then(() => {
-        e.target.innerText = "Copied!";
-        setTimeout(() => { e.target.innerHTML = `<svg viewBox="0 0 20 20" width="18" height="18"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8.828A2 2 0 0 0 15.414 8l-5.828-5.828A2 2 0 0 0 8.828 2H6zm0 2h2.828A2 2 0 0 1 10 4.172V9a1 1 0 0 0 1 1h4v6a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1.414L15.586 9H11V3.414z"/></svg> Copy Link`; }, 1200);
-      });
-    }
+    // After payment, user is redirected to /public/payment-success-public.html
   });
+});
+
+// Helper functions (renderStars, loadSponsorOverallStars, calcCost, autoFillCycles, etc.)
+
+function renderStars(rating) {
+  let out = '';
+  for (let i = 1; i <= 5; i++) {
+    out += `<span class="star${i <= rating ? ' gold-star' : ''}">${i <= rating ? '★' : '☆'}</span>`;
+  }
+  return out;
 }
+
+async function loadSponsorOverallStars(sponsorUsername) {
+  const avgStarsElem = document.getElementById('sponsor-average-stars');
+  if (!sponsorUsername || !avgStarsElem) {
+    if (avgStarsElem) avgStarsElem.innerHTML = renderStars(0);
+    return;
+  }
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('id')
+    .eq('sponsor_username', sponsorUsername);
+  if (!offers || offers.length === 0) {
+    avgStarsElem.innerHTML = renderStars(0);
+    return;
+  }
+  const offerIds = offers.map(o => o.id);
+  let overall = [];
+  for (let i = 0; i < offerIds.length; i += 100) {
+    const batchIds = offerIds.slice(i, i + 100);
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select('overall')
+      .in('offer_id', batchIds)
+      .eq('reviewer_role', 'sponsee');
+    if (reviews) {
+      overall = overall.concat(reviews.map(r => typeof r.overall === "string" ? parseFloat(r.overall) : r.overall || 0));
+    }
+  }
+  function avg(arr) { return arr.length ? arr.reduce((a,b) => a+b,0)/arr.length : 0; }
+  const ratingAvg = Math.round(avg(overall));
+  avgStarsElem.innerHTML = renderStars(ratingAvg);
+}
+
+function calcCost() {
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const applicants = parseInt(document.getElementById('maxApplicants').value) || 1;
+  const payment = document.getElementById('payment').value || '';
+  const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
+
+  // Main payout calculation
+  let total = price * applicants * cycles;
+
+  // Calculate fee per applicant/cycle
+  let tenPercentFee = total * 0.10;
+  let fiveDollarPerAppCycle = Math.min(5, price * 0.10) * applicants * cycles;
+  // The correct per-applicant/cycle logic: 10% of price or $5 per app/cycle, whichever is LESS for each applicant/cycle
+  let perAppFee = Math.min(price * 0.10, 5);
+  let fee = perAppFee * applicants * cycles;
+
+  // Make sure it's capped at 10% total if that's less than the per-app fee
+  fee = Math.min(tenPercentFee, fee);
+
+  let totalWithFee = total + fee;
+
+  let cycle = '';
+  if (payment === 'weekly') cycle = `per week × ${cycles} week${cycles>1?'s':''}`;
+  else if (payment === 'fortnightly') cycle = `per fortnight × ${cycles} fortnight${cycles>1?'s':''}`;
+  else if (payment === 'monthly') cycle = `per month × ${cycles} month${cycles>1?'s':''}`;
+  else if (payment === 'full on completion') cycle = `(one-off, on completion)`;
+
+  document.getElementById('offer-cost-amount').textContent = '$' + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('cost-cycle-label').textContent = cycle ? ` ${cycle}` : '';
+  document.getElementById('listing-fee-amount').textContent = '$' + fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('total-cost-amount').textContent = '$' + totalWithFee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+// Attach listeners for all involved fields:
+['price', 'maxApplicants', 'payment', 'cycleCount'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcCost);
+  document.getElementById(id).addEventListener('change', calcCost);
+});
+
+calcCost();
+
+function autoFillCycles() {
+  const duration = document.getElementById('sponsorshipDuration').value;
+  const payment = document.getElementById('payment').value;
+  let cycles = 1;
+
+  // Normalize strings for comparison
+  const d = (duration || '').toLowerCase();
+  const p = (payment || '').toLowerCase();
+
+  if (d === 'one off' || p === 'full on completion') {
+    cycles = 1;
+  } else if (p === 'monthly') {
+    if (d === '1 month') cycles = 1;
+    else if (d === '3 months') cycles = 3;
+    else if (d === '6 months') cycles = 6;
+    else if (d === '1 year') cycles = 12;
+  } else if (p === 'weekly') {
+    if (d === '1 month') cycles = 4;
+    else if (d === '3 months') cycles = 12;
+    else if (d === '6 months') cycles = 24;
+    else if (d === '1 year') cycles = 52;
+  } else if (p === 'fortnightly') {
+    if (d === '1 month') cycles = 2;
+    else if (d === '3 months') cycles = 6;
+    else if (d === '6 months') cycles = 12;
+    else if (d === '1 year') cycles = 26;
+  }
+
+  document.getElementById('cycleCount').value = cycles;
+  calcCost(); // Recalc total with new cycles value
+}
+
+// Attach event listeners after DOMContentLoaded
+document.getElementById('sponsorshipDuration').addEventListener('change', autoFillCycles);
+document.getElementById('payment').addEventListener('change', autoFillCycles);
+
+</script>
+
+</body>
+</html>
