@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Payment Success - Sponsor Sorter">
+  <title>Payment Success | Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+<main style="min-height:40vh;">
+  <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
+    <h2 style="color:green;">🎉 Payment successful!</h2>
+    <div id="signup-status">Creating your account...</div>
+  </div>
+</main>
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="/public/help.html">Help</a></li>
+      <li><a href="/public/contact.html">Contact</a></li>
+      <li><a href="/public/privacy.html">Privacy Policy</a></li>
+      <li><a href="/public/terms.html">Terms of Service</a></li>
+      <li><a href="/public/reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+<script type="module">
+import { supabase } from '/public/js/supabaseClient.js';
+
+// Helper for orphan logo cleanup
+async function cleanupPendingLogo() {
+  const pendingLogoPath = localStorage.getItem('pendingLogoPath');
+  if (pendingLogoPath) {
+    await supabase.storage.from('logos').remove([pendingLogoPath]);
+    localStorage.removeItem('pendingLogoPath');
+  }
+}
+
+async function finalizeSignupAfterPayment() {
+  const statusDiv = document.getElementById('signup-status');
+  const url = new URL(window.location.href);
+  const session_id = url.searchParams.get('session_id');
+  const payment_status = url.searchParams.get('payment_status');
+  if (!session_id || payment_status !== 'success') {
+    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
+    await cleanupPendingLogo();
+    return;
+  }
+
+  let regData = localStorage.getItem('pendingRegistration');
+  if (!regData) {
+    statusDiv.innerHTML = `<span style="color:red;">No registration data found. Please resubmit your registration.</span>`;
+    await cleanupPendingLogo();
+    return;
+  }
+  regData = JSON.parse(regData);
+
+  // Get password (from memory if available, or prompt user)
+  let password = window.__signupPassword;
+  if (!password) {
+    password = prompt('Please re-enter your password to complete signup (for your security):');
+    if (!password) {
+      statusDiv.innerHTML = `<span style="color:red;">No password found. Please try signing up again.</span>`;
+      await cleanupPendingLogo();
+      return;
+    }
+  }
+
+  // 1. Create Supabase Auth account
+  statusDiv.innerHTML = "Creating your account...";
+  let authData, signUpError;
+  try {
+    ({ data: authData, error: signUpError } = await supabase.auth.signUp({
+      email: regData.email,
+      password: password,
+      options: {
+        data: {
+          username: regData.username,
+          title: regData.title,
+          about_yourself: regData['about-yourself'],
+          location: regData.location,
+          company_name: regData['company_name'],
+          agreed_tos: true
+        }
+      }
+    }));
+    if (signUpError) {
+      statusDiv.innerHTML = `<span style="color:red;">Sign-up error: ${signUpError.message}</span>`;
+      await cleanupPendingLogo();
+      return;
+    }
+  } catch (err) {
+    statusDiv.innerHTML = `<span style="color:red;">Sign-up failed: ${err.message}</span>`;
+    await cleanupPendingLogo();
+    return;
+  }
+
+  const userId = authData?.user?.id;
+  if (!userId) {
+    statusDiv.innerHTML = `<span style="color:green;">Signup succeeded! Please verify your email before logging in.</span>`;
+    localStorage.removeItem('pendingRegistration');
+    await cleanupPendingLogo();
+    setTimeout(() => window.location.href = '/public/login.html', 3000);
+    return;
+  }
+
+  // 2. If logo was pre-uploaded, keep that path
+  let finalLogoPath = null;
+  const pendingLogoPath = localStorage.getItem('pendingLogoPath');
+  if (pendingLogoPath) {
+    finalLogoPath = pendingLogoPath;
+    localStorage.removeItem('pendingLogoPath');
+  }
+
+  // 3. Insert into users_extended_data
+  const extendedData = {
+    username: regData.username,
+    email: regData.email,
+    title: regData.title,
+    bday: regData.bday,
+    company_name: regData.company_name,
+    location: regData.location,
+    about_yourself: regData['about-yourself'],
+    userType: regData.userType,
+    platforms: regData.platforms,
+    target_audience: regData['target-audience'],
+    age_range: regData['age-range'],
+    preferred_content_format: regData['preferred-content-format'],
+    partnership_type: regData['partnership-type'],
+    minfollowers: regData.minfollowers,
+    payment_method: regData['payment-method'],
+    paypal_email: regData['paypal-email'],
+    social_handles: regData.social_handles,
+    profile_pic: finalLogoPath,
+    user_id: userId,
+    email_verified: false,
+    contenttype: regData.contenttype,
+    agreed_tos: true
+  };
+  try {
+    const { error: insertError } = await supabase
+      .from('users_extended_data')
+      .insert([extendedData]);
+    if (insertError) {
+      statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but failed to save profile: ${insertError.message}</span>`;
+    } else {
+      statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account. Redirecting to login...</span>`;
+    }
+  } catch (e) {
+    statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but profile could not be completed.</span>`;
+  }
+
+  localStorage.removeItem('pendingRegistration');
+  setTimeout(() => window.location.href = '/public/login.html', 3400);
+}
+
+document.addEventListener('DOMContentLoaded', finalizeSignupAfterPayment);
+</script>
+</body>
+</html>
