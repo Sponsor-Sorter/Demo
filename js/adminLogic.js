@@ -932,12 +932,11 @@ async function exportLogCSV() {
   exportToCSV('admin_log.csv', data);
 }
 
-
 // ========== Payout/Transaction Log ==========
 async function loadPayoutLogs() {
   const { data: payouts, error } = await supabase
     .from('payouts')
-    .select('id, offer_id, sponsee_id, sponsee_email, payout_amount, payout_method, payout_reference, paid_by_admin_id, paid_at, notes, status, created_at')
+    .select('id, offer_id, sponsee_id, sponsee_email, payout_amount, payout_method, payout_reference, paid_by_admin_id, paid_at, notes, status, created_at, payout_user_role')
     .order('created_at', { ascending: false })
     .limit(100);
 
@@ -1042,35 +1041,169 @@ async function exportPayoutCSV() {
 // Approve/Reject payout actions for admin
 window.markPayoutPaid = async function(id) {
   if (!confirm("Mark this payout as PAID?")) return;
+
+  // 1. Get payout row
+  const { data: payouts, error: payoutError } = await supabase
+    .from('payouts')
+    .select('id, sponsee_id, payout_amount, payout_user_role')
+    .eq('id', id)
+    .limit(1);
+
+  if (payoutError || !payouts || !payouts.length) {
+    alert('Could not fetch payout info.');
+    return;
+  }
+  const payout = payouts[0];
+
+  // 2. Get current admin ID
+  const { data: sessionData } = await supabase.auth.getSession();
+  const adminId = sessionData?.session?.user?.id || null;
   const now = new Date().toISOString();
-  const { data: session } = await supabase.auth.getSession();
-  const adminId = session?.user?.id || null;
-  await supabase.from('payouts').update({ status: 'paid', paid_at: now, paid_by_admin_id: adminId }).eq('id', id);
+
+  // 3. If sponsor, decrement wallet
+  if (payout.payout_user_role === 'sponsor') {
+    const { data: sponsor, error: sponsorErr } = await supabase
+      .from('users_extended_data')
+      .select('wallet')
+      .eq('user_id', payout.sponsee_id)
+      .single();
+
+    if (sponsorErr || !sponsor) {
+      alert("Could not fetch sponsor's wallet.");
+      return;
+    }
+
+    const newWallet = (Number(sponsor.wallet) || 0) - (Number(payout.payout_amount) || 0);
+    const { error: walletErr } = await supabase
+      .from('users_extended_data')
+      .update({ wallet: newWallet < 0 ? 0 : newWallet })
+      .eq('user_id', payout.sponsee_id);
+
+    if (walletErr) {
+      alert("Could not update sponsor wallet.");
+      return;
+    }
+  }
+
+  // 4. Mark payout as paid
+  const { error: updatePayoutErr } = await supabase.from('payouts').update({
+    status: 'paid',
+    paid_at: now,
+    paid_by_admin_id: adminId
+  }).eq('id', id);
+  if (updatePayoutErr) {
+    alert('Failed to update payout record.');
+    return;
+  }
+
+  // 5. Log admin action
   await supabase.from('admin_activity_log').insert({
-    action: "Mark Payout Paid", performed_by: adminId, target_id: id, target_type: "payout"
+    action: "Mark Payout Paid",
+    performed_by: adminId,
+    target_id: id,
+    target_type: "payout"
   });
+
+  // 6. Look up notification_uuid and email for the sponsee
+  const { data: user, error: userErr } = await supabase
+    .from('users_extended_data')
+    .select('notification_uuid, email')
+    .eq('user_id', payout.sponsee_id)
+    .single();
+
+  if (userErr || !user || !user.notification_uuid) {
+    alert('Notification error: Could not get user notification_uuid.');
+    return;
+  }
+
+  // 7. Insert notification (DO NOT include user_id, must use notification_uuid)
+  const { error: notifErr } = await supabase.from('user_notifications').insert([{
+    notification_uuid: user.notification_uuid,
+    email: user.email,
+    type: 'admin',
+    title: 'Withdrawal Approved',
+    message: `Your withdrawal of $${Number(payout.payout_amount).toFixed(2)} has been processed and paid, please allow upto 3 days to reflect in your account.`,
+    read: false,
+    created_at: new Date().toISOString()
+  }]);
+  if (notifErr) {
+    alert('Failed to send notification: ' + notifErr.message);
+    return;
+  }
+
+  // 8. Reload payouts
   loadPayoutLogs();
+  alert('Payout marked as paid and notification sent.');
 };
+
+
 
 window.rejectPayout = async function(id) {
   if (!confirm("Reject and cancel this payout?")) return;
-  const { data: session } = await supabase.auth.getSession();
-  const adminId = session?.user?.id || null;
-  await supabase.from('payouts').update({ status: 'rejected', paid_at: null, paid_by_admin_id: adminId }).eq('id', id);
+
+  // 1. Get payout row
+  const { data: payouts, error: payoutError } = await supabase
+    .from('payouts')
+    .select('id, sponsee_id, payout_amount')
+    .eq('id', id)
+    .limit(1);
+
+  if (payoutError || !payouts || !payouts.length) {
+    alert('Could not fetch payout info.');
+    return;
+  }
+  const payout = payouts[0];
+
+  // 2. Get admin id
+  const { data: sessionData } = await supabase.auth.getSession();
+  const adminId = sessionData?.session?.user?.id || window.adminUserId || null;
+
+  // 3. Update payout status
+  const { error: updateErr } = await supabase.from('payouts').update({
+    status: 'rejected',
+    paid_at: null,
+    paid_by_admin_id: adminId
+  }).eq('id', id);
+
+  if (updateErr) {
+    alert("Failed to update payout status.");
+    return;
+  }
+
+  // 4. Log admin action
   await supabase.from('admin_activity_log').insert({
-    action: "Reject Payout", performed_by: adminId, target_id: id, target_type: "payout"
+    action: "Reject Payout",
+    performed_by: adminId,
+    target_id: id,
+    target_type: "payout"
   });
+
+  // 5. Notification
+  const { data: user, error: userErr } = await supabase
+    .from('users_extended_data')
+    .select('notification_uuid, email')
+    .eq('user_id', payout.sponsee_id)
+    .single();
+
+  if (userErr || !user || !user.notification_uuid) {
+    alert('Notification error: Could not get user notification_uuid.');
+    loadPayoutLogs();
+    return;
+  }
+
+  await supabase.from('user_notifications').insert([{
+    notification_uuid: user.notification_uuid,
+    email: user.email,
+    type: 'admin',
+    title: 'Withdrawal Rejected',
+    message: `Your withdrawal of $${Number(payout.payout_amount).toFixed(2)} was rejected. Contact support for more information.`,
+    read: false,
+    created_at: new Date().toISOString()
+  }]);
+
   loadPayoutLogs();
 };
 
-window.rejectPayout = async function(id) {
-  if (!confirm("Reject and cancel this payout?")) return;
-  await supabase.from('payouts').update({ status: 'rejected', paid_at: null }).eq('id', id);
-  await supabase.from('admin_activity_log').insert({
-    action: "Reject Payout", performed_by: window.adminUserId, target_id: id, target_type: "payout"
-  });
-  loadPayoutLogs();
-};
 
 
 
