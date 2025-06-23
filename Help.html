@@ -7,8 +7,8 @@
     <title>Help & Resource Center - Sponsor Sorter</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="/public/js/settings.js"></script>
-    <script type="module" src="/public/js/alerts.js"></script>
+    <script type="module" src="./js/settings.js"></script>
+    <script type="module" src="./js/alerts.js"></script>
 </head>
 <body>
     <!-- Navbar and Header -->
@@ -261,12 +261,12 @@
         <div class="footer-branding">
             <div class="footer-text">
                 <ul>
-                <li><a href="/public/help.html">Help</a></li>
-                <li><a href="/public/contact.html">Contact</a></li>
-                <li><a href="/public/privacy.html">Privacy Policy</a></li>
-                <li><a href="/public/terms.html">Terms of Service</a></li>
-                <li><a href="/public/reviews.html">Reviews</a></li>
-                <li><a href="/public/blog.html">Blog</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="./blog.html">Blog</a></li>
 
             </ul>
             </div>
@@ -295,7 +295,7 @@
 
       <!-- CHARTS & LIVE STATS SCRIPT -->
     <script type="module">
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 async function loadPlatformStatsAndCharts() {
     // Elements
