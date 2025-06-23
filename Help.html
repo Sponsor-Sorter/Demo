@@ -7,8 +7,8 @@
     <title>Help & Resource Center - Sponsor Sorter</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="./js/settings.js"></script>
-    <script type="module" src="./js/alerts.js"></script>
+    <script type="module" src="/public/js/settings.js"></script>
+    <script type="module" src="/public/js/alerts.js"></script>
 </head>
 <body>
     <!-- Navbar and Header -->
@@ -111,24 +111,24 @@
         <legend>📊 Platform Statistics <span style="font-size:0.9em;font-weight:normal;color:#aaf;">(Live)</span></legend>
         <div class="stats-card-row">
             <div class="stat-card">
+                <canvas id="chart-users" height="52"></canvas>
                 <div class="stat-label">Total Users</div>
                 <div class="stat-value" id="stat-users">Loading…</div>
-                <canvas id="chart-users" height="52"></canvas>
             </div>
             <div class="stat-card">
+                <canvas id="chart-active" height="52"></canvas>
                 <div class="stat-label">Active Sponsorships</div>
                 <div class="stat-value" id="stat-active">Loading…</div>
-                <canvas id="chart-active" height="52"></canvas>
             </div>
             <div class="stat-card">
+                <canvas id="chart-brands" height="52"></canvas>
                 <div class="stat-label">Brands on Platform</div>
                 <div class="stat-value" id="stat-brands">Loading…</div>
-                <canvas id="chart-brands" height="52"></canvas>
             </div>
             <div class="stat-card">
+                <canvas id="chart-dealvalue" height="52"></canvas>
                 <div class="stat-label">Average Deal Value</div>
                 <div class="stat-value" id="stat-dealvalue">Loading…</div>
-                <canvas id="chart-dealvalue" height="52"></canvas>
             </div>
         </div>
     </fieldset>
@@ -138,7 +138,7 @@
             <legend>📘 FAQs & Help Center</legend>
             <div class="help-intro">
                 <h2>Welcome to Sponsor Sorter's Help Center</h2>
-                <p>Need assistance? Browse our frequently asked questions or contact our support team. We're here to help you get the most out of your sponsorship journey!</p>
+                <p>Need assistance? Show help blocks from the settings menu to display. Browse our frequently asked questions or contact our support team. We're here to help you get the most out of your sponsorship journey!</p>
             </div>
             <div class="help-grid">
  
@@ -212,6 +212,46 @@
                     <h3>📧 Need more help?</h3>
                     <p>Contact our support team at <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> or visit our <a href="contact.html">Contact Page</a>.</p>
                 </div>
+                <!-- Refund Help Block -->
+                <div class="help-block">
+                    <h3>💸 How Do Refunds Work?</h3>
+                    <p>
+                        If you cancel a sponsorship offer before it is accepted by the creator, the amount you paid will be refunded directly to your Sponsor Sorter <strong>wallet</strong>.
+                        <br><br>
+                        Cancelled funds are <span style="color:#17974a;"><strong>instantly</strong></span> credited to your wallet. You can view your wallet balance at the top of your sponsor dashboard.
+                        <br><br>
+                        <strong>How to Refund:</strong>
+                        <ol>
+                            <br>Go to your <a href="dashboardsponsor.html">Sponsor Dashboard</a></br>
+                            <br>Find your active offers and click <b>Cancel Offer</b> on the offer you wish to cancel.</br>
+                            <br>After confirmation, the offer will be marked cancelled and the offer amount refunded to your wallet.</br>
+                        </ol>
+                        <span style="color:#ffae34;">Note: Offers can only be refunded/cancelled before they are accepted by a creator.</span>
+                    </p>
+                </div>
+
+                <!-- Wallet Explanation Block -->
+                <div class="help-block">
+                    <h3>👛 Understanding Your Sponsor Sorter Wallet</h3>
+                    <p>
+                        Your <strong>wallet</strong> is a secure virtual balance within Sponsor Sorter. It holds:
+                        <ul>
+                            <br>Refunds from cancelled offers</br>
+                            <br>Deposited or transferred funds</br>
+                        </ul>
+                        <strong>How to Use Your Wallet:</strong>
+                        <ul>
+                            <br><b>Request a Withdrawal:</b> Click the wallet withdraw icon (<span style="color:#17974a;">&#128179;</span>) on your dashboard to transfer funds to your PayPal or bank account. Admin approval is required for withdrawals.</br>
+                            <br><b>Pay for New Offers:</b> Funds in your wallet can be used for new sponsorship offers on the platform.</br>
+                        </ul>
+                        <span style="color:#17974a;">Available wallet balance is always shown in green.</span>
+                        <br>
+                        <span style="color:#ffae34;">If you have a pending withdrawal, the wallet balance will show in orange until your request is processed.</span>
+                        <br><br>
+                        For more details, contact <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>
+                    </p>
+                </div>
+
             </div>
         </fieldset>
     </section>
@@ -221,12 +261,12 @@
         <div class="footer-branding">
             <div class="footer-text">
                 <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
+                <li><a href="/public/blog.html">Blog</a></li>
 
             </ul>
             </div>
@@ -255,7 +295,7 @@
 
       <!-- CHARTS & LIVE STATS SCRIPT -->
     <script type="module">
-import { supabase } from './js/supabaseClient.js';
+import { supabase } from '/public/js/supabaseClient.js';
 
 async function loadPlatformStatsAndCharts() {
     // Elements
@@ -283,7 +323,7 @@ async function loadPlatformStatsAndCharts() {
     activeEl.textContent = activeCount ? activeCount.toLocaleString() : 'N/A';
     // Average Deal Value (completed offers)
     let { data: completed } = await supabase
-        .from('private_offers').select('offer_amount').eq('status', 'completed');
+        .from('private_offers').select('offer_amount').eq('status', 'pending');
     if (!completed || completed.length === 0) {
         avgDealEl.textContent = 'N/A';
     } else {
