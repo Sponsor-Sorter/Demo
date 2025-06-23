@@ -5104,3 +5104,37 @@ fieldset.recentoffers {
 .share-btn.x:hover       { background: #192534 !important; color: #fff !important; }
 .share-btn.linkedin:hover{ background: #173c53 !important; color: #fff !important; }
 .share-btn:active        { background: #2d384c !important; }
+
+
+
+.wallet {
+  position: absolute;        /* Take out of normal flow */
+  left: 32px;                /* Distance from the left edge (adjust as needed) */
+  top: 200px;                 /* Distance from the top (adjust as needed) */
+  background: #4b4b4b;       /* Subtle dark green background */
+  color:  white;
+  font-size: 1.15em;
+  font-weight: 600;
+  padding: 10px 22px 10px 18px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #0002;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wallet .info-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.wallet .withdraw-icon svg {
+  transition: filter 0.2s;
+}
+.wallet .withdraw-icon:hover svg {
+  filter: brightness(1.5) drop-shadow(0 0 4px blue);
+}
+
+.wallet [style*="color:#ffae34"] { font-weight: bold; }
+.wallet [style*="color:#17974a"] { font-weight: bold; }
