@@ -98,7 +98,7 @@ async function renderSingleOffer(offer) {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
       if (offerId) {
-        window.location.href = `./review.html?offer_id=${offerId}`;
+        window.location.href = `/public/review.html?offer_id=${offerId}`;
       }
     }
   });
@@ -249,6 +249,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch latest sponsor_username from users_extended_data every load
   sponsor_username = await getCurrentSponsorUsername(sponsor_id);
+
+  // At top of sponsorOffers.js
+async function updateSponsorWallet() {
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session?.user) return;
+  const sponsor_id = session.user.id;
+  const { data, error: walletError } = await supabase
+    .from('users_extended_data')
+    .select('wallet')
+    .eq('user_id', sponsor_id)
+    .single();
+  if (!walletError && data && document.querySelector('.wallet')) {
+    document.querySelector('.wallet').innerHTML = `Wallet: $${Number(data.wallet).toFixed(2)}
+      <span class="info-icon" data-tooltip="For refund Money" style="color: white;">🛈</span>`;
+  }
+}
+
+  
 
   const { data: offers, error } = await supabase
     .from('private_offers')
@@ -483,30 +501,64 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    if (e.target.classList.contains('cancel-offer-btn')) {
-      if (window.confirm("Are you sure you want to cancel this offer?")) {
-        const { error } = await supabase
-          .from('private_offers')
-          .update({ status: 'Offer Cancelled' })
-          .eq('id', offerId);
-
-        if (error) {
-          alert(`Failed to cancel offer: ${error.message}`);
-        } else {
-          // Always fetch sponsor username for notification
-          const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
-          await notifyOfferUpdate({
-            to_user_id: sponseeUserId,
-            offer_id: offerId,
-            type: 'offer_cancelled',
-            title: "Offer Cancelled",
-            message: `${currentSponsorUsername} has cancelled the sponsorship offer.`
-          });
-          alert("Offer cancelled.");
-          renderOffersByFilter('all');
-        }
-      }
+if (e.target.classList.contains('cancel-offer-btn')) {
+  if (window.confirm("Are you sure you want to cancel this offer?")) {
+    // 1. Get offer amount
+    const offerId = offerCard.dataset.offerId;
+    const { data: offer, error: offerErr } = await supabase
+      .from('private_offers')
+      .select('offer_amount')
+      .eq('id', offerId)
+      .single();
+    if (offerErr || !offer) {
+      alert('Could not fetch offer amount for wallet refund.');
+      return;
     }
+
+    // 2. Update offer status to cancelled
+    const { error: cancelErr } = await supabase
+      .from('private_offers')
+      .update({ status: 'Offer Cancelled' })
+      .eq('id', offerId);
+
+    if (cancelErr) {
+      alert(`Failed to cancel offer: ${cancelErr.message}`);
+      return;
+    }
+
+    // 3. Credit refund to sponsor's wallet
+    const { error: walletErr } = await supabase.rpc('increment_wallet_balance', {
+      user_id_param: sponsor_id,
+      amount_param: offer.offer_amount
+    });
+
+    // If RPC fails (function not created yet), do direct update instead:
+    // const { error: walletErr } = await supabase
+    //   .from('users_extended_data')
+    //   .update({ wallet: supabase.raw('wallet + ?', [offer.offer_amount]) })
+    //   .eq('user_id', sponsor_id);
+
+    if (walletErr) {
+      alert('Failed to credit refund to wallet. Please contact support.');
+      return;
+    }
+
+    // 4. Notify sponsee
+    const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
+    await notifyOfferUpdate({
+      to_user_id: sponseeUserId,
+      offer_id: offerId,
+      type: 'offer_cancelled',
+      title: "Offer Cancelled",
+      message: `${currentSponsorUsername} has cancelled the sponsorship offer.`
+    });
+
+    alert("Offer cancelled. Amount has been refunded to your wallet.");
+    updateSponsorWallet();
+    renderOffersByFilter('all');
+  }
+}
+
 
     if (e.target.classList.contains('delete-offer-btn')) {
       const success = await handleRemoveOffer(offerId);
