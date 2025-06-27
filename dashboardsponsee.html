@@ -47,6 +47,17 @@
                 <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
                 <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn"  >Show Guided Onboarding</button>
 </li>
+<li><button type="button" class="dropdown-item" id="show-referral-link-btn">
+    Show Referral Link
+  </button></li>
+  <li>
+  <button type="button" class="dropdown-item" id="show-subscription-modal-btn">
+    Subscription & Free Month Rewards
+  </button>
+</li>
+
+</li>
+
               </ul>
             </div>
           </li>
@@ -461,6 +472,78 @@
     renderSponseePublicOffers();
   });
 </script>
+
+
+<!-- Referral Link Modal -->
+
+<div id="referral-link-modal" style="display:none;position:fixed;z-index:3000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.18);align-items:center;justify-content:center;">
+  <div style="margin:auto;background:white;max-width:390px;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 4px 28px 0 #dedede;position:relative;">
+    <button id="close-ref-link-modal" style="position:absolute;top:16px;right:16px;background:none;box-shadow:none;border:none;font-size:1.7em;color:rgb(255, 0, 0);cursor:pointer;">×</button>
+    <h3 style="color: black !important;margin:0 0 18px 0;font-size:1.19em;">Your Referral Link</h3>
+    <input id="my-ref-link" style="width:90%;font-size:1em;margin-bottom:14px;" readonly value="Loading...">
+    <button id="copy-ref-link-btn" style="margin-left:0;width:90%;font-size:1.03em;background:#36a2eb;color:white;border:none;padding:7px 0;border-radius:8px;cursor:pointer;">Copy to Clipboard</button>
+    <div id="ref-link-copied-msg" style="color:green;font-size:0.97em;margin-top:10px;display:none;">Copied!</div>
+    <div style="margin-top:14px;font-size:0.97em;color:#556;">
+      Share this link—anyone who signs up with it will earn you a free month!
+    </div>
+  </div>
+</div>
+
+<!-- Subscription & Rewards Modal - styled like Withdraw Funds -->
+<div id="subscription-modal"
+  style="
+    display:none;position:fixed;z-index:3010;
+    left:0;top:0;width:100vw;height:100vh;
+    background:rgba(30,38,80,0.19);
+    align-items:center;justify-content:center;">
+  <div style="
+      margin:auto;
+      background:#232324;
+      color:#fff;
+      max-width:460px;
+      width:94vw;
+      padding:38px 30px 32px 30px;
+      border-radius:22px;
+      box-shadow:0 10px 48px 0 #000a;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:0.45em;">
+    <button id="close-subscription-modal"
+      style="
+        position:absolute;top:18px;right:18px;
+        background:none;box-shadow:none;border:none;
+        font-size:2em;color:#e53e3e;cursor:pointer;
+        line-height:1;
+        ">
+      &times;
+    </button>
+    <h3 style="
+        color:#fff;
+        margin:0 0 16px 0;
+        font-size:1.22em;
+        font-weight:600;
+        text-align:center;
+        letter-spacing:.01em;
+      ">
+      Subscription &amp; Free Month Rewards
+    </h3>
+    <div id="subscription-details"
+      style="
+        background: #19191a;
+        border-radius:14px;
+        min-height:54px;
+        margin-top:7px;
+        padding:18px 14px 14px 14px;
+        color:#ddd;
+        font-size:1.07em;">
+      <div style="text-align:center;color:#bbb;font-size:1em;">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
