@@ -1,5 +1,5 @@
 // /public/js/homepage.js
-import { supabase } from './supabaseClient.js';
+import { supabase } from './Demo/supabaseClient.js';
 
 /* ========== ACTIVITY TICKER ========== */
 function timeAgo(dateString) {
