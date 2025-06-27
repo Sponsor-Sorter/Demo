@@ -624,11 +624,6 @@ body {
 }
 
 /* Hero Section */
-.hero {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-}
 
 #video-bg {
     width: 100%;
@@ -5106,7 +5101,6 @@ fieldset.recentoffers {
 .share-btn:active        { background: #2d384c !important; }
 
 
-
 .wallet {
   position: absolute;        /* Take out of normal flow */
   left: 32px;                /* Distance from the left edge (adjust as needed) */
@@ -5165,3 +5159,5 @@ fieldset.recentoffers {
     transform: none;
   }
 }
+
+
