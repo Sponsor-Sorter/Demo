@@ -627,97 +627,159 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const offerForm = document.getElementById('offerForm');
   offerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const title = document.getElementById('offerTitle').value.trim();
-    const description = document.getElementById('offerDescription').value.trim();
-    const amount = parseFloat(document.getElementById('price').value);
-    const payment = document.getElementById('payment').value;
-    const jobType = document.getElementById('jobType').value;
-    const deliverableType = document.getElementById('deliverableType').value;
-    const instructions = document.getElementById('instructions').value;
-    const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
-    const deadline = document.getElementById('deadline').value;
-    const selectedPlatforms = Array.from(document.querySelectorAll('input[name="offer_platforms"]:checked')).map(cb => cb.value);
-    if (!title || isNaN(amount)) {
-      alert('Please provide a valid title and amount.');
+  const title = document.getElementById('offerTitle').value.trim();
+  const description = document.getElementById('offerDescription').value.trim();
+  const amount = parseFloat(document.getElementById('price').value);
+  const payment = document.getElementById('payment').value;
+  const jobType = document.getElementById('jobType').value;
+  const deliverableType = document.getElementById('deliverableType').value;
+  const instructions = document.getElementById('instructions').value;
+  const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
+  const deadline = document.getElementById('deadline').value;
+  const selectedPlatforms = Array.from(document.querySelectorAll('input[name="offer_platforms"]:checked')).map(cb => cb.value);
+
+  if (!title || isNaN(amount)) {
+    alert('Please provide a valid title and amount.');
+    return;
+  }
+
+  // --- AI moderation ---
+  const modInputs = [
+    { field: "Title", value: title },
+    { field: "Description", value: description },
+    { field: "Instructions", value: instructions }
+  ];
+  for (const input of modInputs) {
+    if (input.value) {
+      const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
+      const jwt = session?.access_token;
+      const result = await famBotModerateWithModal({
+        user_id,
+        content: input.value,
+        jwt,
+        type: 'offer'
+      });
+      if (!result.allowed) return;
+    }
+  }
+
+  // --- Image uploads ---
+  const uploadedImageNames = [];
+  for (let i = 0; i < imageFiles.length; i++) {
+    const { file } = imageFiles[i];
+    const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+    const { error: uploadError } = await supabase
+      .storage
+      .from('offers')
+      .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
+    if (uploadError) {
+      alert(`Failed to upload ${file.name}`);
+      console.error(uploadError);
+      return;
+    }
+    uploadedImageNames.push(uniqueName);
+  }
+  const optionalFileInput = document.getElementById('optionalFile');
+  const optionalFile = optionalFileInput.files[0];
+  let optionalFileName = null;
+  if (optionalFile) {
+    const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
+    const { error: optionalUploadError } = await supabase
+      .storage
+      .from('offers')
+      .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
+    if (optionalUploadError) {
+      alert('Optional file upload failed.');
+      console.error(optionalUploadError);
+      return;
+    }
+    optionalFileName = uniqueOptFileName;
+  }
+
+  const offerData = {
+    sponsee_username: cachedSponseeData.username,
+    sponsee_email: cachedSponseeData.email,
+    sponsee_id: cachedSponseeData.user_id,
+    sponsor_email: cachedSponsorData.email,
+    sponsor_username: cachedSponsorData.username,
+    sponsor_id: cachedSponsorData.id,
+    sponsor_company: cachedSponsorData.company_name,
+    offer_title: title,
+    offer_description: description,
+    offer_amount: amount,
+    payment_schedule: payment,
+    job_type: jobType,
+    deliverable_type: deliverableType,
+    instructions: instructions,
+    sponsorship_duration: sponsorshipDuration,
+    deadline: deadline,
+    offer_images: uploadedImageNames,
+    optional_file: optionalFileName,
+    platforms: selectedPlatforms,
+  };
+
+  // ==== WALLET PAYMENT LOGIC ====
+  // 1. Check wallet balance
+  const { data: sponsorDataUpdated, error: walletError } = await supabase
+    .from('users_extended_data')
+    .select('wallet')
+    .eq('id', cachedSponsorData.id)
+    .single();
+
+  if (walletError) {
+    alert('Error checking wallet balance.');
+    return;
+  }
+  const walletBalance = parseFloat(sponsorDataUpdated?.wallet || 0);
+
+  if (walletBalance >= amount) {
+    // 2. Try to deduct from wallet (atomic SQL function)
+    const { data: walletResult, error: deductError } = await supabase.rpc('use_wallet_funds', {
+      user_id: cachedSponsorData.id,
+      amount: amount
+    });
+    if (deductError) {
+      alert('Failed to deduct from wallet: ' + deductError.message);
+      return;
+    }
+    if (!walletResult) {
+      alert('Wallet balance changed, not enough funds!');
       return;
     }
 
-    const modInputs = [
-      { field: "Title", value: title },
-      { field: "Description", value: description },
-      { field: "Instructions", value: instructions }
-    ];
-    for (const input of modInputs) {
-      if (input.value) {
-        const { data: { session } } = await supabase.auth.getSession();
-        const user_id = session?.user?.id;
-        const jwt = session?.access_token;
-        const result = await famBotModerateWithModal({
-          user_id,
-          content: input.value,
-          jwt,
-          type: 'offer'
-        });
-        if (!result.allowed) return;
-      }
+    // 3. Insert the offer as paid (do NOT include payment_status if not in table)
+    const { data: offerInsertData, error: offerInsertError } = await supabase
+      .from('private_offers')
+      .insert([{
+        ...offerData,
+        stage: 1,
+        status: 'pending'
+      }])
+      .select()
+      .single();
+
+    if (offerInsertError) {
+      alert('Offer creation failed: ' + offerInsertError.message);
+      return;
     }
 
-    const uploadedImageNames = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const { file } = imageFiles[i];
-      const uniqueName = `${crypto.randomUUID()}_${file.name}`;
-      const { error: uploadError } = await supabase
-        .storage
-        .from('offers')
-        .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
-      if (uploadError) {
-        alert(`Failed to upload ${file.name}`);
-        console.error(uploadError);
-        return;
-      }
-      uploadedImageNames.push(uniqueName);
-    }
-    const optionalFileInput = document.getElementById('optionalFile');
-    const optionalFile = optionalFileInput.files[0];
-    let optionalFileName = null;
-    if (optionalFile) {
-      const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
-      const { error: optionalUploadError } = await supabase
-        .storage
-        .from('offers')
-        .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
-      if (optionalUploadError) {
-        alert('Optional file upload failed.');
-        console.error(optionalUploadError);
-        return;
-      }
-      optionalFileName = uniqueOptFileName;
-    }
+    // 4. Notify sponsee of new offer (re-using your working notification logic)
+    await notifyNewOffer({
+      offer_id: offerInsertData.id,
+      to_user_id: cachedSponseeData.user_id,
+      from_username: cachedSponsorData.username,
+      offer_title: offerInsertData.offer_title
+    });
 
-    const offerData = {
-      sponsee_username: cachedSponseeData.username,
-      sponsee_email: cachedSponseeData.email,
-      sponsee_id: cachedSponseeData.user_id,
-      sponsor_email: cachedSponsorData.email,
-      sponsor_username: cachedSponsorData.username,
-      sponsor_id: cachedSponsorData.id,
-      sponsor_company: cachedSponsorData.company_name,
-      offer_title: title,
-      offer_description: description,
-      offer_amount: amount,
-      payment_schedule: payment,
-      job_type: jobType,
-      deliverable_type: deliverableType,
-      instructions: instructions,
-      sponsorship_duration: sponsorshipDuration,
-      deadline: deadline,
-      offer_images: uploadedImageNames,
-      optional_file: optionalFileName,
-      platforms: selectedPlatforms,
-    };
+    alert('Offer submitted and paid with wallet! Redirecting to dashboard...');
+    window.location.href = './dashboardsponsor.html';
+    return;
 
+  } else {
+    // ===== STRIPE PAYMENT FLOW (fallback, never broken) =====
     localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
 
     try {
@@ -726,7 +788,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const frontendBaseUrl = window.location.origin.includes('github.io')
         ? 'https://sponsor-sorter.github.io/Demo'
         : window.location.origin + '/public';
-      let totalWithFee = amount; // For private offers, just amount
+      let totalWithFee = amount;
 
       const sessionRes = await fetch(STRIPE_BACKEND, {
         method: 'POST',
@@ -758,7 +820,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     // After payment, user is redirected to /payment-success.html
-  });
+  }
+});
+
 });
 </script>
 
