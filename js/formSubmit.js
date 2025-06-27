@@ -1,6 +1,13 @@
 // /public/js/formSubmit.js
 import { supabase } from './supabaseClient.js';
 
+let refCode = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  refCode = urlParams.get('ref');
+});
+
+
 const SUPABASE_ANON_KEY = '024636ea4f7d172f905c02347888f84e405b115a0255326a0b185bf767d2baf0';
 const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBotSignup';
 
@@ -147,6 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
       window.__signupConfirmPassword = confirm_password;
       localStorage.setItem('pendingRegistration', JSON.stringify(registration));
 
+      if (refCode) {
+  localStorage.setItem('pendingReferralCode', refCode);
+}
+
       if (window.__signupProcessing) return;
       window.__signupProcessing = true;
 
@@ -227,6 +238,53 @@ window.previewLogo = function () {
   };
   reader.readAsDataURL(file);
 };
+
+//Referral helper
+
+async function processReferralForNewUser(newUserId) {
+  if (!refCode) return; // Only run if referral code present
+
+  // Look up the referrer by referral code
+  const { data: refLink, error: linkErr } = await supabase
+    .from('referral_links')
+    .select('user_id')
+    .eq('code', refCode)
+    .single();
+
+  if (!refLink || linkErr) return; // Fail silently if not valid
+
+  // Record the referral relationship in referral_rewards
+  await supabase
+    .from('referral_rewards')
+    .insert([{
+      referrer_id: refLink.user_id,
+      referred_user_id: newUserId,
+      reward_type: 'month_free'
+    }]);
+}
+
+if (refCode) {
+  supabase.from('referral_links')
+    .select('user_id')
+    .eq('code', refCode)
+    .single()
+    .then(({ data }) => {
+      if (data?.user_id) {
+        supabase.from('users_extended_data')
+          .select('username')
+          .eq('user_id', data.user_id)
+          .single()
+          .then(({ data: refUser }) => {
+            if (refUser?.username) {
+              // Show banner in DOM
+              const el = document.getElementById('referral-banner');
+              if (el) el.textContent = `You're signing up with a referral from ${refUser.username}! 🎉`;
+            }
+          });
+      }
+    });
+}
+
 
 // FamBot Modal Renderer
 function showFamBotModal(result) {
