@@ -113,13 +113,21 @@ async function updateSponsorWallet() {
   // 3. Displayed wallet = actual wallet - pending payouts
   const displayWallet = currentWalletAmount - pendingAmount;
 
-  // 4. Colors
-  let walletNumColor = (pendingSponsorPayouts.length > 0) ? '#ffae34' : '#17974a'; // orange or green
+  // 4. Colors and tooltip
+  let walletNumColor = (pendingSponsorPayouts.length > 0) ? '#ffae34' : '#17974a';
   let tooltipMsg = pendingSponsorPayouts.length > 0
     ? 'Pending withdrawal – waiting for admin approval'
-    : 'Available for withdrawal or refund';
+    : 'Available for withdrawal or another Offer';
 
-  // 5. Render wallet with color ONLY on number
+  // 5. Warning if negative
+  let warningHtml = '';
+  if (displayWallet < 0) {
+    warningHtml = `<div style="color:#ff5555;font-weight:bold;font-size:.9em;margin-top:6px;">
+      ⚠️ Warning: Your pending payout will be <span style="color:#ffae34">rejected</span> due to insufficient funds.
+    </div>`;
+  }
+
+  // 6. Render wallet with color ONLY on number, and show warning if needed
   if (!walletError && data && document.querySelector('.wallet')) {
     document.querySelector('.wallet').innerHTML = `
       Wallet: <span style="color:${walletNumColor};font-weight:600;">$${displayWallet.toFixed(2)}</span>
@@ -129,9 +137,11 @@ async function updateSponsorWallet() {
           <path d="M2 7v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zm2 0h16v10H4V7zm3 4h2a1 1 0 1 1 0 2H7a1 1 0 1 1 0-2z"/>
         </svg>
       </span>
+      ${warningHtml}
     `;
   }
 }
+
 
 
 
