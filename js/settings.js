@@ -1,4 +1,4 @@
-// ./settings.js
+// /public/js/settings.js
 
 import { supabase } from './supabaseClient.js';
 import { getActiveUser } from './impersonationHelper.js';
@@ -270,6 +270,292 @@ document.addEventListener('DOMContentLoaded', async () => {
       await loadSocials();
     };
   }
+
+// --- Referral Link Modal Logic ---
+document.getElementById('show-referral-link-btn')?.addEventListener('click', async () => {
+  const modal = document.getElementById('referral-link-modal');
+  const input = document.getElementById('my-ref-link');
+  const copyBtn = document.getElementById('copy-ref-link-btn');
+  const copiedMsg = document.getElementById('ref-link-copied-msg');
+
+  if (modal) modal.style.display = 'flex';
+  if (input) input.value = 'Loading...';
+  if (copiedMsg) copiedMsg.style.display = 'none';
+
+  // Fetch or create referral link
+  let user = await getActiveUser();
+  if (!user || !user.user_id || !user.username) {
+    if (input) input.value = "Could not load your referral link.";
+    return;
+  }
+  // Check for existing code
+  let { data: link, error } = await supabase
+    .from('referral_links')
+    .select('code')
+    .eq('user_id', user.user_id)
+    .single();
+  if (!link || error) {
+    // Generate a new code
+    const code = `${user.username}-${user.user_id.slice(0,8)}`.replace(/[^a-zA-Z0-9_-]/g, '');
+    const { data: created, error: insertErr } = await supabase
+      .from('referral_links')
+      .insert([{ user_id: user.user_id, code }])
+      .select()
+      .maybeSingle();
+    if (insertErr) {
+      if (input) input.value = "Could not create referral link.";
+      return;
+    }
+    link = created;
+  }
+// Always use the same folder as settings/dashboard page for signup page
+const currentPath = window.location.pathname;
+const folder = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+const refUrl = `${window.location.origin}${folder}signup.html?ref=${encodeURIComponent(link.code)}`;
+  if (input) input.value = refUrl;
+
+  copyBtn.onclick = () => {
+    input.select();
+    document.execCommand('copy');
+    if (copiedMsg) copiedMsg.style.display = 'block';
+  };
+});
+// --- Subscription & Free Month Rewards Modal Logic ---
+document.getElementById('show-subscription-modal-btn')?.addEventListener('click', async () => {
+  const modal = document.getElementById('subscription-modal');
+  const detailsDiv = document.getElementById('subscription-details');
+  if (modal) modal.style.display = 'flex';
+  if (detailsDiv) detailsDiv.innerHTML = '<div style="text-align:center;color:#bbb;">Loading your subscription info...</div>';
+
+  let user = await getActiveUser();
+  if (!user || !user.user_id) {
+    if (detailsDiv) detailsDiv.innerHTML = '<span style="color:red;">Could not load your details. Please try again later.</span>';
+    return;
+  }
+
+  // (Inside your settings.js - inside the event listener for 'show-subscription-modal-btn')
+
+let stripeBlock = '';
+let subDetailsBlock = '';
+let manageLink = '';
+
+if (user.stripe_customer_id) {
+  manageLink = `
+    <a href="https://dashboard.stripe.com/test/customers/${user.stripe_customer_id}" 
+      target="_blank" 
+      style="display:inline-block;margin-top:5px;margin-left:4px;background:#36a2eb;color:#fff;padding:5px 14px;border-radius:10px;text-decoration:none;font-size:1em;">
+      Manage Subscription
+    </a>`;
+
+  // Try to get their current subscription status via a backend function
+try {
+  const jwt = (await supabase.auth.getSession()).data.session?.access_token;
+  const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe_subscription_info', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`
+    },
+    body: JSON.stringify({ customer_id: user.stripe_customer_id })
+  });
+  if (resp.ok) {
+    const data = await resp.json();
+    if (data.subscription) {
+      // --- Replace ONLY this section with the improved logic ---
+      const sub = data.subscription;
+      console.log("Stripe discount object:", sub.discount);
+
+      // Plan name
+      let planName = sub.plan?.nickname || sub.plan?.id || "N/A";
+      // Period: use JS Date for proper formatting
+      let periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000) : null;
+      let periodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000) : null;
+       // -------------- ADD THIS FOR NEXT MONTH FREE DISPLAY --------------
+  let freeMonthMsg = "";
+  let debugDiscountBlock = '';
+if (sub.discount) {
+  debugDiscountBlock = `
+    <div style="font-size:0.9em; background:#222; color:#ffd700; padding:2px 5px; border-radius:6px;">
+      Discount Debug: ${JSON.stringify(sub.discount)}
+    </div>
+  `;
+}
+
+  if (sub.discount && (sub.discount.id === "1MonthFreeSS2025" || (sub.discount.name && sub.discount.name.includes("free month")))) {
+    freeMonthMsg = `
+      <div style="margin-bottom:7px;font-size:1.04em;color:#ffd700;">
+        <b>Next Month: </b> <span style="color:#32e232;">FREE (Referral Applied)</span>
+      </div>
+    `;
+  }
+      // Discount text
+      let couponText = "";
+      if (sub.discount?.percent_off) couponText = ` <span style="color:#ffd700;">(${sub.discount.percent_off}% off)</span>`;
+      if (sub.discount?.amount_off) couponText = ` <span style="color:#ffd700;">($${(sub.discount.amount_off/100).toFixed(2)} off)</span>`;
+      subDetailsBlock = `
+  ${freeMonthMsg}
+  <div style="margin-bottom:7px;font-size:1em;color:white;">
+    <b>Status:</b> ${sub.status}
+    <span style="margin-left:18px;"><b>Renews:</b> ${periodEnd ? periodEnd.toLocaleDateString() : "N/A"}</span>
+  </div>
+  <div style="margin-bottom:7px;font-size:1em;">
+    <b>Plan:</b> <span style="color:#36a2eb;">${planName}${couponText}</span>
+  </div>
+  <div style="margin-bottom:7px;font-size:0.99em;color:#bbb;">
+    <b>Period:</b>
+    ${periodStart ? periodStart.toLocaleDateString() : "N/A"}
+    &rarr;
+    ${periodEnd ? periodEnd.toLocaleDateString() : "N/A"}
+  </div>
+`;
+
+}
+ else {
+        subDetailsBlock = `<div style="color:#f88;font-size:1em;">No active subscription found.</div>`;
+      }
+    } else {
+      subDetailsBlock = `<div style="color:#e93;font-size:1em;">Could not load subscription details.</div>`;
+    }
+  } catch (err) {
+    subDetailsBlock = `<div style="color:#e93;font-size:1em;">Error loading subscription info.</div>`;
+  }
+  stripeBlock = `
+    <div style="margin-bottom:16px;display:flex;align-items:center;">
+      <span style="font-size:0.98em;margin-right:8px;color:white">Your Stripe Customer ID:</span>
+      <span style="background:#222;color:#eee;font-family:monospace;padding:2.5px 12px 2.5px 12px;border-radius:14px;font-size:0.99em;letter-spacing:.01em;">
+        ${user.stripe_customer_id}
+      </span>
+      ${manageLink}
+    </div>
+    ${subDetailsBlock}
+  `;
+} else {
+  stripeBlock = `<div style="margin-bottom:14px;font-size:1em;color:#888;">No linked Stripe subscription found.</div>`;
+}
+
+  // Query only rewards for this user
+  let freeMonthBlock = '';
+  let { data: rewardRows, error: rewardsErr } = await supabase
+    .from('referral_rewards')
+    .select('id, reward_type, claimed, granted_at')
+    .eq('reward_for', user.user_id)
+    .order('granted_at', { ascending: false });
+
+  if (rewardsErr) {
+    freeMonthBlock = `<div style="color:red;font-size:1em;">Error loading reward info.</div>`;
+  } else if (rewardRows && rewardRows.length > 0) {
+    freeMonthBlock = rewardRows.map(r => `
+      <div style="
+        margin-bottom:16px;
+        background:black;
+        border-radius:13px;
+        box-shadow:0 1px 4px #0001;
+        padding:17px 16px 11px 16px;
+        border:1px solid #eee;
+      ">
+        <div style="font-size:1.1em;margin-bottom:2px;">
+          <b>Type:</b>
+          <span style="color:#dfba03;">${r.reward_type.replace('_',' ')}</span>
+          <span style="margin-left:16px;color:${r.claimed ? '#31c634' : '#ff9900'};">
+            ${r.claimed ? 'Claimed' : 'Available!'}
+          </span>
+        </div>
+        ${!r.claimed ? `
+          <button class="claim-reward-btn" data-reward-id="${r.id}" style="margin-top:5px;padding:6px 16px;font-size:1em;border-radius:8px;background:#ffd062;color:#222;border:none;cursor:pointer;box-shadow:0 2px 8px #ffd06270;">Claim Free Month</button>
+        ` : ''}
+        <div style="color:#888;font-size:0.99em;margin-top:9px;">
+          Granted: ${new Date(r.granted_at).toLocaleDateString()} ${new Date(r.granted_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+      </div>
+    `).join('');
+  } else {
+    freeMonthBlock = `
+      <div style="margin-top:13px;font-size:1.01em;color:#888;">
+        You have no free month rewards yet.<br>
+        <span style="font-size:0.98em;">Invite friends with your referral link to earn one!</span>
+      </div>
+    `;
+  }
+
+  detailsDiv.innerHTML = `
+    <div style="margin-bottom:4px;">${stripeBlock}</div>
+    <hr style="margin:10px 0 18px 0;">
+    <div>${freeMonthBlock}</div>
+  `;
+
+  // --- Add claim button logic ---
+  document.querySelectorAll('.claim-reward-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      btn.disabled = true;
+      btn.innerText = "Claiming...";
+      const rewardId = btn.getAttribute('data-reward-id');
+      // Get the current user ID and JWT from session
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session?.user?.id;
+      const jwt = session?.access_token;
+
+      if (!userId || !jwt) {
+        btn.innerText = "Auth Failed";
+        btn.style.background = "#e22";
+        setTimeout(() => { btn.innerText = "Claim Free Month"; btn.style.background = "#ffd062"; btn.disabled = false; }, 1600);
+        return;
+      }
+
+      try {
+        const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/claim_free_month', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+          },
+          body: JSON.stringify({
+            reward_id: rewardId,
+            user_id: userId
+          })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.success) {
+          btn.innerText = "Failed! Try Again";
+          btn.style.background = "#e22";
+          setTimeout(() => { btn.innerText = "Claim Free Month"; btn.style.background = "#ffd062"; btn.disabled = false; }, 1600);
+        } else {
+          btn.innerText = "Claimed!";
+          btn.style.background = "#31c634";
+          btn.style.color = "#fff";
+          btn.disabled = true;
+          setTimeout(() => {
+            modal.style.display = 'none';
+          }, 1200);
+        }
+      } catch (err) {
+        btn.innerText = "Failed! Try Again";
+        btn.style.background = "#e22";
+        setTimeout(() => { btn.innerText = "Claim Free Month"; btn.style.background = "#ffd062"; btn.disabled = false; }, 1600);
+      }
+    });
+  });
+});
+
+
+
+
+// Modal close handlers
+document.getElementById('close-subscription-modal')?.addEventListener('click', () => {
+  document.getElementById('subscription-modal').style.display = 'none';
+});
+document.getElementById('subscription-modal')?.addEventListener('mousedown', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.style.display = 'none';
+});
+
+document.getElementById('close-ref-link-modal')?.addEventListener('click', () => {
+  document.getElementById('referral-link-modal').style.display = 'none';
+});
+
+// Also allow clicking outside modal to close
+document.getElementById('referral-link-modal')?.addEventListener('mousedown', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.style.display = 'none';
+});
+
 
   // --- Close modals on outside click ---
   document.addEventListener('mousedown', (e) => {
