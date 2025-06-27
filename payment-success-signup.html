@@ -49,6 +49,43 @@
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 
+// --- Retry logic for fetching Stripe Customer ID ---
+async function fetchStripeCustomerIdWithFeedback(session_id, statusDiv, retries = 3, delay = 1200) {
+  let attempt = 0;
+  let stripeCustomerId = null;
+  while (attempt < retries) {
+    statusDiv.innerHTML = `<span style="color:blue;">${attempt === 0 ? "Looking up Stripe customer ID..." : "Still looking for Stripe customer ID, please wait..."}</span>`;
+    stripeCustomerId = await fetchStripeCustomerId(session_id);
+    if (stripeCustomerId) break;
+    attempt++;
+    if (attempt < retries) await new Promise(res => setTimeout(res, delay));
+  }
+  if (!stripeCustomerId) {
+    statusDiv.innerHTML = `<span style="color:orange;">Could not fetch Stripe customer ID. You may still continue but features may be limited.</span>`;
+  }
+  return stripeCustomerId;
+}
+
+async function fetchStripeCustomerId(session_id) {
+  const endpoint = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get_stripe_customer_id';
+  try {
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ session_id })
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    // Stripe returns "customer" as string, not object!
+    return typeof data.customer === "string" ? data.customer : null;
+  } catch (e) {
+    console.warn("Stripe customer ID fetch error", e);
+    return null;
+  }
+}
+
 // Helper for orphan logo cleanup
 async function cleanupPendingLogo() {
   const pendingLogoPath = localStorage.getItem('pendingLogoPath');
@@ -88,8 +125,12 @@ async function finalizeSignupAfterPayment() {
     }
   }
 
-  // 1. Create Supabase Auth account
-  statusDiv.innerHTML = "Creating your account...";
+  // 1. Get Stripe customer ID (with feedback + retry)
+  statusDiv.innerHTML = `<span style="color:blue;">Searching for Stripe customer ID...</span>`;
+  let stripe_customer_id = await fetchStripeCustomerIdWithFeedback(session_id, statusDiv, 3, 1200);
+
+  // 2. Create Supabase Auth account
+  statusDiv.innerHTML = `<span style="color:blue;">Creating your Sponsor Sorter account...</span>`;
   let authData, signUpError;
   try {
     ({ data: authData, error: signUpError } = await supabase.auth.signUp({
@@ -126,7 +167,7 @@ async function finalizeSignupAfterPayment() {
     return;
   }
 
-  // 2. If logo was pre-uploaded, keep that path
+  // 3. If logo was pre-uploaded, keep that path
   let finalLogoPath = null;
   const pendingLogoPath = localStorage.getItem('pendingLogoPath');
   if (pendingLogoPath) {
@@ -134,7 +175,9 @@ async function finalizeSignupAfterPayment() {
     localStorage.removeItem('pendingLogoPath');
   }
 
-  // 3. Insert into users_extended_data
+  // 4. Insert into users_extended_data
+  statusDiv.innerHTML = `<span style="color:blue;">Saving your details to our database...</span>`;
+  const refCode = localStorage.getItem('pendingReferralCode');
   const extendedData = {
     username: regData.username,
     email: regData.email,
@@ -157,7 +200,9 @@ async function finalizeSignupAfterPayment() {
     user_id: userId,
     email_verified: false,
     contenttype: regData.contenttype,
-    agreed_tos: true
+    agreed_tos: true,
+    referral_code: refCode || null,
+    stripe_customer_id: stripe_customer_id || null
   };
   try {
     const { error: insertError } = await supabase
@@ -166,12 +211,13 @@ async function finalizeSignupAfterPayment() {
     if (insertError) {
       statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but failed to save profile: ${insertError.message}</span>`;
     } else {
-      statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account. Redirecting to login...</span>`;
+      statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account.<br>Redirecting to login...</span>`;
     }
   } catch (e) {
     statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but profile could not be completed.</span>`;
   }
 
+  localStorage.removeItem('pendingReferralCode');
   localStorage.removeItem('pendingRegistration');
   setTimeout(() => window.location.href = './login.html', 3400);
 }
