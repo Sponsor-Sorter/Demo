@@ -169,8 +169,37 @@ async function showUnreadReportsBanner() {
   }
 }
 
-// ========== Stats ==========
-// ...Rest of your file unchanged...
+// ========== Modals ==========
+function showRejectModal(payoutId) {
+  const modalRoot = document.getElementById('admin-reject-modal-root');
+  modalRoot.innerHTML = `
+    <div class="modal-backdrop" onclick="closeRejectModal()"></div>
+    <div class="modal-content" style="max-width:430px;">
+      <div class="modal-header">Reject Payout</div>
+      <form id="reject-payout-form">
+        <div style="margin-bottom:10px;">Please enter the reason for rejection:</div>
+        <textarea id="reject-reason" style="width:100%;min-height:68px;" required placeholder="E.g. Not enough funds, invalid payout info..."></textarea>
+        <div style="margin-top:16px;display:flex;gap:12px;justify-content:flex-end;">
+          <button type="button" onclick="closeRejectModal()" style="background:#aaa;color:#222;">Cancel</button>
+          <button type="submit" style="background:#ff1e40;color:#fff;">Reject</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.getElementById('reject-payout-form').onsubmit = function(e) {
+    e.preventDefault();
+    const reason = document.getElementById('reject-reason').value.trim();
+    if (!reason) return;
+    window.confirmRejectPayout(payoutId, reason);
+    closeRejectModal();
+  }
+}
+
+function closeRejectModal() {
+  const modalRoot = document.getElementById('admin-reject-modal-root');
+  if (modalRoot) modalRoot.innerHTML = '';
+}
+
 
 // The rest of your file remains unchanged from your last version. 
 // (It was too large to fit within the message window in one go, but everything below this comment is *not modified* from your original file.)
@@ -956,47 +985,67 @@ async function loadPayoutLogs() {
   const offerIds = [...new Set(payouts.map(p => p.offer_id))].filter(Boolean);
   const sponseeIds = [...new Set(payouts.map(p => p.sponsee_id))].filter(Boolean);
 
-  const [{ data: offers = [] }, { data: sponsees = [] }] = await Promise.all([
+  const [{ data: offers = [] }, { data: sponsees = [] }, { data: wallets = [] }] = await Promise.all([
     offerIds.length > 0 ? supabase.from('private_offers').select('id, offer_title').in('id', offerIds) : { data: [] },
-    sponseeIds.length > 0 ? supabase.from('users_extended_data').select('user_id, username').in('user_id', sponseeIds) : { data: [] }
+    sponseeIds.length > 0 ? supabase.from('users_extended_data').select('user_id, username').in('user_id', sponseeIds) : { data: [] },
+    sponseeIds.length > 0 ? supabase.from('users_extended_data').select('user_id, wallet').in('user_id', sponseeIds) : { data: [] }
   ]);
 
   const offerMap = {}; offers.forEach(o => offerMap[o.id] = o.offer_title);
   const sponseeMap = {}; sponsees.forEach(u => sponseeMap[u.user_id] = u.username);
+  const walletMap = {}; wallets.forEach(u => walletMap[u.user_id] = Number(u.wallet) || 0);
 
   let html = `<table class="admin-table"><thead>
     <tr>
       <th>ID</th><th>Offer</th><th>Sponsee</th><th>Email</th><th>Amount</th>
+      <th>Wallet</th>
       <th>Method</th><th>Reference</th><th>Status</th><th>Created</th><th>Paid</th>
       <th>Paid By</th><th>Notes</th><th>Actions</th>
     </tr></thead><tbody>`;
 
   for (const p of payouts) {
-    html += `<tr>
-      <td>${p.id}</td>
-      <td>${offerMap[p.offer_id] ?? '(Unknown Offer)'}</td>
-      <td>${sponseeMap[p.sponsee_id] ?? '(Unknown Sponsee)'}</td>
-      <td>${p.sponsee_email ?? '-'}</td>
-      <td>$${p.payout_amount}</td>
-      <td>${p.payout_method ?? '-'}</td>
-      <td>${p.payout_reference ?? '-'}</td>
-      <td>${p.status}</td>
-      <td>${formatDate(p.created_at)}</td>
-      <td>${p.paid_at ? formatDate(p.paid_at) : '-'}</td>
-      <td>${p.paid_by_admin_id ?? '-'}</td>
-      <td>${p.notes ?? '-'}</td>
-      <td>
-        ${p.status === 'pending'
-          ? `<button onclick="window.markPayoutPaid('${p.id}')">Mark Paid</button>
-             <button onclick="window.rejectPayout('${p.id}')">Reject</button>`
-          : ''}
-      </td>
-    </tr>`;
-  }
+  // Only show wallet for sponsor withdrawals; otherwise blank (or use sponsee if you want)
+  const walletVal = walletMap[p.sponsee_id] ?? 0;
+  const isInsufficient = p.status === 'pending' && p.payout_user_role === 'sponsor' && Number(p.payout_amount) > walletVal;
+  const walletCell = `<td>$${walletVal.toFixed(2)}</td>`;
+
+  // Button disables if payout_amount > wallet for sponsor withdrawals and payout is pending
+  const disableMarkPaid = isInsufficient;
+  const markPaidBtn = `<button onclick="window.markPayoutPaid('${p.id}')"${disableMarkPaid ? " disabled title='Insufficient wallet'" : ""}>Mark Paid</button>`;
+
+  // If insufficient funds, highlight row red
+  const rowStyle = isInsufficient
+    ? "background:#ff1e40!important;color:red;font-weight:bold;"
+    : "";
+
+  html += `<tr style="${rowStyle}">
+    <td>${p.id}</td>
+    <td>${offerMap[p.offer_id] ?? '(Unknown Offer)'}</td>
+    <td>${sponseeMap[p.sponsee_id] ?? '(Unknown Sponsee)'}</td>
+    <td>${p.sponsee_email ?? '-'}</td>
+    <td>$${p.payout_amount}</td>
+    ${walletCell}
+    <td>${p.payout_method ?? '-'}</td>
+    <td>${p.payout_reference ?? '-'}</td>
+    <td>${p.status}</td>
+    <td>${formatDate(p.created_at)}</td>
+    <td>${p.paid_at ? formatDate(p.paid_at) : '-'}</td>
+    <td>${p.paid_by_admin_id ?? '-'}</td>
+    <td>${p.notes ?? '-'}</td>
+    <td>
+      ${p.status === 'pending'
+        ? `${markPaidBtn}
+           <button onclick="showRejectModal('${p.id}')">Reject</button>`
+        : ''}
+    </td>
+  </tr>`;
+}
+
   html += '</tbody></table>';
 
   document.getElementById('admin-payout-table').innerHTML = html;
 }
+
 
 
 async function exportPayoutCSV() {
@@ -1138,9 +1187,7 @@ window.markPayoutPaid = async function(id) {
 
 
 
-window.rejectPayout = async function(id) {
-  if (!confirm("Reject and cancel this payout?")) return;
-
+window.confirmRejectPayout = async function(id, reason) {
   // 1. Get payout row
   const { data: payouts, error: payoutError } = await supabase
     .from('payouts')
@@ -1158,11 +1205,12 @@ window.rejectPayout = async function(id) {
   const { data: sessionData } = await supabase.auth.getSession();
   const adminId = sessionData?.session?.user?.id || window.adminUserId || null;
 
-  // 3. Update payout status
+  // 3. Update payout status and set notes field to reason
   const { error: updateErr } = await supabase.from('payouts').update({
     status: 'rejected',
     paid_at: null,
-    paid_by_admin_id: adminId
+    paid_by_admin_id: adminId,
+    notes: reason
   }).eq('id', id);
 
   if (updateErr) {
@@ -1175,7 +1223,8 @@ window.rejectPayout = async function(id) {
     action: "Reject Payout",
     performed_by: adminId,
     target_id: id,
-    target_type: "payout"
+    target_type: "payout",
+    message: reason
   });
 
   // 5. Notification
@@ -1196,7 +1245,7 @@ window.rejectPayout = async function(id) {
     email: user.email,
     type: 'admin',
     title: 'Withdrawal Rejected',
-    message: `Your withdrawal of $${Number(payout.payout_amount).toFixed(2)} was rejected. Contact support for more information.`,
+    message: `Your withdrawal of $${Number(payout.payout_amount).toFixed(2)} was rejected. Reason: ${reason}`,
     read: false,
     created_at: new Date().toISOString()
   }]);
@@ -2180,3 +2229,8 @@ window.deletePrivacyRequest = async (id) => {
   await supabase.from('user_privacy_requests').delete().eq('id', id);
   loadPrivacyRequests();
 };
+
+window.showRejectModal = showRejectModal;
+window.closeRejectModal = closeRejectModal;
+window.confirmRejectPayout = confirmRejectPayout;
+
