@@ -4,6 +4,44 @@ const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xaXh0cm5ob3RxcXliYWdoZ255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzM1OTcsImV4cCI6MjA2MTA0OTU5N30.mlRfsBXfHkRv8SVQHHPUSDiI74ROs55xdq-yRS-XYnY';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Load real sponsor logos for login page carousels
+async function loadSponsorCarousels() {
+  // Get up to 6 public user profiles, shuffled
+  const { data: users, error } = await supabase
+    .from('public_user_homepage_view')
+    .select('profile_pic, username')
+    .limit(12); // extra for shuffling
+
+  if (error || !users || users.length === 0) return;
+
+  // Shuffle and pick 3 for each side
+  const shuffled = users.sort(() => Math.random() - 0.5);
+  const left = shuffled.slice(0, 3);
+  const right = shuffled.slice(3, 6);
+
+  function profileHTML(user) {
+    const picUrl = user.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+      : 'logos.png';
+    const username = user.username || 'Sponsor';
+    return `<li><figure>
+      <img src="${picUrl}" alt="Sponsor Logo">
+      <figcaption>@${username}</figcaption>
+    </figure></li>`;
+  }
+
+  // Render left
+  const leftList = document.getElementById('sponsor-list-left');
+  if (leftList) leftList.innerHTML = left.map(profileHTML).join('');
+
+  // Render right
+  const rightList = document.getElementById('sponsor-list-right');
+  if (rightList) rightList.innerHTML = right.map(profileHTML).join('');
+}
+
+// Call on page load
+window.addEventListener('DOMContentLoaded', loadSponsorCarousels);
+
 async function processReferralReward(user) {
   // Fetch extended user data again (to get referral_code if still present)
   const { data: ext, error: extErr } = await supabase
