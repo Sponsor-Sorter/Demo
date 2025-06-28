@@ -6095,6 +6095,9 @@ fieldset.recentoffers {
     margin: 0 auto !important;
     border-radius: 10px !important;
   }
+  .blurbbit {
+    font-size: .79em !important;
+  }
 }
 
 
