@@ -363,6 +363,8 @@ padding-right: 80px;
     width: 100%;
     background-color: #000;
     z-index: -1; 
+    height: auto;
+    max-height: 100vw;
     
 }
 .footercomplete li {
