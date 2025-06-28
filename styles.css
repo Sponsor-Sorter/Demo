@@ -627,27 +627,6 @@ body {
 
 /* Hero Section */
 
-#video-bg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-.hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    font-size: 36px;
-    font-weight: bold;
-}
-
 .cta-button {
     background-color: #5622be;
     padding: 10px 20px;
@@ -5217,7 +5196,7 @@ fieldset.recentoffers {
   }
   .carousel-slide img,
   #carousel-img {
-    max-width: 93vw !important;
+    max-width: 100vw !important;
     height: auto !important;
     min-width: 0 !important;
     border-radius: 16px !important;
@@ -5255,7 +5234,7 @@ fieldset.recentoffers {
     margin-top: 0 !important;
     padding: 4vw 2vw 2vw 2vw !important;
     text-align: center !important;
-    width: 90% !important;
+    width: 100vw !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
@@ -5357,7 +5336,7 @@ fieldset.recentoffers {
   fieldset,
   .hero,
   .fade-in-hero {
-    width: 90vw !important;
+    width: 100vw !important;
     max-width: 100vw !important;
     min-width: 0 !important;
     margin-left: 0 !important;
@@ -5436,15 +5415,6 @@ fieldset.recentoffers {
   }
 }
 
-/* Extra hard for <=430px */
-@media (max-width: 430px) {
-  .carousel-slide img,
-  #carousel-img {
-    width: 96vw !important;
-    max-width: 98vw !important;
-    margin: 0 auto 8px auto !important;
-  }
-}
 
 @media (max-width: 600px) {
   .features-grid {
@@ -5483,37 +5453,91 @@ fieldset.recentoffers {
 }
 
 @media (max-width: 600px) {
-  .calculator {
-    width: 88vw !important;
-    max-width: 95vw !important;
-    min-width: 0 !important;
+  /* Center parent .home-cont */
+  .home-cont {
+    width: 98vw !important;
+    max-width: 100vw !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 600px) {
+  .trusted-logos {
+    width: 98vw !important;
+    max-width: 100vw !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px 18px !important; /* (row gap, column gap) adjust as needed */
+    justify-items: center !important;
+    align-items: center !important;
     margin: 0 auto !important;
-    padding: 16px 5vw !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .trusted-logos figure {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 144px !important; /* Adjust if you want */
+  }
+  .trusted-logos img {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: fill !important;
+    margin-bottom: 6px !important;
+    border-radius: 100px !important;
+  }
+  .trusted-logos figcaption {
+    font-size: 0.98em !important;
+    color: #ddd !important;
+    text-align: center !important;
+    word-break: break-word !important;
+    padding-bottom: 10px !important;
+  }
+}
+
+  /* Calculator container */
+  .calculator {
+    width: 95vw !important;
+    max-width: 99vw !important;
+    margin: 0 auto 18px auto !important;
+    padding: 14px 0 !important; /* Remove side paddings */
     border-radius: 13px !important;
     box-sizing: border-box !important;
     background: rgba(255,255,255,0.12) !important;
     box-shadow: 0 1px 8px #1112 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
-  .calculator h2 {
-    font-size: 1.08em !important;
-    text-align: center !important;
-    margin-bottom: 10px !important;
-  }
+  /* Calculator form fully fills .calculator */
   .calculator form {
-    width: 96% !important;
+    width: 94vw !important;
+    max-width: 95vw !important;
     margin: 0 auto !important;
     padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: stretch !important;
+    align-items: center !important;
     gap: 7px !important;
   }
+  /* Label tweaks */
   .calculator label {
     font-size: 0.97em !important;
     margin: 2px 0 1px 0 !important;
     text-align: left !important;
-    padding-left: 1vw !important;
+    align-self: flex-start !important;
+    padding-left: 2vw !important;
   }
+  /* Inputs and button unchanged */
   .calculator input[type="number"] {
     width: 100% !important;
     font-size: 1em !important;
@@ -5543,6 +5567,7 @@ fieldset.recentoffers {
     text-align: center !important;
   }
 }
+
 
 @media (max-width: 600px) {
   /* Testimonial section layout */
