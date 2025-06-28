@@ -5998,4 +5998,20 @@ fieldset.recentoffers {
   }
 }
 
+@media (max-width: 600px) {
+  .footercomplete,
+  .footercomplete {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+  }
+  .footercomplete {
+    padding: 0 2vw !important;
+    margin: 0 auto !important;
+    border-radius: 10px !important;
+  }
+}
+
 
