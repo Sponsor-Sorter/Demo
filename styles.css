@@ -4438,10 +4438,11 @@ fieldset:focus-within, fieldset:hover {
 .settings-dropdown {
   position: absolute;
    overflow-x: hidden;  
+   background-size: cover;
   top: 44px;
   right: 0;
-  min-width: 215px;
-  background: #181828f8; /* dark glassy, adjust as needed */
+  min-width: 255px;
+  background: #000000f8; /* dark glassy, adjust as needed */
   border-radius: 18px;
   box-shadow: 0 6px 32px 0 #000a, 0 0 0 1.5px #36a2eb99;
   z-index: 100;
@@ -4449,7 +4450,7 @@ fieldset:focus-within, fieldset:hover {
   border: none;
   display: none;
   /* Optional: for tall menus */
-  max-height: 350px;
+  max-height: 330px;
   overflow-y: auto;
   animation: fadeDropdown 0.2s;
 }
@@ -4467,7 +4468,7 @@ fieldset:focus-within, fieldset:hover {
   height: 0;
   border-left: 13px solid transparent;
   border-right: 13px solid transparent;
-  border-bottom: 14px solid #181828f8;
+  border-bottom: 14px solid #000000;
   z-index: 101;
   filter: drop-shadow(0 2px 4px #000a);
 }
@@ -4476,6 +4477,7 @@ fieldset:focus-within, fieldset:hover {
   list-style: none;
   padding: 0;
   margin: 0;
+  background-color: #000 !important;
 }
 
 .settings-dropdown li {
@@ -4505,7 +4507,7 @@ fieldset:focus-within, fieldset:hover {
 
 .settings-dropdown .dropdown-item:hover,
 .settings-dropdown .dropdown-item:focus {
-  background: #36a2eb22;
+  background: #00000022;
   color: #36a2eb;
 }
 
@@ -4624,6 +4626,8 @@ fieldset:focus-within, fieldset:hover {
     transition: filter 0.13s;
   }
 
+
+  
 #settings-cog-li {
   margin-top: -5px;
   margin-left: -15px;
@@ -6100,4 +6104,20 @@ fieldset.recentoffers {
   }
 }
 
+.settings-dropdown li,
+.settings-dropdown .dropdown-item {
+  all: unset;
+  display: block;
+  width: 100% !important;
+  background: none !important;
+  min-width: 0;
+  min-height: 0;
+  height: 20px;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: auto !important;
+  gap: 8px !important;
+  
+}
 
