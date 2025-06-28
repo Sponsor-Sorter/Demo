@@ -1363,6 +1363,7 @@ input[type="radio"][id="Company"]:checked ~ .right-side #birthdate-container {
     align-items: center;
     min-height: 100vh;
     background-color: #000000;
+    padding-top: 40px;
 }
 
 /* Wrapper for Sponsors and Login */
@@ -1381,43 +1382,16 @@ input[type="radio"][id="Company"]:checked ~ .right-side #birthdate-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 0 15px; /* Add some padding for spacing */
+    padding: 0 25px; /* Add some padding for spacing */
 }
 
-.sponsor-list-left {
-    padding-right: 50px;
 
-
-}
-
-.total-followers {
-    margin-left: 120px
-
-}
     
-
-.sponsor-list-left ul, .sponsor-list-right ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sponsor-list-left li, .sponsor-list-right li {
-    margin-bottom: 10px;
-}
-
-.sponsor-list-left figure, .sponsor-list-right figure {
-    text-align: center;
-}
-
-.sponsor-list-left img, .sponsor-list-right img {
-    width: 100%;
-    height: auto;
-}
 
 /* Login Form Styling */
 .loginbox {
     width: 60%;
-    background-color: rgb(133, 133, 133);
+    background-color: rgb(108, 108, 108);
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -1464,9 +1438,92 @@ background-color:  #28a745;
 
 }
 
+/* Sponsor logo lists: center, space, and wrap for mobile */
+.sponsor-list-left, .sponsor-list-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  min-width: 110px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.sponsor-list-left ul,
+.sponsor-list-right ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Sponsor logo and username style */
+.sponsor-list-left figure,
+.sponsor-list-right figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  transition: box-shadow 0.18s;
+  background: #1117;
+  border-radius: 15px;
+  padding: 8px 10px 6px 10px;
+  box-shadow: 0 1px 8px #0002;
+  min-width: 80px;
+}
+
+/* Round avatar */
+.sponsor-list-left img,
+.sponsor-list-right img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2.5px solid #7b8cff;
+  background: #222;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 10px #0003;
+  transition: transform 0.18s;
+}
+
+.sponsor-list-left figure:hover img,
+.sponsor-list-right figure:hover img {
+  transform: scale(1.07) rotate(-3deg);
+  border-color: #4ad1a0;
+}
+
+/* Username/handle style */
+.sponsor-list-left figcaption,
+.sponsor-list-right figcaption {
+  margin-top: 4px;
+  color: #eee;
+  font-size: 1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 4px #0006;
+}
+
+/* Responsive for mobile */
+@media (max-width: 400px) {
+  .sponsor-list-left, .sponsor-list-right {
+    min-width: 80px;
+    gap: 12px;
+  }
+  .sponsor-list-left img,
+  .sponsor-list-right img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+
 .loginbox {
     width: 60%; /* Adjust this width to keep it in proportion */
-    background-color: rgb(133, 133, 133);
+    background-color: rgb(75, 75, 75);
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -5786,10 +5843,10 @@ fieldset.recentoffers {
   }
   .sponsor-list-left img,
   .sponsor-list-right img {
-    width: 44px !important;
-    height: 44px !important;
+    width: 70px !important;
+    height: 70px !important;
     object-fit: cover !important;
-    border-radius: 12px !important;
+    border-radius: 100px !important;
   }
   .sponsor-list-left figcaption,
   .sponsor-list-right figcaption {
@@ -5814,7 +5871,7 @@ fieldset.recentoffers {
     background: rgba(255,255,255,0.03) !important;
   }
   .loginbox .logo img {
-    width: 370px !important;
+    width: 360px !important;
     height: auto !important;
     margin: 0 auto 7px auto !important;
     margin-left: -150px !important;
