@@ -27,8 +27,21 @@ body
 
     }
     .upllogo {
-        height: 220px;
+        height: 250px;
+        box-sizing: border-box;
+        max-width: 80vwpx !important;
+        margin: 36px auto 0 auto !important;
+        border-radius: 18px !important;
+        padding: 28px 30px 26px 30px !important;
+        border: 2px solid #3ccfcf !important;
+        box-shadow: 0 3px 24px #2221;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 15px !important;
     }
+    
      li {
         display: inline-block;
         margin: auto;
@@ -383,6 +396,8 @@ padding-right: 80px;
     
 }
 
+
+
 /* Initial setup for the sliding effect */
 #sponsor-options, #besponsored-options {
     
@@ -419,8 +434,20 @@ fieldset {
     position: relative;
 }
 
+form#registrationForm {
+  margin-bottom: 70px !important; /* Adjust if needed */
+  position: relative;
+  z-index: 10;
+}
+
+.signup-section {
+  width: 90vw;
+  padding-top: 20px;
+  
+}
+
 .lookingfor {
-    height: 1500px;
+    height: 1100px;
     padding-bottom: 20px;
     margin-bottom: 80px;
 }
@@ -436,7 +463,8 @@ fieldset {
 #preferred-platforms, #preferred-platforms-besponsored {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* Space between checkboxes */
+    gap: 8px; /* Space between checkboxes */
+    
 }
 
 /* Style for each checkbox label */
@@ -458,6 +486,7 @@ fieldset {
     display: flex;
     flex-direction: column;
     margin: 10px 0;
+    align-items: center;
     
 }
 
@@ -554,6 +583,129 @@ input[type="checkbox"] {
 /* Optional: Add some padding or margin around the preferred platforms section */
 #preferred-platforms, #preferred-platforms-besponsored {
     margin-top: 20px;
+}
+
+.payfield {
+  max-width: 480px;
+  height: inherit !important;
+  margin: 40px auto 0 auto;
+  padding: 30px 26px 32px 26px;
+  border-radius: 18px;
+  border: 2px solid #52d8ff;
+  background: #212121;
+  box-shadow: 0 3px 18px #37326499;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.08em;
+  position: relative;
+}
+
+.payfield legend {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.payment-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.payfield h2 {
+  font-size: 1.25em;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 6px;
+  margin-top: 0;
+  text-align: center;
+}
+
+.payfield p {
+  color: #e7e7e7;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.checkbox-row,
+.tos-agreement,
+.btn-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 6px 0;
+}
+
+.checkbox-row input[type="checkbox"],
+.tos-agreement input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #5eead4;
+  margin-right: 10px;
+}
+
+
+.checkbox-row label,
+.tos-agreement label {
+  color: #fff;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tos-agreement a {
+  color: #5eead4 !important;
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.payfield input[type="checkbox"] {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+}
+
+#submitBtn {
+  padding: 15px 34px;
+  font-size: 1.15em;
+  background: #635bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #8881;
+  margin-top: 10px;
+  display: inline-block;
+  width: 80%;
+  max-width: 250px;
+}
+
+@media (max-width: 600px) {
+  .payfield {
+    max-width: 97vw;
+    padding: 16px 2vw 16px 2vw;
+    border-radius: 12px;
+    font-size: 1em;
+  }
+  .payfield h2 {
+    font-size: 1em;
+  }
+  #submitBtn {
+    font-size: 1em;
+    width: 100%;
+    padding: 14px 0;
+    max-width: none;
+  }
 }
 
 
@@ -930,13 +1082,39 @@ legend {
 }
 
 .pptb {
+    all: unset;
     padding: 15px;
-    border: 2px solid #c0c0c8;  /* Light blue border */
     border-radius: 10px;
     margin-bottom: 20px;
     width: 90%;
-  
+    align-items: center;
+    text-align: center;
+    margin: 36px auto 0 auto !important;
+    display: flex;
+    background-color: none;
+    flex-direction: column;
+    justify-content: center;
 }
+
+#preferred-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 16px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+#preferred-platforms label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+    font-size: 1.04em;
+    justify-content: center;
+}
+
 
 
 
@@ -1839,11 +2017,24 @@ fieldset {
 }
 
 .searchpref {
+  all: unset;
     width: 89%;
-    margin-left: -10px;
-    
-    
+    align-items: center;
+    text-align: center;
+     margin: 15px auto 15px auto !important;
+        
 }
+
+/* Make all select and input elements inside .searchpref centered */
+.searchpref select,
+.searchpref input[type="text"],
+.searchpref label {
+    margin: 7px auto;
+    display: block;
+    text-align: center;
+}
+
+
 
 
 
@@ -6064,7 +6255,7 @@ fieldset.recentoffers {
     transition: filter 0.13s;
   }
   .navbar nav li:not(:last-child) {
-    margin-right: 20px !important; /* adjust gap */
+    margin-right: 15px !important; /* adjust gap */
   }
   .navbar nav a {
     display: block !important;
@@ -6120,4 +6311,450 @@ fieldset.recentoffers {
   gap: 8px !important;
   
 }
+
+/* --- Mobile Styles for Signup Page --- */
+@media (max-width: 600px) {
+  body, html {
+    font-size: 16px !important;
+    color: #fff !important;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .signup-section,
+form#registrationForm {
+  width: 100% !important;              /* Full width */
+  max-width: 80vw !important;          /* Never exceed viewport width */
+  margin-left: -8px !important;        /* Center horizontally */
+  margin-right: 100px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 0vw !important;        /* Small left/right gap */
+  padding-right: 2vw !important;
+  box-sizing: border-box !important;   /* Always include padding in width */
+}
+ 
+ 
+  
+  fieldset, .hero-fieldset, .upllogo, .pibox, .lookingfor, .payfield {
+    border-radius: 18px !important;
+    border: 2px solid;
+    background: #292929 !important;
+    margin: 15px 2vw 18px 2vw !important;
+    box-shadow: 0 4px 32px 0 rgba(64,64,120,0.12);
+    padding: 14px 3vw 20px 3vw;
+  }
+
+  .hero-fieldset h1 {
+    font-size: 1.25em;
+    margin-bottom: 12px;
+    line-height: 1.25em;
+    text-align: center;
+  }
+  .intro-text p, .intro-text ul {
+    font-size: 1em;
+    line-height: 1.5em;
+    text-align: center;
+    margin: 7px 0;
+    padding: 0 2vw;
+  }
+  .intro-text ul {
+    list-style: disc inside;
+    margin: 7px 0 7px 0;
+    text-align: left;
+    padding-left: 0;
+  }
+
+  /* Logo upload section */
+  .upllogo img.picc {
+    width: 90px !important;
+    height: 90px !important;
+    display: block;
+    margin: 12px auto 0 auto;
+    border-radius: 60px !important;
+  }
+  .upllogo label, .upllogo input[type="file"] {
+    font-size: 1em !important;
+    display: block;
+    margin:  auto 4px auto;
+    text-align: center;
+  }
+
+  /* Form layout */
+  .pibox label, .pibox input, .pibox textarea,
+  .lookingfor label, .lookingfor input, .lookingfor select, .lookingfor textarea {
+    font-size: 1em !important;
+    width: 98% !important;
+    max-width: 99vw;
+    margin: 3px auto 8px auto;
+    display: block;
+    box-sizing: border-box;
+  }
+  .pibox input[type="radio"] {
+    width: 16px !important;
+    margin-left: 5px;
+    margin-right: 2px;
+    display: inline-block;
+  }
+  .title1 label {
+    margin-right: 6px;
+  }
+  .right-side {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2px;
+  }
+  .location {
+    margin-top: 6px;
+  }
+  .about-yourself textarea {
+    width: 98vw;
+    min-width: 90%;
+    margin: 6px 0 0 -2px;
+  }
+.lookingfor {
+  
+  max-width: 90vw;
+  box-sizing: border-box;
+  margin: 12px 0 18px 0;
+  padding: 12px 2vw 16px 2vw;
+  overflow-x: hidden;
+  border-radius: 14px;
+}
+@media (max-width: 600px) {
+  .lookingfor {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    height: 1615px !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    border-radius: 14px;
+    background: #222;
+
+  }
+  
+  .signup-section, form#registrationForm, body, html {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+
+
+  /* Toggle buttons */
+  .lookingfor button[type="button"] {
+    width: 60% !important;
+    max-height: max-content;
+    margin: 7px 1% 16px 0;
+    font-size: 1.08em;
+    padding: 10px 2px;
+    border-radius: 7px;
+    border: none;
+    background: blue;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 6px #3333;
+  }
+
+  /* Preferred platforms two columns */
+  
+  .platform-container {
+    border-radius: 9px;
+    padding: 8px 2vw 7px 2vw;
+    box-sizing: border-box;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.98em;
+  }
+  .platform-logo {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .social-handle, .platform-checkbox {
+    width: 92% !important;
+    margin-bottom: 4px;
+    font-size: 0.95em;
+  }
+  .counts {
+    font-size: 0.85em;
+    text-align: center;
+    margin-top: 4px;
+    color: #b2b6fc;
+  }
+
+  
+  
+@media (max-width: 600px) {
+  #preferred-platforms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 2 columns */
+  gap: 1px 10px;
+  justify-items: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 420px;
+  padding-left: 60px;
+}
+#preferred-platforms input[type="checkbox"] {
+  accent-color: #5eead4;
+  margin-right: 6px;
+  width: fit-content;
+}
+
+
+#preferred-platforms label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 1.05em;
+  padding: 20px 0 7px 4px;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 98%;
+  background: transparent;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+  .platform-logo {
+    height: 20px;
+    width: 20px;
+  }
+
+  .platform-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: black;
+    border-radius: 9px;
+    padding: 8px 4px 2px 7px;
+    gap: 2px;
+    width: 90vw;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 0.95em;
+    margin-left: -35px ;
+  }
+     .social-handle {
+    flex: 1 1 70px;
+    min-width: 170px;
+    font-size: 0.96em;
+    padding: 3px 6px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    margin-right: 3px;
+  }
+
+  
+  
+}
+
+
+
+
+  /* Search preferences & select fields */
+  .searchpref, .pptb {
+    width: 99vw !important;
+    max-width: 100vw;
+    margin: 14px 0 14px 0 !important;
+    text-align: center;
+    align-items: center;
+    padding: 0 2vw;
+  }
+  .searchpref label, .searchpref select {
+    display: block;
+    width: 97vw;
+    margin: 5px auto;
+    font-size: 1em;
+    text-align: left;
+  }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: stretch;
+    justify-content: center;
+    margin-bottom: 7px;
+    width: 100%;
+  }
+  .searchpref select {
+    width: 90vw !important;
+    font-size: 1em;
+    padding: 7px;
+    margin-left: 0 !important;
+    padding-bottom: 25px;
+  }
+
+  .searchpref input[type="text"] {
+    padding-left: 20px !important;
+  }
+  
+  @media (max-width: 600px) {
+  #besponsored-options input#socialhandle,
+  #besponsored-options input#contenttype {
+    width: 88vw;
+    max-width: 360px;
+    font-size: 1em;
+    padding: 7px 8px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+    display: block;
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+
+  /* Payment area styling */
+  .payfield {
+    max-width: 100vw !important;
+    width: 98vw !important;
+    margin: 10px auto 18px auto !important;
+    border-radius: 16px !important;
+    border-image: linear-gradient(90deg,#4f5bd5,#8f5de8,#fa8231,#00c3ff) 1 !important;
+    box-shadow: 0 4px 32px 0 rgba(64,64,120,0.10);
+    padding: 10px 2vw 18px 2vw !important;
+    margin-left: 12px !important;
+  }
+  .payment-content h2 {
+    font-size: 1.18em;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .payment-content p {
+    font-size: 1em;
+    line-height: 1.3em;
+    margin: 4px 0;
+    text-align: center;
+    box-shadow: none !important;
+  }
+  .checkbox-row, .tos-agreement {
+    display: flex;
+    align-items: right;
+    gap: 5px;
+    margin: 5px 0 0 0;
+    justify-content: center;
+    font-size: 0.96em;
+    flex-wrap: wrap;
+  }
+  .checkbox-row input[type="checkbox"], .tos-agreement input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    accent-color: #5eead4;
+  }
+  .btn-row {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+  }
+  #submitBtn {
+    width: 100%;
+    max-width: 370px;
+    padding: 15px 0 !important;
+    font-size: 1.14em;
+    border-radius: 10px !important;
+    margin: 0 auto !important;
+    background: #635bff !important;
+    color: #fff !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #8881;
+    display: block;
+    border: none;
+  }
+
+  /* Footer logo and text */
+  .footercomplete {
+    padding: 14px 1vw;
+    text-align: center;
+    background: transparent !important;
+    margin-top: 32px;
+  }
+  
+  .footer-text ul {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
+    justify-content: center;
+    margin: 8px auto 2px auto;
+    padding: 0;
+  }
+  .footer-text ul li {
+    display: block;
+    margin: 0;
+    font-size: 1em;
+  }
+  .blurbbit {
+    font-size: 0.92em;
+    line-height: 1.3em;
+    margin: 12px 0 0 0;
+    color: #bbb !important;
+    text-align: center;
+  }
+
+  .title1 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* 2 columns per row */
+  gap: 1px 3px;
+  justify-items: start;
+  align-items: center;
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.title1 label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+.title1 input[type="radio"] {
+  accent-color: #5eead4;  /* Your preferred color */
+  margin-right: 15px !important;
+}
+/* MOBILE: stack title above birthdate/location */
+@media (max-width: 600px) {
+  .personal-info-container {
+    flex-direction: column;
+    gap: 0;
+  }
+  .titleb {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .right-side {
+    width: 100%;
+    margin: 5px;
+    gap: 6px;
+    margin-left: 32px;
+  }
+}
+@media (min-width: 601px) {
+  .title1 {
+    grid-template-columns: repeat(3, 1fr);  /* 3 columns per row on desktop */
+  }
+}
+}
+
 
