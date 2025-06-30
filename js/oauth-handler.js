@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js'; // If not already imported
+import { supabase } from './supabaseClient.js'; // If not already imported
 
 document.addEventListener('DOMContentLoaded', async () => {
   const statusDiv = document.getElementById('oauth-status');
