@@ -536,6 +536,291 @@ if (sub.discount) {
   });
 });
 
+// --- YouTube OAuth Modal ---
+const connectYouTubeBtn = document.getElementById('connect-youtube-btn');
+const oauthModal = document.getElementById('youtube-oauth-modal');
+const oauthMsg = document.getElementById('youtube-oauth-modal-msg');
+const oauthCloseBtn = document.getElementById('close-youtube-oauth-modal');
+
+if (connectYouTubeBtn && oauthModal && oauthCloseBtn) {
+  connectYouTubeBtn.onclick = async () => {
+    oauthMsg.innerHTML = 'Connecting...';
+    oauthModal.style.display = 'block';
+
+    // Build Google OAuth URL (replace CLIENT_ID and REDIRECT_URI below if needed)
+    const params = new URLSearchParams({
+      client_id: '198536620935-fq5dch116tc0dc11v81bbt720m5f0216.apps.googleusercontent.com',
+      redirect_uri: window.location.origin + '/public/oauth2callback.html', // Or /Demo/oauth2callback.html if on GitHub Pages
+      response_type: 'code',
+      scope: 'https://www.googleapis.com/auth/youtube.readonly openid email profile',
+      access_type: 'offline',
+      prompt: 'consent'
+    });
+
+    // In case you're on /Demo/ folder (GitHub Pages), auto-adjust the redirect URI:
+    if (window.location.pathname.includes('/Demo/')) {
+      params.set('redirect_uri', window.location.origin + '/Demo/oauth2callback.html');
+    }
+
+    // Open the OAuth URL in a new tab/window
+    window.open(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`, '_blank');
+    oauthMsg.innerHTML = 'A new tab has opened. Please finish connecting your YouTube account there.<br>After approving, return here!';
+  };
+
+  // Close modal by X or button
+  oauthCloseBtn.onclick = () => {
+    oauthModal.style.display = 'none';
+  };
+}
+
+// Also allow click outside modal to close
+oauthModal?.addEventListener('mousedown', (e) => {
+  if (e.target === oauthModal) oauthModal.style.display = 'none';
+});
+
+// --- Listen for OAuth popup success ---
+// Place this right after your YouTube OAuth modal logic
+
+window.addEventListener('message', async (event) => {
+  // Allow all origins here for local/dev, restrict to your domains in prod if needed
+  if (event.data && event.data.youtubeConnected === true) {
+    // Show a notification
+    showYouTubeSuccessNotification();
+
+    // Optional: refresh the user's data from Supabase to get new youtube_connected status
+    currentUser = await getActiveUser(true); // Use true if your getActiveUser supports force refresh
+
+    // If you have a UI element that shows the YouTube link status, update it here
+    updateYouTubeStatusUI?.(true);
+
+    // Hide the modal if it's still open
+    const oauthModal = document.getElementById('youtube-oauth-modal');
+    if (oauthModal) oauthModal.style.display = 'none';
+  }
+});
+
+// --- Show success notification for YouTube linking ---
+function showYouTubeSuccessNotification() {
+  // You can use any notification system you want. Here’s a simple banner implementation:
+  let notif = document.createElement('div');
+  notif.id = 'youtube-link-success';
+  notif.style.cssText = `
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: #22b34c; color: #fff; font-size: 1.1em;
+    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+  `;
+  notif.innerHTML = `✅ YouTube account successfully linked!`;
+  document.body.appendChild(notif);
+  setTimeout(() => {
+    notif.remove();
+  }, 3500);
+}
+
+// Optional: helper to update YouTube UI status if you display a "YouTube Connected" badge
+function updateYouTubeStatusUI(connected) {
+  const badge = document.getElementById('youtube-status-badge');
+  const connectBtn = document.getElementById('connect-youtube-btn');
+  if (badge) {
+    badge.innerText = connected ? "YouTube Linked" : "Not linked";
+    badge.style.color = connected ? "#21d32e" : "#888";
+  }
+  if (connectBtn) {
+    connectBtn.disabled = !!connected;
+    connectBtn.style.opacity = connected ? 0.5 : 1;
+    connectBtn.innerText = connected ? "YouTube Linked" : "Connect YouTube";
+  }
+}
+
+// --- Unified OAuth Modal Logic ---
+const oauthLinkBtn = document.getElementById('oauth-link-btn');
+const oauthLinkModal = document.getElementById('oauth-link-modal');
+const oauthAccountsList = document.getElementById('oauth-accounts-list');
+const closeOauthLinkModalBtn = document.getElementById('close-oauth-link-modal');
+
+const supportedPlatforms = [
+  {
+    key: "youtube",
+    name: "YouTube",
+    logo: "youtubelogo.png",
+    badgeId: "youtube-status-badge"
+  },
+  {
+    key: "instagram",
+    name: "Instagram",
+    logo: "instagramlogo.png",
+    badgeId: "instagram-status-badge"
+  },
+  {
+    key: "tiktok",
+    name: "TikTok",
+    logo: "tiktoklogo.png",
+    badgeId: "tiktok-status-badge"
+  },
+  {
+    key: "twitter",
+    name: "X (Twitter)",
+    logo: "twitterlogo.png", // Use xlogo.png or twitterlogo.png
+    badgeId: "twitter-status-badge"
+  },
+  {
+    key: "facebook",
+    name: "Facebook",
+    logo: "facebooklogo.png",
+    badgeId: "facebook-status-badge"
+  },
+  {
+    key: "twitch",
+    name: "Twitch",
+    logo: "twitchlogo.png",
+    badgeId: "twitch-status-badge"
+  },
+   // Add more platforms here as needed
+];
+
+
+async function refreshOauthAccountsUI() {
+  let user = await getActiveUser(true); // Get latest user data
+  let html = supportedPlatforms.map(p => {
+    let connected = user[`${p.key}_connected`] === true;
+    return `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;">
+          <img src="${p.logo}" alt="${p.name}" style="height:32px;width:32px;border-radius:8px;margin-right:14px;">
+          <span style="font-size:1.12em;font-weight:700;">${p.name}</span>
+        </div>
+        <span id="${p.badgeId}" style="margin-right:12px;color:${connected ? "#21d32e" : "#888"};">
+          ${connected ? "Linked" : "Not linked"}
+        </span>
+        <button 
+          class="oauth-connect-btn" 
+          data-platform="${p.key}"
+          style="background:${connected ? "#f55" : "#2d7bfa"};color:#fff;font-weight:600;border:none;padding:6px 18px;border-radius:8px;cursor:pointer;"
+        >
+          ${connected ? "Disconnect" : "Connect"}
+        </button>
+      </div>
+    `;
+  }).join('');
+  oauthAccountsList.innerHTML = html;
+
+  // Connect/disconnect logic
+  document.querySelectorAll('.oauth-connect-btn').forEach(btn => {
+    btn.onclick = async () => {
+      const plat = btn.getAttribute('data-platform');
+      if (plat === "youtube") {
+        let user = await getActiveUser(true);
+        if (user.youtube_connected) {
+          // --- DISCONNECT YOUTUBE ---
+          btn.innerText = "Disconnecting...";
+          btn.disabled = true;
+          // Wipe tokens in DB
+          const { error } = await supabase
+            .from("users_extended_data")
+            .update({
+              youtube_refresh_token: null,
+              youtube_access_token: null,
+              youtube_token_expiry: null,
+              youtube_connected: false
+            })
+            .eq("user_id", user.user_id);
+          if (!error) {
+            btn.innerText = "Connect";
+            btn.style.background = "#2d7bfa";
+            document.getElementById('youtube-status-badge').innerText = "Not linked";
+            document.getElementById('youtube-status-badge').style.color = "#888";
+            showYouTubeDisconnectedNotification();
+            await refreshOauthAccountsUI();
+          } else {
+            btn.innerText = "Failed!";
+            btn.style.background = "#e22";
+            setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
+          }
+        } else {
+          // --- CONNECT YOUTUBE ---
+          // Trigger existing OAuth modal flow
+          oauthModal.style.display = 'block';
+          oauthMsg.innerHTML = 'Connecting...';
+          connectYouTubeBtn.click();
+          oauthLinkModal.style.display = "none";
+        }
+      }
+      // Future: add logic for other platforms
+      else if (plat === "instagram") {
+      if (user.instagram_connected) {
+        // Disconnect Instagram (implement this logic in Supabase)
+      } else {
+        // Connect Instagram (open OAuth flow)
+        alert("Instagram OAuth coming soon!");
+      }
+    } else if (plat === "tiktok") {
+      if (user.tiktok_connected) {
+        // Disconnect TikTok
+      } else {
+        // Connect TikTok (open OAuth flow)
+        alert("TikTok OAuth coming soon!");
+      }
+    } else if (plat === "twitter") {
+      if (user.twitter_connected) {
+        // Disconnect X (Twitter)
+      } else {
+        // Connect X (Twitter)
+        alert("X (Twitter) OAuth coming soon!");
+      }
+    } else if (plat === "facebook") {
+      if (user.facebook_connected) {
+        // Disconnect Facebook
+      } else {
+        // Connect Facebook
+        alert("Facebook OAuth coming soon!");
+      }
+    } else if (plat === "twitch") {
+      if (user.twitch_connected) {
+        // Disconnect Twitch
+      } else {
+        // Connect Twitch
+        alert("Twitch OAuth coming soon!");
+      }
+    } else if (plat === "kick") {
+      if (user.kick_connected) {
+        // Disconnect Kick
+      } else {
+        // Connect Kick
+        alert("Kick OAuth coming soon!");
+      }
+    }
+    // Add more as needed
+    };
+  });
+}
+
+if (oauthLinkBtn && oauthLinkModal && closeOauthLinkModalBtn) {
+  oauthLinkBtn.onclick = async () => {
+    await refreshOauthAccountsUI();
+    oauthLinkModal.style.display = "flex";
+  };
+  closeOauthLinkModalBtn.onclick = () => oauthLinkModal.style.display = "none";
+  oauthLinkModal.addEventListener('mousedown', (e) => {
+    if (e.target === oauthLinkModal) oauthLinkModal.style.display = "none";
+  });
+}
+
+// --- Show notification on disconnect
+function showYouTubeDisconnectedNotification() {
+  let notif = document.createElement('div');
+  notif.id = 'youtube-link-disconnect';
+  notif.style.cssText = `
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 9999;color:black; background: #f53838; font-size: 1.1em;
+    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+  `;
+  notif.innerHTML = `⛔ YouTube account disconnected.`;
+  document.body.appendChild(notif);
+  setTimeout(() => {
+    notif.remove();
+  }, 3200);
+}
 
 
 
