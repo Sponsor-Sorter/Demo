@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .eq('username', offer.sponsor_username)
         .single();
       if (sponsor && sponsor.profile_pic) {
-        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/objectlogos/${sponsor.profile_pic}`;
+        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
       }
       sponsor_id = sponsor?.user_id || '';
     } catch { }
@@ -289,7 +289,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
                 ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
                 ${offer.stage >= 4 && offer.live_date ? `<p><strong>Live Date:</strong> ${new Date(offer.live_date).toLocaleDateString()}</p>` : ''}
-                ${offer.stage >= 4 && offer.live_url ? `<p><strong>Live URL:</strong> <a href="${offer.live_url}" target="_blank">${offer.live_url}</a></p>` : ''}
+                ${offer.stage >= 4 && offer.live_url ? `
+                  <p>
+                    <strong>Live URL:</strong>
+                    <a href="${offer.live_url}" target="_blank">${offer.live_url}</a>
+                  </p>
+                ` : ''}
               </div>
               <div class="offer-right">
                 <p><strong>Amount:</strong> $${offer.offer_amount}</p>
@@ -303,6 +308,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button class="offer-Comments">Comments</button>
           <button class="offer-img">Offer Images</button>
           <button class="expand-btn">View Details</button>
+          <button class="data-summary-btn">Data Summary</button>
           <div class="details-section" style="display:none;">
             <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
             <div class="job-deliverable-row">
@@ -326,6 +332,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <textarea placeholder="Write a comment..." class="comment-input"></textarea><br>
             <button class="submit-comment">Submit Comment</button>
           </div>
+          <div class="data-summary-section" style="display:none;"></div>
           ${actionButtons}
         </div>
       </div>
@@ -348,11 +355,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const imagesSection = cardBottom.querySelector('.images-section');
     const commentsSection = cardBottom.querySelector('.comments-section');
     const thumbnailsContainer = imagesSection.querySelector('.image-thumbnails');
+    const dataSummarySection = cardBottom.querySelector('.data-summary-section');
 
     function hideAllSections() {
       detailsSection.style.display = 'none';
       imagesSection.style.display = 'none';
       commentsSection.style.display = 'none';
+      if (dataSummarySection) dataSummarySection.style.display = 'none';
     }
 
     if (e.target.classList.contains('expand-btn')) {
@@ -422,61 +431,147 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-   if (e.target.classList.contains('submit-comment')) {
-  const textarea = commentsSection.querySelector('.comment-input');
-  const commentText = textarea.value.trim();
-  if (!commentText) {
-    alert('Comment cannot be empty.');
-    return;
-  }
-  // Get JWT for the current user session
-  const { data: { session } } = await supabase.auth.getSession();
-  const user_id = session?.user?.id;
-  const jwt = session?.access_token;
-  if (!jwt || !user_id) {
-    alert("Not authenticated. Please log in again.");
-    return;
-  }
-  // Moderation step
-  const modResult = await famBotModerateWithModal({
-    user_id,
-    content: commentText,
-    jwt,
-    type: 'comment'
-  });
-  if (!modResult.allowed) return; // Block if flagged
+   if (e.target.classList.contains('data-summary-btn')) {
+  if (!dataSummarySection) return;
+  const isVisible = dataSummarySection.style.display === 'block';
+  if (!isVisible) {
+    hideAllSections(); // Only hide others if opening!
+    dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
+    dataSummarySection.style.display = 'block';
 
-  // If passed moderation, insert comment
-  const sender = sponsee_username;
-  const { error } = await supabase
-    .from('private_offer_comments')
-    .insert([{
-      offer_id: offerId,
-      user_id: user_id,
-      sponsor_id: sponsorId,
-      sponsor_email: sponsorEmail,
-      sponsee_id: sponsee_id,
-      sponsee_email: sponsee_email,
-      sender: sender,
-      comment_text: commentText
-    }]);
-  if (error) {
-    alert('Failed to submit comment.');
+    // Fetch and render stats
+    const liveUrl = offerCard.querySelector('.offer-left a')?.href || '';
+    if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
+      dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
+      return;
+    }
+    let videoId = extractYouTubeVideoId(liveUrl);
+    if (!videoId) {
+      dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
+      return;
+    }
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    try {
+      const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoId })
+      });
+      const stats = await resp.json();
+      if (stats && stats.success) {
+        // Thumbnail and duration
+        const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
+        const duration = stats.video.contentDetails?.duration
+          ? parseISO8601Duration(stats.video.contentDetails.duration)
+          : '';
+
+        dataSummarySection.innerHTML = `
+  <div style="
+    background: none;
+    border-radius: 15px;
+    box-shadow: none;
+    padding: 26px 30px;
+    margin: 0 auto;
+    max-width: 520px;
+    color: #f6f6f6;
+    font-size: 1.09em;
+    text-align: left;
+    ">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+      <img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+      <div>
+        <b style="color:#ffe75b;font-size:1.17em;">
+          <span style="font-size:1.3em;vertical-align:-3px;">🎥</span>
+          ${stats.video.snippet.title}
+        </b>
+        ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Video duration ⏱ ${duration}</div>` : ''}
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
+      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
+      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
+      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
+    </div>
+    <div style="margin-top:12px;">
+      <b>📝 Description:</b>
+      <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
+        ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
+      </div>
+    </div>
+    <div style="margin-top:10px;text-align:right;">
+      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+    </div>
+  </div>
+`;
+      } else {
+        dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch video stats.</span>";
+      }
+    } catch (err) {
+      dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+    }
   } else {
-    textarea.value = '';
-    await reloadOfferComments();
-
-    await notifyComment({
-      offer_id: offerId,
-      from_user_id: sponsee_id,
-      to_user_id: sponsorId,
-      from_username: sender,
-      message: commentText
-    });
+    dataSummarySection.style.display = 'none';
+    dataSummarySection.innerHTML = '';
   }
   return;
 }
 
+    if (e.target.classList.contains('submit-comment')) {
+      const textarea = commentsSection.querySelector('.comment-input');
+      const commentText = textarea.value.trim();
+      if (!commentText) {
+        alert('Comment cannot be empty.');
+        return;
+      }
+      // Get JWT for the current user session
+      const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
+      const jwt = session?.access_token;
+      if (!jwt || !user_id) {
+        alert("Not authenticated. Please log in again.");
+        return;
+      }
+      // Moderation step
+      const modResult = await famBotModerateWithModal({
+        user_id,
+        content: commentText,
+        jwt,
+        type: 'comment'
+      });
+      if (!modResult.allowed) return; // Block if flagged
+
+      // If passed moderation, insert comment
+      const sender = sponsee_username;
+      const { error } = await supabase
+        .from('private_offer_comments')
+        .insert([{
+          offer_id: offerId,
+          user_id: user_id,
+          sponsor_id: sponsorId,
+          sponsor_email: sponsorEmail,
+          sponsee_id: sponsee_id,
+          sponsee_email: sponsee_email,
+          sender: sender,
+          comment_text: commentText
+        }]);
+      if (error) {
+        alert('Failed to submit comment.');
+      } else {
+        textarea.value = '';
+        await reloadOfferComments();
+
+        await notifyComment({
+          offer_id: offerId,
+          from_user_id: sponsee_id,
+          to_user_id: sponsorId,
+          from_username: sender,
+          message: commentText
+        });
+      }
+      return;
+    }
 
     async function reloadOfferComments() {
       const existingComments = commentsSection.querySelector('.existing-comments');
@@ -699,10 +794,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadSponseeOffers();
 });
 
+// Helper: Extract YouTube video ID from any valid URL
+function extractYouTubeVideoId(url) {
+  try {
+    const regExp = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts|watch)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  } catch { return null; }
+}
+
+// Helper: Parse ISO8601 duration ("PT7M1S" -> "7m 1s")
+function parseISO8601Duration(duration) {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return duration;
+  const [, h, m, s] = match;
+  return [
+    h ? `${h}h` : '',
+    m ? `${m}m` : '',
+    s ? `${s}s` : ''
+  ].filter(Boolean).join(' ') || '0s';
+}
+
 // Make all profile logos with .profile-link open the user's profile
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
   if (profileImg && profileImg.dataset.username) {
-    window.location.href = `./viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
+    window.location.href = `/public/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
