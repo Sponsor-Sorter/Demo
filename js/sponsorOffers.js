@@ -26,7 +26,7 @@ async function fetchReviewedOfferIds(stage5Offers, userId) {
 // Always fetch username for notifications and comments
 async function getCurrentSponsorUsername(user_id) {
   if (!user_id) return 'Sponsor';
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('users_extended_data')
     .select('username')
     .eq('user_id', user_id)
@@ -38,11 +38,7 @@ async function getCurrentSponsorUsername(user_id) {
 function renderPlatformBadges(platforms) {
   if (!platforms) return '';
   if (typeof platforms === 'string') {
-    try {
-      platforms = JSON.parse(platforms);
-    } catch {
-      platforms = [];
-    }
+    try { platforms = JSON.parse(platforms); } catch { platforms = []; }
   }
   if (!Array.isArray(platforms)) return '';
   const platformLogos = {
@@ -116,34 +112,34 @@ async function renderSingleOffer(offer) {
     platformBadgeHtml = renderPlatformBadges(offer.platforms);
   }
 
- // ================== REPORT BUTTON (OFFER) ======================
-const reportBtnHtml = `
-  <button 
-    class="report-btn" 
-    style="
-      position:absolute; 
-      top:-27px; 
-      left:-30px; 
-      background:none; 
-      border:none !important; 
+  // ========== REPORT BUTTON (OFFER) ==========
+  const reportBtnHtml = `
+    <button 
+      class="report-btn" 
+      style="
+        position:absolute; 
+        top:-27px; 
+        left:-30px; 
+        background:none; 
+        border:none !important; 
         outline: none !important;
-  box-shadow: none !important;
-      cursor:pointer; 
-      color:#e03232; 
-      font-size:1.25em; 
-      z-index:4;
-    "
-    title="Report Offer"
-    onclick="window.openReportModal('offer', '${offer.id}')"
-  >🚩</button>
-`;
+        box-shadow: none !important;
+        cursor:pointer; 
+        color:#e03232; 
+        font-size:1.25em; 
+        z-index:4;
+      "
+      title="Report Offer"
+      onclick="window.openReportModal('offer', '${offer.id}')"
+    >🚩</button>
+  `;
 
   listing.innerHTML = `
     <div class="card-content" style="position:relative;">
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -177,6 +173,7 @@ const reportBtnHtml = `
         <button class="offer-Comments">Comments</button>
         <button class="offer-img">Offer Images</button>
         <button class="expand-btn">View Details</button>
+        <button class="data-summary-btn">Data Summary</button>
         ${actionButton}
         ${offer.stage === 4 && !offer.sponsor_live_confirm ? '<button class="confirm-live-btn">Confirm Live Content</button>' : ''}
         <div class="details-section" style="display: none;">
@@ -202,6 +199,7 @@ const reportBtnHtml = `
           <textarea placeholder="Write a comment..." class="comment-input"></textarea><br>
           <button class="submit-comment">Submit Comment</button>
         </div>
+        <div class="data-summary-section" style="display:none;"></div>
       </div>
     </div>
   `;
@@ -235,38 +233,51 @@ function renderOffersByFilter(filter) {
   filteredOffers.forEach(renderSingleOffer);
 }
 
+// --- Helper: YouTube videoId extraction ---
+function extractYouTubeVideoId(url) {
+  try {
+    const regExp = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts|watch)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  } catch { return null; }
+}
+function parseISO8601Duration(duration) {
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return duration;
+  const [, h, m, s] = match;
+  return [
+    h ? `${h}h` : '',
+    m ? `${m}m` : '',
+    s ? `${s}s` : ''
+  ].filter(Boolean).join(' ') || '0s';
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-
   if (sessionError || !session || !session.user) {
     alert("You must be logged in to view this page.");
     window.location.href = '/login.html';
     return;
   }
-  
   sponsor_email = session.user.email;
   sponsor_id = session.user.id;
 
-  // Fetch latest sponsor_username from users_extended_data every load
   sponsor_username = await getCurrentSponsorUsername(sponsor_id);
 
-  // At top of sponsorOffers.js
-async function updateSponsorWallet() {
-  const { data: { session }, error } = await supabase.auth.getSession();
-  if (error || !session?.user) return;
-  const sponsor_id = session.user.id;
-  const { data, error: walletError } = await supabase
-    .from('users_extended_data')
-    .select('wallet')
-    .eq('user_id', sponsor_id)
-    .single();
-  if (!walletError && data && document.querySelector('.wallet')) {
-    document.querySelector('.wallet').innerHTML = `Wallet: $${Number(data.wallet).toFixed(2)}
-      <span class="info-icon" data-tooltip="For refund Money" style="color: white;">🛈</span>`;
+  async function updateSponsorWallet() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error || !session?.user) return;
+    const sponsor_id = session.user.id;
+    const { data, error: walletError } = await supabase
+      .from('users_extended_data')
+      .select('wallet')
+      .eq('user_id', sponsor_id)
+      .single();
+    if (!walletError && data && document.querySelector('.wallet')) {
+      document.querySelector('.wallet').innerHTML = `Wallet: $${Number(data.wallet).toFixed(2)}
+        <span class="info-icon" data-tooltip="For refund Money" style="color: white;">🛈</span>`;
+    }
   }
-}
-
-  
 
   const { data: offers, error } = await supabase
     .from('private_offers')
@@ -316,11 +327,16 @@ async function updateSponsorWallet() {
     const imagesSection = cardBottom.querySelector('.images-section');
     const commentsSection = cardBottom.querySelector('.comments-section');
     const thumbnailsContainer = imagesSection.querySelector('.image-thumbnails');
+    const dataSummarySection = cardBottom.querySelector('.data-summary-section');
 
     const hideAllSections = () => {
       detailsSection.style.display = 'none';
       imagesSection.style.display = 'none';
       commentsSection.style.display = 'none';
+      if (dataSummarySection) {
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
+      }
     };
 
     if (e.target.classList.contains('expand-btn')) {
@@ -335,26 +351,21 @@ async function updateSponsorWallet() {
       if (!isVisible) {
         imagesSection.style.display = 'flex';
         thumbnailsContainer.innerHTML = '<p>Loading images...</p>';
-
         const { data: offerData, error: offerError } = await supabase
           .from('private_offers')
           .select('offer_images')
           .eq('id', offerId)
           .single();
-
         if (offerError || !offerData?.offer_images?.length) {
           thumbnailsContainer.innerHTML = '<p>Failed to load images.</p>';
           return;
         }
-
         const imageUrls = offerData.offer_images.map(filename =>
           supabase.storage.from('offers').getPublicUrl(filename).data.publicUrl
         );
-
         const imageViewer = imagesSection.querySelector('.main-image');
         const prevBtn = imagesSection.querySelector('.prev-image');
         const nextBtn = imagesSection.querySelector('.next-image');
-
         let currentIndex = 0;
         const showImage = (index) => {
           currentIndex = index;
@@ -363,7 +374,6 @@ async function updateSponsorWallet() {
             thumb.style.border = i === index ? '2px solid #007BFF' : '1px solid #ccc';
           });
         };
-
         thumbnailsContainer.innerHTML = '';
         imageUrls.forEach((url, index) => {
           const thumb = document.createElement('img');
@@ -376,36 +386,103 @@ async function updateSponsorWallet() {
           thumb.addEventListener('click', () => showImage(index));
           thumbnailsContainer.appendChild(thumb);
         });
-
         if (imageUrls.length > 0) showImage(0);
         prevBtn.onclick = () => showImage((currentIndex - 1 + imageUrls.length) % imageUrls.length);
         nextBtn.onclick = () => showImage((currentIndex + 1) % imageUrls.length);
       }
     }
-    if (e.target.classList.contains('confirm-live-btn')) {
-      const confirmed = window.confirm("Are you sure you want to confirm this content as live?");
-      if (!confirmed) return;
 
-      const { error } = await supabase
-        .from('private_offers')
-        .update({ sponsor_live_confirmed: true })
-        .eq('id', offerId);
+    // --- DATA SUMMARY BUTTON HANDLER ---
+    if (e.target.classList.contains('data-summary-btn')) {
+      hideAllSections();
+      if (!dataSummarySection) return;
+      const isVisible = dataSummarySection.style.display === 'block';
+      if (!isVisible) {
+        dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
+        dataSummarySection.style.display = 'block';
 
-      if (error) {
-        alert(`Failed to confirm live content: ${error.message}`);
+        // Try reading live URL from offerCard or DOM
+        let liveUrl = offerCard.dataset.liveUrl || '';
+        if (!liveUrl) {
+          const liveLink = offerCard.querySelector('.offer-left a');
+          liveUrl = liveLink ? liveLink.href : '';
+        }
+
+        if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
+          return;
+        }
+        let videoId = extractYouTubeVideoId(liveUrl);
+        console.log('Live URL:', liveUrl, 'Extracted videoId:', videoId);
+        if (!videoId) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
+          return;
+        }
+        const { data: { session } } = await supabase.auth.getSession();
+        const jwt = session?.access_token;
+        try {
+          // Pass both userId (sponseeUserId) and offerId for edge function security
+          const body = {
+            videoId,
+            userId: sponseeUserId,
+            offerId
+          };
+          const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          const stats = await resp.json();
+          if (stats && stats.success) {
+            const thumbnail = stats.video.snippet.thumbnails?.medium?.url || '';
+            const duration = parseISO8601Duration(stats.video.contentDetails.duration);
+            dataSummarySection.innerHTML = `
+  <div style="
+    background: none;
+    border-radius: 15px;
+    box-shadow: none;
+    padding: 26px 30px;
+    margin: 0 auto;
+    max-width: 520px;
+    color: #f6f6f6;
+    font-size: 1.09em;
+    text-align: left;
+    ">
+    <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
+      ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
+      <div>
+        <b style="color:#ffe75b;"><span style="font-size:1.3em;">🎥</span> ${stats.video.snippet.title}</b>
+        <div style="font-size:0.97em;margin-top:3px;"><span style="background:#353539;padding:2px 7px;border-radius:6px;color:#ffe;">${duration}</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
+      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
+      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
+      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
+    </div>
+    <div style="margin-top:12px;">
+      <b>📝 Description:</b>
+      <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
+        ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
+      </div>
+    </div>
+    <div style="margin-top:10px;text-align:right;">
+      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+    </div>
+  </div>
+`;
+          } else {
+            dataSummarySection.innerHTML = `<span style='color:#faa;'>${stats?.error ? stats.error : 'Could not fetch video stats.'}</span>`;
+          }
+        } catch (err) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+        }
       } else {
-        // Fetch sponsor username before sending notification
-        const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
-        await notifyOfferUpdate({
-          to_user_id: sponseeUserId,
-          offer_id: offerId,
-          type: 'live_confirmed',
-          title: "Sponsor Confirmed Content is Live",
-          message: `${currentSponsorUsername} has confirmed the content as live.`
-        });
-        alert("Live content confirmed.");
-        renderOffersByFilter('all');
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
       }
+      return;
     }
 
     if (e.target.classList.contains('offer-Comments')) {
@@ -415,13 +492,11 @@ async function updateSponsorWallet() {
         commentsSection.style.display = 'block';
         const existingComments = commentsSection.querySelector('.existing-comments');
         existingComments.innerHTML = '<p>Loading comments...</p>';
-
         const { data: comments, error } = await supabase
           .from('private_offer_comments')
           .select('*')
           .eq('offer_id', offerId)
           .order('created_at', { ascending: true });
-
         if (error) {
           existingComments.innerHTML = '<p>Failed to load comments.</p>';
         } else if (!comments.length) {
@@ -429,7 +504,6 @@ async function updateSponsorWallet() {
         } else {
           existingComments.innerHTML = '';
           for (const comment of comments) {
-            // ========== REPORT BUTTON (COMMENT) ==========
             const reportCommentBtn = `
               <button
                 class="report-btn"
@@ -452,7 +526,6 @@ async function updateSponsorWallet() {
       const commentText = textarea.value.trim();
       if (!commentText) return alert('Comment cannot be empty.');
 
-      // Get JWT for the current user session
       const { data: { session } } = await supabase.auth.getSession();
       const user_id = session?.user?.id;
       const jwt = session?.access_token;
@@ -460,16 +533,14 @@ async function updateSponsorWallet() {
         alert("Not authenticated. Please log in again.");
         return;
       }
-      // Moderation step
       const modResult = await famBotModerateWithModal({
         user_id,
         content: commentText,
         jwt,
         type: 'comment'
       });
-      if (!modResult.allowed) return; // Block if flagged
+      if (!modResult.allowed) return;
 
-      // Fetch the latest sponsor username just like sponsee side
       const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
 
       const { error } = await supabase
@@ -484,13 +555,11 @@ async function updateSponsorWallet() {
           sender: currentSponsorUsername,
           comment_text: commentText
         }]);
-
       if (error) {
         console.error(error);
         alert('Failed to submit comment.');
       } else {
         textarea.value = '';
-        // Notify sponsee
         await notifyComment({
           to_user_id: sponseeUserId,
           offer_id: offerId,
@@ -501,64 +570,47 @@ async function updateSponsorWallet() {
       }
     }
 
-if (e.target.classList.contains('cancel-offer-btn')) {
-  if (window.confirm("Are you sure you want to cancel this offer?")) {
-    // 1. Get offer amount
-    const offerId = offerCard.dataset.offerId;
-    const { data: offer, error: offerErr } = await supabase
-      .from('private_offers')
-      .select('offer_amount')
-      .eq('id', offerId)
-      .single();
-    if (offerErr || !offer) {
-      alert('Could not fetch offer amount for wallet refund.');
-      return;
+    if (e.target.classList.contains('cancel-offer-btn')) {
+      if (window.confirm("Are you sure you want to cancel this offer?")) {
+        const offerId = offerCard.dataset.offerId;
+        const { data: offer, error: offerErr } = await supabase
+          .from('private_offers')
+          .select('offer_amount')
+          .eq('id', offerId)
+          .single();
+        if (offerErr || !offer) {
+          alert('Could not fetch offer amount for wallet refund.');
+          return;
+        }
+        const { error: cancelErr } = await supabase
+          .from('private_offers')
+          .update({ status: 'Offer Cancelled' })
+          .eq('id', offerId);
+        if (cancelErr) {
+          alert(`Failed to cancel offer: ${cancelErr.message}`);
+          return;
+        }
+        const { error: walletErr } = await supabase.rpc('increment_wallet_balance', {
+          user_id_param: sponsor_id,
+          amount_param: offer.offer_amount
+        });
+        if (walletErr) {
+          alert('Failed to credit refund to wallet. Please contact support.');
+          return;
+        }
+        const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
+        await notifyOfferUpdate({
+          to_user_id: sponseeUserId,
+          offer_id: offerId,
+          type: 'offer_cancelled',
+          title: "Offer Cancelled",
+          message: `${currentSponsorUsername} has cancelled the sponsorship offer.`
+        });
+        alert("Offer cancelled. Amount has been refunded to your wallet.");
+        updateSponsorWallet();
+        renderOffersByFilter('all');
+      }
     }
-
-    // 2. Update offer status to cancelled
-    const { error: cancelErr } = await supabase
-      .from('private_offers')
-      .update({ status: 'Offer Cancelled' })
-      .eq('id', offerId);
-
-    if (cancelErr) {
-      alert(`Failed to cancel offer: ${cancelErr.message}`);
-      return;
-    }
-
-    // 3. Credit refund to sponsor's wallet
-    const { error: walletErr } = await supabase.rpc('increment_wallet_balance', {
-      user_id_param: sponsor_id,
-      amount_param: offer.offer_amount
-    });
-
-    // If RPC fails (function not created yet), do direct update instead:
-    // const { error: walletErr } = await supabase
-    //   .from('users_extended_data')
-    //   .update({ wallet: supabase.raw('wallet + ?', [offer.offer_amount]) })
-    //   .eq('user_id', sponsor_id);
-
-    if (walletErr) {
-      alert('Failed to credit refund to wallet. Please contact support.');
-      return;
-    }
-
-    // 4. Notify sponsee
-    const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
-    await notifyOfferUpdate({
-      to_user_id: sponseeUserId,
-      offer_id: offerId,
-      type: 'offer_cancelled',
-      title: "Offer Cancelled",
-      message: `${currentSponsorUsername} has cancelled the sponsorship offer.`
-    });
-
-    alert("Offer cancelled. Amount has been refunded to your wallet.");
-    updateSponsorWallet();
-    renderOffersByFilter('all');
-  }
-}
-
 
     if (e.target.classList.contains('delete-offer-btn')) {
       const success = await handleRemoveOffer(offerId);
