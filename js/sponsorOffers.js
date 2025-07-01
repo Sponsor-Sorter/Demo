@@ -452,7 +452,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
       <div>
         <b style="color:#ffe75b;"><span style="font-size:1.3em;">🎥</span> ${stats.video.snippet.title}</b>
-        <div style="font-size:0.97em;margin-top:3px;"><span style="background:#353539;padding:2px 7px;border-radius:6px;color:#ffe;">${duration}</span></div>
+        <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
       </div>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
