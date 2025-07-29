@@ -1,17 +1,19 @@
 // public/js/sponsorOffers.js
-import { supabase } from './supabaseClient.js';
-import { handleRemoveOffer } from './sponsorLogic.js';
-import { notifyComment, notifyOfferUpdate } from './alerts.js';
-import './userReports.js'; // Import the reporting logic
-import { famBotModerateWithModal } from './FamBot.js';
+import { supabase } from './js/supabaseClient.js';
+import { handleRemoveOffer } from './js/sponsorLogic.js';
+import { notifyComment, notifyOfferUpdate } from './js/alerts.js';
+import './js/userReports.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
 let sponsor_email = '';
 let sponsor_id = '';
 let reviewedOfferIds = [];
+let currentFilter = 'all';
+let currentPage = 1;
+const offersPerPage = 5;
 
-// Helper to check reviewed offers at stage 5
 async function fetchReviewedOfferIds(stage5Offers, userId) {
   if (!stage5Offers.length) return [];
   const { data: reviews, error } = await supabase
@@ -23,7 +25,6 @@ async function fetchReviewedOfferIds(stage5Offers, userId) {
   return reviews.map(r => r.offer_id);
 }
 
-// Always fetch username for notifications and comments
 async function getCurrentSponsorUsername(user_id) {
   if (!user_id) return 'Sponsor';
   const { data } = await supabase
@@ -34,6 +35,67 @@ async function getCurrentSponsorUsername(user_id) {
   return data?.username || 'Sponsor';
 }
 
+function renderPaginationControls(totalOffers) {
+  const controls = document.getElementById('pagination-controls');
+  if (!controls) return;
+  const totalPages = Math.ceil(totalOffers / offersPerPage);
+  controls.innerHTML = `
+    <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>
+    <span>Page ${currentPage} of ${totalPages}</span>
+    <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+  `;
+
+  document.getElementById('prev-page')?.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderOffersByFilter(currentFilter);
+    }
+  });
+  document.getElementById('next-page')?.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderOffersByFilter(currentFilter);
+    }
+  });
+}
+
+function renderOffersByFilter(filter) {
+  currentFilter = filter;
+  const listingContainer = document.getElementById('listing-container');
+  listingContainer.innerHTML = '';
+
+  let filteredOffers = allSponsorOffers.filter(offer => {
+    if (filter === 'all') return true;
+    if (filter === 'stage-3') return offer.stage === 3;
+    if (filter === 'stage-4') return offer.stage === 4;
+    if (filter === 'stage-5') return offer.stage === 5;
+    if (filter === 'rejected') return ['rejected', 'Offer Cancelled'].includes(offer.status);
+    return offer.status === filter;
+  });
+
+  filteredOffers = filteredOffers.filter(offer => {
+    if (offer.stage === 5 && reviewedOfferIds.includes(offer.id)) return false;
+    return true;
+  });
+
+  const start = (currentPage - 1) * offersPerPage;
+  const end = start + offersPerPage;
+  const paginatedOffers = filteredOffers.slice(start, end);
+
+  if (!paginatedOffers.length) {
+    listingContainer.innerHTML = '<p>No offers found for this filter/page.</p>';
+    renderPaginationControls(filteredOffers.length);
+    return;
+  }
+
+  paginatedOffers.forEach(renderSingleOffer);
+  renderPaginationControls(filteredOffers.length);
+   const totalLabel = document.getElementById("sponsor-offer-total-label");
+  if (totalLabel) {
+    totalLabel.textContent = `Total Offers: ${filteredOffers.length}`;
+    totalLabel.style.display = 'inline';
+  }
+}
 // --- Platform badge rendering ---
 function renderPlatformBadges(platforms) {
   if (!platforms) return '';
@@ -139,7 +201,7 @@ async function renderSingleOffer(offer) {
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -173,7 +235,7 @@ async function renderSingleOffer(offer) {
         <button class="offer-Comments">Comments</button>
         <button class="offer-img">Offer Images</button>
         <button class="expand-btn">View Details</button>
-        <button class="data-summary-btn">Data Summary</button>
+        ${offer.stage === 4 ? '<button class="data-summary-btn">Data Summary</button>' : ''}
         ${actionButton}
         ${offer.stage === 4 && !offer.sponsor_live_confirm ? '<button class="confirm-live-btn">Confirm Live Content</button>' : ''}
         <div class="details-section" style="display: none;">
@@ -207,31 +269,7 @@ async function renderSingleOffer(offer) {
   listingContainer.appendChild(listing);
 }
 
-function renderOffersByFilter(filter) {
-  const listingContainer = document.getElementById('listing-container');
-  listingContainer.innerHTML = '';
 
-  let filteredOffers = allSponsorOffers.filter(offer => {
-    if (filter === 'all') return true;
-    if (filter === 'stage-3') return offer.stage === 3;
-    if (filter === 'stage-4') return offer.stage === 4;
-    if (filter === 'stage-5') return offer.stage === 5;
-    if (filter === 'rejected') return ['rejected', 'Offer Cancelled'].includes(offer.status);
-    return offer.status === filter;
-  });
-
-  filteredOffers = filteredOffers.filter(offer => {
-    if (offer.stage === 5 && reviewedOfferIds.includes(offer.id)) return false;
-    return true;
-  });
-
-  if (filteredOffers.length === 0) {
-    listingContainer.innerHTML = '<p>No offers found for this filter.</p>';
-    return;
-  }
-
-  filteredOffers.forEach(renderSingleOffer);
-}
 
 // --- Helper: YouTube videoId extraction ---
 function extractYouTubeVideoId(url) {
@@ -627,5 +665,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         allSponsorOffers = allSponsorOffers.filter(offer => offer.id !== parseInt(offerId));
       }
     }
+
+    if (e.target.classList.contains('confirm-live-btn')) {
+  // Confirm with the sponsor
+  if (!window.confirm("Confirm this content is live? This will mark the offer as completed.")) return;
+
+  const offerId = offerCard.dataset.offerId;
+  // Update the offer in Supabase
+  const { error } = await supabase
+    .from('private_offers')
+    .update({
+      sponsor_live_confirmed: true,
+      stage: 4, // Keep at stage 4 Await Sponsee To Accept/Choose Payout.
+      status: 'completed',
+      live_date: new Date().toISOString().slice(0, 10) // today's date in YYYY-MM-DD
+    })
+    .eq('id', offerId);
+
+  if (error) {
+    alert('Failed to confirm content as live: ' + error.message);
+    return;
+  }
+
+  // Optionally: Notify the sponsee
+  await notifyOfferUpdate({
+    to_user_id: sponseeUserId,
+    offer_id: offerId,
+    type: "content_live_confirmed",
+    title: "Content Confirmed Live",
+    message: `${sponsor_username} has confirmed the content is live.`
+  });
+
+  alert("Content marked as live and offer moved to Completed!");
+  renderOffersByFilter('all');
+}
+
   });
 });
