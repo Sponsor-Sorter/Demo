@@ -1,4 +1,4 @@
-// sponseeLogic.js
+// public/js/sponseeLogic.js
 import { supabase } from './supabaseClient.js';
 
 // ----- RENDER GOLD STARS -----
@@ -11,41 +11,42 @@ function renderStars(rating) {
 }
 
 async function updateCategoryStars(category, elementId) {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return;
-    const sponseeEmail = session.user.email;
-  
-    const { data: offers } = await supabase
-      .from('private_offers')
-      .select('id')
-      .eq('sponsee_email', sponseeEmail);
-  
-    if (!offers || offers.length === 0) {
-      const starsEl = document.getElementById(elementId);
-      if (starsEl) starsEl.innerHTML = renderStars(0);
-      return;
-    }
-    const offerIds = offers.map(o => o.id);
-  
-    let allCategoryRatings = [];
-    for (let i = 0; i < offerIds.length; i += 100) {
-      const batchIds = offerIds.slice(i, i + 100);
-      const { data: reviews } = await supabase
-        .from('private_offer_reviews')
-        .select(category)
-        .in('offer_id', batchIds)
-        .eq('reviewer_role', 'sponsor');
-      if (reviews) allCategoryRatings = allCategoryRatings.concat(reviews);
-    }
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) return;
+  const sponseeEmail = session.user.email;
+
+  // Get all offer ids
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('id')
+    .eq('sponsee_email', sponseeEmail);
+
+  if (!offers || offers.length === 0) {
     const starsEl = document.getElementById(elementId);
-    if (!allCategoryRatings.length) {
-      if (starsEl) starsEl.innerHTML = renderStars(0);
-      return;
-    }
-    const avg = allCategoryRatings.reduce((sum, r) => sum + (r[category] || 0), 0) / allCategoryRatings.length;
-    if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
+    if (starsEl) starsEl.innerHTML = renderStars(0);
+    return;
   }
-  
+  const offerIds = offers.map(o => o.id);
+
+  // Fetch all category reviews at once
+  let allCategoryRatings = [];
+  for (let i = 0; i < offerIds.length; i += 100) {
+    const batchIds = offerIds.slice(i, i + 100);
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select(category)
+      .in('offer_id', batchIds)
+      .eq('reviewer_role', 'sponsor');
+    if (reviews) allCategoryRatings = allCategoryRatings.concat(reviews);
+  }
+  const starsEl = document.getElementById(elementId);
+  if (!allCategoryRatings.length) {
+    if (starsEl) starsEl.innerHTML = renderStars(0);
+    return;
+  }
+  const avg = allCategoryRatings.reduce((sum, r) => sum + (r[category] || 0), 0) / allCategoryRatings.length;
+  if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
+}
 
 // ----- SUMMARY STAT CARDS -----
 async function updateSummaryStats() {
@@ -90,7 +91,6 @@ async function updateSummaryStats() {
   const totalEarnings = validIncome.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
   document.getElementById('total-earnings').textContent = `$${totalEarnings.toFixed(2)}`;
 
-
   // ---- LIFETIME SUCCESS RATIO ----
   const successfulOffers = offers.filter(o =>
     ['accepted', 'in_progress', 'live', 'review_completed', 'completed'].includes(o.status)
@@ -120,7 +120,7 @@ async function loadRecentActivity() {
   const sponseeEmail = session.user.email;
   const { data: offers, error: offerError } = await supabase
     .from('private_offers')
-    .select('sponsor_username, status, offer_amount, created_at, deadline, creation_date, live_date')
+    .select('id, sponsor_username, status, offer_amount, created_at, deadline, creation_date, live_date')
     .eq('sponsee_email', sponseeEmail)
     .order('created_at', { ascending: false });
 
@@ -128,59 +128,85 @@ async function loadRecentActivity() {
   if (!tableBody) return;
   tableBody.innerHTML = '';
 
+  const oldBtn = document.getElementById('expand-recent-btn');
+  if (oldBtn) oldBtn.remove();
+
   if (offerError || !offers || offers.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="6">No recent activity yet.</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="7">No recent activity yet.</td></tr>';
     return;
   }
 
-  let displayed = 0;
-  for (const offer of offers) {
-    // Skip review_completed status
-    if (offer.status === 'review_completed') continue;
-    if (displayed >= 10) break;
-
-    // Fetch sponsor's profile pic
-    let sponsorPicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
-    if (offer.sponsor_username) {
-      const { data: sponsorData } = await supabase
-        .from('users_extended_data')
-        .select('profile_pic')
-        .eq('username', offer.sponsor_username)
-        .single();
-      if (sponsorData?.profile_pic) {
-        sponsorPicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`;
-      }
+  // Get unique sponsor usernames for batch fetch
+  const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
+  let sponsorPics = {};
+  if (sponsorUsernames.length > 0) {
+    const { data: sponsors } = await supabase
+      .from('users_extended_data')
+      .select('username, profile_pic')
+      .in('username', sponsorUsernames);
+    if (sponsors && Array.isArray(sponsors)) {
+      sponsorPics = sponsors.reduce((acc, s) => {
+        acc[s.username] = s.profile_pic
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${s.profile_pic}`
+          : 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+        return acc;
+      }, {});
     }
-
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td style="text-align: center;">
-        <img src="${sponsorPicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsor Pic" style="width: 36px; height: 36px; border-radius: 50%; display: block; margin: 0 auto 5px;">
-        ${offer.sponsor_username}
-      </td>
-      <td style="color: ${
-        offer.status === 'pending' ? 'orange' :
-        offer.status === 'accepted' ? 'green' :
-        offer.status === 'live' ? 'blue' :
-        offer.status === 'completed' ? 'gray' :
-        ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
-        'inherit'
-      }">${offer.status}</td>
-      <td>$${Number(offer.offer_amount).toFixed(2)}</td>
-      <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
-      <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
-      <td>${offer.creation_date ? new Date(offer.creation_date + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
-
-      <td>${offer.live_date ? new Date(offer.live_date).toLocaleDateString() : '—'}</td>
-
-    `;
-    tableBody.appendChild(row);
-    displayed++;
   }
 
-  if (displayed === 0) {
-    tableBody.innerHTML = '<tr><td colspan="6">No recent activity yet.</td></tr>';
+  // Filter out review_completed status
+  const rows = [];
+  for (const offer of offers) {
+    if (offer.status === 'review_completed') continue;
+    const sponsorPicUrl = sponsorPics[offer.sponsor_username] || 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+
+    rows.push(`
+      <tr>
+        <td style="text-align: center;">
+          <img src="${sponsorPicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsor Pic" style="width: 36px; height: 36px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          ${offer.sponsor_username}
+        </td>
+        <td style="color: ${
+          offer.status === 'pending' ? 'orange' :
+          offer.status === 'accepted' ? 'green' :
+          offer.status === 'live' ? 'blue' :
+          offer.status === 'completed' ? 'gray' :
+          ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
+          'inherit'
+        }">${offer.status}</td>
+        <td>$${Number(offer.offer_amount).toFixed(2)}</td>
+        <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
+        <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
+        <td>${offer.creation_date ? new Date(offer.creation_date + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
+        <td>${offer.live_date ? new Date(offer.live_date).toLocaleDateString() : '—'}</td>
+      </tr>
+    `);
   }
+
+  let collapsed = true;
+  function renderTable() {
+    tableBody.innerHTML = '';
+    const visibleRows = collapsed ? rows.slice(0, 10) : rows;
+    visibleRows.forEach(row => tableBody.innerHTML += row);
+    let btn = document.getElementById('expand-recent-btn');
+    if (!btn && rows.length > 10) {
+      btn = document.createElement('button');
+      btn.id = 'expand-recent-btn';
+      btn.style.marginTop = "10px";
+      btn.textContent = "Show More";
+      btn.onclick = () => {
+        collapsed = !collapsed;
+        btn.textContent = collapsed ? "Show More" : "Show Less";
+        renderTable();
+      };
+      tableBody.parentElement.appendChild(btn);
+    } else if (btn && rows.length <= 10) {
+      btn.remove();
+    } else if (btn) {
+      btn.textContent = collapsed ? "Show More" : "Show Less";
+    }
+  }
+  renderTable();
 }
 
 // ----- ARCHIVED/HISTORY TABLE -----
@@ -191,7 +217,7 @@ async function loadArchivedDeals() {
 
   const { data: offers, error } = await supabase
     .from("private_offers")
-    .select("*")
+    .select("id, sponsor_username, offer_amount, created_at, live_date, deadline")
     .eq("archived", true)
     .eq("sponsee_email", userEmail)
     .order("created_at", { ascending: false });
@@ -199,6 +225,9 @@ async function loadArchivedDeals() {
   const archivedTableBody = document.getElementById("archived-table-body");
   if (!archivedTableBody) return;
   archivedTableBody.innerHTML = "";
+
+  const oldBtn = document.getElementById('expand-archived-btn');
+  if (oldBtn) oldBtn.remove();
 
   if (error) {
     archivedTableBody.innerHTML = `<tr><td colspan="8" style="color:red;">Failed to load archived deals.</td></tr>`;
@@ -209,43 +238,57 @@ async function loadArchivedDeals() {
     return;
   }
 
-  for (const offer of offers) {
-    // Get sponsor profile pic
-    let profilePicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
-    const { data: sponsorData } = await supabase
+  // Get unique sponsor usernames for batch fetch
+  const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
+  let sponsorPics = {};
+  if (sponsorUsernames.length > 0) {
+    const { data: sponsors } = await supabase
       .from('users_extended_data')
-      .select('profile_pic')
-      .eq('username', offer.sponsor_username)
-      .single();
-    if (sponsorData?.profile_pic) {
-      profilePicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`;
+      .select('username, profile_pic')
+      .in('username', sponsorUsernames);
+    if (sponsors && Array.isArray(sponsors)) {
+      sponsorPics = sponsors.reduce((acc, s) => {
+        acc[s.username] = s.profile_pic
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${s.profile_pic}`
+          : 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+        return acc;
+      }, {});
     }
+  }
 
-    // Sponsor's overall rating of sponsee (role: 'sponsor')
+  // Get all reviews in one go for these offer ids
+  const offerIds = offers.map(o => o.id);
+  let reviewsByOffer = {};
+  if (offerIds.length > 0) {
+    const { data: reviews } = await supabase
+      .from("private_offer_reviews")
+      .select("offer_id, reviewer_role, overall")
+      .in("offer_id", offerIds);
+    if (reviews && Array.isArray(reviews)) {
+      reviewsByOffer = reviews.reduce((acc, r) => {
+        if (!acc[r.offer_id]) acc[r.offer_id] = {};
+        acc[r.offer_id][r.reviewer_role] = r.overall;
+        return acc;
+      }, {});
+    }
+  }
+
+  const rows = [];
+  for (const offer of offers) {
+    const profilePicUrl = sponsorPics[offer.sponsor_username] || 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+
+    // Ratings
     let sponsorRatingDisplay = "—";
-    const { data: sponsorReview } = await supabase
-      .from("private_offer_reviews")
-      .select("overall")
-      .eq("offer_id", offer.id)
-      .eq("reviewer_role", "sponsor")
-      .single();
-    if (sponsorReview && sponsorReview.overall) {
-      sponsorRatingDisplay = renderStars(Math.round(sponsorReview.overall));
+    if (reviewsByOffer[offer.id] && reviewsByOffer[offer.id]['sponsor']) {
+      sponsorRatingDisplay = renderStars(Math.round(reviewsByOffer[offer.id]['sponsor']));
     }
 
-    // Sponsee's overall rating of sponsor (role: 'sponsee')
     let sponseeRatingDisplay = "—";
-    const { data: sponseeReview } = await supabase
-      .from("private_offer_reviews")
-      .select("overall")
-      .eq("offer_id", offer.id)
-      .eq("reviewer_role", "sponsee")
-      .single();
-    if (sponseeReview && sponseeReview.overall) {
-      sponseeRatingDisplay = renderStars(Math.round(sponseeReview.overall));
+    if (reviewsByOffer[offer.id] && reviewsByOffer[offer.id]['sponsee']) {
+      sponseeRatingDisplay = renderStars(Math.round(reviewsByOffer[offer.id]['sponsee']));
     }
 
-    archivedTableBody.innerHTML += `
+    rows.push(`
       <tr data-offer-id="${offer.id}">
         <td style="text-align: center;">
           <img src="${profilePicUrl}" onerror="this.src='/public/logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
@@ -258,8 +301,33 @@ async function loadArchivedDeals() {
         <td>${sponsorRatingDisplay}</td>
         <td>${sponseeRatingDisplay}</td>
       </tr>
-    `;
+    `);
   }
+
+  let collapsed = true;
+  function renderTable() {
+    archivedTableBody.innerHTML = "";
+    const visibleRows = collapsed ? rows.slice(0, 10) : rows;
+    visibleRows.forEach(row => archivedTableBody.innerHTML += row);
+    let btn = document.getElementById('expand-archived-btn');
+    if (!btn && rows.length > 10) {
+      btn = document.createElement('button');
+      btn.id = 'expand-archived-btn';
+      btn.style.marginTop = "10px";
+      btn.textContent = "Show More";
+      btn.onclick = () => {
+        collapsed = !collapsed;
+        btn.textContent = collapsed ? "Show More" : "Show Less";
+        renderTable();
+      };
+      archivedTableBody.parentElement.appendChild(btn);
+    } else if (btn && rows.length <= 10) {
+      btn.remove();
+    } else if (btn) {
+      btn.textContent = collapsed ? "Show More" : "Show Less";
+    }
+  }
+  renderTable();
 }
 
 // ----- OVERALL STAR RATING (Profile) -----
@@ -280,7 +348,7 @@ async function updateOverallStars() {
   }
   const offerIds = offers.map(o => o.id);
 
-  // Batched fetch for all sponsor reviews of this sponsee's offers
+  // Fetch all sponsor reviews in batch
   let allSponsorReviews = [];
   for (let i = 0; i < offerIds.length; i += 100) {
     const batchIds = offerIds.slice(i, i + 100);
@@ -352,17 +420,43 @@ async function loadYouTubeStats() {
   }
 }
 
-
-
 // ----- DOMContentLoaded EVENTS -----
-document.addEventListener("DOMContentLoaded", () => {
-    updateSummaryStats();
-    loadRecentActivity();
-    loadArchivedDeals();
-    updateOverallStars();
-    loadYouTubeStats();
-    updateCategoryStars('communication', 'communication-stars');
-    updateCategoryStars('punctuality', 'punctuality-stars');
-    updateCategoryStars('work_output', 'work-output-stars');
-  });
-  
+document.addEventListener("DOMContentLoaded", async () => {
+  updateSummaryStats();
+  loadRecentActivity();
+  loadArchivedDeals();
+  updateOverallStars();
+  updateCategoryStars('communication', 'communication-stars');
+  updateCategoryStars('punctuality', 'punctuality-stars');
+  updateCategoryStars('work_output', 'work-output-stars');
+
+  // -- Only show/fetch YouTube stats if user is connected! --
+  const { data: { session } } = await supabase.auth.getSession();
+  const userId = session?.user?.id;
+  if (!userId) return;
+
+  // Fetch youtube_connected for this user
+  let youtubeConnected = false;
+  try {
+    const { data: userData } = await supabase
+      .from('users_extended_data')
+      .select('youtube_connected')
+      .eq('user_id', userId)
+      .single();
+    youtubeConnected = !!userData?.youtube_connected;
+  } catch {
+    youtubeConnected = false;
+  }
+
+  // Only show/fetch if connected
+  const ytBlock = document.getElementById('youtube-stats-block');
+  if (ytBlock) {
+    if (youtubeConnected) {
+      ytBlock.style.display = 'block';
+      loadYouTubeStats();
+    } else {
+      ytBlock.style.display = 'none';
+    }
+  }
+});
+
