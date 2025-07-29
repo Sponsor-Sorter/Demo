@@ -3306,9 +3306,14 @@ fieldset {
   }
   .blue {
     min-width: 45%;
-    max-height: 140px;
+    max-height: 200px;
   }
-
+ .confirm-live-btn {
+  background-color: green;
+ }
+ .receive-payment {
+  background-color: green;
+ }
   .offer-details-left p,
   .offer-details-right p {
     margin: 8px 0;
@@ -3426,16 +3431,20 @@ fieldset {
   vertical-align: middle;
 }
 
+
 /* Notification bell button and badge styling */
 .notification-bell-btn {
     background: none;
     border: none;
     cursor: pointer;
     position: relative;
-    right: 20px;
-    top: -5px;
+    box-shadow: none;
+    right: 0px;
+    top: -1px;
     vertical-align: middle;
     padding: 0;
+     margin-right: 16px;
+     padding-left: 20px;
   }
   
   .bell-icon {
@@ -3447,6 +3456,7 @@ fieldset {
   
   .notification-bell-btn:hover .bell-icon {
     filter: invert(0.7) sepia(1) hue-rotate(30deg) saturate(2);
+    box-shadow: none !important;
   }
   
   .notification-badge {
@@ -3457,7 +3467,7 @@ fieldset {
     color: #fff;
     border-radius: 50%;
     font-size: 13px;
-    min-width: 15px;
+    min-width: 10px;
     padding: 1px 6px;
     font-weight: bold;
     box-shadow: 0 1px 3px #0006;
@@ -3844,6 +3854,9 @@ button.report-btn:focus-visible,
   background: transparent !important;
 }
 
+.report-btn {
+  box-shadow: none;
+}
 
 .admin-table thead {
   background: #24243a;
@@ -4601,7 +4614,7 @@ body, .admin-table, .admin-tab, .pagination-btn {
 }
 
 fieldset {
-  background: linear-gradient(#000000, #232323) padding-box,  /* inner background (change #fff if needed) */
+  background: linear-gradient(#000000, #212121) padding-box,  /* inner background (change #fff if needed) */
               linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box;  /* gradient border */
   border: 3px solid transparent;
   border-radius: 18px;
@@ -4839,13 +4852,22 @@ fieldset:focus-within, fieldset:hover {
 }
 
 .notifications-dropdown, #notification-dropdown {
-  width: 370px;            /* or whatever works visually for your site */
+  width: 320px;            /* or whatever works visually for your site */
   max-width: 92vw;         /* keep it responsive */
   min-width: 270px;        /* optional: prevent being too narrow */
   box-sizing: border-box;  /* always a good idea */
   word-break: break-word;  /* wrap long content! */
+   position: absolute;
+  top: 100%;              /* Directly below the bell */
+  right: 35px !important;               /* Align right edge with bell */
 }
-
+#notification-bell,
+#notification-bell:focus,
+#notification-bell:active,
+#notification-bell:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 /*review page*/
 .review-page-container {
@@ -5404,6 +5426,194 @@ fieldset.recentoffers {
     transform: none;
   }
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.pagination-controls button {
+  background-color: #6845e9;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+    box-shadow: none;
+
+  cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+/* Align toggle switches to the right edge of dropdown */
+.settings-dropdown ul {
+  padding: 0 0 0 0;
+  min-width: 150px;
+}
+.settings-dropdown li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 8px 0;
+}
+
+.settings-dropdown li .switch {
+  margin-left: 10px; /* Force the switch (slider) to right */
+}
+
+/* Make text not too close to left edge */
+.settings-dropdown li > span,
+.settings-dropdown li > label.switch {
+  padding-left: 12px;
+}
+
+/* For normal buttons (not switch lines), make full width and align left */
+.settings-dropdown .dropdown-item {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.09em;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+#settings-dropdown {
+  left: auto !important;
+  right: 40px !important;
+  top: 200px !important;
+}
+
+/*settings email switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  vertical-align: middle;
+}
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .2s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #36a2eb;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+/* invoice modal */
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(20,22,35,0.62);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999;
+  transition: opacity .22s;
+}
+.modal-content {
+  top: 20vw;
+  left: 35vw;
+  background: #191a1d;
+  color: #fff;
+  border-radius: 22px;
+  box-shadow: 0 10px 48px 0 #000a;
+  max-width: 600px;
+  width: 94vw;
+  max-height: 500px;
+  padding: 32px 34px 26px 34px;
+  position: relative;
+  font-size: 1.12em;
+  min-width: 350px;
+  border: 1.5px solid #222;
+}
+.modal-content h3 {
+  margin: 0 0 24px 0;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #fff;
+  text-align: left;
+  letter-spacing: .02em;
+}
+#invoice-offer-list {
+  margin-bottom: 22px;
+}
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 8px 0;
+  background: #17181b;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 1em;
+}
+.invoice-table th, .invoice-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #25272c;
+  text-align: left;
+}
+.invoice-table th {
+  background: #202126;
+  color: #68bbff;
+  font-weight: 600;
+}
+.invoice-table tr:last-child td { border-bottom: none; }
+.invoice-table td { color: #f5f5f7; }
+.invoice-table .amount { color: #41d461; font-weight: 600; }
+.invoice-table .btn { margin: 0; }
+.invoice-table .status-paid { color: #41d461; font-weight: 500; }
+.invoice-table .status-rejected { color: #ff4040; font-weight: 500; }
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+.btn, .modal-content .btn {
+  background: #421caa;
+  color: white;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
+  box-shadow: 0 1px 8px 0 #191a1d38;
+  transition: background .18s, box-shadow .18s;
+}
+.btn.btn-secondary { background: #15156a; color: #eee; }
+.btn.btn-cancel { background: #f14444; }
+.btn.btn-cancel:hover { background: #bb2222; }
+.btn:hover { background: #1876c7; }
 
 /* ================================================ */
 /*  MOBILE RESPONSIVE (UNIVERSAL)                   */
