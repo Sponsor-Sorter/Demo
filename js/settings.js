@@ -21,73 +21,66 @@ document.addEventListener('DOMContentLoaded', async () => {
     settingsDropdown.addEventListener('click', (e) => e.stopPropagation());
   }
 
-  // --- Help Blocks Hide/Show (DB-persisted) ---
-  const toggleHelpBtn = document.getElementById('toggle-help-blocks-btn');
-  let helpHidden = false;
+ // === HELP BLOCKS SLIDER ===
+const helpBlocksToggle = document.getElementById('toggle-help-slider');
 
-  async function loadHelpSetting() {
-    const user = await getActiveUser();
+async function loadHelpBlocksSetting() {
+  let user = await getActiveUser();
+  if (!user) return;
+  const { data } = await supabase
+    .from('user_settings')
+    .select('hide_help_blocks')
+    .eq('user_id', user.user_id)
+    .single();
+  // hide_help_blocks: true means HIDE, so slider OFF means "hidden"
+  helpBlocksToggle.checked = !(data && data.hide_help_blocks); // checked = SHOW
+  updateHelpBlocksVisibility();
+}
+function updateHelpBlocksVisibility() {
+  document.querySelectorAll('.help-block').forEach(el => {
+    el.style.display = helpBlocksToggle.checked ? '' : 'none';
+  });
+}
+if (helpBlocksToggle) {
+  helpBlocksToggle.addEventListener('change', async () => {
+    let user = await getActiveUser();
     if (!user) return;
-    const { data } = await supabase
-      .from('user_settings')
-      .select('hide_help_blocks')
-      .eq('user_id', user.user_id)
-      .single();
-    helpHidden = !!(data && data.hide_help_blocks);
-    updateHelpBlocksVisibility();
-  }
-  async function saveHelpSetting(val) {
-    const user = await getActiveUser();
-    if (!user) return;
+    // Save "hide_help_blocks" as the REVERSE of the switch
+    const hideHelp = !helpBlocksToggle.checked;
     await supabase
       .from('user_settings')
-      .upsert({ user_id: user.user_id, hide_help_blocks: val }, { onConflict: ['user_id'] });
-  }
-  function updateHelpBlocksVisibility() {
-    document.querySelectorAll('.help-block').forEach(el => {
-      el.style.display = helpHidden ? 'none' : '';
-    });
-    if (toggleHelpBtn) toggleHelpBtn.innerText = helpHidden ? 'Show All Help Blocks' : 'Hide All Help Blocks';
-  }
-  if (toggleHelpBtn) {
-    toggleHelpBtn.addEventListener('click', async () => {
-      helpHidden = !helpHidden;
-      updateHelpBlocksVisibility();
-      await saveHelpSetting(helpHidden);
-    });
-  }
-  await loadHelpSetting();
+      .upsert({ user_id: user.user_id, hide_help_blocks: hideHelp }, { onConflict: ['user_id'] });
+    updateHelpBlocksVisibility();
+    // Feedback effect
+    helpBlocksToggle.parentElement.querySelector('.slider').style.boxShadow = '0 0 0 2px #36a2eb';
+    setTimeout(() => helpBlocksToggle.parentElement.querySelector('.slider').style.boxShadow = '', 600);
+  });
+  loadHelpBlocksSetting();
+}
 
-  // --- Onboarding Show/Hide Toggle (DB-persisted) ---
-  const toggleOnboardingBtn = document.getElementById('toggle-onboarding-btn');
-  let onboardingHidden = false;
-
-  async function loadOnboardingSetting() {
-    currentUser = await getActiveUser();
-    if (!currentUser) return;
-    onboardingHidden = !!currentUser.onboarded;
-    updateOnboardingToggleUI();
-  }
-  async function saveOnboardingSetting(val) {
-    currentUser = await getActiveUser();
-    if (!currentUser) return;
+// === ONBOARDING SLIDER ===
+const onboardingToggle = document.getElementById('toggle-onboarding-slider');
+async function loadOnboardingSetting() {
+  let user = await getActiveUser();
+  if (!user) return;
+  // If onboarded is TRUE, user wants onboarding HIDDEN, so switch OFF
+  onboardingToggle.checked = !(user.onboarded === true); // checked = SHOW
+}
+if (onboardingToggle) {
+  onboardingToggle.addEventListener('change', async () => {
+    let user = await getActiveUser();
+    if (!user) return;
+    // "onboarded" true means hide, so set to REVERSE of checked
+    const onboarded = !onboardingToggle.checked;
     await supabase
       .from('users_extended_data')
-      .update({ onboarded: val })
-      .eq('user_id', currentUser.user_id);
-  }
-  function updateOnboardingToggleUI() {
-    if (toggleOnboardingBtn)
-      toggleOnboardingBtn.innerText = onboardingHidden ? 'Show Guided Onboarding' : 'Hide Guided Onboarding';
-  }
-  if (toggleOnboardingBtn) {
-    toggleOnboardingBtn.addEventListener('click', async () => {
-      onboardingHidden = !onboardingHidden;
-      updateOnboardingToggleUI();
-      await saveOnboardingSetting(onboardingHidden);
-    });
-  }
-  await loadOnboardingSetting();
+      .update({ onboarded })
+      .eq('user_id', user.user_id);
+    onboardingToggle.parentElement.querySelector('.slider').style.boxShadow = '0 0 0 2px #36a2eb';
+    setTimeout(() => onboardingToggle.parentElement.querySelector('.slider').style.boxShadow = '', 600);
+  });
+  loadOnboardingSetting();
+}
 
   // --- Modal Open/Close helpers ---
   function openModal(id) {
@@ -319,6 +312,82 @@ const refUrl = `${window.location.origin}${folder}signup.html?ref=${encodeURICom
     document.execCommand('copy');
     if (copiedMsg) copiedMsg.style.display = 'block';
   };
+
+ // --- Referral Medal Logic: Query count, percentile, and display badge ---
+(async function showReferralMedal() {
+  const medalDiv = document.getElementById('referral-medal-info');
+  if (medalDiv) medalDiv.innerHTML = 'Loading medal...';
+
+  // 1. Fetch all relevant referral reward rows (exclude self-refer and nulls)
+  let { data: allRewards, error: allErr } = await supabase
+    .from('referral_rewards')
+    .select('referrer_id, reward_for')
+    .not('referrer_id', 'is', null);
+
+  if (allErr || !allRewards) {
+    if (medalDiv) medalDiv.innerHTML = '<span style="color:red;">Error loading referral data.</span>';
+    return;
+  }
+
+  // 2. Only count rows where referrer_id != reward_for (ignore self-refer and count only true successful referrals)
+  const filtered = allRewards.filter(r => r.referrer_id && r.reward_for && r.referrer_id !== r.reward_for);
+
+  // 3. Tally successful referrals for every user
+  const referralMap = {};
+  filtered.forEach(row => {
+    referralMap[row.referrer_id] = (referralMap[row.referrer_id] || 0) + 1;
+  });
+
+  // 4. This user's count
+  const myCount = referralMap[user.user_id] || 0;
+
+  // 5. Calculate percentile
+const allCounts = Object.values(referralMap);
+allCounts.sort((a, b) => a - b);
+
+let myPercentile = 0;
+if (allCounts.length > 0 && myCount > 0) {
+  const lessThan = allCounts.filter(c => c < myCount).length;
+  myPercentile = lessThan / allCounts.length;
+}
+// Award Gold if you are the only referrer
+if (allCounts.length === 1 && myCount > 0) {
+  myPercentile = 1;
+}
+
+
+  // 6. Assign medal by percentile
+  let medal = '', medalHtml = '';
+  if (myPercentile >= 0.9) {
+    medal = 'Gold';
+    medalHtml = `<span style="color:#FFD700;font-size:1.23em;">🥇 Gold Referrer</span>`;
+  } else if (myPercentile >= 0.7) {
+    medal = 'Silver';
+    medalHtml = `<span style="color:#C0C0C0;font-size:1.23em;">🥈 Silver Referrer</span>`;
+  } else if (myPercentile >= 0.5) {
+    medal = 'Bronze';
+    medalHtml = `<span style="color:#CD7F32;font-size:1.23em;">🥉 Bronze Referrer</span>`;
+  }
+
+  // 7. Output in modal (with styling)
+  if (medalDiv) {
+    medalDiv.innerHTML = `
+      <div style="margin-top:13px;font-size:1.13em;color:black;">
+        <b>Your Successful Referrals:</b> <span style="color:#36a2eb;font-weight:600;">${myCount}</span>
+        <br>
+        ${
+          medal 
+          ? `<span style="margin-top:5px;display:inline-block;">${medalHtml}</span>`
+          : `<span style="color:#999;">Refer more people to receive a medal!</span>`
+        }
+      </div>
+      <div style="font-size:0.97em;color:#bbb;margin-top:5px;">
+        (Gold = Top 10%, Silver = Top 30%, Bronze = Top 50% of referrers)
+      </div>
+    `;
+  }
+})();
+
 });
 // --- Subscription & Free Month Rewards Modal Logic ---
 document.getElementById('show-subscription-modal-btn')?.addEventListener('click', async () => {
@@ -851,4 +920,42 @@ document.getElementById('referral-link-modal')?.addEventListener('mousedown', (e
       }
     });
   });
+  // === EMAIL ALERTS SLIDER ===
+const emailAlertToggle = document.getElementById('email-alert-toggle');
+
+async function loadEmailAlertSetting() {
+  let currentUser = await getActiveUser();
+  if (!currentUser || !currentUser.user_id) return;
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('alert_email')
+    .eq('user_id', currentUser.user_id)
+    .single();
+  if (!error && data && typeof data.alert_email === "boolean") {
+    emailAlertToggle.checked = data.alert_email;
+  } else {
+    emailAlertToggle.checked = true;
+  }
+}
+
+if (emailAlertToggle) {
+  emailAlertToggle.addEventListener('change', async () => {
+    let currentUser = await getActiveUser();
+    if (!currentUser || !currentUser.user_id) return;
+    const checked = emailAlertToggle.checked;
+    const { error } = await supabase
+      .from('users_extended_data')
+      .update({ alert_email: checked })
+      .eq('user_id', currentUser.user_id);
+    if (!error) {
+      emailAlertToggle.parentElement.querySelector('.slider').style.boxShadow = '0 0 0 2px #36a2eb';
+      setTimeout(() => emailAlertToggle.parentElement.querySelector('.slider').style.boxShadow = '', 600);
+    } else {
+      alert("Failed to update Email Alerts. Please try again.");
+      emailAlertToggle.checked = !checked; // revert
+    }
+  });
+  loadEmailAlertSetting();
+}
+
 });
