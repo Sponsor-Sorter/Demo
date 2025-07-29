@@ -524,20 +524,13 @@ window.deleteApplicant = async function(appId, btn) {
   }
 };
 
+// Update in renderSponsorPublicOffers()
 export async function renderSponsorPublicOffers(containerId = "offers-container") {
   const sponsor = await getActiveSponsor();
   if (!sponsor) return;
-  const page = window.sponsorOfferPage;
-  const pageSize = 10;
+  const pageSize = 5;
   const filter = window.sponsorOfferStatusFilter;
-  let query = supabase
-    .from('public_offers')
-    .select('*')
-    .eq('sponsor_id', sponsor.user_id)
-    .order('creation_date', { ascending: false })
-    .range((page-1)*pageSize, page*pageSize-1);
-  if (filter) query = query.eq('status', filter);
-  const { data: offers, error } = await query;
+  // Calculate totalCount for correct pagination
   let totalCount = 0;
   if (!filter) {
     const { count } = await supabase
@@ -553,26 +546,52 @@ export async function renderSponsorPublicOffers(containerId = "offers-container"
       .eq('status', filter);
     totalCount = count || 0;
   }
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize)); // Always at least 1 page
+  let page = window.sponsorOfferPage;
+  if (!page || isNaN(page)) page = 1;
+  page = Math.max(1, Math.min(page, totalPages));
+  window.sponsorOfferPage = page; // Sync
+
+  let query = supabase
+    .from('public_offers')
+    .select('*')
+    .eq('sponsor_id', sponsor.user_id)
+    .order('creation_date', { ascending: false })
+    .range((page - 1) * pageSize, page * pageSize - 1);
+  if (filter) query = query.eq('status', filter);
+  const { data: offers, error } = await query;
+
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   if (error || !offers || !offers.length) {
     container.innerHTML = `<div style="padding:18px 8px;">No public offers found.</div>`;
-    return;
+  } else {
+    for (const offer of offers) {
+      container.appendChild(await renderSponsorOfferCard(offer));
+    }
   }
-  for (const offer of offers) {
-    container.appendChild(await renderSponsorOfferCard(offer));
-  }
+
+  // Pagination controls and label
   const prevBtn = document.getElementById("sponsor-offer-prev-page");
   const nextBtn = document.getElementById("sponsor-offer-next-page");
   const pageLabel = document.getElementById("sponsor-offer-pagination-label");
-  if (pageLabel) pageLabel.textContent = `Page ${page}`;
+  const totalLabel = document.getElementById("public-offer-total-label");
+
+  if (pageLabel) pageLabel.textContent = `Page ${page} / ${totalPages}`;
+  if (totalLabel) {
+    totalLabel.textContent = `Total Public Offers: ${totalCount}`;
+    totalLabel.style.display = 'inline';
+  }
   if (prevBtn) prevBtn.disabled = page === 1;
-  if (nextBtn) nextBtn.disabled = (page * pageSize >= totalCount);
+  if (nextBtn) nextBtn.disabled = (page >= totalPages);
 }
+
+
 
 export async function renderSponseePublicOffers(containerId = "sponsee-public-offers-container") {
   const page = window.sponseePublicOfferPage;
-  const pageSize = 10;
+  const pageSize = 5;
   const filter = window.sponseePublicOfferStatusFilter;
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -590,6 +609,8 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
     .range((page-1)*pageSize, page*pageSize-1);
   if (filter) query = query.eq("status", filter);
   const { data: apps, error } = await query;
+
+  // Get total count for pagination
   let totalCount = 0;
   if (!filter) {
     const { count } = await supabase
@@ -605,12 +626,17 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
       .eq("status", filter);
     totalCount = count || 0;
   }
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize)); // Always at least 1 page
   const prevBtn = document.getElementById("public-offer-prev-page");
   const nextBtn = document.getElementById("public-offer-next-page");
   const pageLabel = document.getElementById("public-offer-pagination-label");
-  if (pageLabel) pageLabel.textContent = `Page ${page}`;
+  const totalLabel = document.getElementById("public-offer-total-label");
+  if (pageLabel) pageLabel.textContent = `Page ${page} / ${totalPages}`;
+  if (totalLabel) totalLabel.textContent = `Total Public Offers: ${totalCount}`;
   if (prevBtn) prevBtn.disabled = page === 1;
-  if (nextBtn) nextBtn.disabled = (page * pageSize >= totalCount);
+  if (nextBtn) nextBtn.disabled = (page >= totalPages);
+
   if (error || !apps || !apps.length) {
     container.innerHTML = "<p>No public offers found for this page/filter.</p>";
     return;
@@ -619,113 +645,119 @@ export async function renderSponseePublicOffers(containerId = "sponsee-public-of
   for (const app of apps) {
     const offer = app.public_offers;
     if (!offer) continue;
-    let sponsorLogo = "logos.png";
-    try {
-      const { data: sponsor } = await supabase
-        .from("users_extended_data")
-        .select("profile_pic")
-        .eq("username", offer.sponsor_username)
-        .single();
-      if (sponsor && sponsor.profile_pic)
-        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
-    } catch {}
-    const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(offer.platforms)}</div>`;
-    const detailsId = `details-${app.id}`;
-    const imagesId = `images-${app.id}`;
-    let constraintsHtml = '';
-    if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
-    const div = document.createElement("div");
-    div.className = "public-offer-card";
-    div.style.background = "#232323";
-    div.style.borderRadius = "14px";
-    div.style.padding = "18px 20px 16px 20px";
-    div.style.margin = "24px 0 0 0";
-    div.style.maxWidth = "730px";
-    div.style.marginLeft = "auto";
-    div.style.marginRight = "auto";
-    div.style.boxShadow = "0 2px 10px #0006";
-    div.style.border = "1.2px solid #26263a";
-    div.style.overflowWrap = "anywhere";
-    div.innerHTML = `
-      <div style="display:flex;align-items:flex-start;gap:24px;">
-        <div style="flex-shrink:0;text-align:center;">
-          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
-          <div style="margin-top:7px;font-size:0.99em;">
-            <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
-            <div style="margin-bottom:3px;"><strong>At:</strong> ${offer.sponsor_company || '-'}</div>
-            <button class="view-profile-btn" style="margin-top:7px;background:#4061b3;color:#fff;padding:4px 15px;border-radius:7px;border:none;cursor:pointer;">View Profile</button>
-            
-          </div>
-          ${platformsRow}
-        </div>
-        <div style="flex:1; min-width:0;">
-          <span style="font-size:1.18em;font-weight:700;">Offer: ${offer.offer_title}</span>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
-            <div><strong>Status:</strong> ${app.status || "pending"}</div>
-            <div><strong>Amount:</strong> $${offer.offer_amount}</div>
-            <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-            <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
-            <div><strong>Payment Schedule:</strong> ${offer.payment_schedule || '-'}</div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-            <div><strong>Audience Country:</strong> ${offer.audience_country || '-'}</div>
-            <div><strong>Duration:</strong> ${offer.sponsorship_duration || '-'}</div>
-          </div>
-          ${constraintsHtml ? `<div style="font-size:0.96em;margin-bottom:5px;">${constraintsHtml}</div>` : ''}
-          <div style="margin:9px 0 0 0; display:flex; gap:10px;">
-            <button class="view-details-btn" style="background:#4061b3;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-detailsid="${detailsId}">View Details</button>
-            <button class="view-images-btn" style="background:#684ad1;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-imagesid="${imagesId}">View Images</button>
-            <button class="withdraw-btn" style="background:#c90b3e;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" ${app.status==="withdrawn"?"disabled":""}>
-              ${app.status==="withdrawn"?"Withdrawn":"Withdraw"}
-            </button>
-          </div>
-          <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
-            <strong>Description:</strong> ${offer.offer_description || ''}<br>
-            <strong>Instructions:</strong> ${offer.instructions || ''}<br>
-            <strong>Payment Schedule:</strong> ${offer.payment_schedule || ''}<br>
-            <strong>Duration:</strong> ${offer.sponsorship_duration || ''}<br>
-            <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
-          </div>
-          <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
-            ${(offer.offer_images && offer.offer_images.length)
-              ? offer.offer_images.map(img =>
-                `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`
-              ).join('')
-              : '<i>No offer images.</i>'
-            }
-          </div>
-        </div>
-      </div>
-    `;
-    div.querySelector('.view-profile-btn').onclick = () => {
-      window.location.href = `viewprofiles.html?username=${encodeURIComponent(offer.sponsor_username)}`;
-    };
-    div.querySelector('.view-details-btn').onclick = () => {
-      const details = div.querySelector(`#${detailsId}`);
-      details.style.display = details.style.display === 'block' ? 'none' : 'block';
-    };
-    div.querySelector('.view-images-btn').onclick = () => {
-      const images = div.querySelector(`#${imagesId}`);
-      images.style.display = images.style.display === 'block' ? 'none' : 'block';
-    };
-    div.querySelector('.withdraw-btn').onclick = async () => {
-      if (app.status === "withdrawn") return;
-      if (!confirm("Are you sure you want to withdraw your application?")) return;
-      const { error } = await supabase
-        .from("public_offer_applications")
-        .update({ status: "withdrawn" })
-        .eq("id", app.id);
-      if (!error) {
-        renderSponseePublicOffers(containerId);
-      } else {
-        alert("Error withdrawing: " + error.message);
-      }
-    };
-    container.appendChild(div);
+    // This renders the correct application card (NOT sponsor card!)
+    container.appendChild(await renderSponseePublicOfferAppCard(app, offer));
   }
 }
+
+// Helper for sponsee side
+async function renderSponseePublicOfferAppCard(app, offer) {
+  let sponsorLogo = "logos.png";
+  try {
+    const { data: sponsor } = await supabase
+      .from("users_extended_data")
+      .select("profile_pic")
+      .eq("username", offer.sponsor_username)
+      .single();
+    if (sponsor && sponsor.profile_pic)
+      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
+  } catch {}
+  const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(offer.platforms)}</div>`;
+  const detailsId = `details-${app.id}`;
+  const imagesId = `images-${app.id}`;
+  let constraintsHtml = '';
+  if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+  const div = document.createElement("div");
+  div.className = "public-offer-card";
+  div.style.background = "#232323";
+  div.style.borderRadius = "14px";
+  div.style.padding = "18px 20px 16px 20px";
+  div.style.margin = "24px 0 0 0";
+  div.style.maxWidth = "730px";
+  div.style.marginLeft = "auto";
+  div.style.marginRight = "auto";
+  div.style.boxShadow = "0 2px 10px #0006";
+  div.style.border = "1.2px solid #26263a";
+  div.style.overflowWrap = "anywhere";
+  div.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:24px;">
+      <div style="flex-shrink:0;text-align:center;">
+        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
+        <div style="margin-top:7px;font-size:0.99em;">
+          <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
+          <div style="margin-bottom:3px;"><strong>At:</strong> ${offer.sponsor_company || '-'}</div>
+          <button class="view-profile-btn" style="margin-top:7px;background:#4061b3;color:#fff;padding:4px 15px;border-radius:7px;border:none;cursor:pointer;">View Profile</button>
+        </div>
+        ${platformsRow}
+      </div>
+      <div style="flex:1; min-width:0;">
+        <span style="font-size:1.18em;font-weight:700;">Offer: ${offer.offer_title}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
+          <div><strong>Status:</strong> ${app.status || "pending"}</div>
+          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+          <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
+          <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
+          <div><strong>Payment Schedule:</strong> ${offer.payment_schedule || '-'}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
+          <div><strong>Audience Country:</strong> ${offer.audience_country || '-'}</div>
+          <div><strong>Duration:</strong> ${offer.sponsorship_duration || '-'}</div>
+        </div>
+        ${constraintsHtml ? `<div style="font-size:0.96em;margin-bottom:5px;">${constraintsHtml}</div>` : ''}
+        <div style="margin:9px 0 0 0; display:flex; gap:10px;">
+          <button class="view-details-btn" style="background:#4061b3;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-detailsid="${detailsId}">View Details</button>
+          <button class="view-images-btn" style="background:#684ad1;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" data-imagesid="${imagesId}">View Images</button>
+          <button class="withdraw-btn" style="background:#c90b3e;color:#fff;padding:7px 0;border-radius:7px;border:none;cursor:pointer;flex:1 1 0;" ${app.status==="withdrawn"?"disabled":""}>
+            ${app.status==="withdrawn"?"Withdrawn":"Withdraw"}
+          </button>
+        </div>
+        <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
+          <strong>Description:</strong> ${offer.offer_description || ''}<br>
+          <strong>Instructions:</strong> ${offer.instructions || ''}<br>
+          <strong>Payment Schedule:</strong> ${offer.payment_schedule || ''}<br>
+          <strong>Duration:</strong> ${offer.sponsorship_duration || ''}<br>
+          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+        </div>
+        <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
+          ${(offer.offer_images && offer.offer_images.length)
+            ? offer.offer_images.map(img =>
+              `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`
+            ).join('')
+            : '<i>No offer images.</i>'
+          }
+        </div>
+      </div>
+    </div>
+  `;
+  div.querySelector('.view-profile-btn').onclick = () => {
+    window.location.href = `viewprofiles.html?username=${encodeURIComponent(offer.sponsor_username)}`;
+  };
+  div.querySelector('.view-details-btn').onclick = () => {
+    const details = div.querySelector(`#${detailsId}`);
+    details.style.display = details.style.display === 'block' ? 'none' : 'block';
+  };
+  div.querySelector('.view-images-btn').onclick = () => {
+    const images = div.querySelector(`#${imagesId}`);
+    images.style.display = images.style.display === 'block' ? 'none' : 'block';
+  };
+  div.querySelector('.withdraw-btn').onclick = async () => {
+    if (app.status === "withdrawn") return;
+    if (!confirm("Are you sure you want to withdraw your application?")) return;
+    const { error } = await supabase
+      .from("public_offer_applications")
+      .update({ status: "withdrawn" })
+      .eq("id", app.id);
+    if (!error) {
+      renderSponseePublicOffers();
+    } else {
+      alert("Error withdrawing: " + error.message);
+    }
+  };
+  return div;
+}
+
 
 if (typeof window !== "undefined") {
   window.addEventListener('DOMContentLoaded', () => {
