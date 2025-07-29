@@ -6,11 +6,15 @@ import {
   notifyOfferUpdate,
   notifyPayout
 } from './alerts.js';
-import './userReports.js'; // For global report modal logic
+import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
-let allSponseeOffers = []; // Stores all loaded offers
+let allSponseeOffers = [];
+let currentPage = 1;
+const offersPerPage = 5;
+let currentFilter = "all";
 
+// Helper for social platform icons
 function renderPlatformBadges(platforms) {
   if (!platforms) return '';
   if (typeof platforms === 'string') {
@@ -37,13 +41,13 @@ function renderPlatformBadges(platforms) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Auth and user/session fetch
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session || !session.user) {
     alert("You must be logged in to view this page.");
     window.location.href = '/login.html';
     return;
   }
-
   const sponsee_email = session.user.email;
   const sponsee_id = session.user.id;
 
@@ -59,9 +63,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     sponsee_username = session.user.user_metadata.username || 'Unknown';
   }
 
+  // 2. DOM nodes
   const listingContainer = document.getElementById('listing-container');
   const offerTabs = document.getElementById('offer-tabs');
+  const paginationLabel = document.getElementById('pagination-label');
+  const prevPageBtn = document.getElementById('prev-page');
+  const nextPageBtn = document.getElementById('next-page');
+  const totalLabel = document.getElementById('sponsee-offer-total-label');
 
+  // 3. Tab Buttons (with default ALL tab active)
   offerTabs.innerHTML = `
     <button data-filter="all" class="tab-btn active">All</button>
     <button data-filter="pending" class="tab-btn">Pending</button>
@@ -73,13 +83,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     <button data-filter="other" class="tab-btn">Other</button>
   `;
 
+  // --- Events for TABS
   offerTabs.addEventListener('click', (e) => {
     if (!e.target.classList.contains('tab-btn')) return;
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     e.target.classList.add('active');
-    renderSponseeOffersByFilter(e.target.dataset.filter);
+    currentPage = 1;
+    currentFilter = e.target.dataset.filter;
+    renderSponseeOffersByFilter();
   });
 
+  // --- Pagination
+  prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderSponseeOffersByFilter();
+    }
+  });
+  nextPageBtn.addEventListener('click', () => {
+    if (currentPage < window._totalPages) {
+      currentPage++;
+      renderSponseeOffersByFilter();
+    }
+  });
+
+  // 4. LOAD offers and always render "All" tab on page load
   async function loadSponseeOffers() {
     listingContainer.innerHTML = '<p>Loading sponsorship offers...</p>';
     const { data: offers, error } = await supabase
@@ -92,52 +120,102 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     allSponseeOffers = (offers || []);
-    if (allSponseeOffers.length === 0) {
-      listingContainer.innerHTML = '<p>No sponsorship offers yet.</p>';
-      return;
-    }
-    renderSponseeOffersByFilter(document.querySelector('.tab-btn.active')?.dataset.filter || "all");
+    currentPage = 1;
+    currentFilter = "all";
+    // Set All tab active
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.tab-btn[data-filter="all"]')?.classList.add('active');
+    renderSponseeOffersByFilter();
   }
 
-  const knownStatus = [
-    'pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled', 'review-completed', 'review_completed'
-  ];
-  const knownStage = [1, 2, 3, 4, 5];
+  // 5. Main render (by filter + page)
+  async function renderSponseeOffersByFilter() {
+  listingContainer.innerHTML = '';
+  // FILTER OUT ARCHIVED OFFERS GLOBALLY!
+  let nonArchivedOffers = allSponseeOffers.filter(offer => !offer.archived);
+  let filteredOffers = [];
+  // ... your tab filtering logic, but using nonArchivedOffers instead of allSponseeOffers ...
+  if (currentFilter === 'all') filteredOffers = nonArchivedOffers;
+  else if (currentFilter === 'pending') filteredOffers = nonArchivedOffers.filter(offer => offer.status === 'pending');
+  else if (currentFilter === 'accepted') filteredOffers = nonArchivedOffers.filter(offer => offer.status === 'accepted');
+  else if (currentFilter === 'stage-3') filteredOffers = nonArchivedOffers.filter(offer => offer.stage === 3);
+  else if (currentFilter === 'stage-4') filteredOffers = nonArchivedOffers.filter(offer => offer.stage === 4);
+  else if (currentFilter === 'stage-5') {
+    filteredOffers = nonArchivedOffers.filter(offer =>
+      (Number(offer.stage) === 5) ||
+      (offer.status && (
+        offer.status === 'completed' ||
+        offer.status === 'review_completed' ||
+        offer.status === 'review-completed'
+      ))
+    );
+  }
+  else if (currentFilter === 'rejected') filteredOffers = nonArchivedOffers.filter(offer =>
+    ['rejected', 'Offer Cancelled'].includes(offer.status)
+  );
+  else if (currentFilter === 'other') filteredOffers = nonArchivedOffers.filter(offer =>
+    !['pending', 'accepted', 'in_progress', 'live', 'completed', 'rejected', 'Offer Cancelled', 'review-completed', 'review_completed'].includes(offer.status) &&
+    ![1,2,3,4,5].includes(offer.stage)
+  );
 
-  async function renderSponseeOffersByFilter(filter) {
-    listingContainer.innerHTML = '';
-    let filteredOffers = [];
-    if (filter === 'all') filteredOffers = allSponseeOffers;
-    else if (filter === 'pending') filteredOffers = allSponseeOffers.filter(offer => offer.status === 'pending');
-    else if (filter === 'accepted') filteredOffers = allSponseeOffers.filter(offer => offer.status === 'accepted');
-    else if (filter === 'stage-3') filteredOffers = allSponseeOffers.filter(offer => offer.stage === 3);
-    else if (filter === 'stage-4') filteredOffers = allSponseeOffers.filter(offer => offer.stage === 4);
-    else if (filter === 'stage-5') filteredOffers = allSponseeOffers.filter(offer => offer.stage === 5);
-    else if (filter === 'rejected') filteredOffers = allSponseeOffers.filter(offer =>
-      ['rejected', 'Offer Cancelled'].includes(offer.status)
-    );
-    else if (filter === 'other') filteredOffers = allSponseeOffers.filter(offer =>
-      !knownStatus.includes(offer.status) && !knownStage.includes(offer.stage)
-    );
-    if (filteredOffers.length === 0) {
-      listingContainer.innerHTML = '<p>No offers found for this filter.</p>';
-      return;
-    }
-    for (const offer of filteredOffers) {
-      if (offer.status === 'review_completed' && offer.stage === 5) {
-        const { data: sponseeReview } = await supabase
-          .from('private_offer_reviews')
-          .select('id')
-          .eq('offer_id', offer.id)
-          .eq('reviewer_id', sponsee_id)
-          .maybeSingle();
-        if (!sponseeReview) {
+    const totalOffers = filteredOffers.length;
+    window._totalPages = Math.max(1, Math.ceil(totalOffers / offersPerPage));
+    if (currentPage > window._totalPages) currentPage = window._totalPages;
+    const start = (currentPage - 1) * offersPerPage;
+    const end = start + offersPerPage;
+    const paginatedOffers = filteredOffers.slice(start, end);
+
+    paginationLabel.textContent = `Page ${totalOffers === 0 ? 0 : currentPage} of ${window._totalPages}`;
+    prevPageBtn.disabled = (currentPage <= 1);
+    nextPageBtn.disabled = (currentPage >= window._totalPages);
+    totalLabel.textContent = `Total Offers: ${totalOffers}`;
+
+    if (paginatedOffers.length === 0) {
+      listingContainer.innerHTML = '<p>No offers found for this filter/page.</p>';
+    } else {
+      for (const offer of paginatedOffers) {
+        if (offer.status === 'review_completed' && offer.stage === 5) {
+          const { data: sponseeReview } = await supabase
+            .from('private_offer_reviews')
+            .select('id')
+            .eq('offer_id', offer.id)
+            .eq('reviewer_id', sponsee_id)
+            .maybeSingle();
+          if (!sponseeReview) {
+            await renderSingleOfferCard(offer, false);
+          }
+        } else {
           await renderSingleOfferCard(offer, false);
         }
-      } else {
-        await renderSingleOfferCard(offer, false);
       }
     }
+  }
+
+  function renderPaginationControls(totalOffers, totalPages) {
+    const controls = document.getElementById('pagination-controls');
+    const totalLabel = document.getElementById('sponsee-offer-total-label');
+    if (!controls || !totalLabel) return;
+
+    controls.innerHTML = `
+      <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>&laquo; Prev</button>
+      <span id="page-info" style="margin:0 10px;">Page ${totalOffers === 0 ? 0 : currentPage} of ${totalPages}</span>
+      <button id="next-page" ${currentPage === totalPages || totalOffers === 0 ? 'disabled' : ''}>Next &raquo;</button>
+    `;
+    totalLabel.textContent = `Total Offers: ${totalOffers}`;
+
+    // Remove all previous listeners by replacing element, but we'll just set up new listeners each time:
+    controls.querySelector('#prev-page')?.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderSponseeOffersByFilter(document.querySelector('.tab-btn.active')?.dataset.filter || "all");
+      }
+    });
+    controls.querySelector('#next-page')?.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderSponseeOffersByFilter(document.querySelector('.tab-btn.active')?.dataset.filter || "all");
+      }
+    });
   }
 
   async function getSponsorId(username) {
@@ -308,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button class="offer-Comments">Comments</button>
           <button class="offer-img">Offer Images</button>
           <button class="expand-btn">View Details</button>
-          <button class="data-summary-btn">Data Summary</button>
+          ${offer.stage === 4 ? '<button class="data-summary-btn">Data Summary</button>' : ''}
           <div class="details-section" style="display:none;">
             <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
             <div class="job-deliverable-row">
@@ -431,92 +509,92 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-   if (e.target.classList.contains('data-summary-btn')) {
-  if (!dataSummarySection) return;
-  const isVisible = dataSummarySection.style.display === 'block';
-  if (!isVisible) {
-    hideAllSections(); // Only hide others if opening!
-    dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
-    dataSummarySection.style.display = 'block';
+    if (e.target.classList.contains('data-summary-btn')) {
+      if (!dataSummarySection) return;
+      const isVisible = dataSummarySection.style.display === 'block';
+      if (!isVisible) {
+        hideAllSections(); // Only hide others if opening!
+        dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
+        dataSummarySection.style.display = 'block';
 
-    // Fetch and render stats
-    const liveUrl = offerCard.querySelector('.offer-left a')?.href || '';
-    if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
-      dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
-      return;
-    }
-    let videoId = extractYouTubeVideoId(liveUrl);
-    if (!videoId) {
-      dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
-      return;
-    }
-    const { data: { session } } = await supabase.auth.getSession();
-    const jwt = session?.access_token;
-    try {
-      const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videoId })
-      });
-      const stats = await resp.json();
-      if (stats && stats.success) {
-        // Thumbnail and duration
-        const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
-        const duration = stats.video.contentDetails?.duration
-          ? parseISO8601Duration(stats.video.contentDetails.duration)
-          : '';
+        // Fetch and render stats
+        const liveUrl = offerCard.querySelector('.offer-left a')?.href || '';
+        if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
+          return;
+        }
+        let videoId = extractYouTubeVideoId(liveUrl);
+        if (!videoId) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
+          return;
+        }
+        const { data: { session } } = await supabase.auth.getSession();
+        const jwt = session?.access_token;
+        try {
+          const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ videoId })
+          });
+          const stats = await resp.json();
+          if (stats && stats.success) {
+            // Thumbnail and duration
+            const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
+            const duration = stats.video.contentDetails?.duration
+              ? parseISO8601Duration(stats.video.contentDetails.duration)
+              : '';
 
-        dataSummarySection.innerHTML = `
-  <div style="
-    background: none;
-    border-radius: 15px;
-    box-shadow: none;
-    padding: 26px 30px;
-    margin: 0 auto;
-    max-width: 520px;
-    color: #f6f6f6;
-    font-size: 1.09em;
-    text-align: left;
-    ">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-      <img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-      <div>
-        <b style="color:#ffe75b;font-size:1.17em;">
-          <span style="font-size:1.3em;vertical-align:-3px;">🎥</span>
-          ${stats.video.snippet.title}
-        </b>
-        ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Video duration ⏱ ${duration}</div>` : ''}
-      </div>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
-      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
-      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
-      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
-    </div>
-    <div style="margin-top:12px;">
-      <b>📝 Description:</b>
-      <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
-        ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
-      </div>
-    </div>
-    <div style="margin-top:10px;text-align:right;">
-      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
-    </div>
-  </div>
-`;
+            dataSummarySection.innerHTML = `
+              <div style="
+                background: none;
+                border-radius: 15px;
+                box-shadow: none;
+                padding: 26px 30px;
+                margin: 0 auto;
+                max-width: 520px;
+                color: #f6f6f6;
+                font-size: 1.09em;
+                text-align: left;
+                ">
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                  <img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                  <div>
+                    <b style="color:#ffe75b;font-size:1.17em;">
+                      <span style="font-size:1.3em;vertical-align:-3px;">🎥</span>
+                      ${stats.video.snippet.title}
+                    </b>
+                    ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Video duration ⏱ ${duration}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                  <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
+                  <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
+                  <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
+                  <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
+                </div>
+                <div style="margin-top:12px;">
+                  <b>📝 Description:</b>
+                  <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
+                    ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
+                  </div>
+                </div>
+                <div style="margin-top:10px;text-align:right;">
+                  <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+                </div>
+              </div>
+            `;
+          } else {
+            dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch video stats.</span>";
+          }
+        } catch (err) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+        }
       } else {
-        dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch video stats.</span>";
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
       }
-    } catch (err) {
-      dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+      return;
     }
-  } else {
-    dataSummarySection.style.display = 'none';
-    dataSummarySection.innerHTML = '';
-  }
-  return;
-}
 
     if (e.target.classList.contains('submit-comment')) {
       const textarea = commentsSection.querySelector('.comment-input');
