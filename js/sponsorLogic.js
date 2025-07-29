@@ -1,4 +1,4 @@
-// sponsorLogic.js
+// public/js/sponsorLogic.js
 import { supabase } from './supabaseClient.js';
 
 // ----- REMOVE OFFER (with comments) -----
@@ -7,27 +7,19 @@ export async function handleRemoveOffer(offerId) {
     alert("Invalid offer ID.");
     return;
   }
-
   const confirmed = window.confirm("Are you sure you want to permanently delete this offer and all related comments?");
   if (!confirmed) return;
-
   try {
     const { error: commentDeleteError } = await supabase
       .from('private_offer_comments')
       .delete()
       .eq('offer_id', offerId);
-    if (commentDeleteError) {
-      throw new Error(`Failed to delete comments: ${commentDeleteError.message}`);
-    }
-
+    if (commentDeleteError) throw new Error(`Failed to delete comments: ${commentDeleteError.message}`);
     const { error: offerDeleteError } = await supabase
       .from('private_offers')
       .delete()
       .eq('id', offerId);
-    if (offerDeleteError) {
-      throw new Error(`Failed to delete offer: ${offerDeleteError.message}`);
-    }
-
+    if (offerDeleteError) throw new Error(`Failed to delete offer: ${offerDeleteError.message}`);
     alert("Offer and related comments deleted successfully.");
     return true;
   } catch (err) {
@@ -48,41 +40,41 @@ function renderStars(rating) {
 
 // ----- CATEGORY STAR RATINGS (Profile, SPONSOR SIDE) -----
 async function updateSponsorCategoryStars(category, elementId) {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return;
-    const sponsorEmail = session.user.email;
-  
-    const { data: offers } = await supabase
-      .from('private_offers')
-      .select('id')
-      .eq('sponsor_email', sponsorEmail);
-  
-    if (!offers || offers.length === 0) {
-      const starsEl = document.getElementById(elementId);
-      if (starsEl) starsEl.innerHTML = renderStars(0);
-      return;
-    }
-    const offerIds = offers.map(o => o.id);
-  
-    let allCategoryRatings = [];
-    for (let i = 0; i < offerIds.length; i += 100) {
-      const batchIds = offerIds.slice(i, i + 100);
-      const { data: reviews } = await supabase
-        .from('private_offer_reviews')
-        .select(category)
-        .in('offer_id', batchIds)
-        .eq('reviewer_role', 'sponsee');
-      if (reviews) allCategoryRatings = allCategoryRatings.concat(reviews);
-    }
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) return;
+  const sponsorEmail = session.user.email;
+
+  const { data: offers } = await supabase
+    .from('private_offers')
+    .select('id')
+    .eq('sponsor_email', sponsorEmail);
+
+  if (!offers || offers.length === 0) {
     const starsEl = document.getElementById(elementId);
-    if (!allCategoryRatings.length) {
-      if (starsEl) starsEl.innerHTML = renderStars(0);
-      return;
-    }
-    const avg = allCategoryRatings.reduce((sum, r) => sum + (r[category] || 0), 0) / allCategoryRatings.length;
-    if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
+    if (starsEl) starsEl.innerHTML = renderStars(0);
+    return;
   }
-  
+  const offerIds = offers.map(o => o.id);
+
+  let allCategoryRatings = [];
+  for (let i = 0; i < offerIds.length; i += 100) {
+    const batchIds = offerIds.slice(i, i + 100);
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select(category)
+      .in('offer_id', batchIds)
+      .eq('reviewer_role', 'sponsee');
+    if (reviews) allCategoryRatings = allCategoryRatings.concat(reviews);
+  }
+  const starsEl = document.getElementById(elementId);
+  if (!allCategoryRatings.length) {
+    if (starsEl) starsEl.innerHTML = renderStars(0);
+    return;
+  }
+  const avg = allCategoryRatings.reduce((sum, r) => sum + (r[category] || 0), 0) / allCategoryRatings.length;
+  if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
+}
+
 let currentWalletAmount = 0; // Actual wallet amount from DB
 let pendingSponsorPayouts = []; // Track all pending sponsor payouts
 
@@ -106,20 +98,15 @@ async function updateSponsorWallet() {
     .eq('sponsee_id', sponsor_id)
     .eq('payout_user_role', 'sponsor')
     .eq('status', 'pending');
-
   pendingSponsorPayouts = payouts || [];
   const pendingAmount = pendingSponsorPayouts.reduce((sum, row) => sum + Number(row.payout_amount || 0), 0);
-
-  // 3. Displayed wallet = actual wallet - pending payouts
   const displayWallet = currentWalletAmount - pendingAmount;
 
-  // 4. Colors and tooltip
   let walletNumColor = (pendingSponsorPayouts.length > 0) ? '#ffae34' : '#17974a';
   let tooltipMsg = pendingSponsorPayouts.length > 0
     ? 'Pending withdrawal – waiting for admin approval'
     : 'Available for withdrawal or another Offer';
 
-  // 5. Warning if negative
   let warningHtml = '';
   if (displayWallet < 0) {
     warningHtml = `<div style="color:#ff5555;font-weight:bold;font-size:.9em;margin-top:6px;">
@@ -127,7 +114,6 @@ async function updateSponsorWallet() {
     </div>`;
   }
 
-  // 6. Render wallet with color ONLY on number, and show warning if needed
   if (!walletError && data && document.querySelector('.wallet')) {
     document.querySelector('.wallet').innerHTML = `
       Wallet: <span style="color:${walletNumColor};font-weight:600;">$${displayWallet.toFixed(2)}</span>
@@ -141,10 +127,6 @@ async function updateSponsorWallet() {
     `;
   }
 }
-
-
-
-
 
 // Withdraw Modal Logic
 document.addEventListener('click', function (e) {
@@ -172,12 +154,10 @@ async function openWithdrawModal() {
     .order('created_at', { ascending: false })
     .limit(10);
 
-  // Compute summary numbers
   const pendingAmount = pendingSponsorPayouts.reduce((sum, row) => sum + Number(row.payout_amount || 0), 0);
   const afterPayoutWallet = currentWalletAmount - pendingAmount;
   const hasPending = pendingSponsorPayouts.length > 0;
 
-  // Show orange "True wallet" only if pending
   let walletHtml = '';
   if (hasPending) {
     walletHtml = `
@@ -186,8 +166,6 @@ async function openWithdrawModal() {
       </div>
     `;
   }
-
-  // Pending payout requests list (if any)
   let pendingHtml = '';
   if (hasPending) {
     pendingHtml = `
@@ -204,8 +182,6 @@ async function openWithdrawModal() {
       </div>
     `;
   }
-
-  // Payout history table (last 10)
   let historyHtml = '';
   if (payoutHistory && payoutHistory.length) {
     historyHtml = `
@@ -239,7 +215,6 @@ async function openWithdrawModal() {
     `;
   }
 
-  // Modal structure
   const modal = document.createElement('div');
   modal.id = 'withdraw-modal-root';
   modal.style = `
@@ -268,7 +243,6 @@ async function openWithdrawModal() {
 `;
 
   document.body.appendChild(modal);
-
   document.getElementById('withdraw-cancel').onclick = () => modal.remove();
 
   document.getElementById('withdraw-confirm').onclick = async () => {
@@ -283,17 +257,14 @@ async function openWithdrawModal() {
       msgDiv.textContent = "Enter a destination (PayPal email or bank).";
       return;
     }
-    // Only allow up to after-payout amount
     if (amt > afterPayoutWallet) {
       msgDiv.textContent = `Unavailable funds. You only have $${afterPayoutWallet.toFixed(2)} available after pending payouts.`;
       return;
     }
-
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session?.user) return;
     const sponsor_id = session.user.id;
     const sponsor_email = session.user.email;
-
     const { error: insertError } = await supabase.from('payouts').insert([{
       sponsee_id: sponsor_id,
       sponsee_email: sponsor_email,
@@ -309,21 +280,15 @@ async function openWithdrawModal() {
       msgDiv.textContent = "Error submitting request. Please try again or contact support.";
       return;
     }
-
     msgDiv.style.color = "#41ff88";
     msgDiv.textContent = "Withdraw request submitted! Admin will process your payout.";
-
-    
     setTimeout(() => document.getElementById('withdraw-modal-root')?.remove(), 2000);
     setTimeout(updateSponsorWallet, 2000);
   };
 }
 
-
-
 // ----- SUMMARY STAT CARDS -----
 async function updateSummaryStats() {
-  // Show loading states while fetching
   document.getElementById('sponsored-deals').textContent = '…';
   document.getElementById('ongoing-campaigns').textContent = '…';
   document.getElementById('total-spend').textContent = '…';
@@ -351,11 +316,10 @@ async function updateSummaryStats() {
     document.getElementById('success-ratio').textContent = '0:0';
     return;
   }
-
   document.getElementById('sponsored-deals').textContent = offers.length ?? 0;
 
   const ongoing = offers.filter(o =>
-    ['accepted', 'in_progress', 'live'].includes(o.status)
+    ['accepted', 'pending', 'in_progress', 'live'].includes(o.status)
   );
   document.getElementById('ongoing-campaigns').textContent = ongoing.length ?? 0;
 
@@ -363,7 +327,6 @@ async function updateSummaryStats() {
   const totalSpend = validSpendOffers.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
   document.getElementById('total-spend').textContent = `$${totalSpend.toFixed(2)}`;
 
-  // ---- LIFETIME SUCCESS RATIO ----
   const successfulOffers = offers.filter(o =>
     ['accepted', 'in_progress', 'live', 'review_completed', 'completed'].includes(o.status)
   ).length;
@@ -376,7 +339,6 @@ async function updateSummaryStats() {
   if (ratioEl) ratioEl.textContent = ratioText;
 }
 
-
 // ----- RECENT (ACTIVE) DEALS TABLE -----
 async function loadRecentDeals() {
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -385,57 +347,92 @@ async function loadRecentDeals() {
     window.location.href = '/login.html';
     return;
   }
-
   const sponsorEmail = session.user.email;
   const { data: offers, error: offerError } = await supabase
     .from('private_offers')
     .select('sponsee_username, status, offer_amount, created_at, live_date, deadline, archived')
     .eq('sponsor_email', sponsorEmail)
-    .eq('archived', false) // Only non-archived deals (active)
+    .eq('archived', false)
     .order('created_at', { ascending: false });
 
   const tableBody = document.getElementById('deals-table-body');
+  if (!tableBody) return;
   tableBody.innerHTML = '';
+
+  // Remove old expand button if it exists
+  const oldBtn = document.getElementById('expand-deals-btn');
+  if (oldBtn) oldBtn.remove();
 
   if (offerError || !offers || offers.length === 0) {
     tableBody.innerHTML = '<tr><td colspan="6">No sponsorship deals found.</td></tr>';
     return;
   }
 
-  for (const offer of offers) {
-    const { data: sponseeData } = await supabase
+  // Fetch all unique sponsee usernames
+  const sponseeUsernames = [...new Set(offers.map(o => o.sponsee_username).filter(Boolean))];
+  let profilePicMap = {};
+  if (sponseeUsernames.length > 0) {
+    const { data: sponseeProfiles } = await supabase
       .from('users_extended_data')
-      .select('profile_pic')
-      .eq('username', offer.sponsee_username)
-      .single();
-
-    let profilePicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
-    if (sponseeData?.profile_pic) {
-      profilePicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponseeData.profile_pic}`;
+      .select('username, profile_pic')
+      .in('username', sponseeUsernames);
+    profilePicMap = {};
+    for (const s of sponseeProfiles || []) {
+      profilePicMap[s.username] = s.profile_pic
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${s.profile_pic}`
+        : 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
     }
-    const statusText = offer.status === 'review_completed' ? 'Reviewed' : offer.status;
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="text-align: center;">
-        <img src="${profilePicUrl}" onerror="this.src='./logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
-        ${offer.sponsee_username}
-      </td>
-      <td style="color: ${
-        offer.status === 'pending' ? 'orange' :
-        offer.status === 'accepted' ? 'green' :
-        offer.status === 'live' ? 'blue' :
-        offer.status === 'review_completed' ? 'purple' :
-        ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
-        'inherit'
-      }">${statusText}</td>
-      <td>$${Number(offer.offer_amount).toFixed(2)}</td>
-      <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
-      <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
-      <td>${offer.live_date ? new Date(offer.live_date + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
-    `;
-    tableBody.appendChild(tr);
   }
+
+  const rows = offers.map(offer => {
+    const profilePicUrl = profilePicMap[offer.sponsee_username] || 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+    const statusText = offer.status === 'review_completed' ? 'Reviewed' : offer.status;
+    return `
+      <tr>
+        <td style="text-align: center;">
+          <img src="${profilePicUrl}" onerror="this.src='/public/logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          ${offer.sponsee_username}
+        </td>
+        <td style="color: ${
+          offer.status === 'pending' ? 'orange' :
+          offer.status === 'accepted' ? 'green' :
+          offer.status === 'live' ? 'blue' :
+          offer.status === 'review_completed' ? 'purple' :
+          ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
+          'inherit'
+        }">${statusText}</td>
+        <td>$${Number(offer.offer_amount).toFixed(2)}</td>
+        <td>${offer.created_at ? new Date(offer.created_at).toLocaleDateString() : '—'}</td>
+        <td>${offer.deadline ? new Date(offer.deadline + 'T00:00:00Z').toLocaleDateString() : '—'}</td>
+        <td>${offer.live_date ? new Date(offer.live_date + 'T00:00:00Z').toLocaleDateString() : 'N/A'}</td>
+      </tr>
+    `;
+  });
+
+  let collapsed = true;
+  function renderTable() {
+    tableBody.innerHTML = '';
+    const visibleRows = collapsed ? rows.slice(0, 10) : rows;
+    visibleRows.forEach(row => tableBody.innerHTML += row);
+    let btn = document.getElementById('expand-deals-btn');
+    if (!btn && rows.length > 10) {
+      btn = document.createElement('button');
+      btn.id = 'expand-deals-btn';
+      btn.style.marginTop = "10px";
+      btn.textContent = "Show More";
+      btn.onclick = () => {
+        collapsed = !collapsed;
+        btn.textContent = collapsed ? "Show More" : "Show Less";
+        renderTable();
+      };
+      tableBody.parentElement.appendChild(btn);
+    } else if (btn && rows.length <= 10) {
+      btn.remove();
+    } else if (btn) {
+      btn.textContent = collapsed ? "Show More" : "Show Less";
+    }
+  }
+  renderTable();
 }
 
 // ----- ARCHIVED/HISTORY TABLE -----
@@ -452,60 +449,63 @@ async function loadArchivedDeals() {
     .order("created_at", { ascending: false });
 
   const archivedTableBody = document.getElementById("archived-table-body");
+  if (!archivedTableBody) return;
   archivedTableBody.innerHTML = "";
+
+  // Remove old expand button if it exists
+  const oldBtn = document.getElementById('expand-archived-btn');
+  if (oldBtn) oldBtn.remove();
 
   if (error) {
     archivedTableBody.innerHTML = `<tr><td colspan="8" style="color:red;">Failed to load archived deals.</td></tr>`;
     return;
   }
-
   if (!offers || offers.length === 0) {
     archivedTableBody.innerHTML = `<tr><td colspan="8">No archived deals yet.</td></tr>`;
     return;
   }
 
-  for (const offer of offers) {
-    // Get sponsee profile pic
-    let profilePicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
-    const { data: sponseeData } = await supabase
+  // Batch profile pic fetch for all unique sponsees
+  const sponseeUsernames = [...new Set(offers.map(o => o.sponsee_username).filter(Boolean))];
+  let profilePicMap = {};
+  if (sponseeUsernames.length > 0) {
+    const { data: sponseeProfiles } = await supabase
       .from('users_extended_data')
-      .select('profile_pic')
-      .eq('username', offer.sponsee_username)
-      .single();
-    if (sponseeData?.profile_pic) {
-      profilePicUrl = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponseeData.profile_pic}`;
+      .select('username, profile_pic')
+      .in('username', sponseeUsernames);
+    profilePicMap = {};
+    for (const s of sponseeProfiles || []) {
+      profilePicMap[s.username] = s.profile_pic
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${s.profile_pic}`
+        : 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
     }
+  }
 
-    // Sponsor's overall rating of sponsee (role: 'sponsor')
-    let sponsorRatingDisplay = "—";
-    const { data: sponsorReview } = await supabase
+  // Batch all reviews in one go for both sponsor and sponsee roles
+  const offerIds = offers.map(o => o.id);
+  let sponsorReviewMap = {}, sponseeReviewMap = {};
+  if (offerIds.length > 0) {
+    const { data: reviews } = await supabase
       .from("private_offer_reviews")
-      .select("overall")
-      .eq("offer_id", offer.id)
-      .eq("reviewer_role", "sponsor")
-      .single();
-    if (sponsorReview && sponsorReview.overall) {
-      sponsorRatingDisplay = renderStars(Math.round(sponsorReview.overall));
+      .select("offer_id, overall, reviewer_role")
+      .in("offer_id", offerIds);
+    for (const review of reviews || []) {
+      if (review.reviewer_role === "sponsor") sponsorReviewMap[review.offer_id] = review.overall;
+      if (review.reviewer_role === "sponsee") sponseeReviewMap[review.offer_id] = review.overall;
     }
+  }
 
-    // Sponsee's overall rating of sponsor (role: 'sponsee')
-    let sponseeRatingDisplay = "—";
-    const { data: sponseeReview } = await supabase
-      .from("private_offer_reviews")
-      .select("overall")
-      .eq("offer_id", offer.id)
-      .eq("reviewer_role", "sponsee")
-      .single();
-    if (sponseeReview && sponseeReview.overall) {
-      sponseeRatingDisplay = renderStars(Math.round(sponseeReview.overall));
-    }
-
+  const rows = offers.map(offer => {
+    const profilePicUrl = profilePicMap[offer.sponsee_username] || 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+    const sponsorRatingDisplay = sponsorReviewMap[offer.id] !== undefined
+      ? renderStars(Math.round(sponsorReviewMap[offer.id])) : "—";
+    const sponseeRatingDisplay = sponseeReviewMap[offer.id] !== undefined
+      ? renderStars(Math.round(sponseeReviewMap[offer.id])) : "—";
     const statusText = offer.status === 'review_completed' ? 'Reviewed' : offer.status;
-
-    archivedTableBody.innerHTML += `
+    return `
       <tr data-offer-id="${offer.id}">
         <td style="text-align: center;">
-          <img src="${profilePicUrl}" onerror="this.src='./logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          <img src="${profilePicUrl}" onerror="this.src='/public/logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
           ${offer.sponsee_username}
         </td>
         <td>$${Number(offer.offer_amount).toFixed(2)}</td>
@@ -516,7 +516,32 @@ async function loadArchivedDeals() {
         <td>${sponseeRatingDisplay}</td>
       </tr>
     `;
+  });
+
+  let collapsed = true;
+  function renderTable() {
+    archivedTableBody.innerHTML = "";
+    const visibleRows = collapsed ? rows.slice(0, 10) : rows;
+    visibleRows.forEach(row => archivedTableBody.innerHTML += row);
+    let btn = document.getElementById('expand-archived-btn');
+    if (!btn && rows.length > 10) {
+      btn = document.createElement('button');
+      btn.id = 'expand-archived-btn';
+      btn.style.marginTop = "10px";
+      btn.textContent = "Show More";
+      btn.onclick = () => {
+        collapsed = !collapsed;
+        btn.textContent = collapsed ? "Show More" : "Show Less";
+        renderTable();
+      };
+      archivedTableBody.parentElement.appendChild(btn);
+    } else if (btn && rows.length <= 10) {
+      btn.remove();
+    } else if (btn) {
+      btn.textContent = collapsed ? "Show More" : "Show Less";
+    }
   }
+  renderTable();
 }
 
 // ----- OVERALL STAR RATING (Profile) -----
@@ -524,7 +549,6 @@ async function updateOverallStars() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) return;
   const sponsorId = session.user.id;
-  // Get all offers where this user was the sponsor
   const { data: offers, error: offerError } = await supabase
     .from('private_offers')
     .select('id')
@@ -534,8 +558,6 @@ async function updateOverallStars() {
     return;
   }
   const offerIds = offers.map(o => o.id);
-
-  // Batched fetch for all sponsee reviews of this sponsor's offers
   let allSponseeReviews = [];
   for (let i = 0; i < offerIds.length; i += 100) {
     const batchIds = offerIds.slice(i, i + 100);
@@ -562,7 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadArchivedDeals();
   updateOverallStars();
   updateSponsorCategoryStars('communication', 'communication-stars');
-updateSponsorCategoryStars('punctuality', 'punctuality-stars');
-updateSponsorCategoryStars('work_output', 'work-output-stars');
-updateSponsorWallet(); 
+  updateSponsorCategoryStars('punctuality', 'punctuality-stars');
+  updateSponsorCategoryStars('work_output', 'work-output-stars');
+  updateSponsorWallet();
 });
