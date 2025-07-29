@@ -10,15 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="./js/sponsorCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKW1Q9PH7Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FKW1Q9PH7Z');
-</script>
 
 
 </head>
@@ -38,35 +29,56 @@
         <nav class="nav">
           <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html">Logout</a></li>
-          <!-- Notification Bell here -->
-          <li id="notification-bell-li" style="display:inline;">
-            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-            </button>
-            
-          </li>
-          <li id="settings-cog-li" style="display:inline;position:relative;">
-  <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-    <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-  </button>
-  <div id="settings-dropdown" class="settings-dropdown">
-    <div class="dropdown-arrow"></div>
-    <ul>
-      <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-      <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-      <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-      <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
-      <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn"  >Show Guided Onboarding</button></li>
+         <li id="settings-notif-bar" style="display:inline;">
+  <div class="icon-bar-bg">
+    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+    </button>
+    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+    </button>
+    <div id="settings-dropdown" class="settings-dropdown">
+      <div class="dropdown-arrow"></div>
+      <ul>
+        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
         <li>
-  <li><button type="button" class="dropdown-item" id="show-referral-link-btn">
-    Show Referral Link
-  </button></li>
-  <li>
-  <button type="button" class="dropdown-item" id="show-subscription-modal-btn">
-    Subscription & Free Month Rewards
-  </button>
+          <span style="font-size:1em;">Guided Onboarding</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-onboarding-slider">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li>
+          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-help-slider">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li>
+          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
+          <label class="switch">
+            <input type="checkbox" id="email-alert-toggle">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li><button type="button" class="dropdown-item" id="show-referral-link-btn">
+          Show Referral Link
+        </button></li>
+        <li>
+          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 50px !important;padding-top: 10px !important;">
+            Subscription & Free Month Rewards
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </li>
+
+
 
 </li>
 
@@ -171,6 +183,15 @@
     <div class="active-listings" id="listing-container">
       <!-- JS will populate sponsorship stages here -->
     </div>
+
+   <div id="pagination-row" style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;width:100%;max-width:720px;margin-left:auto;margin-right:auto;">
+  <div id="pagination-controls" class="pagination-controls"></div>
+  <span id="sponsor-offer-total-label" style="font-weight:500;color:#ccc;"></span>
+</div>
+
+
+
+
     <div class="help-block" style="margin-bottom:8px;">
       <em>
         <strong>Active Listings:</strong>
@@ -185,14 +206,17 @@
   <option value="">All</option>
   <option value="open">Open</option>
   <option value="closed">Closed</option>
+  
   <!-- Add more statuses as needed -->
 </select>
  <div id="offers-container"></div>
+ <div class="pagination-controls">
 <button id="sponsor-offer-prev-page">Previous</button>
-<span id="sponsor-offer-pagination-label">Page 1</span>
+<span id="sponsor-offer-pagination-label">Page 1 / 1</span>
 <button id="sponsor-offer-next-page">Next</button>
-
-    </div>
+<span id="public-offer-total-label" style="margin-left: 15px; font-weight: 500; color: #ccc;"></span>
+ </div>
+</div>
     <div class="help-block" style="margin-bottom:8px; margin-top:12px;">
   <em>
     <strong>Your Public Offers:</strong><br>
@@ -252,7 +276,10 @@
       <tbody id="archived-table-body"></tbody>
     </table>
 <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
-     <div class="help-block" style="margin-bottom:8px;">
+     <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
+  Generate Invoices
+</button>
+<div class="help-block" style="margin-bottom:8px;">
       <em>
         <strong>Sponsorship History:</strong>
         View all your past (archived) sponsorships here. Ratings for both you and your sponsees are displayed, and you can view and reply to reviews for completed campaigns.
@@ -261,24 +288,6 @@
   </fieldset>
   </div>
 
-  <fieldset>
-    <legend>Notification Preferences</legend>
-    <div class="help-block" style="margin-bottom:8px;">
-      <em>
-        <strong>Notification Preferences:</strong>
-        Choose how you want to be notified about new offers, updates, or messages. Enable email or SMS alerts and keep your phone number updated for SMS notifications.
-      </em>
-    </div>
-    <label>
-      <input type="checkbox" id="alert-email" /> Email Alerts
-    </label>
-    <label style="margin-left: 16px;">
-      <input type="checkbox" id="alert-sms" /> SMS Alerts
-      <input type="tel" id="phone-number" placeholder="Mobile number" style="margin-left: 8px;" />
-    </label>
-    <button id="save-alert-prefs">Save</button>
-  </fieldset>
-  
   <fieldset>
     <div class="help-block" style="margin-bottom:8px;">
       <em>
@@ -334,7 +343,7 @@
 
     if (!user) {
       alert("You must be logged in to view this page.");
-      window.location.href = '/Demo/login.html';
+      window.location.href = '/login.html';
       return;
     }
 
@@ -374,29 +383,9 @@
     // Inject badge
     injectUserBadge(user.email, "#profile-badge-slot");
     
-    // Notification Preferences
-    document.getElementById('alert-email').checked = !!user.alert_email;
-    document.getElementById('alert-sms').checked = !!user.alert_sms;
-    document.getElementById('phone-number').value = user.phone_number || '';
   });
 
-  document.getElementById('save-alert-prefs').onclick = async () => {
-    const alert_email = document.getElementById('alert-email').checked;
-    const alert_sms = document.getElementById('alert-sms').checked;
-    const phone_number = document.getElementById('phone-number').value.trim();
-
-    const { getActiveUser } = await import('./js/impersonationHelper.js');
-    const user = await getActiveUser();
-    if (!user) return;
-
-    const { error } = await supabase
-      .from('users_extended_data')
-      .update({ alert_email, alert_sms, phone_number })
-      .eq('user_id', user.user_id);
-
-    if (!error) alert('Preferences saved!');
-    else alert('Error saving preferences.');
-  };
+  
 </script>
 
 <script type="module" src="./js/alerts.js"></script>
@@ -499,6 +488,9 @@ button.report-btn::-webkit-focus-inner {
     <div id="ref-link-copied-msg" style="color:green;font-size:0.97em;margin-top:10px;display:none;">Copied!</div>
     <div style="margin-top:14px;font-size:0.97em;color:#556;">
       Share this link—anyone who signs up with it will earn you a free month!
+      <!-- Place this under your referral link input -->
+<div id="referral-medal-info" style="margin-top:10px;text-align:center;"></div>
+
     </div>
   </div>
 </div>
@@ -557,6 +549,221 @@ button.report-btn::-webkit-focus-inner {
     </div>
   </div>
 </div>
+
+<!-- Invoice Modal -->
+<div id="invoice-modal" class="modal" style="display:none;">
+  <div class="modal-content" >
+    <h3>Completed Offers – Generate Invoices</h3>
+    <div id="invoice-offer-list">Loading...</div>
+    <div class="modal-actions">
+      <button id="close-invoice-modal" class="btn btn-cancel">Close</button>
+    </div>
+  </div>
+</div>
+
+
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+
+// Build a map by id, user_id, and username for total legacy safety!
+function buildUserLookup(users) {
+  const map = {};
+  for (const u of users) {
+    if (u.id) map[u.id] = u;
+    if (u.user_id) map[u.user_id] = u;
+    if (u.username) map[u.username] = u;
+  }
+  return map;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const openBtn = document.getElementById('generate-invoices-btn');
+  const modal = document.getElementById('invoice-modal');
+  const closeBtn = document.getElementById('close-invoice-modal');
+  const listContainer = document.getElementById('invoice-offer-list');
+  if (!openBtn || !modal || !closeBtn || !listContainer) return;
+
+  openBtn.addEventListener('click', async () => {
+    modal.style.display = 'flex';
+    listContainer.innerHTML = 'Loading...';
+
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) {
+      listContainer.innerHTML = 'Not logged in.';
+      return;
+    }
+    const sponsorIds = [user.id];
+    if (user.user_id && user.user_id !== user.id) sponsorIds.push(user.user_id);
+
+    // 1. Get offers
+    let offers = [];
+    try {
+      const { data } = await supabase
+        .from('private_offers')
+        .select('id, offer_title, offer_amount, stage, status, sponsee_id, sponsee_username, sponsor_id, created_at')
+        .in('sponsor_id', sponsorIds)
+        .order('created_at', { ascending: false });
+      offers = data || [];
+    } catch {
+      offers = [];
+    }
+
+    // 2. Filter completed offers
+    const completedOffers = offers.filter(offer =>
+      (
+        Number(offer.stage) === 5 ||
+        ['completed', 'review_completed', 'review-completed'].includes((offer.status || '').toLowerCase())
+      )
+    );
+
+    if (!completedOffers.length) {
+      listContainer.innerHTML = '<p>No completed offers found.</p>';
+      return;
+    }
+
+    // 3. Gather all user ids & usernames needed
+    const allSponseeIds = completedOffers.map(o => o.sponsee_id).filter(Boolean);
+    const allSponseeUsernames = completedOffers.map(o => o.sponsee_username).filter(Boolean);
+    const sponseeIdsSet = new Set(allSponseeIds.concat(allSponseeUsernames));
+
+    // 4. Fetch all user profiles where user_id, id, or username match
+    let users = [];
+    if (sponseeIdsSet.size) {
+      const idsArray = Array.from(sponseeIdsSet);
+
+      // Get by user_id
+      const { data: userIdMatches } = await supabase
+        .from('users_extended_data')
+        .select('id, user_id, username, profile_pic')
+        .in('user_id', idsArray);
+      // Get by id
+      const { data: idMatches } = await supabase
+        .from('users_extended_data')
+        .select('id, user_id, username, profile_pic')
+        .in('id', idsArray);
+      // Get by username
+      const { data: usernameMatches } = await supabase
+        .from('users_extended_data')
+        .select('id, user_id, username, profile_pic')
+        .in('username', allSponseeUsernames);
+
+      users = [
+        ...(userIdMatches || []),
+        ...(idMatches || []),
+        ...(usernameMatches || []),
+      ];
+
+      // Remove duplicates (by id+user_id+username combo)
+      const seen = new Set();
+      users = users.filter(u => {
+        const key = (u.id || '') + '|' + (u.user_id || '') + '|' + (u.username || '');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+    // Build a multi-key lookup map
+    const sponseeMap = buildUserLookup(users);
+
+    // 5. Fetch payout statuses
+    const offerIds = completedOffers.map(o => o.id);
+    let payouts = {};
+    if (offerIds.length) {
+      const { data: payoutRows } = await supabase
+        .from('payouts')
+        .select('offer_id, status')
+        .in('offer_id', offerIds);
+      if (payoutRows) {
+        for (const p of payoutRows) payouts[p.offer_id] = p.status;
+      }
+    }
+
+    // 6. Render invoice table
+    const table = document.createElement('table');
+    table.className = 'invoice-table';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Sponsee</th>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Payout</th>
+          <th style="width:110px;"></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    const tbody = table.querySelector('tbody');
+
+    for (const offer of completedOffers) {
+      // Try id, user_id, then username
+      let sponsee = sponseeMap[offer.sponsee_id] ||
+                    sponseeMap[offer.sponsee_username] ||
+                    {};
+      const sponseeLogo = sponsee.profile_pic
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsee.profile_pic}`
+        : 'logos.png';
+      const sponseeUsername = sponsee.username || offer.sponsee_username || 'Unknown';
+      const payoutStatus = payouts[offer.id] || '—';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="vertical-align:middle;">
+          <img src="${sponseeLogo}" alt="Sponsee Logo" style="width:38px;height:38px;object-fit:cover;border-radius:9px;vertical-align:middle;margin-right:7px;">
+          <span style="display:inline-block;vertical-align:middle;font-weight:600;">${sponseeUsername}</span>
+        </td>
+        <td>${offer.offer_title}</td>
+        <td class="amount">$${offer.offer_amount}</td>
+        <td>${payoutStatus.charAt(0).toUpperCase() + payoutStatus.slice(1)}</td>
+        <td></td>
+      `;
+      const btn = document.createElement('button');
+      btn.textContent = 'Generate Invoice';
+      btn.className = 'btn';
+      btn.onclick = async () => {
+        btn.disabled = true;
+        btn.textContent = 'Generating...';
+        try {
+          const accessToken = (await supabase.auth.getSession()).data.session.access_token;
+          const res = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/generate_invoice_pdf', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({ offer_id: offer.id })
+          });
+          const { url, error } = await res.json();
+          if (url) {
+            window.open(url, '_blank');
+            btn.textContent = 'Done ✅';
+          } else {
+            btn.textContent = 'Error';
+            alert(error || 'Something went wrong.');
+          }
+        } catch (err) {
+          btn.textContent = 'Error';
+          alert('Something went wrong.');
+        }
+        btn.disabled = false;
+      };
+      row.children[4].appendChild(btn);
+      tbody.appendChild(row);
+    }
+
+    listContainer.innerHTML = '';
+    listContainer.appendChild(table);
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+});
+
+</script>
 
 
 
