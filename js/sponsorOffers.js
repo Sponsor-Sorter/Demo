@@ -1,9 +1,9 @@
 // public/js/sponsorOffers.js
-import { supabase } from './js/supabaseClient.js';
-import { handleRemoveOffer } from './js/sponsorLogic.js';
-import { notifyComment, notifyOfferUpdate } from './js/alerts.js';
-import './js/userReports.js';
-import { famBotModerateWithModal } from './js/FamBot.js';
+import { supabase } from './supabaseClient.js';
+import { handleRemoveOffer } from './sponsorLogic.js';
+import { notifyComment, notifyOfferUpdate } from './alerts.js';
+import './userReports.js';
+import { famBotModerateWithModal } from './FamBot.js';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
