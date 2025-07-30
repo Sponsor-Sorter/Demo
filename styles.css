@@ -5563,10 +5563,12 @@ input:checked + .slider:before {
   color: #fff;
   text-align: left;
   letter-spacing: .02em;
+  overflow:visible;
 }
 #invoice-offer-list {
   margin-bottom: 22px;
 }
+
 .invoice-table {
   width: 100%;
   border-collapse: collapse;
@@ -5610,6 +5612,41 @@ input:checked + .slider:before {
   box-shadow: 0 1px 8px 0 #191a1d38;
   transition: background .18s, box-shadow .18s;
 }
+
+#invoice-offer-list {
+  /* Add a fixed height for scroll, fits nicely in your modal! */
+  max-height: 400px;        /* Adjust as needed for modal size */
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 22px;
+  background: #17181b;
+  border-radius: 12px;
+  padding: 0;
+}
+
+/* Make the table header sticky inside the scrollable list */
+.invoice-table thead tr,
+.invoice-table th {
+  position: sticky !important;
+  top: 0;
+  background: #202126 !important;
+  z-index: 2;
+}
+
+/* Prevent modal-content itself from scrolling (only inner list scrolls) */
+.modal-content {
+  overflow: visible !important;
+}
+
+/* Actions pinned to bottom, optional if more than one button */
+.modal-actions {
+  background: #191a1d;
+  position: static;
+  bottom: 0;
+  z-index: 10;
+  padding-bottom: 0;
+}
+
 .btn.btn-secondary { background: #15156a; color: #eee; }
 .btn.btn-cancel { background: #f14444; }
 .btn.btn-cancel:hover { background: #bb2222; }
