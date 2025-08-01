@@ -7,16 +7,6 @@
     <title>Sponsor Sorter – Creators Meet Brands</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKW1Q9PH7Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FKW1Q9PH7Z');
-</script>
-
 </head>
 <body>
     <!-- NAVBAR -->
@@ -67,8 +57,19 @@
 </p>
 
             <div class="cta-main">
-                <a href="signup.html" class="cta-button">Get Started Free</a>
+                <a href="signup.html" class="cta-button">Get Started now</a>
             </div>
+            <br>
+            <button class="cta-button" onclick="window.location.href='guest.html?role=sponsor'" 
+            style="font-size:1.15em;padding:14px 34px;margin:14px 18px 0 0;background:#3100d2;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #c2c2ff;">
+            Try as Sponsor
+            </button>
+
+            <button class="cta-button" onclick="window.location.href='guest.html?role=sponsee'"
+            style="font-size:1.15em;padding:14px 34px;margin:14px 0 0 18px;background:#930edb;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #ffc2e5;">
+            Try as Sponsee
+            </button>
+
             <!-- Trust Badges -->
             <div class="trust-badges" style="display:flex;gap:22px;justify-content:center;align-items:center;margin:22px 0 6px 0;flex-wrap:wrap;">
                 <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
@@ -123,6 +124,7 @@
     <!-- How It Works -->
     <fieldset class="home-cont">
         <div class="section-title">How Sponsor Sorter Works</div>
+        
         <section class="how-it-works">
             <div class="step-card">
                 <h3>1. Join & Set Up Profile</h3>
