@@ -9,16 +9,6 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script type="module" src="auth.js" defer></script>
     <script type="module" src="./js/onboarding.js"></script>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKW1Q9PH7Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FKW1Q9PH7Z');
-</script>
-
 
   <style>
     #recent-offers-list {
@@ -53,34 +43,58 @@
         <nav>
           <li class="navr" id="dashboard-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html">Login</a></li>
-          <li id="notification-bell-li" style="display:inline;">
-            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-            </button>
-          </li>
-          <!-- Settings Cog -->
-          <li id="settings-cog-li" style="display:inline;position:relative;">
-            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-            </button>
-            <div id="settings-dropdown" class="settings-dropdown">
-              <div class="dropdown-arrow"></div>
-              <ul>
-                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn"  >Show Guided Onboarding</button>
-
-              </ul>
-            </div>
-          </li>
-        </nav>
-      </div>
+           <li id="settings-notif-bar" style="display:inline;">
+  <div class="icon-bar-bg">
+    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+    </button>
+    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+    </button>
+    <div id="settings-dropdown" class="settings-dropdown">
+      <div class="dropdown-arrow"></div>
+      <ul>
+        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+        <li>
+          <span style="font-size:1em;">Guided Onboarding</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-onboarding-slider">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li>
+          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-help-slider">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li>
+          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
+          <label class="switch">
+            <input type="checkbox" id="email-alert-toggle">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li><button type="button" class="dropdown-item" id="show-referral-link-btn">
+          Show Referral Link
+        </button></li>
+        <li>
+          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 50px !important;padding-top: 10px !important;">
+            Subscription & Free Month Rewards
+          </button>
+        </li>
+      </ul>
     </div>
+  </div>
+</li>
+   
   </section>
 </header>
+
 
 <fieldset>
   <section class="search-section">
@@ -336,7 +350,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
-    window.location.href = '/login.html';
+    window.location.href = './login.html';
     return;
   }
   window.currentUser = user;
