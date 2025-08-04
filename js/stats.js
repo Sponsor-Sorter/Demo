@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // These must match your Supabase settings:
 const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
@@ -408,3 +408,4 @@ async function loadLeaderboards() {
     document.getElementById('referral-leaders').innerHTML = "<h3 style='color:#f6c62e;'>Referral Leaders</h3><div style='color:#bbb;'>Could not load data.</div>";
   }
 }
+
