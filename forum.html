@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sponsor Sorter Community Forum & Q&A — peer help, feature voting, deal diaries, and more." />
+  <title>Community Forum & Q&A - Sponsor Sorter</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="/public/js/settings.js"></script>
+  <script type="module" src="/public/js/alerts.js"></script>
+  <script type="module" src="/public/js/forum.js"></script>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+         <li id="settings-notif-bar" style="display:inline;">
+  <div class="icon-bar-bg">
+    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+    </button>
+    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+    </button>
+    <div id="settings-dropdown" class="settings-dropdown">
+      <div class="dropdown-arrow"></div>
+      <ul>
+                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
+              </ul>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section>
+  <div class="forum-hero">
+    <h1>💬 Community Forum & Q&#38;A</h1>
+    <p>Connect, share, and get help from other creators and sponsors. Feature voting, deal diaries, peer support, and Q&A — all in one place.</p>
+  </div>
+  <div class="forum-controls">
+    <input type="text" id="forum-search" placeholder="Search threads, authors, keywords..." />
+    <select id="forum-category">
+      <option value="">All Types</option>
+      <option value="qna">Q&amp;A</option>
+      <option value="diary">Deal Diaries</option>
+      <option value="feature">Feature Voting</option>
+      <option value="help">Peer Help</option>
+    </select>
+    <button id="forum-add-btn" style="display:none;">➕ New Thread</button>
+  </div>
+  <div class="forum-tabs" id="forum-tabs">
+    <button class="forum-tab active" data-category="">All</button>
+    <button class="forum-tab" data-category="qna">Q&amp;A</button>
+    <button class="forum-tab" data-category="diary">Deal Diaries</button>
+    <button class="forum-tab" data-category="feature">Feature Voting</button>
+    <button class="forum-tab" data-category="help">Peer Help</button>
+  
+  <div style="display:flex;align-items:center;gap:14px;margin:16px 0 12px 0;">
+  <label for="forum-per-page" style="color:#bbb;font-size:1em;">Threads per page:</label>
+  <select id="forum-per-page" style="padding:4px 10px;border-radius:5px;">
+    <option value="5">5</option>
+    <option value="10" selected>10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+  </select>
+</div>
+</div>
+
+  <div id="forum-list" class="forum-list">
+    <div class="forum-loading">Loading threads...</div>
+  </div>
+    <div id="forum-pagination-controls" style="margin-left:auto;"></div>
+
+</section>
+
+<!-- Forum Modal (hidden by default) -->
+<div id="forum-modal-root"></div>
+
+<!-- Thread Comments Modal (hidden by default) -->
+<div id="forum-comments-modal-root"></div>
+
+ <!-- FOOTER -->
+    <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./forum.html">Forum</a></li>
+                <li><a href="./stats.html">Stats</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN/ACN: 00 000 000 000 <br>
+            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+        </div>
+    </footer>
+
+<style>
+.forum-hero { margin: 40px auto 14px auto; max-width: 760px; text-align: center; }
+.forum-hero h1 { color: #36a2eb; margin-bottom: 8px; font-size: 2.3em; }
+.forum-hero p { color: #ccc; font-size: 1.12em; font-weight: 400; }
+
+.forum-controls {
+    display: flex; gap: 16px; max-width: 830px;
+    margin: 0 auto 22px auto; align-items: center; justify-content: center;
+}
+#forum-search { flex: 2; padding: 8px 13px; border-radius: 7px; border: none;
+    background: #23232b; color: #f8f8ff; font-size: 1em; outline: none; }
+#forum-category { flex: 1; padding: 8px 13px; border-radius: 7px; border: none;
+    background: #23232b; color: #36a2eb; font-size: 1em; }
+#forum-add-btn { padding: 7px 19px; border-radius: 7px; background: #f6c62e; color: #23232b; font-weight:700; border:none; cursor:pointer; }
+
+.forum-tabs {
+    display: flex; gap: 6px; justify-content: center; margin: 0 auto 20px auto; padding: 0;
+}
+.forum-tab {
+    background: #23232b; color: #ffffff; border: 1.5px solid #323247;
+    border-radius: 8px; font-size: 1em; font-weight: 600; padding: 7px 20px;
+    cursor: pointer; transition: all 0.13s cubic-bezier(.9,0,.3,1);
+}
+.forum-tab.active, .forum-tab:hover { background: #36a2eb33; border-color: #36a2eb; color: #f6c62e; }
+
+.forum-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 800px;
+  margin: 0 auto 48px auto;
+  padding: 0 12px;
+}
+.forum-loading { grid-column: 1/-1; color: #aaa; text-align: center; margin: 40px 0; font-size: 1.15em; }
+.forum-card { background: #23232b; border-radius: 14px; box-shadow: 0 2px 16px #0002; padding: 0 0 16px 0;
+    display: flex; flex-direction: column; min-height: 120px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; position: relative;}
+.forum-card:hover { transform: translateY(-4px) scale(1.018); border-color: #36a2eb; }
+.forum-meta { padding: 12px 18px 0 18px; color: #bbb; font-size: 0.98em; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 4px; }
+.forum-author-img { width:30px; height:30px; border-radius:50%; object-fit:cover; margin-right:7px; background:#292941;}
+.forum-title { font-size: 1.15em; font-weight: 700; margin: 0 0 6px 0; color: #f6c62e; padding: 0 18px; }
+.forum-content-preview { color: #f8f8ff; margin: 0 0 10px 0; font-size: 1.07em; line-height: 1.6; padding: 0 18px; }
+.forum-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0 0; padding: 0 18px; }
+.forum-tag { background: #36a2eb33; color: #36a2eb; font-size: 0.85em; border-radius: 8px; padding: 2.5px 9px; font-weight: 500; }
+.forum-link { display: inline-block; margin: 10px 0 0 18px; color: #36a2eb; font-weight: 600; font-size: 1em; text-decoration: none; }
+.forum-link:hover { text-decoration: underline; }
+.forum-card-footer {
+    display: flex; align-items: center; justify-content: space-between; padding: 0 18px;
+    margin-top: 8px; font-size: 0.97em;
+}
+.forum-card-votes { display: flex; align-items: center; gap: 6px; }
+.forum-vote-btn {
+    background: none; border: none; color: #f6c62e; font-size: 1.08em; cursor: pointer;
+    padding: 1px 7px; border-radius: 5px; transition: background 0.12s; box-shadow: none;
+}
+.forum-vote-btn.active, .forum-vote-btn:hover { background: #23232b; color: #36a2eb; }
+.forum-card-category { padding: 2px 11px; border-radius: 7px; font-size: 0.93em; font-weight: 600; margin-right: 6px;}
+.forum-card-category.qna { background: #36a2eb; color: #fff; }
+.forum-card-category.diary { background: #f6c62e; color: #23232b; }
+.forum-card-category.feature { background: #ff5899; color: #fff; }
+.forum-card-category.help { background: #6ede87; color: #23232b; }
+.forum-card-footer .forum-card-comments { display: flex; align-items: center; color: #bbb; cursor: pointer; }
+.forum-card-footer .forum-card-comments:hover { color: #36a2eb; text-decoration: underline; }
+
+#forum-modal-root,
+#forum-comments-modal-root { position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:9000; display:none; }
+#forum-modal-root.active,
+#forum-comments-modal-root.active { display:block; }
+.forum-modal-backdrop { position:absolute; left:0; top:0; width:100vw; height:100vh; background:#000c; }
+.forum-modal,
+.forum-comments-modal {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    background: #222436; border-radius: 12px; max-width: 540px; width: 97vw; padding: 34px 26px 22px 26px; box-shadow: 0 7px 40px #0009;
+    color: #f8f8ff;
+}
+.forum-modal h2,
+.forum-comments-modal h2 { color:#36a2eb; margin:0 0 18px 0; }
+.forum-modal label,
+.forum-comments-modal label { display:block; margin:10px 0 3px 0; color:#ccc; }
+.forum-modal input, .forum-modal textarea, .forum-modal select,
+.forum-comments-modal textarea {
+    width:100%; margin-bottom:14px; padding:8px 10px; border-radius:7px; border:none; background:#23232b; color:#f8f8ff; font-size:1em;
+}
+.forum-modal textarea, .forum-comments-modal textarea { min-height:80px; }
+.forum-modal-btns, .forum-comments-modal-btns { display:flex; justify-content: flex-end; gap:10px; margin-top:10px;}
+.forum-modal-btns button, .forum-comments-modal-btns button { padding:7px 17px; border-radius:7px; border:none; font-weight:600; cursor:pointer;}
+.forum-modal-cancel, .forum-comments-modal-cancel { background:#23232b; color:#fff;}
+.forum-modal-save, .forum-comments-modal-save { background:#f6c62e; color:#222;}
+@media (max-width: 950px) { .forum-list { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } .forum-hero { padding: 0 8px; } }
+@media (max-width: 600px) { .forum-list { grid-template-columns: 1fr; } .forum-hero h1 { font-size: 1.3em;} .forum-controls { flex-direction: column; gap: 10px; } .forum-tabs { flex-direction: column; gap: 6px; align-items: center; } }
+</style>
+
+</body>
+</html>

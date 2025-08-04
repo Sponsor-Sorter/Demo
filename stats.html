@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sponsor Sorter Platform Stats, Social Proof, and Leaderboards — live offer count, user stats, winners, and more." />
+  <title>Platform Stats & Leaderboard - Sponsor Sorter</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Only load stats.js for this page -->
+   <script type="module" src="/public/js/settings.js"></script>
+  <script type="module" src="/public/js/alerts.js"></script>
+  <script type="module" src="/public/js/stats.js"></script>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav class="nav">
+          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+          <li><a href="login.html">Logout</a></li>
+         <li id="settings-notif-bar" style="display:inline;">
+            <div class="icon-bar-bg">
+              <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+                <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+              </button>
+              <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+              </button>
+              <div id="settings-dropdown" class="settings-dropdown">
+                <div class="dropdown-arrow"></div>
+                <ul>
+                  <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                  <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<!-- ======================= -->
+<!--    PLATFORM STATS HERO  -->
+<!-- ======================= -->
+
+<section>
+  <div class="forum-hero">
+    <h1>📈 Platform Stats & Leaderboard</h1>
+    <p>Live system health, social proof, and top performers — transparent data for all users, brands, and creators.</p>
+  </div>
+
+  <div class="forum-list" style="margin-bottom:0;">
+    <!-- System Status Block -->
+    <section class="system-status" style="margin: 0 0 38px 0; background:#23232b; border-radius:14px; padding:20px 24px 12px 24px; box-shadow: 0 2px 16px #0002; border: 1.5px solid #323247;">
+      <h2 style="color:#36a2eb;margin-bottom:10px;font-size:1.5em;">System Health</h2>
+      <ul style="color:#ddd;font-size:1.08em;line-height:2;">
+        <li><strong>Status:</strong> <span id="system-status" style="color:#6ede87;">Loading...</span></li>
+        <li><strong>Live Offers:</strong> <span id="live-offer-count">—</span></li>
+        <li><strong>Open Offers by Stage:</strong> <span id="offer-stages">—</span></li>
+        <li><strong>Total Users:</strong> <span id="user-count">—</span></li>
+        <li><strong>Total Payouts:</strong> $<span id="total-payouts">—</span></li>
+        <li><small style="color:#aaa;">Last Updated: <span id="last-updated">—</span></small></li>
+      </ul>
+    </section>
+
+    <!-- Social Proof Block -->
+    <section class="social-proof" style="margin: 0 0 38px 0; background:#23232b; border-radius:14px; padding:18px 24px 10px 24px; box-shadow: 0 2px 16px #0002; border: 1.5px solid #323247;">
+      <h2 style="color:#f6c62e;margin-bottom:9px;font-size:1.3em;">Social Proof</h2>
+      <div id="recent-winners" style="margin-bottom:18px;"></div>
+      <div id="recent-reviews" style="margin-bottom:18px;"></div>
+      <div id="featured-sponsors" style="margin-bottom:18px;"></div>
+      <div id="featured-sponsees"></div>
+    </section>
+
+    <!-- Leaderboard Block -->
+    <section class="leaderboard" style="margin: 0 0 38px 0; background:#23232b; border-radius:14px; padding:18px 24px 10px 24px; box-shadow: 0 2px 16px #0002; border: 1.5px solid #323247;">
+      <h2 style="color:#36a2eb;margin-bottom:9px;font-size:1.3em;">Leaderboards</h2>
+      <div id="top-earners" style="margin-bottom:18px;"></div>
+      <div id="most-completed" style="margin-bottom:18px;"></div>
+      <div id="top-rated" style="margin-bottom:18px;"></div>
+      <div id="referral-leaders"></div>
+    </section>
+  </div>
+</section>
+
+ <!-- FOOTER -->
+<footer class="footercomplete">
+    <div class="footer-text">
+        <ul>
+            <li><a href="./help.html">Help</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+            <li><a href="./privacy.html">Privacy Policy</a></li>
+            <li><a href="./terms.html">Terms of Service</a></li>
+            <li><a href="./reviews.html">Reviews</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./forum.html">Forum</a></li>
+            <li><a href="./stats.html">Stats</a></li>
+
+        </ul>
+    </div>
+    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+        &copy; 2025 Sponsor Sorter. All rights reserved. | ABN/ACN: 00 000 000 000 <br>
+        Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+    </div>
+</footer>
+
+<style>
+/* --- REUSE forum-hero, forum-list, etc. --- */
+.forum-hero { margin: 40px auto 14px auto; max-width: 760px; text-align: center; }
+.forum-hero h1 { color: #36a2eb; margin-bottom: 8px; font-size: 2.3em; }
+.forum-hero p { color: #ccc; font-size: 1.12em; font-weight: 400; }
+
+/* Stats & Leaderboard custom tweaks */
+.system-status ul, .social-proof, .leaderboard {
+  list-style: none;
+  margin: 30px; padding: 20px;
+}
+.system-status ul li, .leaderboard > div, .social-proof > div {
+  margin-bottom: 6px;
+}
+.social-proof ul li {
+    padding: 15px;
+}
+.most-completed ol li {
+    padding: 15px !important;
+}
+.leaderboard h2, .social-proof h2, .system-status h2 {
+  margin-top: 0;
+}
+.leaderboard ol, .social-proof ul {
+  color: #f8f8ff;
+  margin-left: 0;
+  padding-left: 18px;
+  font-size: 1.04em;
+  padding: 15px;
+}
+.leaderboard li, .social-proof li {
+  margin-bottom: 4px;
+}
+.leaderboard section ol li {
+    padding: 15px;
+}
+@media (max-width: 950px) {
+  .forum-list { padding: 0 4px; }
+  .forum-hero { padding: 0 8px; }
+  .system-status, .social-proof, .leaderboard { padding: 13px 5vw 6px 5vw; }
+}
+@media (max-width: 600px) {
+  .forum-list { padding: 0 2px; }
+  .forum-hero h1 { font-size: 1.3em;}
+  .system-status, .social-proof, .leaderboard { padding: 8px 1vw 2px 1vw; }
+}
+</style>
+
+</body>
+</html>
