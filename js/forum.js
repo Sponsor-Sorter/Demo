@@ -1,6 +1,6 @@
 // /public/js/forum.js
 
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 let forumThreads = [];
 let filteredThreads = [];
@@ -151,7 +151,7 @@ function renderThreads(threads) {
   container.innerHTML = pageThreads.map(post => {
     let authorImg = post.author?.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
-      : '/public/logos.png';
+      : './logos.png';
     let authorName = post.author?.username || "Anonymous";
     let voteCount = (post.upvotes || 0) - (post.downvotes || 0);
     let myVote = myVotes[post.id] || 0;
@@ -178,7 +178,7 @@ function renderThreads(threads) {
         <div class="forum-meta">
           <span class="forum-card-category ${catClass}">${catName}</span>
           <img src="${authorImg}" style="width:55px;height:55px;" class="forum-author-img" title="${escapeHtml(authorName)}"
-            onerror="this.src='/public/logos.png'">
+            onerror="this.src='./logos.png'">
           <span>${escapeHtml(authorName)}</span>
           <span>🗓️ ${formatDate(post.created_at)}</span>
         </div>
@@ -393,7 +393,7 @@ async function openFullThreadModal(threadId) {
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:3px;">
         <img src="${post.author?.profile_pic
           ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
-          : '/public/logos.png'}" style="width:45px;height:45px;border-radius:50%;background:#292941;">
+          : './logos.png'}" style="width:45px;height:45px;border-radius:50%;background:#292941;">
         <span style="color:#fff;font-weight:600;font-size:1.1em;">${escapeHtml(post.author?.username || "Anonymous")}</span>
         <span style="color:#aaa;font-size:0.98em;margin-left:auto;">${formatDate(post.created_at)}</span>
       </div>
@@ -407,7 +407,7 @@ async function openFullThreadModal(threadId) {
           let author = profiles[c.author_id] || {};
           let authorImg = author.profile_pic
             ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${author.profile_pic}`
-            : '/public/logos.png';
+            : './logos.png';
           let authorName = author.username || "Anonymous";
           return `
             <div style="display:flex;align-items:center;margin:13px 0 3px 0;">
@@ -493,7 +493,7 @@ async function renderComments(postId) {
     let author = profiles[c.author_id] || {};
     let authorImg = author.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${author.profile_pic}`
-      : '/public/logos.png';
+      : './logos.png';
     let authorName = author.username || "Anonymous";
     let canEdit = userIsAdmin || (sessionUser && c.author_id === sessionUser.id);
     return `
@@ -558,3 +558,4 @@ function truncate(str, n) {
 function stripMd(md) {
   return md.replace(/[_*~`>#-]/g, '').replace(/\[(.*?)\]\(.*?\)/g, '$1');
 }
+
