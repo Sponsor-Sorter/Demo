@@ -816,6 +816,141 @@ if (typeof window !== "undefined") {
   });
 }
 
+window.showOfferDetailsModal = function(offer) {
+  // Remove any existing modal
+  document.querySelectorAll('.offer-details-modal').forEach(e => e.remove());
+
+  // Build modal HTML
+  let sponsorLogo = "logos.png";
+  if (offer.offer_images && offer.offer_images.length && typeof offer.offer_images[0] === "string") {
+    sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${offer.offer_images[0]}`;
+  } else if (offer.sponsor_logo) {
+    sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${offer.sponsor_logo}`;
+  }
+  let platformsRow = renderPlatformLogos(offer.platforms);
+  let constraintsHtml = '';
+  if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+
+  let modal = document.createElement('div');
+  modal.className = 'offer-details-modal';
+  modal.style.position = 'fixed';
+  modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
+  modal.style.background = 'rgba(0,0,0,0.78)';
+  modal.style.zIndex = '99999';
+  modal.innerHTML = `
+    <div style="background:#232333;padding:28px 32px 22px 32px;max-width:540px;border-radius:18px;box-shadow:0 8px 38px #000c;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:360px;">
+      <div style="display:flex;gap:20px;align-items:flex-start;">
+        <img src="${sponsorLogo}" alt="Logo" style="width:74px;height:74px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
+        <div style="flex:1;">
+          <div style="font-size:1.2em;font-weight:700;margin-bottom:3px;">${offer.offer_title || ""}</div>
+          <div style="color:#bbb;margin-bottom:3px;"><b>By:</b> ${offer.sponsor_username || ''} <span style="color:#666;">(${offer.sponsor_company || '-'})</span></div>
+          <div style="color:#f0b246;"><b>Amount:</b> $${offer.offer_amount ?? '-'}</div>
+          <div style="margin:5px 0;">${platformsRow}</div>
+          <div style="margin:7px 0;">${constraintsHtml}</div>
+        </div>
+      </div>
+      <hr style="margin:12px 0 8px 0;border:0;border-bottom:1px solid #353553;">
+      <div style="font-size:1.03em;margin-bottom:9px;">
+        <b>Description:</b><br>${offer.offer_description || "<i>No description.</i>"}
+      </div>
+      <div style="font-size:0.98em;margin-bottom:6px;">
+        <b>Instructions:</b><br>${offer.instructions || "<i>No instructions.</i>"}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:17px;font-size:0.96em;">
+        <div><b>Payment:</b> ${offer.payment_schedule || "-"}</div>
+        <div><b>Duration:</b> ${offer.sponsorship_duration || "-"}</div>
+        <div><b>Deliverable:</b> ${offer.deliverable_type || "-"}</div>
+        <div><b>Job Type:</b> ${offer.job_type || "-"}</div>
+        <div><b>Deadline:</b> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : "-"}</div>
+        <div><b>Country:</b> ${offer.audience_country || "-"}</div>
+      </div>
+      <div style="margin-top:12px;">
+        ${(offer.offer_images && offer.offer_images.length)
+          ? offer.offer_images.map(img =>
+              `<img src="https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${img}" alt="Offer Image" style="width:84px;height:64px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`
+            ).join('')
+          : '<i>No offer images.</i>'
+        }
+      </div>
+      <div style="text-align:right;">
+        <button id="close-offer-modal" style="margin-top:18px;background:#888;color:#fff;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;">Close</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.getElementById('close-offer-modal').onclick = () => modal.remove();
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+};
+
+window.showApplyModal = function(offer) {
+  // Remove any existing modal
+  document.querySelectorAll('.offer-apply-modal').forEach(e => e.remove());
+
+  let modal = document.createElement('div');
+  modal.className = 'offer-apply-modal';
+  modal.style.position = 'fixed';
+  modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
+  modal.style.background = 'rgba(0,0,0,0.80)';
+  modal.style.zIndex = '99999';
+
+  modal.innerHTML = `
+    <div style="background:#232333;padding:32px 26px 22px 26px;max-width:430px;border-radius:16px;box-shadow:0 8px 32px #000c;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:320px;">
+      <h2 style="margin-top:0;margin-bottom:15px;">Apply for: ${offer.offer_title || "Offer"}</h2>
+      <form id="apply-offer-form">
+        <label for="application_text" style="display:block;margin-bottom:8px;">Message to Sponsor (optional):</label>
+        <textarea id="application_text" name="application_text" style="width:100%;min-height:70px;padding:7px;border-radius:7px;margin-bottom:15px;" maxlength="450"></textarea>
+        <button type="submit" style="background:#4061b3;color:#fff;padding:8px 20px;border-radius:8px;border:none;cursor:pointer;font-size:1.08em;">Submit Application</button>
+        <button type="button" id="close-apply-modal" style="margin-left:13px;background:#888;color:#fff;padding:8px 20px;border-radius:8px;border:none;cursor:pointer;">Cancel</button>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById('close-apply-modal').onclick = () => modal.remove();
+
+  document.getElementById('apply-offer-form').onsubmit = async function(e) {
+    e.preventDefault();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return alert('Not logged in!');
+    // Check for existing application
+    const { data: existing } = await supabase
+      .from('public_offer_applications')
+      .select('id')
+      .eq('offer_id', offer.id)
+      .eq('sponsee_id', user.id)
+      .maybeSingle();
+    if (existing && existing.id) {
+      alert('You have already applied for this offer.');
+      return;
+    }
+    // Insert application
+    const application_text = document.getElementById('application_text').value.trim();
+    const sponsee_email = user.email || user.user_metadata?.email || "";
+
+const { error } = await supabase
+  .from('public_offer_applications')
+  .insert([{
+    offer_id: offer.id,
+    sponsee_id: user.id,
+    sponsee_username: user.user_metadata?.username || "",
+    sponsee_email, 
+    status: 'pending',
+    application_text,
+    created_at: new Date().toISOString()
+  }]);
+
+    if (error) {
+      alert('Could not apply: ' + error.message);
+    } else {
+      alert('Application submitted!');
+      modal.remove();
+      // Optional: Trigger notification logic here if needed
+    }
+  };
+
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+};
+
 export async function notifySponsorOnApplication({ offer_id, sponsee_user_id, sponsee_username }) {
   const { data: offerRow } = await supabase
     .from('public_offers')
