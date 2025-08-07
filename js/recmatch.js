@@ -1,4 +1,4 @@
-import { supabase } from '/public/js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 const MATCH_FN_URL = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/calculate_match_scores';
 const container = document.getElementById('recommendedMatches');
@@ -259,3 +259,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 });
+
