@@ -27,6 +27,8 @@
     #recent-offers-list::-webkit-scrollbar-thumb {
       border-radius: 8px;
     }
+    
+    
   </style>
 </head>
 <body>
@@ -96,7 +98,7 @@
 </header>
 
 
-<fieldset>
+<fieldset class="finder" >
   <section class="search-section">
     <h2>Welcome, <span id="sponsorName"></span>!</h2>
     <div class="search-toggle-row" style="margin-bottom:18px;">
@@ -198,6 +200,23 @@
     </div>
   </section>
 </fieldset>
+
+<fieldset class="recommended-matches">
+  <legend><h3>Recommended Matches</h3></legend>
+  <div class="matches-scroll-viewport" style="max-width:100%; overflow-x:auto; padding-bottom:2px;">
+    <div class="user-matches" id="recommendedMatches" style="display:flex; flex-wrap:nowrap; gap:18px;">
+      <!-- JS will inject match cards here -->
+    </div>
+  </div>
+  <div class="help-block" style="margin-bottom:10px;">
+    <em>
+      <strong>Recommended for You:</strong><br>
+      Based on your profile and activity, here are the top matches our system found for you.<br>
+      Click <b>View Profile</b> to see more, or <b>Connect</b> to start a conversation or application.
+    </em>
+  </div>
+</fieldset>
+
 
 <fieldset class="otheraccounts">
   <legend><h3>Other Accounts:</h3></legend>
@@ -305,19 +324,28 @@ async function renderRecentOffers() {
 document.addEventListener('DOMContentLoaded', renderRecentOffers);
 </script>
 
-<footer class="footercomplete">
-  <div class="footer-text">
-    <ul>
-      <li><a href="./help.html">Help</a></li>
-      <li><a href="./contact.html">Contact</a></li>
-      <li><a href="./privacy.html">Privacy Policy</a></li>
-      <li><a href="./terms.html">Terms of Service</a></li>
-      <li><a href="./reviews.html">Reviews</a></li>
-    </ul>
-  </div>
-  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
-</footer>
+ <!-- FOOTER -->
+    <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./forum.html">Forum</a></li>
+                <li><a href="./stats.html">Stats</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+        </div>
+    </footer>
 
 <div id="cookie-banner" class="cookie-banner">
   <p>
@@ -886,8 +914,41 @@ window.applyToOffer = async function(offerId, btn, applicationText = '') {
 };
 
 </script>
+<style>
+ .recommended-matches,
+.otheraccounts,
+.recentoffers {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* For recommended matches section: */
+.matches-scroll-viewport {
+  max-width: 900px;
+  width: 100%;
+  overflow-x: auto;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: 0;
+  padding-right: 0;
+}
+ #recommendedMatches {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 18px;
+  max-width: 900px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+
+</style>
 <script type="module" src="./js/alerts.js"></script>
 <script type="module" src="./js/settings.js"></script>
+<script type="module" src="./js/recmatch.js"></script>
 
 </body>
 </html>
