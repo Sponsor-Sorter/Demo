@@ -8,10 +8,10 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Auth and settings are imported FIRST so session is ready -->
-<script type="module" src="./js/settings.js"></script>
-<script type="module" src="./js/alerts.js"></script>
 
+    <!-- Auth and settings are imported FIRST so session is ready -->
+    <script type="module" src="./js/settings.js"></script>
+    <script type="module" src="./js/alerts.js"></script>
 </head>
 
 <body>
@@ -20,14 +20,14 @@
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
       <div>
-        <background-img class="navimg" src="navimg.png" alt="">
+        <background-img class="navimg" src="navimg.png" alt=""></background-img>
         <nav>
           <li><a href="index.html">Home</a></li>
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav class="nav">
           <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Login</a></li>
+          <li><a href="login.html" id="login-logout-link">Login</a></li>
           <li id="notification-bell-li" style="display:inline;">
             <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
               <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
@@ -45,7 +45,7 @@
                 <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
                 <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
                 <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
+                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button></li>
               </ul>
             </div>
           </li>
@@ -56,52 +56,50 @@
 </header>
 
 <section>
-    <div class="blog-hero">
-        <h1>📚 Blog & Resource Center</h1>
-        <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
-    </div>
-    <div class="blog-controls">
-        <input type="text" id="blog-search" placeholder="Search articles, guides, authors..." />
-        <select id="blog-category">
-            <option value="">All Categories</option>
-            <option value="guides">Guides</option>
-            <option value="case_study">Case Studies</option>
-            <option value="platform">Platform News</option>
-            <option value="tips">Tips</option>
-            <option value="analytics">Analytics</option>
-        </select>
-        <button id="blog-add-btn" style="display:none;">➕ New Article</button>
-    </div>
-    <div id="blog-list" class="blog-list">
-        <div class="blog-loading">Loading articles...</div>
-    </div>
+  <div class="blog-hero">
+      <h1>📚 Blog & Resource Center</h1>
+      <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
+  </div>
+  <div class="blog-controls">
+      <input type="text" id="blog-search" placeholder="Search articles, guides, authors...">
+      <select id="blog-category">
+          <option value="">All Categories</option>
+          <option value="guides">Guides</option>
+          <option value="case_study">Case Studies</option>
+          <option value="platform">Platform News</option>
+          <option value="tips">Tips</option>
+          <option value="analytics">Analytics</option>
+      </select>
+      <button id="blog-add-btn" style="display:none;">➕ New Article</button>
+  </div>
+  <div id="blog-list" class="blog-list">
+      <div class="blog-loading">Loading articles...</div>
+  </div>
 </section>
 
 <!-- Blog Modal (hidden by default) -->
 <div id="blog-modal-root"></div>
 
 <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./forum.html">Forum</a></li>
-                <li><a href="./stats.html">Stats</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
-    </footer>
+<footer class="footercomplete">
+  <div class="footer-text">
+      <ul>
+          <li><a href="./help.html">Help</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+          <li><a href="./privacy.html">Privacy Policy</a></li>
+          <li><a href="./terms.html">Terms of Service</a></li>
+          <li><a href="./reviews.html">Reviews</a></li>
+          <li><a href="./blog.html">Blog</a></li>
+          <li><a href="./forum.html">Forum</a></li>
+          <li><a href="./stats.html">Stats</a></li>
+      </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo">
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+      Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+  </div>
+</footer>
 
 <style>
 .blog-hero { margin: 40px auto 14px auto; max-width: 760px; text-align: center; }
@@ -109,22 +107,22 @@
 .blog-hero p { color: #ccc; font-size: 1.12em; font-weight: 400; }
 
 .blog-controls {
-    display: flex; gap: 16px; max-width: 830px;
-    margin: 0 auto 22px auto; align-items: center; justify-content: center;
+  display: flex; gap: 16px; max-width: 830px;
+  margin: 0 auto 22px auto; align-items: center; justify-content: center;
 }
 #blog-search { flex: 2; padding: 8px 13px; border-radius: 7px; border: none;
-    background: #23232b; color: #f8f8ff; font-size: 1em; outline: none; }
+  background: #23232b; color: #f8f8ff; font-size: 1em; outline: none; }
 #blog-category { flex: 1; padding: 8px 13px; border-radius: 7px; border: none;
-    background: #23232b; color: #36a2eb; font-size: 1em; }
+  background: #23232b; color: #36a2eb; font-size: 1em; }
 #blog-add-btn { padding: 7px 19px; border-radius: 7px; background: #f6c62e; color: #23232b; font-weight:700; border:none; cursor:pointer; }
 
 .blog-list {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
-    gap: 22px; max-width: 1200px; margin: 0 auto 48px auto; padding: 0 12px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+  gap: 22px; max-width: 1200px; margin: 0 auto 48px auto; padding: 0 12px;
 }
 .blog-loading { grid-column: 1/-1; color: #aaa; text-align: center; margin: 40px 0; font-size: 1.15em; }
 .blog-card { background: #23232b; border-radius: 14px; box-shadow: 0 2px 16px #0002; padding: 0 0 18px 0;
-    display: flex; flex-direction: column; min-height: 280px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; }
+  display: flex; flex-direction: column; min-height: 280px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; }
 .blog-card:hover { transform: translateY(-4px) scale(1.018); border-color: #36a2eb; }
 .blog-img { width: 100%; height: 158px; object-fit: cover; border-radius: 14px 14px 0 0; background: #151522; }
 .blog-meta { padding: 13px 18px 0 18px; color: #bbb; font-size: 0.96em; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 4px; }
@@ -140,14 +138,14 @@
 #blog-modal-root.active { display:block; }
 .blog-modal-backdrop { position:absolute; left:0; top:0; width:100vw; height:100vh; background:#000c; }
 .blog-modal {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-    background: #222436; border-radius: 12px; max-width: 480px; width: 97vw; padding: 34px 26px 22px 26px; box-shadow: 0 7px 40px #0009;
-    color: #f8f8ff;
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  background: #222436; border-radius: 12px; max-width: 480px; width: 97vw; padding: 34px 26px 22px 26px; box-shadow: 0 7px 40px #0009;
+  color: #f8f8ff;
 }
 .blog-modal h2 { color:#36a2eb; margin:0 0 18px 0; }
 .blog-modal label { display:block; margin:10px 0 3px 0; color:#ccc; }
 .blog-modal input, .blog-modal textarea, .blog-modal select {
-    width:100%; margin-bottom:14px; padding:8px 10px; border-radius:7px; border:none; background:#23232b; color:#f8f8ff; font-size:1em;
+  width:100%; margin-bottom:14px; padding:8px 10px; border-radius:7px; border:none; background:#23232b; color:#f8f8ff; font-size:1em;
 }
 .blog-modal textarea { min-height:80px; }
 .blog-modal-btns { display:flex; justify-content: flex-end; gap:10px; margin-top:10px;}
@@ -174,8 +172,6 @@
 }
 .blog-guest-actions .btn-primary { background: #f6c62e; color: #222; }
 .blog-guest-actions .btn-secondary { background: #23232b; color: #fff; border: 1px solid #3a3a4e; }
-
-
 </style>
 
 <script type="module">
@@ -186,25 +182,24 @@ let filteredPosts = [];
 let userIsAdmin = false;
 let userProfile = null;
 
-// --- NAV: Show Dashboard/Signup Link based on userType ---
-document.addEventListener("DOMContentLoaded", async () => {
-  const { data: { session } } = await supabase.auth.getSession();
+// Helper: update nav links based on session
+async function updateNavForSession(session) {
   const authLink = document.getElementById('auth-link');
+  const loginLogout = document.getElementById('login-logout-link');
 
   if (authLink) {
     if (session?.user) {
-      let dashboardUrl = "dashboardsponsee.html"; // default
+      let dashboardUrl = 'dashboardsponsee.html'; // default
       try {
         const { data: ext } = await supabase
           .from('users_extended_data')
           .select('userType')
           .eq('user_id', session.user.id)
           .maybeSingle();
-
         const t = (ext?.userType || '').toLowerCase();
-        if (t === "sponsor") dashboardUrl = "dashboardsponsor.html";
-        else if (t === "admin") dashboardUrl = "admindashboard.html";
-        else dashboardUrl = "dashboardsponsee.html";
+        if (t === 'sponsor') dashboardUrl = 'dashboardsponsor.html';
+        else if (t === 'admin') dashboardUrl = 'admindashboard.html';
+        else dashboardUrl = 'dashboardsponsee.html';
       } catch {}
       authLink.innerHTML = `<a href="${dashboardUrl}">Dashboard</a>`;
     } else {
@@ -212,29 +207,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // --- BLOG PAGE SESSION HANDLING ---
+  if (loginLogout) {
+    // Remove any previous handler to avoid duplicates
+    loginLogout.onclick = null;
+
+    if (session?.user) {
+      loginLogout.textContent = 'Logout';
+      loginLogout.href = '#';
+      loginLogout.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await supabase.auth.signOut();
+        } finally {
+          location.href = 'login.html';
+        }
+      });
+    } else {
+      loginLogout.textContent = 'Login';
+      loginLogout.href = 'login.html';
+    }
+  }
+}
+
+// Guest prompt renderer
+function showGuestPrompt() {
+  const container = document.getElementById('blog-list');
+  if (container) {
+    container.innerHTML = `
+      <div class="blog-guest-prompt">
+        <h3>Sign in to read our Blog & Resource Center</h3>
+        <p>Articles, guides, and platform updates are available to members.</p>
+        <div class="blog-guest-actions">
+          <a class="btn-primary" href="login.html">Log in</a>
+          <a class="btn-secondary" href="signup.html">Create an account</a>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// --- Page bootstrap ---
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  await updateNavForSession(session);
+
   if (session?.user) {
     initBlogWithSession(session.user);
   } else {
-    // Guest: show prompt instead of infinite "Loading articles..."
-    const container = document.getElementById('blog-list');
-    if (container) {
-      container.innerHTML = `
-        <div class="blog-guest-prompt">
-          <h3>Sign in to read our Blog & Resource Center</h3>
-          <p>Articles, guides, and platform updates are available to members.</p>
-          <div class="blog-guest-actions">
-            <a class="btn-primary" href="login.html">Log in</a>
-            <a class="btn-secondary" href="signup.html">Create an account</a>
-          </div>
-        </div>
-      `;
-    }
-    // If they log in later during the session:
-    supabase.auth.onAuthStateChange((_event, sess) => {
-      if (sess?.user) initBlogWithSession(sess.user);
-    });
+    showGuestPrompt();
   }
+
+  // React to auth changes live
+  supabase.auth.onAuthStateChange(async (_event, sess) => {
+    await updateNavForSession(sess);
+    if (sess?.user) {
+      initBlogWithSession(sess.user);
+    } else {
+      showGuestPrompt();
+    }
+  });
 });
 
 // --- SESSION/ADMIN LOGIC FOR BLOG ---
@@ -249,13 +281,14 @@ async function initBlogWithSession(sessionUser) {
     if (!data) return;
     userProfile = data;
     userIsAdmin = !!data.is_admin;
-    if (userIsAdmin) document.getElementById('blog-add-btn').style.display = '';
+    const addBtn = document.getElementById('blog-add-btn');
+    if (userIsAdmin && addBtn) addBtn.style.display = '';
     await fetchBlogPosts();
   } catch {}
 }
 
 async function fetchBlogPosts() {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('blog_posts')
     .select('*, author:author_id(user_id, username, profile_pic)')
     .eq('published', true)
@@ -275,12 +308,12 @@ function renderBlogPosts(posts) {
   }
 
   container.innerHTML = posts.map(post => {
-    let authorImg = post.author?.profile_pic
+    const authorImg = post.author?.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
-      : './logos.png'; // fallback if profile_pic missing
+      : './logos.png';
 
-    let authorName = post.author?.username || post.author_name || "Sponsor Sorter Team";
-    let chartHtml = post.custom_chart ? `<canvas class="blog-chart-canvas" id="chart-${post.id}"></canvas>` : '';
+    const authorName = post.author?.username || post.author_name || 'Sponsor Sorter Team';
+    const chartHtml = post.custom_chart ? `<canvas class="blog-chart-canvas" id="chart-${post.id}"></canvas>` : '';
 
     return `
       <div class="blog-card">
@@ -293,7 +326,7 @@ function renderBlogPosts(posts) {
                onerror="handleImgError(event, './logos.png')">
           <span>${escapeHtml(authorName)}</span>
           <span>🗓️ ${formatDate(post.created_at)}</span>
-          <span>📂 ${escapeHtml(post.category || "General")}</span>
+          <span>📂 ${escapeHtml(post.category || 'General')}</span>
         </div>
         <div class="blog-title">${escapeHtml(post.title)}</div>
         <div class="blog-excerpt">${escapeHtml(post.excerpt || truncate(post.content, 160))}</div>
@@ -305,7 +338,8 @@ function renderBlogPosts(posts) {
         ${userIsAdmin ? `<div style="text-align:right;padding-right:14px;">
           <button class="blog-edit-btn" data-id="${post.id}" style="margin-top:4px;">Edit</button>
         </div>` : ''}
-      </div>`;
+      </div>
+    `;
   }).join('');
 
   // Render charts if present
@@ -325,7 +359,7 @@ function renderBlogPosts(posts) {
   }
 }
 
-// Modal, helpers, and filter logic remain unchanged
+// Modal, helpers, and filter logic
 async function openBlogModal(editId = null) {
   const root = document.getElementById('blog-modal-root');
   let editing = !!editId;
@@ -344,13 +378,13 @@ async function openBlogModal(editId = null) {
       <h2>${editing ? 'Edit Article' : 'New Article'}</h2>
       <form id="blog-edit-form">
         <label>Title</label>
-        <input name="title" value="${escapeHtml(data.title)}" required maxlength="140"/>
+        <input name="title" value="${escapeHtml(data.title)}" required maxlength="140">
         <label>Excerpt</label>
-        <input name="excerpt" value="${escapeHtml(data.excerpt || '')}" maxlength="200"/>
+        <input name="excerpt" value="${escapeHtml(data.excerpt || '')}" maxlength="200">
         <label>Content (Markdown/HTML)</label>
         <textarea name="content" required>${escapeHtml(data.content || '')}</textarea>
         <label>Tags (comma separated)</label>
-        <input name="tags" value="${(Array.isArray(data.tags) ? data.tags.join(', ') : '')}" />
+        <input name="tags" value="${(Array.isArray(data.tags) ? data.tags.join(', ') : '')}">
         <label>Category</label>
         <select name="category">
           <option value="guides" ${data.category==="guides"?"selected":""}>Guides</option>
@@ -361,7 +395,7 @@ async function openBlogModal(editId = null) {
           <option value="general" ${!data.category||data.category==="general"?"selected":""}>General</option>
         </select>
         <label>Cover Image URL</label>
-        <input name="cover_image" value="${escapeHtml(data.cover_image||'')}" />
+        <input name="cover_image" value="${escapeHtml(data.cover_image||'')}">
         <label>Custom Chart JSON (optional)</label>
         <textarea name="custom_chart" placeholder='{"type":"bar","data":...}'>${data.custom_chart ? JSON.stringify(data.custom_chart, null, 2) : ''}</textarea>
         <label>Featured?</label>
@@ -410,9 +444,12 @@ async function openBlogModal(editId = null) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('blog-search').addEventListener('input', filterPosts);
-  document.getElementById('blog-category').addEventListener('change', filterPosts);
+  const search = document.getElementById('blog-search');
+  const cat = document.getElementById('blog-category');
   const addBtn = document.getElementById('blog-add-btn');
+
+  if (search) search.addEventListener('input', filterPosts);
+  if (cat) cat.addEventListener('change', filterPosts);
   if (addBtn) addBtn.addEventListener('click', () => openBlogModal());
 });
 
@@ -454,8 +491,5 @@ window.handleImgError = function(event, fallback = './logos.png') {
   }
 }
 </script>
-
-
 </body>
 </html>
-
