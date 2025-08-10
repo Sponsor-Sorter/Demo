@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Compute the correct frontendBaseUrl
         const frontendBaseUrl = window.location.origin.includes('github.io')
           ? 'https://sponsor-sorter.github.io/Demo'
-          : window.location.origin + '/public';
+          : window.location.origin;
 
         sessionRes = await fetch(STRIPE_BACKEND, {
           method: 'POST',
@@ -308,3 +308,4 @@ function showFamBotModal(result) {
   document.body.appendChild(modal);
   document.getElementById('fambot-close').onclick = () => modal.remove();
 }
+
