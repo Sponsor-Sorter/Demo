@@ -797,7 +797,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const jwt = session?.access_token;
       const frontendBaseUrl = window.location.origin.includes('github.io')
         ? 'https://sponsor-sorter.github.io/Demo'
-        : window.location.origin + '/public';
+        : window.location.origin;
       let totalWithFee = amount;
 
       const sessionRes = await fetch(STRIPE_BACKEND, {
