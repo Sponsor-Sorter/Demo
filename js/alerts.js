@@ -1,14 +1,85 @@
+// alerts.js
 import { supabase } from './supabaseClient.js';
 
-// === UI notification dropdown logic ===
+// === UI notification dropdown logic (shared by sponsor & sponsee) ===
 
 let notifications = [];
+
+/** Utility: check if current page is one of the dashboards */
+function isOnDashboard() {
+  const p = location.pathname.toLowerCase();
+  return p.endsWith('dashboardsponsor.html') || p.endsWith('/dashboardsponsor.html')
+      || p.endsWith('dashboardsponsee.html') || p.endsWith('/dashboardsponsee.html');
+}
+
+/** Utility: which dashboard for this user? */
+function resolveDashboardPath(userType) {
+  return (String(userType || '').toLowerCase() === 'besponsored')
+    ? './dashboardsponsee.html'
+    : './dashboardsponsor.html'; // default to sponsor if missing/unknown
+}
+
+/** Highlight a DOM node temporarily */
+function flashNode(node) {
+  if (!node) return;
+  node.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
+  const prevBg = node.style.background;
+  const prevBorder = node.style.border;
+  const prevBoxShadow = node.style.boxShadow;
+  node.style.background = '#3b3b3b';
+  node.style.border = '3px solid #0096FF';
+  node.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
+  setTimeout(() => {
+    node.style.background = prevBg || '';
+    node.style.border = prevBorder || '';
+    node.style.boxShadow = prevBoxShadow || '';
+  }, 1500);
+}
+
+/** Try to find a card/row by offer id and scroll/highlight it */
+function jumpToOfferId(offerId) {
+  if (!offerId) return false;
+  let card =
+    document.querySelector(`.public-offer-card[data-offer-id="${offerId}"]`) ||
+    document.querySelector(`.listing-stage[data-offer-id="${offerId}"]`) ||
+    document.querySelector(`#archived-table-body tr[data-offer-id="${offerId}"]`);
+  if (!card) return false;
+
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  flashNode(card);
+  return true;
+}
+
+/** Poll for target element to exist before jumping (for content rendered by other JS) */
+function waitAndJumpToOffer(offerId, { interval = 150, limit = 40 } = {}) {
+  let tries = 0;
+  const timer = setInterval(() => {
+    tries++;
+    if (jumpToOfferId(offerId) || tries >= limit) {
+      clearInterval(timer);
+    }
+  }, interval);
+}
+
+/** On dashboards, auto-consume ?offer=... deep links created by alert clicks */
+function consumeDeepLinkIfPresent() {
+  if (!isOnDashboard()) return;
+  const url = new URL(window.location.href);
+  const deepOffer = url.searchParams.get('offer');
+  if (!deepOffer) return;
+  // Give the page a moment to render cards, then attempt jump a few times.
+  setTimeout(() => waitAndJumpToOffer(deepOffer), 300);
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   const bell = document.getElementById('notification-bell');
   const badge = document.getElementById('notification-count');
-  if (!bell || !badge) return;
+  if (!bell || !badge) {
+    consumeDeepLinkIfPresent(); // still consume deep link even if no bell on page
+    return;
+  }
 
+  // Build dropdown once
   let dropdown = document.getElementById('notification-dropdown');
   if (!dropdown) {
     dropdown = document.createElement('div');
@@ -29,26 +100,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.appendChild(dropdown);
   }
 
+  // Session + user
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) {
     badge.style.display = 'none';
+    consumeDeepLinkIfPresent();
     return;
   }
   const userId = session.user.id;
 
-  // Get notification_uuid and email for this user
-  const { data: userRow } = await supabase
+  // Pull notification_uuid, email, userType (for routing), and alert_email (for toggle)
+  const { data: userRow, error: userErr } = await supabase
     .from('users_extended_data')
-    .select('notification_uuid, email')
+    .select('notification_uuid, email, userType, alert_email')
     .eq('user_id', userId)
     .single();
 
+  if (userErr) {
+    console.error('alerts.js: failed to load users_extended_data:', userErr.message);
+  }
   const notification_uuid = userRow?.notification_uuid;
   const user_email = userRow?.email;
+  const userType = userRow?.userType || 'sponsor';
+
   if (!notification_uuid) {
     badge.style.display = 'none';
+    consumeDeepLinkIfPresent();
     return;
   }
+
+  // (Optional) Email Alerts toggle, if present on page
+  initEmailAlertToggle(userId, userRow?.alert_email);
 
   async function loadNotifications() {
     const { data, error } = await supabase
@@ -57,10 +139,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       .eq('notification_uuid', notification_uuid)
       .order('created_at', { ascending: false })
       .limit(30);
+
     if (error) {
+      console.error('alerts.js: loadNotifications failed:', error.message);
       badge.style.display = 'none';
       return;
     }
+
     notifications = data || [];
     const unread = notifications.filter(n => !n.read);
     if (unread.length > 0) {
@@ -76,13 +161,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const readNotifs = notifications.filter(n => n.read);
     if (!readNotifs.length) return;
     const idsToDelete = readNotifs.map(n => n.id);
-    if (idsToDelete.length > 0) {
-      await supabase
-        .from('user_notifications')
-        .delete()
-        .in('id', idsToDelete);
-      await loadNotifications();
+    if (!idsToDelete.length) return;
+
+    const { error } = await supabase
+      .from('user_notifications')
+      .delete()
+      .in('id', idsToDelete);
+
+    if (error) {
+      console.error('alerts.js: clearReadNotifications failed:', error.message);
     }
+    await loadNotifications();
   }
 
   function renderDropdown() {
@@ -102,8 +191,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       clearBtn.style.borderRadius = '6px';
       clearBtn.style.cursor = 'pointer';
       clearBtn.style.fontWeight = 'bold';
-      clearBtn.onmouseenter = () => clearBtn.style.background = '#006ed1';
-      clearBtn.onmouseleave = () => clearBtn.style.background = '#0096FF';
+      clearBtn.onmouseenter = () => (clearBtn.style.background = '#006ed1');
+      clearBtn.onmouseleave = () => (clearBtn.style.background = '#0096FF');
       clearBtn.onclick = async (e) => {
         e.stopPropagation();
         await clearReadNotifications();
@@ -115,6 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       dropdown.innerHTML += `<div class="notif-item" style="padding:20px;text-align:center;color:#aaa;">No notifications.</div>`;
       return;
     }
+
     notifications.forEach(n => {
       const notif = document.createElement('div');
       notif.className = 'notif-item';
@@ -127,46 +217,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div style="font-size:0.95em;line-height:1.5;">${n.message || ''}</div>
         <div style="font-size:0.85em;color:#aaa;margin-top:3px;">${n.created_at ? new Date(n.created_at).toLocaleString() : ''}</div>
       `;
+
       notif.onclick = async () => {
+        // Mark read if needed
         if (!n.read) {
-          await supabase
+          const { error } = await supabase
             .from('user_notifications')
             .update({ read: true })
             .eq('id', n.id);
+          if (error) console.error('alerts.js: mark read failed:', error.message);
           n.read = true;
           loadNotifications();
         }
-        if (n.related_offer_id) {
-          dropdown.style.display = 'none';
-          setTimeout(() => {
-            // --- Try jump to public offer card first ---
-            let card = document.querySelector(`.public-offer-card[data-offer-id="${n.related_offer_id}"]`);
-            // --- Fallback: Try jump to active/private offer card ---
-            if (!card) card = document.querySelector(`.listing-stage[data-offer-id="${n.related_offer_id}"]`);
-            // --- Fallback: Try archived offer row ---
-            if (!card) card = document.querySelector(`#archived-table-body tr[data-offer-id="${n.related_offer_id}"]`);
-            if (card) {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              card.style.transition = 'background 0.4s, box-shadow 0.4s, border 0.4s';
-              const prevBg = card.style.background;
-              const prevBorder = card.style.border;
-              const prevBoxShadow = card.style.boxShadow;
-              card.style.background = '#3b3b3b';
-              card.style.border = '3px solid #0096FF';
-              card.style.boxShadow = '0 0 18px 2px rgba(40, 5, 180, 0.53)';
-              setTimeout(() => {
-                card.style.background = prevBg || '';
-                card.style.border = prevBorder || '';
-                card.style.boxShadow = prevBoxShadow || '';
-              }, 1500);
-            }
-          }, 100);
+
+        // Build deep link for the correct dashboard
+        const dashboard = resolveDashboardPath(userType);
+        const target = new URL(dashboard, window.location.href);
+        if (n.related_offer_id) target.searchParams.set('offer', n.related_offer_id);
+        if (n.type)            target.searchParams.set('type', n.type);
+        target.searchParams.set('notif', String(n.id));
+
+        // If not on the dashboard for this user, redirect; else in-page jump.
+        const onSponsor = location.pathname.toLowerCase().endsWith('dashboardsponsor.html');
+        const onSponsee = location.pathname.toLowerCase().endsWith('dashboardsponsee.html');
+        const shouldBeSponsor = dashboard.toLowerCase().includes('dashboardsponsor.html');
+        const isCorrectDashboard = (shouldBeSponsor && onSponsor) || (!shouldBeSponsor && onSponsee);
+
+        dropdown.style.display = 'none';
+
+        if (!isCorrectDashboard) {
+          window.location.href = target.toString();
+          return;
         }
+
+        // Already on correct dashboard: smooth scroll + highlight
+        setTimeout(() => {
+          if (n.related_offer_id) {
+            if (!jumpToOfferId(n.related_offer_id)) {
+              // If card not yet rendered, poll briefly
+              waitAndJumpToOffer(n.related_offer_id);
+            }
+          }
+        }, 100);
       };
+
       dropdown.appendChild(notif);
     });
   }
 
+  // Bell open/close
   bell.addEventListener('click', (e) => {
     e.stopPropagation();
     if (dropdown.style.display === 'none') {
@@ -179,15 +278,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  document.addEventListener('click', (e) => {
-    if (dropdown && dropdown.style.display === 'block') {
-      dropdown.style.display = 'none';
-    }
+  document.addEventListener('click', () => {
+    if (dropdown && dropdown.style.display === 'block') dropdown.style.display = 'none';
   });
 
-  loadNotifications();
+  // Initial load + polling
+  await loadNotifications();
   setInterval(loadNotifications, 20000);
+
+  // If we landed here with ?offer=... (from some other page), do the jump
+  consumeDeepLinkIfPresent();
 });
+
+/** Optional: wire Email Alerts toggle if present on the page */
+async function initEmailAlertToggle(userId, initial) {
+  const toggle = document.getElementById('email-alert-toggle');
+  if (!toggle) return;
+  toggle.checked = !!initial;
+  toggle.addEventListener('change', async () => {
+    const { error } = await supabase
+      .from('users_extended_data')
+      .update({ alert_email: toggle.checked })
+      .eq('user_id', userId);
+    if (error) {
+      console.error('alerts.js: failed to update alert_email:', error.message);
+      // revert UI on failure
+      toggle.checked = !toggle.checked;
+    }
+  });
+}
 
 // ==== Notification INSERT HELPERS ====
 
@@ -198,6 +317,9 @@ export async function getNotificationInfo(user_id) {
     .select('notification_uuid, email')
     .eq('user_id', user_id)
     .single();
+  if (error) {
+    console.error('alerts.js: getNotificationInfo failed:', error.message);
+  }
   return { notification_uuid: data?.notification_uuid || null, email: data?.email || null };
 }
 
