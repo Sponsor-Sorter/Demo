@@ -8,9 +8,10 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Auth and settings are imported FIRST so session is ready -->
-    <script type="module" src="./js/settings.js"></script>
-    <script type="module" src="./js/alerts.js"></script>
+<!-- Auth and settings are imported FIRST so session is ready -->
+<script type="module" src="./js/settings.js"></script>
+<script type="module" src="./js/alerts.js"></script>
+
 </head>
 
 <body>
@@ -155,6 +156,26 @@
 .blog-modal-save { background:#f6c62e; color:#222;}
 @media (max-width: 950px) { .blog-list { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); } .blog-hero { padding: 0 8px; } }
 @media (max-width: 600px) { .blog-list { grid-template-columns: 1fr; } .blog-hero h1 { font-size: 1.3em;} .blog-controls { flex-direction: column; gap: 10px; } }
+
+.blog-guest-prompt {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: #23232b;
+  border: 1.5px solid #323247;
+  border-radius: 14px;
+  padding: 28px 20px;
+  color: #f8f8ff;
+}
+.blog-guest-prompt h3 { margin: 0 0 8px 0; color: #36a2eb; }
+.blog-guest-actions { display: flex; gap: 12px; justify-content: center; margin-top: 12px; }
+.blog-guest-actions .btn-primary,
+.blog-guest-actions .btn-secondary {
+  display: inline-block; padding: 8px 16px; border-radius: 8px; font-weight: 700; text-decoration: none;
+}
+.blog-guest-actions .btn-primary { background: #f6c62e; color: #222; }
+.blog-guest-actions .btn-secondary { background: #23232b; color: #fff; border: 1px solid #3a3a4e; }
+
+
 </style>
 
 <script type="module">
@@ -165,60 +186,73 @@ let filteredPosts = [];
 let userIsAdmin = false;
 let userProfile = null;
 
-// --- NAV: Show Dashboard/Signup Link ---
+// --- NAV: Show Dashboard/Signup Link based on userType ---
 document.addEventListener("DOMContentLoaded", async () => {
   const { data: { session } } = await supabase.auth.getSession();
   const authLink = document.getElementById('auth-link');
+
   if (authLink) {
-    if (session && session.user) {
-      // Default to sponsee dashboard
-      let dashboardUrl = "dashboardsponsee.html";
-      let userType = null;
+    if (session?.user) {
+      let dashboardUrl = "dashboardsponsee.html"; // default
       try {
         const { data: ext } = await supabase
           .from('users_extended_data')
           .select('userType')
           .eq('user_id', session.user.id)
           .maybeSingle();
-        if (ext && ext.user_type) userType = ext.user_type;
+
+        const t = (ext?.userType || '').toLowerCase();
+        if (t === "sponsor") dashboardUrl = "dashboardsponsor.html";
+        else if (t === "admin") dashboardUrl = "admindashboard.html";
+        else dashboardUrl = "dashboardsponsee.html";
       } catch {}
-      if (userType === "sponsor") dashboardUrl = "dashboardsponsor.html";
-      if (userType === "admin") dashboardUrl = "admindashboard.html";
       authLink.innerHTML = `<a href="${dashboardUrl}">Dashboard</a>`;
     } else {
       authLink.innerHTML = `<a href="signup.html">Signup</a>`;
     }
   }
+
+  // --- BLOG PAGE SESSION HANDLING ---
+  if (session?.user) {
+    initBlogWithSession(session.user);
+  } else {
+    // Guest: show prompt instead of infinite "Loading articles..."
+    const container = document.getElementById('blog-list');
+    if (container) {
+      container.innerHTML = `
+        <div class="blog-guest-prompt">
+          <h3>Sign in to read our Blog & Resource Center</h3>
+          <p>Articles, guides, and platform updates are available to members.</p>
+          <div class="blog-guest-actions">
+            <a class="btn-primary" href="login.html">Log in</a>
+            <a class="btn-secondary" href="signup.html">Create an account</a>
+          </div>
+        </div>
+      `;
+    }
+    // If they log in later during the session:
+    supabase.auth.onAuthStateChange((_event, sess) => {
+      if (sess?.user) initBlogWithSession(sess.user);
+    });
+  }
 });
 
 // --- SESSION/ADMIN LOGIC FOR BLOG ---
 async function initBlogWithSession(sessionUser) {
-  if (!sessionUser) {
-    return;
-  }
-  // Now fetch profile and check admin
-  const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('user_id, username, profile_pic, is_admin')
-    .eq('user_id', sessionUser.id)
-    .single();
+  try {
+    const { data } = await supabase
+      .from('users_extended_data')
+      .select('user_id, username, profile_pic, is_admin')
+      .eq('user_id', sessionUser.id)
+      .single();
 
-  if (error || !data) return;
-  userProfile = data;
-  userIsAdmin = !!data.is_admin;
-  if (userIsAdmin) document.getElementById('blog-add-btn').style.display = '';
-  await fetchBlogPosts();
+    if (!data) return;
+    userProfile = data;
+    userIsAdmin = !!data.is_admin;
+    if (userIsAdmin) document.getElementById('blog-add-btn').style.display = '';
+    await fetchBlogPosts();
+  } catch {}
 }
-
-supabase.auth.getSession().then(({ data: { session } }) => {
-  if (session && session.user) {
-    initBlogWithSession(session.user);
-  } else {
-    supabase.auth.onAuthStateChange((event, sess) => {
-      if (sess && sess.user) initBlogWithSession(sess.user);
-    });
-  }
-});
 
 async function fetchBlogPosts() {
   const { data, error } = await supabase
@@ -234,30 +268,29 @@ async function fetchBlogPosts() {
 function renderBlogPosts(posts) {
   const container = document.getElementById('blog-list');
   if (!container) return;
+
   if (!posts.length) {
     container.innerHTML = `<div class="blog-loading">No articles found. Check back soon!</div>`;
     return;
   }
+
   container.innerHTML = posts.map(post => {
     let authorImg = post.author?.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
       : './logos.png'; // fallback if profile_pic missing
 
     let authorName = post.author?.username || post.author_name || "Sponsor Sorter Team";
-    let chartHtml = '';
-    if (post.custom_chart) {
-      chartHtml = `<canvas class="blog-chart-canvas" id="chart-${post.id}"></canvas>`;
-    }
+    let chartHtml = post.custom_chart ? `<canvas class="blog-chart-canvas" id="chart-${post.id}"></canvas>` : '';
+
     return `
       <div class="blog-card">
-        ${post.cover_image ?
-          `<img src="${post.cover_image}" alt="" class="blog-img" loading="lazy"
-            onerror="handleImgError(event, './logos.png')">`
-          : ''
+        ${post.cover_image ? `
+          <img src="${post.cover_image}" alt="" class="blog-img" loading="lazy"
+               onerror="handleImgError(event, './logos.png')">` : ''
         }
         <div class="blog-meta">
           <img src="${authorImg}" class="blog-author-img" title="${escapeHtml(authorName)}"
-            onerror="handleImgError(event, './logos.png')">
+               onerror="handleImgError(event, './logos.png')">
           <span>${escapeHtml(authorName)}</span>
           <span>🗓️ ${formatDate(post.created_at)}</span>
           <span>📂 ${escapeHtml(post.category || "General")}</span>
@@ -274,6 +307,8 @@ function renderBlogPosts(posts) {
         </div>` : ''}
       </div>`;
   }).join('');
+
+  // Render charts if present
   posts.forEach(post => {
     if (post.custom_chart) {
       try {
@@ -282,6 +317,7 @@ function renderBlogPosts(posts) {
       } catch {}
     }
   });
+
   if (userIsAdmin) {
     document.querySelectorAll('.blog-edit-btn').forEach(btn => {
       btn.onclick = () => openBlogModal(btn.getAttribute('data-id'));
@@ -376,7 +412,8 @@ async function openBlogModal(editId = null) {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('blog-search').addEventListener('input', filterPosts);
   document.getElementById('blog-category').addEventListener('change', filterPosts);
-  document.getElementById('blog-add-btn').addEventListener('click', () => openBlogModal());
+  const addBtn = document.getElementById('blog-add-btn');
+  if (addBtn) addBtn.addEventListener('click', () => openBlogModal());
 });
 
 function escapeHtml(text) {
@@ -419,7 +456,5 @@ window.handleImgError = function(event, fallback = './logos.png') {
 </script>
 
 
-
 </body>
 </html>
-
