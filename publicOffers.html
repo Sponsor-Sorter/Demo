@@ -640,7 +640,7 @@ try {
   // Calculate frontendBaseUrl
   const frontendBaseUrl = window.location.origin.includes('github.io')
     ? 'https://sponsor-sorter.github.io/Demo'
-    : window.location.origin + '/public';
+    : window.location.origin;
 
   const sessionRes = await fetch(STRIPE_BACKEND, {
     method: 'POST',
@@ -673,7 +673,7 @@ try {
   return;
 }
 
-    // After payment, user is redirected to /public/payment-success-public.html
+    // After payment, user is redirected to /payment-success-public.html
   });
 });
 
@@ -800,3 +800,4 @@ document.getElementById('payment').addEventListener('change', autoFillCycles);
 
 </body>
 </html>
+
