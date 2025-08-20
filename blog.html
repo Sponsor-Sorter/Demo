@@ -28,16 +28,15 @@
         <nav class="nav">
           <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html" id="login-logout-link">Login</a></li>
-          <li id="notification-bell-li" style="display:inline;">
-            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-            </button>
-          </li>
-          <li id="settings-cog-li" style="display:inline;position:relative;">
-            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-            </button>
+        <li id="settings-notif-bar" style="display:inline;">
+  <div class="icon-bar-bg">
+    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+    </button>
+    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+    </button>
             <div id="settings-dropdown" class="settings-dropdown">
               <div class="dropdown-arrow"></div>
               <ul>
@@ -60,6 +59,15 @@
       <h1>📚 Blog & Resource Center</h1>
       <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
   </div>
+
+  <!-- Featured section -->
+  <div id="featured-wrap" class="featured-wrap" style="display:none;">
+    <h2 class="featured-title">⭐ Featured</h2>
+    <div id="featured-list" class="featured-list">
+      <div class="blog-loading">Loading featured articles...</div>
+    </div>
+  </div>
+
   <div class="blog-controls">
       <input type="text" id="blog-search" placeholder="Search articles, guides, authors...">
       <select id="blog-category">
@@ -72,6 +80,8 @@
       </select>
       <button id="blog-add-btn" style="display:none;">➕ New Article</button>
   </div>
+
+  <!-- Main list -->
   <div id="blog-list" class="blog-list">
       <div class="blog-loading">Loading articles...</div>
   </div>
@@ -106,6 +116,14 @@
 .blog-hero h1 { color: #36a2eb; margin-bottom: 8px; font-size: 2.3em; }
 .blog-hero p { color: #ccc; font-size: 1.12em; font-weight: 400; }
 
+/* Featured */
+.featured-wrap { max-width: 1200px; margin: 6px auto 18px auto; padding: 0 12px; }
+.featured-title { color: #f6c62e; margin: 0 0 8px 4px; font-size: 1.35em; font-weight: 800; letter-spacing: .3px; }
+.featured-list {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+  gap: 18px;
+}
+
 .blog-controls {
   display: flex; gap: 16px; max-width: 830px;
   margin: 0 auto 22px auto; align-items: center; justify-content: center;
@@ -122,7 +140,7 @@
 }
 .blog-loading { grid-column: 1/-1; color: #aaa; text-align: center; margin: 40px 0; font-size: 1.15em; }
 .blog-card { background: #23232b; border-radius: 14px; box-shadow: 0 2px 16px #0002; padding: 0 0 18px 0;
-  display: flex; flex-direction: column; min-height: 280px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; }
+  display: flex; flex-direction: column; min-height: 280px; transition: transform .12s cubic-bezier(.9,0,.3,1); border: 1.5px solid #323247; position: relative; }
 .blog-card:hover { transform: translateY(-4px) scale(1.018); border-color: #36a2eb; }
 .blog-img { width: 100%; height: 158px; object-fit: cover; border-radius: 14px 14px 0 0; background: #151522; }
 .blog-meta { padding: 13px 18px 0 18px; color: #bbb; font-size: 0.96em; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 4px; }
@@ -134,6 +152,12 @@
 .blog-link { display: inline-block; margin: 12px 0 0 18px; color: #36a2eb; font-weight: 600; font-size: 1em; text-decoration: none; }
 .blog-link:hover { text-decoration: underline; }
 .blog-chart-canvas { max-width:98%; margin: 20px auto 6px auto; display: block; background: #23232b; border-radius: 8px; }
+
+.featured-badge {
+  position: absolute; top: 10px; left: -6px; background: #f6c62e; color: #222;
+  padding: 4px 10px; font-weight: 800; border-radius: 0 8px 8px 0; box-shadow: 0 2px 10px #0006; font-size: .82em;
+}
+
 #blog-modal-root { position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:9000; display:none; }
 #blog-modal-root.active { display:block; }
 .blog-modal-backdrop { position:absolute; left:0; top:0; width:100vw; height:100vh; background:#000c; }
@@ -232,6 +256,8 @@ async function updateNavForSession(session) {
 // Guest prompt renderer
 function showGuestPrompt() {
   const container = document.getElementById('blog-list');
+  const featuredWrap = document.getElementById('featured-wrap');
+  if (featuredWrap) featuredWrap.style.display = 'none';
   if (container) {
     container.innerHTML = `
       <div class="blog-guest-prompt">
@@ -295,7 +321,78 @@ async function fetchBlogPosts() {
     .order('created_at', { ascending: false });
 
   blogPosts = Array.isArray(data) ? data : [];
-  renderBlogPosts(blogPosts);
+
+  // Split featured vs non-featured
+  const featured = blogPosts.filter(p => p.is_featured);
+  const nonFeatured = blogPosts.filter(p => !p.is_featured);
+
+  renderFeaturedPosts(featured);
+  renderBlogPosts(nonFeatured);
+}
+
+function renderFeaturedPosts(posts) {
+  const wrap = document.getElementById('featured-wrap');
+  const container = document.getElementById('featured-list');
+  if (!wrap || !container) return;
+
+  if (!posts.length) {
+    wrap.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+  wrap.style.display = '';
+
+  container.innerHTML = posts.map(post => {
+    const authorImg = post.author?.profile_pic
+      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`
+      : './logos.png';
+
+    const authorName = post.author?.username || post.author_name || 'Sponsor Sorter Team';
+    const chartHtml = post.custom_chart ? `<canvas class="blog-chart-canvas" id="chart-featured-${post.id}"></canvas>` : '';
+
+    return `
+      <div class="blog-card">
+        <div class="featured-badge">FEATURED</div>
+        ${post.cover_image ? `
+          <img src="${post.cover_image}" alt="" class="blog-img" loading="lazy"
+               onerror="handleImgError(event, './logos.png')">` : ''
+        }
+        <div class="blog-meta">
+          <img src="${authorImg}" class="blog-author-img" title="${escapeHtml(authorName)}"
+               onerror="handleImgError(event, './logos.png')">
+          <span>${escapeHtml(authorName)}</span>
+          <span>🗓️ ${formatDate(post.created_at)}</span>
+          <span>📂 ${escapeHtml(post.category || 'General')}</span>
+        </div>
+        <div class="blog-title">${escapeHtml(post.title)}</div>
+        <div class="blog-excerpt">${escapeHtml(post.excerpt || truncate(post.content, 160))}</div>
+        <div class="blog-tags">
+          ${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHtml(tag)}</span>`).join('')}
+        </div>
+        <a href="blog-article.html?id=${encodeURIComponent(post.id)}" class="blog-link">Read More &rarr;</a>
+        ${chartHtml}
+        ${userIsAdmin ? `<div style="text-align:right;padding-right:14px;">
+          <button class="blog-edit-btn" data-id="${post.id}" style="margin-top:4px;">Edit</button>
+        </div>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  // Render charts if present
+  posts.forEach(post => {
+    if (post.custom_chart) {
+      try {
+        const ctx = document.getElementById(`chart-featured-${post.id}`);
+        if (ctx) new Chart(ctx, post.custom_chart);
+      } catch {}
+    }
+  });
+
+  if (userIsAdmin) {
+    document.querySelectorAll('.blog-edit-btn').forEach(btn => {
+      btn.onclick = () => openBlogModal(btn.getAttribute('data-id'));
+    });
+  }
 }
 
 function renderBlogPosts(posts) {
@@ -317,6 +414,7 @@ function renderBlogPosts(posts) {
 
     return `
       <div class="blog-card">
+        ${post.is_featured ? `<div class="featured-badge">FEATURED</div>` : ''}
         ${post.cover_image ? `
           <img src="${post.cover_image}" alt="" class="blog-img" loading="lazy"
                onerror="handleImgError(event, './logos.png')">` : ''
@@ -481,7 +579,12 @@ function filterPosts() {
       (Array.isArray(post.tags) && post.tags.join(' ').toLowerCase().includes(searchVal));
     return inCat && inSearch;
   });
-  renderBlogPosts(filteredPosts);
+
+  const featured = filteredPosts.filter(p => p.is_featured);
+  const nonFeatured = filteredPosts.filter(p => !p.is_featured);
+
+  renderFeaturedPosts(featured);
+  renderBlogPosts(nonFeatured);
 }
 
 // Universal image error handler for blog covers and author pics
