@@ -7,7 +7,43 @@
   <title>User Reviews | Sponsor Sorter</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  
+  <style>
+    /* === Keep stars centered, but FIX their left-to-right order === */
+
+    /* Summary (average) */
+    .reviews-summary-block { text-align: center; }
+    .reviews-summary-block .summary-avg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Interactive input row */
+    #star-input.star-rating {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      flex-direction: row !important;  /* <- force LTR order */
+      direction: ltr !important;       /* <- ignore any global RTL */
+      unicode-bidi: isolate;
+    }
+    #star-input.star-rating span {
+      display: inline-block;
+      float: none !important;          /* <- neutralize float-based hacks */
+      order: 0 !important;             /* <- neutralize row-reverse/order hacks */
+      cursor: pointer;
+      font-size: 1.4em;
+      line-height: 1;
+      color: #9aa0a6;                  /* base (unfilled) */
+      transition: transform .05s ease;
+    }
+    #star-input.star-rating span.filled { color: #f5c518; } /* filled = gold */
+    #star-input.star-rating span:hover { transform: scale(1.06); }
+    /* If a global CSS tries to color “following siblings”, cancel it */
+    #star-input.star-rating span:hover ~ span { color: #9aa0a6 !important; }
+  </style>
 </head>
 <body>
   <header class="navbar1">
@@ -19,8 +55,9 @@
           <nav>
             <li><a href="index.html">Home</a></li>
             <li><a href="finder.html">Finder</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="signup.html">Signup</a></li>
+            <!-- Give the auth links stable IDs so we can safely update them -->
+            <li><a href="login.html" id="login-link">Login</a></li>
+            <li><a href="signup.html" id="signup-link">Signup</a></li>
           </nav>
         </div>
       </div>
@@ -61,18 +98,28 @@
     <h2 style="margin-bottom:8px;">What users are saying:</h2>
     <div id="reviews-list" class="reviews-list"></div>
   </div>
-  <footer class="footercomplete" style="margin-top:30px;">
-    <div class="footer-text">
-      <ul>
-        <li><a href="/Demo/help.html">Help</a></li>
-        <li><a href="/Demo/contact.html">Contact</a></li>
-        <li><a href="/Demo/privacy.html">Privacy Policy</a></li>
-        <li><a href="/Demo/terms.html">Terms of Service</a></li>
-      </ul>
-    </div>
-    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
-  </footer>
+    <!-- FOOTER -->
+    <footer class="footercomplete">
+        <div class="footer-text">
+            <ul>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./forum.html">Forum</a></li>
+                <li><a href="./stats.html">Stats</a></li>
+
+            </ul>
+        </div>
+        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+        
+        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+        </div>
+    </footer>
   <script type="module">
     import { supabase } from './js/supabaseClient.js';
     import { getActiveUser } from './js/impersonationHelper.js';
@@ -81,6 +128,47 @@
       'admin@example.com',
       // Add other admin emails here, or use a Supabase is_admin field
     ];
+
+    // --- Minimal, safe “smart nav”: mutate the two existing links only ---
+    async function setupSmartNav() {
+      try {
+        const loginA  = document.getElementById('login-link');
+        const signupA = document.getElementById('signup-link');
+        if (!loginA || !signupA) return;
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return; // stay as Login/Signup
+
+        // Decide dashboard by userType (metadata -> users_extended_data)
+        let dashUrl = 'dashboardsponsee.html';
+        let t = session.user.user_metadata?.userType;
+        if (!t) {
+          const { data: row } = await supabase
+            .from('users_extended_data')
+            .select('userType')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+          t = row?.userType;
+        }
+        const role = (t || '').toLowerCase();
+        if (role === 'sponsor') dashUrl = 'dashboardsponsor.html';
+        else if (role === 'admin') dashUrl = 'admindashboard.html';
+
+        // Swap texts/targets (no DOM replacement)
+        loginA.textContent = 'Dashboard';
+        loginA.setAttribute('href', dashUrl);
+
+        signupA.textContent = 'Logout';
+        signupA.setAttribute('href', '#');
+        signupA.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try { await supabase.auth.signOut(); }
+          finally { window.location.href = 'login.html'; }
+        }, { once: true });
+      } catch (_) {
+        // Silently ignore nav issues to avoid breaking the page
+      }
+    }
 
     let currentRating = 0, currentUser = null;
 
@@ -94,6 +182,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+      // Smart nav: run once on load
+      await setupSmartNav();
+      // Also update if auth state changes later
+      try { supabase.auth.onAuthStateChange(setupSmartNav); } catch {}
+
       // --- Setup User ---
       try { currentUser = await getActiveUser(); } catch {}
       // --- Show/hide review form if logged in ---
