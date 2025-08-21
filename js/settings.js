@@ -619,7 +619,7 @@ if (connectYouTubeBtn && oauthModal && oauthCloseBtn) {
     // Build Google OAuth URL (replace CLIENT_ID and REDIRECT_URI below if needed)
     const params = new URLSearchParams({
       client_id: '198536620935-fq5dch116tc0dc11v81bbt720m5f0216.apps.googleusercontent.com',
-      redirect_uri: window.location.origin + '/public/oauth2callback.html', // Or /Demo/oauth2callback.html if on GitHub Pages
+      redirect_uri: window.location.origin + '/oauth2callback.html', // Or /Demo/oauth2callback.html if on GitHub Pages
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/youtube.readonly openid email profile',
       access_type: 'offline',
@@ -959,3 +959,4 @@ if (emailAlertToggle) {
 }
 
 });
+
