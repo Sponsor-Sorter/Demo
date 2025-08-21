@@ -611,36 +611,48 @@ const oauthModal = document.getElementById('youtube-oauth-modal');
 const oauthMsg = document.getElementById('youtube-oauth-modal-msg');
 const oauthCloseBtn = document.getElementById('close-youtube-oauth-modal');
 
+function getGoogleRedirectUri() {
+  const base = window.location.origin;
+  const path = window.location.pathname;
+
+  // GitHub Pages demo
+  if (path.includes('/Demo/')) {
+    return `${base}/Demo/oauth2callback.html`;
+  }
+
+  // Local dev served from VS Code Live Server / static server
+  if (base.includes('127.0.0.1:5500') || base.includes('localhost:5500')) {
+    return `${base}/public/oauth2callback.html`;
+  }
+
+  // Production sponsorsorter.com
+  return `${base}/oauth2callback.html`;
+}
+
 if (connectYouTubeBtn && oauthModal && oauthCloseBtn) {
   connectYouTubeBtn.onclick = async () => {
     oauthMsg.innerHTML = 'Connecting...';
     oauthModal.style.display = 'block';
 
-    // Build Google OAuth URL (replace CLIENT_ID and REDIRECT_URI below if needed)
+    const redirectUri = getGoogleRedirectUri();
     const params = new URLSearchParams({
       client_id: '198536620935-fq5dch116tc0dc11v81bbt720m5f0216.apps.googleusercontent.com',
-      redirect_uri: window.location.origin + '/oauth2callback.html', // Or /Demo/oauth2callback.html if on GitHub Pages
+      redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/youtube.readonly openid email profile',
       access_type: 'offline',
       prompt: 'consent'
     });
 
-    // In case you're on /Demo/ folder (GitHub Pages), auto-adjust the redirect URI:
-    if (window.location.pathname.includes('/Demo/')) {
-      params.set('redirect_uri', window.location.origin + '/Demo/oauth2callback.html');
-    }
-
-    // Open the OAuth URL in a new tab/window
     window.open(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`, '_blank');
     oauthMsg.innerHTML = 'A new tab has opened. Please finish connecting your YouTube account there.<br>After approving, return here!';
   };
 
-  // Close modal by X or button
   oauthCloseBtn.onclick = () => {
     oauthModal.style.display = 'none';
   };
 }
+
 
 // Also allow click outside modal to close
 oauthModal?.addEventListener('mousedown', (e) => {
@@ -959,4 +971,3 @@ if (emailAlertToggle) {
 }
 
 });
-
