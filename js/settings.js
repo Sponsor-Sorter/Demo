@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Pop open Twitch authorize URL with CSRF + provider in `state`
   function launchTwitchOAuth() {
-    const TWITCH_CLIENT_ID = 'mb99fgqpca3iyng8y79n362ogroxd7'; // replace if you change the app
+    const TWITCH_CLIENT_ID = 'mb99fqgpca3jyng8y79n362ogroxd7'; // replace if you change the app
     const redirect = getTwitchRedirectUri();
     const scopes = ['user:read:email']; // keep minimal; extend later
 
@@ -1070,3 +1070,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadEmailAlertSetting();
   }
 });
+
