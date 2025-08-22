@@ -339,6 +339,50 @@
   </div>
 </div>
 
+<!-- twitch stats -->
+<div class="twitch-stats-card" id="twitch-stats-block" style="
+  display:none;
+ padding:24px 22px;
+  background:#5e5e5e;
+  border-radius:16px;
+  box-shadow:0 5px 9px #9046ff87;
+  max-width: 550px;
+  margin: 0 auto 16px auto;
+  color: #fff;
+">
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+    <img id="tw-profile-pic" src="twitchlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+    <div>
+      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+        <img src="twitchlogo.png" alt="Twitch" style="height:26px;vertical-align:-4px;margin-right:6px;">
+        <span id="tw-display-name">Loading…</span>
+        <span id="tw-login" style="margin-left:8px;font-size:.9em;color:#dcd3ff;">(@login)</span>
+      </h2>
+      <span id="tw-bio" style="font-size:0.97em;color:#ffd;">Channel bio…</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+    <div><b>Followers:</b> <span id="tw-followers">-</span></div>
+    <div id="tw-created-wrap"><b>Created:</b> <span id="tw-created">-</span></div>
+    <div><b>Status:</b> <span id="tw-live-status">-</span></div>
+    <div id="tw-viewers-wrap" style="display:none;"><b>Viewers:</b> <span id="tw-viewers">-</span></div>
+  </div>
+
+  <div id="tw-last-stream-row" style="margin-top:14px;display:none;">
+    <b>Current/Last Stream:</b>
+    <span id="tw-stream-title" style="margin-left:6px;">Title</span>
+    <span id="tw-stream-started" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+      <img id="tw-stream-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+      <div style="font-size:0.97em;">
+        <div>Game: <span id="tw-game-name">-</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
     </fieldset>
@@ -694,4 +738,3 @@
 
 </body>
 </html>
-
