@@ -163,7 +163,7 @@ async function loadRecentActivity() {
     rows.push(`
       <tr>
         <td style="text-align: center;">
-          <img src="${sponsorPicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsor Pic" style="width: 36px; height: 36px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          <img src="${sponsorPicUrl}" onerror="this.src='./logos.png'" alt="Sponsor Pic" style="width: 36px; height: 36px; border-radius: 50%; display: block; margin: 0 auto 5px;">
           ${offer.sponsor_username}
         </td>
         <td style="color: ${
@@ -291,7 +291,7 @@ async function loadArchivedDeals() {
     rows.push(`
       <tr data-offer-id="${offer.id}">
         <td style="text-align: center;">
-          <img src="${profilePicUrl}" onerror="this.src='/public/logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+          <img src="${profilePicUrl}" onerror="this.src='./logos.png'" alt="Profile Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
           ${offer.sponsor_username}
         </td>
         <td>$${Number(offer.offer_amount).toFixed(2)}</td>
@@ -369,6 +369,7 @@ async function updateOverallStars() {
   if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
 }
 
+// ----- YOUTUBE -----
 async function loadYouTubeStats() {
   const { data: { session } } = await supabase.auth.getSession();
   const jwt = session?.access_token;
@@ -380,7 +381,7 @@ async function loadYouTubeStats() {
   if (data.success && data.stats) {
     // Main info
     document.getElementById('yt-channel-title').innerText = data.snippet.title;
-    document.getElementById('yt-channel-desc').innerText = data.snippet.description?.slice(0, 120) + '…';
+    document.getElementById('yt-channel-desc').innerText = (data.snippet.description || '').slice(0, 120) + (data.snippet.description?.length > 120 ? '…' : '');
     document.getElementById('yt-subs').innerText = data.stats.subscriberCount;
     document.getElementById('yt-views').innerText = data.stats.viewCount;
     document.getElementById('yt-videos').innerText = data.stats.videoCount;
@@ -395,7 +396,7 @@ async function loadYouTubeStats() {
       document.getElementById('yt-banner-row').style.display = "none";
     }
 
-    // Latest video (optional, if included in your function)
+    // Latest video (optional)
     if (data.lastVideo) {
       document.getElementById('yt-last-video-title').innerText = data.lastVideo.title;
       document.getElementById('yt-last-video-link').href = "https://youtube.com/watch?v=" + data.lastVideo.id;
@@ -420,6 +421,107 @@ async function loadYouTubeStats() {
   }
 }
 
+// ----- TWITCH -----
+async function loadTwitchStats() {
+  const twEls = {
+    block: document.getElementById('twitch-stats-block'),
+    name: document.getElementById('tw-display-name'),
+    login: document.getElementById('tw-login'),
+    bio: document.getElementById('tw-bio'),
+    followers: document.getElementById('tw-followers'),
+    created: document.getElementById('tw-created'),
+    createdWrap: document.getElementById('tw-created-wrap'),
+    live: document.getElementById('tw-live-status'),
+    viewersWrap: document.getElementById('tw-viewers-wrap'),
+    viewers: document.getElementById('tw-viewers'),
+    streamRow: document.getElementById('tw-last-stream-row'),
+    streamTitle: document.getElementById('tw-stream-title'),
+    streamStarted: document.getElementById('tw-stream-started'),
+    streamThumb: document.getElementById('tw-stream-thumb'),
+    gameName: document.getElementById('tw-game-name'),
+    pic: document.getElementById('tw-profile-pic'),
+  };
+  if (!twEls.block) return;
+
+  // Loading state
+  twEls.name.textContent = 'Loading…';
+  twEls.login.textContent = '(@login)';
+  twEls.bio.textContent = '';
+  twEls.followers.textContent = '-';
+  twEls.created.textContent = '-';
+  twEls.live.textContent = '-';
+  twEls.viewersWrap.style.display = 'none';
+  twEls.streamRow.style.display = 'none';
+  twEls.pic.src = 'twitchlogo.png';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-stats', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${jwt}` }
+    });
+    const data = await resp.json();
+
+    if (!resp.ok || !data?.success) throw new Error(data?.error || 'Failed');
+
+    const u = data.user || {};
+    twEls.name.textContent = u.display_name || u.login || 'Unknown';
+    twEls.login.textContent = u.login ? `(@${u.login})` : '';
+    twEls.bio.textContent = (u.description || '').slice(0, 140) + ((u.description || '').length > 140 ? '…' : '');
+    if (u.profile_image_url) twEls.pic.src = u.profile_image_url;
+
+    if (data.followers != null) twEls.followers.textContent = data.followers.toLocaleString();
+    if (u.created_at) {
+      twEls.created.textContent = new Date(u.created_at).toLocaleDateString();
+      twEls.createdWrap.style.display = '';
+    } else {
+      twEls.createdWrap.style.display = 'none';
+    }
+
+    // Stream info
+    const s = data.stream || {};
+    const isLive = !!s.is_live;
+    twEls.live.textContent = isLive ? 'LIVE' : 'Offline';
+    twEls.live.style.color = isLive ? '#32e232' : '#ffd';
+    if (isLive) {
+      if (s.viewer_count != null) {
+        twEls.viewers.textContent = s.viewer_count.toLocaleString();
+        twEls.viewersWrap.style.display = '';
+      } else {
+        twEls.viewersWrap.style.display = 'none';
+      }
+      twEls.streamTitle.textContent = s.title || 'Untitled stream';
+      twEls.streamStarted.textContent = s.started_at ? new Date(s.started_at).toLocaleString([], {hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}) : '';
+      twEls.gameName.textContent = s.game_name || '-';
+      if (s.thumbnail_url) twEls.streamThumb.src = s.thumbnail_url;
+      twEls.streamRow.style.display = '';
+    } else if (s.title || s.thumbnail_url) {
+      // Last stream fallback (if your function sends it)
+      twEls.streamTitle.textContent = s.title || 'Last stream';
+      if (s.started_at) twEls.streamStarted.textContent = new Date(s.started_at).toLocaleDateString();
+      if (s.thumbnail_url) twEls.streamThumb.src = s.thumbnail_url;
+      twEls.gameName.textContent = s.game_name || '-';
+      twEls.streamRow.style.display = '';
+      twEls.viewersWrap.style.display = 'none';
+    } else {
+      twEls.streamRow.style.display = 'none';
+      twEls.viewersWrap.style.display = 'none';
+    }
+  } catch (e) {
+    // Error state
+    twEls.name.textContent = 'Not linked or error.';
+    twEls.login.textContent = '';
+    twEls.bio.textContent = '';
+    twEls.followers.textContent = '-';
+    twEls.created.textContent = '-';
+    twEls.live.textContent = '-';
+    twEls.viewersWrap.style.display = 'none';
+    twEls.streamRow.style.display = 'none';
+    twEls.pic.src = 'twitchlogo.png';
+  }
+}
+
 // ----- DOMContentLoaded EVENTS -----
 document.addEventListener("DOMContentLoaded", async () => {
   updateSummaryStats();
@@ -430,25 +532,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCategoryStars('punctuality', 'punctuality-stars');
   updateCategoryStars('work_output', 'work-output-stars');
 
-  // -- Only show/fetch YouTube stats if user is connected! --
+  // -- Only show/fetch platform stats if user is connected! --
   const { data: { session } } = await supabase.auth.getSession();
   const userId = session?.user?.id;
   if (!userId) return;
 
-  // Fetch youtube_connected for this user
   let youtubeConnected = false;
+  let twitchConnected = false;
   try {
     const { data: userData } = await supabase
       .from('users_extended_data')
-      .select('youtube_connected')
+      .select('youtube_connected, twitch_connected')
       .eq('user_id', userId)
       .single();
     youtubeConnected = !!userData?.youtube_connected;
+    twitchConnected = !!userData?.twitch_connected;
   } catch {
     youtubeConnected = false;
+    twitchConnected = false;
   }
 
-  // Only show/fetch if connected
+  // YouTube
   const ytBlock = document.getElementById('youtube-stats-block');
   if (ytBlock) {
     if (youtubeConnected) {
@@ -458,5 +562,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       ytBlock.style.display = 'none';
     }
   }
-});
 
+  // Twitch
+  const twBlock = document.getElementById('twitch-stats-block');
+  if (twBlock) {
+    if (twitchConnected) {
+      twBlock.style.display = 'block';
+      loadTwitchStats();
+    } else {
+      twBlock.style.display = 'none';
+    }
+  }
+});
