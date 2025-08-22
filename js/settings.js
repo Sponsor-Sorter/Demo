@@ -658,18 +658,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Listen for OAuth popup success (YouTube) ---
   window.addEventListener('message', async (event) => {
-    // Allow all origins here for local/dev, restrict to your domains in prod if needed
     if (event.data && event.data.youtubeConnected === true) {
-      // Show a notification
       showYouTubeSuccessNotification();
-
-      // Optional: refresh the user's data from Supabase to get new youtube_connected status
-      currentUser = await getActiveUser(true); // Use true if your getActiveUser supports force refresh
-
-      // If you have a UI element that shows the YouTube link status, update it here
+      currentUser = await getActiveUser(true);
       updateYouTubeStatusUI?.(true);
-
-      // Hide the modal if it's still open
       const oauthModal = document.getElementById('youtube-oauth-modal');
       if (oauthModal) oauthModal.style.display = 'none';
     }
@@ -723,14 +715,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `${base}/oauth2callback.html`;
   }
 
-  // Pop open Twitch authorize URL with CSRF + provider in `state`
   function launchTwitchOAuth() {
-    const TWITCH_CLIENT_ID = 'mb99fqgpca3jyng8y79n362ogroxd7'; // replace if you change the app
+    const TWITCH_CLIENT_ID = 'mb99fqgpca3jyng8y79n362ogroxd7'; // exact from Twitch console
     const redirect = getTwitchRedirectUri();
-    const scopes = ['user:read:email']; // keep minimal; extend later
+    const scopes = ['user:read:email'];
 
     // CSRF
-    const csrf = crypto.getRandomValues(new Uint8Array(16)).join('');
+    const buf = new Uint8Array(16);
+    crypto.getRandomValues(buf);
+    const csrf = Array.from(buf).map(x => x.toString(16).padStart(2, '0')).join('');
     localStorage.setItem('oauth_csrf', csrf);
 
     const u = new URL('https://id.twitch.tv/oauth2/authorize');
@@ -739,7 +732,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     u.searchParams.set('response_type', 'code');
     u.searchParams.set('scope', scopes.join(' '));
     u.searchParams.set('force_verify', 'true');
-    // IMPORTANT: provider prefix so oauth-handler knows which Edge Function to call
+    // provider prefix so oauth-handler knows which Edge Function to call
     u.searchParams.set('state', `twitch:${csrf}`);
 
     window.open(u.toString(), '_blank', 'noopener');
@@ -795,7 +788,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     {
       key: "twitter",
       name: "X (Twitter)",
-      logo: "./twitterlogo.png", // Use xlogo.png or twitterlogo.png
+      logo: "./twitterlogo.png",
       badgeId: "twitter-status-badge"
     },
     {
@@ -813,28 +806,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add more platforms here as needed
   ];
 
-  // Helpers to detect connected status (Twitch via social_handles.twitch)
-  function parseSocialHandles(maybeJson) {
-    try {
-      if (!maybeJson) return {};
-      if (typeof maybeJson === 'string') return JSON.parse(maybeJson);
-      if (typeof maybeJson === 'object') return maybeJson || {};
-    } catch (_) {}
-    return {};
-  }
   function isPlatformConnected(user, key) {
     if (!user) return false;
-
-    // YouTube uses a dedicated boolean column in your schema
-    if (key === 'youtube') {
-      return user.youtube_connected === true;
-    }
-    // Twitch stored inside social_handles JSON
-    if (key === 'twitch') {
-      const social = parseSocialHandles(user.social_handles);
-      return !!(social?.twitch && (social.twitch.access_token || social.twitch.twitch_user_id));
-    }
-    // Defaults for future platforms
+    if (key === 'youtube') return user.youtube_connected === true;
+    if (key === 'twitch') return user.twitch_connected === true;
     return user[`${key}_connected`] === true;
   }
 
@@ -874,7 +849,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             // --- DISCONNECT YOUTUBE ---
             btn.innerText = "Disconnecting...";
             btn.disabled = true;
-            // Wipe tokens in DB
             const { error } = await supabase
               .from("users_extended_data")
               .update({
@@ -906,21 +880,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         else if (plat === "twitch") {
-          const social = parseSocialHandles(user.social_handles);
-          const isLinked = !!social?.twitch;
-
-          if (isLinked) {
+          if (user.twitch_connected) {
             // --- DISCONNECT TWITCH ---
             btn.innerText = "Disconnecting...";
             btn.disabled = true;
 
-            // Remove twitch object from social_handles JSON
-            const nextSocial = { ...social };
-            delete nextSocial.twitch;
-
             const { error } = await supabase
               .from('users_extended_data')
-              .update({ social_handles: nextSocial })
+              .update({
+                twitch_access_token: null,
+                twitch_refresh_token: null,
+                twitch_token_expiry: null,
+                twitch_connected: false
+              })
               .eq('user_id', user.user_id);
 
             if (!error) {
@@ -936,7 +908,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           } else {
             // --- CONNECT TWITCH ---
-            launchTwitchOAuth();        // open Twitch popup
+            launchTwitchOAuth();                  // open Twitch popup
             oauthLinkModal.style.display = "none"; // close the picker while user authorizes
           }
         }
@@ -1070,4 +1042,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadEmailAlertSetting();
   }
 });
-
