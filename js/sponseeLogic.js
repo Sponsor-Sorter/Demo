@@ -1,6 +1,9 @@
 // public/js/sponseeLogic.js
 import { supabase } from './supabaseClient.js';
 
+/* =========================
+   Helpers
+========================= */
 // ----- RENDER GOLD STARS -----
 function renderStars(rating) {
   let out = '';
@@ -10,6 +13,19 @@ function renderStars(rating) {
   return out;
 }
 
+// Format seconds as H:MM:SS or M:SS
+function fmtDuration(totalSec) {
+  if (!Number.isFinite(totalSec) || totalSec <= 0) return null;
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = Math.floor(totalSec % 60);
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/* =========================
+   Category Stars
+========================= */
 async function updateCategoryStars(category, elementId) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) return;
@@ -21,8 +37,9 @@ async function updateCategoryStars(category, elementId) {
     .select('id')
     .eq('sponsee_email', sponseeEmail);
 
+  const starsEl = document.getElementById(elementId);
+
   if (!offers || offers.length === 0) {
-    const starsEl = document.getElementById(elementId);
     if (starsEl) starsEl.innerHTML = renderStars(0);
     return;
   }
@@ -39,7 +56,7 @@ async function updateCategoryStars(category, elementId) {
       .eq('reviewer_role', 'sponsor');
     if (reviews) allCategoryRatings = allCategoryRatings.concat(reviews);
   }
-  const starsEl = document.getElementById(elementId);
+
   if (!allCategoryRatings.length) {
     if (starsEl) starsEl.innerHTML = renderStars(0);
     return;
@@ -48,9 +65,11 @@ async function updateCategoryStars(category, elementId) {
   if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
 }
 
-// ----- SUMMARY STAT CARDS -----
+/* =========================
+   Summary Stat Cards
+========================= */
 async function updateSummaryStats() {
-  // Set "loading..." state to avoid blank cards
+  // Set "loading..." state
   document.getElementById('active-sponsorships').textContent = '…';
   document.getElementById('completed-deals').textContent = '…';
   document.getElementById('total-earnings').textContent = '…';
@@ -91,7 +110,7 @@ async function updateSummaryStats() {
   const totalEarnings = validIncome.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
   document.getElementById('total-earnings').textContent = `$${totalEarnings.toFixed(2)}`;
 
-  // ---- LIFETIME SUCCESS RATIO ----
+  // Lifetime success ratio
   const successfulOffers = offers.filter(o =>
     ['accepted', 'in_progress', 'live', 'review_completed', 'completed'].includes(o.status)
   ).length;
@@ -108,7 +127,9 @@ async function updateSummaryStats() {
   if (ratioEl) ratioEl.textContent = ratioText;
 }
 
-// ----- RECENT ACTIVITY TABLE -----
+/* =========================
+   Recent Activity
+========================= */
 async function loadRecentActivity() {
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session || !session.user) {
@@ -136,7 +157,7 @@ async function loadRecentActivity() {
     return;
   }
 
-  // Get unique sponsor usernames for batch fetch
+  // Batch fetch sponsor pics
   const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
@@ -154,7 +175,6 @@ async function loadRecentActivity() {
     }
   }
 
-  // Filter out review_completed status
   const rows = [];
   for (const offer of offers) {
     if (offer.status === 'review_completed') continue;
@@ -187,44 +207,46 @@ async function loadRecentActivity() {
   function renderTable() {
     tableBody.innerHTML = '';
     const visibleRows = collapsed ? rows.slice(0, 10) : rows;
-    visibleRows.forEach(row => tableBody.innerHTML += row);
+    visibleRows.forEach(row => (tableBody.innerHTML += row));
     let btn = document.getElementById('expand-recent-btn');
     if (!btn && rows.length > 10) {
       btn = document.createElement('button');
       btn.id = 'expand-recent-btn';
-      btn.style.marginTop = "10px";
-      btn.textContent = "Show More";
+      btn.style.marginTop = '10px';
+      btn.textContent = 'Show More';
       btn.onclick = () => {
         collapsed = !collapsed;
-        btn.textContent = collapsed ? "Show More" : "Show Less";
+        btn.textContent = collapsed ? 'Show More' : 'Show Less';
         renderTable();
       };
       tableBody.parentElement.appendChild(btn);
     } else if (btn && rows.length <= 10) {
       btn.remove();
     } else if (btn) {
-      btn.textContent = collapsed ? "Show More" : "Show Less";
+      btn.textContent = collapsed ? 'Show More' : 'Show Less';
     }
   }
   renderTable();
 }
 
-// ----- ARCHIVED/HISTORY TABLE -----
+/* =========================
+   Archived / History
+========================= */
 async function loadArchivedDeals() {
   const { data: sessionData } = await supabase.auth.getSession();
   if (!sessionData?.session?.user) return;
   const userEmail = sessionData.session.user.email;
 
   const { data: offers, error } = await supabase
-    .from("private_offers")
-    .select("id, sponsor_username, offer_amount, created_at, live_date, deadline")
-    .eq("archived", true)
-    .eq("sponsee_email", userEmail)
-    .order("created_at", { ascending: false });
+    .from('private_offers')
+    .select('id, sponsor_username, offer_amount, created_at, live_date, deadline')
+    .eq('archived', true)
+    .eq('sponsee_email', userEmail)
+    .order('created_at', { ascending: false });
 
-  const archivedTableBody = document.getElementById("archived-table-body");
+  const archivedTableBody = document.getElementById('archived-table-body');
   if (!archivedTableBody) return;
-  archivedTableBody.innerHTML = "";
+  archivedTableBody.innerHTML = '';
 
   const oldBtn = document.getElementById('expand-archived-btn');
   if (oldBtn) oldBtn.remove();
@@ -238,7 +260,7 @@ async function loadArchivedDeals() {
     return;
   }
 
-  // Get unique sponsor usernames for batch fetch
+  // Batch sponsor pics
   const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
@@ -256,14 +278,14 @@ async function loadArchivedDeals() {
     }
   }
 
-  // Get all reviews in one go for these offer ids
+  // Batch reviews
   const offerIds = offers.map(o => o.id);
   let reviewsByOffer = {};
   if (offerIds.length > 0) {
     const { data: reviews } = await supabase
-      .from("private_offer_reviews")
-      .select("offer_id, reviewer_role, overall")
-      .in("offer_id", offerIds);
+      .from('private_offer_reviews')
+      .select('offer_id, reviewer_role, overall')
+      .in('offer_id', offerIds);
     if (reviews && Array.isArray(reviews)) {
       reviewsByOffer = reviews.reduce((acc, r) => {
         if (!acc[r.offer_id]) acc[r.offer_id] = {};
@@ -275,15 +297,17 @@ async function loadArchivedDeals() {
 
   const rows = [];
   for (const offer of offers) {
-    const profilePicUrl = sponsorPics[offer.sponsor_username] || 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
+    const profilePicUrl =
+      sponsorPics[offer.sponsor_username] ||
+      'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
 
     // Ratings
-    let sponsorRatingDisplay = "—";
+    let sponsorRatingDisplay = '—';
     if (reviewsByOffer[offer.id] && reviewsByOffer[offer.id]['sponsor']) {
       sponsorRatingDisplay = renderStars(Math.round(reviewsByOffer[offer.id]['sponsor']));
     }
 
-    let sponseeRatingDisplay = "—";
+    let sponseeRatingDisplay = '—';
     if (reviewsByOffer[offer.id] && reviewsByOffer[offer.id]['sponsee']) {
       sponseeRatingDisplay = renderStars(Math.round(reviewsByOffer[offer.id]['sponsee']));
     }
@@ -306,46 +330,50 @@ async function loadArchivedDeals() {
 
   let collapsed = true;
   function renderTable() {
-    archivedTableBody.innerHTML = "";
+    archivedTableBody.innerHTML = '';
     const visibleRows = collapsed ? rows.slice(0, 10) : rows;
-    visibleRows.forEach(row => archivedTableBody.innerHTML += row);
+    visibleRows.forEach(row => (archivedTableBody.innerHTML += row));
     let btn = document.getElementById('expand-archived-btn');
     if (!btn && rows.length > 10) {
       btn = document.createElement('button');
       btn.id = 'expand-archived-btn';
-      btn.style.marginTop = "10px";
-      btn.textContent = "Show More";
+      btn.style.marginTop = '10px';
+      btn.textContent = 'Show More';
       btn.onclick = () => {
         collapsed = !collapsed;
-        btn.textContent = collapsed ? "Show More" : "Show Less";
+        btn.textContent = collapsed ? 'Show More' : 'Show Less';
         renderTable();
       };
       archivedTableBody.parentElement.appendChild(btn);
     } else if (btn && rows.length <= 10) {
       btn.remove();
     } else if (btn) {
-      btn.textContent = collapsed ? "Show More" : "Show Less";
+      btn.textContent = collapsed ? 'Show More' : 'Show Less';
     }
   }
   renderTable();
 }
 
-// ----- OVERALL STAR RATING (Profile) -----
+/* =========================
+   Overall Stars (Profile)
+========================= */
 async function updateOverallStars() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) return;
   const sponseeEmail = session.user.email;
 
-  // Get all offers where this user was the sponsee
   const { data: offers, error: offerError } = await supabase
     .from('private_offers')
     .select('id')
     .eq('sponsee_email', sponseeEmail);
+
+  const starsEl = document.getElementById('average-stars');
+
   if (offerError || !offers || offers.length === 0) {
-    const starsEl = document.getElementById('average-stars');
     if (starsEl) starsEl.innerHTML = renderStars(0);
     return;
   }
+
   const offerIds = offers.map(o => o.id);
 
   // Fetch all sponsor reviews in batch
@@ -360,7 +388,7 @@ async function updateOverallStars() {
     if (reviewError) continue;
     allSponsorReviews = allSponsorReviews.concat(reviews);
   }
-  const starsEl = document.getElementById('average-stars');
+
   if (!allSponsorReviews.length) {
     if (starsEl) starsEl.innerHTML = renderStars(0);
     return;
@@ -369,7 +397,9 @@ async function updateOverallStars() {
   if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
 }
 
-// ----- YOUTUBE -----
+/* =========================
+   YouTube Stats
+========================= */
 async function loadYouTubeStats() {
   const { data: { session } } = await supabase.auth.getSession();
   const jwt = session?.access_token;
@@ -385,43 +415,62 @@ async function loadYouTubeStats() {
     document.getElementById('yt-subs').innerText = data.stats.subscriberCount;
     document.getElementById('yt-views').innerText = data.stats.viewCount;
     document.getElementById('yt-videos').innerText = data.stats.videoCount;
-    document.getElementById('yt-profile-pic').src = data.snippet.thumbnails?.default?.url || "youtubelogo.png";
+    document.getElementById('yt-profile-pic').src = data.snippet.thumbnails?.default?.url || 'youtubelogo.png';
     document.getElementById('yt-created').innerText = (new Date(data.snippet.publishedAt)).toLocaleDateString();
 
     // Banner
     if (data.branding?.image?.bannerExternalUrl) {
       document.getElementById('yt-banner').src = data.branding.image.bannerExternalUrl;
-      document.getElementById('yt-banner-row').style.display = "";
+      document.getElementById('yt-banner-row').style.display = '';
     } else {
-      document.getElementById('yt-banner-row').style.display = "none";
+      document.getElementById('yt-banner-row').style.display = 'none';
     }
 
     // Latest video (optional)
     if (data.lastVideo) {
       document.getElementById('yt-last-video-title').innerText = data.lastVideo.title;
-      document.getElementById('yt-last-video-link').href = "https://youtube.com/watch?v=" + data.lastVideo.id;
+      document.getElementById('yt-last-video-link').href = 'https://youtube.com/watch?v=' + data.lastVideo.id;
       document.getElementById('yt-last-video-published').innerText = (new Date(data.lastVideo.publishedAt)).toLocaleDateString();
       document.getElementById('yt-last-video-thumb').src = data.lastVideo.thumbnail;
-      document.getElementById('yt-last-video-views').innerText = data.lastVideo.views || "-";
-      document.getElementById('yt-last-video-row').style.display = "";
+      document.getElementById('yt-last-video-views').innerText = data.lastVideo.views || '-';
+      document.getElementById('yt-last-video-row').style.display = '';
     } else {
-      document.getElementById('yt-last-video-row').style.display = "none";
+      document.getElementById('yt-last-video-row').style.display = 'none';
     }
   } else {
-    // Not connected, error, etc
-    document.getElementById('yt-channel-title').innerText = "Not linked or error.";
-    document.getElementById('yt-channel-desc').innerText = "";
-    document.getElementById('yt-subs').innerText = "-";
-    document.getElementById('yt-views').innerText = "-";
-    document.getElementById('yt-videos').innerText = "-";
-    document.getElementById('yt-profile-pic').src = "youtubelogo.png";
-    document.getElementById('yt-created').innerText = "-";
-    document.getElementById('yt-banner-row').style.display = "none";
-    document.getElementById('yt-last-video-row').style.display = "none";
+    // Not connected / error
+    document.getElementById('yt-channel-title').innerText = 'Not linked or error.';
+    document.getElementById('yt-channel-desc').innerText = '';
+    document.getElementById('yt-subs').innerText = '-';
+    document.getElementById('yt-views').innerText = '-';
+    document.getElementById('yt-videos').innerText = '-';
+    document.getElementById('yt-profile-pic').src = 'youtubelogo.png';
+    document.getElementById('yt-created').innerText = '-';
+    document.getElementById('yt-banner-row').style.display = 'none';
+    document.getElementById('yt-last-video-row').style.display = 'none';
   }
 }
 
-// ----- TWITCH -----
+/* =========================
+   Twitch Stats
+========================= */
+// Normalize Twitch thumbnail URL tokens to a concrete size (also works for VODs)
+function normalizeTwitchThumb(u) {
+  if (!u) return null;
+  return u.replace('%{width}x%{height}', '320x180').replace('{width}x{height}', '320x180');
+}
+
+// Set thumbnail safely: no-referrer + graceful fallback
+function setTwitchThumb(imgEl, url, fallbackUrl) {
+  const finalUrl = normalizeTwitchThumb(url) || fallbackUrl || 'twitchlogo.png';
+  imgEl.setAttribute('referrerpolicy', 'no-referrer');
+  imgEl.onerror = () => {
+    imgEl.onerror = null;
+    imgEl.src = fallbackUrl || 'twitchlogo.png';
+  };
+  imgEl.src = finalUrl;
+}
+
 async function loadTwitchStats() {
   const twEls = {
     block: document.getElementById('twitch-stats-block'),
@@ -440,6 +489,11 @@ async function loadTwitchStats() {
     streamThumb: document.getElementById('tw-stream-thumb'),
     gameName: document.getElementById('tw-game-name'),
     pic: document.getElementById('tw-profile-pic'),
+    // Optional offline VOD stats (only shown if these elements exist in HTML)
+    vodViewsWrap: document.getElementById('tw-vod-views-wrap'),
+    vodViews: document.getElementById('tw-vod-views'),
+    durationWrap: document.getElementById('tw-duration-wrap'),
+    duration: document.getElementById('tw-vod-duration'),
   };
   if (!twEls.block) return;
 
@@ -450,9 +504,11 @@ async function loadTwitchStats() {
   twEls.followers.textContent = '-';
   twEls.created.textContent = '-';
   twEls.live.textContent = '-';
-  twEls.viewersWrap.style.display = 'none';
+  if (twEls.viewersWrap) twEls.viewersWrap.style.display = 'none';
   twEls.streamRow.style.display = 'none';
   twEls.pic.src = 'twitchlogo.png';
+  if (twEls.vodViewsWrap) twEls.vodViewsWrap.style.display = 'none';
+  if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -464,15 +520,29 @@ async function loadTwitchStats() {
     const data = await resp.json();
     if (!resp.ok || !data?.success) throw new Error(data?.error || 'Failed');
 
-    // Accept both shapes: {channel, stats} (current) or {user, stream, followers}
+    // Accept both shapes: {channel, stats} (older) or {user, stream, followers, last_broadcast} (current)
     const chan = data.channel || data.user || {};
     const followers = (data.stats && data.stats.followers != null)
       ? data.stats.followers
       : (data.followers != null ? data.followers : null);
 
     const statusStr = (data.stats?.status || data.status || '').toString().toLowerCase();
-    const stream = data.stream || {};
+    let stream = data.stream || {};
+    const last = data.last_broadcast || data.lastVod || null;
     const isLive = stream.is_live === true || statusStr === 'live';
+
+    // When offline, prefer last_broadcast details if provided
+    if (!isLive && last) {
+      stream = {
+        title: last.title || stream.title,
+        started_at: last.started_at || stream.started_at,
+        game_name: last.game_name || stream.game_name,
+        thumbnail_url: last.thumbnail_url || stream.thumbnail_url,
+        vod_views: last.view_count ?? stream.vod_views,
+        duration_seconds: last.duration_seconds ?? stream.duration_seconds,
+        duration_text: last.duration_text ?? stream.duration_text
+      };
+    }
 
     // Main info
     twEls.name.textContent = chan.display_name || chan.displayName || chan.login || 'Unknown';
@@ -499,10 +569,11 @@ async function loadTwitchStats() {
     twEls.live.style.color = isLive ? '#32e232' : '#ffd';
 
     if (isLive) {
+      // live viewer count
       if (typeof stream.viewer_count === 'number') {
         twEls.viewers.textContent = stream.viewer_count.toLocaleString();
-        twEls.viewersWrap.style.display = '';
-      } else {
+        if (twEls.viewersWrap) twEls.viewersWrap.style.display = '';
+      } else if (twEls.viewersWrap) {
         twEls.viewersWrap.style.display = 'none';
       }
 
@@ -511,19 +582,49 @@ async function loadTwitchStats() {
         ? new Date(stream.started_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })
         : '';
       twEls.gameName.textContent = stream.game_name || '-';
-      if (stream.thumbnail_url) twEls.streamThumb.src = stream.thumbnail_url;
+      setTwitchThumb(twEls.streamThumb, stream.thumbnail_url, chan.profile_image_url || 'twitchlogo.png');
       twEls.streamRow.style.display = '';
+
+      // hide offline-only fields
+      if (twEls.vodViewsWrap) twEls.vodViewsWrap.style.display = 'none';
+      if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
     } else if (stream.title || stream.thumbnail_url) {
-      // Last stream fallback
+      // Offline / last broadcast shown
       twEls.streamTitle.textContent = stream.title || 'Last stream';
       twEls.streamStarted.textContent = stream.started_at ? new Date(stream.started_at).toLocaleDateString() : '';
       twEls.gameName.textContent = stream.game_name || '-';
-      if (stream.thumbnail_url) twEls.streamThumb.src = stream.thumbnail_url;
+      setTwitchThumb(twEls.streamThumb, stream.thumbnail_url, chan.profile_image_url || 'twitchlogo.png');
       twEls.streamRow.style.display = '';
-      twEls.viewersWrap.style.display = 'none';
+      if (twEls.viewersWrap) twEls.viewersWrap.style.display = 'none';
+
+      // Show VOD views (if provided)
+      const vodViewsVal = (typeof stream.vod_views === 'number')
+        ? stream.vod_views
+        : (typeof stream.viewer_count === 'number' ? stream.viewer_count : null); // fallback for older shape
+      if (twEls.vodViewsWrap) {
+        if (vodViewsVal != null) {
+          twEls.vodViews.textContent = Number(vodViewsVal).toLocaleString();
+          twEls.vodViewsWrap.style.display = '';
+        } else {
+          twEls.vodViewsWrap.style.display = 'none';
+        }
+      }
+
+      // Show duration if present
+      if (twEls.durationWrap) {
+        const durTxt = stream.duration_text || fmtDuration(stream.duration_seconds);
+        if (durTxt) {
+          twEls.duration.textContent = durTxt;
+          twEls.durationWrap.style.display = '';
+        } else {
+          twEls.durationWrap.style.display = 'none';
+        }
+      }
     } else {
       twEls.streamRow.style.display = 'none';
-      twEls.viewersWrap.style.display = 'none';
+      if (twEls.viewersWrap) twEls.viewersWrap.style.display = 'none';
+      if (twEls.vodViewsWrap) twEls.vodViewsWrap.style.display = 'none';
+      if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
     }
   } catch {
     // Error state
@@ -533,14 +634,18 @@ async function loadTwitchStats() {
     twEls.followers.textContent = '-';
     twEls.created.textContent = '-';
     twEls.live.textContent = '-';
-    twEls.viewersWrap.style.display = 'none';
+    if (twEls.viewersWrap) twEls.viewersWrap.style.display = 'none';
     twEls.streamRow.style.display = 'none';
+    if (twEls.vodViewsWrap) twEls.vodViewsWrap.style.display = 'none';
+    if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
     twEls.pic.src = 'twitchlogo.png';
   }
 }
 
-// ----- DOMContentLoaded EVENTS -----
-document.addEventListener("DOMContentLoaded", async () => {
+/* =========================
+   DOMContentLoaded
+========================= */
+document.addEventListener('DOMContentLoaded', async () => {
   updateSummaryStats();
   loadRecentActivity();
   loadArchivedDeals();
@@ -549,7 +654,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCategoryStars('punctuality', 'punctuality-stars');
   updateCategoryStars('work_output', 'work-output-stars');
 
-  // -- Only show/fetch platform stats if user is connected! --
+  // Only show/fetch platform stats if user is connected
   const { data: { session } } = await supabase.auth.getSession();
   const userId = session?.user?.id;
   if (!userId) return;
