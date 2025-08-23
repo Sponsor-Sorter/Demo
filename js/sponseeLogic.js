@@ -462,53 +462,70 @@ async function loadTwitchStats() {
       headers: { 'Authorization': `Bearer ${jwt}` }
     });
     const data = await resp.json();
-
     if (!resp.ok || !data?.success) throw new Error(data?.error || 'Failed');
 
-    const u = data.user || {};
-    twEls.name.textContent = u.display_name || u.login || 'Unknown';
-    twEls.login.textContent = u.login ? `(@${u.login})` : '';
-    twEls.bio.textContent = (u.description || '').slice(0, 140) + ((u.description || '').length > 140 ? '…' : '');
-    if (u.profile_image_url) twEls.pic.src = u.profile_image_url;
+    // Accept both shapes: {channel, stats} (current) or {user, stream, followers}
+    const chan = data.channel || data.user || {};
+    const followers = (data.stats && data.stats.followers != null)
+      ? data.stats.followers
+      : (data.followers != null ? data.followers : null);
 
-    if (data.followers != null) twEls.followers.textContent = data.followers.toLocaleString();
-    if (u.created_at) {
-      twEls.created.textContent = new Date(u.created_at).toLocaleDateString();
+    const statusStr = (data.stats?.status || data.status || '').toString().toLowerCase();
+    const stream = data.stream || {};
+    const isLive = stream.is_live === true || statusStr === 'live';
+
+    // Main info
+    twEls.name.textContent = chan.display_name || chan.displayName || chan.login || 'Unknown';
+    twEls.login.textContent = chan.login ? `(@${chan.login})` : '';
+    const desc = chan.description || '';
+    twEls.bio.textContent = desc.slice(0, 140) + (desc.length > 140 ? '…' : '');
+    if (chan.profile_image_url || chan.profileImageUrl) {
+      twEls.pic.src = chan.profile_image_url || chan.profileImageUrl;
+    }
+
+    if (followers != null) {
+      twEls.followers.textContent = Number(followers).toLocaleString();
+    }
+
+    if (chan.created_at || chan.createdAt) {
+      twEls.created.textContent = new Date(chan.created_at || chan.createdAt).toLocaleDateString();
       twEls.createdWrap.style.display = '';
     } else {
       twEls.createdWrap.style.display = 'none';
     }
 
     // Stream info
-    const s = data.stream || {};
-    const isLive = !!s.is_live;
     twEls.live.textContent = isLive ? 'LIVE' : 'Offline';
     twEls.live.style.color = isLive ? '#32e232' : '#ffd';
+
     if (isLive) {
-      if (s.viewer_count != null) {
-        twEls.viewers.textContent = s.viewer_count.toLocaleString();
+      if (typeof stream.viewer_count === 'number') {
+        twEls.viewers.textContent = stream.viewer_count.toLocaleString();
         twEls.viewersWrap.style.display = '';
       } else {
         twEls.viewersWrap.style.display = 'none';
       }
-      twEls.streamTitle.textContent = s.title || 'Untitled stream';
-      twEls.streamStarted.textContent = s.started_at ? new Date(s.started_at).toLocaleString([], {hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}) : '';
-      twEls.gameName.textContent = s.game_name || '-';
-      if (s.thumbnail_url) twEls.streamThumb.src = s.thumbnail_url;
+
+      twEls.streamTitle.textContent = stream.title || 'Untitled stream';
+      twEls.streamStarted.textContent = stream.started_at
+        ? new Date(stream.started_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })
+        : '';
+      twEls.gameName.textContent = stream.game_name || '-';
+      if (stream.thumbnail_url) twEls.streamThumb.src = stream.thumbnail_url;
       twEls.streamRow.style.display = '';
-    } else if (s.title || s.thumbnail_url) {
-      // Last stream fallback (if your function sends it)
-      twEls.streamTitle.textContent = s.title || 'Last stream';
-      if (s.started_at) twEls.streamStarted.textContent = new Date(s.started_at).toLocaleDateString();
-      if (s.thumbnail_url) twEls.streamThumb.src = s.thumbnail_url;
-      twEls.gameName.textContent = s.game_name || '-';
+    } else if (stream.title || stream.thumbnail_url) {
+      // Last stream fallback
+      twEls.streamTitle.textContent = stream.title || 'Last stream';
+      twEls.streamStarted.textContent = stream.started_at ? new Date(stream.started_at).toLocaleDateString() : '';
+      twEls.gameName.textContent = stream.game_name || '-';
+      if (stream.thumbnail_url) twEls.streamThumb.src = stream.thumbnail_url;
       twEls.streamRow.style.display = '';
       twEls.viewersWrap.style.display = 'none';
     } else {
       twEls.streamRow.style.display = 'none';
       twEls.viewersWrap.style.display = 'none';
     }
-  } catch (e) {
+  } catch {
     // Error state
     twEls.name.textContent = 'Not linked or error.';
     twEls.login.textContent = '';
