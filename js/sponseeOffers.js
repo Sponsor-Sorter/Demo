@@ -40,6 +40,35 @@ function renderPlatformBadges(platforms) {
   }).join(' ');
 }
 
+// Parse platforms robustly
+function parsePlatforms(platforms) {
+  if (!platforms) return [];
+  if (Array.isArray(platforms)) return platforms;
+  if (typeof platforms === 'string') {
+    try {
+      const p = JSON.parse(platforms);
+      if (Array.isArray(p)) return p;
+    } catch {
+      return platforms.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  }
+  return [];
+}
+
+// Pair up live_urls and url_dates (falling back to legacy single fields)
+function pairUrlsAndDates(offer) {
+  const urls = Array.isArray(offer?.live_urls) ? offer.live_urls : (offer?.live_url ? [offer.live_url] : []);
+  const dates = Array.isArray(offer?.url_dates) ? offer.url_dates : (offer?.live_date ? [offer.live_date] : []);
+  const max = Math.max(urls.length, dates.length);
+  const pairs = [];
+  for (let i = 0; i < max; i++) {
+    const u = urls[i] ?? null;
+    const d = dates[i] ?? null;
+    if (u) pairs.push({ url: u, date: d });
+  }
+  return pairs;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   // 1. Auth and user/session fetch
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -263,6 +292,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="progress-bar" style="width: ${stageProgress}%; ${progressColor}"></div>
       </div>`;
 
+    // Build Stage-specific actions
     let actionButtons = '';
     if (offer.stage === 1 && offer.status === 'pending') {
       actionButtons = `
@@ -278,12 +308,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
     } else if (offer.stage === 3) {
+      // MULTI-URL INPUTS — one date + url per platform
+      const plats = parsePlatforms(offer.platforms);
+      const placeholders = {
+        youtube: 'https://www.youtube.com/watch?v=...',
+        twitch: 'https://www.twitch.tv/videos/123456789',
+        instagram: 'https://www.instagram.com/p/....',
+        tiktok: 'https://www.tiktok.com/@user/video/....',
+        twitter: 'https://x.com/username/status/....',
+        facebook: 'https://www.facebook.com/....',
+        snapchat: 'https://www.snapchat.com/add/....'
+      };
+
+      const inputsHtml = (plats.length ? plats : ['content']).map((p, idx) => `
+        <div class="per-url-row" data-index="${idx}" style="margin:10px 0 14px 0;padding:10px;border:1px dashed #444;border-radius:8px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <label for="url-date-${offer.id}-${idx}" style="min-width:140px;"><strong>Live Date${p && p !== 'content' ? ` (${p})` : ''}:</strong></label>
+            <input type="date" id="url-date-${offer.id}-${idx}" class="per-url-date" style="flex:0 0 170px;">
+          </div>
+          <div style="margin-top:6px;">
+            <label for="live-url-${offer.id}-${idx}">
+              <strong>Link to Live Content${p && p !== 'content' ? ` (${p})` : ''}:</strong>
+            </label><br>
+            <input
+              type="url"
+              id="live-url-${offer.id}-${idx}"
+              class="per-url-input"
+              data-platform="${p || 'content'}"
+              placeholder="${placeholders[p?.toLowerCase()] || 'https://example.com/content'}"
+              style="width:100%;">
+          </div>
+        </div>
+      `).join('');
+
       actionButtons = `
         <div class="live-scheduling">
-          <label for="live-date-${offer.id}"><strong>Select Live Date:</strong></label><br>
-          <input type="date" id="live-date-${offer.id}" class="live-date"><br>
-          <label for="live-url-${offer.id}"><strong>Link to Live Content:</strong></label><br>
-          <input type="url" id="live-url-${offer.id}" class="live-url" placeholder="https://example.com/content"><br>
+          ${inputsHtml}
           <button class="live-now-btn">Live</button>
         </div>
       `;
@@ -310,6 +370,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         <button class="review" data-offer-id="${offer.id}">Leave Review</button>
       `;
     }
+
+    // Live URL(s) + per-link date display (Stage 4+)
+    const pairs = pairUrlsAndDates(offer);
+    const liveLinksHtml = pairs.length
+      ? `<p><strong>Live URL${pairs.length > 1 ? 's' : ''} & Dates:</strong><br>${
+          pairs.map(({url, date}) => {
+            const d = date ? new Date(date).toLocaleDateString() : '—';
+            return `<span style="display:block;margin:2px 0;"><a class="live-url-link" href="${url}" target="_blank">${url}</a> <em style="color:#ddd;">(${d})</em></span>`;
+          }).join('')
+        }</p>`
+      : '';
 
     const reportBtnHtml = `
       <button
@@ -364,13 +435,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p><strong>Date:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
                 <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
                 ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
-                ${offer.stage >= 4 && offer.live_date ? `<p><strong>Live Date:</strong> ${new Date(offer.live_date).toLocaleDateString()}</p>` : ''}
-                ${offer.stage >= 4 && offer.live_url ? `
-                  <p>
-                    <strong>Live URL:</strong>
-                    <a href="${offer.live_url}" target="_blank">${offer.live_url}</a>
-                  </p>
-                ` : ''}
+                ${offer.stage >= 4 && offer.live_date ? `<p><strong>First Live Date:</strong> ${new Date(offer.live_date).toLocaleDateString()}</p>` : ''}
+                ${offer.stage >= 4 ? liveLinksHtml : ''}
               </div>
               <div class="offer-right">
                 <p><strong>Amount:</strong> $${offer.offer_amount}</p>
@@ -507,7 +573,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // --- Data Summary (YouTube or Twitch VOD) ---
+    // --- Data Summary (handle ALL attached URLs) ---
     if (e.target.classList.contains('data-summary-btn')) {
       if (!dataSummarySection) return;
       const isVisible = dataSummarySection.style.display === 'block';
@@ -516,141 +582,114 @@ document.addEventListener("DOMContentLoaded", async () => {
         dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
         dataSummarySection.style.display = 'block';
 
-        const liveUrl = offerCard.querySelector('.offer-left a')?.href || '';
-        const isYouTube = /youtube\.com|youtu\.be/i.test(liveUrl);
-        const isTwitch = /twitch\.tv/i.test(liveUrl);
+        // Prefer DB copy
+        const offerObj = allSponseeOffers.find(o => String(o.id) === String(offerId)) || {};
+        const pairs = pairUrlsAndDates(offerObj);
+        if (!pairs.length) {
+          dataSummarySection.innerHTML = "<span style='color:#faa;'>No video URLs found.</span>";
+          return;
+        }
 
         const { data: { session } } = await supabase.auth.getSession();
         const jwt = session?.access_token;
 
-        // Helper: render a small info row
-        const wrapRow = (label, value) =>
-          `<div><b>${label}</b><br>${value ?? '-'}</div>`;
-
-        // Helper: common container
-        const renderContainer = (inner) => `
-          <div style="
-            background: none;
-            border-radius: 15px;
-            box-shadow: none;
-            padding: 26px 30px;
-            margin: 0 auto;
-            max-width: 560px;
-            color: #f6f6f6;
-            font-size: 1.09em;
-            text-align: left;">
-            ${inner}
-          </div>
-        `;
-
-        // --- YouTube path (existing) ---
-        if (isYouTube) {
-          const videoId = extractYouTubeVideoId(liveUrl);
-          if (!videoId) {
-            dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
-            return;
-          }
-          try {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ videoId })
-            });
-            const stats = await resp.json();
-            if (stats && stats.success) {
-              const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
-              const duration = stats.video.contentDetails?.duration
-                ? parseISO8601Duration(stats.video.contentDetails.duration)
-                : '';
-              dataSummarySection.innerHTML = renderContainer(`
-                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                  <img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                  <div>
-                    <b style="color:#ffe75b;font-size:1.17em;">
-                      <span style="font-size:1.3em;vertical-align:-3px;">🎥</span>
-                      ${stats.video.snippet.title}
-                    </b>
-                    ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Video duration ⏱ ${duration}</div>` : ''}
-                  </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${wrapRow('📅 Published:', new Date(stats.video.snippet.publishedAt).toLocaleDateString())}
-                  ${wrapRow('👀 Views:', stats.video.statistics.viewCount)}
-                  ${wrapRow('👍 Likes:', stats.video.statistics.likeCount || '-')}
-                  ${wrapRow('💬 Comments:', stats.video.statistics.commentCount || '-')}
-                </div>
-                <div style="margin-top:12px;">
-                  <b>📝 Description:</b>
-                  <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
-                    ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
-                  </div>
-                </div>
-                <div style="margin-top:10px;text-align:right;">
-                  <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
-                </div>
-              `);
-            } else {
-              dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch YouTube video stats.</span>";
+        const blocks = [];
+        for (const { url: link, date } of pairs) {
+          const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+          if (/youtube\.com|youtu\.be/i.test(link)) {
+            const videoId = extractYouTubeVideoId(link);
+            if (!videoId) {
+              blocks.push(`<div style="color:#faa;">Invalid YouTube URL: ${link}</div>`);
+              continue;
             }
-          } catch {
-            dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading YouTube video stats.</span>";
+            try {
+              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ videoId })
+              });
+              const stats = await resp.json();
+              if (stats?.success) {
+                const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
+                const duration = stats.video.contentDetails?.duration
+                  ? parseISO8601Duration(stats.video.contentDetails.duration)
+                  : '';
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
+                      <div>
+                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">🎥</span> ${stats.video.snippet.title}</b>
+                        ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
+                        ${dateBadge}
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
+                      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
+                      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
+                      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
+                    </div>
+                    <div style="margin-top:10px;text-align:right;">
+                      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+                    </div>
+                  </div>
+                `);
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch YouTube stats for ${link}.</div>`);
+              }
+            } catch {
+              blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
+            }
+          } else if (/twitch\.tv/i.test(link)) {
+            try {
+              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: link })
+              });
+              const data = await resp.json();
+              if (resp.ok && data?.success) {
+                const v = data.vod || {};
+                const thumb = normalizeTwitchThumb(v.thumbnail_url) || 'twitchlogo.png';
+                const durationText = v.duration?.text || null;
+                const creator = v.user_display_name || v.user_login || '-';
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="${thumb}" referrerpolicy="no-referrer" alt="VOD thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                      <div>
+                        <b style="color:#c9b6ff;font-size:1.17em;">
+                          <img src="twitchlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                          ${v.title || 'Twitch VOD'}
+                        </b>
+                        ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
+                        ${dateBadge}
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                      <div><b>🎮 Game:</b><br>${v.game_name || '-'}</div>
+                      <div><b>👤 Creator:</b><br>${creator}</div>
+                      <div><b>📅 Created:</b><br>${v.created_at ? new Date(v.created_at).toLocaleDateString() : '-'}</div>
+                      <div><b>👀 Views:</b><br>${v.view_count != null ? v.view_count.toLocaleString() : '-'}</div>
+                    </div>
+                    <div style="margin-top:10px;text-align:right;">
+                      <a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
+                    </div>
+                  </div>
+                `);
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch Twitch stats for ${link}.</div>`);
+              }
+            } catch {
+              blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
+            }
+          } else {
+            blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
           }
-          return;
         }
 
-        // --- Twitch path (new) ---
-        if (isTwitch) {
-          try {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ url: liveUrl })
-            });
-            const data = await resp.json();
-            if (!resp.ok || !data?.success) {
-              dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch Twitch VOD stats.</span>";
-              return;
-            }
-            const v = data.vod || {};
-            const thumb = normalizeTwitchThumb(v.thumbnail_url);
-            const durationText = v.duration?.text || null;
-            const creator = v.user_display_name || v.user_login || '-';
-            dataSummarySection.innerHTML = renderContainer(`
-              <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                <img id="tw-vod-thumb" src="${thumb || 'twitchlogo.png'}" referrerpolicy="no-referrer"
-                     alt="VOD thumbnail"
-                     style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                <div>
-                  <b style="color:#c9b6ff;font-size:1.17em;">
-                    <img src="twitchlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                    ${v.title || 'Twitch VOD'}
-                  </b>
-                  ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
-                </div>
-              </div>
-              <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                ${wrapRow('🎮 Game:', v.game_name || '-')}
-                ${wrapRow('👤 Creator:', creator)}
-                ${wrapRow('📅 Created:', v.created_at ? new Date(v.created_at).toLocaleDateString() : '-')}
-                ${wrapRow('👀 Views:', v.view_count != null ? v.view_count.toLocaleString() : '-')}
-              </div>
-              <div style="margin-top:10px;text-align:right;">
-                <a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
-              </div>
-            `);
-            // Fallback if thumb fails to load
-            const img = dataSummarySection.querySelector('#tw-vod-thumb');
-            if (img) {
-              img.onerror = () => { img.onerror = null; img.src = 'twitchlogo.png'; };
-            }
-          } catch {
-            dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading Twitch VOD stats.</span>";
-          }
-          return;
-        }
-
-        // Neither YT nor Twitch
-        dataSummarySection.innerHTML = "<span style='color:#faa;'>No supported video URL found in Live URL (YouTube or Twitch).</span>";
+        dataSummarySection.innerHTML = blocks.join('') || "<span style='color:#faa;'>No stats could be shown.</span>";
       } else {
         dataSummarySection.style.display = 'none';
         dataSummarySection.innerHTML = '';
@@ -808,28 +847,53 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    // >>> LIVE NOW with per-URL dates <<<
     if (e.target.classList.contains('live-now-btn')) {
-      const dateInput = offerCard.querySelector('.live-date');
-      const urlInput = offerCard.querySelector('.live-url');
-      const selectedDate = dateInput.value;
-      const liveUrl = urlInput.value.trim();
-      if (!selectedDate || !liveUrl) {
-        alert("Please select a live date and enter a live URL before proceeding.");
+      const rows = Array.from(offerCard.querySelectorAll('.per-url-row'));
+      const urls = [];
+      const dates = [];
+
+      for (const row of rows) {
+        const url = row.querySelector('.per-url-input')?.value.trim();
+        const date = row.querySelector('.per-url-date')?.value;
+        if (url) {
+          if (!date) {
+            alert("Each provided URL must have a live date.");
+            return;
+          }
+          urls.push(url);
+          dates.push(date);
+        }
+      }
+
+      if (urls.length === 0) {
+        alert("Please enter at least one live URL and its date before proceeding.");
         return;
       }
-      if (!window.confirm(`Gone live on ${selectedDate} with URL:\n${liveUrl}\nProceed?`)) return;
+
+      const confirmMsg = `Going live with the following:\n\n${urls.map((u, i) => `- ${u}\n  date: ${dates[i]}`).join('\n')}\n\nProceed?`;
+      if (!window.confirm(confirmMsg)) return;
+
+      // Compute legacy fields for backward compatibility
+      const earliest = dates.slice().sort()[0];
+      const firstUrl = urls[0];
+
       const { error } = await supabase
         .from('private_offers')
         .update({
           stage: 4,
           status: 'live',
-          live_date: selectedDate,
           sponsee_live_confirmed: true,
-          live_url: liveUrl
+          live_url: firstUrl,            // legacy single value
+          live_date: earliest,           // legacy single value
+          live_urls: urls,               // new array
+          url_dates: dates               // new array
         })
         .eq('id', offerId);
-      if (error) alert(`Failed to go live: ${error.message}`);
-      else {
+
+      if (error) {
+        alert(`Failed to go live: ${error.message}`);
+      } else {
         await notifyOfferUpdate({
           to_user_id: sponsorId,
           offer_id: offerId,
