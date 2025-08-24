@@ -90,12 +90,13 @@ function renderOffersByFilter(filter) {
 
   paginatedOffers.forEach(renderSingleOffer);
   renderPaginationControls(filteredOffers.length);
-   const totalLabel = document.getElementById("sponsor-offer-total-label");
+  const totalLabel = document.getElementById("sponsor-offer-total-label");
   if (totalLabel) {
     totalLabel.textContent = `Total Offers: ${filteredOffers.length}`;
     totalLabel.style.display = 'inline';
   }
 }
+
 // --- Platform badge rendering ---
 function renderPlatformBadges(platforms) {
   if (!platforms) return '';
@@ -201,7 +202,7 @@ async function renderSingleOffer(offer) {
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -269,8 +270,6 @@ async function renderSingleOffer(offer) {
   listingContainer.appendChild(listing);
 }
 
-
-
 // --- Helper: YouTube videoId extraction ---
 function extractYouTubeVideoId(url) {
   try {
@@ -288,6 +287,13 @@ function parseISO8601Duration(duration) {
     m ? `${m}m` : '',
     s ? `${s}s` : ''
   ].filter(Boolean).join(' ') || '0s';
+}
+// Twitch thumbnails sometimes use {width}x{height} / %{width}x%{height}
+function normalizeTwitchThumb(u) {
+  if (!u) return null;
+  return u
+    .replace('%{width}x%{height}', '320x180')
+    .replace('{width}x{height}', '320x180');
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -430,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- DATA SUMMARY BUTTON HANDLER ---
+    // --- DATA SUMMARY BUTTON HANDLER (YouTube + Twitch) ---
     if (e.target.classList.contains('data-summary-btn')) {
       hideAllSections();
       if (!dataSummarySection) return;
@@ -446,76 +452,132 @@ document.addEventListener("DOMContentLoaded", async () => {
           liveUrl = liveLink ? liveLink.href : '';
         }
 
-        if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
-          dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
-          return;
-        }
-        let videoId = extractYouTubeVideoId(liveUrl);
-        console.log('Live URL:', liveUrl, 'Extracted videoId:', videoId);
-        if (!videoId) {
-          dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
-          return;
-        }
+        const isYouTube = /youtube\.com|youtu\.be/i.test(liveUrl);
+        const isTwitch  = /twitch\.tv/i.test(liveUrl);
+
         const { data: { session } } = await supabase.auth.getSession();
         const jwt = session?.access_token;
-        try {
-          // Pass both userId (sponseeUserId) and offerId for edge function security
-          const body = {
-            videoId,
-            userId: sponseeUserId,
-            offerId
-          };
-          const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-          });
-          const stats = await resp.json();
-          if (stats && stats.success) {
-            const thumbnail = stats.video.snippet.thumbnails?.medium?.url || '';
-            const duration = parseISO8601Duration(stats.video.contentDetails.duration);
-            dataSummarySection.innerHTML = `
-  <div style="
-    background: none;
-    border-radius: 15px;
-    box-shadow: none;
-    padding: 26px 30px;
-    margin: 0 auto;
-    max-width: 520px;
-    color: #f6f6f6;
-    font-size: 1.09em;
-    text-align: left;
-    ">
-    <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
-      ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
-      <div>
-        <b style="color:#ffe75b;"><span style="font-size:1.3em;">🎥</span> ${stats.video.snippet.title}</b>
-        <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
-      </div>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
-      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
-      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
-      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
-    </div>
-    <div style="margin-top:12px;">
-      <b>📝 Description:</b>
-      <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
-        ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
-      </div>
-    </div>
-    <div style="margin-top:10px;text-align:right;">
-      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
-    </div>
-  </div>
-`;
-          } else {
-            dataSummarySection.innerHTML = `<span style='color:#faa;'>${stats?.error ? stats.error : 'Could not fetch video stats.'}</span>`;
+
+        // small helpers
+        const wrapRow = (label, value) => `<div><b>${label}</b><br>${value ?? '-'}</div>`;
+        const container = (inner) => `
+          <div style="
+            background: none;
+            border-radius: 15px;
+            box-shadow: none;
+            padding: 26px 30px;
+            margin: 0 auto;
+            max-width: 560px;
+            color: #f6f6f6;
+            font-size: 1.09em;
+            text-align: left;">${inner}</div>
+        `;
+
+        // ---- YouTube path (existing logic kept) ----
+        if (isYouTube) {
+          if (!liveUrl.includes('youtube.com') && !liveUrl.includes('youtu.be')) {
+            dataSummarySection.innerHTML = "<span style='color:#faa;'>No YouTube video URL found in Live URL.</span>";
+            return;
           }
-        } catch (err) {
-          dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+          const videoId = extractYouTubeVideoId(liveUrl);
+          if (!videoId) {
+            dataSummarySection.innerHTML = "<span style='color:#faa;'>Invalid or unrecognized YouTube URL.</span>";
+            return;
+          }
+          try {
+            const body = { videoId, userId: sponseeUserId, offerId };
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            });
+            const stats = await resp.json();
+            if (stats && stats.success) {
+              const thumbnail = stats.video.snippet.thumbnails?.medium?.url || '';
+              const duration = parseISO8601Duration(stats.video.contentDetails.duration);
+              dataSummarySection.innerHTML = container(`
+                <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
+                  ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
+                  <div>
+                    <b style="color:#ffe75b;"><span style="font-size:1.3em;">🎥</span> ${stats.video.snippet.title}</b>
+                    <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                  ${wrapRow('📅 Published:', new Date(stats.video.snippet.publishedAt).toLocaleDateString())}
+                  ${wrapRow('👀 Views:', stats.video.statistics.viewCount)}
+                  ${wrapRow('👍 Likes:', stats.video.statistics.likeCount || '-')}
+                  ${wrapRow('💬 Comments:', stats.video.statistics.commentCount || '-')}
+                </div>
+                <div style="margin-top:12px;">
+                  <b>📝 Description:</b>
+                  <div style="margin-top:4px;background:#18181a;border-radius:7px;padding:11px 13px;max-height:80px;overflow:auto;font-size:0.97em;color:#d7d7d7;">
+                    ${stats.video.snippet.description ? stats.video.snippet.description.replace(/\n/g, '<br>') : '<i>No description.</i>'}
+                  </div>
+                </div>
+                <div style="margin-top:10px;text-align:right;">
+                  <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+                </div>
+              `);
+            } else {
+              dataSummarySection.innerHTML = `<span style='color:#faa;'>${stats?.error ? stats.error : 'Could not fetch video stats.'}</span>`;
+            }
+          } catch {
+            dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading video stats.</span>";
+          }
+          return;
         }
+
+        // ---- Twitch VOD path (new) ----
+        if (isTwitch) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: liveUrl })
+            });
+            const data = await resp.json();
+            if (!resp.ok || !data?.success) {
+              dataSummarySection.innerHTML = "<span style='color:#faa;'>Could not fetch Twitch VOD stats.</span>";
+              return;
+            }
+            const v = data.vod || {};
+            const thumb = normalizeTwitchThumb(v.thumbnail_url);
+            const durationText = v.duration?.text || null;
+            const creator = v.user_display_name || v.user_login || '-';
+            dataSummarySection.innerHTML = container(`
+              <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                <img id="tw-vod-thumb" src="${thumb || 'twitchlogo.png'}" referrerpolicy="no-referrer"
+                     alt="VOD thumbnail"
+                     style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                <div>
+                  <b style="color:#c9b6ff;font-size:1.17em;">
+                    <img src="twitchlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                    ${v.title || 'Twitch VOD'}
+                  </b>
+                  ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
+                </div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                ${wrapRow('🎮 Game:', v.game_name || '-')}
+                ${wrapRow('👤 Creator:', creator)}
+                ${wrapRow('📅 Created:', v.created_at ? new Date(v.created_at).toLocaleDateString() : '-')}
+                ${wrapRow('👀 Views:', v.view_count != null ? v.view_count.toLocaleString() : '-')}
+              </div>
+              <div style="margin-top:10px;text-align:right;">
+                <a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
+              </div>
+            `);
+            const img = dataSummarySection.querySelector('#tw-vod-thumb');
+            if (img) img.onerror = () => { img.onerror = null; img.src = 'twitchlogo.png'; };
+          } catch {
+            dataSummarySection.innerHTML = "<span style='color:#faa;'>Error loading Twitch VOD stats.</span>";
+          }
+          return;
+        }
+
+        // Neither YT nor Twitch
+        dataSummarySection.innerHTML = "<span style='color:#faa;'>No supported video URL found in Live URL (YouTube or Twitch).</span>";
       } else {
         dataSummarySection.style.display = 'none';
         dataSummarySection.innerHTML = '';
@@ -667,39 +729,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (e.target.classList.contains('confirm-live-btn')) {
-  // Confirm with the sponsor
-  if (!window.confirm("Confirm this content is live? This will mark the offer as completed.")) return;
+      // Confirm with the sponsor
+      if (!window.confirm("Confirm this content is live? This will mark the offer as completed.")) return;
 
-  const offerId = offerCard.dataset.offerId;
-  // Update the offer in Supabase
-  const { error } = await supabase
-    .from('private_offers')
-    .update({
-      sponsor_live_confirmed: true,
-      stage: 4, // Keep at stage 4 Await Sponsee To Accept/Choose Payout.
-      status: 'completed',
-      live_date: new Date().toISOString().slice(0, 10) // today's date in YYYY-MM-DD
-    })
-    .eq('id', offerId);
+      const offerId = offerCard.dataset.offerId;
+      // Update the offer in Supabase
+      const { error } = await supabase
+        .from('private_offers')
+        .update({
+          sponsor_live_confirmed: true,
+          stage: 4, // Keep at stage 4 Await Sponsee To Accept/Choose Payout.
+          status: 'completed',
+          live_date: new Date().toISOString().slice(0, 10) // today's date in YYYY-MM-DD
+        })
+        .eq('id', offerId);
 
-  if (error) {
-    alert('Failed to confirm content as live: ' + error.message);
-    return;
-  }
+      if (error) {
+        alert('Failed to confirm content as live: ' + error.message);
+        return;
+      }
 
-  // Optionally: Notify the sponsee
-  await notifyOfferUpdate({
-    to_user_id: sponseeUserId,
-    offer_id: offerId,
-    type: "content_live_confirmed",
-    title: "Content Confirmed Live",
-    message: `${sponsor_username} has confirmed the content is live.`
-  });
+      // Optionally: Notify the sponsee
+      await notifyOfferUpdate({
+        to_user_id: sponseeUserId,
+        offer_id: offerId,
+        type: "content_live_confirmed",
+        title: "Content Confirmed Live",
+        message: `${sponsor_username} has confirmed the content is live.`
+      });
 
-  alert("Content marked as live and offer moved to Completed!");
-  renderOffersByFilter('all');
-}
+      alert("Content marked as live and offer moved to Completed!");
+      renderOffersByFilter('all');
+    }
 
   });
 });
-
