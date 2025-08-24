@@ -619,7 +619,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                       ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
                       <div>
-                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">🎥</span> ${stats.video.snippet.title}</b>
+                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">
+                        <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                        </span> ${stats.video.snippet.title}</b>
                         ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
                         ${dateBadge}
                       </div>
@@ -1036,3 +1038,4 @@ document.addEventListener('click', function(e) {
     window.location.href = `/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
+
