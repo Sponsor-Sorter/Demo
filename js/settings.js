@@ -760,6 +760,62 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => notif.remove(), 3500);
   }
 
+  // =========================
+  //   INSTAGRAM INTEGRATION
+  // =========================
+
+  // Build the Meta login URL for Instagram Graph (Business/Creator)
+  function buildInstagramAuthUrl() {
+    const APP_ID = '1051907877053568'; // safe to expose, required in the URL
+    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+    const scope = [
+      'instagram_basic',
+      'pages_show_list',
+      'pages_read_engagement',
+      'instagram_manage_insights',
+      'business_management'
+    ].join(',');
+    // We use state=instagram so oauth-handler knows which provider to finish
+    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=instagram`;
+  }
+
+  // Success toast when returning from oauth2callback.html
+  function showInstagramSuccessNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #E1306C; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '✅ Instagram account successfully linked!';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  function showInstagramDisconnectedNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '⛔ Instagram account disconnected.';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  // If we just returned from oauth2callback.html with ?instagram=connected, show toast and clean URL
+  (function handleInstagramReturn() {
+    const url = new URL(location.href);
+    if (url.searchParams.get('instagram') === 'connected') {
+      showInstagramSuccessNotification();
+      url.searchParams.delete('instagram');
+      history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
+    }
+  })();
+
   // --- Unified OAuth Modal Logic ---
   const oauthLinkBtn = document.getElementById('oauth-link-btn');
   const oauthLinkModal = document.getElementById('oauth-link-modal');
@@ -913,14 +969,46 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
 
-        // Future platforms (placeholders)
         else if (plat === "instagram") {
           if (user.instagram_connected) {
-            // TODO: disconnect instagram
+            // --- DISCONNECT INSTAGRAM ---
+            btn.innerText = "Disconnecting...";
+            btn.disabled = true;
+
+            const { error } = await supabase
+              .from('users_extended_data')
+              .update({
+                instagram_access_token: null,
+                instagram_refresh_token: null,
+                instagram_token_expiry: null,
+                instagram_connected: false,
+                instagram_user_id: null
+              })
+              .eq('user_id', user.user_id);
+
+            if (!error) {
+              btn.innerText = "Connect";
+              btn.style.background = "#2d7bfa";
+              const badge = document.getElementById('instagram-status-badge');
+              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
+              showInstagramDisconnectedNotification();
+              await refreshOauthAccountsUI();
+            } else {
+              btn.innerText = "Failed!";
+              btn.style.background = "#e22";
+              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
+            }
           } else {
-            alert("Instagram OAuth coming soon!");
+            // --- CONNECT INSTAGRAM ---
+            const url = buildInstagramAuthUrl();
+            oauthLinkModal.style.display = "none";
+            // Full-page redirect (Meta blocks popup in many cases)
+            window.location.href = url;
           }
-        } else if (plat === "tiktok") {
+        }
+
+        // Future platforms (placeholders)
+        else if (plat === "tiktok") {
           if (user.tiktok_connected) {
             // TODO
           } else {
