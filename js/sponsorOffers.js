@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                        style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                   <div>
                     <b style="color:#c9b6ff;font-size:1.17em;">
-                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;">
+                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
                       ${v.title || 'Twitch VOD'}
                     </b>
                     ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
@@ -811,6 +811,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   });
 });
+
 
 
 
