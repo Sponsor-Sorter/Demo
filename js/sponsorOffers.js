@@ -554,7 +554,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               const duration = parseISO8601Duration(stats.video.contentDetails.duration);
               blocks.push(container(`
                 <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
-                  ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
+                  ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:auto;height:80px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
                   <div>
                     <b style="color:#ffe75b;"><span style="font-size:1.3em;">
                     <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
@@ -811,4 +811,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   });
 });
+
 
