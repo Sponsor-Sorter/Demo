@@ -1,16 +1,18 @@
 // File: ./js/oauth-handler.js
-// Unified OAuth callback handler for YouTube + Twitch
-// - Backwards compatible with your current YouTube flow
-// - Uses one callback page: /oauth2callback.html
-// - Expects Twitch launcher to set state="twitch:<csrf>" (YouTube can remain unchanged)
+// Unified OAuth callback handler for YouTube + Twitch + Instagram
+// - One callback page: /oauth2callback.html
+// - Twitch launcher sets state="twitch:<csrf>"
+// - Instagram launcher sets state="instagram"
+// - Legacy YouTube can omit state (defaults to youtube)
 
 import { supabase } from './supabaseClient.js';
 
 // === Config ===
 const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co'; // keep hardcoded like your current handler
 const EDGE_FN = {
-  youtube: 'youtube-oauth',
-  twitch:  'twitch-oauth',
+  youtube:   'youtube-oauth',
+  twitch:    'twitch-oauth',
+  instagram: 'instagram-oauth',
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -24,7 +26,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Parse URL params ---
   const p = new URLSearchParams(window.location.search);
   const code  = p.get('code');
-  const error = p.get('error') || p.get('error_description');
+  // Meta sometimes returns error_description and/or error_reason; keep both.
+  const error = p.get('error') || p.get('error_description') || p.get('error_reason');
   let state   = p.get('state') || '';
 
   if (error) {
@@ -38,41 +41,46 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // --- Detect provider (state OR ?provider=) ---
-  // Expected (preferred): state = "twitch:<csrf>" or "youtube:<csrf>"
-  // Fallbacks: ?provider=twitch|youtube ; default -> youtube (legacy-safe)
+  // Expected:
+  //  - twitch uses state="twitch:<csrf>"
+  //  - instagram uses state="instagram"
+  //  - youtube may use nothing (legacy) or state="youtube:<csrf>"
   let provider = 'youtube';
   let csrfFromState = '';
+
   if (state.includes(':')) {
     const [maybeProvider, csrf] = state.split(':', 2);
     if (maybeProvider === 'twitch' || maybeProvider === 'youtube') {
       provider = maybeProvider;
       csrfFromState = csrf || '';
     }
+  } else if (state) {
+    if (state === 'instagram' || state === 'youtube' || state === 'twitch') {
+      provider = state;
+    }
   } else {
     const qProv = (p.get('provider') || '').toLowerCase();
-    if (qProv === 'twitch' || qProv === 'youtube') provider = qProv;
+    if (qProv === 'twitch' || qProv === 'youtube' || qProv === 'instagram') provider = qProv;
   }
 
-  // --- Friendly status text ---
-  const niceName = provider === 'twitch' ? 'Twitch' : 'YouTube';
+  const niceNameMap = { youtube: 'YouTube', twitch: 'Twitch', instagram: 'Instagram' };
+  const niceName = niceNameMap[provider] || provider;
   setStatus(`<span style="color:#4886f4;">Connecting to ${niceName}, please wait...</span>`);
 
   try {
     const redirectUri = window.location.origin + window.location.pathname;
 
-    // --- Optional CSRF check (new Twitch flow uses this; legacy YouTube may not) ---
-    // If a CSRF was stored, enforce it; otherwise allow legacy YouTube path through.
+    // --- Optional CSRF check (Twitch/new YouTube). Instagram uses simple "instagram" state w/o CSRF.
     const expectedCsrf = localStorage.getItem('oauth_csrf');
     if (csrfFromState) {
       if (!expectedCsrf || expectedCsrf !== csrfFromState) {
         throw new Error('State mismatch');
       }
     }
-    // Clean up either way (keeps storage tidy)
     if (expectedCsrf) localStorage.removeItem('oauth_csrf');
 
     // --- Current Supabase session JWT ---
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session} } = await supabase.auth.getSession();
     const jwt = session?.access_token;
     if (!jwt) throw new Error('Not logged in or missing session.');
 
@@ -95,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       throw new Error(data?.error || data?.message || 'Unknown error');
     }
 
-    // --- Success UX: notify opener (popup) or redirect fallback ---
+    // --- Success UX: notify opener (popup) or redirect fallback
     setStatus(`<span style="color:green;">${niceName} account successfully connected! Closing…</span>`);
     finalizeSuccess(provider);
   } catch (err) {
@@ -104,29 +112,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Notify parent window if this is a popup, else redirect to dashboard
+// Notify parent window if this is a popup, else redirect appropriately
 function finalizeSuccess(provider) {
   const flag =
-    provider === 'twitch' ? { twitchConnected: true } :
-    { youtubeConnected: true }; // default for legacy YouTube
+    provider === 'twitch'    ? { twitchConnected: true } :
+    provider === 'instagram' ? { instagramConnected: true } :
+    { youtubeConnected: true }; // default legacy
 
   if (window.opener) {
-    try {
-      window.opener.postMessage(flag, '*');
-    } catch {}
+    try { window.opener.postMessage(flag, '*'); } catch {}
     window.close();
   } else {
-    // Fallback: redirect to dashboard (matches your existing behavior)
-    window.location.href = './dashboardsponsee.html';
+    // Instagram uses full-page redirect; bounce back to settings where we show the toast.
+    if (provider === 'instagram') {
+      window.location.href = './settings.html?instagram=connected';
+    } else {
+      // Existing fallback for YouTube/Twitch
+      window.location.href = './dashboardsponsee.html';
+    }
   }
 }
 
 function safeBounce(msg) {
   // If opened as a popup, inform parent and close; else bounce to settings with error
   if (window.opener) {
-    try {
-      window.opener.postMessage({ oauthError: msg }, '*');
-    } catch {}
+    try { window.opener.postMessage({ oauthError: msg }, '*'); } catch {}
     window.close();
   } else {
     window.location.href = `./settings.html?error=${encodeURIComponent(msg)}`;
