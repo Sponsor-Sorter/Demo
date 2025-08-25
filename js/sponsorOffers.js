@@ -375,7 +375,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     .from('private_offers')
     .select('*')
     .eq('sponsor_email', sponsor_email)
-    .in('status', ['pending', 'accepted', 'in_progress', 'live', 'completed', 'Offer Cancelled', 'rejected', "review_completed" ]);
+    .in('status', ['pending', 'accepted', 'in_progress', 'live', 'completed', 'Offer Cancelled', 'rejected', 'review_completed']);
 
   if (error || !offers) {
     document.getElementById('listing-container').innerHTML = `<p style="color:red;">Error loading offers: ${error?.message}</p>`;
@@ -485,8 +485,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- DATA SUMMARY (iterate all URLs but keep existing working Edge Fn contracts) ---
+    // --- DATA SUMMARY (iterate all URLs with proper toggle behaviour) ---
     if (e.target.classList.contains('data-summary-btn')) {
+      // TOGGLE: if currently shown, hide and clear, then stop.
+      const isCurrentlyVisible = dataSummarySection.style.display === 'block';
+      if (isCurrentlyVisible) {
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
+        return;
+      }
+
+      // Otherwise, hide everything else and load stats fresh.
       hideAllSections();
       if (!dataSummarySection) return;
 
@@ -556,9 +565,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
                   ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:auto;height:80px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
                   <div>
-                    <b style="color:#ffe75b;"><span style="font-size:1.3em;">
-                    <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                    </span> ${stats.video.snippet.title}</b>
+                    <b style="color:#ffe75b;">
+                      <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                      ${stats.video.snippet.title}
+                    </b>
                     <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
                     ${dateBadge}
                   </div>
@@ -811,7 +821,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   });
 });
-
-
-
-
