@@ -556,7 +556,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
                   ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:78px;height:55px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
                   <div>
-                    <b style="color:#ffe75b;"><span style="font-size:1.3em;">🎥</span> ${stats.video.snippet.title}</b>
+                    <b style="color:#ffe75b;"><span style="font-size:1.3em;">
+                    <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                    </span> ${stats.video.snippet.title}</b>
                     <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
                     ${dateBadge}
                   </div>
@@ -809,3 +811,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   });
 });
+
