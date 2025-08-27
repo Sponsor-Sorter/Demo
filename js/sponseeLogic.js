@@ -23,6 +23,11 @@ function fmtDuration(totalSec) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+function fmtNum(n) {
+  if (n === null || n === undefined || isNaN(Number(n))) return '-';
+  return Number(n).toLocaleString();
+}
+
 /* =========================
    Category Stars
 ========================= */
@@ -643,6 +648,141 @@ async function loadTwitchStats() {
 }
 
 /* =========================
+   Instagram Stats
+========================= */
+function setIGThumb(imgEl, url, fallbackUrl = 'instagramlogo.png') {
+  if (!imgEl) return;
+  imgEl.setAttribute('referrerpolicy', 'no-referrer');
+  imgEl.onerror = () => {
+    imgEl.onerror = null;
+    imgEl.src = fallbackUrl;
+  };
+  imgEl.src = url || fallbackUrl;
+}
+
+async function loadInstagramStats() {
+  const igEls = {
+    block: document.getElementById('instagram-stats-block'),
+    pic: document.getElementById('ig-profile-pic'),
+    username: document.getElementById('ig-username'),
+    accountType: document.getElementById('ig-account-type'),
+    bio: document.getElementById('ig-bio'),
+    followers: document.getElementById('ig-followers'),
+    following: document.getElementById('ig-following'),
+    posts: document.getElementById('ig-posts'),
+    updatedWrap: document.getElementById('ig-updated-wrap'),
+    updated: document.getElementById('ig-updated'),
+    impressions7d: document.getElementById('ig-impressions-7d'),
+    reach7d: document.getElementById('ig-reach-7d'),
+    profileViews7d: document.getElementById('ig-profile-views-7d'),
+    lastRow: document.getElementById('ig-last-media-row'),
+    lastLink: document.getElementById('ig-last-media-link'),
+    lastCaption: document.getElementById('ig-last-media-caption'),
+    lastPublished: document.getElementById('ig-last-media-published'),
+    lastThumb: document.getElementById('ig-last-media-thumb'),
+    lastLikes: document.getElementById('ig-last-media-likes'),
+    lastComments: document.getElementById('ig-last-media-comments'),
+    lastViewsWrap: document.getElementById('ig-last-media-views-wrap'),
+    lastViews: document.getElementById('ig-last-media-views'),
+  };
+  if (!igEls.block) return;
+
+  // Loading/default state
+  igEls.username.textContent = 'Loading…';
+  igEls.accountType.textContent = '(Professional)';
+  igEls.bio.textContent = '';
+  igEls.followers.textContent = '-';
+  igEls.following.textContent = '-';
+  igEls.posts.textContent = '-';
+  igEls.updated.textContent = '-';
+  igEls.impressions7d.textContent = '-';
+  igEls.reach7d.textContent = '-';
+  igEls.profileViews7d.textContent = '-';
+  igEls.lastRow.style.display = 'none';
+  igEls.pic.src = 'instagramlogo.png';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-stats', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ period_days: 7 })
+    });
+    const payload = await resp.json();
+
+    if (!resp.ok) throw new Error(payload?.error || 'Failed');
+
+    // Accept both shapes:
+    const profile = payload.profile || payload;
+    const insights = payload.insights_7d || payload.insights || {};
+    const last = payload.last_media || payload.lastPost || null;
+
+    // Main info
+    igEls.username.textContent = profile.username || 'Unknown';
+    igEls.accountType.textContent = profile.account_type ? `(${profile.account_type})` : '(Professional)';
+    const bio = profile.biography || profile.bio || '';
+    igEls.bio.textContent = bio ? (bio.length > 140 ? bio.slice(0, 140) + '…' : bio) : '';
+    if (profile.profile_picture_url) {
+      setIGThumb(igEls.pic, profile.profile_picture_url, 'instagramlogo.png');
+    }
+
+    igEls.followers.textContent = fmtNum(profile.followers_count);
+    igEls.following.textContent = fmtNum(profile.follows_count);
+    igEls.posts.textContent = fmtNum(profile.media_count);
+
+    if (payload.fetched_at) {
+      igEls.updated.textContent = new Date(payload.fetched_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+      igEls.updatedWrap.style.display = '';
+    } else {
+      igEls.updatedWrap.style.display = 'none';
+    }
+
+    igEls.impressions7d.textContent = fmtNum(insights.impressions);
+    igEls.reach7d.textContent = fmtNum(insights.reach);
+    igEls.profileViews7d.textContent = fmtNum(insights.profile_views);
+
+    // Last media (optional)
+    if (last) {
+      igEls.lastCaption.textContent = (last.caption || 'Latest post');
+      igEls.lastLink.href = last.permalink || '#';
+      igEls.lastPublished.textContent = last.timestamp ? new Date(last.timestamp).toLocaleDateString() : '';
+      const thumb = last.media_url || last.thumbnail_url || null;
+      if (thumb) setIGThumb(igEls.lastThumb, thumb, 'instagramlogo.png');
+
+      if (igEls.lastLikes) igEls.lastLikes.textContent = fmtNum(last.like_count);
+      if (igEls.lastComments) igEls.lastComments.textContent = fmtNum(last.comments_count);
+
+      if (igEls.lastViewsWrap) {
+        if (last.video_views != null) {
+          igEls.lastViews.textContent = fmtNum(last.video_views);
+          igEls.lastViewsWrap.style.display = '';
+        } else {
+          igEls.lastViewsWrap.style.display = 'none';
+        }
+      }
+      igEls.lastRow.style.display = '';
+    } else {
+      igEls.lastRow.style.display = 'none';
+    }
+  } catch (e) {
+    // Error state
+    igEls.username.textContent = 'Not linked or error.';
+    igEls.accountType.textContent = '';
+    igEls.bio.textContent = '';
+    igEls.followers.textContent = '-';
+    igEls.following.textContent = '-';
+    igEls.posts.textContent = '-';
+    igEls.updated.textContent = '-';
+    igEls.impressions7d.textContent = '-';
+    igEls.reach7d.textContent = '-';
+    igEls.profileViews7d.textContent = '-';
+    igEls.lastRow.style.display = 'none';
+    igEls.pic.src = 'instagramlogo.png';
+  }
+}
+
+/* =========================
    DOMContentLoaded
 ========================= */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -661,17 +801,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let youtubeConnected = false;
   let twitchConnected = false;
+  let instagramConnected = false;
   try {
     const { data: userData } = await supabase
       .from('users_extended_data')
-      .select('youtube_connected, twitch_connected')
+      .select('youtube_connected, twitch_connected, instagram_connected')
       .eq('user_id', userId)
       .single();
     youtubeConnected = !!userData?.youtube_connected;
     twitchConnected = !!userData?.twitch_connected;
+    instagramConnected = !!userData?.instagram_connected;
   } catch {
     youtubeConnected = false;
     twitchConnected = false;
+    instagramConnected = false;
   }
 
   // YouTube
@@ -693,6 +836,37 @@ document.addEventListener('DOMContentLoaded', async () => {
       loadTwitchStats();
     } else {
       twBlock.style.display = 'none';
+    }
+  }
+
+  // Instagram
+  const igBlock = document.getElementById('instagram-stats-block');
+  if (igBlock) {
+    if (instagramConnected) {
+      igBlock.style.display = 'block';
+      loadInstagramStats();
+    } else {
+      igBlock.style.display = 'none';
+    }
+  }
+
+  // If redirected back with ?instagram=connected, show card & refresh
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('instagram') === 'connected' && igBlock) {
+      igBlock.style.display = 'block';
+      loadInstagramStats();
+    }
+  } catch {}
+});
+
+// Also respond to postMessage from oauth popup (for instant refresh)
+window.addEventListener('message', (event) => {
+  if (event?.data?.instagramConnected) {
+    const igBlock = document.getElementById('instagram-stats-block');
+    if (igBlock) {
+      igBlock.style.display = 'block';
+      loadInstagramStats();
     }
   }
 });
