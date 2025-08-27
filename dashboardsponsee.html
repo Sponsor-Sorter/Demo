@@ -401,9 +401,9 @@
       <h2 style="margin:0 0 4px 0;font-size:1.35em;">
         <img src="instagramlogo.png" alt="Instagram" style="height:26px;vertical-align:-4px;margin-right:6px;">
         <span id="ig-username">Loading…</span>
-        <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;">(Professional)</span>
+        <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;display:none;">(Professional)</span>
       </h2>
-      <span id="ig-bio" style="font-size:0.97em;color:#ffd;">Bio…</span>
+      <span id="ig-bio" style="font-size:0.97em;color:#ffd;display:none;">Bio…</span>
     </div>
   </div>
 
@@ -411,6 +411,7 @@
     <div><b>Followers:</b> <span id="ig-followers">-</span></div>
     <div><b>Following:</b> <span id="ig-following">-</span></div>
     <div><b>Posts:</b> <span id="ig-posts">-</span></div>
+    <div><b>Eng. Rate (12):</b> <span id="ig-eng-rate">-</span></div>
     <div id="ig-updated-wrap"><b>Updated:</b> <span id="ig-updated">-</span></div>
   </div>
 
@@ -423,7 +424,7 @@
   <div id="ig-last-media-row" style="margin-top:14px;display:none;">
     <b>Latest Post:</b>
     <a id="ig-last-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
-      <span id="ig-last-media-caption">Caption</span>
+      <span id="ig-last-media-caption">Latest post</span>
     </a>
     <span id="ig-last-media-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
     <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
@@ -434,8 +435,29 @@
         <div id="ig-last-media-views-wrap" style="display:none;">Views: <span id="ig-last-media-views">-</span></div>
       </div>
     </div>
+
+    <!-- Lifetime insights for latest media -->
+    <div id="ig-last-post-insights" style="margin-top:6px; font-size:0.95em; color:#eee; display:none;">
+      <span>Impr: <span id="ig-last-impr">-</span></span>
+      <span style="margin-left:12px;">Reach: <span id="ig-last-reach">-</span></span>
+      <span style="margin-left:12px;">Saved: <span id="ig-last-saved">-</span></span>
+      <span id="ig-last-views-wrap" style="margin-left:12px; display:none;">Views: <span id="ig-last-views">-</span></span>
+    </div>
+  </div>
+
+  <!-- Top recent post by engagement (last 12) -->
+  <div id="ig-top-post-row" style="margin-top:14px;display:none;">
+    <b>Top Recent Post:</b>
+    <a id="ig-top-post-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+      <span id="ig-top-post-caption">Top post</span>
+    </a>
+    <span id="ig-top-post-engagement" style="margin-left:12px;font-size:0.97em;color:#fcfcaa;">Eng: 0</span>
+    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+      <img id="ig-top-post-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+    </div>
   </div>
 </div>
+
 
 
 
@@ -793,5 +815,6 @@
 
 </body>
 </html>
+
 
 
