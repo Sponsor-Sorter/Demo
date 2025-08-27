@@ -12,6 +12,7 @@ function renderStars(rating) {
   }
   return out;
 }
+window.renderStars = renderStars; // expose for any inline/global use
 
 // Format seconds as H:MM:SS or M:SS
 function fmtDuration(totalSec) {
@@ -23,9 +24,17 @@ function fmtDuration(totalSec) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
+// Format numbers with commas (or dash)
 function fmtNum(n) {
   if (n === null || n === undefined || isNaN(Number(n))) return '-';
   return Number(n).toLocaleString();
+}
+
+// Small helper so one failing call doesn’t break the rest of the dashboard
+function safeCall(fn) {
+  try { if (typeof fn === 'function') return fn(); }
+  catch (e) { console.error(e); }
+  return undefined;
 }
 
 /* =========================
@@ -36,7 +45,6 @@ async function updateCategoryStars(category, elementId) {
   if (!session?.user) return;
   const sponseeEmail = session.user.email;
 
-  // Get all offer ids
   const { data: offers } = await supabase
     .from('private_offers')
     .select('id')
@@ -50,7 +58,6 @@ async function updateCategoryStars(category, elementId) {
   }
   const offerIds = offers.map(o => o.id);
 
-  // Fetch all category reviews at once
   let allCategoryRatings = [];
   for (let i = 0; i < offerIds.length; i += 100) {
     const batchIds = offerIds.slice(i, i + 100);
@@ -74,7 +81,6 @@ async function updateCategoryStars(category, elementId) {
    Summary Stat Cards
 ========================= */
 async function updateSummaryStats() {
-  // Set "loading..." state
   document.getElementById('active-sponsorships').textContent = '…';
   document.getElementById('completed-deals').textContent = '…';
   document.getElementById('total-earnings').textContent = '…';
@@ -100,22 +106,16 @@ async function updateSummaryStats() {
     return;
   }
 
-  // Stat Cards
-  const active = offers.filter(o =>
-    ['accepted', 'pending', 'in_progress', 'live'].includes(o.status)
-  );
+  const active = offers.filter(o => ['accepted', 'pending', 'in_progress', 'live'].includes(o.status));
   document.getElementById('active-sponsorships').textContent = active.length ?? 0;
 
-  const completed = offers.filter(o =>
-    ['completed', 'review_completed'].includes(o.status)
-  );
+  const completed = offers.filter(o => ['completed', 'review_completed'].includes(o.status));
   document.getElementById('completed-deals').textContent = completed.length ?? 0;
 
   const validIncome = offers.filter(o => !['rejected', 'Offer Cancelled'].includes(o.status));
   const totalEarnings = validIncome.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
   document.getElementById('total-earnings').textContent = `$${totalEarnings.toFixed(2)}`;
 
-  // Lifetime success ratio
   const successfulOffers = offers.filter(o =>
     ['accepted', 'in_progress', 'live', 'review_completed', 'completed'].includes(o.status)
   ).length;
@@ -162,7 +162,6 @@ async function loadRecentActivity() {
     return;
   }
 
-  // Batch fetch sponsor pics
   const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
@@ -265,7 +264,6 @@ async function loadArchivedDeals() {
     return;
   }
 
-  // Batch sponsor pics
   const sponsorUsernames = [...new Set(offers.map(o => o.sponsor_username).filter(Boolean))];
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
@@ -283,7 +281,6 @@ async function loadArchivedDeals() {
     }
   }
 
-  // Batch reviews
   const offerIds = offers.map(o => o.id);
   let reviewsByOffer = {};
   if (offerIds.length > 0) {
@@ -306,7 +303,6 @@ async function loadArchivedDeals() {
       sponsorPics[offer.sponsor_username] ||
       'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
 
-    // Ratings
     let sponsorRatingDisplay = '—';
     if (reviewsByOffer[offer.id] && reviewsByOffer[offer.id]['sponsor']) {
       sponsorRatingDisplay = renderStars(Math.round(reviewsByOffer[offer.id]['sponsor']));
@@ -381,7 +377,6 @@ async function updateOverallStars() {
 
   const offerIds = offers.map(o => o.id);
 
-  // Fetch all sponsor reviews in batch
   let allSponsorReviews = [];
   for (let i = 0; i < offerIds.length; i += 100) {
     const batchIds = offerIds.slice(i, i + 100);
@@ -401,6 +396,7 @@ async function updateOverallStars() {
   const avg = allSponsorReviews.reduce((sum, r) => sum + (r.overall || 0), 0) / allSponsorReviews.length;
   if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
 }
+window.updateOverallStars = updateOverallStars; // expose just in case something else calls it
 
 /* =========================
    YouTube Stats
@@ -414,16 +410,15 @@ async function loadYouTubeStats() {
   });
   const data = await resp.json();
   if (data.success && data.stats) {
-    // Main info
     document.getElementById('yt-channel-title').innerText = data.snippet.title;
-    document.getElementById('yt-channel-desc').innerText = (data.snippet.description || '').slice(0, 120) + (data.snippet.description?.length > 120 ? '…' : '');
+    document.getElementById('yt-channel-desc').innerText =
+      (data.snippet.description || '').slice(0, 120) + (data.snippet.description?.length > 120 ? '…' : '');
     document.getElementById('yt-subs').innerText = data.stats.subscriberCount;
     document.getElementById('yt-views').innerText = data.stats.viewCount;
     document.getElementById('yt-videos').innerText = data.stats.videoCount;
     document.getElementById('yt-profile-pic').src = data.snippet.thumbnails?.default?.url || 'youtubelogo.png';
     document.getElementById('yt-created').innerText = (new Date(data.snippet.publishedAt)).toLocaleDateString();
 
-    // Banner
     if (data.branding?.image?.bannerExternalUrl) {
       document.getElementById('yt-banner').src = data.branding.image.bannerExternalUrl;
       document.getElementById('yt-banner-row').style.display = '';
@@ -431,7 +426,6 @@ async function loadYouTubeStats() {
       document.getElementById('yt-banner-row').style.display = 'none';
     }
 
-    // Latest video (optional)
     if (data.lastVideo) {
       document.getElementById('yt-last-video-title').innerText = data.lastVideo.title;
       document.getElementById('yt-last-video-link').href = 'https://youtube.com/watch?v=' + data.lastVideo.id;
@@ -443,7 +437,6 @@ async function loadYouTubeStats() {
       document.getElementById('yt-last-video-row').style.display = 'none';
     }
   } else {
-    // Not connected / error
     document.getElementById('yt-channel-title').innerText = 'Not linked or error.';
     document.getElementById('yt-channel-desc').innerText = '';
     document.getElementById('yt-subs').innerText = '-';
@@ -459,20 +452,14 @@ async function loadYouTubeStats() {
 /* =========================
    Twitch Stats
 ========================= */
-// Normalize Twitch thumbnail URL tokens to a concrete size (also works for VODs)
 function normalizeTwitchThumb(u) {
   if (!u) return null;
   return u.replace('%{width}x%{height}', '320x180').replace('{width}x{height}', '320x180');
 }
-
-// Set thumbnail safely: no-referrer + graceful fallback
 function setTwitchThumb(imgEl, url, fallbackUrl) {
   const finalUrl = normalizeTwitchThumb(url) || fallbackUrl || 'twitchlogo.png';
   imgEl.setAttribute('referrerpolicy', 'no-referrer');
-  imgEl.onerror = () => {
-    imgEl.onerror = null;
-    imgEl.src = fallbackUrl || 'twitchlogo.png';
-  };
+  imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = fallbackUrl || 'twitchlogo.png'; };
   imgEl.src = finalUrl;
 }
 
@@ -494,7 +481,6 @@ async function loadTwitchStats() {
     streamThumb: document.getElementById('tw-stream-thumb'),
     gameName: document.getElementById('tw-game-name'),
     pic: document.getElementById('tw-profile-pic'),
-    // Optional offline VOD stats (only shown if these elements exist in HTML)
     vodViewsWrap: document.getElementById('tw-vod-views-wrap'),
     vodViews: document.getElementById('tw-vod-views'),
     durationWrap: document.getElementById('tw-duration-wrap'),
@@ -502,7 +488,6 @@ async function loadTwitchStats() {
   };
   if (!twEls.block) return;
 
-  // Loading state
   twEls.name.textContent = 'Loading…';
   twEls.login.textContent = '(@login)';
   twEls.bio.textContent = '';
@@ -525,7 +510,6 @@ async function loadTwitchStats() {
     const data = await resp.json();
     if (!resp.ok || !data?.success) throw new Error(data?.error || 'Failed');
 
-    // Accept both shapes: {channel, stats} (older) or {user, stream, followers, last_broadcast} (current)
     const chan = data.channel || data.user || {};
     const followers = (data.stats && data.stats.followers != null)
       ? data.stats.followers
@@ -536,7 +520,6 @@ async function loadTwitchStats() {
     const last = data.last_broadcast || data.lastVod || null;
     const isLive = stream.is_live === true || statusStr === 'live';
 
-    // When offline, prefer last_broadcast details if provided
     if (!isLive && last) {
       stream = {
         title: last.title || stream.title,
@@ -549,7 +532,6 @@ async function loadTwitchStats() {
       };
     }
 
-    // Main info
     twEls.name.textContent = chan.display_name || chan.displayName || chan.login || 'Unknown';
     twEls.login.textContent = chan.login ? `(@${chan.login})` : '';
     const desc = chan.description || '';
@@ -558,9 +540,7 @@ async function loadTwitchStats() {
       twEls.pic.src = chan.profile_image_url || chan.profileImageUrl;
     }
 
-    if (followers != null) {
-      twEls.followers.textContent = Number(followers).toLocaleString();
-    }
+    if (followers != null) twEls.followers.textContent = Number(followers).toLocaleString();
 
     if (chan.created_at || chan.createdAt) {
       twEls.created.textContent = new Date(chan.created_at || chan.createdAt).toLocaleDateString();
@@ -569,12 +549,10 @@ async function loadTwitchStats() {
       twEls.createdWrap.style.display = 'none';
     }
 
-    // Stream info
     twEls.live.textContent = isLive ? 'LIVE' : 'Offline';
     twEls.live.style.color = isLive ? '#32e232' : '#ffd';
 
     if (isLive) {
-      // live viewer count
       if (typeof stream.viewer_count === 'number') {
         twEls.viewers.textContent = stream.viewer_count.toLocaleString();
         if (twEls.viewersWrap) twEls.viewersWrap.style.display = '';
@@ -590,11 +568,9 @@ async function loadTwitchStats() {
       setTwitchThumb(twEls.streamThumb, stream.thumbnail_url, chan.profile_image_url || 'twitchlogo.png');
       twEls.streamRow.style.display = '';
 
-      // hide offline-only fields
       if (twEls.vodViewsWrap) twEls.vodViewsWrap.style.display = 'none';
       if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
     } else if (stream.title || stream.thumbnail_url) {
-      // Offline / last broadcast shown
       twEls.streamTitle.textContent = stream.title || 'Last stream';
       twEls.streamStarted.textContent = stream.started_at ? new Date(stream.started_at).toLocaleDateString() : '';
       twEls.gameName.textContent = stream.game_name || '-';
@@ -602,10 +578,9 @@ async function loadTwitchStats() {
       twEls.streamRow.style.display = '';
       if (twEls.viewersWrap) twEls.viewersWrap.style.display = 'none';
 
-      // Show VOD views (if provided)
       const vodViewsVal = (typeof stream.vod_views === 'number')
         ? stream.vod_views
-        : (typeof stream.viewer_count === 'number' ? stream.viewer_count : null); // fallback for older shape
+        : (typeof stream.viewer_count === 'number' ? stream.viewer_count : null);
       if (twEls.vodViewsWrap) {
         if (vodViewsVal != null) {
           twEls.vodViews.textContent = Number(vodViewsVal).toLocaleString();
@@ -615,7 +590,6 @@ async function loadTwitchStats() {
         }
       }
 
-      // Show duration if present
       if (twEls.durationWrap) {
         const durTxt = stream.duration_text || fmtDuration(stream.duration_seconds);
         if (durTxt) {
@@ -632,7 +606,6 @@ async function loadTwitchStats() {
       if (twEls.durationWrap) twEls.durationWrap.style.display = 'none';
     }
   } catch {
-    // Error state
     twEls.name.textContent = 'Not linked or error.';
     twEls.login.textContent = '';
     twEls.bio.textContent = '';
@@ -653,10 +626,7 @@ async function loadTwitchStats() {
 function setIGThumb(imgEl, url, fallbackUrl = 'instagramlogo.png') {
   if (!imgEl) return;
   imgEl.setAttribute('referrerpolicy', 'no-referrer');
-  imgEl.onerror = () => {
-    imgEl.onerror = null;
-    imgEl.src = fallbackUrl;
-  };
+  imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = fallbackUrl; };
   imgEl.src = url || fallbackUrl;
 }
 
@@ -670,6 +640,7 @@ async function loadInstagramStats() {
     followers: document.getElementById('ig-followers'),
     following: document.getElementById('ig-following'),
     posts: document.getElementById('ig-posts'),
+    engRate: document.getElementById('ig-eng-rate'),
     updatedWrap: document.getElementById('ig-updated-wrap'),
     updated: document.getElementById('ig-updated'),
     impressions7d: document.getElementById('ig-impressions-7d'),
@@ -684,21 +655,34 @@ async function loadInstagramStats() {
     lastComments: document.getElementById('ig-last-media-comments'),
     lastViewsWrap: document.getElementById('ig-last-media-views-wrap'),
     lastViews: document.getElementById('ig-last-media-views'),
+    lastInsightsRow: document.getElementById('ig-last-post-insights'),
+    lastImpr: document.getElementById('ig-last-impr'),
+    lastReach: document.getElementById('ig-last-reach'),
+    lastSaved: document.getElementById('ig-last-saved'),
+    lastViews2Wrap: document.getElementById('ig-last-views-wrap'),
+    lastViews2: document.getElementById('ig-last-views'),
+    topRow: document.getElementById('ig-top-post-row'),
+    topLink: document.getElementById('ig-top-post-link'),
+    topCaption: document.getElementById('ig-top-post-caption'),
+    topEngagement: document.getElementById('ig-top-post-engagement'),
+    topThumb: document.getElementById('ig-top-post-thumb'),
   };
   if (!igEls.block) return;
 
-  // Loading/default state
   igEls.username.textContent = 'Loading…';
-  igEls.accountType.textContent = '(Professional)';
-  igEls.bio.textContent = '';
+  igEls.accountType.style.display = 'none';
+  igEls.bio.style.display = 'none';
   igEls.followers.textContent = '-';
   igEls.following.textContent = '-';
   igEls.posts.textContent = '-';
+  if (igEls.engRate) igEls.engRate.textContent = '-';
   igEls.updated.textContent = '-';
   igEls.impressions7d.textContent = '-';
   igEls.reach7d.textContent = '-';
   igEls.profileViews7d.textContent = '-';
-  igEls.lastRow.style.display = 'none';
+  if (igEls.lastRow) igEls.lastRow.style.display = 'none';
+  if (igEls.topRow) igEls.topRow.style.display = 'none';
+  if (igEls.lastInsightsRow) igEls.lastInsightsRow.style.display = 'none';
   igEls.pic.src = 'instagramlogo.png';
 
   try {
@@ -710,19 +694,23 @@ async function loadInstagramStats() {
       body: JSON.stringify({ period_days: 7 })
     });
     const payload = await resp.json();
+    if (!resp.ok || !payload?.ok) throw new Error(payload?.error || 'Failed');
 
-    if (!resp.ok) throw new Error(payload?.error || 'Failed');
+    const profile = payload.profile || {};
+    const recent = Array.isArray(payload.recent_media) ? payload.recent_media : [];
+    const rollups = payload.rollups || {};
+    const fetchedAt = payload.fetched_at || Date.now();
 
-    // Accept both shapes:
-    const profile = payload.profile || payload;
-    const insights = payload.insights_7d || payload.insights || {};
-    const last = payload.last_media || payload.lastPost || null;
-
-    // Main info
     igEls.username.textContent = profile.username || 'Unknown';
-    igEls.accountType.textContent = profile.account_type ? `(${profile.account_type})` : '(Professional)';
+    if (profile.account_type) {
+      igEls.accountType.textContent = `(${profile.account_type})`;
+      igEls.accountType.style.display = '';
+    }
     const bio = profile.biography || profile.bio || '';
-    igEls.bio.textContent = bio ? (bio.length > 140 ? bio.slice(0, 140) + '…' : bio) : '';
+    if (bio) {
+      igEls.bio.textContent = bio.length > 140 ? bio.slice(0, 140) + '…' : bio;
+      igEls.bio.style.display = '';
+    }
     if (profile.profile_picture_url) {
       setIGThumb(igEls.pic, profile.profile_picture_url, 'instagramlogo.png');
     }
@@ -730,28 +718,36 @@ async function loadInstagramStats() {
     igEls.followers.textContent = fmtNum(profile.followers_count);
     igEls.following.textContent = fmtNum(profile.follows_count);
     igEls.posts.textContent = fmtNum(profile.media_count);
+    if (igEls.engRate) {
+      const er = rollups.last_12_avg_engagement_rate;
+      igEls.engRate.textContent = (er || er === 0) ? `${(er * 100).toFixed(2)}%` : '-';
+    }
 
-    if (payload.fetched_at) {
-      igEls.updated.textContent = new Date(payload.fetched_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+    if (fetchedAt) {
+      igEls.updated.textContent = new Date(fetchedAt).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
       igEls.updatedWrap.style.display = '';
     } else {
       igEls.updatedWrap.style.display = 'none';
     }
 
-    igEls.impressions7d.textContent = fmtNum(insights.impressions);
-    igEls.reach7d.textContent = fmtNum(insights.reach);
-    igEls.profileViews7d.textContent = fmtNum(insights.profile_views);
+    if (payload.insights_7d || payload.insights) {
+      const ins = payload.insights_7d || payload.insights;
+      igEls.impressions7d.textContent = fmtNum(ins.impressions);
+      igEls.reach7d.textContent = fmtNum(ins.reach);
+      igEls.profileViews7d.textContent = fmtNum(ins.profile_views);
+    }
 
-    // Last media (optional)
-    if (last) {
-      igEls.lastCaption.textContent = (last.caption || 'Latest post');
+    if (recent.length > 0 && igEls.lastRow) {
+      recent.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+      const last = recent[0];
+
+      igEls.lastCaption.textContent = last.caption || 'Latest post';
       igEls.lastLink.href = last.permalink || '#';
       igEls.lastPublished.textContent = last.timestamp ? new Date(last.timestamp).toLocaleDateString() : '';
-      const thumb = last.media_url || last.thumbnail_url || null;
-      if (thumb) setIGThumb(igEls.lastThumb, thumb, 'instagramlogo.png');
+      setIGThumb(igEls.lastThumb, last.media_url || last.thumbnail_url || null, 'instagramlogo.png');
 
-      if (igEls.lastLikes) igEls.lastLikes.textContent = fmtNum(last.like_count);
-      if (igEls.lastComments) igEls.lastComments.textContent = fmtNum(last.comments_count);
+      igEls.lastLikes.textContent = fmtNum(last.like_count);
+      igEls.lastComments.textContent = fmtNum(last.comments_count);
 
       if (igEls.lastViewsWrap) {
         if (last.video_views != null) {
@@ -761,23 +757,64 @@ async function loadInstagramStats() {
           igEls.lastViewsWrap.style.display = 'none';
         }
       }
+
+      if (payload.last_media_insights) {
+        const li = payload.last_media_insights;
+        if (igEls.lastInsightsRow) {
+          if (igEls.lastImpr) igEls.lastImpr.textContent = fmtNum(li.impressions);
+          if (igEls.lastReach) igEls.lastReach.textContent = fmtNum(li.reach);
+          if (igEls.lastSaved) igEls.lastSaved.textContent = fmtNum(li.saved);
+          if (igEls.lastViews2Wrap) {
+            if (li.video_views != null) {
+              igEls.lastViews2.textContent = fmtNum(li.video_views);
+              igEls.lastViews2Wrap.style.display = '';
+            } else {
+              igEls.lastViews2Wrap.style.display = 'none';
+            }
+          }
+          igEls.lastInsightsRow.style.display = '';
+        }
+      } else if (igEls.lastInsightsRow) {
+        igEls.lastInsightsRow.style.display = 'none';
+      }
+
       igEls.lastRow.style.display = '';
-    } else {
+    } else if (igEls.lastRow) {
       igEls.lastRow.style.display = 'none';
     }
-  } catch (e) {
-    // Error state
+
+    if (recent.length > 0 && igEls.topRow) {
+      let top = null;
+      let topScore = -1;
+      for (const m of recent) {
+        const score = (Number(m.like_count) || 0) + (Number(m.comments_count) || 0);
+        if (score > topScore) { top = m; topScore = score; }
+      }
+      if (top) {
+        igEls.topCaption.textContent = top.caption || 'Top post';
+        igEls.topLink.href = top.permalink || '#';
+        igEls.topEngagement.textContent = `Eng: ${fmtNum(topScore)}`;
+        setIGThumb(igEls.topThumb, top.media_url || top.thumbnail_url || null, 'instagramlogo.png');
+        igEls.topRow.style.display = '';
+      } else {
+        igEls.topRow.style.display = 'none';
+      }
+    }
+  } catch {
     igEls.username.textContent = 'Not linked or error.';
-    igEls.accountType.textContent = '';
-    igEls.bio.textContent = '';
+    igEls.accountType.style.display = 'none';
+    igEls.bio.style.display = 'none';
     igEls.followers.textContent = '-';
     igEls.following.textContent = '-';
     igEls.posts.textContent = '-';
+    if (igEls.engRate) igEls.engRate.textContent = '-';
     igEls.updated.textContent = '-';
     igEls.impressions7d.textContent = '-';
     igEls.reach7d.textContent = '-';
     igEls.profileViews7d.textContent = '-';
-    igEls.lastRow.style.display = 'none';
+    if (igEls.lastRow) igEls.lastRow.style.display = 'none';
+    if (igEls.topRow) igEls.topRow.style.display = 'none';
+    if (igEls.lastInsightsRow) igEls.lastInsightsRow.style.display = 'none';
     igEls.pic.src = 'instagramlogo.png';
   }
 }
@@ -786,15 +823,14 @@ async function loadInstagramStats() {
    DOMContentLoaded
 ========================= */
 document.addEventListener('DOMContentLoaded', async () => {
-  updateSummaryStats();
-  loadRecentActivity();
-  loadArchivedDeals();
-  updateOverallStars();
-  updateCategoryStars('communication', 'communication-stars');
-  updateCategoryStars('punctuality', 'punctuality-stars');
-  updateCategoryStars('work_output', 'work-output-stars');
+  safeCall(updateSummaryStats);
+  safeCall(loadRecentActivity);
+  safeCall(loadArchivedDeals);
+  safeCall(updateOverallStars);          // <- guarded to prevent page crash
+  safeCall(() => updateCategoryStars('communication', 'communication-stars'));
+  safeCall(() => updateCategoryStars('punctuality', 'punctuality-stars'));
+  safeCall(() => updateCategoryStars('work_output', 'work-output-stars'));
 
-  // Only show/fetch platform stats if user is connected
   const { data: { session } } = await supabase.auth.getSession();
   const userId = session?.user?.id;
   if (!userId) return;
@@ -817,56 +853,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     instagramConnected = false;
   }
 
-  // YouTube
   const ytBlock = document.getElementById('youtube-stats-block');
-  if (ytBlock) {
-    if (youtubeConnected) {
-      ytBlock.style.display = 'block';
-      loadYouTubeStats();
-    } else {
-      ytBlock.style.display = 'none';
-    }
-  }
+  if (ytBlock) ytBlock.style.display = youtubeConnected ? 'block' : 'none';
+  if (youtubeConnected) safeCall(loadYouTubeStats);
 
-  // Twitch
   const twBlock = document.getElementById('twitch-stats-block');
-  if (twBlock) {
-    if (twitchConnected) {
-      twBlock.style.display = 'block';
-      loadTwitchStats();
-    } else {
-      twBlock.style.display = 'none';
-    }
-  }
+  if (twBlock) twBlock.style.display = twitchConnected ? 'block' : 'none';
+  if (twitchConnected) safeCall(loadTwitchStats);
 
-  // Instagram
   const igBlock = document.getElementById('instagram-stats-block');
-  if (igBlock) {
-    if (instagramConnected) {
-      igBlock.style.display = 'block';
-      loadInstagramStats();
-    } else {
-      igBlock.style.display = 'none';
-    }
-  }
+  if (igBlock) igBlock.style.display = instagramConnected ? 'block' : 'none';
+  if (instagramConnected) safeCall(loadInstagramStats);
 
-  // If redirected back with ?instagram=connected, show card & refresh
   try {
     const params = new URLSearchParams(window.location.search);
     if (params.get('instagram') === 'connected' && igBlock) {
       igBlock.style.display = 'block';
-      loadInstagramStats();
+      safeCall(loadInstagramStats);
     }
   } catch {}
 });
 
-// Also respond to postMessage from oauth popup (for instant refresh)
 window.addEventListener('message', (event) => {
   if (event?.data?.instagramConnected) {
     const igBlock = document.getElementById('instagram-stats-block');
     if (igBlock) {
       igBlock.style.display = 'block';
-      loadInstagramStats();
+      safeCall(loadInstagramStats);
     }
   }
 });
