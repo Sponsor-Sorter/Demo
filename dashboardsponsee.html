@@ -382,6 +382,60 @@
     </div>
   </div>
 </div>
+</div>
+
+<!-- instagram stats -->
+<div class="instagram-stats-card" id="instagram-stats-block" style="
+  display:none;
+  padding:24px 22px;
+  background:#5e5e5e;
+  border-radius:16px;
+  box-shadow:0 5px 9px rgba(225,48,108,.45);
+  max-width:550px;
+  margin:0 auto 16px auto;
+  color:#fff;
+">
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+    <img id="ig-profile-pic" src="instagramlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+    <div>
+      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+        <img src="instagramlogo.png" alt="Instagram" style="height:26px;vertical-align:-4px;margin-right:6px;">
+        <span id="ig-username">Loading…</span>
+        <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;">(Professional)</span>
+      </h2>
+      <span id="ig-bio" style="font-size:0.97em;color:#ffd;">Bio…</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+    <div><b>Followers:</b> <span id="ig-followers">-</span></div>
+    <div><b>Following:</b> <span id="ig-following">-</span></div>
+    <div><b>Posts:</b> <span id="ig-posts">-</span></div>
+    <div id="ig-updated-wrap"><b>Updated:</b> <span id="ig-updated">-</span></div>
+  </div>
+
+  <div id="ig-insights-row" style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-top:6px;">
+    <div><b>Impressions (7d):</b> <span id="ig-impressions-7d">-</span></div>
+    <div><b>Reach (7d):</b> <span id="ig-reach-7d">-</span></div>
+    <div><b>Profile Views (7d):</b> <span id="ig-profile-views-7d">-</span></div>
+  </div>
+
+  <div id="ig-last-media-row" style="margin-top:14px;display:none;">
+    <b>Latest Post:</b>
+    <a id="ig-last-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+      <span id="ig-last-media-caption">Caption</span>
+    </a>
+    <span id="ig-last-media-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+      <img id="ig-last-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+      <div style="font-size:0.97em;">
+        <div>Likes: <span id="ig-last-media-likes">-</span></div>
+        <div>Comments: <span id="ig-last-media-comments">-</span></div>
+        <div id="ig-last-media-views-wrap" style="display:none;">Views: <span id="ig-last-media-views">-</span></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -739,4 +793,5 @@
 
 </body>
 </html>
+
 
