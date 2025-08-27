@@ -646,6 +646,8 @@ async function loadInstagramStats() {
     impressions7d: document.getElementById('ig-impressions-7d'),
     reach7d: document.getElementById('ig-reach-7d'),
     profileViews7d: document.getElementById('ig-profile-views-7d'),
+
+    // Latest post section
     lastRow: document.getElementById('ig-last-media-row'),
     lastLink: document.getElementById('ig-last-media-link'),
     lastCaption: document.getElementById('ig-last-media-caption'),
@@ -661,14 +663,22 @@ async function loadInstagramStats() {
     lastSaved: document.getElementById('ig-last-saved'),
     lastViews2Wrap: document.getElementById('ig-last-views-wrap'),
     lastViews2: document.getElementById('ig-last-views'),
-    topRow: document.getElementById('ig-top-post-row'),
-    topLink: document.getElementById('ig-top-post-link'),
-    topCaption: document.getElementById('ig-top-post-caption'),
-    topEngagement: document.getElementById('ig-top-post-engagement'),
-    topThumb: document.getElementById('ig-top-post-thumb'),
+
+    // Top post section (support both current + richer future markup)
+    topRow: document.getElementById('ig-top-post-row') || document.getElementById('ig-top-media-row'),
+    topLink: document.getElementById('ig-top-post-link') || document.getElementById('ig-top-media-link'),
+    topCaption: document.getElementById('ig-top-post-caption') || document.getElementById('ig-top-media-caption'),
+    topEngagement: document.getElementById('ig-top-post-engagement') || document.getElementById('ig-top-media-eng'),
+    topThumb: document.getElementById('ig-top-post-thumb') || document.getElementById('ig-top-media-thumb'),
+    // optional like/comment/views fields if present in HTML
+    topLikes: document.getElementById('ig-top-media-likes') || document.getElementById('ig-top-post-likes'),
+    topComments: document.getElementById('ig-top-media-comments') || document.getElementById('ig-top-post-comments'),
+    topViewsWrap: document.getElementById('ig-top-media-views-wrap') || document.getElementById('ig-top-post-views-wrap'),
+    topViews: document.getElementById('ig-top-media-views') || document.getElementById('ig-top-post-views'),
   };
   if (!igEls.block) return;
 
+  // Loading/default state
   igEls.username.textContent = 'Loading…';
   igEls.accountType.style.display = 'none';
   igEls.bio.style.display = 'none';
@@ -701,6 +711,7 @@ async function loadInstagramStats() {
     const rollups = payload.rollups || {};
     const fetchedAt = payload.fetched_at || Date.now();
 
+    // Profile
     igEls.username.textContent = profile.username || 'Unknown';
     if (profile.account_type) {
       igEls.accountType.textContent = `(${profile.account_type})`;
@@ -730,6 +741,7 @@ async function loadInstagramStats() {
       igEls.updatedWrap.style.display = 'none';
     }
 
+    // Account insights (7d)
     if (payload.insights_7d || payload.insights) {
       const ins = payload.insights_7d || payload.insights;
       igEls.impressions7d.textContent = fmtNum(ins.impressions);
@@ -737,6 +749,7 @@ async function loadInstagramStats() {
       igEls.profileViews7d.textContent = fmtNum(ins.profile_views);
     }
 
+    // Latest post
     if (recent.length > 0 && igEls.lastRow) {
       recent.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
       const last = recent[0];
@@ -783,18 +796,43 @@ async function loadInstagramStats() {
       igEls.lastRow.style.display = 'none';
     }
 
+    // Top recent post (by likes+comments)
     if (recent.length > 0 && igEls.topRow) {
-      let top = null;
-      let topScore = -1;
-      for (const m of recent) {
-        const score = (Number(m.like_count) || 0) + (Number(m.comments_count) || 0);
-        if (score > topScore) { top = m; topScore = score; }
+      const topFromServer =
+        payload.top_recent_media || payload.top_recent_post || payload.topPost || null;
+
+      let top = topFromServer;
+      if (!top) {
+        let best = null;
+        let bestScore = -1;
+        for (const m of recent) {
+          const score = (Number(m.like_count) || 0) + (Number(m.comments_count) || 0);
+          if (score > bestScore) { best = m; bestScore = score; }
+        }
+        top = best;
       }
+
       if (top) {
-        igEls.topCaption.textContent = top.caption || 'Top post';
-        igEls.topLink.href = top.permalink || '#';
-        igEls.topEngagement.textContent = `Eng: ${fmtNum(topScore)}`;
-        setIGThumb(igEls.topThumb, top.media_url || top.thumbnail_url || null, 'instagramlogo.png');
+        // main fields
+        if (igEls.topCaption) igEls.topCaption.textContent = top.caption || 'Top post';
+        if (igEls.topLink) igEls.topLink.href = top.permalink || '#';
+        if (igEls.topThumb) setIGThumb(igEls.topThumb, top.media_url || top.thumbnail_url || null, 'instagramlogo.png');
+
+        const eng = (Number(top.like_count) || 0) + (Number(top.comments_count) || 0);
+        if (igEls.topEngagement) igEls.topEngagement.textContent = ` ${fmtNum(eng)}`;
+
+        // optional like/comment/views fields if they exist in HTML
+        if (igEls.topLikes) igEls.topLikes.textContent = fmtNum(top.like_count);
+        if (igEls.topComments) igEls.topComments.textContent = fmtNum(top.comments_count);
+        if (igEls.topViewsWrap) {
+          if (top.video_views != null) {
+            if (igEls.topViews) igEls.topViews.textContent = fmtNum(top.video_views);
+            igEls.topViewsWrap.style.display = '';
+          } else {
+            igEls.topViewsWrap.style.display = 'none';
+          }
+        }
+
         igEls.topRow.style.display = '';
       } else {
         igEls.topRow.style.display = 'none';
