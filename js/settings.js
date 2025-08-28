@@ -816,18 +816,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })();
 
- // =========================
+// =========================
 //    FACEBOOK INTEGRATION
 // =========================
 
 function buildFacebookAuthUrl() {
   const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
   const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+  // Minimal, valid set for selecting a Page and reading its engagement data.
+  // (Removed pages_read_user_content and read_insights to avoid "Invalid Scopes")
   const scope = [
     'public_profile',
     'pages_show_list',
-    'pages_read_engagement',
-    'read_insights' // keep if you'll call Page Insights; remove if not needed
+    'pages_read_engagement'
   ].join(',');
   // We use state=facebook so oauth2callback.html knows to call facebook-oauth
   return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
@@ -1231,4 +1232,5 @@ function showFacebookDisconnectedNotification() {
     loadEmailAlertSetting();
   }
 });
+
 
