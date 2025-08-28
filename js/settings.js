@@ -816,6 +816,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })();
 
+  // =========================
+  //    FACEBOOK INTEGRATION
+  // =========================
+
+  function buildFacebookAuthUrl() {
+    const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
+    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+    const scope = [
+      'public_profile',
+      'pages_show_list',
+      'pages_read_engagement',
+      'pages_read_user_content'
+    ].join(',');
+    // We use state=facebook so oauth2callback.html knows to call facebook-oauth
+    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
+  }
+
+  function showFacebookSuccessNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #1877F2; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '✅ Facebook Page successfully linked!';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  function showFacebookDisconnectedNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '⛔ Facebook account disconnected.';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  // If oauth2callback.html redirected back with ?facebook=connected
+  (function handleFacebookReturn() {
+    const url = new URL(location.href);
+    if (url.searchParams.get('facebook') === 'connected') {
+      showFacebookSuccessNotification();
+      url.searchParams.delete('facebook');
+      history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
+    }
+  })();
+
   // --- Unified OAuth Modal Logic ---
   const oauthLinkBtn = document.getElementById('oauth-link-btn');
   const oauthLinkModal = document.getElementById('oauth-link-modal');
@@ -862,11 +915,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add more platforms here as needed
   ];
 
+  // Enhanced: allow either *_connected bool OR presence of provider-specific columns
   function isPlatformConnected(user, key) {
     if (!user) return false;
-    if (key === 'youtube') return user.youtube_connected === true;
-    if (key === 'twitch') return user.twitch_connected === true;
-    return user[`${key}_connected`] === true;
+
+    // direct boolean pattern (youtube_connected, instagram_connected, etc.)
+    const boolFlag = user[`${key}_connected`] === true;
+    if (boolFlag) return true;
+
+    // Fallbacks by provider (when you haven't added *_connected yet)
+    if (key === 'twitch') return !!(user.twitch_access_token);
+    if (key === 'youtube') return !!(user.youtube_refresh_token || user.youtube_access_token);
+    if (key === 'instagram') return !!(user.instagram_user_id || user.instagram_access_token);
+    if (key === 'facebook') {
+      // Treat as connected if we have a page id or page access token saved in users_extended_data
+      return !!(user.facebook_page_id || user.facebook_access_token);
+    }
+    return false;
   }
 
   async function refreshOauthAccountsUI() {
@@ -922,8 +987,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               showYouTubeDisconnectedNotification();
               await refreshOauthAccountsUI();
             } else {
-              btn.innerText = "Failed!";
-              btn.style.background = "#e22";
+              btn.innerText = "Failed!"; btn.style.background = "#e22";
               setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
             }
           } else {
@@ -958,8 +1022,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
               await refreshOauthAccountsUI();
             } else {
-              btn.innerText = "Failed!";
-              btn.style.background = "#e22";
+              btn.innerText = "Failed!"; btn.style.background = "#e22";
               setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
             }
           } else {
@@ -994,8 +1057,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               showInstagramDisconnectedNotification();
               await refreshOauthAccountsUI();
             } else {
-              btn.innerText = "Failed!";
-              btn.style.background = "#e22";
+              btn.innerText = "Failed!"; btn.style.background = "#e22";
               setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
             }
           } else {
@@ -1007,24 +1069,62 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
 
+        // --- NEW: FACEBOOK CONNECT/DISCONNECT ---
+        else if (plat === "facebook") {
+          // We treat connected if page id/token present OR facebook_connected flag is true
+          const fbConnected = isPlatformConnected(user, 'facebook');
+
+          if (fbConnected) {
+            // --- DISCONNECT FACEBOOK ---
+            btn.innerText = "Disconnecting...";
+            btn.disabled = true;
+
+            const update = {
+              facebook_user_id: null,
+              facebook_page_id: null,
+              facebook_page_name: null,
+              facebook_access_token: null,
+              facebook_token_expires_at: null
+            };
+            // Also try to set flag false if your schema includes it (safe if ignored)
+            update['facebook_connected'] = false;
+
+            const { error } = await supabase
+              .from('users_extended_data')
+              .update(update)
+              .eq('user_id', user.user_id);
+
+            if (!error) {
+              btn.innerText = "Connect";
+              btn.style.background = "#2d7bfa";
+              const badge = document.getElementById('facebook-status-badge');
+              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
+              showFacebookDisconnectedNotification();
+              await refreshOauthAccountsUI();
+            } else {
+              btn.innerText = "Failed!"; btn.style.background = "#e22";
+              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
+            }
+          } else {
+            // --- CONNECT FACEBOOK ---
+            const url = buildFacebookAuthUrl(); // state=facebook
+            oauthLinkModal.style.display = "none";
+            window.location.href = url; // full redirect (Meta-friendly)
+          }
+        }
+
         // Future platforms (placeholders)
         else if (plat === "tiktok") {
           if (user.tiktok_connected) {
-            // TODO
+            // TODO: add disconnect if needed
           } else {
             alert("TikTok OAuth coming soon!");
           }
         } else if (plat === "twitter") {
           if (user.twitter_connected) {
-            // TODO
+            // TODO: add disconnect if needed
           } else {
             alert("X (Twitter) OAuth coming soon!");
-          }
-        } else if (plat === "facebook") {
-          if (user.facebook_connected) {
-            // TODO
-          } else {
-            alert("Facebook OAuth coming soon!");
           }
         } else if (plat === "kick") {
           if (user.kick_connected) {
