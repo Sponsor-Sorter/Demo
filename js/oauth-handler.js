@@ -1,5 +1,5 @@
 // File: ./js/oauth-handler.js
-// One callback for YouTube + Twitch + Instagram (Meta IG Graph)
+// One callback for YouTube + Twitch + Instagram + Facebook (Meta)
 
 import { supabase } from './supabaseClient.js';
 
@@ -8,6 +8,7 @@ const EDGE_FN = {
   youtube:   'youtube-oauth',
   twitch:    'twitch-oauth',
   instagram: 'instagram-oauth',
+  facebook:  'facebook-oauth',
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,19 +28,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   let csrfFromState = '';
   if (state.includes(':')) {
     const [maybe, csrf] = state.split(':', 2);
-    if (maybe === 'twitch' || maybe === 'youtube') { provider = maybe; csrfFromState = csrf || ''; }
-  } else if (state && ['instagram','youtube','twitch'].includes(state)) {
+    if (['twitch','youtube'].includes(maybe)) { provider = maybe; csrfFromState = csrf || ''; }
+  } else if (state && ['instagram','youtube','twitch','facebook'].includes(state)) {
     provider = state;
   } else {
     const via = (qs.get('provider') || '').toLowerCase();
-    if (['twitch','youtube','instagram'].includes(via)) provider = via;
+    if (['twitch','youtube','instagram','facebook'].includes(via)) provider = via;
   }
 
-  const pretty = { youtube:'YouTube', twitch:'Twitch', instagram:'Instagram' }[provider] || provider;
+  const pretty = { youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook' }[provider] || provider;
   setStatus(`<span style="color:#4886f4;">Connecting to ${pretty}…</span>`);
 
   try {
-    // CSRF for Twitch/new YouTube (Instagram uses simple "instagram" state)
+    // CSRF for Twitch/new YouTube (Instagram/Facebook use simple state)
     const expected = localStorage.getItem('oauth_csrf');
     if (csrfFromState && expected !== csrfFromState) throw new Error('State mismatch');
     if (expected) localStorage.removeItem('oauth_csrf');
@@ -70,15 +71,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function success(provider) {
-  const flag = provider === 'twitch' ? { twitchConnected: true }
-             : provider === 'instagram' ? { instagramConnected: true }
-             : { youtubeConnected: true };
+  const flag =
+    provider === 'twitch'    ? { twitchConnected: true } :
+    provider === 'instagram' ? { instagramConnected: true } :
+    provider === 'facebook'  ? { facebookConnected: true } :
+    { youtubeConnected: true };
 
   if (window.opener) {
     try { window.opener.postMessage(flag, '*'); } catch {}
     window.close();
   } else {
-    const suffix = provider === 'instagram' ? '?instagram=connected' : '';
+    const suffix =
+      provider === 'instagram' ? '?instagram=connected' :
+      provider === 'facebook'  ? '?facebook=connected'  :
+      '';
     location.href = `./dashboardsponsee.html${suffix}`;
   }
 }
