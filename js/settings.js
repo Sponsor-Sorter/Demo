@@ -816,58 +816,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })();
 
-  // =========================
-  //    FACEBOOK INTEGRATION
-  // =========================
+ // =========================
+//    FACEBOOK INTEGRATION
+// =========================
 
-  function buildFacebookAuthUrl() {
-    const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
-    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
-    const scope = [
-      'public_profile',
-      'pages_show_list',
-      'pages_read_engagement',
-      'pages_read_user_content'
-    ].join(',');
-    // We use state=facebook so oauth2callback.html knows to call facebook-oauth
-    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
+function buildFacebookAuthUrl() {
+  const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
+  const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+  const scope = [
+    'public_profile',
+    'pages_show_list',
+    'pages_read_engagement',
+    'read_insights' // keep if you'll call Page Insights; remove if not needed
+  ].join(',');
+  // We use state=facebook so oauth2callback.html knows to call facebook-oauth
+  return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
+}
+
+function showFacebookSuccessNotification() {
+  const el = document.createElement('div');
+  el.style.cssText = `
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: #1877F2; color: #fff; font-size: 1.1em;
+    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+  `;
+  el.textContent = '✅ Facebook Page successfully linked!';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+function showFacebookDisconnectedNotification() {
+  const el = document.createElement('div');
+  el.style.cssText = `
+    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
+    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+  `;
+  el.textContent = '⛔ Facebook account disconnected.';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+// If oauth2callback.html redirected back with ?facebook=connected
+(function handleFacebookReturn() {
+  const url = new URL(location.href);
+  if (url.searchParams.get('facebook') === 'connected') {
+    showFacebookSuccessNotification();
+    url.searchParams.delete('facebook');
+    history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
   }
+})();
 
-  function showFacebookSuccessNotification() {
-    const el = document.createElement('div');
-    el.style.cssText = `
-      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-      z-index: 9999; background: #1877F2; color: #fff; font-size: 1.1em;
-      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
-      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
-    `;
-    el.textContent = '✅ Facebook Page successfully linked!';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3500);
-  }
-
-  function showFacebookDisconnectedNotification() {
-    const el = document.createElement('div');
-    el.style.cssText = `
-      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-      z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
-      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
-      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
-    `;
-    el.textContent = '⛔ Facebook account disconnected.';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3200);
-  }
-
-  // If oauth2callback.html redirected back with ?facebook=connected
-  (function handleFacebookReturn() {
-    const url = new URL(location.href);
-    if (url.searchParams.get('facebook') === 'connected') {
-      showFacebookSuccessNotification();
-      url.searchParams.delete('facebook');
-      history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
-    }
-  })();
 
   // --- Unified OAuth Modal Logic ---
   const oauthLinkBtn = document.getElementById('oauth-link-btn');
@@ -1230,3 +1231,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadEmailAlertSetting();
   }
 });
+
