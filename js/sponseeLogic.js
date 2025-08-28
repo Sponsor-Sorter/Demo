@@ -858,6 +858,124 @@ async function loadInstagramStats() {
 }
 
 /* =========================
+   Facebook (Pages) Stats
+========================= */
+function setFBThumb(imgEl, url, fallbackUrl = 'facebooklogo.png') {
+  if (!imgEl) return;
+  imgEl.setAttribute('referrerpolicy', 'no-referrer');
+  imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = fallbackUrl; };
+  imgEl.src = url || fallbackUrl;
+}
+
+async function loadFacebookStats() {
+  const fbEls = {
+    block: document.getElementById('facebook-stats-block'),
+    name: document.getElementById('fb-page-name'),
+    category: document.getElementById('fb-page-category'),
+    about: document.getElementById('fb-about'),
+    pic: document.getElementById('fb-profile-pic'),
+    followers: document.getElementById('fb-followers'),
+    likes: document.getElementById('fb-likes'),
+    reach28: document.getElementById('fb-reach-28d'),
+    impressions28: document.getElementById('fb-impressions-28d'),
+    engaged28: document.getElementById('fb-engaged-28d'),
+    updatedWrap: document.getElementById('fb-updated-wrap'),
+    updated: document.getElementById('fb-updated'),
+
+    lastRow: document.getElementById('fb-last-post-row'),
+    lastMsg: document.getElementById('fb-last-post-message'),
+    lastWhen: document.getElementById('fb-last-post-created'),
+    lastLink: document.getElementById('fb-last-post-link'),
+    lastThumb: document.getElementById('fb-last-post-thumb')
+  };
+  if (!fbEls.block) return; // no card in DOM -> nothing to do
+
+  // Loading/default
+  if (fbEls.name) fbEls.name.textContent = 'Loading…';
+  if (fbEls.category) fbEls.category.style.display = 'none';
+  if (fbEls.about) fbEls.about.style.display = 'none';
+  if (fbEls.followers) fbEls.followers.textContent = '-';
+  if (fbEls.likes) fbEls.likes.textContent = '-';
+  if (fbEls.reach28) fbEls.reach28.textContent = '-';
+  if (fbEls.impressions28) fbEls.impressions28.textContent = '-';
+  if (fbEls.engaged28) fbEls.engaged28.textContent = '-';
+  if (fbEls.updated) fbEls.updated.textContent = '-';
+  if (fbEls.lastRow) fbEls.lastRow.style.display = 'none';
+  if (fbEls.pic) fbEls.pic.src = 'facebooklogo.png';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-page-insights', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+      // body optional; you can pass { period_days: 28 } if your function supports it
+      body: JSON.stringify({ period_days: 28 })
+    });
+    const payload = await resp.json();
+
+    if (!resp.ok || (!payload?.ok && !payload?.success)) throw new Error(payload?.error || 'Failed');
+
+    // Page object
+    const page = payload.page || payload.page_info || payload.fb_page || {};
+    if (fbEls.name) fbEls.name.textContent = page.name || page.page_name || 'Facebook Page';
+    if (fbEls.category && (page.category || page.category_list?.[0]?.name)) {
+      fbEls.category.textContent = `(${page.category || page.category_list?.[0]?.name})`;
+      fbEls.category.style.display = '';
+    }
+    const picUrl = page.picture_url || page.picture?.data?.url || null;
+    if (fbEls.pic) setFBThumb(fbEls.pic, picUrl, 'facebooklogo.png');
+
+    if (fbEls.about && (page.about || page.description)) {
+      const txt = (page.about || page.description || '').toString();
+      fbEls.about.textContent = txt.length > 140 ? txt.slice(0, 140) + '…' : txt;
+      fbEls.about.style.display = '';
+    }
+
+    const followers = page.followers_count ?? page.fan_count ?? page.likes ?? null;
+    const likes = page.fan_count ?? page.likes ?? null;
+    if (fbEls.followers && followers != null) fbEls.followers.textContent = fmtNum(followers);
+    if (fbEls.likes && likes != null) fbEls.likes.textContent = fmtNum(likes);
+
+    // Insights (28d rollup)
+    const ins = payload.insights_28d || payload.insights || payload.page_insights || {};
+    if (fbEls.reach28 && ins.reach != null) fbEls.reach28.textContent = fmtNum(ins.reach);
+    if (fbEls.impressions28 && ins.impressions != null) fbEls.impressions28.textContent = fmtNum(ins.impressions);
+    if (fbEls.engaged28 && (ins.page_engaged_users != null || ins.engaged != null)) {
+      fbEls.engaged28.textContent = fmtNum(ins.page_engaged_users ?? ins.engaged);
+    }
+
+    const fetchedAt = payload.fetched_at || Date.now();
+    if (fbEls.updated && fbEls.updatedWrap) {
+      fbEls.updated.textContent = new Date(fetchedAt).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+      fbEls.updatedWrap.style.display = '';
+    }
+
+    // Last post (if the function returns one)
+    const last = payload.last_post || payload.latest_post || payload.recent_post || null;
+    if (last && fbEls.lastRow) {
+      if (fbEls.lastMsg) fbEls.lastMsg.textContent = (last.message || last.caption || 'Latest post').toString().slice(0, 140) + ((last.message || last.caption || '').length > 140 ? '…' : '');
+      if (fbEls.lastWhen) fbEls.lastWhen.textContent = last.created_time ? new Date(last.created_time).toLocaleDateString() : '';
+      if (fbEls.lastLink) fbEls.lastLink.href = last.permalink_url || '#';
+      if (fbEls.lastThumb) setFBThumb(fbEls.lastThumb, last.full_picture || last.picture || null, 'facebooklogo.png');
+      fbEls.lastRow.style.display = '';
+    }
+  } catch (e) {
+    if (fbEls.name) fbEls.name.textContent = 'Not linked or error.';
+    if (fbEls.category) fbEls.category.style.display = 'none';
+    if (fbEls.about) fbEls.about.style.display = 'none';
+    if (fbEls.followers) fbEls.followers.textContent = '-';
+    if (fbEls.likes) fbEls.likes.textContent = '-';
+    if (fbEls.reach28) fbEls.reach28.textContent = '-';
+    if (fbEls.impressions28) fbEls.impressions28.textContent = '-';
+    if (fbEls.engaged28) fbEls.engaged28.textContent = '-';
+    if (fbEls.updated) fbEls.updated.textContent = '-';
+    if (fbEls.lastRow) fbEls.lastRow.style.display = 'none';
+    if (fbEls.pic) fbEls.pic.src = 'facebooklogo.png';
+  }
+}
+
+/* =========================
    DOMContentLoaded
 ========================= */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -876,19 +994,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   let youtubeConnected = false;
   let twitchConnected = false;
   let instagramConnected = false;
+  let facebookConnected = false;
   try {
     const { data: userData } = await supabase
       .from('users_extended_data')
-      .select('youtube_connected, twitch_connected, instagram_connected')
+      .select('youtube_connected, twitch_connected, instagram_connected, facebook_connected')
       .eq('user_id', userId)
       .single();
     youtubeConnected = !!userData?.youtube_connected;
     twitchConnected = !!userData?.twitch_connected;
     instagramConnected = !!userData?.instagram_connected;
+    facebookConnected = !!userData?.facebook_connected;
   } catch {
     youtubeConnected = false;
     twitchConnected = false;
     instagramConnected = false;
+    facebookConnected = false;
   }
 
   const ytBlock = document.getElementById('youtube-stats-block');
@@ -903,11 +1024,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (igBlock) igBlock.style.display = instagramConnected ? 'block' : 'none';
   if (instagramConnected) safeCall(loadInstagramStats);
 
+  const fbBlock = document.getElementById('facebook-stats-block');
+  if (fbBlock) fbBlock.style.display = facebookConnected ? 'block' : 'none';
+  if (facebookConnected) safeCall(loadFacebookStats);
+
   try {
     const params = new URLSearchParams(window.location.search);
     if (params.get('instagram') === 'connected' && igBlock) {
       igBlock.style.display = 'block';
       safeCall(loadInstagramStats);
+    }
+    if (params.get('facebook') === 'connected' && fbBlock) {
+      fbBlock.style.display = 'block';
+      safeCall(loadFacebookStats);
     }
   } catch {}
 });
@@ -918,6 +1047,13 @@ window.addEventListener('message', (event) => {
     if (igBlock) {
       igBlock.style.display = 'block';
       safeCall(loadInstagramStats);
+    }
+  }
+  if (event?.data?.facebookConnected) {
+    const fbBlock = document.getElementById('facebook-stats-block');
+    if (fbBlock) {
+      fbBlock.style.display = 'block';
+      safeCall(loadFacebookStats);
     }
   }
 });
