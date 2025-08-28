@@ -251,7 +251,7 @@ async function renderSingleOffer(offer) {
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
           <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
@@ -342,6 +342,10 @@ function normalizeTwitchThumb(u) {
   return u
     .replace('%{width}x%{height}', '320x180')
     .replace('{width}x{height}', '320x180');
+}
+function fmtNum(n) {
+  if (n === null || n === undefined || isNaN(Number(n))) return '-';
+  return Number(n).toLocaleString();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -541,6 +545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       for (const { url: liveUrl, date } of pairs) {
         const isYouTube = /youtube\.com|youtu\.be/i.test(liveUrl);
         const isTwitch  = /twitch\.tv/i.test(liveUrl);
+        const isInstagram = /instagram\.com/i.test(liveUrl);
         const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
 
         if (isYouTube) {
@@ -550,7 +555,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             continue;
           }
           try {
-            // Keep EXACT body shape that worked previously
             const body = { videoId, userId: sponseeUserId, offerId };
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
               method: 'POST',
@@ -634,6 +638,63 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
           } catch {
             blocks.push("<div style='color:#faa;'>Error loading Twitch VOD stats.</div>");
+          }
+          continue;
+        }
+
+        if (isInstagram) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                url: liveUrl,
+                userId: sponseeUserId,
+                offerId: offerId 
+
+             })
+            });
+            const ig = await resp.json();
+            if (resp.ok && ig?.ok && ig?.found && ig?.media) {
+              const m = ig.media;
+              const ins = ig.insights || {};
+              const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
+              const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
+              const cap = (m.caption || '').trim();
+              const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
+              blocks.push(container(`
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                  <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                  <div>
+                    <b style="color:#ff8bd2;font-size:1.17em;">
+                      <img src="instagramlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                      Instagram ${kind || 'Post'}
+                    </b>
+                    ${m.timestamp ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(m.timestamp).toLocaleDateString()}</div>` : ''}
+                    ${dateBadge}
+                    ${shortCap ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortCap}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                  ${wrapRow('👍 Likes:', fmtNum(m.like_count))}
+                  ${wrapRow('💬 Comments:', fmtNum(m.comments_count))}
+                  ${m.video_views != null ? wrapRow('▶️ Video Views:', fmtNum(m.video_views)) : ''}
+                  ${wrapRow('👁️ Impressions:', fmtNum(ins.impressions))}
+                  ${wrapRow('📣 Reach:', fmtNum(ins.reach))}
+                  ${wrapRow('💾 Saved:', fmtNum(ins.saved))}
+                  ${wrapRow('🤝 Engagement:', fmtNum(ins.engagement))}
+                </div>
+                <div style="margin-top:10px;text-align:right;">
+                  <a href="${m.permalink || liveUrl}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
+                </div>
+              `));
+            } else if (resp.ok && ig?.ok && ig?.found === false) {
+              blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to the creator’s connected account: <a href="${liveUrl}" target="_blank" style="color:#ff8bd2;">${liveUrl}</a></div>`);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${liveUrl}.</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${liveUrl}.</div>`);
           }
           continue;
         }
