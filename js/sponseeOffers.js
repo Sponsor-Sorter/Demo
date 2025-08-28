@@ -579,7 +579,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isVisible = dataSummarySection.style.display === 'block';
       if (!isVisible) {
         hideAllSections();
-        dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
+        dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading content stats...</div>";
         dataSummarySection.style.display = 'block';
 
         // Prefer DB copy
@@ -619,9 +619,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                       ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
                       <div>
-                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">
-                        <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                        </span> ${stats.video.snippet.title}</b>
+                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">🎥</span> ${stats.video.snippet.title}</b>
                         ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
                         ${dateBadge}
                       </div>
@@ -662,7 +660,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                       <img src="${thumb}" referrerpolicy="no-referrer" alt="VOD thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                       <div>
                         <b style="color:#c9b6ff;font-size:1.17em;">
-                          <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                          <img src="twitchlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
                           ${v.title || 'Twitch VOD'}
                         </b>
                         ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
@@ -685,6 +683,61 @@ document.addEventListener("DOMContentLoaded", async () => {
               }
             } catch {
               blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
+            }
+          } else if (/instagram\.com/i.test(link)) {
+            try {
+              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: link })
+              });
+              const ig = await resp.json();
+              if (resp.ok && ig?.ok && ig?.found && ig?.media) {
+                const m = ig.media;
+                const ins = ig.insights || {};
+                const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
+                const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
+                const likes = fmtNum(m.like_count);
+                const comments = fmtNum(m.comments_count);
+                const vviews = (m.video_views != null) ? fmtNum(m.video_views) : null;
+                const cap = (m.caption || '').trim();
+                const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
+
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                      <div>
+                        <b style="color:#ff8bd2;font-size:1.17em;">
+                          <img src="instagramlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                          Instagram ${kind || 'Post'}
+                        </b>
+                        ${m.timestamp ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(m.timestamp).toLocaleDateString()}</div>` : ''}
+                        ${dateBadge}
+                        ${shortCap ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortCap}</div>` : ''}
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                      <div><b>👍 Likes:</b><br>${likes}</div>
+                      <div><b>💬 Comments:</b><br>${comments}</div>
+                      ${vviews ? `<div><b>▶️ Video Views:</b><br>${vviews}</div>` : ''}
+                      <div><b>👁️ Impressions:</b><br>${fmtNum(ins.impressions)}</div>
+                      <div><b>📣 Reach:</b><br>${fmtNum(ins.reach)}</div>
+                      <div><b>💾 Saved:</b><br>${fmtNum(ins.saved)}</div>
+                      <div><b>🤝 Engagement:</b><br>${fmtNum(ins.engagement)}</div>
+                    </div>
+                    <div style="margin-top:10px;text-align:right;">
+                      <a href="${m.permalink || link}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
+                    </div>
+                  </div>
+                `);
+              } else if (resp.ok && ig?.ok && ig?.found === false) {
+                blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to your connected account’s media: <a href="${link}" target="_blank" style="color:#ff8bd2;">${link}</a></div>`);
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
+              }
+            } catch {
+              blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
             }
           } else {
             blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
@@ -1031,6 +1084,12 @@ function normalizeTwitchThumb(u) {
     .replace('{width}x{height}', '320x180');
 }
 
+// Simple number formatter
+function fmtNum(n) {
+  if (n === null || n === undefined || isNaN(Number(n))) return '-';
+  return Number(n).toLocaleString();
+}
+
 // Make all profile logos with .profile-link open the user's profile
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
@@ -1038,6 +1097,3 @@ document.addEventListener('click', function(e) {
     window.location.href = `/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
-
-
-
