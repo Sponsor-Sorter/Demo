@@ -462,6 +462,49 @@
   </div>
 </div>
 
+<!-- facebook stats -->
+<div class="facebook-stats-card" id="facebook-stats-block" style="
+  display:none;
+  padding:24px 22px;
+  background:#5e5e5e;
+  border-radius:16px;
+  box-shadow:0 5px 9px rgba(24,119,242,.45);
+  max-width:550px;
+  margin:0 auto 16px auto;
+  color:#fff;
+">
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+    <img id="fb-profile-pic" src="facebooklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+    <div>
+      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+        <img src="facebooklogo.png" alt="Facebook" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius:6px;">
+        <span id="fb-page-name">Loading…</span>
+        <span id="fb-page-category" style="margin-left:8px;font-size:.9em;color:#cfe3ff;display:none;">(Category)</span>
+      </h2>
+      <span id="fb-about" style="font-size:0.97em;color:#ffd;display:none;">About…</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+    <div><b>Followers:</b> <span id="fb-followers">-</span></div>
+    <div><b>Page Likes:</b> <span id="fb-likes">-</span></div>
+    <div><b>Reach (28d):</b> <span id="fb-reach-28d">-</span></div>
+    <div><b>Impressions (28d):</b> <span id="fb-impressions-28d">-</span></div>
+    <div><b>Engaged (28d):</b> <span id="fb-engaged-28d">-</span></div>
+    <div id="fb-updated-wrap"><b>Updated:</b> <span id="fb-updated">-</span></div>
+  </div>
+
+  <div id="fb-last-post-row" style="margin-top:14px;display:none;">
+    <b>Latest Post:</b>
+    <a id="fb-last-post-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+      <span id="fb-last-post-message">Latest post</span>
+    </a>
+    <span id="fb-last-post-created" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+      <img id="fb-last-post-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+    </div>
+  </div>
+</div>
 
 
 
@@ -818,6 +861,7 @@
 
 </body>
 </html>
+
 
 
 
