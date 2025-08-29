@@ -867,6 +867,64 @@ function setFBThumb(imgEl, url, fallbackUrl = 'facebooklogo.png') {
   imgEl.src = url || fallbackUrl
 }
 
+// safely read deep paths like "followers.summary.total_count"
+function pick(obj, ...paths) {
+  for (const path of paths) {
+    if (!path) continue
+    let cur = obj
+    let ok = true
+    for (const seg of path.split('.')) {
+      if (cur && Object.prototype.hasOwnProperty.call(cur, seg)) {
+        cur = cur[seg]
+      } else {
+        ok = false
+        break
+      }
+    }
+    if (ok && cur !== undefined && cur !== null) return cur
+  }
+  return null
+}
+
+// accepts either an object keyed by metric name or an array like [{name, values:[{value}]}]
+function readMetric(insights, names = []) {
+  if (!insights) return null
+
+  // object style
+  for (const n of names) {
+    const v = insights[n]
+    if (v !== undefined && v !== null) {
+      if (typeof v === 'number') return v
+      if (typeof v === 'object') {
+        if (typeof v.value === 'number') return v.value
+        const last = Array.isArray(v.values) ? v.values[v.values.length - 1] : null
+        if (last && typeof last.value === 'number') return last.value
+      }
+    }
+  }
+
+  // array style
+  const arr = Array.isArray(insights) ? insights
+    : (Array.isArray(insights.data) ? insights.data
+      : (Array.isArray(insights.metrics) ? insights.metrics : null))
+  if (Array.isArray(arr)) {
+    for (const item of arr) {
+      const nm = (item && (item.name || item.metric || item.title || '')).toLowerCase()
+      if (!nm) continue
+      if (names.some(n => n.toLowerCase() === nm)) {
+        const vals = item.values || item.data || item.points || []
+        const last = vals[vals.length - 1]
+        let val = last?.value
+        if (val && typeof val === 'object') {
+          val = pick(val, 'value', 'page_impressions', 'page_impressions_unique', 'reach')
+        }
+        if (typeof val === 'number') return val
+      }
+    }
+  }
+  return null
+}
+
 async function loadFacebookStats() {
   const fbEls = {
     block: document.getElementById('facebook-stats-block'),
@@ -881,7 +939,9 @@ async function loadFacebookStats() {
     engaged28: document.getElementById('fb-engaged-28d'),
     updatedWrap: document.getElementById('fb-updated-wrap'),
     updated: document.getElementById('fb-updated'),
+    note: document.getElementById('fb-insights-note'), // optional small note in HTML
 
+    // optional "last post" row
     lastRow: document.getElementById('fb-last-post-row'),
     lastLink: document.getElementById('fb-last-post-link'),
     lastMsg: document.getElementById('fb-last-post-message'),
@@ -900,6 +960,7 @@ async function loadFacebookStats() {
   fbEls.impr28.textContent = '-'
   fbEls.engaged28.textContent = '-'
   fbEls.updated.textContent = '-'
+  if (fbEls.note) fbEls.note.style.display = 'none'
   if (fbEls.lastRow) fbEls.lastRow.style.display = 'none'
   fbEls.pic.src = 'facebooklogo.png'
 
@@ -915,70 +976,128 @@ async function loadFacebookStats() {
     if (!resp.ok || !(payload?.success || payload?.ok)) throw new Error(payload?.error || 'Failed')
 
     // Page profile
-    const page = payload.page || payload.page_info || {}
+    const page = payload.page || payload.page_info || payload.data?.page || {}
     fbEls.name.textContent = page.name || 'Facebook Page'
-    if (page.category || page.category_list?.[0]?.name) {
-      fbEls.category.textContent = `(${page.category || page.category_list?.[0]?.name})`
+
+    const cat = page.category || page.category_list?.[0]?.name
+    if (cat && fbEls.category) {
+      fbEls.category.textContent = `(${cat})`
       fbEls.category.style.display = ''
-    } else {
-      fbEls.category.style.display = 'none'
     }
+
     const about = page.about || page.description || ''
-    if (about) {
+    if (about && fbEls.about) {
       fbEls.about.textContent = about.length > 140 ? about.slice(0, 140) + '…' : about
       fbEls.about.style.display = ''
-    } else {
-      fbEls.about.style.display = 'none'
     }
-    const picUrl = page.picture?.data?.url || page.picture_url
+
+    const picUrl = pick(page, 'picture.data.url', 'picture_url')
     if (picUrl) setFBThumb(fbEls.pic, picUrl, 'facebooklogo.png')
 
-    // Counts
-    const followers = page.followers_count ?? payload.followers ?? null
-    const likes = page.fan_count ?? page.likes ?? payload.page_likes ?? null
+    // Followers / Likes
+    const followers =
+      page.followers_count ??
+      page.followers ??
+      pick(page, 'followers.summary.total_count', 'counts.followers', 'metrics.followers', 'stats.followers') ??
+      payload.followers ??
+      payload.page_followers ??
+      null
+
+    const likes =
+      page.fan_count ??
+      page.likes ??
+      payload.page_likes ??
+      pick(page, 'counts.likes', 'metrics.likes', 'stats.likes') ??
+      null
+
     if (followers != null) fbEls.followers.textContent = fmtNum(followers)
     if (likes != null) fbEls.likes.textContent = fmtNum(likes)
 
-    // 28d insights
-    const ins = payload.insights_28d || payload.insights || {}
-    // try both normalized and raw metric names
-    const reach =
-      ins.reach ?? ins.page_impressions_unique ?? ins.page_reach ?? ins.unique_impressions ?? null
-    const impressions =
-      ins.impressions ?? ins.page_impressions ?? null
-    const engaged =
-      ins.engaged_users ?? ins.page_engaged_users ?? ins.engaged ?? null
+    // 28-day insights (page-level)
+    let insights28 =
+      payload.insights_28d || payload.insights || payload.page_insights || payload.metrics_28d || null
 
-    if (reach != null) fbEls.reach28.textContent = fmtNum(reach)
-    if (impressions != null) fbEls.impr28.textContent = fmtNum(impressions)
-    if (engaged != null) fbEls.engaged28.textContent = fmtNum(engaged)
+    let reach = readMetric(insights28, ['reach', 'page_reach', 'page_impressions_unique', 'page_posts_impressions_unique'])
+    let impressions = readMetric(insights28, ['impressions', 'page_impressions', 'page_posts_impressions'])
+    let engaged = readMetric(insights28, ['engaged', 'engaged_users', 'page_engaged_users'])
 
-    const fetchedAt = payload.fetched_at || Date.now()
-    if (fetchedAt) {
-      fbEls.updated.textContent = new Date(fetchedAt).toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })
-      fbEls.updatedWrap.style.display = ''
-    } else {
-      fbEls.updatedWrap.style.display = 'none'
+    // Fallback #1: server-provided post rollups
+    const roll = payload.posts_rollup_28d || payload.post_insights_28d_sum || payload.rollup_28d
+    if (roll) {
+      if (reach == null && roll.reach != null) reach = roll.reach
+      if (impressions == null && roll.impressions != null) impressions = roll.impressions
+      if (engaged == null && roll.engaged != null) engaged = roll.engaged
     }
 
-    // Last post
-    const last = payload.last_post || (Array.isArray(payload.recent_posts) ? payload.recent_posts[0] : null)
+    // Fallback #2: compute from recent posts if present
+    if (reach == null || impressions == null || engaged == null) {
+      const posts = (Array.isArray(payload.recent_posts) ? payload.recent_posts
+                    : Array.isArray(payload.posts?.data) ? payload.posts.data
+                    : [])
+      let r = 0, i = 0, e = 0, any = false
+      for (const p of posts) {
+        const ins = p.insights || p.post_insights || p.metrics || p.data
+        if (!ins) continue
+        const pr = readMetric(ins, ['post_impressions_unique','reach'])
+        const pi = readMetric(ins, ['post_impressions','impressions'])
+        const pe = readMetric(ins, ['post_engaged_users','engaged_users'])
+        if (pr != null || pi != null || pe != null) any = true
+        r += pr || 0
+        i += pi || 0
+        e += pe || 0
+      }
+      if (any) {
+        if (reach == null) reach = r
+        if (impressions == null) impressions = i
+        if (engaged == null) engaged = e
+      }
+    }
+
+    // If still nothing, show 0s (typical for brand-new pages)
+    if (reach == null && impressions == null && engaged == null) {
+      reach = 0; impressions = 0; engaged = 0
+      if (fbEls.note) {
+        fbEls.note.textContent = 'No 28-day insights yet — page is new or has too little activity.'
+        fbEls.note.style.display = ''
+      } else {
+        console.info('[FB] No insights yet — likely a new page/low activity.')
+      }
+    }
+
+    fbEls.reach28.textContent = fmtNum(reach)
+    fbEls.impr28.textContent = fmtNum(impressions)
+    fbEls.engaged28.textContent = fmtNum(engaged)
+
+    const fetchedAt = payload.fetched_at || Date.now()
+    fbEls.updated.textContent = new Date(fetchedAt).toLocaleString([], {
+      hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short'
+    })
+    if (fbEls.updatedWrap) fbEls.updatedWrap.style.display = ''
+
+    // Last post (optional)
+    const last =
+      payload.last_post ||
+      (Array.isArray(payload.recent_posts) ? payload.recent_posts[0] : null) ||
+      (Array.isArray(payload.posts?.data) ? payload.posts.data[0] : null)
+
     if (last && fbEls.lastRow) {
-      fbEls.lastMsg.textContent = last.message || last.story || 'Latest post'
-      fbEls.lastLink.href = last.permalink_url || '#'
-      const created = last.created_time || last.created || null
-      fbEls.lastCreated.textContent = created ? new Date(created).toLocaleDateString() : ''
+      if (fbEls.lastMsg) fbEls.lastMsg.textContent = last.message || last.story || 'Latest post'
+      if (fbEls.lastLink) fbEls.lastLink.href = last.permalink_url || '#'
+      if (fbEls.lastCreated) {
+        const created = last.created_time || last.created || null
+        fbEls.lastCreated.textContent = created ? new Date(created).toLocaleDateString() : ''
+      }
       const thumb =
         last.full_picture ||
         last.picture ||
-        last.attachments?.data?.[0]?.media?.image?.src ||
-        null
-      setFBThumb(fbEls.lastThumb, thumb, 'facebooklogo.png')
+        pick(last, 'attachments.data.0.media.image.src')
+      if (fbEls.lastThumb) setFBThumb(fbEls.lastThumb, thumb, 'facebooklogo.png')
       fbEls.lastRow.style.display = ''
     } else if (fbEls.lastRow) {
       fbEls.lastRow.style.display = 'none'
     }
   } catch (e) {
+    // graceful fallback
     fbEls.name.textContent = 'Not linked or error.'
     if (fbEls.category) fbEls.category.style.display = 'none'
     if (fbEls.about) fbEls.about.style.display = 'none'
@@ -988,10 +1107,13 @@ async function loadFacebookStats() {
     fbEls.impr28.textContent = '-'
     fbEls.engaged28.textContent = '-'
     fbEls.updated.textContent = '-'
+    if (fbEls.note) fbEls.note.style.display = 'none'
     if (fbEls.lastRow) fbEls.lastRow.style.display = 'none'
     fbEls.pic.src = 'facebooklogo.png'
+    console.warn('FB stats error:', e?.message || e)
   }
 }
+
 
 /* =========================
    DOMContentLoaded
