@@ -886,7 +886,7 @@ function pick(obj, ...paths) {
   return null
 }
 
-// accepts either an object keyed by metric name or an array like [{name, values:[{value}]}]
+// accept either an object keyed by metric name or an array like [{name, values:[{value}]}]
 function readMetric(insights, names = []) {
   if (!insights) return null
 
@@ -925,6 +925,23 @@ function readMetric(insights, names = []) {
   return null
 }
 
+// find best image candidate for a post
+function fbFindImage(p) {
+  const cands = [
+    p?.thumbnail, // from server if provided
+    p?.full_picture,
+    p?.picture,
+    pick(p, 'attachments.data.0.media.image.src'),
+    pick(p, 'attachments.data.0.media.image.url'),
+    pick(p, 'attachments.data.0.subattachments.data.0.media.image.src'),
+    pick(p, 'attachments.data.0.subattachments.data.0.media.image.url'),
+  ]
+  for (const u of cands) {
+    if (typeof u === 'string' && u) return u
+  }
+  return null
+}
+
 async function loadFacebookStats() {
   const fbEls = {
     block: document.getElementById('facebook-stats-block'),
@@ -939,7 +956,7 @@ async function loadFacebookStats() {
     engaged28: document.getElementById('fb-engaged-28d'),
     updatedWrap: document.getElementById('fb-updated-wrap'),
     updated: document.getElementById('fb-updated'),
-    note: document.getElementById('fb-insights-note'), // optional small note in HTML
+    note: document.getElementById('fb-insights-note'),
 
     // optional "last post" row
     lastRow: document.getElementById('fb-last-post-row'),
@@ -994,8 +1011,8 @@ async function loadFacebookStats() {
     const picUrl = pick(page, 'picture.data.url', 'picture_url')
     if (picUrl) setFBThumb(fbEls.pic, picUrl, 'facebooklogo.png')
 
-    // Followers / Likes
-    const followers =
+    // Followers / Likes (as variables first; we'll render after insight fallbacks)
+    let followers =
       page.followers_count ??
       page.followers ??
       pick(page, 'followers.summary.total_count', 'counts.followers', 'metrics.followers', 'stats.followers') ??
@@ -1003,25 +1020,22 @@ async function loadFacebookStats() {
       payload.page_followers ??
       null
 
-    const likes =
+    let likes =
       page.fan_count ??
       page.likes ??
       payload.page_likes ??
       pick(page, 'counts.likes', 'metrics.likes', 'stats.likes') ??
       null
 
-    if (followers != null) fbEls.followers.textContent = fmtNum(followers)
-    if (likes != null) fbEls.likes.textContent = fmtNum(likes)
-
     // 28-day insights (page-level)
-    let insights28 =
+    const insights28 =
       payload.insights_28d || payload.insights || payload.page_insights || payload.metrics_28d || null
 
     let reach = readMetric(insights28, ['reach', 'page_reach', 'page_impressions_unique', 'page_posts_impressions_unique'])
     let impressions = readMetric(insights28, ['impressions', 'page_impressions', 'page_posts_impressions'])
     let engaged = readMetric(insights28, ['engaged', 'engaged_users', 'page_engaged_users'])
 
-    // Fallback #1: server-provided post rollups
+    // Fallback #1 for reach/imp/engaged from rollups
     const roll = payload.posts_rollup_28d || payload.post_insights_28d_sum || payload.rollup_28d
     if (roll) {
       if (reach == null && roll.reach != null) reach = roll.reach
@@ -1029,7 +1043,7 @@ async function loadFacebookStats() {
       if (engaged == null && roll.engaged != null) engaged = roll.engaged
     }
 
-    // Fallback #2: compute from recent posts if present
+    // Fallback #2: compute from recent posts
     if (reach == null || impressions == null || engaged == null) {
       const posts = (Array.isArray(payload.recent_posts) ? payload.recent_posts
                     : Array.isArray(payload.posts?.data) ? payload.posts.data
@@ -1059,14 +1073,31 @@ async function loadFacebookStats() {
       if (fbEls.note) {
         fbEls.note.textContent = 'No 28-day insights yet — page is new or has too little activity.'
         fbEls.note.style.display = ''
-      } else {
-        console.info('[FB] No insights yet — likely a new page/low activity.')
       }
     }
 
     fbEls.reach28.textContent = fmtNum(reach)
     fbEls.impr28.textContent = fmtNum(impressions)
     fbEls.engaged28.textContent = fmtNum(engaged)
+
+    // ---- Likes fallback via Insights 'page_fans', then (last resort) Followers ----
+    if (likes == null) {
+      const fansFromInsights = readMetric(insights28, ['page_fans', 'fan_count'])
+      if (typeof fansFromInsights === 'number') {
+        likes = fansFromInsights
+      } else if (followers != null) {
+        likes = followers
+        if (fbEls.note) {
+          const msg = 'Meta may not expose Page Likes for new pages; showing Followers as a proxy.'
+          fbEls.note.textContent = fbEls.note.textContent ? (fbEls.note.textContent + ' ' + msg) : msg
+          fbEls.note.style.display = ''
+        }
+      }
+    }
+
+    // Now render followers/likes after all fallbacks
+    if (followers != null) fbEls.followers.textContent = fmtNum(followers)
+    if (likes != null) fbEls.likes.textContent = fmtNum(likes)
 
     const fetchedAt = payload.fetched_at || Date.now()
     fbEls.updated.textContent = new Date(fetchedAt).toLocaleString([], {
@@ -1087,10 +1118,7 @@ async function loadFacebookStats() {
         const created = last.created_time || last.created || null
         fbEls.lastCreated.textContent = created ? new Date(created).toLocaleDateString() : ''
       }
-      const thumb =
-        last.full_picture ||
-        last.picture ||
-        pick(last, 'attachments.data.0.media.image.src')
+      const thumb = fbFindImage(last)
       if (fbEls.lastThumb) setFBThumb(fbEls.lastThumb, thumb, 'facebooklogo.png')
       fbEls.lastRow.style.display = ''
     } else if (fbEls.lastRow) {
@@ -1113,7 +1141,6 @@ async function loadFacebookStats() {
     console.warn('FB stats error:', e?.message || e)
   }
 }
-
 
 /* =========================
    DOMContentLoaded
