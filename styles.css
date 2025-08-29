@@ -3038,6 +3038,7 @@ fieldset {
   
   .offer-left {
     text-align: left;
+   overflow-wrap:anywhere!important;
   }
   
   .offer-right {
@@ -7003,5 +7004,6 @@ form#registrationForm {
   }
 }
 }
+
 
 
