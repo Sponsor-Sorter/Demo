@@ -1089,7 +1089,7 @@ function showFacebookDisconnectedNotification() {
               facebook_token_expires_at: null
             };
             // Also try to set flag false if your schema includes it (safe if ignored)
-            update['facebook_connected'] = false;
+            
 
             const { error } = await supabase
               .from('users_extended_data')
@@ -1232,5 +1232,6 @@ function showFacebookDisconnectedNotification() {
     loadEmailAlertSetting();
   }
 });
+
 
 
