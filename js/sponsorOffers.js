@@ -217,12 +217,12 @@ async function renderSingleOffer(offer) {
         pairs.map(({ url, date }) => {
           const d = date ? new Date(date).toLocaleDateString() : '—';
           return `<span style="display:block;margin:2px 0;">
-            <a href="${url}" target="_blank">${url}</a> <em style="color:#888;">(${d})</em>
+            <a class="live-url-link" href="${url}" target="_blank">${url}</a> <em style="color:#888;">(${d})</em>
           </span>`;
         }).join('')
       }</p>`
     : (offer.stage >= 4 && offer.live_url
-        ? `<p><strong>Live URL:</strong> <a href="${offer.live_url}" target="_blank">${offer.live_url}</a></p>`
+        ? `<p><strong>Live URL:</strong> <a class="live-url-link" href="${offer.live_url}" target="_blank">${offer.live_url}</a></p>`
         : '');
 
   const reportBtnHtml = `
@@ -346,6 +346,70 @@ function normalizeTwitchThumb(u) {
 function fmtNum(n) {
   if (n === null || n === undefined || isNaN(Number(n))) return '-';
   return Number(n).toLocaleString();
+}
+// Safe deep getter (used by FB card)
+function pick(obj, ...paths) {
+  for (const path of paths) {
+    if (!path) continue;
+    let cur = obj;
+    let ok = true;
+    for (const seg of path.split('.')) {
+      if (cur && Object.prototype.hasOwnProperty.call(cur, seg)) cur = cur[seg];
+      else { ok = false; break; }
+    }
+    if (ok && cur !== undefined && cur !== null) return cur;
+  }
+  return null;
+}
+// Read metric from FB insights-like structures
+function readMetric(insights, names = []) {
+  if (!insights) return null;
+  for (const n of names) {
+    const v = insights[n];
+    if (v !== undefined && v !== null) {
+      if (typeof v === 'number') return v;
+      if (typeof v === 'object') {
+        if (typeof v.value === 'number') return v.value;
+        const last = Array.isArray(v.values) ? v.values[v.values.length - 1] : null;
+        if (last && typeof last.value === 'number') return last.value;
+      }
+    }
+  }
+  const arr = Array.isArray(insights) ? insights
+    : (Array.isArray(insights?.data) ? insights.data
+      : (Array.isArray(insights?.metrics) ? insights.metrics : null));
+  if (Array.isArray(arr)) {
+    for (const item of arr) {
+      const nm = (item && (item.name || item.metric || item.title || '')).toLowerCase();
+      if (!nm) continue;
+      if (names.some(n => n.toLowerCase() === nm)) {
+        const vals = item.values || item.data || item.points || [];
+        const last = vals[vals.length - 1];
+        let val = last?.value;
+        if (val && typeof val === 'object') {
+          val = pick(val, 'value', 'page_impressions', 'page_impressions_unique', 'reach');
+        }
+        if (typeof val === 'number') return val;
+      }
+    }
+  }
+  return null;
+}
+// Pick a usable image for FB post card
+function fbFindImage(p) {
+  const cands = [
+    p?.thumbnail,
+    p?.full_picture,
+    p?.picture,
+    pick(p, 'attachments.data.0.media.image.src'),
+    pick(p, 'attachments.data.0.media.image.url'),
+    pick(p, 'attachments.data.0.subattachments.data.0.media.image.src'),
+    pick(p, 'attachments.data.0.subattachments.data.0.media.image.url'),
+  ];
+  for (const u of cands) {
+    if (typeof u === 'string' && u) return u;
+  }
+  return null;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -543,9 +607,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const blocks = [];
       for (const { url: liveUrl, date } of pairs) {
-        const isYouTube = /youtube\.com|youtu\.be/i.test(liveUrl);
-        const isTwitch  = /twitch\.tv/i.test(liveUrl);
+        const isYouTube   = /youtube\.com|youtu\.be/i.test(liveUrl);
+        const isTwitch    = /twitch\.tv/i.test(liveUrl);
         const isInstagram = /instagram\.com/i.test(liveUrl);
+        const isFacebook  = /(facebook\.com|fb\.watch)/i.test(liveUrl);
         const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
 
         if (isYouTube) {
@@ -651,8 +716,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 url: liveUrl,
                 userId: sponseeUserId,
                 offerId: offerId 
-
-             })
+              })
             });
             const ig = await resp.json();
             if (resp.ok && ig?.ok && ig?.found && ig?.media) {
@@ -695,6 +759,78 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
           } catch {
             blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${liveUrl}.</div>`);
+          }
+          continue;
+        }
+
+        if (isFacebook) {
+          // IMPORTANT: ask the Edge function to use the CREATOR’s (sponsee) connected Page,
+          // not the sponsor’s. We pass userId/for_user_id overrides.
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                url: liveUrl,
+                userId: sponseeUserId,
+                for_user_id: sponseeUserId,
+                offerId: offerId
+              })
+            });
+            const fb = await resp.json();
+
+            if (resp.ok && (fb?.ok || fb?.success)) {
+              const p = fb.post || fb.data || {};
+              const ins = fb.insights || p.insights || fb.metrics || null;
+
+              const permalink = p.permalink_url || p.link || liveUrl;
+              const created = p.created_time || p.created_at || p.created || null;
+              const message = (p.message || p.story || '').toString().trim();
+              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
+              const thumb = fbFindImage(p) || 'facebooklogo.png';
+
+              const reactions =
+                pick(p, 'reactions.summary.total_count', 'reaction_count', 'reactions') ?? fb.reactions_count ?? null;
+              const comments =
+                pick(p, 'comments.summary.total_count', 'comment_count', 'comments') ?? fb.comments_count ?? null;
+              const shares =
+                pick(p, 'shares.count', 'share_count', 'shares') ?? fb.shares_count ?? null;
+
+              const impressions = readMetric(ins, ['post_impressions','impressions']);
+              const reach       = readMetric(ins, ['post_impressions_unique','reach']);
+              const engaged     = readMetric(ins, ['post_engaged_users','engaged_users']);
+
+              blocks.push(container(`
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                  <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                  <div>
+                    <b style="color:#7fb4ff;font-size:1.17em;">
+                      <img src="facebooklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                      Facebook Post
+                    </b>
+                    ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(created).toLocaleDateString()}</div>` : ''}
+                    ${dateBadge}
+                    ${shortMsg ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortMsg}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                  ${reactions != null ? wrapRow('👍 Reactions:', fmtNum(reactions)) : ''}
+                  ${comments  != null ? wrapRow('💬 Comments:', fmtNum(comments)) : ''}
+                  ${shares    != null ? wrapRow('🔁 Shares:',   fmtNum(shares))   : ''}
+                  ${impressions != null ? wrapRow('👁️ Impressions:', fmtNum(impressions)) : ''}
+                  ${reach       != null ? wrapRow('📣 Reach:',       fmtNum(reach))       : ''}
+                  ${engaged     != null ? wrapRow('🤝 Engaged Users:', fmtNum(engaged))   : ''}
+                </div>
+                <div style="margin-top:10px;text-align:right;">
+                  <a href="${permalink}" target="_blank" style="color:#7fb4ff;text-decoration:underline;font-size:0.96em;">Open on Facebook ↗</a>
+                </div>
+              `));
+            } else {
+              const reason = fb?.error || fb?.message || fb?.detail || 'Unknown error';
+              blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${liveUrl}" target="_blank" style="color:#7fb4ff;">${liveUrl}</a>. ${reason ? `(${reason})` : ''}</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${liveUrl}.</div>`);
           }
           continue;
         }
