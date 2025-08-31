@@ -119,7 +119,9 @@
         <div class="card-row">
           <div class="card">
             <h3>Total Followers</h3>
-            <p id="total-followers">0</p>
+            <p id="total-followers" title="Combined audience across linked accounts (not deduped)">0</p>
+            <div id="followers-updated" class="subtext"> </div>
+            <div id="followers-note" class="subtext warn" style="display:none;">No social media connected yet.</div>
           </div>
           <div class="card">
             <h3>Accepted : Rejected offers</h3>
@@ -195,6 +197,12 @@
 import { supabase } from './js/supabaseClient.js';
 import { injectUserBadge } from './js/badges.js';
 import './js/userReports.js';
+
+/* ---------- simple page context ---------- */
+const PROFILE_CTX = {
+  connectedCount: 0,
+  fallbackTotalFollowers: 0
+};
 
 /* ---------- Dynamic Nav Bar ---------- */
 async function updateNavBar() {
@@ -421,6 +429,60 @@ function extractPlatformBadges(social_handles) {
   }).join(' ');
 }
 
+/* ---------- Followers helpers ---------- */
+function setFollowersUpdated(ts) {
+  const u = document.getElementById('followers-updated');
+  if (!u) return;
+  if (ts) {
+    const d = new Date(ts);
+    u.textContent = `Last updated: ${isNaN(d) ? ts : d.toLocaleString()}`;
+  } else {
+    u.textContent = '';
+  }
+}
+function renderFollowersNote() {
+  const note = document.getElementById('followers-note');
+  if (!note) return;
+  if (PROFILE_CTX.connectedCount === 0) {
+    note.style.display = 'block';
+    note.textContent = 'No social media connected yet.';
+  } else {
+    note.style.display = 'none';
+  }
+}
+
+/* Persisted total followers via RLS-protected table */
+async function loadFollowersTotalViaRLS(username) {
+  try {
+    const { data, error } = await supabase
+      .from('user_social_followers')
+      .select('total_followers,last_updated')
+      .ilike('username', username)
+      .maybeSingle();
+
+    const el = document.getElementById('total-followers');
+    if (!el) return;
+
+    if (!error && data) {
+      const n = Number(data.total_followers || 0);
+      el.textContent = n.toLocaleString();
+      setFollowersUpdated(data.last_updated);
+      el.title = 'Combined audience across linked accounts (not deduped)';
+    } else {
+      // fallback to any profile-stored value
+      const n = Number(PROFILE_CTX.fallbackTotalFollowers || 0);
+      el.textContent = n.toLocaleString();
+      setFollowersUpdated(null);
+    }
+  } catch (e) {
+    // graceful fallback
+    const el = document.getElementById('total-followers');
+    if (el) el.textContent = Number(PROFILE_CTX.fallbackTotalFollowers || 0).toLocaleString();
+    setFollowersUpdated(null);
+  }
+  renderFollowersNote();
+}
+
 /* ---------- Profile & Stats ---------- */
 async function loadProfileAndStats(username) {
   const { data, error } = await supabase
@@ -449,6 +511,19 @@ async function loadProfileAndStats(username) {
   document.getElementById("social_handles").innerHTML = extractPlatformBadges(data.social_handles);
 
   injectBadge(username, data.email);
+
+  // Capture context for followers UI (connected flags + fallback total)
+  PROFILE_CTX.fallbackTotalFollowers = Number(data.total_followers || 0);
+  const connectedFlags = [
+    data.youtube_connected,
+    data.twitch_connected,
+    data.instagram_connected,
+    data.facebook_connected,
+    data.tiktok_connected,
+    data.twitter_connected
+  ].filter(Boolean);
+  PROFILE_CTX.connectedCount = connectedFlags.length;
+  renderFollowersNote();
 
   // Insert Report button
   const fieldset = document.querySelector('.userprofile fieldset');
@@ -485,12 +560,18 @@ async function loadProfileAndStats(username) {
   }
   setText('active-sponsorships', active);
   setText('completed-deals', completed);
-  setText('total-followers', data.total_followers);
-  const ratioEl = document.getElementById('ratio-earnings');
-  if (ratioEl) ratioEl.innerText = `${accepted}:${rejected} ${accepted+rejected>0 ? Math.round((accepted/(accepted+rejected))*100) : 0}%`;
 
-  const earningsEl = document.getElementById('total-earnings');
+  const ratioEl = document.getElementById('ratio-earnings');
+  if (ratioEl) {
+    const total = accepted + rejected;
+    ratioEl.innerText = `${accepted}:${rejected} ${total>0 ? Math.round((accepted/total)*100) : 0}%`;
+  }
+
+  const earningsEl = document.getElementById('total-earnings'); // optional if present
   if (earningsEl) earningsEl.innerText = `$${totalEarnings.toFixed(2)}`;
+
+  // Load persisted followers total (+ last updated)
+  await loadFollowersTotalViaRLS(username);
 
   await updateOverallStars(username);
   await updateProfileCategoryStars(username);
@@ -804,7 +885,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   justify-content: center;
   gap: 8px;
   margin: 10px 0 0;
-  
 }
 .table-pager button {
   background: #23232b;
@@ -824,6 +904,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   opacity: .5;
   cursor: not-allowed;
 }
+
+/* Subtext helpers beneath cards */
+.subtext { font-size: .9em; color: #aaa; margin-top: -6px; }
+.subtext.warn { color: #f5a623; }
 </style>
 
 </body>
