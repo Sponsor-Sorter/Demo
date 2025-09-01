@@ -1,5 +1,5 @@
 // File: ./js/oauth-handler.js
-// One callback for YouTube + Twitch + Instagram + Facebook (Meta)
+// One callback for YouTube + Twitch + Instagram + Facebook (Meta) + TikTok
 
 import { supabase } from './supabaseClient.js';
 
@@ -9,11 +9,13 @@ const EDGE_FN = {
   twitch:    'twitch-oauth',
   instagram: 'instagram-oauth',
   facebook:  'facebook-oauth',
+  tiktok:    'tiktok-oauth',          // NEW
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
   const statusDiv = document.getElementById('oauth-status');
-  const setStatus = (html) => (statusDiv ? (statusDiv.innerHTML = html) : console.log(html.replace(/<[^>]+>/g, '')));
+  const setStatus = (html) =>
+    (statusDiv ? (statusDiv.innerHTML = html) : console.log(html.replace(/<[^>]+>/g, '')));
 
   const qs = new URLSearchParams(location.search);
   const code  = qs.get('code');
@@ -28,19 +30,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   let csrfFromState = '';
   if (state.includes(':')) {
     const [maybe, csrf] = state.split(':', 2);
-    if (['twitch','youtube'].includes(maybe)) { provider = maybe; csrfFromState = csrf || ''; }
-  } else if (state && ['instagram','youtube','twitch','facebook'].includes(state)) {
+    if (['twitch','youtube','tiktok'].includes(maybe)) { // include TikTok in CSRF-style state
+      provider = maybe;
+      csrfFromState = csrf || '';
+    }
+  } else if (state && ['instagram','youtube','twitch','facebook','tiktok'].includes(state)) {
     provider = state;
   } else {
     const via = (qs.get('provider') || '').toLowerCase();
-    if (['twitch','youtube','instagram','facebook'].includes(via)) provider = via;
+    if (['twitch','youtube','instagram','facebook','tiktok'].includes(via)) provider = via;
   }
 
-  const pretty = { youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook' }[provider] || provider;
+  const pretty =
+    ({ youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok' }[provider]) || provider;
+
   setStatus(`<span style="color:#4886f4;">Connecting to ${pretty}…</span>`);
 
   try {
-    // CSRF for Twitch/new YouTube (Instagram/Facebook use simple state)
+    // CSRF for Twitch/new YouTube/TikTok (Instagram/Facebook use simple state)
     const expected = localStorage.getItem('oauth_csrf');
     if (csrfFromState && expected !== csrfFromState) throw new Error('State mismatch');
     if (expected) localStorage.removeItem('oauth_csrf');
@@ -75,6 +82,7 @@ function success(provider) {
     provider === 'twitch'    ? { twitchConnected: true } :
     provider === 'instagram' ? { instagramConnected: true } :
     provider === 'facebook'  ? { facebookConnected: true } :
+    provider === 'tiktok'    ? { tiktokConnected: true } : // NEW
     { youtubeConnected: true };
 
   if (window.opener) {
@@ -84,6 +92,7 @@ function success(provider) {
     const suffix =
       provider === 'instagram' ? '?instagram=connected' :
       provider === 'facebook'  ? '?facebook=connected'  :
+      provider === 'tiktok'    ? '?tiktok=connected'    : // optional convenience
       '';
     location.href = `./dashboardsponsee.html${suffix}`;
   }
