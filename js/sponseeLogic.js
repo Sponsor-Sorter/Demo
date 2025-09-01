@@ -1030,19 +1030,13 @@ async function loadFacebookStats() {
 
     // Followers / Likes (as variables first; we'll render after insight fallbacks)
     let followers =
-      page.followers_count ??
-      page.followers ??
+      page.followers_count ?? page.followers ??
       pick(page, 'followers.summary.total_count', 'counts.followers', 'metrics.followers', 'stats.followers') ??
-      payload.followers ??
-      payload.page_followers ??
-      null;
+      payload.followers ?? payload.page_followers ?? null;
 
     let likes =
-      page.fan_count ??
-      page.likes ??
-      payload.page_likes ??
-      pick(page, 'counts.likes', 'metrics.likes', 'stats.likes') ??
-      null;
+      page.fan_count ?? page.likes ?? payload.page_likes ??
+      pick(page, 'counts.likes', 'metrics.likes', 'stats.likes') ?? null;
 
     // 28-day insights (page-level)
     const insights28 =
@@ -1163,6 +1157,167 @@ async function loadFacebookStats() {
 }
 
 /* =========================
+   TikTok Stats
+========================= */
+function setTTThumb(imgEl, url, fallbackUrl = 'tiktoklogo.png') {
+  if (!imgEl) return;
+  imgEl.setAttribute('referrerpolicy', 'no-referrer');
+  imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = fallbackUrl; };
+  imgEl.src = url || fallbackUrl;
+}
+
+function secsOrMsToDate(ts) {
+  if (!ts) return null;
+  const n = Number(ts);
+  // if value looks like seconds, multiply to ms
+  const ms = n < 2e10 ? n * 1000 : n;
+  const d = new Date(ms);
+  return Number.isFinite(d.getTime()) ? d : null;
+}
+
+async function loadTikTokStats() {
+  const ttEls = {
+    block: document.getElementById('tiktok-stats-block'),
+    pic: document.getElementById('tt-profile-pic'),
+    name: document.getElementById('tt-display-name'),
+    followers: document.getElementById('tt-followers'),
+    followingWrap: document.getElementById('tt-following-wrap'),
+    following: document.getElementById('tt-following'),
+    likesWrap: document.getElementById('tt-likes-wrap'),
+    likes: document.getElementById('tt-likes'),
+    videosWrap: document.getElementById('tt-videos-wrap'),
+    videos: document.getElementById('tt-videos'),
+    updatedWrap: document.getElementById('tt-updated-wrap'),
+    updated: document.getElementById('tt-updated'),
+
+    lastRow: document.getElementById('tt-last-video-row'),
+    lastLink: document.getElementById('tt-last-video-link'),
+    lastDesc: document.getElementById('tt-last-video-desc'),
+    lastDate: document.getElementById('tt-last-video-date'),
+    lastThumb: document.getElementById('tt-last-video-thumb'),
+    lastViews: document.getElementById('tt-last-video-views'),
+    lastLikes: document.getElementById('tt-last-video-likes'),
+    lastComments: document.getElementById('tt-last-video-comments'),
+    lastShares: document.getElementById('tt-last-video-shares'),
+  };
+  if (!ttEls.block) return;
+
+  // defaults
+  ttEls.name.textContent = 'Loading…';
+  ttEls.pic.src = 'tiktoklogo.png';
+  ttEls.followers.textContent = '-';
+  if (ttEls.followingWrap) ttEls.followingWrap.style.display = 'none';
+  if (ttEls.likesWrap) ttEls.likesWrap.style.display = 'none';
+  if (ttEls.videosWrap) ttEls.videosWrap.style.display = 'none';
+  if (ttEls.openId) ttEls.openId.style.display = 'none';
+  if (ttEls.lastRow) ttEls.lastRow.style.display = 'none';
+  if (ttEls.updatedWrap) ttEls.updatedWrap.style.display = 'none';
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+
+    // NOTE: The browser will preflight (OPTIONS) due to Authorization header.
+    // The real JSON response is the subsequent GET — so ignore the “ok” OPTIONS in devtools.
+    const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-stats', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${jwt}` }
+    });
+    const payload = await resp.json();
+    // For visibility while we sort scopes / API quirks:
+    console.debug('TikTok payload:', payload);
+
+    if (!resp.ok || !payload?.ok) throw new Error(payload?.error || 'Failed');
+
+    const p = payload.profile || {};
+    ttEls.name.textContent = p.display_name || p.username || 'TikTok';
+    if (p.avatar_url) setTTThumb(ttEls.pic, p.avatar_url, 'tiktoklogo.png');
+
+    if (p.open_id && ttEls.openId) {
+      ttEls.openId.textContent = `open_id: ${p.open_id}`;
+      ttEls.openId.style.display = '';
+    }
+
+    if (p.follower_count != null) {
+      ttEls.followers.textContent = fmtNum(p.follower_count);
+      updateFollowersTotalSafe('tiktok', Number(p.follower_count) || 0);
+    }
+
+    if (p.following_count != null && ttEls.followingWrap) {
+      ttEls.following.textContent = fmtNum(p.following_count);
+      ttEls.followingWrap.style.display = '';
+    }
+    if (p.likes_count != null && ttEls.likesWrap) {
+      ttEls.likes.textContent = fmtNum(p.likes_count);
+      ttEls.likesWrap.style.display = '';
+    }
+    if (p.video_count != null && ttEls.videosWrap) {
+      ttEls.videos.textContent = fmtNum(p.video_count);
+      ttEls.videosWrap.style.display = '';
+    }
+
+    if (ttEls.updatedWrap) {
+      ttEls.updated.textContent = new Date(payload.fetched_at || Date.now())
+        .toLocaleString([], { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+      ttEls.updatedWrap.style.display = '';
+    }
+
+    // ---------- Latest content (post or video) ----------
+    const c = payload.last_post || payload.last_video || null;
+
+    if (c) {
+      // We have real content + stats from the Edge Function
+      ttEls.lastDesc.textContent = c.description || 'Latest content';
+      if (ttEls.lastLink) ttEls.lastLink.href = c.url || p.profile_url || '#';
+
+      const d = secsOrMsToDate(c.create_time);
+      ttEls.lastDate.textContent = d ? d.toLocaleDateString() : '';
+
+      setTTThumb(ttEls.lastThumb, c.cover || null, 'tiktoklogo.png');
+
+      if (c.stats) {
+        if (ttEls.lastViews) ttEls.lastViews.textContent = fmtNum(c.stats.view_count);
+        if (ttEls.lastLikes) ttEls.lastLikes.textContent = fmtNum(c.stats.like_count);
+        if (ttEls.lastComments) ttEls.lastComments.textContent = fmtNum(c.stats.comment_count);
+        if (ttEls.lastShares) ttEls.lastShares.textContent = fmtNum(c.stats.share_count);
+      }
+
+      ttEls.lastRow.style.display = '';
+    } else {
+      // No content returned (typical when post.list/video.list aren’t granted).
+      // Don’t leave the UI blank — show a helpful row with a link to profile.
+      if (ttEls.lastRow) {
+        ttEls.lastDesc.textContent = 'Latest content unavailable (TikTok did not return posts for this account/scopes).';
+        if (ttEls.lastLink) ttEls.lastLink.href = p.profile_url || '#';
+        ttEls.lastDate.textContent = '';
+        setTTThumb(ttEls.lastThumb, null, 'tiktoklogo.png');
+        if (ttEls.lastViews) ttEls.lastViews.textContent = '-';
+        if (ttEls.lastLikes) ttEls.lastLikes.textContent = '-';
+        if (ttEls.lastComments) ttEls.lastComments.textContent = '-';
+        if (ttEls.lastShares) ttEls.lastShares.textContent = '-';
+        ttEls.lastRow.style.display = '';
+      }
+      // Optional: surface the API reason in the console to help you fix scopes
+      if (payload.post_list_error || payload.video_list_error) {
+        console.warn('TikTok list error:', payload.post_list_error || payload.video_list_error);
+      }
+    }
+  } catch (e) {
+    ttEls.name.textContent = 'Not linked or error.';
+    ttEls.pic.src = 'tiktoklogo.png';
+    ttEls.followers.textContent = '-';
+    if (ttEls.followingWrap) ttEls.followingWrap.style.display = 'none';
+    if (ttEls.likesWrap) ttEls.likesWrap.style.display = 'none';
+    if (ttEls.videosWrap) ttEls.videosWrap.style.display = 'none';
+    if (ttEls.openId) ttEls.openId.style.display = 'none';
+    if (ttEls.lastRow) ttEls.lastRow.style.display = 'none';
+    if (ttEls.updatedWrap) ttEls.updatedWrap.style.display = 'none';
+    console.warn('TikTok stats error:', e?.message || e);
+  }
+}
+
+
+/* =========================
    DOMContentLoaded
 ========================= */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1178,28 +1333,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   const userId = session?.user?.id;
   if (!userId) return;
 
-  // default to showing blocks when the page is directly linked back with ?platform=connected
-  // otherwise, optionally look up flags if you store them in users_extended_data
   let youtubeConnected = false;
   let twitchConnected = false;
   let instagramConnected = false;
   let facebookConnected = false;
+  let tiktokConnected = false;
 
   try {
     const { data: userData } = await supabase
       .from('users_extended_data')
-      .select('youtube_connected, twitch_connected, instagram_connected, facebook_connected')
+      .select('youtube_connected, twitch_connected, instagram_connected, facebook_connected, tiktok_connected, tiktok_access_token')
       .eq('user_id', userId)
       .single();
     youtubeConnected = !!userData?.youtube_connected;
     twitchConnected = !!userData?.twitch_connected;
     instagramConnected = !!userData?.instagram_connected;
     facebookConnected = !!userData?.facebook_connected;
+    // treat as connected if either flag or token exists
+    tiktokConnected = !!(userData?.tiktok_connected || userData?.tiktok_access_token);
   } catch {
-    youtubeConnected = false;
-    twitchConnected = false;
-    instagramConnected = false;
-    facebookConnected = false;
+    youtubeConnected = twitchConnected = instagramConnected = facebookConnected = tiktokConnected = false;
   }
 
   const ytBlock = document.getElementById('youtube-stats-block');
@@ -1218,6 +1371,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (fbBlock) fbBlock.style.display = facebookConnected ? 'block' : 'none';
   if (facebookConnected) safeCall(loadFacebookStats);
 
+  const ttBlock = document.getElementById('tiktok-stats-block');
+  if (ttBlock) ttBlock.style.display = tiktokConnected ? 'block' : 'none';
+  if (tiktokConnected) safeCall(loadTikTokStats);
+
   try {
     const params = new URLSearchParams(window.location.search);
     if (params.get('instagram') === 'connected' && igBlock) {
@@ -1227,6 +1384,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (params.get('facebook') === 'connected' && fbBlock) {
       fbBlock.style.display = 'block';
       safeCall(loadFacebookStats);
+    }
+    if (params.get('tiktok') === 'connected' && ttBlock) {
+      ttBlock.style.display = 'block';
+      safeCall(loadTikTokStats);
     }
   } catch {}
 });
@@ -1244,6 +1405,13 @@ window.addEventListener('message', (event) => {
     if (fbBlock) {
       fbBlock.style.display = 'block';
       safeCall(loadFacebookStats);
+    }
+  }
+  if (event?.data?.tiktokConnected) {
+    const ttBlock = document.getElementById('tiktok-stats-block');
+    if (ttBlock) {
+      ttBlock.style.display = 'block';
+      safeCall(loadTikTokStats);
     }
   }
 });
