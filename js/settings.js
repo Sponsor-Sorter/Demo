@@ -429,26 +429,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (resp.ok) {
           const data = await resp.json();
           if (data.subscription) {
-            // --- Replace ONLY this section with the improved logic ---
             const sub = data.subscription;
-            console.log("Stripe discount object:", sub.discount);
 
             // Plan name
             let planName = sub.plan?.nickname || sub.plan?.id || "N/A";
-            // Period: use JS Date for proper formatting
+            // Period
             let periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000) : null;
             let periodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000) : null;
-            // -------------- ADD THIS FOR NEXT MONTH FREE DISPLAY --------------
-            let freeMonthMsg = "";
-            let debugDiscountBlock = '';
-            if (sub.discount) {
-              debugDiscountBlock = `
-                <div style="font-size:0.9em; background:#222; color:#ffd700; padding:2px 5px; border-radius:6px;">
-                  Discount Debug: ${JSON.stringify(sub.discount)}
-                </div>
-              `;
-            }
 
+            let freeMonthMsg = "";
             if (sub.discount && (sub.discount.id === "1MonthFreeSS2025" || (sub.discount.name && sub.discount.name.includes("free month")))) {
               freeMonthMsg = `
                 <div style="margin-bottom:7px;font-size:1.04em;color:#ffd700;">
@@ -816,60 +805,133 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   })();
 
-// =========================
-//    FACEBOOK INTEGRATION
-// =========================
+  // =========================
+  //    FACEBOOK INTEGRATION
+  // =========================
 
-function buildFacebookAuthUrl() {
-  const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
-  const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
-  // Minimal, valid set for selecting a Page and reading its engagement data.
-  // (Removed pages_read_user_content and read_insights to avoid "Invalid Scopes")
-  const scope = [
-    'public_profile',
-    'pages_show_list',
-    'pages_read_engagement'
-  ].join(',');
-  // We use state=facebook so oauth2callback.html knows to call facebook-oauth
-  return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
-}
-
-function showFacebookSuccessNotification() {
-  const el = document.createElement('div');
-  el.style.cssText = `
-    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 9999; background: #1877F2; color: #fff; font-size: 1.1em;
-    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
-    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
-  `;
-  el.textContent = '✅ Facebook Page successfully linked!';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3500);
-}
-
-function showFacebookDisconnectedNotification() {
-  const el = document.createElement('div');
-  el.style.cssText = `
-    position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
-    padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
-    border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
-  `;
-  el.textContent = '⛔ Facebook account disconnected.';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3200);
-}
-
-// If oauth2callback.html redirected back with ?facebook=connected
-(function handleFacebookReturn() {
-  const url = new URL(location.href);
-  if (url.searchParams.get('facebook') === 'connected') {
-    showFacebookSuccessNotification();
-    url.searchParams.delete('facebook');
-    history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
+  function buildFacebookAuthUrl() {
+    const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
+    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+    const scope = [
+      'public_profile',
+      'pages_show_list',
+      'pages_read_engagement'
+    ].join(',');
+    // We use state=facebook so oauth2callback.html knows to call facebook-oauth
+    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
   }
-})();
 
+  function showFacebookSuccessNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #1877F2; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '✅ Facebook Page successfully linked!';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  function showFacebookDisconnectedNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '⛔ Facebook account disconnected.';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  // If oauth2callback.html redirected back with ?facebook=connected
+  (function handleFacebookReturn() {
+    const url = new URL(location.href);
+    if (url.searchParams.get('facebook') === 'connected') {
+      showFacebookSuccessNotification();
+      url.searchParams.delete('facebook');
+      history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
+    }
+  })();
+
+  // =========================
+  //     TIKTOK INTEGRATION
+  // =========================
+
+  function getTikTokRedirectUri() {
+    const base = window.location.origin;
+    const path = window.location.pathname;
+    // Demo folder
+    if (path.includes('/Demo/')) return `${base}/Demo/oauth2callback.html`;
+    // Local dev (same as Twitch)
+    if (base.includes('127.0.0.1:5500') || base.includes('localhost:5500')) return `${base}/oauth2callback.html`;
+    // Production
+    return `${base}/oauth2callback.html`;
+  }
+
+  function launchTikTokOAuth() {
+    // TODO: replace with your real Client Key (public; safe to expose)
+    const TIKTOK_CLIENT_KEY = 'sbawbcrozip468vh2m';
+    const REDIRECT = getTikTokRedirectUri();
+    const SCOPES = ['user.info.profile','user.info.stats','video.list'].join(',');
+
+    // CSRF
+    const buf = new Uint8Array(16);
+    crypto.getRandomValues(buf);
+    const csrf = Array.from(buf).map(x => x.toString(16).padStart(2, '0')).join('');
+    localStorage.setItem('oauth_csrf', csrf);
+
+    const u = new URL('https://www.tiktok.com/v2/auth/authorize/');
+    u.searchParams.set('client_key', TIKTOK_CLIENT_KEY);
+    u.searchParams.set('response_type', 'code');
+    u.searchParams.set('scope', SCOPES);
+    u.searchParams.set('redirect_uri', REDIRECT);
+    u.searchParams.set('state', `tiktok:${csrf}`); // so oauth-handler routes to tiktok-oauth
+
+    const w = 500, h = 650;
+    const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
+    const x = window.top.outerWidth  / 2 + window.top.screenX - (w / 2);
+    window.open(u.toString(), 'oauth_tiktok', `width=${w},height=${h},left=${x},top=${y}`);
+  }
+
+  function showTikTokSuccessNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #000000; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '✅ TikTok account successfully linked!';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  function showTikTokDisconnectedNotification() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #f53838; color: #fff; font-size: 1.1em;
+      padding: 14px 38px; border-radius: 12px; box-shadow: 0 3px 22px #2222;
+      border: 2px solid #fff; font-weight: 700; letter-spacing: .02em;
+    `;
+    el.textContent = '⛔ TikTok account disconnected.';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  // If oauth2callback.html redirected back with ?tiktok=connected
+  (function handleTikTokReturn() {
+    const url = new URL(location.href);
+    if (url.searchParams.get('tiktok') === 'connected') {
+      showTikTokSuccessNotification();
+      url.searchParams.delete('tiktok');
+      history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + url.hash);
+    }
+  })();
 
   // --- Unified OAuth Modal Logic ---
   const oauthLinkBtn = document.getElementById('oauth-link-btn');
@@ -926,13 +988,11 @@ function showFacebookDisconnectedNotification() {
     if (boolFlag) return true;
 
     // Fallbacks by provider (when you haven't added *_connected yet)
-    if (key === 'twitch') return !!(user.twitch_access_token);
-    if (key === 'youtube') return !!(user.youtube_refresh_token || user.youtube_access_token);
-    if (key === 'instagram') return !!(user.instagram_user_id || user.instagram_access_token);
-    if (key === 'facebook') {
-      // Treat as connected if we have a page id or page access token saved in users_extended_data
-      return !!(user.facebook_page_id || user.facebook_access_token);
-    }
+    if (key === 'twitch')   return !!(user.twitch_access_token);
+    if (key === 'youtube')  return !!(user.youtube_refresh_token || user.youtube_access_token);
+    if (key === 'instagram')return !!(user.instagram_user_id || user.instagram_access_token);
+    if (key === 'facebook') return !!(user.facebook_page_id || user.facebook_access_token);
+    if (key === 'tiktok')   return !!(user.tiktok_access_token); // NEW: TikTok
     return false;
   }
 
@@ -1088,8 +1148,6 @@ function showFacebookDisconnectedNotification() {
               facebook_access_token: null,
               facebook_token_expires_at: null
             };
-            // Also try to set flag false if your schema includes it (safe if ignored)
-            
 
             const { error } = await supabase
               .from('users_extended_data')
@@ -1115,14 +1173,45 @@ function showFacebookDisconnectedNotification() {
           }
         }
 
-        // Future platforms (placeholders)
+        // --- NEW: TIKTOK CONNECT/DISCONNECT ---
         else if (plat === "tiktok") {
-          if (user.tiktok_connected) {
-            // TODO: add disconnect if needed
+          if (isPlatformConnected(user, 'tiktok')) {
+            // --- DISCONNECT TIKTOK ---
+            btn.innerText = "Disconnecting...";
+            btn.disabled = true;
+
+            const { error } = await supabase
+              .from('users_extended_data')
+              .update({
+                tiktok_access_token: null,
+                tiktok_refresh_token: null,
+                tiktok_token_expiry: null,
+                tiktok_connected: false,
+                tiktok_user_id: null,
+                tiktok_username: null
+              })
+              .eq('user_id', user.user_id);
+
+            if (!error) {
+              btn.innerText = "Connect";
+              btn.style.background = "#2d7bfa";
+              const badge = document.getElementById('tiktok-status-badge');
+              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
+              showTikTokDisconnectedNotification();
+              await refreshOauthAccountsUI();
+            } else {
+              btn.innerText = "Failed!"; btn.style.background = "#e22";
+              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
+            }
           } else {
-            alert("TikTok OAuth coming soon!");
+            // --- CONNECT TIKTOK ---
+            launchTikTokOAuth();                  // popup using state=tiktok:<csrf>
+            oauthLinkModal.style.display = "none"; // close the picker while user authorizes
           }
-        } else if (plat === "twitter") {
+        }
+
+        // Future placeholders
+        else if (plat === "twitter") {
           if (user.twitter_connected) {
             // TODO: add disconnect if needed
           } else {
@@ -1149,6 +1238,14 @@ function showFacebookDisconnectedNotification() {
       if (e.target === oauthLinkModal) oauthLinkModal.style.display = "none";
     });
   }
+
+  // --- Listen for TikTok OAuth popup success (postMessage from oauth2callback.html)
+  window.addEventListener('message', async (event) => {
+    if (event.data && event.data.tiktokConnected === true) {
+      showTikTokSuccessNotification();
+      await refreshOauthAccountsUI?.();
+    }
+  });
 
   // --- Show notification on disconnect (YouTube) ---
   function showYouTubeDisconnectedNotification() {
@@ -1232,6 +1329,3 @@ function showFacebookDisconnectedNotification() {
     loadEmailAlertSetting();
   }
 });
-
-
-
