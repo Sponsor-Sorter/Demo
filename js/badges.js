@@ -50,7 +50,8 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
     'youtube_connected',
     'twitch_connected',
     'instagram_connected',
-    'facebook_connected'
+    'facebook_connected',
+    'tiktok_connected'
   ]
 
   const SOCIAL_LOGOS = {
@@ -116,3 +117,4 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
     // .badge-social-row img { filter: none; opacity: 0.95; }
   }
 }
+
