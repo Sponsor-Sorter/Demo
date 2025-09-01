@@ -669,37 +669,81 @@ document.addEventListener("DOMContentLoaded", async () => {
               body: JSON.stringify({ url: liveUrl })
             });
             const data = await resp.json();
+
+            // Heuristic classification for "deleted / expired / not found"
+            const msg = (data?.error || data?.message || data?.detail || '').toLowerCase();
+            const vodStatus = (data?.vod?.status || data?.vod?.state || data?.status || '').toLowerCase();
+            const looksUnavailable =
+              resp.status === 404 ||
+              data?.not_found === true ||
+              data?.deleted === true ||
+              /not[\s-]?found/.test(msg) ||
+              /deleted|expired|removed|pruned/.test(msg) ||
+              /deleted|expired|removed|pruned/.test(vodStatus);
+
             if (!resp.ok || !data?.success) {
-              blocks.push("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
-            } else {
-              const v = data.vod || {};
-              const thumb = normalizeTwitchThumb(v.thumbnail_url);
-              const durationText = v.duration?.text || null;
-              const creator = v.user_display_name || v.user_login || '-';
-              blocks.push(container(`
-                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                  <img id="tw-vod-thumb" src="${thumb || 'twitchlogo.png'}" referrerpolicy="no-referrer"
-                       alt="VOD thumbnail"
-                       style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                  <div>
-                    <b style="color:#c9b6ff;font-size:1.17em;">
-                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                      ${v.title || 'Twitch VOD'}
-                    </b>
-                    ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
+              if (looksUnavailable) {
+                blocks.push(container(`
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                    <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                  </div>
+                  <div style="color:#ddd;margin-bottom:6px;">
+                    This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
                     ${dateBadge}
                   </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${wrapRow('🎮 Game:', v.game_name || '-') }
-                  ${wrapRow('👤 Creator:', creator) }
-                  ${wrapRow('📅 Created:', v.created_at ? new Date(v.created_at).toLocaleDateString() : '-') }
-                  ${wrapRow('👀 Views:', v.view_count != null ? v.view_count.toLocaleString() : '-') }
-                </div>
-                <div style="margin-top:10px;text-align:right;">
-                  <a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
-                </div>
-              `));
+                  <div><a href="${liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                `));
+              } else {
+                blocks.push("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
+              }
+            } else {
+              const v = data.vod || {};
+              const vDeleted =
+                v?.deleted === true ||
+                /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
+
+              if (vDeleted) {
+                blocks.push(container(`
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                    <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                  </div>
+                  <div style="color:#ddd;margin-bottom:6px;">
+                    This VOD was removed or has expired on Twitch. Stats are no longer available.
+                    ${dateBadge}
+                  </div>
+                  <div><a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                `));
+              } else {
+                const thumb = normalizeTwitchThumb(v.thumbnail_url);
+                const durationText = v.duration?.text || null;
+                const creator = v.user_display_name || v.user_login || '-';
+                blocks.push(container(`
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img id="tw-vod-thumb" src="${thumb || 'twitchlogo.png'}" referrerpolicy="no-referrer"
+                         alt="VOD thumbnail"
+                         style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                    <div>
+                      <b style="color:#c9b6ff;font-size:1.17em;">
+                        <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                        ${v.title || 'Twitch VOD'}
+                      </b>
+                      ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
+                      ${dateBadge}
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                    ${wrapRow('🎮 Game:', v.game_name || '-') }
+                    ${wrapRow('👤 Creator:', creator) }
+                    ${wrapRow('📅 Created:', v.created_at ? new Date(v.created_at).toLocaleDateString() : '-') }
+                    ${wrapRow('👀 Views:', v.view_count != null ? v.view_count.toLocaleString() : '-') }
+                  </div>
+                  <div style="margin-top:10px;text-align:right;">
+                    <a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
+                  </div>
+                `));
+              }
             }
           } catch {
             blocks.push("<div style='color:#faa;'>Error loading Twitch VOD stats.</div>");
