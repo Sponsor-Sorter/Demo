@@ -9,8 +9,11 @@ const EDGE_FN = {
   twitch:    'twitch-oauth',
   instagram: 'instagram-oauth',
   facebook:  'facebook-oauth',
-  tiktok:    'tiktok-oauth',          // NEW
+  tiktok:    'tiktok-oauth',
 };
+
+// keep the popup open briefly so the POST/DOM/message can complete
+const AUTO_CLOSE_MS = 900;
 
 document.addEventListener('DOMContentLoaded', async () => {
   const statusDiv = document.getElementById('oauth-status');
@@ -30,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let csrfFromState = '';
   if (state.includes(':')) {
     const [maybe, csrf] = state.split(':', 2);
-    if (['twitch','youtube','tiktok'].includes(maybe)) { // include TikTok in CSRF-style state
+    if (['twitch','youtube','tiktok'].includes(maybe)) {
       provider = maybe;
       csrfFromState = csrf || '';
     }
@@ -41,15 +44,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (['twitch','youtube','instagram','facebook','tiktok'].includes(via)) provider = via;
   }
 
-  const pretty =
-    ({ youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok' }[provider]) || provider;
-
+  const pretty = ({ youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok' }[provider]) || provider;
   setStatus(`<span style="color:#4886f4;">Connecting to ${pretty}…</span>`);
+  console.debug('[oauth-handler] provider =', provider, 'code?', !!code);
 
   try {
-    // CSRF for Twitch/new YouTube/TikTok (Instagram/Facebook use simple state)
+    // CSRF for Twitch/new YouTube/TikTok
     const expected = localStorage.getItem('oauth_csrf');
-    if (csrfFromState && expected !== csrfFromState) throw new Error('State mismatch');
+    if (csrfFromState && expected && expected !== csrfFromState) throw new Error('State mismatch');
     if (expected) localStorage.removeItem('oauth_csrf');
 
     const { data: { session } } = await supabase.auth.getSession();
@@ -64,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${jwt}` },
       body: JSON.stringify({ code, redirect_uri }),
-      credentials: 'include',
+      credentials: 'omit', // <= important: we send JWT header; omit cookies to reduce CORS edge cases
     });
 
     const payload = await resp.json().catch(() => ({}));
@@ -82,17 +84,17 @@ function success(provider) {
     provider === 'twitch'    ? { twitchConnected: true } :
     provider === 'instagram' ? { instagramConnected: true } :
     provider === 'facebook'  ? { facebookConnected: true } :
-    provider === 'tiktok'    ? { tiktokConnected: true } : // NEW
+    provider === 'tiktok'    ? { tiktokConnected: true } :
     { youtubeConnected: true };
 
   if (window.opener) {
     try { window.opener.postMessage(flag, '*'); } catch {}
-    window.close();
+    setTimeout(() => window.close(), AUTO_CLOSE_MS);
   } else {
     const suffix =
       provider === 'instagram' ? '?instagram=connected' :
       provider === 'facebook'  ? '?facebook=connected'  :
-      provider === 'tiktok'    ? '?tiktok=connected'    : // optional convenience
+      provider === 'tiktok'    ? '?tiktok=connected'    :
       '';
     location.href = `./dashboardsponsee.html${suffix}`;
   }
@@ -103,7 +105,7 @@ function fail(msg) {
   if (statusDiv) statusDiv.innerHTML = `<span style="color:red;">${msg}</span>`;
   if (window.opener) {
     try { window.opener.postMessage({ oauthError: msg }, '*'); } catch {}
-    window.close();
+    setTimeout(() => window.close(), AUTO_CLOSE_MS + 600);
   } else {
     location.href = `./dashboardsponsee.html?error=${encodeURIComponent(msg)}`;
   }
