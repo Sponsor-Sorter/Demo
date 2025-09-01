@@ -296,6 +296,56 @@
 </em>
 
       </div>
+
+      <!-- tiktok stats -->
+<div class="tiktok-stats-card" id="tiktok-stats-block" style="
+  display:none;
+  padding:24px 22px;
+  background:#5e5e5e;
+  border-radius:16px;
+  box-shadow:0 5px 9px rgba(255, 255, 255, 0.799); /* TikTok red glow */
+  max-width:550px;
+  margin:0 auto 16px auto;
+  color:#fff;
+">
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+    <img id="tt-profile-pic" src="tiktoklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+    <div>
+      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+        <img src="tiktoklogo.png" alt="TikTok" style="height:26px;vertical-align:-4px;margin-right:6px;">
+        <span id="tt-display-name">Loading…</span>
+      </h2>
+      <span id="tt-openid" style="font-size:0.97em;color:#c7f9ff;display:none;">open_id: …</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+    <div><b>Followers:</b> <span id="tt-followers">-</span></div>
+    <div id="tt-following-wrap" style="display:none;"><b>Following:</b> <span id="tt-following">-</span></div>
+    <div id="tt-likes-wrap" style="display:none;"><b>Total Likes:</b> <span id="tt-likes">-</span></div>
+    <div id="tt-videos-wrap" style="display:none;"><b>Videos:</b> <span id="tt-videos">-</span></div>
+    <div id="tt-updated-wrap"><b>Updated:</b> <span id="tt-updated">-</span></div>
+  </div>
+
+  <!-- Latest owned video (optional) -->
+  <div id="tt-last-video-row" style="margin-top:14px;display:none;">
+    <b>Latest Video:</b>
+    <a id="tt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+      <span id="tt-last-video-desc">Latest video</span>
+    </a>
+    <span id="tt-last-video-date" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+      <img id="tt-last-video-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+      <div style="font-size:0.97em;">
+        <div>Views: <span id="tt-last-video-views">-</span></div>
+        <div>Likes: <span id="tt-last-video-likes">-</span></div>
+        <div>Comments: <span id="tt-last-video-comments">-</span></div>
+        <div>Shares: <span id="tt-last-video-shares">-</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+      
       <!-- youtube stats -->
      <div class="youtube-stats-card" id="youtube-stats-block" style="
   padding:24px 22px;
@@ -866,6 +916,7 @@
 
 </body>
 </html>
+
 
 
 
