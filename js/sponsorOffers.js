@@ -130,13 +130,14 @@ function renderOffersByFilter(filter) {
   }
 }
 
-// --- Platform badges ---
-function renderPlatformBadges(platforms) {
+// --- Platform badges with clickable links ---
+function renderPlatformBadges(platforms, urls = []) {
   if (!platforms) return '';
   if (typeof platforms === 'string') {
     try { platforms = JSON.parse(platforms); } catch { platforms = []; }
   }
   if (!Array.isArray(platforms)) return '';
+
   const platformLogos = {
     instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
     tiktok: 'tiktoklogo.png',
@@ -146,15 +147,22 @@ function renderPlatformBadges(platforms) {
     twitch: 'twitchlogo.png',
     snapchat: 'snaplogo.png',
   };
-  return platforms.map(platform => {
+
+  return platforms.map((platform, i) => {
     const logo = platformLogos[platform.toLowerCase()] || '';
-    return logo
-      ? `<span class="social-badge" style="display:inline-block;background:#f4f7ff;border-radius:8px;padding:2px 5px;margin-right:4px;">
-          <img src="${logo}" alt="${platform}" style="height:20px;width:20px;vertical-align:middle;">
-        </span>`
-      : '';
+    const link = urls[i]?.url || null; // map URL by index if available
+    if (!logo) return '';
+    const badgeImg = `<img src="${logo}" alt="${platform}" style="height:20px;width:20px;vertical-align:middle;">`;
+    return link
+      ? `<a href="${link}" target="_blank" class="social-badge" 
+             style="display:inline-block;background:#f4f7ff;border-radius:8px;
+             padding:2px 5px;margin-right:4px;text-decoration:none;">${badgeImg}</a>`
+      : `<span class="social-badge" 
+             style="display:inline-block;background:#f4f7ff;border-radius:8px;
+             padding:2px 5px;margin-right:4px;">${badgeImg}</span>`;
   }).join(' ');
 }
+
 
 // --- Main offer rendering ---
 async function renderSingleOffer(offer) {
@@ -200,13 +208,14 @@ async function renderSingleOffer(offer) {
     actionButton = '<button class="delete-offer-btn">Remove Offer</button>';
   }
 
-  let platformBadgeHtml = '';
-  if (offer.platforms && offer.platforms.length) {
-    platformBadgeHtml = renderPlatformBadges(offer.platforms);
-  }
+const pairs = pairUrlsAndDates(offer);
+let platformBadgeHtml = '';
+if (offer.platforms && offer.platforms.length) {
+  platformBadgeHtml = renderPlatformBadges(offer.platforms, pairs);
+}
+
 
   // Build URL/date display
-  const pairs = pairUrlsAndDates(offer);
   const firstLiveDate =
     offer.live_date ||
     earliestDate(offer.url_dates) ||
@@ -264,7 +273,7 @@ async function renderSingleOffer(offer) {
               <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
               ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
               ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
-              ${liveLinksHtml}
+              
             </div>
             <div class="offer-right">
               <p><strong>Amount:</strong> $${offer.offer_amount}</p>
