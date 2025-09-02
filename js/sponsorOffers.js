@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- DATA SUMMARY (iterate all URLs with proper toggle behaviour) ---
+    // --- DATA SUMMARY (stream results + live "Loading X of N") ---
     if (e.target.classList.contains('data-summary-btn')) {
       // TOGGLE: if currently shown, hide and clear, then stop.
       const isCurrentlyVisible = dataSummarySection.style.display === 'block';
@@ -592,8 +592,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         pairs.push({ url: liveUrl, date: currentOffer.live_date || null });
       }
 
-      dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading video stats...</div>";
+      // Initial UI with progress + streaming container
+      dataSummarySection.innerHTML = `
+        <div class="stats-loader" style="max-width: 600px; margin: 0 auto;">
+          <div id="ds-progress" style="
+            color:#fff; font-size:0.98em; padding:8px 12px; border-radius:8px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+            display:inline-block; margin-bottom:10px;">Preparing…</div>
+          <div id="ds-results"></div>
+        </div>`;
       dataSummarySection.style.display = 'block';
+
+      const progressEl = dataSummarySection.querySelector('#ds-progress');
+      const resultsEl  = dataSummarySection.querySelector('#ds-results');
 
       const { data: { session } } = await supabase.auth.getSession();
       const jwt = session?.access_token;
@@ -612,22 +623,44 @@ document.addEventListener("DOMContentLoaded", async () => {
           text-align: left;">${inner}</div>
       `;
 
-      const blocks = [];
-      for (const { url: liveUrl, date } of pairs) {
-        const isYouTube   = /youtube\.com|youtu\.be/i.test(liveUrl);
-        const isTwitch    = /twitch\.tv/i.test(liveUrl);
-        const isInstagram = /instagram\.com/i.test(liveUrl);
-        const isFacebook  = /(facebook\.com|fb\.watch)/i.test(liveUrl);
-        const isTikTok    = /(^|\.)(tiktok\.com)/i.test(liveUrl) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(liveUrl);
-        const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+      // Helpers from original block
+      const isYouTubeUrl   = u => /youtube\.com|youtu\.be/i.test(u);
+      const isTwitchUrl    = u => /twitch\.tv/i.test(u);
+      const isInstagramUrl = u => /instagram\.com/i.test(u);
+      const isFacebookUrl  = u => /(facebook\.com|fb\.watch)/i.test(u);
+      const isTikTokUrl    = u => /(^|\.)(tiktok\.com)/i.test(u) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(u);
 
-        if (isYouTube) {
-          const videoId = extractYouTubeVideoId(liveUrl);
-          if (!videoId) {
-            blocks.push(`<div style="color:#faa;">Invalid or unrecognized YouTube URL: ${liveUrl}</div>`);
-            continue;
-          }
-          try {
+      const addBlock = (html) => resultsEl.insertAdjacentHTML('beforeend', html);
+      const setProgress = (i, n, note = '') => {
+        const tail = note ? ` • ${note}` : '';
+        progressEl.textContent = `Loading ${i} of ${n}${tail}`;
+      };
+
+      const total = pairs.length;
+      let index = 0;
+
+      for (const { url: liveUrl, date } of pairs) {
+        index += 1;
+        const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+        // platform hint for progress
+        let platformHint = '';
+        if (isYouTubeUrl(liveUrl)) platformHint = 'YouTube';
+        else if (isTikTokUrl(liveUrl)) platformHint = 'TikTok';
+        else if (isInstagramUrl(liveUrl)) platformHint = 'Instagram';
+        else if (isFacebookUrl(liveUrl)) platformHint = 'Facebook';
+        else if (isTwitchUrl(liveUrl)) platformHint = 'Twitch';
+        else platformHint = 'Link';
+
+        setProgress(index, total, platformHint);
+
+        try {
+          // === YouTube ===
+          if (isYouTubeUrl(liveUrl)) {
+            const videoId = extractYouTubeVideoId(liveUrl);
+            if (!videoId) {
+              addBlock(`<div style="color:#faa;">Invalid or unrecognized YouTube URL: ${liveUrl}</div>`);
+              continue;
+            }
             const body = { videoId, userId: sponseeUserId, offerId };
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
               method: 'POST',
@@ -638,7 +671,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (stats && stats.success) {
               const thumbnail = stats.video.snippet.thumbnails?.medium?.url || '';
               const duration = parseISO8601Duration(stats.video.contentDetails.duration);
-              blocks.push(container(`
+              addBlock(container(`
                 <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
                   ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:auto;height:80px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
                   <div>
@@ -661,19 +694,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else {
-              blocks.push(`<div style="color:#faa;">${stats?.error ? stats.error : 'Could not fetch video stats.'}</div>`);
+              addBlock(`<div style="color:#faa;">${stats?.error ? stats.error : 'Could not fetch video stats.'}</div>`);
             }
-          } catch {
-            blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${liveUrl}.</div>`);
+            continue;
           }
-          continue;
-        }
 
-        if (isTikTok) {
-          try {
+          // === TikTok ===
+          if (isTikTokUrl(liveUrl)) {
             const body = {
               video_url: liveUrl,
-              // Always target the creator (sponsee) connection:
               ...(sponseeUserId ? { for_user_id: sponseeUserId } : {}),
               offerId
             };
@@ -691,13 +720,12 @@ document.addEventListener("DOMContentLoaded", async () => {
               const desc = (v.description || '').trim();
               const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
               const vurl = v.url || liveUrl;
-
               const views    = fmtNum(v.stats?.view_count);
               const likes    = fmtNum(v.stats?.like_count);
               const comments = fmtNum(v.stats?.comment_count);
               const shares   = fmtNum(v.stats?.share_count);
 
-              blocks.push(container(`
+              addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                   <img src="${thumb}" referrerpolicy="no-referrer" alt="TikTok video" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                   <div>
@@ -721,7 +749,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else if (resp.ok && tk?.error === 'not_connected') {
-              blocks.push(container(`
+              addBlock(container(`
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
                   <img src="tiktoklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
                   <b style="color:#ffb1bf;font-size:1.05em;">TikTok not connected</b>
@@ -734,20 +762,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else if (resp.status === 403 || tk?.error === 'forbidden') {
-              blocks.push(`<div style="color:#faa;">You’re not authorized to view TikTok stats for this link. (Sponsor must be attributed to this offer.)</div>`);
+              addBlock(`<div style="color:#faa;">You’re not authorized to view TikTok stats for this link. (Sponsor must be attributed to this offer.)</div>`);
             } else if (resp.ok && tk?.ok && tk?.found === false) {
-              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to the creator’s connected account’s videos: <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">${liveUrl}</a></div>`);
+              addBlock(`<div style="color:#faa;">Couldn’t match this TikTok link to the creator’s connected account’s videos: <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">${liveUrl}</a></div>`);
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${liveUrl}.</div>`);
+              addBlock(`<div style="color:#faa;">Could not fetch TikTok stats for ${liveUrl}.</div>`);
             }
-          } catch {
-            blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${liveUrl}.</div>`);
+            continue;
           }
-          continue;
-        }
 
-        if (isTwitch) {
-          try {
+          // === Twitch ===
+          if (isTwitchUrl(liveUrl)) {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
@@ -755,7 +780,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const data = await resp.json();
 
-            // Heuristic classification for "deleted / expired / not found"
             const msg = (data?.error || data?.message || data?.detail || '').toLowerCase();
             const vodStatus = (data?.vod?.status || data?.vod?.state || data?.status || '').toLowerCase();
             const looksUnavailable =
@@ -768,7 +792,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!resp.ok || !data?.success) {
               if (looksUnavailable) {
-                blocks.push(container(`
+                addBlock(container(`
                   <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                     <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
                     <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
@@ -780,7 +804,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                   <div><a href="${liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
                 `));
               } else {
-                blocks.push("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
+                addBlock("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
               }
             } else {
               const v = data.vod || {};
@@ -789,7 +813,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
 
               if (vDeleted) {
-                blocks.push(container(`
+                addBlock(container(`
                   <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                     <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
                     <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
@@ -804,7 +828,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const thumb = normalizeTwitchThumb(v.thumbnail_url);
                 const durationText = v.duration?.text || null;
                 const creator = v.user_display_name || v.user_login || '-';
-                blocks.push(container(`
+                addBlock(container(`
                   <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                     <img id="tw-vod-thumb" src="${thumb || 'twitchlogo.png'}" referrerpolicy="no-referrer"
                          alt="VOD thumbnail"
@@ -830,14 +854,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `));
               }
             }
-          } catch {
-            blocks.push("<div style='color:#faa;'>Error loading Twitch VOD stats.</div>");
+            continue;
           }
-          continue;
-        }
 
-        if (isInstagram) {
-          try {
+          // === Instagram ===
+          if (isInstagramUrl(liveUrl)) {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
@@ -855,7 +876,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
               const cap = (m.caption || '').trim();
               const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
-              blocks.push(container(`
+              addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                   <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                   <div>
@@ -882,19 +903,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else if (resp.ok && ig?.ok && ig?.found === false) {
-              blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to the creator’s connected account: <a href="${liveUrl}" target="_blank" style="color:#ff8bd2;">${liveUrl}</a></div>`);
+              addBlock(`<div style="color:#faa;">Couldn’t match this Instagram link to the creator’s connected account: <a href="${liveUrl}" target="_blank" style="color:#ff8bd2;">${liveUrl}</a></div>`);
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${liveUrl}.</div>`);
+              addBlock(`<div style="color:#faa;">Could not fetch Instagram stats for ${liveUrl}.</div>`);
             }
-          } catch {
-            blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${liveUrl}.</div>`);
+            continue;
           }
-          continue;
-        }
 
-        if (isFacebook) {
-          // IMPORTANT: ask the Edge function to use the CREATOR’s (sponsee) connected Page
-          try {
+          // === Facebook ===
+          if (isFacebookUrl(liveUrl)) {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
@@ -928,7 +945,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               const reach       = readMetric(ins, ['post_impressions_unique','reach']);
               const engaged     = readMetric(ins, ['post_engaged_users','engaged_users']);
 
-              blocks.push(container(`
+              addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                   <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                   <div>
@@ -955,19 +972,22 @@ document.addEventListener("DOMContentLoaded", async () => {
               `));
             } else {
               const reason = fb?.error || fb?.message || fb?.detail || 'Unknown error';
-              blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${liveUrl}" target="_blank" style="color:#7fb4ff;">${liveUrl}</a>. ${reason ? `(${reason})` : ''}</div>`);
+              addBlock(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${liveUrl}" target="_blank" style="color:#7fb4ff;">${liveUrl}</a>. ${reason ? `(${reason})` : ''}</div>`);
             }
-          } catch {
-            blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${liveUrl}.</div>`);
+            continue;
           }
-          continue;
-        }
 
-        // Unknown / unsupported link
-        blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${liveUrl}" target="_blank" style="color:#9ad;">${liveUrl}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
+          // Unknown / unsupported link
+          addBlock(`<div style="color:#ccc;">No stats integration for: <a href="${liveUrl}" target="_blank" style="color:#9ad;">${liveUrl}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
+
+        } catch {
+          addBlock(`<div style="color:#faa;">Error loading stats for ${liveUrl}.</div>`);
+        }
       }
 
-      dataSummarySection.innerHTML = blocks.join('') || "<span style='color:#faa;'>No stats could be shown.</span>";
+      // Done
+      setProgress(total, total, 'Done');
+      setTimeout(() => { progressEl.style.opacity = '0.6'; }, 800);
       return;
     }
 
