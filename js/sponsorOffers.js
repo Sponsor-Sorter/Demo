@@ -331,11 +331,7 @@ function parseISO8601Duration(duration) {
   const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!match) return duration;
   const [, h, m, s] = match;
-  return [
-    h ? `${h}h` : '',
-    m ? `${m}m` : '',
-    s ? `${s}s` : ''
-  ].filter(Boolean).join(' ') || '0s';
+  return [ h ? `${h}h` : '', m ? `${m}m` : '', s ? `${s}s` : '' ].filter(Boolean).join(' ') || '0s';
 }
 function normalizeTwitchThumb(u) {
   if (!u) return null;
@@ -410,6 +406,17 @@ function fbFindImage(p) {
     if (typeof u === 'string' && u) return u;
   }
   return null;
+}
+// Epoch seconds or ms -> locale date string
+function epochToDateString(n) {
+  try {
+    let ms = Number(n);
+    if (!isFinite(ms)) return null;
+    if (ms < 1e12) ms *= 1000; // seconds -> ms
+    return new Date(ms).toLocaleDateString();
+  } catch {
+    return null;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -611,6 +618,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const isTwitch    = /twitch\.tv/i.test(liveUrl);
         const isInstagram = /instagram\.com/i.test(liveUrl);
         const isFacebook  = /(facebook\.com|fb\.watch)/i.test(liveUrl);
+        const isTikTok    = /(^|\.)(tiktok\.com)/i.test(liveUrl) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(liveUrl);
         const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
 
         if (isYouTube) {
@@ -657,6 +665,83 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
           } catch {
             blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${liveUrl}.</div>`);
+          }
+          continue;
+        }
+
+        if (isTikTok) {
+          try {
+            const body = {
+              video_url: liveUrl,
+              // Always target the creator (sponsee) connection:
+              ...(sponseeUserId ? { for_user_id: sponseeUserId } : {}),
+              offerId
+            };
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-video-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            });
+            const tk = await resp.json();
+
+            if (resp.ok && tk?.ok && tk?.found && tk?.video) {
+              const v = tk.video || {};
+              const thumb = v.cover || 'tiktoklogo.png';
+              const created = v.create_time ? epochToDateString(v.create_time) : null;
+              const desc = (v.description || '').trim();
+              const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
+              const vurl = v.url || liveUrl;
+
+              const views    = fmtNum(v.stats?.view_count);
+              const likes    = fmtNum(v.stats?.like_count);
+              const comments = fmtNum(v.stats?.comment_count);
+              const shares   = fmtNum(v.stats?.share_count);
+
+              blocks.push(container(`
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                  <img src="${thumb}" referrerpolicy="no-referrer" alt="TikTok video" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                  <div>
+                    <b style="color:#ff3b5c;font-size:1.17em;">
+                      <img src="tiktoklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                      TikTok Video
+                    </b>
+                    ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${created}</div>` : ''}
+                    ${dateBadge}
+                    ${shortDesc ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortDesc}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                  ${wrapRow('👀 Views:', views)}
+                  ${wrapRow('👍 Likes:', likes)}
+                  ${wrapRow('💬 Comments:', comments)}
+                  ${wrapRow('🔁 Shares:', shares)}
+                </div>
+                <div style="margin-top:10px;text-align:right;">
+                  <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
+                </div>
+              `));
+            } else if (resp.ok && tk?.error === 'not_connected') {
+              blocks.push(container(`
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+                  <img src="tiktoklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                  <b style="color:#ffb1bf;font-size:1.05em;">TikTok not connected</b>
+                </div>
+                <div style="color:#ddd;">
+                  The creator hasn’t connected TikTok (or hasn’t granted the necessary permissions),
+                  so we can’t fetch stats for
+                  <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">this link</a>.
+                  Ask them to connect TikTok from their dashboard and try again.
+                </div>
+              `));
+            } else if (resp.status === 403 || tk?.error === 'forbidden') {
+              blocks.push(`<div style="color:#faa;">You’re not authorized to view TikTok stats for this link. (Sponsor must be attributed to this offer.)</div>`);
+            } else if (resp.ok && tk?.ok && tk?.found === false) {
+              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to the creator’s connected account’s videos: <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">${liveUrl}</a></div>`);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${liveUrl}.</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${liveUrl}.</div>`);
           }
           continue;
         }
@@ -808,8 +893,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (isFacebook) {
-          // IMPORTANT: ask the Edge function to use the CREATOR’s (sponsee) connected Page,
-          // not the sponsor’s. We pass userId/for_user_id overrides.
+          // IMPORTANT: ask the Edge function to use the CREATOR’s (sponsee) connected Page
           try {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
               method: 'POST',
