@@ -560,9 +560,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- DATA SUMMARY (stream results + live "Loading X of N") ---
+    // --- DATA SUMMARY (progressive "Loading X of N" with spinner that disappears when done) ---
     if (e.target.classList.contains('data-summary-btn')) {
-      // TOGGLE: if currently shown, hide and clear, then stop.
       const isCurrentlyVisible = dataSummarySection.style.display === 'block';
       if (isCurrentlyVisible) {
         dataSummarySection.style.display = 'none';
@@ -570,7 +569,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      // Otherwise, hide everything else and load stats fresh.
       hideAllSections();
       if (!dataSummarySection) return;
 
@@ -578,7 +576,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const pairs = pairUrlsAndDates(currentOffer);
 
       if (!pairs.length) {
-        // legacy fallback: try reading single URL from DOM
         let liveUrl = offerCard.dataset.liveUrl || '';
         if (!liveUrl) {
           const liveLink = offerCard.querySelector('.offer-left a');
@@ -589,21 +586,22 @@ document.addEventListener("DOMContentLoaded", async () => {
           dataSummarySection.style.display = 'block';
           return;
         }
-        pairs.push({ url: liveUrl, date: currentOffer.live_date || null });
       }
 
-      // Initial UI with progress + streaming container
+      // Loader + results shell
       dataSummarySection.innerHTML = `
-        <div class="stats-loader" style="max-width: 600px; margin: 0 auto;">
-          <div id="ds-progress" style="
-            color:#fff; font-size:0.98em; padding:8px 12px; border-radius:8px;
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-            display:inline-block; margin-bottom:10px;">Preparing…</div>
-          <div id="ds-results"></div>
-        </div>`;
+        <div id="ds-progress" style="color:#fff;margin-bottom:8px;font-size:0.95em;">
+          <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid #999;border-top-color:#fff;border-radius:50%;margin-right:8px;animation:spin 0.8s linear infinite;"></span>
+          Loading <b id="ds-count">1</b> of <b id="ds-total">${pairs.length || 1}</b>…
+        </div>
+        <div id="ds-results"></div>
+        <style>@keyframes spin { to { transform: rotate(360deg);} }</style>
+      `;
       dataSummarySection.style.display = 'block';
 
       const progressEl = dataSummarySection.querySelector('#ds-progress');
+      const countEl = dataSummarySection.querySelector('#ds-count');
+      const totalEl = dataSummarySection.querySelector('#ds-total');
       const resultsEl  = dataSummarySection.querySelector('#ds-results');
 
       const { data: { session } } = await supabase.auth.getSession();
@@ -612,18 +610,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const wrapRow = (label, value) => `<div><b>${label}</b><br>${value ?? '-'}</div>`;
       const container = (inner) => `
         <div style="
-          background: none;
-          border-radius: 15px;
-          box-shadow: none;
-          padding: 26px 30px;
-          margin: 0 auto 14px;
-          max-width: 560px;
-          color: #f6f6f6;
-          font-size: 1.09em;
-          text-align: left;">${inner}</div>
+          background:none;border-radius:15px;box-shadow:none;
+          padding:26px 30px;margin:0 auto 14px;max-width:560px;
+          color:#f6f6f6;font-size:1.09em;text-align:left;">${inner}</div>
       `;
 
-      // Helpers from original block
       const isYouTubeUrl   = u => /youtube\.com|youtu\.be/i.test(u);
       const isTwitchUrl    = u => /twitch\.tv/i.test(u);
       const isInstagramUrl = u => /instagram\.com/i.test(u);
@@ -631,27 +622,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isTikTokUrl    = u => /(^|\.)(tiktok\.com)/i.test(u) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(u);
 
       const addBlock = (html) => resultsEl.insertAdjacentHTML('beforeend', html);
-      const setProgress = (i, n, note = '') => {
-        const tail = note ? ` • ${note}` : '';
-        progressEl.textContent = `Loading ${i} of ${n}${tail}`;
+      const setProgress = (i, n) => {
+        if (countEl) countEl.textContent = String(i);
+        if (totalEl) totalEl.textContent = String(n);
       };
 
-      const total = pairs.length;
+      const total = pairs.length || 1;
       let index = 0;
 
-      for (const { url: liveUrl, date } of pairs) {
-        index += 1;
-        const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
-        // platform hint for progress
-        let platformHint = '';
-        if (isYouTubeUrl(liveUrl)) platformHint = 'YouTube';
-        else if (isTikTokUrl(liveUrl)) platformHint = 'TikTok';
-        else if (isInstagramUrl(liveUrl)) platformHint = 'Instagram';
-        else if (isFacebookUrl(liveUrl)) platformHint = 'Facebook';
-        else if (isTwitchUrl(liveUrl)) platformHint = 'Twitch';
-        else platformHint = 'Link';
+      const activePairs = pairs.length ? pairs : [{ url: (offerCard.querySelector('.offer-left a')?.href || ''), date: currentOffer.live_date || null }];
 
-        setProgress(index, total, platformHint);
+      for (const { url: liveUrl, date } of activePairs) {
+        index += 1;
+        setProgress(index, total);
+
+        const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
 
         try {
           // === YouTube ===
@@ -985,9 +970,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      // Done
-      setProgress(total, total, 'Done');
-      setTimeout(() => { progressEl.style.opacity = '0.6'; }, 800);
+      // Done — remove the loader so it doesn't show after load
+      const prog = dataSummarySection.querySelector('#ds-progress');
+      if (prog) prog.remove();
       return;
     }
 
