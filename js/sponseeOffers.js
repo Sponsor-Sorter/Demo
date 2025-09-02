@@ -596,6 +596,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const blocks = [];
         for (const { url: link, date } of pairs) {
           const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+
           if (/youtube\.com|youtu\.be/i.test(link)) {
             const videoId = extractYouTubeVideoId(link);
             if (!videoId) {
@@ -619,7 +620,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                       ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
                       <div>
-                        <b style="color:#ffe75b;font-size:1.17em;"><span style="font-size:1.3em;vertical-align:-3px;">🎥</span> ${stats.video.snippet.title}</b>
+                        <b style="color:red;font-size:1.17em;">
+                        <img src="youtubelogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:8px">
+                        ${stats.video.snippet.title}
+                      </b>
+
                         ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
                         ${dateBadge}
                       </div>
@@ -641,6 +646,64 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch {
               blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
             }
+
+          } else if (/(^|\.)(tiktok\.com)/i.test(link) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(link)) {
+            // NEW: TikTok video stats from URL (creator-owned)
+            try {
+              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-video-stats', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ video_url: link })
+              });
+              const tk = await resp.json();
+
+              if (resp.ok && tk?.ok && tk?.found && tk?.video) {
+                const v = tk.video || {};
+                const thumb = v.cover || 'tiktoklogo.png';
+                const created = v.create_time ? epochToDateString(v.create_time) : null;
+                const desc = (v.description || '').trim();
+                const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
+                const vurl = v.url || link;
+
+                const views = fmtNum(v.stats?.view_count);
+                const likes = fmtNum(v.stats?.like_count);
+                const comments = fmtNum(v.stats?.comment_count);
+                const shares = fmtNum(v.stats?.share_count);
+
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="${thumb}" referrerpolicy="no-referrer" alt="TikTok video" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                      <div>
+                        <b style="color:#ff3b5c;font-size:1.17em;">
+                          <img src="tiktoklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
+                          TikTok Video
+                        </b>
+                        ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${created}</div>` : ''}
+                        ${dateBadge}
+                        ${shortDesc ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortDesc}</div>` : ''}
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                      <div><b>👀 Views:</b><br>${views}</div>
+                      <div><b>👍 Likes:</b><br>${likes}</div>
+                      <div><b>💬 Comments:</b><br>${comments}</div>
+                      <div><b>🔁 Shares:</b><br>${shares}</div>
+                    </div>
+                    <div style="margin-top:10px;text-align:right;">
+                      <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
+                    </div>
+                  </div>
+                `);
+              } else if (resp.ok && tk?.ok && tk?.found === false) {
+                blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos (it might not be yours or the app lacks permission): <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
+              }
+            } catch {
+              blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${link}.</div>`);
+            }
+
           } else if (/twitch\.tv/i.test(link)) {
             try {
               const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
@@ -700,7 +763,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                   `);
                 } else {
-                  const v = data.vod || {};
                   const thumb = normalizeTwitchThumb(v.thumbnail_url) || 'twitchlogo.png';
                   const durationText = v.duration?.text || null;
                   const creator = v.user_display_name || v.user_login || '-';
@@ -710,7 +772,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <img src="${thumb}" referrerpolicy="no-referrer" alt="VOD thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                         <div>
                           <b style="color:#c9b6ff;font-size:1.17em;">
-                            <img src="twitchlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                            <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
                             ${v.title || 'Twitch VOD'}
                           </b>
                           ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
@@ -733,6 +795,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch {
               blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
             }
+
           } else if (/instagram\.com/i.test(link)) {
             try {
               const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
@@ -758,7 +821,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                       <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                       <div>
                         <b style="color:#ff8bd2;font-size:1.17em;">
-                          <img src="instagramlogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                          <img src="instagramlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:8px">
                           Instagram ${kind || 'Post'}
                         </b>
                         ${m.timestamp ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(m.timestamp).toLocaleDateString()}</div>` : ''}
@@ -788,6 +851,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch {
               blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
             }
+
           } else if (/(facebook\.com|fb\.watch)/i.test(link)) {
             // NEW: Facebook post stats from URL
             try {
@@ -828,7 +892,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                       <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
                       <div>
                         <b style="color:#7fb4ff;font-size:1.17em;">
-                          <img src="facebooklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                          <img src="facebooklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
                           Facebook Post
                         </b>
                         ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(created).toLocaleDateString()}</div>` : ''}
@@ -855,6 +919,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch {
               blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
             }
+
           } else {
             blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
           }
@@ -1275,6 +1340,18 @@ function fbFindImage(p) {
     if (typeof u === 'string' && u) return u;
   }
   return null;
+}
+
+// Epoch seconds or ms -> locale date string
+function epochToDateString(n) {
+  try {
+    let ms = Number(n);
+    if (!isFinite(ms)) return null;
+    if (ms < 1e12) ms *= 1000; // seconds -> ms
+    return new Date(ms).toLocaleDateString();
+  } catch {
+    return null;
+  }
 }
 
 // Make all profile logos with .profile-link open the user's profile
