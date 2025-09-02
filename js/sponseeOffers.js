@@ -503,7 +503,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       detailsSection.style.display = 'none';
       imagesSection.style.display = 'none';
       commentsSection.style.display = 'none';
-      if (dataSummarySection) dataSummarySection.style.display = 'none';
+      if (dataSummarySection) {
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
+      }
     }
 
     if (e.target.classList.contains('expand-btn')) {
@@ -573,363 +576,402 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // --- Data Summary (handle ALL attached URLs) ---
+    // --- Data Summary (handle ALL attached URLs) with Loading "one of X"
     if (e.target.classList.contains('data-summary-btn')) {
       if (!dataSummarySection) return;
+
       const isVisible = dataSummarySection.style.display === 'block';
-      if (!isVisible) {
-        hideAllSections();
-        dataSummarySection.innerHTML = "<div style='color:#fff;'>Loading content stats...</div>";
-        dataSummarySection.style.display = 'block';
+      if (isVisible) {
+        // toggle off
+        dataSummarySection.style.display = 'none';
+        dataSummarySection.innerHTML = '';
+        return;
+      }
 
-        // Prefer DB copy
-        const offerObj = allSponseeOffers.find(o => String(o.id) === String(offerId)) || {};
-        const pairs = pairUrlsAndDates(offerObj);
-        if (!pairs.length) {
-          dataSummarySection.innerHTML = "<span style='color:#faa;'>No video URLs found.</span>";
-          return;
-        }
+      // show + start loading
+      hideAllSections();
+      dataSummarySection.style.display = 'block';
 
-        const { data: { session } } = await supabase.auth.getSession();
-        const jwt = session?.access_token;
+      // Prefer DB copy for URL list
+      const offerObj = allSponseeOffers.find(o => String(o.id) === String(offerId)) || {};
+      const pairs = pairUrlsAndDates(offerObj);
+      if (!pairs.length) {
+        dataSummarySection.innerHTML = "<span style='color:#faa;'>No video URLs found.</span>";
+        return;
+      }
 
-        const blocks = [];
-        for (const { url: link, date } of pairs) {
-          const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+      // Loading header with progress counter
+      const total = pairs.length;
+      dataSummarySection.innerHTML = `
+        <div id="ds-progress" style="color:#fff;margin-bottom:8px;font-size:0.95em;">
+          <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid #999;border-top-color:#fff;border-radius:50%;margin-right:8px;animation:spin 0.8s linear infinite;"></span>
+          Loading <b id="ds-count">1</b> of <b>${total}</b>…
+        </div>
+        <div id="ds-results"></div>
+        <style>
+          @keyframes spin { to { transform: rotate(360deg);} }
+        </style>
+      `;
+      const countNode = dataSummarySection.querySelector('#ds-count');
+      const resultsNode = dataSummarySection.querySelector('#ds-results');
 
-          if (/youtube\.com|youtu\.be/i.test(link)) {
-            const videoId = extractYouTubeVideoId(link);
-            if (!videoId) {
-              blocks.push(`<div style="color:#faa;">Invalid YouTube URL: ${link}</div>`);
-              continue;
-            }
-            try {
-              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ videoId })
-              });
-              const stats = await resp.json();
-              if (stats?.success) {
-                const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
-                const duration = stats.video.contentDetails?.duration
-                  ? parseISO8601Duration(stats.video.contentDetails.duration)
-                  : '';
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
-                      <div>
-                        <b style="color:red;font-size:1.17em;">
+      const { data: { session } } = await supabase.auth.getSession();
+      const jwt = session?.access_token;
+
+      const blocks = [];
+      let index = 0;
+
+      const wrapRow = (label, value) => `<div><b>${label}</b><br>${value ?? '-'}</div>`;
+
+      for (const { url: link, date } of pairs) {
+        index += 1;
+        // Update loading counter immediately when starting each URL
+        if (countNode) countNode.textContent = String(index);
+
+        const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
+
+        if (/youtube\.com|youtu\.be/i.test(link)) {
+          const videoId = extractYouTubeVideoId(link);
+          if (!videoId) {
+            blocks.push(`<div style="color:#faa;">Invalid YouTube URL: ${link}</div>`);
+            resultsNode.innerHTML = blocks.join('');
+            continue;
+          }
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-youtube-video-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ videoId })
+            });
+            const stats = await resp.json();
+            if (stats?.success) {
+              const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
+              const duration = stats.video.contentDetails?.duration
+                ? parseISO8601Duration(stats.video.contentDetails.duration)
+                : '';
+              blocks.push(`
+                <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    ${thumb ? `<img src="${thumb}" alt="Video thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">` : ''}
+                    <div>
+                      <b style="color:red;font-size:1.17em;">
                         <img src="youtubelogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:8px">
                         ${stats.video.snippet.title}
                       </b>
-
-                        ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
-                        ${dateBadge}
-                      </div>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                      <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
-                      <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
-                      <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
-                      <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
-                    </div>
-                    <div style="margin-top:10px;text-align:right;">
-                      <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
+                      ${duration ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${duration}</div>` : ''}
+                      ${dateBadge}
                     </div>
                   </div>
-                `);
-              } else {
-                blocks.push(`<div style="color:#faa;">Could not fetch YouTube stats for ${link}.</div>`);
-              }
-            } catch {
-              blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
-            }
-
-          } else if (/(^|\.)(tiktok\.com)/i.test(link) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(link)) {
-            // NEW: TikTok video stats from URL (creator-owned)
-            try {
-              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-video-stats', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ video_url: link })
-              });
-              const tk = await resp.json();
-
-              if (resp.ok && tk?.ok && tk?.found && tk?.video) {
-                const v = tk.video || {};
-                const thumb = v.cover || 'tiktoklogo.png';
-                const created = v.create_time ? epochToDateString(v.create_time) : null;
-                const desc = (v.description || '').trim();
-                const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
-                const vurl = v.url || link;
-
-                const views = fmtNum(v.stats?.view_count);
-                const likes = fmtNum(v.stats?.like_count);
-                const comments = fmtNum(v.stats?.comment_count);
-                const shares = fmtNum(v.stats?.share_count);
-
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      <img src="${thumb}" referrerpolicy="no-referrer" alt="TikTok video" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                      <div>
-                        <b style="color:#ff3b5c;font-size:1.17em;">
-                          <img src="tiktoklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
-                          TikTok Video
-                        </b>
-                        ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${created}</div>` : ''}
-                        ${dateBadge}
-                        ${shortDesc ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortDesc}</div>` : ''}
-                      </div>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                      <div><b>👀 Views:</b><br>${views}</div>
-                      <div><b>👍 Likes:</b><br>${likes}</div>
-                      <div><b>💬 Comments:</b><br>${comments}</div>
-                      <div><b>🔁 Shares:</b><br>${shares}</div>
-                    </div>
-                    <div style="margin-top:10px;text-align:right;">
-                      <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
-                    </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                    <div><b>📅 Published:</b><br>${new Date(stats.video.snippet.publishedAt).toLocaleDateString()}</div>
+                    <div><b>👀 Views:</b><br>${stats.video.statistics.viewCount}</div>
+                    <div><b>👍 Likes:</b><br>${stats.video.statistics.likeCount || '-'}</div>
+                    <div><b>💬 Comments:</b><br>${stats.video.statistics.commentCount || '-'}</div>
                   </div>
-                `);
-              } else if (resp.ok && tk?.ok && tk?.found === false) {
-                blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos (it might not be yours or the app lacks permission): <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
-              } else {
-                blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
-              }
-            } catch {
-              blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${link}.</div>`);
-            }
-
-          } else if (/twitch\.tv/i.test(link)) {
-            try {
-              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: link })
-              });
-              const data = await resp.json();
-
-              // NEW: classify unavailable VODs (deleted/expired/not found)
-              const msg = (data?.error || data?.message || data?.detail || '').toLowerCase();
-              const vodStatus = (data?.vod?.status || data?.vod?.state || data?.status || '').toLowerCase();
-              const looksUnavailable =
-                resp.status === 404 ||
-                data?.not_found === true ||
-                data?.deleted === true ||
-                /not[\s-]?found/.test(msg) ||
-                /deleted|expired|removed|pruned/.test(msg) ||
-                /deleted|expired|removed|pruned/.test(vodStatus);
-
-              if (!resp.ok || !data?.success) {
-                if (looksUnavailable) {
-                  blocks.push(`
-                    <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                        <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                        <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
-                      </div>
-                      <div style="color:#ddd;margin-bottom:6px;">
-                        This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
-                        ${dateBadge}
-                      </div>
-                      <div><a href="${link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                    </div>
-                  `);
-                } else {
-                  blocks.push(`<div style="color:#faa;">Could not fetch Twitch stats for ${link}.</div>`);
-                }
-              } else {
-                const v = data.vod || {};
-                const vDeleted =
-                  v?.deleted === true ||
-                  /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
-
-                if (vDeleted) {
-                  blocks.push(`
-                    <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                        <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                        <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
-                      </div>
-                      <div style="color:#ddd;margin-bottom:6px;">
-                        This VOD was removed or has expired on Twitch. Stats are no longer available.
-                        ${dateBadge}
-                      </div>
-                      <div><a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                    </div>
-                  `);
-                } else {
-                  const thumb = normalizeTwitchThumb(v.thumbnail_url) || 'twitchlogo.png';
-                  const durationText = v.duration?.text || null;
-                  const creator = v.user_display_name || v.user_login || '-';
-                  blocks.push(`
-                    <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                        <img src="${thumb}" referrerpolicy="no-referrer" alt="VOD thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                        <div>
-                          <b style="color:#c9b6ff;font-size:1.17em;">
-                            <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
-                            ${v.title || 'Twitch VOD'}
-                          </b>
-                          ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
-                          ${dateBadge}
-                        </div>
-                      </div>
-                      <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                        <div><b>🎮 Game:</b><br>${v.game_name || '-'}</div>
-                        <div><b>👤 Creator:</b><br>${creator}</div>
-                        <div><b>📅 Created:</b><br>${v.created_at ? new Date(v.created_at).toLocaleDateString() : '-'}</div>
-                        <div><b>👀 Views:</b><br>${v.view_count != null ? v.view_count.toLocaleString() : '-'}</div>
-                      </div>
-                      <div style="margin-top:10px;text-align:right;">
-                        <a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
-                      </div>
-                    </div>
-                  `);
-                }
-              }
-            } catch {
-              blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
-            }
-
-          } else if (/instagram\.com/i.test(link)) {
-            try {
-              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: link })
-              });
-              const ig = await resp.json();
-              if (resp.ok && ig?.ok && ig?.found && ig?.media) {
-                const m = ig.media;
-                const ins = ig.insights || {};
-                const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
-                const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
-                const likes = fmtNum(m.like_count);
-                const comments = fmtNum(m.comments_count);
-                const vviews = (m.video_views != null) ? fmtNum(m.video_views) : null;
-                const cap = (m.caption || '').trim();
-                const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
-
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                      <div>
-                        <b style="color:#ff8bd2;font-size:1.17em;">
-                          <img src="instagramlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:8px">
-                          Instagram ${kind || 'Post'}
-                        </b>
-                        ${m.timestamp ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(m.timestamp).toLocaleDateString()}</div>` : ''}
-                        ${dateBadge}
-                        ${shortCap ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortCap}</div>` : ''}
-                      </div>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                      <div><b>👍 Likes:</b><br>${likes}</div>
-                      <div><b>💬 Comments:</b><br>${comments}</div>
-                      ${vviews ? `<div><b>▶️ Video Views:</b><br>${vviews}</div>` : ''}
-                      <div><b>👁️ Impressions:</b><br>${fmtNum(ins.impressions)}</div>
-                      <div><b>📣 Reach:</b><br>${fmtNum(ins.reach)}</div>
-                      <div><b>💾 Saved:</b><br>${fmtNum(ins.saved)}</div>
-                      <div><b>🤝 Engagement:</b><br>${fmtNum(ins.engagement)}</div>
-                    </div>
-                    <div style="margin-top:10px;text-align:right;">
-                      <a href="${m.permalink || link}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
-                    </div>
+                  <div style="margin-top:10px;text-align:right;">
+                    <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
                   </div>
-                `);
-              } else if (resp.ok && ig?.ok && ig?.found === false) {
-                blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to your connected account’s media: <a href="${link}" target="_blank" style="color:#ff8bd2;">${link}</a></div>`);
-              } else {
-                blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
-              }
-            } catch {
-              blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
+                </div>
+              `);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch YouTube stats for ${link}.</div>`);
             }
-
-          } else if (/(facebook\.com|fb\.watch)/i.test(link)) {
-            // NEW: Facebook post stats from URL
-            try {
-              const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: link })
-              });
-              const fb = await resp.json();
-
-              if (resp.ok && (fb?.ok || fb?.success)) {
-                const p = fb.post || fb.data || {};
-                const ins = fb.insights || p.insights || fb.metrics || null;
-
-                const permalink = p.permalink_url || p.link || link;
-                const created = p.created_time || p.created_at || p.created || null;
-                const message = (p.message || p.story || '').toString().trim();
-                const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
-
-                const thumb = fbFindImage(p) || 'facebooklogo.png';
-
-                // counts on object (with nested fallbacks)
-                const reactions =
-                  pick(p, 'reactions.summary.total_count', 'reaction_count', 'reactions') ?? fb.reactions_count ?? null;
-                const comments =
-                  pick(p, 'comments.summary.total_count', 'comment_count', 'comments') ?? fb.comments_count ?? null;
-                const shares =
-                  pick(p, 'shares.count', 'share_count', 'shares') ?? fb.shares_count ?? null;
-
-                // insights metrics
-                const impressions = readMetric(ins, ['post_impressions','impressions']);
-                const reach = readMetric(ins, ['post_impressions_unique','reach']);
-                const engaged = readMetric(ins, ['post_engaged_users','engaged_users']);
-
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                      <div>
-                        <b style="color:#7fb4ff;font-size:1.17em;">
-                          <img src="facebooklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
-                          Facebook Post
-                        </b>
-                        ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(created).toLocaleDateString()}</div>` : ''}
-                        ${dateBadge}
-                        ${shortMsg ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortMsg}</div>` : ''}
-                      </div>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                      ${reactions != null ? `<div><b>👍 Reactions:</b><br>${fmtNum(reactions)}</div>` : ''}
-                      ${comments != null ? `<div><b>💬 Comments:</b><br>${fmtNum(comments)}</div>` : ''}
-                      ${shares != null ? `<div><b>🔁 Shares:</b><br>${fmtNum(shares)}</div>` : ''}
-                      ${impressions != null ? `<div><b>👁️ Impressions:</b><br>${fmtNum(impressions)}</div>` : ''}
-                      ${reach != null ? `<div><b>📣 Reach:</b><br>${fmtNum(reach)}</div>` : ''}
-                      ${engaged != null ? `<div><b>🤝 Engaged Users:</b><br>${fmtNum(engaged)}</div>` : ''}
-                    </div>
-                    <div style="margin-top:10px;text-align:right;">
-                      <a href="${permalink}" target="_blank" style="color:#7fb4ff;text-decoration:underline;font-size:0.96em;">Open on Facebook ↗</a>
-                    </div>
-                  </div>
-                `);
-              } else {
-                blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${link}" target="_blank" style="color:#7fb4ff;">${link}</a>.</div>`);
-              }
-            } catch {
-              blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
-            }
-
-          } else {
-            blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
           }
+          resultsNode.innerHTML = blocks.join('');
+          continue;
         }
 
-        dataSummarySection.innerHTML = blocks.join('') || "<span style='color:#faa;'>No stats could be shown.</span>";
-      } else {
-        dataSummarySection.style.display = 'none';
-        dataSummarySection.innerHTML = '';
-      }
+        if (/(^|\.)(tiktok\.com)/i.test(link) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(link)) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-video-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ video_url: link })
+            });
+            const tk = await resp.json();
+
+            if (resp.ok && tk?.ok && tk?.found && tk?.video) {
+              const v = tk.video || {};
+              const thumb = v.cover || 'tiktoklogo.png';
+              const created = v.create_time ? epochToDateString(v.create_time) : null;
+              const desc = (v.description || '').trim();
+              const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
+              const vurl = v.url || link;
+
+              const views = fmtNum(v.stats?.view_count);
+              const likes = fmtNum(v.stats?.like_count);
+              const comments = fmtNum(v.stats?.comment_count);
+              const shares = fmtNum(v.stats?.share_count);
+
+              blocks.push(`
+                <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img src="${thumb}" referrerpolicy="no-referrer" alt="TikTok video" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                    <div>
+                      <b style="color:#ff3b5c;font-size:1.17em;">
+                        <img src="tiktoklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
+                        TikTok Video
+                      </b>
+                      ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${created}</div>` : ''}
+                      ${dateBadge}
+                      ${shortDesc ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortDesc}</div>` : ''}
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                    <div><b>👀 Views:</b><br>${views}</div>
+                    <div><b>👍 Likes:</b><br>${likes}</div>
+                    <div><b>💬 Comments:</b><br>${comments}</div>
+                    <div><b>🔁 Shares:</b><br>${shares}</div>
+                  </div>
+                  <div style="margin-top:10px;text-align:right;">
+                    <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
+                  </div>
+                </div>
+              `);
+            } else if (resp.ok && tk?.ok && tk?.found === false) {
+              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos (it might not be yours or the app lacks permission): <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${link}.</div>`);
+          }
+          resultsNode.innerHTML = blocks.join('');
+          continue;
+        }
+
+        if (/twitch\.tv/i.test(link)) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: link })
+            });
+            const data = await resp.json();
+
+            // classify unavailable VODs (deleted/expired/not found)
+            const msg = (data?.error || data?.message || data?.detail || '').toLowerCase();
+            const vodStatus = (data?.vod?.status || data?.vod?.state || data?.status || '').toLowerCase();
+            const looksUnavailable =
+              resp.status === 404 ||
+              data?.not_found === true ||
+              data?.deleted === true ||
+              /not[\s-]?found/.test(msg) ||
+              /deleted|expired|removed|pruned/.test(msg) ||
+              /deleted|expired|removed|pruned/.test(vodStatus);
+
+            if (!resp.ok || !data?.success) {
+              if (looksUnavailable) {
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                    </div>
+                    <div style="color:#ddd;margin-bottom:6px;">
+                      This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
+                      ${dateBadge}
+                    </div>
+                    <div><a href="${link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                  </div>
+                `);
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch Twitch stats for ${link}.</div>`);
+              }
+            } else {
+              const v = data.vod || {};
+              const vDeleted =
+                v?.deleted === true ||
+                /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
+
+              if (vDeleted) {
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                    </div>
+                    <div style="color:#ddd;margin-bottom:6px;">
+                      This VOD was removed or has expired on Twitch. Stats are no longer available.
+                      ${dateBadge}
+                    </div>
+                    <div><a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                  </div>
+                `);
+              } else {
+                const thumb = normalizeTwitchThumb(v.thumbnail_url) || 'twitchlogo.png';
+                const durationText = v.duration?.text || null;
+                const creator = v.user_display_name || v.user_login || '-';
+                blocks.push(`
+                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="${thumb}" referrerpolicy="no-referrer" alt="VOD thumbnail" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                      <div>
+                        <b style="color:#c9b6ff;font-size:1.17em;">
+                          <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
+                          ${v.title || 'Twitch VOD'}
+                        </b>
+                        ${durationText ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Duration ⏱ ${durationText}</div>` : ''}
+                        ${dateBadge}
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                      <div><b>🎮 Game:</b><br>${v.game_name || '-'}</div>
+                      <div><b>👤 Creator:</b><br>${creator}</div>
+                      <div><b>📅 Created:</b><br>${v.created_at ? new Date(v.created_at).toLocaleDateString() : '-'}</div>
+                      <div><b>👀 Views:</b><br>${v.view_count != null ? v.view_count.toLocaleString() : '-'}</div>
+                    </div>
+                    <div style="margin-top:10px;text-align:right;">
+                      <a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;font-size:0.96em;">Open on Twitch ↗</a>
+                    </div>
+                  </div>
+                `);
+              }
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
+          }
+          resultsNode.innerHTML = blocks.join('');
+          continue;
+        }
+
+        if (/instagram\.com/i.test(link)) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: link })
+            });
+            const ig = await resp.json();
+            if (resp.ok && ig?.ok && ig?.found && ig?.media) {
+              const m = ig.media;
+              const ins = ig.insights || {};
+              const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
+              const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
+              const likes = fmtNum(m.like_count);
+              const comments = fmtNum(m.comments_count);
+              const vviews = (m.video_views != null) ? fmtNum(m.video_views) : null;
+              const cap = (m.caption || '').trim();
+              const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
+
+              blocks.push(`
+                <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                    <div>
+                      <b style="color:#ff8bd2;font-size:1.17em;">
+                        <img src="instagramlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:8px">
+                        Instagram ${kind || 'Post'}
+                      </b>
+                      ${m.timestamp ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(m.timestamp).toLocaleDateString()}</div>` : ''}
+                      ${dateBadge}
+                      ${shortCap ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortCap}</div>` : ''}
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                    <div><b>👍 Likes:</b><br>${likes}</div>
+                    <div><b>💬 Comments:</b><br>${comments}</div>
+                    ${vviews ? `<div><b>▶️ Video Views:</b><br>${vviews}</div>` : ''}
+                    <div><b>👁️ Impressions:</b><br>${fmtNum(ins.impressions)}</div>
+                    <div><b>📣 Reach:</b><br>${fmtNum(ins.reach)}</div>
+                    <div><b>💾 Saved:</b><br>${fmtNum(ins.saved)}</div>
+                    <div><b>🤝 Engagement:</b><br>${fmtNum(ins.engagement)}</div>
+                  </div>
+                  <div style="margin-top:10px;text-align:right;">
+                    <a href="${m.permalink || link}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
+                  </div>
+                </div>
+              `);
+            } else if (resp.ok && ig?.ok && ig?.found === false) {
+              blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to your connected account’s media: <a href="${link}" target="_blank" style="color:#ff8bd2;">${link}</a></div>`);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
+          }
+          resultsNode.innerHTML = blocks.join('');
+          continue;
+        }
+
+        if (/(facebook\.com|fb\.watch)/i.test(link)) {
+          try {
+            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: link })
+            });
+            const fb = await resp.json();
+
+            if (resp.ok && (fb?.ok || fb?.success)) {
+              const p = fb.post || fb.data || {};
+              const ins = fb.insights || p.insights || fb.metrics || null;
+
+              const permalink = p.permalink_url || p.link || link;
+              const created = p.created_time || p.created_at || p.created || null;
+              const message = (p.message || p.story || '').toString().trim();
+              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
+
+              const thumb = fbFindImage(p) || 'facebooklogo.png';
+
+              const reactions =
+                pick(p, 'reactions.summary.total_count', 'reaction_count', 'reactions') ?? fb.reactions_count ?? null;
+              const comments =
+                pick(p, 'comments.summary.total_count', 'comment_count', 'comments') ?? fb.comments_count ?? null;
+              const shares =
+                pick(p, 'shares.count', 'share_count', 'shares') ?? fb.shares_count ?? null;
+
+              const impressions = readMetric(ins, ['post_impressions','impressions']);
+              const reach = readMetric(ins, ['post_impressions_unique','reach']);
+              const engaged = readMetric(ins, ['post_engaged_users','engaged_users']);
+
+              blocks.push(`
+                <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                    <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
+                    <div>
+                      <b style="color:#7fb4ff;font-size:1.17em;">
+                        <img src="facebooklogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;;border-radius:8px">
+                        Facebook Post
+                      </b>
+                      ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(created).toLocaleDateString()}</div>` : ''}
+                      ${dateBadge}
+                      ${shortMsg ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortMsg}</div>` : ''}
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
+                    ${reactions != null ? `<div><b>👍 Reactions:</b><br>${fmtNum(reactions)}</div>` : ''}
+                    ${comments != null ? `<div><b>💬 Comments:</b><br>${fmtNum(comments)}</div>` : ''}
+                    ${shares != null ? `<div><b>🔁 Shares:</b><br>${fmtNum(shares)}</div>` : ''}
+                    ${impressions != null ? `<div><b>👁️ Impressions:</b><br>${fmtNum(impressions)}</div>` : ''}
+                    ${reach != null ? `<div><b>📣 Reach:</b><br>${fmtNum(reach)}</div>` : ''}
+                    ${engaged != null ? `<div><b>🤝 Engaged Users:</b><br>${fmtNum(engaged)}</div>` : ''}
+                  </div>
+                  <div style="margin-top:10px;text-align:right;">
+                    <a href="${permalink}" target="_blank" style="color:#7fb4ff;text-decoration:underline;font-size:0.96em;">Open on Facebook ↗</a>
+                  </div>
+                </div>
+              `);
+            } else {
+              blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${link}" target="_blank" style="color:#7fb4ff;">${link}</a>.</div>`);
+            }
+          } catch {
+            blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
+          }
+          resultsNode.innerHTML = blocks.join('');
+          continue;
+        }
+
+        // Unknown / unsupported link
+        blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
+        resultsNode.innerHTML = blocks.join('');
+      } // end for loop
+
+      // Done loading — remove spinner, leave results
+      const prog = dataSummarySection.querySelector('#ds-progress');
+      if (prog) prog.remove();
       return;
     }
 
