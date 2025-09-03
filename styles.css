@@ -2531,7 +2531,7 @@ fieldset {
   .card p {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2d8cf0;
+    color: #fbfbfb;
   }
 
   .review-stars {
@@ -7004,6 +7004,7 @@ form#registrationForm {
   }
 }
 }
+
 
 
 
