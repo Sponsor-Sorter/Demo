@@ -1,139 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find and view active users, discover sponsorship opportunities, and connect with influencers and creators.">
-    <title>SponsorFinder - Sponsor Sorter</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="main.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Privacy Policy - Sponsor Sorter">
+  <title>Privacy Policy | Sponsor Sorter</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  <style>
+    :root{
+      --bg:#000; --panel:#3a3a3a; --panel-2:#414141; --txt:#fff;
+      --muted:#bdbdbd; --accent:#fefefe; --border:#5a5a5a; --shadow:0 3px 12px #d0fdfa55;
+    }
+    body{ background:var(--bg); color:var(--txt); font-family:'Segoe UI',Arial,sans-serif; margin:0; min-height:100vh; display:flex; flex-direction:column; }
+    .navbar1,.footercomplete{ width:100% }
+    .wrap{ width:100%; display:flex; justify-content:center }
+    .pp-container{
+      width:min(980px,80vw); margin:38px auto 18px; padding:38px 28px 28px;
+      background:linear-gradient(180deg,var(--panel),var(--panel-2)); color:var(--txt);
+      border-radius:16px; border:1px solid var(--border); box-shadow:var(--shadow);
+    }
+    .page-title{ display:flex; align-items:center; justify-content:center; margin-bottom:1rem }
+    .page-title h1{ margin:0; font-size:2.2rem; color:#eaeaea }
+    .meta{ text-align:center; font-size:.95rem; color:var(--muted); margin-bottom:1.2rem }
+    .pill{ display:inline-block; padding:4px 10px; border:1px solid var(--border); border-radius:999px; font-size:.9rem; color:var(--muted); margin:0 6px; }
+
+    /* ToC layout (keeps your black pill look if global li/a styles apply) */
+    .toc{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:15px 5px; justify-content:center; margin:14px 0 22px; padding:0; list-style:none;
+    }
+    .toc li{ 
+      background: none;
+     }
+    .toc a{ color:var(--accent); text-decoration:none; padding:6px 12px; border:1px solid var(--border); border-radius:8px; transition:background .2s; }
+    .toc a:hover{ background:rgba(255,255,255,.08) }
+
+    h2{ color:#fff; margin:1.8em 0 .6em; font-size:1.25em; border-bottom:1px solid #f0f0f0; padding-bottom:6px; scroll-margin-top:120px; }
+
+    .pp-text{ line-height:1.7; font-size:1rem; color:#f5f5f5; margin:0 0 .9rem; background:none !important; }
+    .pp-list{ padding-left:1.2rem; margin:0 0 1rem; background:none !important; }
+    .pp-list li{ margin:0 0 .5rem; line-height:1.6; background:none !important; }
+
+    .callout{ border:1px solid #2dd4bf55; border-radius:12px; padding:12px 14px; margin:14px 0; color:#f5f5f5; background:none !important; }
+    a,a:visited{ color:var(--accent) }
+    hr.sep{ margin:2em 0 1em; border:0; border-top:1px solid #c7c7c7; opacity:.5 }
+    .fineprint{ font-size:.95rem; color:var(--muted) }
+
+    @media (max-width:600px){
+      .pp-container{ padding:16px 3vw }
+      .page-title h1{ font-size:1.6rem }
+      .toc{ grid-template-columns:repeat(auto-fit,minmax(170px,1fr)) }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar and Header -->
-    <header class="navbar1">
-        <section class="navbar"> 
-            <div class="navii">
-                <h5><header>Sponsor Sorter</header></h5>
-                <div>
-                    <background-img class="navimg" src="navimg.png" alt="">
-                    <nav> 
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="finder.html">Finder</a></li>
-                    </nav>
-                    <li class="navr"><a href="signup.html">Signup</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </div>
-            </div> 
-        </section>
-    </header>
-
-  <section class="privacy-policy">
-    <fieldset>
-      <legend> <h2>🔒 Privacy Policy </h2></legend>
-
-      
-      <p><strong>Last Updated:</strong> April 11, 2025</p>
-
-      <p>
-        Sponsor Sorter ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services. Please read it carefully.
-      </p>
-
-      <h2>1. Information We Collect</h2>
-      <p>We may collect the following types of personal information:</p>
-      <ul>
-        <li>Full name, email address, phone number, and username</li>
-        <li>Social media metrics (followers, engagement, etc.)</li>
-        <li>Payment and billing details (handled via secure third-party services)</li>
-        <li>Location, IP address, and browser/device type</li>
-        <li>Content uploads, messaging activity, and brand engagement history</li>
-      </ul>
-
-      <h2>2. How We Use Your Information</h2>
-      <p>We use your information to:</p>
-      <ul>
-        <li>Facilitate sponsorship matchmaking and profile discovery</li>
-        <li>Provide customer support and improve user experience</li>
-        <li>Send platform updates, promotional emails, and notifications</li>
-        <li>Process transactions securely and detect fraud</li>
-        <li>Generate anonymized usage statistics and analytics</li>
-      </ul>
-
-      <h2>3. Sharing of Information</h2>
-      <p>We may share your information with:</p>
-      <ul>
-        <li>Verified sponsor brands and agencies</li>
-        <li>Third-party service providers (e.g., payment processors, analytics tools)</li>
-        <li>Legal authorities, when required by law or to protect rights and safety</li>
-      </ul>
-
-      <h2>4. Data Security</h2>
-      <p>
-        Your data is stored on secure servers, encrypted using industry-standard protocols. We implement administrative, technical, and physical safeguards to prevent unauthorized access.
-      </p>
-
-      <h2>5. Your Rights</h2>
-      <p>You have the right to:</p>
-      <ul>
-        <li>Access and update your personal information</li>
-        <li>Request deletion of your data</li>
-        <li>Opt-out of marketing communications</li>
-        <li>Withdraw consent where applicable</li>
-      </ul>
-
-      <h2>6. Cookies & Tracking</h2>
-      <p>
-        We use cookies and similar technologies to improve site functionality and deliver a tailored experience. You can manage cookies through your browser settings.
-      </p>
-
-      <h2>7. Third-Party Links</h2>
-      <p>
-        Our platform may contain links to third-party sites. We are not responsible for their privacy practices or content. Please review their policies individually.
-      </p>
-
-      <h2>8. Children's Privacy</h2>
-      <p>
-        Sponsor Sorter is not intended for users under 13. We do not knowingly collect information from children. If we discover such data, we will delete it immediately.
-      </p>
-
-      <h2>9. Changes to This Policy</h2>
-      <p>
-        We may update this Privacy Policy from time to time. Changes will be reflected on this page with a new effective date. Continued use of our services implies consent to the revised terms.
-      </p>
-
-      <h2>10. Contact Us</h2>
-      <p>
-        If you have questions or concerns about this policy, please contact us at:
-        <br /><strong>Email:</strong> <a href="mailto:privacy@sponsorsorter.com">privacy@sponsorsorter.com</a>
-        <br /><strong>Phone:</strong> +1 (800) 555-0123
-      </p>
-    </fieldset>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footercomplete">
-    <div class="footer-branding">
-      <div class="footer-text">
-        <ul>
-          <li><a href="help.html">Help</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="privacy.html" class="active">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-        </ul>
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="./navimg.png" alt="">
+        <nav>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="./login.html">Logout</a></li>
+        </nav>
       </div>
     </div>
-    <img src="Logo1.jpg" class="footpic" alt="Footer Logo">
-  </footer>
+  </section>
+</header>
 
-  <!-- Cookie Consent Banner -->
-<div id="cookie-banner" class="cookie-banner">
-    <p>
-      🍪 We use cookies to personalize content, provide social media features, and analyze our traffic. By clicking “Accept”, you consent to the use of all cookies in accordance with our 
-      <a href="privacy.html" target="_blank">Privacy Policy</a>.
-    </p>
-    <div class="cookie-buttons">
-      <button id="accept-cookies">Accept</button>
-      <button id="decline-cookies">Decline</button>
+<main class="wrap">
+  <section class="pp-container">
+    <div class="page-title"><h1>Privacy Policy</h1></div>
+    <div class="meta">
+      <span class="pill">Last updated: 3 September 2025</span>
+      <span class="pill">Business ABN: 23&nbsp;801&nbsp;694&nbsp;480</span>
     </div>
+
+    <ul class="toc">
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#data-categories">Data We Collect</a></li>
+      <li><a href="#purposes">How We Use Data</a></li>
+      <li><a href="#oauth">OAuth & Connected Platforms</a></li>
+      <li><a href="#sharing">Sharing & Subprocessors</a></li>
+      <li><a href="#retention">Data Retention</a></li>
+      <li><a href="#rights">Your Rights & Choices</a></li>
+      <li><a href="#deletion">Data Export & Deletion</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#transfers">International Transfers</a></li>
+      <li><a href="#cookies">Cookies</a></li>
+      <li><a href="#automation">Automated Moderation</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <h2 id="intro">1) Introduction</h2>
+    <p class="pp-text">
+      Sponsor Sorter (“we”, “us”) provides tools that connect sponsors with creators and help both parties track offer performance.
+      This Privacy Policy explains what we collect, why we collect it, how we use and share it, and the choices you have.
+      By using our website, dashboards, or APIs (the “Service”), you agree to this Policy and our <a href="./terms.html">Terms of Service</a>.
+    </p>
+
+    <h2 id="data-categories">2) Data We Collect</h2>
+    <p class="pp-text">We collect the following categories of information (depending on how you use the Service):</p>
+    <ul class="pp-list">
+      <li><strong>Account & Profile:</strong> name, display name, email, username, phone (optional), organization, role, profile image, preferences.</li>
+      <li><strong>OAuth & Social Metrics:</strong> limited identifiers and insights from connected platforms (see <a href="#oauth">Section 4</a>).</li>
+      <li><strong>Offer & Workflow:</strong> offers, deliverables, milestones, comments, attachments, reviews/ratings, dispute notes.</li>
+      <li><strong>Payments:</strong> payment intent/receipt metadata, subscription status and plan, refunds/chargebacks (processed by Stripe; we don’t store raw card numbers).</li>
+      <li><strong>Support & Communications:</strong> messages with us, support tickets, moderation reports.</li>
+      <li><strong>Device & Usage:</strong> IP address, device/browser type, pages/actions, timestamps, authentication logs.</li>
+      <li><strong>Cookies/SDKs:</strong> necessary cookies for login and security; analytics cookies described below.</li>
+    </ul>
+
+    <h2 id="purposes">3) How We Use Data (and lawful bases)</h2>
+    <ul class="pp-list">
+      <li><strong>Operate the Service & fulfill contracts</strong> (create accounts, connect platforms, run offers, process payments, provide support).</li>
+      <li><strong>Safety, fraud prevention & dispute handling</strong> (moderation, rate limiting, abuse detection, audits) – our legitimate interests and legal obligations.</li>
+      <li><strong>Analytics & product improvement</strong> using aggregate/anonymous insights – our legitimate interests.</li>
+      <li><strong>Communications</strong> (transactional emails, important updates). Marketing emails are optional and can be opted out.</li>
+      <li><strong>Legal compliance</strong> (tax, financial reporting, regulatory requests).</li>
+    </ul>
+
+    <h2 id="oauth">4) OAuth & Connected Platforms</h2>
+    <div class="callout">
+      <strong>Summary:</strong> When you connect a social account, we only access the minimal scopes you approve to verify deliverables and show performance to the parties to an offer. You can disconnect at any time in <em>Connected Platforms</em>.
+    </div>
+    <p class="pp-text"><strong>What we access & why (examples):</strong></p>
+    <ul class="pp-list">
+      <li><strong>YouTube (Google):</strong> channel identity and public/video metrics to attribute deliverables and summarize performance for offers you participate in.</li>
+      <li><strong>Instagram (via Facebook):</strong> business/creator account identity; media metadata/insights to verify posts and provide performance summaries.</li>
+      <li><strong>TikTok:</strong> basic profile, post metadata, engagement metrics to confirm deliverables and show results.</li>
+      <li><strong>Twitch:</strong> channel identity and public metrics to verify activations and summarize outcomes.</li>
+      <li><strong>Facebook Pages:</strong> Page identity and insights if you connect a Page for verification or reporting.</li>
+    </ul>
+    <p class="pp-text"><strong>Token storage & security:</strong> OAuth tokens and minimal account metadata are stored securely (encrypted at rest) and transmitted over TLS. Access is restricted to systems that perform the features you enable.</p>
+    <p class="pp-text"><strong>Revocation:</strong> Disconnect in your account’s <em>Connected Platforms</em> settings or revoke directly in the platform’s security settings. Revocation stops future sync.</p>
+    <p class="pp-text"><strong>Google/YouTube Limited Use:</strong> Our use and transfer of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements. We use approved scopes only for features you enable, do not sell Google user data, and do not transfer it except as necessary to provide the Service.</p>
+
+    <h2 id="sharing">5) Sharing & Subprocessors</h2>
+    <p class="pp-text">We don’t sell personal information. We share it only as described:</p>
+    <ul class="pp-list">
+      <li><strong>With parties to an offer</strong> (e.g., sponsor and creator) to operate deliverables, messaging, and performance summaries.</li>
+      <li><strong>Service providers/Subprocessors</strong> that help us operate the Service:
+        <ul class="pp-list">
+          <li><strong>Supabase</strong> (hosting, database, authentication, storage).</li>
+          <li><strong>Stripe</strong> (payments, billing, receipts, subscription management).</li>
+          <li><strong>Resend</strong> (transactional email delivery).</li>
+          <li><strong>Google Analytics</strong> (measurement only; no Ads/Remarketing features).</li>
+        </ul>
+      </li>
+      <li><strong>Legal & safety</strong> (compelled disclosures; enforcing our rights; preventing fraud/abuse).</li>
+      <li><strong>Business transfers</strong> (e.g., merger or acquisition) with protections in place.</li>
+    </ul>
+
+    <h2 id="retention">6) Data Retention</h2>
+    <ul class="pp-list">
+      <li><strong>Account & profile:</strong> for the life of your account; deleted within <strong>30 days</strong> after confirmed account deletion, subject to the exceptions below.</li>
+      <li><strong>Payments & invoices:</strong> retained for <strong>7 years</strong> to meet tax and financial record obligations.</li>
+      <li><strong>Offer/contracts & disputes:</strong> retained up to <strong>6 years</strong> for contract and claim purposes.</li>
+      <li><strong>Security & audit logs (incl. IP):</strong> retained for up to <strong>12 months</strong>.</li>
+      <li><strong>Moderation/abuse records:</strong> retained up to <strong>24 months</strong> after case closure to prevent repeat abuse.</li>
+    </ul>
+
+    <h2 id="rights">7) Your Rights & Choices</h2>
+    <p class="pp-text">Depending on your location (e.g., EU/UK/EEA, California), you may have rights to access, correct, delete, restrict, or object to processing; request portability; and withdraw consent for optional features.</p>
+    <ul class="pp-list">
+      <li><strong>Marketing opt-out:</strong> unsubscribe via any email footer or your settings.</li>
+      <li><strong>Analytics opt-out:</strong> decline analytics cookies in the banner or update preferences later (see <a href="#cookies">Cookies</a>).</li>
+      <li><strong>“Do Not Sell/Share” (CPRA):</strong> we do not sell or share your personal information for cross-context behavioral advertising.</li>
+      <li><strong>Appeals:</strong> if you believe an automated moderation action was incorrect, contact <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.</li>
+    </ul>
+
+    <h2 id="deletion">8) Data Export & Deletion</h2>
+    <p class="pp-text">
+      You can request a copy of your data or account deletion from your dashboard:
+      <em>“Request My Data (GDPR/CCPA)”</em> and <em>“Request Account Deletion”</em> buttons. You may also use our public page at
+      <a href="./data-deletion.html">./data-deletion.html</a> or email <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.
+      Disconnecting a platform stops future sync; deletion requests also revoke tokens and remove related stored data except where retention is required by law or for dispute resolution.
+    </p>
+
+    <h2 id="security">9) Security</h2>
+    <ul class="pp-list">
+      <li>Encryption at rest for stored data and TLS in transit.</li>
+      <li>Least-privileged access, logging, and access reviews.</li>
+      <li>Backups and disaster recovery operated by our hosting provider(s).</li>
+      <li>No storage of raw payment card numbers on our servers.</li>
+    </ul>
+
+    <h2 id="transfers">10) International Transfers</h2>
+    <p class="pp-text">
+      We and our providers may process data in countries other than yours. Where required (e.g., EEA/UK), we rely on appropriate safeguards such as Standard Contractual Clauses.
+    </p>
+
+    <h2 id="cookies">11) Cookies</h2>
+    <p class="pp-text">
+      We use (i) <strong>strictly necessary</strong> cookies for login, security, and preference storage; and (ii) <strong>analytics</strong> cookies for measurement only (no Ads/Remarketing).
+      You can accept or decline in the banner and update preferences later in your account or browser settings.
+    </p>
+
+    <h2 id="automation">12) Automated Moderation</h2>
+    <p class="pp-text">
+      We use automated moderation (e.g., “FamBot”) to detect spam, fraud, and harmful content. Automated decisions may restrict content or accounts; you can request human review via
+      <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.
+    </p>
+
+    <h2 id="children">13) Children</h2>
+    <p class="pp-text">
+      The Service is not directed to children under 13 (or the applicable age of consent in your region). Do not register or connect social accounts if underage.
+    </p>
+
+    <h2 id="changes">14) Changes</h2>
+    <p class="pp-text">
+      We may update this Privacy Policy over time. Material changes will be notified via the Service or email. Continued use means you accept the updated Policy.
+    </p>
+
+    <h2 id="contact">15) Contact</h2>
+    <p class="pp-text">
+      Questions or requests about this Policy or your data rights?<br>
+      Email: <a href="mailto:privacy@sponsorsorter.com">privacy@sponsorsorter.com</a> or <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a><br>
+      Registered in Australia (Victoria). ABN: 23 801 694 480
+    </p>
+
+    <hr class="sep">
+    <p class="fineprint" style="text-align:center;">Sponsor Sorter &copy; 2025. All rights reserved.</p>
+  </section>
+</main>
+
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html" class="active">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+      <li><a href="./blog.html">Blog</a></li>
+      <li><a href="./forum.html">Forum</a></li>
+      <li><a href="./stats.html">Stats</a></li>
+    </ul>
   </div>
+  <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+    Data protected by Supabase | Powered by Stripe
+  </div>
+</footer>
+
+<!-- Optional cookie banner hook (uses your existing implementation if present) -->
+<div id="cookie-banner" class="cookie-banner">
+  <p>
+    🍪 We use necessary cookies and measurement analytics (no Ads/Remarketing). Manage in this banner or see our
+    <a href="./privacy.html" target="_blank">Privacy Policy</a>.
+  </p>
+  <div class="cookie-buttons">
+    <button id="accept-cookies">Accept</button>
+    <button id="decline-cookies">Decline</button>
+  </div>
+</div>
+<script src="./main.js" defer></script>
 </body>
 </html>
