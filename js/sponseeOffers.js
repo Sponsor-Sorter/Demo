@@ -14,13 +14,68 @@ let currentPage = 1;
 const offersPerPage = 5;
 let currentFilter = "all";
 
-// Helper for social platform icons
-function renderPlatformBadges(platforms) {
+/* ===================== URL/Date helpers (match sponsor) ===================== */
+function pairUrlsAndDates(offer) {
+  // Combine live_urls[] with url_dates[] by index, fallback to legacy live_url/live_date
+  const urls = Array.isArray(offer?.live_urls)
+    ? offer.live_urls
+    : (offer?.live_url ? [offer.live_url] : []);
+  const dates = Array.isArray(offer?.url_dates)
+    ? offer.url_dates
+    : (offer?.live_date ? [offer.live_date] : []);
+  const max = Math.max(urls.length, dates.length);
+  const pairs = [];
+  for (let i = 0; i < max; i++) {
+    const u = urls[i] ?? null;
+    const d = dates[i] ?? null;
+    if (u) pairs.push({ url: u, date: d });
+  }
+  return pairs;
+}
+function earliestDate(dates) {
+  if (!Array.isArray(dates) || !dates.length) return null;
+  const sorted = dates
+    .filter(Boolean)
+    .map(d => new Date(d).toISOString().slice(0, 10))
+    .sort();
+  return sorted[0] || null;
+}
+/* =========================================================================== */
+
+// Map a URL's hostname to a normalized platform key
+function detectPlatformFromURL(u) {
+  try {
+    const host = new URL(u).hostname.toLowerCase();
+
+    if (host.includes('youtube.com') || host.includes('youtu.be')) return 'youtube';
+    if (host.includes('tiktok.com') || host.includes('vm.tiktok.com') || host.includes('vt.tiktok.com')) return 'tiktok';
+    if (host.includes('instagram.com')) return 'instagram';
+    if (host.includes('twitch.tv')) return 'twitch';
+    if (host.includes('facebook.com') || host === 'fb.watch' || host.endsWith('.fb.watch')) return 'facebook';
+    if (host.includes('twitter.com') || host === 'x.com') return 'twitter';
+    if (host.includes('snapchat.com')) return 'snapchat';
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/* ============== Platform badges (domain-matched, not index-based) =============== */
+function renderPlatformBadges(platforms, urlPairs = []) {
   if (!platforms) return '';
   if (typeof platforms === 'string') {
     try { platforms = JSON.parse(platforms); } catch { platforms = []; }
   }
   if (!Array.isArray(platforms)) return '';
+
+  // Build a lookup: { platformKey -> first matching URL }
+  const urlByPlatform = {};
+  for (const p of (urlPairs || [])) {
+    const key = p?.url ? detectPlatformFromURL(p.url) : null;
+    if (key && !urlByPlatform[key]) urlByPlatform[key] = p.url;
+  }
+
   const platformLogos = {
     instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
     tiktok: 'tiktoklogo.png',
@@ -30,17 +85,30 @@ function renderPlatformBadges(platforms) {
     twitch: 'twitchlogo.png',
     snapchat: 'snaplogo.png',
   };
-  return platforms.map(platform => {
-    const logo = platformLogos[platform.toLowerCase()] || '';
-    return logo
-      ? `<span class="social-badge" style="display:inline-block;background:#f4f7ff;border-radius:8px;padding:2px 5px;margin-right:4px;">
-          <img src="${logo}" alt="${platform}" style="height:20px;width:20px;vertical-align:middle;">
-        </span>`
-      : '';
+
+  // Optional: if NOTHING matched (e.g. no URLs yet) and lengths line up,
+  // you can fallback to the old index mapping to keep prior behavior.
+  const needIndexFallback = Object.keys(urlByPlatform).length === 0 && Array.isArray(urlPairs) && urlPairs.length === platforms.length;
+
+  return platforms.map((platform, i) => {
+    const key = (platform || '').toLowerCase().trim();
+    const logo = platformLogos[key] || '';
+    if (!logo) return '';
+
+    const link = urlByPlatform[key] || (needIndexFallback ? (urlPairs[i]?.url || null) : null);
+
+    const badgeImg = `<img src="${logo}" alt="${platform}" style="height:20px;width:20px;vertical-align:middle;">`;
+    return link
+      ? `<a href="${link}" target="_blank" class="social-badge" 
+             style="display:inline-block;background:#f4f7ff;border-radius:8px;
+             padding:2px 5px;margin-right:4px;text-decoration:none;">${badgeImg}</a>`
+      : `<span class="social-badge" 
+             style="display:inline-block;background:#f4f7ff;border-radius:8px;
+             padding:2px 5px;margin-right:4px;">${badgeImg}</span>`;
   }).join(' ');
 }
 
-// Parse platforms robustly
+// Parse platforms robustly (kept from your version)
 function parsePlatforms(platforms) {
   if (!platforms) return [];
   if (Array.isArray(platforms)) return platforms;
@@ -55,26 +123,12 @@ function parsePlatforms(platforms) {
   return [];
 }
 
-// Pair up live_urls and url_dates (falling back to legacy single fields)
-function pairUrlsAndDates(offer) {
-  const urls = Array.isArray(offer?.live_urls) ? offer.live_urls : (offer?.live_url ? [offer.live_url] : []);
-  const dates = Array.isArray(offer?.url_dates) ? offer.url_dates : (offer?.live_date ? [offer.live_date] : []);
-  const max = Math.max(urls.length, dates.length);
-  const pairs = [];
-  for (let i = 0; i < max; i++) {
-    const u = urls[i] ?? null;
-    const d = dates[i] ?? null;
-    if (u) pairs.push({ url: u, date: d });
-  }
-  return pairs;
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
   // 1. Auth and user/session fetch
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session || !session.user) {
     alert("You must be logged in to view this page.");
-    window.location.href = '/login.html';
+    window.location.href = './login.html';
     return;
   }
   const sponsee_email = session.user.email;
@@ -271,12 +325,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       sponsor_id = sponsor?.user_id || '';
     } catch { }
 
-    let platformBadgeHtml = '';
-    if (offer.platforms && offer.platforms.length) {
-      platformBadgeHtml = `
-        <div style="margin-bottom:8px;margin-top:4px;">${renderPlatformBadges(offer.platforms)}</div>
-      `;
-    }
+    // Build platform badges with URL mapping (like sponsor)
+    const pairs = pairUrlsAndDates(offer);
+    const platformBadgeHtml = (offer.platforms && offer.platforms.length)
+      ? `<div style="margin-bottom:8px;margin-top:4px;">${renderPlatformBadges(offer.platforms, pairs)}</div>`
+      : '';
 
     const stageProgress = [20, 40, 60, 80, 100][offer.stage - 1] || 0;
     const stageLabels = [
@@ -292,11 +345,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="progress-bar" style="width: ${stageProgress}%; ${progressColor}"></div>
       </div>`;
 
-    // Build Stage-specific actions
+    // Build Stage-specific actions (sponsee doesn’t delete offers)
     let actionButtons = '';
     if (offer.stage === 1 && offer.status === 'pending') {
       actionButtons = `
-        <button class="confirm-offer">Confirm Offer</button>
+        <button class="confirm-offer">Accept Offer</button>
         <button class="reject-offer">Reject Offer</button>
       `;
     } else if (offer.stage === 2 && offer.status === 'accepted') {
@@ -372,15 +425,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Live URL(s) + per-link date display (Stage 4+)
-    const pairs = pairUrlsAndDates(offer);
-    const liveLinksHtml = pairs.length
-      ? `<p><strong>Live URL${pairs.length > 1 ? 's' : ''} & Dates:</strong><br>${
-          pairs.map(({url, date}) => {
-            const d = date ? new Date(date).toLocaleDateString() : '—';
-            return `<span style="display:block;margin:2px 0;"><a class="live-url-link" href="${url}" target="_blank">${url}</a> <em style="color:#ddd;">(${d})</em></span>`;
-          }).join('')
-        }</p>`
-      : '';
+    const firstLiveDate =
+      offer.live_date ||
+      earliestDate(offer.url_dates) ||
+      (pairs.length ? pairs[0].date : null);
+
+
 
     const reportBtnHtml = `
       <button
@@ -416,7 +466,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${reportBtnHtml}
         <div class="card-top">
           <div class="logo-container">
-            <img src="${sponsorPicUrl}" alt="Sponsor Profile Pic" class="stage-logo profile-link" data-username="${offer.sponsor_username}">
+            <img src="${sponsorPicUrl}" onerror="this.src='./logos.png'" alt="Sponsor Profile Pic" class="stage-logo profile-link" data-username="${offer.sponsor_username}">
             <p><strong>From:</strong> ${offer.sponsor_username}</p>
             <p><strong>At:</strong> ${offer.sponsor_company}</p>
           </div>
@@ -435,8 +485,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <p><strong>Date:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
                 <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
                 ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
-                ${offer.stage >= 4 && offer.live_date ? `<p><strong>First Live Date:</strong> ${new Date(offer.live_date).toLocaleDateString()}</p>` : ''}
-                ${offer.stage >= 4 ? liveLinksHtml : ''}
+                ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
               </div>
               <div class="offer-right">
                 <p><strong>Amount:</strong> $${offer.offer_amount}</p>
@@ -576,23 +625,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // --- Data Summary (handle ALL attached URLs) with Loading "one of X"
+    // --- Data Summary (multi-URL; toggle; shows "Loading i of N") ---
     if (e.target.classList.contains('data-summary-btn')) {
       if (!dataSummarySection) return;
 
       const isVisible = dataSummarySection.style.display === 'block';
       if (isVisible) {
-        // toggle off
         dataSummarySection.style.display = 'none';
         dataSummarySection.innerHTML = '';
         return;
       }
 
-      // show + start loading
       hideAllSections();
       dataSummarySection.style.display = 'block';
 
-      // Prefer DB copy for URL list
       const offerObj = allSponseeOffers.find(o => String(o.id) === String(offerId)) || {};
       const pairs = pairUrlsAndDates(offerObj);
       if (!pairs.length) {
@@ -608,9 +654,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           Loading <b id="ds-count">1</b> of <b>${total}</b>…
         </div>
         <div id="ds-results"></div>
-        <style>
-          @keyframes spin { to { transform: rotate(360deg);} }
-        </style>
+        <style>@keyframes spin { to { transform: rotate(360deg);} }</style>
       `;
       const countNode = dataSummarySection.querySelector('#ds-count');
       const resultsNode = dataSummarySection.querySelector('#ds-results');
@@ -620,16 +664,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const blocks = [];
       let index = 0;
-
       const wrapRow = (label, value) => `<div><b>${label}</b><br>${value ?? '-'}</div>`;
 
       for (const { url: link, date } of pairs) {
         index += 1;
-        // Update loading counter immediately when starting each URL
         if (countNode) countNode.textContent = String(index);
 
         const dateBadge = date ? `<div style="font-size:0.92em;margin-top:2px;color:#ddd;">📅 Live Date (set): ${new Date(date).toLocaleDateString()}</div>` : '';
 
+        // === YouTube ===
         if (/youtube\.com|youtu\.be/i.test(link)) {
           const videoId = extractYouTubeVideoId(link);
           if (!videoId) {
@@ -683,6 +726,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           continue;
         }
 
+        // === TikTok ===
         if (/(^|\.)(tiktok\.com)/i.test(link) || /vm\.tiktok\.com|vt\.tiktok\.com/i.test(link)) {
           try {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-tiktok-video-stats', {
@@ -731,7 +775,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `);
             } else if (resp.ok && tk?.ok && tk?.found === false) {
-              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos (it might not be yours or the app lacks permission): <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
+              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos: <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
             } else {
               blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
             }
@@ -742,6 +786,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           continue;
         }
 
+        // === Twitch ===
         if (/twitch\.tv/i.test(link)) {
           try {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-twitch-vod-stats', {
@@ -751,7 +796,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const data = await resp.json();
 
-            // classify unavailable VODs (deleted/expired/not found)
             const msg = (data?.error || data?.message || data?.detail || '').toLowerCase();
             const vodStatus = (data?.vod?.status || data?.vod?.state || data?.status || '').toLowerCase();
             const looksUnavailable =
@@ -837,6 +881,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           continue;
         }
 
+        // === Instagram ===
         if (/instagram\.com/i.test(link)) {
           try {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
@@ -896,6 +941,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           continue;
         }
 
+        // === Facebook ===
         if (/(facebook\.com|fb\.watch)/i.test(link)) {
           try {
             const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
@@ -967,9 +1013,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Unknown / unsupported link
         blocks.push(`<div style="color:#ccc;">No stats integration for: <a href="${link}" target="_blank" style="color:#9ad;">${link}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
         resultsNode.innerHTML = blocks.join('');
-      } // end for loop
+      }
 
-      // Done loading — remove spinner, leave results
+      // Done — remove the loader
       const prog = dataSummarySection.querySelector('#ds-progress');
       if (prog) prog.remove();
       return;
@@ -982,7 +1028,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert('Comment cannot be empty.');
         return;
       }
-      // Get JWT for the current user session
       const { data: { session } } = await supabase.auth.getSession();
       const user_id = session?.user?.id;
       const jwt = session?.access_token;
@@ -990,7 +1035,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("Not authenticated. Please log in again.");
         return;
       }
-      // Moderation step
       const modResult = await famBotModerateWithModal({
         user_id,
         content: commentText,
@@ -999,7 +1043,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       if (!modResult.allowed) return;
 
-      // If passed moderation, insert comment
       const sender = sponsee_username;
       const { error } = await supabase
         .from('private_offer_comments')
@@ -1268,7 +1311,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
-      if (offerId) window.location.href = `review.html?offer_id=${offerId}`;
+      if (offerId) window.location.href = `./review.html?offer_id=${offerId}`;
       return;
     }
   });
@@ -1400,6 +1443,6 @@ function epochToDateString(n) {
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
   if (profileImg && profileImg.dataset.username) {
-    window.location.href = `/viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
+    window.location.href = `./viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
