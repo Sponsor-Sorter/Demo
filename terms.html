@@ -121,7 +121,7 @@
           <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <li class="navr" id="dashboard-link"><a href="">Dashboard</a></li>
           <li><a href="./login.html">Logout</a></li>
         </nav>
       </div>
@@ -282,5 +282,39 @@
     Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
   </div>
 </footer>
+<!-- Role-aware Dashboard link (Finder-style) -->
+<script type="module">
+  import { supabase } from '/public/js/supabaseClient.js';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const dashLi = document.getElementById('dashboard-link');
+    const dashA = dashLi?.firstElementChild;
+    if (!dashA) return;
+
+    // Check auth
+    const { data: { user }, error: authErr } = await supabase.auth.getUser();
+    if (authErr || !user) {
+      // Not logged in → offer Login
+      dashA.href = './login.html';
+      dashA.textContent = 'Login';
+      return;
+    }
+
+    // Fetch role
+    const { data: profile, error: profErr } = await supabase
+      .from('users_extended_data')
+      .select('userType')
+      .eq('user_id', user.id)
+      .single();
+
+    const userType = (profile?.userType || '').toLowerCase();
+    const isSponsor = userType === 'sponsor';
+    dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
+    dashA.textContent = 'Dashboard';
+
+    // Optional: immediately send logged-in users to their dashboard
+    // window.location.replace(dashA.href);
+  });
+</script>
 </body>
 </html>
