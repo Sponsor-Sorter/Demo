@@ -130,13 +130,39 @@ function renderOffersByFilter(filter) {
   }
 }
 
-// --- Platform badges with clickable links ---
-function renderPlatformBadges(platforms, urls = []) {
+// Map a URL's hostname to a normalized platform key
+function detectPlatformFromURL(u) {
+  try {
+    const host = new URL(u).hostname.toLowerCase();
+
+    if (host.includes('youtube.com') || host.includes('youtu.be')) return 'youtube';
+    if (host.includes('tiktok.com') || host.includes('vm.tiktok.com') || host.includes('vt.tiktok.com')) return 'tiktok';
+    if (host.includes('instagram.com')) return 'instagram';
+    if (host.includes('twitch.tv')) return 'twitch';
+    if (host.includes('facebook.com') || host === 'fb.watch' || host.endsWith('.fb.watch')) return 'facebook';
+    if (host.includes('twitter.com') || host === 'x.com') return 'twitter';
+    if (host.includes('snapchat.com')) return 'snapchat';
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/* ============== Platform badges (domain-matched, not index-based) =============== */
+function renderPlatformBadges(platforms, urlPairs = []) {
   if (!platforms) return '';
   if (typeof platforms === 'string') {
     try { platforms = JSON.parse(platforms); } catch { platforms = []; }
   }
   if (!Array.isArray(platforms)) return '';
+
+  // Build a lookup: { platformKey -> first matching URL }
+  const urlByPlatform = {};
+  for (const p of (urlPairs || [])) {
+    const key = p?.url ? detectPlatformFromURL(p.url) : null;
+    if (key && !urlByPlatform[key]) urlByPlatform[key] = p.url;
+  }
 
   const platformLogos = {
     instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
@@ -148,10 +174,17 @@ function renderPlatformBadges(platforms, urls = []) {
     snapchat: 'snaplogo.png',
   };
 
+  // Optional: if NOTHING matched (e.g. no URLs yet) and lengths line up,
+  // you can fallback to the old index mapping to keep prior behavior.
+  const needIndexFallback = Object.keys(urlByPlatform).length === 0 && Array.isArray(urlPairs) && urlPairs.length === platforms.length;
+
   return platforms.map((platform, i) => {
-    const logo = platformLogos[platform.toLowerCase()] || '';
-    const link = urls[i]?.url || null; // map URL by index if available
+    const key = (platform || '').toLowerCase().trim();
+    const logo = platformLogos[key] || '';
     if (!logo) return '';
+
+    const link = urlByPlatform[key] || (needIndexFallback ? (urlPairs[i]?.url || null) : null);
+
     const badgeImg = `<img src="${logo}" alt="${platform}" style="height:20px;width:20px;vertical-align:middle;">`;
     return link
       ? `<a href="${link}" target="_blank" class="social-badge" 
