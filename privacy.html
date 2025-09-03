@@ -26,15 +26,12 @@
     .meta{ text-align:center; font-size:.95rem; color:var(--muted); margin-bottom:1.2rem }
     .pill{ display:inline-block; padding:4px 10px; border:1px solid var(--border); border-radius:999px; font-size:.9rem; color:var(--muted); margin:0 6px; }
 
-    /* ToC layout (keeps your black pill look if global li/a styles apply) */
     .toc{
       display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
       gap:15px 5px; justify-content:center; margin:14px 0 22px; padding:0; list-style:none;
     }
-    .toc li{ 
-      background: none;
-     }
-    .toc a{ color:var(--accent); text-decoration:none; padding:6px 12px; border:1px solid var(--border); border-radius:8px; transition:background .2s; }
+    .toc li{ background:none; }
+    .toc a{ color:var(--accent); text-decoration:none; padding:6px 12px; border:1px solid var(--border); border-radius:8px; transition:background .2s; margin:20px; }
     .toc a:hover{ background:rgba(255,255,255,.08) }
 
     h2{ color:#fff; margin:1.8em 0 .6em; font-size:1.25em; border-bottom:1px solid #f0f0f0; padding-bottom:6px; scroll-margin-top:120px; }
@@ -67,7 +64,8 @@
           <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <!-- added id for role-aware routing -->
+          <li class="navr" id="dashboard-link"><a href="">Dashboard</a></li>
           <li><a href="./login.html">Logout</a></li>
         </nav>
       </div>
@@ -88,7 +86,7 @@
       <li><a href="#data-categories">Data We Collect</a></li>
       <li><a href="#purposes">How We Use Data</a></li>
       <li><a href="#oauth">OAuth Connection</a></li>
-      <li><a href="#sharing">Sharing </a></li>
+      <li><a href="#sharing">Sharing</a></li>
       <li><a href="#retention">Data Retention</a></li>
       <li><a href="#rights">Your Rights & Choices</a></li>
       <li><a href="#deletion">Data Export & Deletion</a></li>
@@ -179,16 +177,15 @@
       <li><strong>Appeals:</strong> if you believe an automated moderation action was incorrect, contact <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.</li>
     </ul>
 
-<h2 id="deletion">8) Data Export & Deletion</h2>
-<p class="pp-text">
-  You can request a copy of your data or account deletion directly from your dashboard using the
-  <em>“Request My Data (GDPR/CCPA)”</em> and <em>“Request Account Deletion”</em> buttons. To stop future data syncing from any
-  connected platform, open <em>Connected Platforms</em> in settings and click <strong>Disconnect</strong>; this revokes access tokens
-  and halts future pulls. You may also email <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> if you prefer.
-  After confirmed deletion, we purge account data within <strong>30 days</strong> except where retention is required by law,
-  security, or dispute resolution (see <a href="#retention">Data Retention</a>).
-</p>
-
+    <h2 id="deletion">8) Data Export & Deletion</h2>
+    <p class="pp-text">
+      You can request a copy of your data or account deletion directly from your dashboard using the
+      <em>“Request My Data (GDPR/CCPA)”</em> and <em>“Request Account Deletion”</em> buttons. To stop future data syncing from any
+      connected platform, open <em>Connected Platforms</em> in settings and click <strong>Disconnect</strong>; this revokes access tokens
+      and halts future pulls. You may also email <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> if you prefer.
+      After confirmed deletion, we purge account data within <strong>30 days</strong> except where retention is required by law,
+      security, or dispute resolution (see <a href="#retention">Data Retention</a>).
+    </p>
 
     <h2 id="security">9) Security</h2>
     <ul class="pp-list">
@@ -257,7 +254,7 @@
   </div>
 </footer>
 
-<!-- Optional cookie banner hook (uses your existing implementation if present) -->
+<!-- Cookie banner (uses your existing implementation if present) -->
 <div id="cookie-banner" class="cookie-banner">
   <p>
     🍪 We use necessary cookies and measurement analytics (no Ads/Remarketing). Manage in this banner or see our
@@ -268,8 +265,40 @@
     <button id="decline-cookies">Decline</button>
   </div>
 </div>
-<script src="./main.js" defer></script>
+
+<!-- Role-aware Dashboard link (Finder-style) -->
+<script type="module">
+  import { supabase } from '/public/js/supabaseClient.js';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const dashLi = document.getElementById('dashboard-link');
+    const dashA = dashLi?.firstElementChild;
+    if (!dashA) return;
+
+    // Check auth
+    const { data: { user }, error: authErr } = await supabase.auth.getUser();
+    if (authErr || !user) {
+      // Not logged in → offer Login
+      dashA.href = './login.html';
+      dashA.textContent = 'Login';
+      return;
+    }
+
+    // Fetch role
+    const { data: profile, error: profErr } = await supabase
+      .from('users_extended_data')
+      .select('userType')
+      .eq('user_id', user.id)
+      .single();
+
+    const userType = (profile?.userType || '').toLowerCase();
+    const isSponsor = userType === 'sponsor';
+    dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
+    dashA.textContent = 'Dashboard';
+
+    // Optional: immediately send logged-in users to their dashboard
+    // window.location.replace(dashA.href);
+  });
+</script>
 </body>
 </html>
-
-
