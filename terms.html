@@ -5,54 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Terms of Service - Sponsor Sorter">
   <title>Terms of Service | Sponsor Sorter</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <style>
+    :root {
+      --bg: #000;
+      --panel: #3a3a3a;
+      --panel-2: #414141;
+      --txt: #ffffff;
+      --muted: #bdbdbd;
+      --accent: #fefefe;
+      --border: #5a5a5a;
+      --shadow: 0 3px 12px 0 #d0fdfa55;
+    }
     body {
-      background: #000000;
-      color: #18181b;
+      background: var(--bg);
+      color: var(--txt);
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-    .navbar1, .footercomplete {
-      width: 100%;
-    }
+    .navbar1, .footercomplete { width: 100%; }
+    .wrap { width: 100%; display: flex; justify-content: center; }
     .tos-container {
-      max-width: 800px;
+      width: min(980px, 80vw);
       margin: 38px auto 18px auto;
-      background: #414141;
-      color: white;
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+      color: var(--txt);
       border-radius: 16px;
-      box-shadow: 0 3px 12px 0 #d0fdfa55;
+      box-shadow: var(--shadow);
       padding: 38px 28px 28px 28px;
-      border: 1px solid #b4b4b4;
+      border: 1px solid var(--border);
     }
-    .tos-container h1 {
-      color: #eaeaea;
-      font-size: 2.2rem;
-      margin-bottom: 0.8em;
-      text-align: center;
+    .page-title { display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .page-title h1 { color: #eaeaea; font-size: 2.2rem; margin: 0; }
+    .meta { text-align: center; font-size: .95rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .pill {
+      display: inline-block; padding: 4px 10px; border: 1px solid var(--border);
+      border-radius: 999px; font-size: .9rem; color: var(--muted); margin: 0 6px;
     }
-    .tos-container h2 {
+    .toc {
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* equal columns */
+      flex-wrap: wrap; 
+      gap: 15px 5px;
+      justify-content: center; 
+      margin: 14px 0 22px 0;
+      padding: 0; 
+      list-style: none;
+      
+    }
+    .toc li {
+      background: none;
+    }
+    .toc a {
+      color: var(--accent); text-decoration: none;
+      padding: 6px 12px; border: 1px solid var(--border);
+      border-radius: 8px; transition: background .2s;
+    }
+    .toc a:hover { background: rgba(255,255,255,.08); }
+    h2 {
       color: #ffffff;
       margin-top: 1.8em;
-      margin-bottom: .4em;
+      margin-bottom: .6em;
       font-size: 1.25em;
       border-bottom: 1px solid #f0f0f0;
-      padding-bottom: 4px;
+      padding-bottom: 6px;
     }
-    .tos-container p, .tos-container li {
-      line-height: 1.65;
+    .tos-text {
+      line-height: 1.7;
       font-size: 1rem;
-      margin-bottom: .7em;
+      color: #f5f5f5;
+      margin-bottom: .9em;
+      background: none !important;
     }
-   
+    .tos-list {
+      padding-left: 1.2rem;
+      margin-bottom: 1em;
+      background: none !important;
+    }
+    .tos-list li {
+      margin-bottom: .5em;
+      line-height: 1.6;
+      background: none !important;
+    }
+    .callout {
+      border: 1px solid #2dd4bf55;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      color: #f5f5f5;
+      background: none !important;
+    }
+    a, a:visited { color: var(--accent); }
+    hr.sep { margin: 2em 0 1em 0; border: 0; border-top: 1px solid #c7c7c7; opacity: .5; }
+    .fineprint { font-size: .95rem; color: var(--muted); }
     @media (max-width: 600px) {
-      .tos-container { padding: 14px 3vw; }
-      .tos-container h1 { font-size: 1.45rem; }
+      .tos-container { padding: 16px 3vw; }
+      .page-title h1 { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -62,94 +114,172 @@
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
       <div>
-        <background-img class="navimg" src="navimg.png" alt="">
+        <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
-          <li><a href="login.html">Logout</a></li>
+          <li class="navr"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="./login.html">Logout</a></li>
         </nav>
       </div>
     </div>
   </section>
 </header>
 
-<main class="tos-container">
-  <h1>Terms of Service</h1>
-  <p>Welcome to Sponsor Sorter! By accessing or using our platform, you agree to comply with and be bound by the following terms. Please read them carefully.</p>
-  
-  <h2>1. Acceptance of Terms</h2>
-  <p>By registering or using Sponsor Sorter, you agree to these Terms of Service (“Terms”) and our <a href="privacy.html" style="color:#2dd4bf;">Privacy Policy</a>. If you do not agree, do not use the site.</p>
+<main class="wrap">
+  <section class="tos-container">
+    <div class="page-title"><h1>Terms of Service</h1></div>
+    <div class="meta">
+      <span class="pill">Last updated: 3 September 2025</span>
+      <span class="pill">Business ABN: 23&nbsp;801&nbsp;694&nbsp;480</span>
+    </div>
 
-  <h2>2. User Accounts & Eligibility</h2>
-  <ul>
-    <li>You must be at least 18 years old, or have the legal capacity to enter into contracts in your country.</li>
-    <li>Accurate, complete, and updated registration information is required.</li>
-    <li>You are responsible for maintaining your account’s security and confidentiality.</li>
-  </ul>
+    <ul class="toc">
+      <li><a href="#acceptance">Acceptance</a></li>
+      <li><a href="#eligibility">Eligibility & Accounts</a></li>
+      <li><a href="#rules">Acceptable Use</a></li>
+      <li><a href="#offers">Offers & Workflow</a></li>
+      <li><a href="#payments">Payments</a></li>
+      <li><a href="#content">Content & IP</a></li>
+      <li><a href="#oauth">OAuth Via Platforms</a></li>
+      <li><a href="#privacy">Privacy & Data Rights</a></li>
+      <li><a href="#termination">Termination</a></li>
+      <li><a href="#warranty">Disclaimers</a></li>
+      <li><a href="#liability">Limitation of Liability</a></li>
+      <li><a href="#law">Governing Law</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+<hr class="sep">
+    <p class="tos-text">Welcome to Sponsor Sorter. By accessing or using our website, dashboards, APIs, or services (collectively, the “Service”), you agree to these Terms of Service (“Terms”) and our <a href="./privacy.html">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
 
-  <h2>3. Platform Rules</h2>
-  <ul>
-    <li>Sponsors and sponsees must interact honestly and professionally.</li>
-    <li>No fraudulent, abusive, or unlawful activities are permitted.</li>
-    <li>Any disputes must first be attempted to be resolved via Sponsor Sorter’s support channels.</li>
-  </ul>
+    <h2 id="acceptance">1) Acceptance of Terms</h2>
+    <p class="tos-text">These Terms apply to all users (sponsors, creators/sponsees, admins). You represent that you have authority to bind yourself or your business to these Terms.</p>
 
-  <h2>4. Offers & Agreements</h2>
-  <ul>
-    <li>Offer terms, deliverables, and payments must be mutually agreed in writing on the platform.</li>
-    <li>Breach of agreed terms may result in suspension or account removal.</li>
-    <li>Both parties must honor deliverables, payment schedules, and deadlines as agreed in each offer.</li>
-  </ul>
+    <h2 id="eligibility">2) Eligibility & Accounts</h2>
+    <ul class="tos-list">
+      <li>You must be at least 18 years old (or the age of legal capacity in your jurisdiction).</li>
+      <li>Provide accurate, complete registration details and keep them updated.</li>
+      <li>You are responsible for safeguarding account credentials and all activity under your account.</li>
+      <li>We may refuse, suspend, or terminate accounts that violate these Terms or applicable law.</li>
+    </ul>
 
-  <h2>5. Content & Intellectual Property</h2>
-  <ul>
-    <li>Do not upload copyrighted or unauthorized content.</li>
-    <li>You grant Sponsor Sorter the right to use uploaded logos/media solely for platform features and promotion.</li>
-    <li>Respect the rights and privacy of all users and third parties.</li>
-  </ul>
+    <h2 id="rules">3) Acceptable Use & Safety</h2>
+    <ul class="tos-list">
+      <li>Be honest and professional in all sponsor–creator interactions.</li>
+      <li>Do not engage in fraud, spam, harassment, hate, or unlawful conduct.</li>
+      <li>Do not attempt to bypass security, scrape private data, or reverse engineer the Service.</li>
+      <li>Respect others’ privacy, intellectual property, and platform rules of any connected services.</li>
+      <li>We use automated and manual moderation (including “FamBot”) to detect abuse; violations may result in removal or ban.</li>
+    </ul>
 
-  <h2>6. Payment & Fees</h2>
-  <ul>
-    <li>All payment arrangements and amounts are agreed between sponsor and sponsee.</li>
-    <li>Sponsor Sorter may deduct a platform fee or commission if described elsewhere.</li>
-    <li>Chargebacks, failed payments, or suspected fraud may result in account action.</li>
-  </ul>
+    <h2 id="offers">4) Offers, Deliverables & Workflow</h2>
+    <ul class="tos-list">
+      <li>Offer terms (deliverables, timing, payment) must be agreed in writing within the platform.</li>
+      <li>Each party is responsible for timely performance; missed deadlines or non-payment may lead to cancellation and account action.</li>
+      <li>Status changes and comments are logged for transparency. Keep communications on-platform for dispute clarity.</li>
+    </ul>
 
-  <h2>7. Termination</h2>
-  <ul>
-    <li>Accounts may be suspended or terminated for violations of these Terms.</li>
-    <li>Either party may close their account at any time from the account settings.</li>
-  </ul>
+    <h2 id="payments">5) Payments, Fees & Taxes</h2>
+    <ul class="tos-list">
+      <li>Payments are typically processed via Stripe. We do not store raw card numbers on our servers.</li>
+      <li>Platform fees/commissions (if applicable) will be disclosed in the UI or relevant plan details.</li>
+      <li>You are responsible for your own taxes and reporting obligations.</li>
+      <li>Chargebacks, suspected fraud, or payment failures may trigger account review, holds, or suspension.</li>
+    </ul>
 
-  <h2>8. Changes to Terms</h2>
-  <p>We may update these Terms periodically. Continued use of Sponsor Sorter constitutes acceptance of any revised terms.</p>
+    <h2 id="content">6) Content & Intellectual Property</h2>
+    <ul class="tos-list">
+      <li>Do not upload content you do not have rights to. You retain ownership of your content.</li>
+      <li>You grant Sponsor Sorter a non-exclusive, worldwide, royalty-free license to host, reproduce, display, and adapt your uploaded content (logos, images, offer materials) solely to operate, improve, and promote the Service.</li>
+      <li>We may remove content that violates law, third-party rights, or these Terms.</li>
+      <li>Sponsor Sorter, our logos, and site assets are protected by IP laws. No rights or licenses are granted except as stated.</li>
+    </ul>
 
-  <h2>9. Disclaimer & Limitation of Liability</h2>
-  <p>Sponsor Sorter is provided “as is.” We are not responsible for user conduct, third-party actions, or external links. Liability is limited to the maximum extent permitted by law.</p>
-  
-  <h2>10. Contact Us</h2>
-  <p>If you have questions about these Terms, please email us at <a href="mailto:support@sponsorsorter.com" style="color:#2dd4bf;">support@sponsorsorter.com</a>.</p>
-  
-  <hr style="margin:2em 0 1em 0; border:0; border-top:1px solid #c7c7c7;">
-  <p style="font-size:.97em; color:#6c6c6c; text-align:center;">Sponsor Sorter &copy; 2025. All rights reserved.</p>
+    <h2 id="oauth">7) OAuth & Connected Platforms (Google/YouTube, Facebook/Instagram, TikTok, Twitch)</h2>
+    <div class="callout">
+      <strong>Summary:</strong> When you connect a social account, you authorize us to access the limited data necessary to verify identity, attribute live posts to offers, and show performance stats to involved parties. You can disconnect at any time in Settings.
+    </div>
+    <p class="tos-text"><strong>What we access</strong> (varies by provider and the scopes you approve):</p>
+    <ul class="tos-list">
+      <li><strong>YouTube (Google):</strong> basic channel identity and public metrics; video information and performance stats used to attribute deliverables and show outcomes for offers.</li>
+      <li><strong>Instagram (via Facebook):</strong> business/creator account identity; media metadata and insights needed to verify live posts and summarize performance.</li>
+      <li><strong>TikTok:</strong> basic account identity; post metadata and engagement metrics necessary to confirm deliverables and show results.</li>
+      <li><strong>Twitch:</strong> channel identity and public performance data to verify presence/activations and summarize outcomes.</li>
+      <li><strong>Facebook (Pages):</strong> Page identity and insights if you explicitly connect a Page for verification or reporting.</li>
+    </ul>
+    <p class="tos-text"><strong>How we use this data:</strong> to (a) verify deliverables went live, (b) display analytics tied to offers, (c) reduce fraud and improve matching, and (d) maintain audit logs for disputes.</p>
+    <p class="tos-text"><strong>What we do NOT do:</strong> sell your data, read private messages, or post on your behalf without explicit user action (default is read-only analytics/verification).</p>
+    <p class="tos-text"><strong>Storage & security:</strong> OAuth tokens and minimal metadata are stored securely (encrypted at rest) in Supabase. Transport uses TLS. Access is restricted.</p>
+    <p class="tos-text"><strong>Revocation & disconnect:</strong> You can disconnect any platform in <em>Connected Platforms</em>. You may also revoke directly in provider account/security settings.</p>
+    <p class="tos-text"><strong>Retention:</strong> Tokens are retained while your account remains connected. Offer-linked analytics may be retained for records, fraud prevention, or legal compliance.</p>
+    <p class="tos-text"><strong>Third-party terms:</strong> Use of connected platforms is also governed by their own terms and policies.</p>
+
+    <h2 id="privacy">8) Privacy, Data Rights & Data Deletion</h2>
+    <ul class="tos-list">
+      <li>Our data practices are described in the <a href="./privacy.html">Privacy Policy</a>.</li>
+      <li>You can request access, correction, portability, restriction, or deletion as permitted by law.</li>
+      <li><strong>Data deletion:</strong> Disconnecting stops future sync. Full deletion requests via Settings or <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.</li>
+      <li>Children: the Service is not directed to under-13s (or local age of consent).</li>
+      <li>We use trusted subprocessors (Supabase, Stripe, Resend, etc.) with safeguards.</li>
+    </ul>
+
+    <h2 id="termination">9) Suspension & Termination</h2>
+    <ul class="tos-list">
+      <li>We may suspend/terminate accounts for violations or risk.</li>
+      <li>You may close your account in Settings. Certain obligations survive termination.</li>
+    </ul>
+
+    <h2 id="warranty">10) Disclaimers</h2>
+    <p class="tos-text">The Service is provided “as is” and “as available.” We do not warrant uninterrupted or error-free operation, nor that metrics from connected platforms are always available, accurate, or timely.</p>
+
+    <h2 id="liability">11) Limitation of Liability</h2>
+    <p class="tos-text">To the maximum extent permitted by law, Sponsor Sorter is not liable for indirect, incidental, consequential, or punitive damages. Aggregate liability is limited to (a) amounts paid in the 6 months preceding claim or (b) AUD $100.</p>
+
+    <h2 id="indemnity">12) Indemnity</h2>
+    <p class="tos-text">You agree to indemnify Sponsor Sorter and affiliates against claims, damages, and expenses arising from your content, your use, or violations of these Terms.</p>
+
+    <h2 id="changes">13) Changes</h2>
+    <p class="tos-text">We may update Terms or the Service. Material changes will be communicated. Continued use means acceptance.</p>
+
+    <h2 id="law">14) Governing Law</h2>
+    <p class="tos-text">These Terms are governed by the laws of Victoria, Australia. You consent to exclusive jurisdiction of courts in Victoria.</p>
+
+    <h2 id="misc">15) Miscellaneous</h2>
+    <ul class="tos-list">
+      <li>Severability: unenforceable provisions don’t affect the rest.</li>
+      <li>Assignment: You may not assign without consent; we may assign with corporate changes.</li>
+      <li>Entire Agreement: These Terms + Privacy Policy are the full agreement.</li>
+      <li>No waiver: Failure to enforce isn’t a waiver.</li>
+    </ul>
+
+    <h2 id="contact">16) Contact</h2>
+    <p class="tos-text">Questions? Email <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.</p>
+
+    <hr class="sep">
+  </section>
 </main>
 
- <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="/public/help.html">Help</a></li>
-                <li><a href="/public/contact.html">Contact</a></li>
-                <li><a href="/public/privacy.html">Privacy Policy</a></li>
-                <li><a href="/public/terms.html">Terms of Service</a></li>
-                <li><a href="/public/reviews.html">Reviews</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
-    </footer>
+<!-- FOOTER -->
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+      <li><a href="./blog.html">Blog</a></li>
+      <li><a href="./forum.html">Forum</a></li>
+      <li><a href="./stats.html">Stats</a></li>
+    </ul>
+  </div>
+  <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+    Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+  </div>
+</footer>
 </body>
 </html>
