@@ -11,6 +11,7 @@
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
+
 </head>
 <body>
 
@@ -64,6 +65,7 @@
           </label>
         </li>
         <li>
+
           <button type="button" class="dropdown-item" id="oauth-link-btn">
             OAuth Link
           </button>
@@ -271,6 +273,9 @@
         </thead>
         <tbody id="archived-table-body"></tbody>
       </table>
+          <button id="generate-recap-btn" class="btn btn-secondary" style="margin-left: 12px;">
+  Generate Recap
+</button>
       <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
       <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
   Generate Invoices
@@ -297,7 +302,8 @@
 
       </div>
 
-      <!-- tiktok stats -->
+
+<!-- tiktok stats -->
 <div class="tiktok-stats-card" id="tiktok-stats-block" style="
   display:none;
   padding:24px 22px;
@@ -345,6 +351,7 @@
     </div>
   </div>
 </div>
+
       
       <!-- youtube stats -->
      <div class="youtube-stats-card" id="youtube-stats-block" style="
@@ -558,7 +565,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -908,22 +914,25 @@
   </div>
 </div>
 
+<!-- === Campaign Recap Modal (mirrors Invoice Modal) === -->
+<div id="recap-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 style="margin:0;">Generate Campaign Recap</h3>
+    </div>
+
+    <div class="modal-body" id="recap-offer-list">
+      <!-- Filled by recaps.js -->
+    </div>
+
+    <div class="modal-footer">
+      <button id="close-recap-modal" class="btn btn-secondary">Close</button>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="./js/invoices.js"></script>
-
-
-
-
+<script type="module" src="./js/recaps.js"></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
