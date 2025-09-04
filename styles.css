@@ -3034,11 +3034,12 @@ fieldset {
   
   .offer-left, .offer-right {
     flex: 1;
+  
   }
   
   .offer-left {
     text-align: left;
-   overflow-wrap:anywhere!important;
+    overflow-wrap:anywhere!important;
   }
   
   .offer-right {
@@ -3512,7 +3513,7 @@ fieldset {
    .review-thread-container { max-width: 780px; margin: 40px auto 36px auto; padding: 0 14px; }
     .review-thread-header { text-align: center; margin-bottom: 22px; }
     .review-card {
-      background: #4c4c4c;
+      background: #454545 !important;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(25, 12, 99, 0.763);
       margin-bottom: 24px !important;
@@ -4873,11 +4874,11 @@ fieldset:focus-within, fieldset:hover {
 /*review page*/
 .review-page-container {
       max-width: 730px;
-      margin: 48px auto 0 auto;
+      margin: 10px auto 0 auto;
       background: black;
       border-radius: 18px;
       box-shadow: 0 2px 24px 0 #0005;
-      padding: 30px 28px 20px 28px;
+      padding: 15px 28px 20px 28px;
     }
     .reviews-summary-block {
       padding: 18px 22px 10px 22px;
@@ -4889,7 +4890,7 @@ fieldset:focus-within, fieldset:hover {
   );
       border-radius: 13px;
       margin-bottom: 24px;
-      border: 1.5px solid #5ee0ff60;
+      border: 2.5px solid #5ee0ff60;
     }
     .summary-title { font-size: 1.19em; font-weight: bold; letter-spacing: 0.01em; color: #5ee0ff; margin-bottom: 7px; }
     .summary-avg {
@@ -4918,7 +4919,7 @@ fieldset:focus-within, fieldset:hover {
       border-radius: 14px;
       margin-bottom: 18px;
       padding: 20px 22px 34px 22px; /* add extra bottom padding for buttons */
-      border: 1.5px solid #5ee0ff60;
+      border: 2.5px solid #5ee0ff60;
       box-shadow: 0 1px 6px 0 #0002;
       position: relative;
     }
@@ -4984,7 +4985,7 @@ fieldset:focus-within, fieldset:hover {
     #232323 60%,      /* existing dark mid */
     #535353 100%         /* white at bottom */
   );
-      border: 1.5px solid #5ee0ff60;
+      border: 2.5px solid #5ee0ff60;
     }
     .review-form-block h3 { margin: 0 0 14px 0; }
     .review-form-block label {
@@ -4996,7 +4997,7 @@ fieldset:focus-within, fieldset:hover {
     .review-form-block textarea, .suggest-form textarea {
       width: 100%;
       border-radius: 8px;
-      border: 1.5px solid #4edcf3cc;
+      border: 2.5px solid #8e8e8ecc;
       min-height: 75px;
       resize: vertical;
       margin-bottom: 12px;
@@ -5054,7 +5055,7 @@ fieldset:focus-within, fieldset:hover {
     #535353 100%         /* white at bottom */
   );
       border-radius: 12px;
-      border: 1.5px solid #5ee0ff60;
+      border: 2.5px solid #5ee0ff60;
     }
     .suggest-section h3 { color: #5ee0ff; margin-bottom: 8px; }
     .suggest-form label { color: #8deaff; font-weight: 500; margin-bottom: 5px; display: block; }
@@ -5099,6 +5100,8 @@ fieldset:focus-within, fieldset:hover {
   gap: 28px;
   align-items: flex-start;
 }
+
+
 
 
 /* On screens wider than 1100px, use two columns */
@@ -5318,6 +5321,7 @@ fieldset.recentoffers {
     .form-double-row { flex-direction: column; gap: 12px; }
     .form-double-row .form-group { min-width: unset; }
   }
+
 
   /* --- Share Dropdown Styling --- */
 .share-dropdown {
@@ -5647,6 +5651,58 @@ input:checked + .slider:before {
   z-index: 10;
   padding-bottom: 0;
 }
+
+.highlight-card {
+  
+  box-shadow: 0 0 22px 0 #214ed3cc !important;
+  border-color: #478dff !important;
+  transition: background 0.18s, box-shadow 0.28s, border 0.2s;
+}
+
+/* recap css */
+
+/* Generic modal shell */
+
+
+/* Panel */
+.modal .modal-content{
+  width: min(800px, 92vw);
+  max-height: 60vh;              /* keep inside viewport */
+  border-radius: 14px;
+  display: flex;                 /* header/body/footer layout */
+  flex-direction: column;
+  overflow: hidden;              /* clip overflowing children */
+}
+
+/* Header / Footer stay fixed; body scrolls */
+.modal-header{
+  padding: 16px 20px;
+  border-bottom: 1px solid #2b2b2b;
+  flex: 0 0 auto;
+}
+
+.modal-body{
+  padding: 12px 20px;
+  flex: 1 1 auto;
+  overflow-y: auto;              /* scroll here */
+  min-height: 0;                 /* Firefox flex fix */
+}
+
+/* Optional sticky table header inside the scroll area */
+.modal-body .invoice-table thead th{
+  position: sticky; top: 0;
+  background: #111;              /* contrast for sticky row */
+  z-index: 1;
+}
+
+/* Footer with Close button pinned at bottom */
+.modal-footer{
+  padding: 12px 20px;
+  border-top: 1px solid #2b2b2b;
+  display: flex; justify-content: flex-end; gap: 8px;
+  flex: 0 0 auto;
+}
+
 
 .btn.btn-secondary { background: #15156a; color: #eee; }
 .btn.btn-cancel { background: #f14444; }
@@ -7004,7 +7060,5 @@ form#registrationForm {
   }
 }
 }
-
-
 
 
