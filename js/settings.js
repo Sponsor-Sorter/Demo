@@ -1291,6 +1291,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  // === COMPLETION RECAPS SLIDER ===
+const recapToggle = document.getElementById('toggle-recap-slider');
+
+async function loadRecapSetting() {
+  const user = await getActiveUser();
+  if (!user?.user_id || !recapToggle) return;
+
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('completion_recaps_enabled')
+    .eq('user_id', user.user_id)
+    .single();
+
+  if (!error && data && typeof data.completion_recaps_enabled === 'boolean') {
+    recapToggle.checked = data.completion_recaps_enabled;
+  } else {
+    recapToggle.checked = false; // default OFF
+  }
+}
+
+if (recapToggle) {
+  recapToggle.addEventListener('change', async () => {
+    const user = await getActiveUser();
+    if (!user?.user_id) return;
+
+    const enabled = !!recapToggle.checked;
+    const { error } = await supabase
+      .from('users_extended_data')
+      .upsert(
+        { user_id: user.user_id, completion_recaps_enabled: enabled },
+        { onConflict: ['user_id'] }
+      );
+
+    if (error) {
+      alert('Failed to update Completion Recaps setting. Please try again.');
+      recapToggle.checked = !enabled; // revert UI on failure
+      return;
+    }
+
+    // small visual feedback
+    const slider = recapToggle.parentElement?.querySelector('.slider');
+    if (slider) {
+      slider.style.boxShadow = '0 0 0 2px #36a2eb';
+      setTimeout(() => (slider.style.boxShadow = ''), 600);
+    }
+  });
+
+  loadRecapSetting();
+}
+
   // === EMAIL ALERTS SLIDER ===
   const emailAlertToggle = document.getElementById('email-alert-toggle');
 
@@ -1329,3 +1379,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadEmailAlertSetting();
   }
 });
+
