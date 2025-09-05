@@ -193,6 +193,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         (mode === 'sponsor' ? offer.sponsee_username : offer.sponsor_username) ||
         'Unknown';
 
+      // Is the CURRENT user the sponsor for THIS offer?
+      const isSponsorForThis =
+        (ids.includes(offer.sponsor_id) || userEmail === offer.sponsor_email);
+
+      // If so, tell the Edge Function to act as the SPONSEE (no custom headers — put in body)
+      const actAs = isSponsorForThis
+        ? {
+            user_id:  offer.sponsee_id || null,
+            email:    offer.sponsee_email || null,
+            username: offer.sponsee_username || null
+          }
+        : null;
+
       const row = document.createElement('tr');
       row.innerHTML = `
         <td style="vertical-align:middle;">
@@ -211,21 +224,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn.disabled = true;
         btn.textContent = 'Generating...';
         try {
-          const { data: { session } } = await supabase.auth.getSession();
+          const { data: { session} } = await supabase.auth.getSession();
           const accessToken = session?.access_token;
+
+          const body = { offer_id: offer.id };
+          if (actAs) body.act_as = actAs; // <— pass act_as ONLY in JSON body
+
           const res = await fetch(RECAP_FN_URL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ offer_id: offer.id })
+            body: JSON.stringify(body)
           });
 
           let payload = {};
           try { payload = await res.json(); } catch { /* no-op */ }
 
-          // Expect Edge Function to return: { url } on success (same contract as invoices)
           if (payload?.url) {
             window.open(payload.url, '_blank');
             btn.textContent = 'Done ✅';
