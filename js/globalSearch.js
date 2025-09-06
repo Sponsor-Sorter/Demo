@@ -40,7 +40,18 @@ function scoreRow(q, text, updated_at) {
 // Destination URLs
 function linkFor(item) {
   switch (item.kind) {
-    case 'private_offer': return `./dashboardsponsor.html?offer=${encodeURIComponent(item.id)}`;
+    case 'private_offer': {
+      // Stay on the SAME dashboard/page; just set ?offer=<id> in the current URL.
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('offer', item.id);
+        return url.toString();
+      } catch {
+        // Fallback (very old browsers)
+        const sep = window.location.search ? '&' : '?';
+        return `${window.location.pathname}${window.location.search}${sep}offer=${encodeURIComponent(item.id)}`;
+      }
+    }
     case 'public_offer':  return `./finder.html#public-offer-${encodeURIComponent(item.id)}`;
     case 'profile': {
       // route based on userType
@@ -89,7 +100,6 @@ function renderSection(title, items) {
     </div>
   `;
 }
-
 
 function escapeHtml(s) {
   return String(s ?? '')
@@ -179,12 +189,13 @@ const runSearch = debounce(async (q) => {
     const { username } = await getCurrentIdentity();
 
     const tasks = [
-      // PRIVATE OFFERS (attributed by username)
+      // PRIVATE OFFERS (attributed by username; exclude archived)
       (async () => {
         if (!username) return [];
         const { data, error } = await supabase
           .from('private_offers')
           .select('id, offer_title, offer_description, stage, created_at, sponsor_username, sponsee_username')
+          .eq('archived', false) // 🚫 exclude archived
           .or(`sponsor_username.eq.${username},sponsee_username.eq.${username}`)
           .limit(50);
         if (error || !data) return [];
@@ -304,7 +315,7 @@ const runSearch = debounce(async (q) => {
     const privateOffers = results.filter(r => r.kind === 'private_offer').sort((a,b)=>b._score-a._score).slice(0,12);
     const publicOffers  = results.filter(r => r.kind === 'public_offer').sort((a,b)=>b._score-a._score).slice(0,8);
     const profiles      = results.filter(r => r.kind === 'profile').sort((a,b)=>b._score-a._score).slice(0,8);
-    const blogPosts     = results.filter(r => r.kind === 'blog_post').sort((a,b)=>b._score-a._score).slice(0,8);
+    const blogPosts     = results.filter(r => r.kind === 'blog_post').sort((a,b)=>b._score-a-_score).slice(0,8);
     const forumPosts    = results.filter(r => r.kind === 'forum_post').sort((a,b)=>b._score-a._score).slice(0,8);
 
     // Flatten for keyboard nav
