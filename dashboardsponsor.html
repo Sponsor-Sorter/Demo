@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="./js/sponsorCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
+  <script type="module" src="./js/globalSearch.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,17 @@
       <div>
         <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
+                    <!-- Global Search (Nav) -->
+        <div class="nav-search">
+          <input
+            id="global-search-input"
+            type="search"
+            placeholder="Search offers, people, posts..."
+            autocomplete="off"
+            aria-label="Global search"
+          />
+          <div id="global-search-results" class="search-popover" hidden></div>
+        </div>
           <li><a href="./index.html">Home</a></li>
           <li><a href="./finder.html">Finder</a></li>
         </nav>
@@ -520,4 +532,5 @@
 
 </body>
 </html>
+
 
