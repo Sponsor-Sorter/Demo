@@ -1378,5 +1378,469 @@ if (recapToggle) {
     });
     loadEmailAlertSetting();
   }
-});
+  // =========================
+// =========================
+// Affiliate Application (Settings dropdown → modal)
+// Paste this whole block just ABOVE the closing "});" of DOMContentLoaded
+// =========================
 
+// ---------- Small helpers ----------
+function aff_functionsBase(){ return supabase.functionsUrl || `${location.origin}/functions/v1`; }
+async function aff_getJwt(){ return (await supabase.auth.getSession()).data.session?.access_token || ''; }
+function aff_esc(v){ return v==null?'':String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// deep read (with common wrappers)
+function aff_get(root, keys) {
+  const prefixes = ['', 'data.', 'result.', 'channel.', 'profile.', 'stats.', 'payload.', 'body.'];
+  const read = (obj, path) => path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), obj);
+  for (const k of keys) for (const p of prefixes) {
+    const val = read(root, p + k);
+    if (val !== undefined && val !== null) return val;
+  }
+  return undefined;
+}
+function aff_num(x) {
+  if (x === undefined || x === null) return undefined;
+  if (typeof x === 'number') return x;
+  if (typeof x === 'string') {
+    const m = x.replace(/[, _]/g, '').match(/-?\d+(\.\d+)?/);
+    return m ? Number(m[0]) : undefined;
+  }
+  return undefined;
+}
+
+// Normalize a URL for de-duping (no query/hash, lowercased host, no trailing slash, no www)
+function aff_normUrl(u){
+  try{
+    const url = new URL(u);
+    url.hash = '';
+    url.search = '';
+    url.hostname = url.hostname.toLowerCase().replace(/^www\./,'');
+    let s = url.toString();
+    if (s.endsWith('/')) s = s.slice(0, -1);
+    return s;
+  }catch{ return null; }
+}
+
+// ---------- Snapshot globals ----------
+let AFF_SNAPSHOT = null;       // compact object of detected stats
+let AFF_SNAPSHOT_AT = null;    // ISO timestamp when captured
+
+// ---------- Add / wire up the Affiliate button (idempotent) ----------
+(function wireAffiliateApplyMenuItem() {
+  const dd = document.getElementById('settings-dropdown');
+  if (!dd) return;
+
+  let btn = document.getElementById('open-affiliate-apply');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.id = 'open-affiliate-apply';
+    btn.type = 'button';
+    btn.className = 'dropdown-item';
+    btn.textContent = '🤝 Apply to be an Affiliate';
+    const ul = dd.querySelector('ul') || dd;
+    const li = document.createElement('li');
+    li.appendChild(btn);
+    ul.appendChild(li);
+  }
+
+  if (!btn.dataset.bound) {
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      aff_buildApplyModal();
+      const modal = document.getElementById('affiliate-apply-modal');
+      modal.style.display = 'block';
+      dd.style.display = 'none';
+
+      // OAuth-only detection (no prefill from saved handles)
+      await aff_refreshDetectedStats();
+      await aff_refreshMyApplications();
+    });
+  }
+})();
+
+// ---------- Modal builder (idempotent, scrollable) ----------
+function aff_buildApplyModal(){
+  if (document.getElementById('affiliate-apply-modal')) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'affiliate-apply-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:1000;';
+  modal.innerHTML = `
+    <div style="
+      width:min(760px,92vw);
+      margin:7vh auto;
+      background:#111;
+      border:1px solid #333;
+      border-radius:12px;
+      box-shadow:0 20px 80px #0007;
+      color:#fff;
+    ">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #222;">
+        <h3 style="margin:0;font-size:1.2rem;">Apply to be an Affiliate</h3>
+        <button id="close-affiliate-apply-modal" style="background:none;border:none;color:#aaa;font-size:1.6rem;cursor:pointer;box-shadow:none;">×</button>
+      </div>
+
+      <div style="max-height:75vh;overflow:auto;padding:16px;">
+        <div style="display:grid;gap:10px;">
+          <label>Partner Type
+            <select id="aff-partner-type" style="width:100%">
+              <option value="affiliate">Affiliate</option>
+              <option value="agency">Agency</option>
+              <option value="reseller">Reseller</option>
+            </select>
+          </label>
+
+          <label>Pitch
+            <textarea id="aff-pitch" rows="4" placeholder="Tell us about your audience and how you’ll promote."></textarea>
+          </label>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <label>Niche <input id="aff-niche" placeholder="e.g., gaming, beauty"></label>
+            <label>Regions <input id="aff-regions" placeholder="e.g., AU/NZ, US, EU"></label>
+          </div>
+
+          <label>Monthly Clicks (est.) <input id="aff-clicks" type="number" min="0" step="1" placeholder="e.g., 12000"></label>
+
+          <label>Links (one per line)
+            <textarea id="aff-links" rows="3" placeholder="https://your-site
+https://instagram.com/you
+https://youtube.com/@you"></textarea>
+          </label>
+
+          <label>Desired Commission Rate (%) <input id="aff-rate" type="number" step="0.01" min="0" max="100" value="10"></label>
+
+          <div style="display:flex;gap:10px;position:sticky;top:0;">
+            <button id="aff-save-draft" style="padding:8px 14px;border-radius:8px;border:1px solid #444;background:#222;color:#fff;box-shadow:none;">Save Draft</button>
+            <button id="aff-submit" style="padding:8px 14px;border-radius:8px;border:1px solid #ffd062;background:#ffd062;color:#222;font-weight:700;box-shadow:none;">Submit Application</button>
+          </div>
+          <div id="aff-apply-msg" style="color:#bbb;font-size:.95em;"></div>
+        </div>
+
+        <hr style="margin:16px 0;border-color:#222;">
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-weight:700;">▾ Detected Profiles &amp; Stats</div>
+          <button id="aff-stats-refresh" style="background:#2654ff;border:none;color:#fff;padding:4px 10px;border-radius:8px;cursor:pointer;">Refresh</button>
+        </div>
+        <div id="aff-stats" style="display:grid;gap:10px;margin-top:10px;"></div>
+
+        <hr style="margin:16px 0;border-color:#222;">
+
+        <h4 style="margin:0 0 8px 0;">Your Applications</h4>
+        <div id="aff-my-apps"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // close handlers
+  modal.addEventListener('mousedown', (e) => { if (e.target === modal) modal.style.display='none'; });
+  document.getElementById('close-affiliate-apply-modal').addEventListener('click', ()=> modal.style.display='none');
+
+  // buttons
+  document.getElementById('aff-save-draft').addEventListener('click', ()=> aff_submitApplication(false));
+  document.getElementById('aff-submit').addEventListener('click', ()=> aff_submitApplication(true));
+  document.getElementById('aff-stats-refresh').addEventListener('click', aff_refreshDetectedStats);
+}
+
+// ---------- Draft/Submit handler (calls Edge Function: affiliate-apply) ----------
+async function aff_submitApplication(submit){
+  const msg = document.getElementById('aff-apply-msg');
+  const pitch = (document.getElementById('aff-pitch')?.value || '').trim();
+
+  // FamBot moderation on pitch
+  const { data: { session } } = await supabase.auth.getSession();
+  if (pitch) {
+    const res = await famBotModerateWithModal({
+      user_id: session?.user?.id,
+      content: pitch,
+      jwt: session?.access_token,
+      type: 'affiliate_pitch'
+    });
+    if (!res.allowed) return;
+  }
+
+  const body = {
+    partner_type: document.getElementById('aff-partner-type')?.value || 'affiliate',
+    pitch,
+    audience: {
+      niche: (document.getElementById('aff-niche')?.value || '').trim() || null,
+      regions: (document.getElementById('aff-regions')?.value || '').trim() || null,
+      monthly_clicks: Number(document.getElementById('aff-clicks')?.value || 0)
+    },
+    links: (document.getElementById('aff-links')?.value || '')
+      .split('\n').map(s=>s.trim()).filter(Boolean),
+    desired_rate: Number(document.getElementById('aff-rate')?.value || 0),
+
+    // >>> Include the captured snapshot so it persists on the row <<<
+    stats_snapshot: AFF_SNAPSHOT || null,
+    stats_captured_at: AFF_SNAPSHOT_AT || null,
+
+    submit
+  };
+
+  msg.style.color = '#bbb';
+  msg.textContent = submit ? 'Submitting…' : 'Saving draft…';
+
+  try {
+    const resp = await fetch(`${aff_functionsBase()}/affiliate-apply`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${await aff_getJwt()}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      mode: 'cors',
+    });
+    const json = await resp.json().catch(()=>({ ok:false, error:'Bad JSON' }));
+    if (!json.ok) throw new Error(json.error || 'Unknown error');
+
+    msg.style.color = '#21d32e';
+    msg.textContent = submit ? 'Application submitted!' : 'Draft saved.';
+    await aff_refreshMyApplications();
+  } catch (e) {
+    msg.style.color = '#f66';
+    msg.textContent = 'Error: ' + (e.message || e);
+  }
+}
+
+// ---------- Live “Detected Profiles & Stats” (OAuth URLs only; builds snapshot) ----------
+async function aff_refreshDetectedStats(){
+  const box = document.getElementById('aff-stats');
+  if (!box) return;
+  box.innerHTML = '<div style="color:#bbb;">Scanning connected accounts…</div>';
+
+  const jwt = await aff_getJwt();
+  const headers = { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' };
+
+  async function callFn(name){
+    const base = `${aff_functionsBase()}/${name}`;
+    let r = await fetch(base, { method:'POST', headers, mode:'cors', cache:'no-store' }).catch(()=>null);
+    if (!r || !r.ok) r = await fetch(base, { method:'GET', headers, mode:'cors', cache:'no-store' }).catch(()=>null);
+    if (!r || !r.ok) throw new Error(`${name}: ${r ? r.status : 'network'}`);
+    return r.json();
+  }
+
+  const work = [
+    ['YouTube','get-youtube-stats'],
+    ['TikTok','get-tiktok-stats'],
+    ['Twitch','get-twitch-stats'],
+    ['Instagram','get-instagram-stats'],
+    ['Facebook','get-facebook-page-insights'],
+  ].map(([label, fn]) => callFn(fn).then(d => ({label, ok:true, data:d})).catch(err => ({label, ok:false, err:String(err?.message||err)})));
+
+  const results = await Promise.allSettled(work);
+
+  // De-dupe by normalized URL; start with what's in the textarea already
+  const linksBox   = document.getElementById('aff-links');
+  const existingRaw  = (linksBox?.value || '').split('\n').map(s=>s.trim()).filter(Boolean);
+  const existingNorm = new Set(existingRaw.map(aff_normUrl).filter(Boolean));
+
+  // Helper: coerce any shape -> array of strings
+  function toUrlArray(x){
+    if (!x) return [];
+    if (typeof x === 'string') return [x];
+    if (Array.isArray(x)) return x.filter(v => typeof v === 'string');
+    if (typeof x === 'object') {
+      const vals = Object.values(x).flat();
+      return vals.filter(v => typeof v === 'string');
+    }
+    return [];
+  }
+
+  // fresh snapshot we’ll send with the application
+  const snapshot = {};
+
+  const cards = results.map((wrap) => {
+    const res = wrap.value || wrap.reason;
+    if (!res || !res.label) return '';
+
+    if (!res.ok) {
+      return `
+        <div style="border:1px solid #333;border-radius:10px;padding:10px;background:#141414">
+          <div style="font-weight:700">${aff_esc(res.label)}</div>
+          <div style="color:#f66;font-size:.95em;margin-top:4px;">No stats (not linked or blocked by CORS)</div>
+        </div>
+      `;
+    }
+
+    const d = res.data || {};
+
+    // Only accept URLs provided (directly or as arrays/objects) by the OAuth-backed function
+    const urlCandidates = [
+      aff_get(d, ['url','link','permalink','permalink_url','page_url','channel_url','profile_url','external_url','website']),
+      aff_get(d, ['urls']),
+      aff_get(d, ['links']),
+      aff_get(d, ['profiles']),
+      aff_get(d, ['page.link']),
+      aff_get(d, ['page.permalink_url']),
+      aff_get(d, ['data.0.link','pages.0.link','accounts.0.link','accounts.data.0.link']),
+    ];
+    const discoveredUrls = urlCandidates.flatMap(toUrlArray);
+
+    // Fallback: derive from OAuth identifiers when URL not provided
+    if (!discoveredUrls.length) {
+      if (res.label === 'YouTube') {
+        const handle = aff_get(d, ['handle','snippet.customUrl','items.0.snippet.customUrl','customUrl','channel.handle']);
+        const chanId = aff_get(d, ['channelId','channel.id','items.0.id','id']);
+        if (typeof handle === 'string' && handle.trim()) {
+          discoveredUrls.push(handle.startsWith('@') ? `https://youtube.com/${handle.trim()}` : `https://youtube.com/c/${String(handle).replace(/^c\//,'')}`);
+        } else if (chanId) {
+          discoveredUrls.push(`https://youtube.com/channel/${chanId}`);
+        }
+      } else if (res.label === 'TikTok') {
+        const u = aff_get(d, ['username','unique_id','profile.username']);
+        if (u) discoveredUrls.push(`https://www.tiktok.com/@${u}`);
+      } else if (res.label === 'Twitch') {
+        const login = aff_get(d, ['login','user_login','profile.login','user.login','users.0.login','data.0.login']);
+        if (login) discoveredUrls.push(`https://twitch.tv/${login}`);
+      } else if (res.label === 'Instagram') {
+        const u = aff_get(d, ['username','profile.username']);
+        if (u) discoveredUrls.push(`https://instagram.com/${u}`);
+      } else if (res.label === 'Facebook') {
+        const uname = aff_get(d, ['page_username','username','page.username','pages.0.username','accounts.0.username','accounts.data.0.username']);
+        const pid   = aff_get(d, ['page_id','id','page.id','pages.0.id','accounts.0.id','accounts.data.0.id']);
+        if (uname) discoveredUrls.push(`https://facebook.com/${uname}`);
+        else if (pid) discoveredUrls.push(`https://facebook.com/${pid}`);
+      }
+    }
+
+    // Append any new URLs (de-duped)
+    if (linksBox && discoveredUrls.length) {
+      let dirty = false;
+      for (const u of discoveredUrls) {
+        const norm = aff_normUrl(u);
+        if (norm && !existingNorm.has(norm)) {
+          existingNorm.add(norm);
+          existingRaw.push(u);
+          dirty = true;
+        }
+      }
+      if (dirty) linksBox.value = existingRaw.join('\n');
+    }
+
+    // Render numbers + add to snapshot
+    let inner = '';
+
+    if (res.label === 'YouTube') {
+      const subs = aff_num(aff_get(d, [
+        'subscribers','subscriber_count',
+        'statistics.subscriberCount','data.statistics.subscriberCount',
+        'channel.statistics.subscriberCount','channel.subscriberCount',
+        'items.0.statistics.subscriberCount'
+      ]));
+      const views = aff_num(aff_get(d, [
+        'views','viewCount',
+        'statistics.viewCount','data.statistics.viewCount',
+        'channel.statistics.viewCount','channel.viewCount',
+        'items.0.statistics.viewCount'
+      ]));
+      const videos = aff_num(aff_get(d, [
+        'videos','videoCount',
+        'statistics.videoCount','data.statistics.videoCount',
+        'channel.statistics.videoCount','channel.videoCount',
+        'items.0.statistics.videoCount'
+      ]));
+      inner = [
+        subs!=null  ? `<b>Subs:</b> ${aff_esc(subs)}`   : '',
+        views!=null ? `<b>Views:</b> ${aff_esc(views)}` : '',
+        videos!=null? `<b>Videos:</b> ${aff_esc(videos)}`: ''
+      ].filter(Boolean).join(' &nbsp; ');
+      snapshot.youtube = { url: discoveredUrls[0] || null, subscribers: subs ?? null, views: views ?? null, videos: videos ?? null };
+
+    } else if (res.label === 'TikTok') {
+      const followers = aff_num(aff_get(d, ['followers','followers_count','follower_count','profile.follower_count','data.followers']));
+      const likes     = aff_num(aff_get(d, ['likes','likes_count','heart','profile.total_heart','data.likes']));
+      const videos    = aff_num(aff_get(d, ['videos','video_count','profile.video_count','data.videos']));
+      inner = [
+        followers!=null ? `<b>Followers:</b> ${aff_esc(followers)}` : '',
+        likes!=null     ? `<b>Likes:</b> ${aff_esc(likes)}`         : '',
+        videos!=null    ? `<b>Videos:</b> ${aff_esc(videos)}`       : ''
+      ].filter(Boolean).join(' &nbsp; ');
+      snapshot.tiktok = { url: discoveredUrls[0] || null, followers: followers ?? null, likes: likes ?? null, videos: videos ?? null };
+
+    } else if (res.label === 'Twitch') {
+      const followers = aff_num(aff_get(d, ['followers','follower_count','total','data.total']));
+      const live      = aff_get(d,  ['live','is_live','streaming','data.live']);
+      const views     = aff_num(aff_get(d, ['view_count','views','data.views']));
+      inner = [
+        followers!=null ? `<b>Followers:</b> ${aff_esc(followers)}` : '',
+        live!=null      ? `<b>Live:</b> ${aff_esc(live)}`           : '',
+        views!=null     ? `<b>Views:</b> ${aff_esc(views)}`         : ''
+      ].filter(Boolean).join(' &nbsp; ');
+      snapshot.twitch = { url: discoveredUrls[0] || null, followers: followers ?? null, live: !!live, views: views ?? null };
+
+    } else if (res.label === 'Instagram') {
+      const followers = aff_num(aff_get(d, ['followers','followers_count','account.followers_count','insights.followers','data.followers']));
+      const posts     = aff_num(aff_get(d, ['posts','media_count','data.media_count']));
+      const er        = aff_get(d,  ['engagement_rate','eng_rate','data.engagement_rate']);
+      inner = [
+        followers!=null ? `<b>Followers:</b> ${aff_esc(followers)}` : '',
+        posts!=null     ? `<b>Posts:</b> ${aff_esc(posts)}`         : '',
+        er!=null        ? `<b>ER (12):</b> ${aff_esc(er)}`          : ''
+      ].filter(Boolean).join(' &nbsp; ');
+      snapshot.instagram = { url: discoveredUrls[0] || null, followers: followers ?? null, posts: posts ?? null, engagement_rate: er ?? null };
+
+    } else if (res.label === 'Facebook') {
+      const followers = aff_num(aff_get(d, ['followers','page_followers','page_follows','data.page_followers']));
+      const likes     = aff_num(aff_get(d, ['page_likes','likes','data.page_likes']));
+      const reach28   = aff_num(aff_get(d, ['reach_28d','page_impressions_unique_28d','reach','data.reach_28d']));
+      inner = [
+        followers!=null ? `<b>Followers:</b> ${aff_esc(followers)}` : '',
+        likes!=null     ? `<b>Page Likes:</b> ${aff_esc(likes)}`    : '',
+        reach28!=null   ? `<b>Reach (28d):</b> ${aff_esc(reach28)}` : ''
+      ].filter(Boolean).join(' &nbsp; ');
+      snapshot.facebook = { url: discoveredUrls[0] || null, followers: followers ?? null, likes: likes ?? null, reach_28d: reach28 ?? null };
+    }
+
+    return `
+      <div style="border:1px solid #333;border-radius:10px;padding:10px;background:#141414">
+        <div style="font-weight:700">${aff_esc(res.label)} <span style="color:#21d32e;font-weight:600;margin-left:6px;">(ok)</span></div>
+        <div style="margin-top:6px;font-size:.98em;">${inner || '<span style="color:#bbb;">Connected</span>'}</div>
+      </div>
+    `;
+  }).join('');
+
+  box.innerHTML = cards || '<div style="color:#bbb;">No connected accounts detected.</div>';
+
+  // save snapshot for submit
+  AFF_SNAPSHOT = Object.keys(snapshot).length ? snapshot : null;
+  AFF_SNAPSHOT_AT = AFF_SNAPSHOT ? new Date().toISOString() : null;
+}
+
+// ---------- “Your Applications” table ----------
+async function aff_refreshMyApplications(){
+  const el = document.getElementById('aff-my-apps');
+  if (!el) return;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) { el.innerHTML = '<p>Please log in.</p>'; return; }
+
+  const { data, error } = await supabase
+    .from('affiliate_applications')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) { el.innerHTML = `<p style="color:#f66;">${aff_esc(error.message)}</p>`; return; }
+  if (!data?.length) { el.innerHTML = '<p>No applications yet.</p>'; return; }
+
+  const rows = data.map(a => `
+    <tr>
+      <td>${aff_esc(a.id)}</td>
+      <td>${aff_esc(a.partner_type)}</td>
+      <td>${aff_esc(a.status)}</td>
+      <td>${a.desired_rate!=null ? aff_esc(Number(a.desired_rate).toFixed(2))+'%' : '-'}</td>
+      <td>${a.created_at ? new Date(a.created_at).toLocaleString() : ''}</td>
+    </tr>
+  `).join('');
+
+  el.innerHTML = `
+    <div style="overflow:auto;">
+      <table border="1" cellspacing="0" cellpadding="6" style="width:100%;border-color:#333;">
+        <thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Desired Rate</th><th>Created</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+});
