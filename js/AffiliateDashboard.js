@@ -43,7 +43,7 @@ function fmtCurrency(v) {
 }
 function buildReferralUrl(code) {
   const base = window?.ENV_PUBLIC_SITE_BASE_URL || window?.location?.origin || 'https://sponsorsorter.com';
-  return `${String(base).replace(/\/+$/, '')}/?ref=${encodeURIComponent(code || '')}`;
+  return `${String(base).replace(/\/+$/, '')}/signup.html?ref=${encodeURIComponent(code || '')}`;
 }
 
 // Read-only: get the caller's referral link (unchanged)
@@ -326,3 +326,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn('[AffiliateDashboard] init failed', e);
   }
 });
+
