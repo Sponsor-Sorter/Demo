@@ -5661,7 +5661,24 @@ input:checked + .slider:before {
 
 /* global search */
 
+/* Remove/override any `.stars { color: ... }` you had */
+.search-item.kind-profile .stars {
+  letter-spacing: 1px;
+  line-height: 18px;
+  min-height: 18px;        /* keep rows even */
+}
 
+/* Per-star colors */
+.search-item.kind-profile .stars .star.full  { color: #FFD600; } /* gold */
+.search-item.kind-profile .stars .star.empty { color: #888a8f; } /* gray */
+
+
+.avatar{
+  width: 50px;
+  height: 50px; 
+  opacity: .9;
+  border-radius: 10px;
+}
 .nav-search {
   position: relative;
   display: flex;
@@ -5669,23 +5686,173 @@ input:checked + .slider:before {
   gap: 1px;
   max-width: 220px;
   background: url("./navimg.png") center / 100% 110% no-repeat;
-  background-position: 0px -4px;
   
 }
 
+/* ===== Affiliate Totals Card ===== */
+:root{
+  --aff-bg-soft:#2a2c2f;
+  --aff-border:#3c4147;        /* subtle border */
+  --aff-text:#f3f5f7;          /* primary text */
+  --aff-muted:#aeb6bf;         /* secondary text */
+  --aff-accent:#77e48f;        /* numbers/accent */
+  --aff-shadow: 0 8px 30px rgba(0,0,0,.35);
+  --aff-radius: 18px;
+}
+
+/* Card container */
+#aff-stats-card.card{
+  background: linear-gradient(180deg, var(--aff-bg), var(--aff-bg-soft));
+  border: 1px solid var(--aff-border);
+  border-radius: var(--aff-radius);
+  box-shadow: var(--aff-shadow);
+  overflow: hidden;
+}
+
+
+/* Header */
+#aff-stats-card .card-header{
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--aff-border);
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+}
+#aff-stats-card .card-header h3{
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: var(--aff-text);
+}
+
+/* Grid of stats */
+#aff-stats-card .card-body{
+  padding: 18px 20px 22px;
+}
+#aff-stats{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+}
+
+/* Stat tile */
+#aff-stats .stat{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--aff-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+#aff-stats-dashboard{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+}
+
+/* Stat tile */
+#aff-stats-dashboard .stat{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--aff-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+
+
+/* Label + value */
+#aff-stats .label{
+  color: var(--aff-muted);
+  font-size: .82rem;
+  letter-spacing: .25px;
+  margin-bottom: 8px;
+}
+#aff-stats .value{
+  color: var(--aff-accent);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+/* Make currency lines stack nicely (e.g., "USD 0.00") */
+#aff-stats .value small{
+  font-weight: 600;
+  opacity: .9;
+  margin-right: 6px;
+}
+
+/* Section heading above the card if you use one */
+#affiliate-dashboard-section .panel-header h2{
+  color: var(--aff-text);
+  margin: 0 0 6px 0;
+}
+#affiliate-dashboard-section .panel-header .muted{
+  color: var(--aff-muted);
+}
+
+/* Referral link card polish (optional) */
+#aff-link-card.card{
+  background: linear-gradient(180deg, var(--aff-bg), var(--aff-bg-soft));
+  border: 1px solid var(--aff-border);
+  border-radius: var(--aff-radius);
+  box-shadow: var(--aff-shadow);
+  overflow: hidden;
+}
+#aff-link-card .card-header{
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--aff-border);
+  background: rgba(255,255,255,0.02);
+}
+#aff-link-card .card-body{
+  padding: 18px 20px 22px;
+}
+#aff-link-card input[readonly]{
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--aff-border);
+  color: var(--aff-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: .95rem;
+}
+#aff-link-card button{
+  border: 1px solid var(--aff-border);
+  box-shadow: none;
+  background: rgba(255,255,255,0.06);
+  color: var(--aff-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease, border-color .15s ease;
+}
+
+
+/* Mobile */
+@media (max-width: 900px){
+  #aff-stats{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 560px){
+  #aff-stats{ grid-template-columns: 1fr; }
+}
+
+
+.admin-affiliates-section {
+  width: 90% !important;
+  max-width: 900px;
+}
 
 #global-search-input {
   width: 90%;
   padding: 8px 8px;
   border-radius: 8px;
-  border: 1px solid var(--border, #444);
+  border: none;
   background: var(--panel-2, #2b2b2b);
   color: var(--txt, #fff);
   outline: none;
 }
 
 #global-search-input:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
   border-color: #3b82f6;
 }
 
@@ -6713,6 +6880,7 @@ input:checked + .slider:before {
   margin: 0 !important;
   padding: auto !important;
   gap: 8px !important;
+  cursor: pointer !important;
   
 }
 
