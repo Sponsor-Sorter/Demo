@@ -7,11 +7,17 @@
   <title>Sponsee Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- replace the current script tag -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
-  <script type="module" src="./js/globalSearch.js"></script>
+<script type="module">
+  import { supabase } from './js/supabaseClient.js';
+  // Point to your Supabase Functions endpoint
+  supabase.functionsUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
+</script>
+
 </head>
 <body>
 
@@ -22,21 +28,26 @@
       <div>
         <background-img class="navimg" src="navimg.png" alt="">
         <nav>
-                    <!-- Global Search (Nav) -->
-        <div class="nav-search">
-          <input
-            id="global-search-input"
-            type="search"
-            placeholder="Global Search..."
-            autocomplete="off"
-            aria-label="Global search"
-          />
-          <div id="global-search-results" class="search-popover" hidden></div>
-        </div>
+          <!-- Global Search (Nav) -->
+<div class="nav-search">
+  <input
+    id="global-search-input"
+    type="search"
+    placeholder="Global Search..."
+    autocomplete="off"
+    aria-label="Global search"
+  />
+  <div id="global-search-results" class="search-popover" hidden></div>
+</div>
+
+<!-- Load the search logic after supabaseClient.js -->
+<script type="module" src="./js/globalSearch.js"></script>
+
           <li><a href="index.html">Home</a></li>
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav class="nav">
+          
           <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html">Logout</a></li>
         <li id="settings-notif-bar" style="display:inline;">
@@ -75,7 +86,6 @@
             <span class="slider round"></span>
           </label>
         </li>
-        <li>
          <li>
           <span style="font-size:1em;">Completion Recaps</span>
           <label class="switch">
@@ -83,6 +93,7 @@
             <span class="slider round"></span>
           </label>
        </li>
+        <li>
 
           <button type="button" class="dropdown-item" id="oauth-link-btn">
             OAuth Link
@@ -98,6 +109,12 @@
             Subscription & Free Month Rewards
           </button>
         </li>
+        <li>
+          <button type="button" class="dropdown-item" id="open-affiliate-apply">
+            Apply to be an Affiliate
+          </button>
+        </li>
+
       </ul>
     </div>
   </div>
@@ -115,7 +132,6 @@
   <section class="userprofile">
     <h2>Welcome, <span id="user-name">[Username]</span></h2>
     <fieldset>
-      <legend>Profile Details</legend>
       <div class="profile-header">
         <div class="profile-picture">
           <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
@@ -670,6 +686,67 @@
 
 </section>
 
+<fieldset>
+<section id="affiliate-dashboard-section" class="panel">
+  <div class="panel-header">
+    <h2>Affiliate</h2>
+    <p class="muted">Share your referral link and track your commissions.</p>
+  </div>
+
+  <div class="card" id="aff-link-card">
+    <div class="card-header"><h3>Your Referral Link</h3></div>
+    <div class="card-body">
+      <div class="row" style="gap:10px; align-items:center;">
+        <input id="aff-link-input" type="text" readonly />
+        <button id="aff-copy-btn">Copy</button>
+        <button id="aff-share-btn">Share</button><br>
+        <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
+      </div>
+      <p class="muted" style="margin-top:8px;">
+        Need a custom code? Contact support — code creation/changes are admin-only.
+      </p>
+    </div>
+  </div>
+
+  <div class="card" id="aff-stats-card" style="margin-top:16px;">
+    <div class="card-header"><h3>Your Totals</h3></div>
+    <div class="card-body">
+      <div id="aff-stats" class="stats-grid">
+        <!-- Row 1: Pending | Conversions | Approved -->
+        <div class="stat"><div class="label">Pending Comm.</div><div class="value" id="aff-pending">—</div></div>
+        <div class="stat"><div class="label">Conversions</div><div class="value" id="aff-total-conv">—</div></div>
+        <div class="stat"><div class="label">Approved Comm.</div><div class="value" id="aff-approved">—</div></div>
+
+        <!-- Row 2: GMV | Paid -->
+        <div class="stat"><div class="label">Total GMV</div><div class="value" id="aff-gmv">—</div></div>
+        <div class="stat"><div class="label">Paid Comm.</div><div class="value" id="aff-paid">—</div></div>
+      </div>
+      <!-- under the totals card body -->
+<div style="margin-top:12px;">
+  <button id="aff-request-payout-btn">Request Payout</button>
+</div>
+
+    </div>
+  </div>
+</section>
+</fieldset>
+<style>
+
+  
+  #aff-stats.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 16px;
+}
+#aff-stats .stat:nth-last-child(2) { grid-column: 1 / 2; }
+#aff-stats .stat:nth-last-child(1) { grid-column: 3 / 4; }
+
+</style>
+
+<script type="module" src="./js/AffiliateDashboard.js"></script>
+
+</section>
+
  <!-- FOOTER -->
     <footer class="footercomplete">
         <div class="footer-text">
@@ -728,6 +805,8 @@
       : "logos.png";
     document.getElementById("profile-pic").src = profilePic;
 
+
+    
     // ==== BADGE LOGIC FOR SPONSEE ====
     injectUserBadge(user.email, '#profile-badge-slot', 'sponsee_email');
 
@@ -777,6 +856,7 @@
         `;
       }).join(' ');
     }
+    
     const linkedPlatformsHTML = extractPlatformBadges(user.social_handles);
     socialHandlesSpan.innerHTML = linkedPlatformsHTML;
     linkedAccountsDiv.innerHTML = linkedPlatformsHTML;
@@ -795,8 +875,9 @@
     });
     
   });
-
 </script>
+
+
 <script type="module" src="./js/settings.js"></script>
 <script type="module">import './js/sponseeOffers.js';</script>
 <script type="module">import './js/sponseeLogic.js';</script>
@@ -954,6 +1035,3 @@
 
 </body>
 </html>
-
-
-
