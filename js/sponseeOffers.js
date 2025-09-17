@@ -1227,87 +1227,88 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Accept Payment (triggers payout)
-    if (e.target.classList.contains('receive-payment')) {
-      let modal = document.createElement('div');
-      modal.innerHTML = `
-        <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
-        <div class="modal-content" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-          background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
-          <h3 style="margin-top:0">Payout Information</h3>
-          <label><strong>Payout Method:</strong>
-            <select id="payout-method" style="margin-left:7px;padding:3px 8px;">
-              <option value="">Select</option>
-              <option value="Bank">Bank Transfer</option>
-              <option value="PayPal">PayPal</option>
-              <option value="Stripe">Stripe</option>
-            </select>
-          </label>
-          <div style="margin:10px 0 5px 0;">
-            <label><strong>Payout Reference:</strong></label>
-            <input id="payout-reference" style="width:100%;padding:5px;" placeholder="e.g. bank: BSB-ACC, PayPal email, Stripe Connect">
-          </div>
-          <div style="margin-top:18px;display:flex;gap:10px;">
-            <button id="confirm-payout" style="background:#28a745;color:#fff;">Confirm</button>
-            <button id="cancel-payout" style="background:#ddd;">Cancel</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
+// Accept Payment (triggers payout)
+if (e.target.classList.contains('receive-payment')) {
+  let modal = document.createElement('div');
+  modal.innerHTML = `
+    <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
+    <div class="modal-content" style="width:70%;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
+      <h3 style="margin-top:0;color:black;">Confirm Payout</h3>
+      <p style="color:black;">Do you want to move this payment into your wallet balance?</p>
+      <div style="margin-top:18px;display:flex;gap:10px;">
+        <button id="confirm-payout" style="background:#28a745;color:#fff;">Confirm</button>
+        <button id="cancel-payout" style="background:#ddd;">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
 
-      modal.querySelector('#cancel-payout').onclick = () => modal.remove();
+  modal.querySelector('#cancel-payout').onclick = () => modal.remove();
 
-      modal.querySelector('#confirm-payout').onclick = async () => {
-        const method = modal.querySelector('#payout-method').value;
-        const reference = modal.querySelector('#payout-reference').value.trim();
-        if (!method || !reference) {
-          alert("Please select a payout method and enter the reference details.");
-          return;
-        }
-        const { error: updateError } = await supabase
-          .from('private_offers')
-          .update({ stage: 5 })
-          .eq('id', offerId);
-        if (updateError) {
-          alert(`Failed to mark payment received: ${updateError.message}`);
-          return;
-        }
-        const { data: existingPayouts, error: payoutError } = await supabase
-          .from('payouts')
-          .select('id')
-          .eq('offer_id', offerId)
-          .limit(1);
-        if (!payoutError && (!existingPayouts || existingPayouts.length === 0)) {
-          const offerAmount = offerCard.querySelector('.offer-right').textContent.match(/\$(\d+(\.\d+)?)/)?.[1] || "0";
-          await supabase.from('payouts').insert([{
-            offer_id: offerId,
-            sponsee_id: sponsee_id,
-            sponsee_email: sponsee_email,
-            payout_amount: offerAmount,
-            payout_method: method,
-            payout_reference: reference,
-            status: 'pending'
-          }]);
-        }
-        await notifyOfferUpdate({
-          to_user_id: sponsorId,
-          offer_id: offerId,
-          type: 'payment_received',
-          title: 'Payment Marked as Received',
-          message: `${sponsee_username} marked payment as received.`
-        });
-        await notifyPayout({
-          to_user_id: sponsee_id,
-          payout_amount: offerCard.querySelector('.offer-right').textContent.match(/\$\d+/)?.[0] || 'Amount',
-          payout_currency: 'USD',
-          payout_status: 'pending',
-          offer_id: offerId
-        });
-        modal.remove();
-        await loadSponseeOffers();
-      };
+  modal.querySelector('#confirm-payout').onclick = async () => {
+    const offerAmount = parseFloat(
+      offerCard.querySelector('.offer-right').textContent.match(/\$(\d+(\.\d+)?)/)?.[1] || "0"
+    );
+
+    // 1. Mark offer stage = 5
+    const { error: updateError } = await supabase
+      .from('private_offers')
+      .update({ stage: 5 })
+      .eq('id', offerId);
+    if (updateError) {
+      alert(`Failed to mark payment received: ${updateError.message}`);
       return;
     }
+
+    // 2. Credit amount into sponsee wallet
+    const { data: walletRow, error: walletFetchErr } = await supabase
+      .from('users_extended_data')
+      .select('wallet')
+      .eq('user_id', sponsee_id)
+      .maybeSingle();
+
+    if (walletFetchErr) {
+      alert(`Failed to fetch wallet: ${walletFetchErr.message}`);
+      return;
+    }
+
+    const currentWallet = Number(walletRow?.wallet) || 0;
+    const newWallet = currentWallet + offerAmount;
+
+    const { error: walletUpdateErr } = await supabase
+      .from('users_extended_data')
+      .update({ wallet: newWallet })
+      .eq('user_id', sponsee_id);
+
+    if (walletUpdateErr) {
+      alert(`Failed to update wallet: ${walletUpdateErr.message}`);
+      return;
+    }
+
+    // 3. Send notifications
+    await notifyOfferUpdate({
+      to_user_id: sponsorId,
+      offer_id: offerId,
+      type: 'payment_received',
+      title: 'Payment Marked as Received',
+      message: `${sponsee_username} marked payment as received.`
+    });
+
+    await notifyPayout({
+      to_user_id: sponsee_id,
+      payout_amount: `$${offerAmount.toFixed(2)}`,
+      payout_currency: 'USD',
+      payout_status: 'credited',
+      offer_id: offerId
+    });
+
+    modal.remove();
+    await loadSponseeOffers();
+    await updateSponseeWallet(); // refresh wallet display
+  };
+  return;
+}
 
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
