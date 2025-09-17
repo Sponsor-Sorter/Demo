@@ -12,6 +12,8 @@
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
+    <script type="module" src="./js/wallet.js"></script>
+
 <script type="module">
   import { supabase } from './js/supabaseClient.js';
   // Point to your Supabase Functions endpoint
@@ -131,6 +133,10 @@
   <!-- User Profile -->
   <section class="userprofile">
     <h2>Welcome, <span id="user-name">[Username]</span></h2>
+    <div class="wallet">Wallet: $[Wallet] 
+      <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
+    </div>
+
     <fieldset>
       <div class="profile-header">
         <div class="profile-picture">
@@ -703,7 +709,7 @@
         <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
       </div>
       <p class="muted" style="margin-top:8px;">
-        Need a custom code? Contact support — code creation/changes are admin-only.
+        Want a custom code? Contact support — code creation/changes are admin-only.
       </p>
     </div>
   </div>
