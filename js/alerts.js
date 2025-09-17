@@ -423,7 +423,7 @@ export async function notifyPayout({ to_user_id, payout_amount, payout_currency,
     email,
     type: 'payout',
     title: `${statusText}`,
-    message: `You have a payout of ${payout_amount} ${payout_currency} on the way! Please allow upto 3 days for payment.`,
+    message: `You have a payout of ${payout_amount} ${payout_currency} credited to your account, request payout in your wallet.`,
     related_offer_id: offer_id || null
   });
 }
@@ -441,3 +441,4 @@ export async function notifyNewOffer({ offer_id, to_user_id, from_username, offe
     related_offer_id: offer_id
   });
 }
+
