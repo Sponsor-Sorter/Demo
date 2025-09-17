@@ -1,26 +1,26 @@
 // ./js/AffiliateDashboard.js
 //
-// Read-only affiliate wiring for dashboardsponsee.html
-// - Keeps your existing IDs (aff-*), including the modal ones
-// - Reads referral link via your existing Edge Fn (unchanged)
-// - Reads totals directly from public.affiliate_conversions
-//   * Commission = (commission_rate% from affiliate_partners) * price
-//   * price = row.amount OR $10 default if null
-// - "Request Payout" stays ENABLED at all times (no disabling)
-//   (We use a local 'requesting' flag to prevent duplicate submits)
-//
-// No triggers. No schema changes in-db triggers.
+// Affiliate dashboard for dashboardsponsee.html
+// - Pay to Wallet: flips approved rows -> paid (RLS), then credits wallet
+// - Row commission math: $10 * (row.commission %)
+// - If RLS blocks and user is admin, uses Edge Function to flip, then credits
+// - Sends user a notification that $X was credited to their wallet
+// - No triggers. No schema changes.
 
 import { supabase } from './supabaseClient.js';
-import { notifyOfferUpdate as toast } from './alerts.js';
+// IMPORTANT: only import notifyPayout for real notifications.
+// We implement a local toast() for simple UI messages.
+import { notifyPayout } from './alerts.js';
 
-// Functions base (kept for link-only)
+const DEFAULT_SIGNUP_PRICE = 10;
+
+// ----- functions base (referral + mark-paid EF) -----
 const functionsBase =
   (supabase && supabase.functionsUrl) ||
   (window?.SUPABASE_FUNCTIONS_URL) ||
   `${supabase?.supabaseUrl || ''}/functions/v1`;
 
-/* ------------ utils ------------ */
+/* ---------------- utils ---------------- */
 function setTextScoped(rootId, id, val) {
   const root = document.getElementById(rootId);
   if (!root) return;
@@ -46,7 +46,26 @@ function buildReferralUrl(code) {
   return `${String(base).replace(/\/+$/, '')}/signup.html?ref=${encodeURIComponent(code || '')}`;
 }
 
-// Read-only: get the caller's referral link (unchanged)
+// Lightweight UI toast (no alerts.js dependency)
+function toast(message) {
+  try {
+    const id = 'mini-toast';
+    const old = document.getElementById(id);
+    if (old) old.remove();
+    const el = document.createElement('div');
+    el.id = id;
+    el.textContent = String(message || '');
+    el.style.cssText = `
+      position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+      background:#222;color:#fff;padding:10px 14px;border-radius:10px;
+      box-shadow:0 6px 22px rgba(0,0,0,.35);z-index:99999;font-size:14px;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1800);
+  } catch { /* ignore */ }
+}
+
+/* ------------- referral link (unchanged) ------------- */
 async function getMyReferralLink(accessToken) {
   const res = await fetch(`${functionsBase}/affiliate-get-referral-link`, {
     method: 'GET',
@@ -60,51 +79,22 @@ async function getMyReferralLink(accessToken) {
   return json; // { ok:true, link: { user_id, code } | null }
 }
 
-/* ------------ read totals straight from DB (rate-based commission) ------------ */
+/* ------------- totals (row.commission% of $10) ------------- */
 async function getAffiliateTotalsFromDB(userId) {
-  const DEFAULT_SIGNUP_PRICE = 10;
-
-  // 1) Resolve partner_id + commission_rate for this user
-  const { data: partnerRow, error: pErr } = await supabase
+  const { data: partnerRow } = await supabase
     .from('affiliate_partners')
-    .select('id, commission_rate')
+    .select('id')
     .eq('user_id', userId)
     .maybeSingle();
-
-  if (pErr) {
-    console.warn('[AffiliateDashboard] partner lookup failed', pErr);
-    return {};
-  }
   if (!partnerRow?.id) return {};
 
   const partnerId = partnerRow.id;
-  const ratePct = toNum(partnerRow.commission_rate); // e.g. 10 => 10%
-  // const rate = ratePct / 100; // not used directly; inline below
 
-  // 2) Pull all conversions for this partner (only needed columns)
-  const { data: rows, error: cErr } = await supabase
+  const { data: rows } = await supabase
     .from('affiliate_conversions')
-    .select('status, amount, referred_user_id')
+    .select('status, commission, referred_user_id')
     .eq('partner_id', partnerId);
 
-  if (cErr) {
-    console.warn('[AffiliateDashboard] conversions select failed', cErr);
-    return {};
-  }
-  if (!rows?.length) {
-    return {
-      partnerId,
-      ratePct,
-      total_conversions: 0,
-      unique_referred_users: 0,
-      total_gmv: 0,
-      pending_commission: 0,
-      approved_commission: 0,
-      paid_commission: 0
-    };
-  }
-
-  // 3) Aggregate — commission derived from rate * price
   let total_conversions = 0;
   let total_gmv = 0;
   let pending_commission = 0;
@@ -113,28 +103,22 @@ async function getAffiliateTotalsFromDB(userId) {
 
   const seenUsers = new Set();
 
-  for (const r of rows) {
+  for (const r of (rows || [])) {
     total_conversions += 1;
-
-    // price per conversion: prefer row.amount, else fallback to $10
-    const price = toNum(r.amount) || DEFAULT_SIGNUP_PRICE;
-    total_gmv += price;
-
+    total_gmv += DEFAULT_SIGNUP_PRICE;
     if (r.referred_user_id) seenUsers.add(r.referred_user_id);
 
-    const commissionForThisRow = price * (ratePct / 100);
+    const pct = toNum(r.commission);
+    const earnedUSD = DEFAULT_SIGNUP_PRICE * (pct / 100);
 
-    switch (String(r.status || '').toLowerCase()) {
-      case 'pending':  pending_commission  += commissionForThisRow; break;
-      case 'approved': approved_commission += commissionForThisRow; break;
-      case 'paid':     paid_commission     += commissionForThisRow; break;
-      default: break;
-    }
+    const st = String(r.status || '').toLowerCase();
+    if (st === 'pending')  pending_commission  += earnedUSD;
+    if (st === 'approved') approved_commission += earnedUSD;
+    if (st === 'paid')     paid_commission     += earnedUSD;
   }
 
   return {
     partnerId,
-    ratePct,
     total_conversions,
     unique_referred_users: seenUsers.size,
     total_gmv,
@@ -144,55 +128,179 @@ async function getAffiliateTotalsFromDB(userId) {
   };
 }
 
-/* ------------ payout helpers ------------ */
-// Never disable; only adjust label
-function setPayoutBtnLabel(btn, label) {
-  if (!btn) return;
-  if (label) btn.textContent = label;
+/* ------------- EF: mark approved -> paid (admin only) ------------- */
+async function markApprovedPaidViaEdge(partnerId, conversionIds = []) {
+  const { data: sessWrap } = await supabase.auth.getSession();
+  const accessToken = sessWrap?.session?.access_token;
+  if (!accessToken) return { ok: false, status: 401, message: 'No session' };
+
+  const res = await fetch(`${functionsBase}/affiliate-mark-approved-paid`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'apikey': supabase?.supabaseKey || '',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      partner_id: partnerId || undefined,
+      conversion_ids: Array.isArray(conversionIds) ? conversionIds : []
+    })
+  });
+
+  const payload = await res.json().catch(() => ({}));
+  if (!res.ok || payload?.ok === false) {
+    return { ok: false, status: res.status, payload };
+  }
+  return { ok: true, payload };
 }
 
-async function requestPayout() {
-  try {
-    const { data: sessData, error } = await supabase.auth.getSession();
-    if (error) throw error;
-    const access_token = sessData?.session?.access_token;
-    if (!access_token) throw new Error('No session');
+/* ------------- helper: is current user admin? ------------- */
+async function isCurrentUserAdmin() {
+  const { data: sessWrap } = await supabase.auth.getSession();
+  const uid = sessWrap?.session?.user?.id;
+  if (!uid) return false;
+  const { data } = await supabase
+    .from('users_extended_data')
+    .select('is_admin')
+    .eq('user_id', uid)
+    .maybeSingle();
+  return !!data?.is_admin;
+}
 
-    const res = await fetch(`${functionsBase}/affiliate-request-payout`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'apikey': supabase?.supabaseKey || '',
-        'Content-Type': 'application/json'
-      },
-      body: '{}' // not used by the function, but keeps it explicit
-    });
-
-    const data = await res.json().catch(() => ({}));
-    // show the server reason if it failed
-    if (!res.ok || data?.ok === false) {
-      const msg = data?.message || data?.details || 'Could not request payout.';
-      toast(msg);
-      console.log('[affiliate-request-payout] error', { status: res.status, data });
-      return false;
-    }
-
-    toast(`Payout requested for ${fmtCurrency(data.amount)}.`);
-    return true;
-
-  } catch (e) {
-    console.warn('[AffiliateDashboard] requestPayout failed', e);
-    toast(e?.message || 'Could not request payout.');
+/* ------------- Pay to Wallet (mark first, then credit + notify) ------------- */
+async function payApprovedToWallet(userId) {
+  // 1) Resolve partner & fetch APPROVED rows with id + commission
+  const { data: partnerRow } = await supabase
+    .from('affiliate_partners')
+    .select('id')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (!partnerRow?.id) {
+    toast('Affiliate partner not found.');
     return false;
   }
+  const partnerId = partnerRow.id;
+
+  const { data: approvedRows } = await supabase
+    .from('affiliate_conversions')
+    .select('id, commission, status')
+    .eq('partner_id', partnerId)
+    .eq('status', 'approved');
+
+  if (!approvedRows?.length) {
+    toast('No approved commissions to pay.');
+    return false;
+  }
+
+  // 2) Try to flip APPROVED -> PAID via RLS client update
+  const ids = approvedRows.map(r => r.id);
+  const { data: changed } = await supabase
+    .from('affiliate_conversions')
+    .update({ status: 'paid' })
+    .in('id', ids)
+    .eq('status', 'approved')
+    .select('id');
+
+  let paidIds = Array.isArray(changed) ? changed.map(r => r.id) : [];
+
+  // 3) If nothing flipped, optionally fallback to EF for admins
+  if (!paidIds.length) {
+    const admin = await isCurrentUserAdmin();
+    if (admin) {
+      const ef = await markApprovedPaidViaEdge(partnerId, ids);
+      if (ef.ok) {
+        const { data: nowPaid } = await supabase
+          .from('affiliate_conversions')
+          .select('id')
+          .in('id', ids)
+          .eq('status', 'paid');
+        paidIds = (nowPaid || []).map(r => r.id);
+      } else {
+        toast('Could not mark paid via admin function.');
+        return false;
+      }
+    } else {
+      toast('Could not mark paid (permissions). Please contact admin.');
+      return false;
+    }
+  }
+
+  if (!paidIds.length) {
+    toast('No rows changed to paid.');
+    return false;
+  }
+
+  // 4) Credit wallet ONLY for the rows that actually flipped
+  const paidMap = new Set(paidIds);
+  const rowsWeFlipped = approvedRows.filter(r => paidMap.has(r.id));
+  const amountUSD = rowsWeFlipped.reduce((sum, r) => {
+    const pct = toNum(r.commission);
+    return sum + (DEFAULT_SIGNUP_PRICE * (pct / 100));
+  }, 0);
+
+  const { data: sessWrap } = await supabase.auth.getSession();
+  const sponsee_id = sessWrap?.session?.user?.id;
+  const sponsee_email = sessWrap?.session?.user?.email || null;
+  if (!sponsee_id) {
+    toast('Not signed in.');
+    return false;
+  }
+
+  const { data: walletRow, error: wErr } = await supabase
+    .from('users_extended_data')
+    .select('wallet')
+    .eq('user_id', sponsee_id)
+    .maybeSingle();
+
+  if (wErr) {
+    toast('Failed to load wallet.');
+    return false;
+  }
+
+  const curr = toNum(walletRow?.wallet);
+  const next = curr + amountUSD;
+
+  const { error: upErr } = await supabase
+    .from('users_extended_data')
+    .update({ wallet: next })
+    .eq('user_id', sponsee_id);
+
+  if (upErr) {
+    toast('Failed to credit wallet after marking paid.');
+    return false;
+  }
+
+  // Send wallet credit notification to the current user
+  try {
+    if (typeof notifyPayout === 'function') {
+      await notifyPayout({
+        to_user_id: sponsee_id,              // REQUIRED to avoid eq.undefined
+        payout_amount: amountUSD.toFixed(2),
+        payout_currency: 'USD',
+        payout_status: 'credited',
+        offer_id: null,
+        note: 'Affiliate commission credited to wallet',
+        email: sponsee_email                 // optional if your notifier uses it
+      });
+    }
+  } catch (e) {
+    // Non-fatal: wallet already credited
+    console.warn('notifyPayout failed (wallet credit):', e);
+  }
+
+  toast(`Paid ${fmtCurrency(amountUSD)} to your wallet.`);
+
+  if (typeof window !== 'undefined' && typeof window.updateSponseeWallet === 'function') {
+    try { await window.updateSponseeWallet(); } catch { /* ignore */ }
+  }
+  return true;
 }
 
-
-/* ------------ init ------------ */
+/* ------------- init ------------- */
 document.addEventListener('DOMContentLoaded', async () => {
   const DASH_ROOT = 'affiliate-dashboard-section';
 
-  // Protect the dashboard totals box from collisions (keep your old rename)
+  // guard legacy container id
   {
     const dashRootEl = document.getElementById(DASH_ROOT);
     if (dashRootEl) {
@@ -224,17 +332,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const modalCopyBtn = document.getElementById('copy-ref-link-btn');
   const modalCopied = document.getElementById('ref-link-copied-msg');
 
-  // payout button (always enabled)
   const payoutBtn = document.getElementById('aff-request-payout-btn');
 
   try {
-    const { data: sessData, error } = await supabase.auth.getSession();
-    if (error) throw error;
+    const { data: sessData } = await supabase.auth.getSession();
     const session = sessData?.session;
     const userId = session?.user?.id;
     if (!session?.access_token || !userId) return;
 
-    // --- Referral link (unchanged flow) ---
+    // --- Referral link (unchanged) ---
     const linkResp = await getMyReferralLink(session.access_token);
     const code = linkResp?.link?.code || '';
     if (!code) {
@@ -252,12 +358,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (affUrlInput) affUrlInput.value = fullUrl;
       if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
-          try {
-            await navigator.clipboard.writeText(affUrlInput?.value || fullUrl);
-          } catch {
-            toast('Could not copy.');
-            return;
-          }
+          try { await navigator.clipboard.writeText(affUrlInput?.value || fullUrl); }
+          catch { toast('Could not copy.'); return; }
           if (copyOk) {
             copyOk.style.display = 'inline';
             setTimeout(() => (copyOk.style.display = 'none'), 1100);
@@ -287,16 +389,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // --- Totals from DB (rate-based) ---
+    // --- Totals ---
     const totals = await getAffiliateTotalsFromDB(userId);
 
-    // Legacy small block (Clicks/Signups/Conversions/Rewards) — safe if present
     setTextScoped(legacyAffSection ? legacyAffSection.id : DASH_ROOT, 'aff-clicks', fmtInt(totals.clicks));
     setTextScoped(legacyAffSection ? legacyAffSection.id : DASH_ROOT, 'aff-signups', fmtInt(totals.signups));
     setTextScoped(legacyAffSection ? legacyAffSection.id : DASH_ROOT, 'aff-conversions', fmtInt(totals.total_conversions));
     setTextScoped(legacyAffSection ? legacyAffSection.id : DASH_ROOT, 'aff-rewards', fmtCurrency(totals.paid_commission));
 
-    // Big “Your Totals” card (scoped strictly to #affiliate-dashboard-section)
     setTextScoped(DASH_ROOT, 'aff-total-conv', fmtInt(totals.total_conversions));
     setTextScoped(DASH_ROOT, 'aff-unique-users', fmtInt(totals.unique_referred_users));
     setTextScoped(DASH_ROOT, 'aff-gmv', fmtCurrency(totals.total_gmv));
@@ -304,21 +404,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTextScoped(DASH_ROOT, 'aff-approved', fmtCurrency(totals.approved_commission));
     setTextScoped(DASH_ROOT, 'aff-paid', fmtCurrency(totals.paid_commission));
 
-    // --- Payout button handler (never disabled) ---
+    // --- Button: Pay to Wallet ---
     if (payoutBtn) {
-      setPayoutBtnLabel(payoutBtn, 'Request Payout');
+      payoutBtn.textContent = 'Pay to Wallet';
+      let paying = false;
 
-      let requesting = false;
       payoutBtn.addEventListener('click', async () => {
-        if (requesting) return; // ignore rapid double-clicks, but keep button enabled
-        requesting = true;
-        setPayoutBtnLabel(payoutBtn, 'Requesting…');
+        if (paying) return;
+        paying = true;
+        const original = payoutBtn.textContent;
+        payoutBtn.textContent = 'Paying…';
 
-        const ok = await requestPayout();
+        const ok = await payApprovedToWallet(userId);
 
-        // Keep it enabled regardless of outcome
-        setPayoutBtnLabel(payoutBtn, ok ? 'Requested' : 'Request Payout');
-        requesting = false;
+        payoutBtn.textContent = ok ? 'Paid to Wallet' : original;
+
+        try {
+          const updated = await getAffiliateTotalsFromDB(userId);
+          setTextScoped(DASH_ROOT, 'aff-pending', fmtCurrency(updated.pending_commission));
+          setTextScoped(DASH_ROOT, 'aff-approved', fmtCurrency(updated.approved_commission));
+          setTextScoped(DASH_ROOT, 'aff-paid', fmtCurrency(updated.paid_commission));
+        } catch { /* noop */ }
+
+        setTimeout(() => { payoutBtn.textContent = 'Pay to Wallet'; }, 1500);
+        paying = false;
       });
     }
 
@@ -326,4 +435,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn('[AffiliateDashboard] init failed', e);
   }
 });
-
