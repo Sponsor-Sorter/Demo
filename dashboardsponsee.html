@@ -693,49 +693,69 @@
 </section>
 
 <fieldset>
-<section id="affiliate-dashboard-section" class="panel">
-  <div class="panel-header">
-    <h2>Affiliate</h2>
-    <p class="muted">Share your referral link and track your commissions.</p>
-  </div>
-
-  <div class="card" id="aff-link-card">
-    <div class="card-header"><h3>Your Referral Link</h3></div>
-    <div class="card-body">
-      <div class="row" style="gap:10px; align-items:center;">
-        <input id="aff-link-input" type="text" readonly />
-        <button id="aff-copy-btn">Copy</button>
-        <button id="aff-share-btn">Share</button><br>
-        <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
-      </div>
-      <p class="muted" style="margin-top:8px;">
-        Want a custom code? Contact support — code creation/changes are admin-only.
-      </p>
+  <section id="affiliate-dashboard-section" class="panel">
+    <div class="panel-header">
+      <h2>Affiliate</h2>
+      <p class="muted">Share your referral link and track your commissions.</p>
     </div>
-  </div>
 
-  <div class="card" id="aff-stats-card" style="margin-top:16px;">
-    <div class="card-header"><h3>Your Totals</h3></div>
-    <div class="card-body">
-      <div id="aff-stats" class="stats-grid">
-        <!-- Row 1: Pending | Conversions | Approved -->
-        <div class="stat"><div class="label">Pending Comm.</div><div class="value" id="aff-pending">—</div></div>
-        <div class="stat"><div class="label">Conversions</div><div class="value" id="aff-total-conv">—</div></div>
-        <div class="stat"><div class="label">Approved Comm.</div><div class="value" id="aff-approved">—</div></div>
-
-        <!-- Row 2: GMV | Paid -->
-        <div class="stat"><div class="label">Total GMV</div><div class="value" id="aff-gmv">—</div></div>
-        <div class="stat"><div class="label">Paid Comm.</div><div class="value" id="aff-paid">—</div></div>
+    <div class="card" id="aff-link-card">
+      <div class="card-header"><h3>Your Referral Link</h3></div>
+      <div class="card-body">
+        <div class="row" style="gap:10px; align-items:center;">
+          <input id="aff-link-input" type="text" readonly />
+          <button id="aff-copy-btn">Copy</button>
+          <button id="aff-share-btn">Share</button><br>
+          <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
+        </div>
+        <p class="muted" style="margin-top:8px;">
+          Want a custom code? Contact support — code creation/changes are admin-only.
+        </p>
       </div>
-      <!-- under the totals card body -->
-<div style="margin-top:12px;">
-  <button id="aff-request-payout-btn">Request Payout</button>
-</div>
-
     </div>
-  </div>
-</section>
+
+    <div class="card" id="aff-stats-card" style="margin-top:16px;">
+      <div class="card-header"><h3>Your Totals</h3></div>
+      <div class="card-body">
+        <div id="aff-stats" class="stats-grid">
+          <!-- Row 1 -->
+          <div class="stat">
+            <div class="label">Pending Comm.</div>
+            <div class="value" id="aff-pending">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Conversions</div>
+            <div class="value" id="aff-total-conv">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Approved Comm.</div>
+            <div class="value" id="aff-approved">—</div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="stat">
+            <div class="label">Total GMV</div>
+            <div class="value" id="aff-gmv">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Paid Comm.</div>
+            <div class="value" id="aff-paid">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Commission Rate</div>
+            <!-- read-only; filled by JS from affiliate_partners.commission_rate -->
+            <div class="value" id="aff-rate">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button id="aff-request-payout-btn">Pay to Wallet</button>
+        </div>
+      </div>
+    </div>
+  </section>
 </fieldset>
+
 <style>
 
   
