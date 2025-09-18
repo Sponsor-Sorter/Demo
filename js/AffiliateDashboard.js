@@ -3,13 +3,13 @@
 // Affiliate dashboard for dashboardsponsee.html
 // - Pay to Wallet: flips approved rows -> paid (RLS), then credits wallet
 // - Row commission math: $10 * (row.commission %)
-// - If RLS blocks and user is admin, uses Edge Function to flip, then credits
+// - Read-only "Commission Rate" card (from affiliate_partners.commission_rate)
+// - If RLS blocks and user is admin, uses Edge Function to flip approved->paid
 // - Sends user a notification that $X was credited to their wallet
 // - No triggers. No schema changes.
 
 import { supabase } from './supabaseClient.js';
-// IMPORTANT: only import notifyPayout for real notifications.
-// We implement a local toast() for simple UI messages.
+// Only import notifyPayout for real notifications.
 import { notifyPayout } from './alerts.js';
 
 const DEFAULT_SIGNUP_PRICE = 10;
@@ -41,12 +41,15 @@ function fmtCurrency(v) {
     ? n.toLocaleString(undefined, { style: 'currency', currency: 'USD' })
     : '$0.00';
 }
+function fmtPct(v) {
+  const n = Number(v || 0);
+  return Number.isFinite(n) ? `${n.toFixed(2)}%` : '—';
+}
 function buildReferralUrl(code) {
   const base = window?.ENV_PUBLIC_SITE_BASE_URL || window?.location?.origin || 'https://sponsorsorter.com';
   return `${String(base).replace(/\/+$/, '')}/signup.html?ref=${encodeURIComponent(code || '')}`;
 }
-
-// Lightweight UI toast (no alerts.js dependency)
+// skinny toast (no alerts.js dependency)
 function toast(message) {
   try {
     const id = 'mini-toast';
@@ -79,16 +82,18 @@ async function getMyReferralLink(accessToken) {
   return json; // { ok:true, link: { user_id, code } | null }
 }
 
-/* ------------- totals (row.commission% of $10) ------------- */
+/* ------------- totals (row.commission% of $10) + partner rate ------------- */
 async function getAffiliateTotalsFromDB(userId) {
+  // also fetch commission_rate so we can show a read-only card
   const { data: partnerRow } = await supabase
     .from('affiliate_partners')
-    .select('id')
+    .select('id, commission_rate')
     .eq('user_id', userId)
     .maybeSingle();
   if (!partnerRow?.id) return {};
 
   const partnerId = partnerRow.id;
+  const partnerRatePct = toNum(partnerRow.commission_rate); // read-only display
 
   const { data: rows } = await supabase
     .from('affiliate_conversions')
@@ -119,6 +124,7 @@ async function getAffiliateTotalsFromDB(userId) {
 
   return {
     partnerId,
+    partnerRatePct, // <— read-only commission rate to display
     total_conversions,
     unique_referred_users: seenUsers.size,
     total_gmv,
@@ -274,17 +280,16 @@ async function payApprovedToWallet(userId) {
   try {
     if (typeof notifyPayout === 'function') {
       await notifyPayout({
-        to_user_id: sponsee_id,              // REQUIRED to avoid eq.undefined
+        to_user_id: sponsee_id,
         payout_amount: amountUSD.toFixed(2),
         payout_currency: 'USD',
         payout_status: 'credited',
         offer_id: null,
         note: 'Affiliate commission credited to wallet',
-        email: sponsee_email                 // optional if your notifier uses it
+        email: sponsee_email
       });
     }
   } catch (e) {
-    // Non-fatal: wallet already credited
     console.warn('notifyPayout failed (wallet credit):', e);
   }
 
@@ -294,6 +299,37 @@ async function payApprovedToWallet(userId) {
     try { await window.updateSponseeWallet(); } catch { /* ignore */ }
   }
   return true;
+}
+
+/* ------------- UI helpers: ensure a read-only Commission Rate card ------------- */
+function ensureRateCard(rootId) {
+  const root = document.getElementById(rootId);
+  if (!root) return;
+
+  // If a placeholder already exists, don't inject
+  if (root.querySelector('#aff-rate')) return;
+
+  // Try to drop a card into the same container as other total cards.
+  // Heuristic: find a sibling card (paid, pending, etc.) and append next to it.
+  const anchor =
+    root.querySelector('#aff-paid') ||
+    root.querySelector('#aff-approved') ||
+    root.querySelector('#aff-total-conv') ||
+    root;
+
+  // The cards likely live one level up from the text span; default to parent.
+  const container = anchor?.parentElement?.parentElement || root;
+
+  const card = document.createElement('div');
+  card.style.cssText = `
+    display:inline-block;min-width:210px;min-height:84px;margin:10px;
+    padding:12px 14px;border-radius:12px;background:#1e1e1e;vertical-align:top;
+  `;
+  card.innerHTML = `
+    <div style="font-size:14px;color:#bbb;text-align:center;">Commission Rate</div>
+    <div id="aff-rate" style="margin-top:6px;text-align:center;font-weight:700;color:#42e87c;">—</div>
+  `;
+  container.appendChild(card);
 }
 
 /* ------------- init ------------- */
@@ -389,7 +425,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // --- Totals ---
+    // --- Totals + read-only rate ---
     const totals = await getAffiliateTotalsFromDB(userId);
 
     setTextScoped(legacyAffSection ? legacyAffSection.id : DASH_ROOT, 'aff-clicks', fmtInt(totals.clicks));
@@ -403,6 +439,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTextScoped(DASH_ROOT, 'aff-pending', fmtCurrency(totals.pending_commission));
     setTextScoped(DASH_ROOT, 'aff-approved', fmtCurrency(totals.approved_commission));
     setTextScoped(DASH_ROOT, 'aff-paid', fmtCurrency(totals.paid_commission));
+
+    // Ensure a read-only card exists, then set its value
+    ensureRateCard(DASH_ROOT);
+    setTextScoped(DASH_ROOT, 'aff-rate', fmtPct(totals.partnerRatePct));
 
     // --- Button: Pay to Wallet ---
     if (payoutBtn) {
@@ -424,6 +464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           setTextScoped(DASH_ROOT, 'aff-pending', fmtCurrency(updated.pending_commission));
           setTextScoped(DASH_ROOT, 'aff-approved', fmtCurrency(updated.approved_commission));
           setTextScoped(DASH_ROOT, 'aff-paid', fmtCurrency(updated.paid_commission));
+          setTextScoped(DASH_ROOT, 'aff-rate', fmtPct(updated.partnerRatePct));
         } catch { /* noop */ }
 
         setTimeout(() => { payoutBtn.textContent = 'Pay to Wallet'; }, 1500);
