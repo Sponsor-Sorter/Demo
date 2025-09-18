@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Connect YouTube - Sponsor Sorter">
-  <title>YouTube OAuth | Sponsor Sorter</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="description" content="Connect Account - Sponsor Sorter">
+  <title>OAuth | Sponsor Sorter</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
 </head>
 <body>
 <header class="navbar1">
@@ -14,26 +14,30 @@
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
       <div>
-        <background-img class="navimg" src="navimg.png" alt="">
+        <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
-          <li class="navr" id="dashboard-link"><a href="index.html">Dashboard</a></li>
-          <li><a href="login.html">Logout</a></li>
+          <li class="navr" id="dashboard-link"><a href="./index.html">Dashboard</a></li>
+          <li><a href="./login.html">Logout</a></li>
         </nav>
       </div>
     </div>
   </section>
 </header>
+
 <main style="min-height:40vh;">
   <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
-    <h2 style="color:#4886f4;">🎬 Connecting to <b style="color: rgb(185, 0, 0);font-weight: 700;"> YouTube...</b><img src="youtubelogo.png" alt="youtube" height="30px" style="border-radius: 10px;background-color: black;" ></h2>
-    <div style="color: black;" id="oauth-status">Waiting for Google OAuth response...</div>
+    <h2 id="platform-heading" style="color:#4886f4;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span>🔗 Connecting to <b id="platform-name" style="color:#111;font-weight:700;">Your Platform</b>…</span>
+      <img id="platform-logo" src="./youtubelogo.png" alt="Platform logo" height="30" style="border-radius:10px;background-color:black;">
+    </h2>
+    <div style="color:black;" id="oauth-status">Waiting for OAuth response…</div>
   </div>
 </main>
-<!-- FOOTER -->
+
 <footer class="footercomplete">
   <div class="footer-text">
     <ul>
@@ -54,7 +58,7 @@
   </div>
 </footer>
 
-<!-- Load your handler (adjust path if needed for Demo/github) -->
+<!-- Handler updates the UI to match the detected provider -->
 <script type="module" src="./js/oauth-handler.js"></script>
 </body>
 </html>
