@@ -12,10 +12,39 @@ const EDGE_FN = {
   tiktok:    'tiktok-oauth',
 };
 
-// keep the popup open briefly so the POST/DOM/message can complete
+// Local logo paths (keep/edit these filenames as needed in your ./ root)
+const PLATFORM_UI = {
+  youtube:   { name: 'YouTube',   logo: './youtubelogo.png',   bg: '#000' },
+  twitch:    { name: 'Twitch',    logo: './twitchlogo.png',    bg: '#6441a5' },
+  instagram: { name: 'Instagram', logo: './instagramlogo.png', bg: '#000' },
+  facebook:  { name: 'Facebook',  logo: './facebooklogo.png',  bg: '#1877f2' },
+  tiktok:    { name: 'TikTok',    logo: './tiktoklogo.png',    bg: '#000' },
+};
+
 const AUTO_CLOSE_MS = 900;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Small helper to set UI after we know the provider
+  function applyPlatformUI(providerKey) {
+    const ui = PLATFORM_UI[providerKey] || PLATFORM_UI.youtube;
+    const pretty = ui.name;
+
+    // Title + meta
+    document.title = `${pretty} OAuth | Sponsor Sorter`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', `Connect ${pretty} - Sponsor Sorter`);
+    
+    // Heading text + logo
+    const nameSpan = document.getElementById('platform-name');
+    const logoImg  = document.getElementById('platform-logo');
+    if (nameSpan) nameSpan.textContent = ` ${pretty} `;
+    if (logoImg) {
+      logoImg.src = ui.logo;
+      logoImg.alt = `${pretty} logo`;
+      logoImg.style.backgroundColor = ui.bg || '#000';
+    }
+  }
+
   const statusDiv = document.getElementById('oauth-status');
   const setStatus = (html) =>
     (statusDiv ? (statusDiv.innerHTML = html) : console.log(html.replace(/<[^>]+>/g, '')));
@@ -28,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (error) return fail(`OAuth error: ${error}`);
   if (!code)  return setStatus('<span style="color:red;">No OAuth code found. Try again.</span>');
 
-  // Detect provider
+  // Detect provider (unchanged logic, but we also reflect it in the UI)
   let provider = 'youtube';
   let csrfFromState = '';
   if (state.includes(':')) {
@@ -44,7 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (['twitch','youtube','instagram','facebook','tiktok'].includes(via)) provider = via;
   }
 
-  const pretty = ({ youtube:'YouTube', twitch:'Twitch', instagram:'Instagram', facebook:'Facebook', tiktok:'TikTok' }[provider]) || provider;
+  // Update the UI immediately for the detected platform
+  applyPlatformUI(provider);
+  const pretty = (PLATFORM_UI[provider]?.name) || provider;
   setStatus(`<span style="color:#4886f4;">Connecting to ${pretty}…</span>`);
   console.debug('[oauth-handler] provider =', provider, 'code?', !!code);
 
@@ -66,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${jwt}` },
       body: JSON.stringify({ code, redirect_uri }),
-      credentials: 'omit', // <= important: we send JWT header; omit cookies to reduce CORS edge cases
+      credentials: 'omit',
     });
 
     const payload = await resp.json().catch(() => ({}));
