@@ -29,7 +29,7 @@ body
     .upllogo {
         height: 250px;
         box-sizing: border-box;
-        max-width: 80vwpx !important;
+        max-width: 80vw !important;
         margin: 36px auto 0 auto !important;
         border-radius: 18px !important;
         padding: 28px 30px 26px 30px !important;
@@ -2637,7 +2637,9 @@ fieldset {
     font-size: 0.75rem;
   }
   
-  
+  .dashboard {
+    width: 90vw;
+  }
   
   /* Ensure user profile "card" layout stacks cleanly */
   .user-profile {
@@ -3899,8 +3901,8 @@ button.report-btn:focus-visible,
 
 /* Force all main dashboard sections/cards to max width of the screen */
 .dashboard-card, .profile-card, .review-card, .summary-card, .dashboard-content, .profile-section, .main-section {
-    width: 100% !important;
-    max-width: 99vw !important;
+    width: 70vw !important;
+    max-width: 85vw !important;
     margin: 0 auto !important;
     box-sizing: border-box !important;
 }
@@ -4003,7 +4005,7 @@ body, .admin-table, .admin-tab, .pagination-btn {
     display: block !important;
   }
   .user-profile, .sponsor-group, .card, .card-row > * {
-    width: 100% !important;
+    width: 80% !important;
     max-width: 98vw !important;
     margin: 0 auto 1rem auto !important;
   }
@@ -4625,6 +4627,8 @@ fieldset {
   box-sizing: border-box;
   box-shadow: 0 2px 18px 0 rgba(49,16,210,0.06);
   transition: box-shadow 0.18s;
+
+  
 }
 
 /* Optionally, add hover/focus effect for extra polish */
@@ -5115,13 +5119,13 @@ fieldset:focus-within, fieldset:hover {
   .dashboard-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 60px; /* or whatever gap looks best */
-    max-width: 1200px;
+    gap: 80px; /* or whatever gap looks best */
+    max-width: 800px;
     margin: 0 auto 20px auto;
     justify-content: center; /* Ensures centering */
   }
   .dashboard-cards .card {
-    max-width: 300px;
+    max-width: 400px;
     min-width: 250px;
     width: 100%;
     margin: 0;
@@ -5708,7 +5712,17 @@ input:checked + .slider:before {
   box-shadow: var(--aff-shadow);
   overflow: hidden;
 }
-
+  .cardsaff {
+    flex: 1;
+    background: #1d1d1d;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    
+  }
 
 /* Header */
 #aff-stats-card .card-header{
@@ -5976,6 +5990,49 @@ input:checked + .slider:before {
 .btn.btn-cancel:hover { background: #bb2222; }
 .btn:hover { background: #1876c7; }
 
+/* Keep notification bell + settings cog side-by-side on all widths */
+#settings-notif-bar{
+  /* inline style on the LI currently says display:inline; override it */
+  display:flex !important;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;            /* pushes the pair to the right in the nav row */
+  white-space:nowrap;          /* prevents line breaks */
+  flex-wrap:nowrap;            /* belt-and-braces: no wrapping */
+}
+
+#settings-notif-bar .icon-bar-bg{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+#settings-notif-bar button{
+  flex:0 0 auto;               /* buttons keep their size; never stretch/shrink */
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* If you have a badge on the bell, keep it from shifting layout */
+#settings-notif-bar .notification-btn{
+  position:relative;
+}
+#settings-notif-bar .notification-btn .badge{
+  position:absolute; top:-6px; right:-6px;
+}
+
+/* Small screens: gently reduce spacing/icon size without wrapping */
+@media (max-width: 600px){
+  #settings-notif-bar{ gap:6px; }
+  #settings-notif-bar .icon-bar-bg{ gap:6px; }
+  #settings-notif-bar .notification-btn,
+  #settings-notif-bar .settings-btn{
+    width:28px; height:28px;   /* optional, if your icons are bigger now */
+  }
+}
+
+
 /* ================================================ */
 /*  MOBILE RESPONSIVE (UNIVERSAL)                   */
 /* ================================================ */
@@ -5986,6 +6043,7 @@ input:checked + .slider:before {
     background-size: cover;
     overflow-x: hidden;
   }
+  
   /* Core content scaling */
   .referral-banner,
   main,
@@ -6148,7 +6206,7 @@ input:checked + .slider:before {
 }
 
 /* Extra hard override for extra skinny screens */
-@media (max-width: 430px) {
+@media (max-width: 450px) {
   .referral-banner,
   main,
   .home-cont,
@@ -6177,6 +6235,11 @@ input:checked + .slider:before {
     padding-left: 2vw !important;
     padding-right: 2vw !important;
   }
+
+  .gold-star {
+    font-size: 1.2em !important;
+  }
+  
 }
 
 @media (max-width: 600px) {
@@ -6497,7 +6560,6 @@ input:checked + .slider:before {
     padding: 0 !important;
     border-radius: 10px !important;
     box-sizing: border-box !important;
-    overflow-x: hidden !important;
   }
   .navbar {
     width: 100% !important;
@@ -6802,7 +6864,7 @@ input:checked + .slider:before {
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
-    gap: 4px !important; /* change for more/less gap */
+    gap: 1px !important; /* change for more/less gap */
     width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -6826,7 +6888,7 @@ input:checked + .slider:before {
     transition: filter 0.13s;
   }
   .navbar nav li:not(:last-child) {
-    margin-right: 15px !important; /* adjust gap */
+    margin-right: 5px !important; /* adjust gap */
   }
   .navbar nav a {
     display: block !important;
@@ -6837,13 +6899,17 @@ input:checked + .slider:before {
     text-decoration: none !important;
     background: none !important;
     border-radius: 12px !important;
-    padding: 8px 0 !important;
+    padding: 11px 0 !important;
     letter-spacing: 0.01em;
     transition: background 0.17s, color 0.15s;
   }
   .navbar nav li:active,
   .navbar nav li:hover {
     filter: brightness(1.17);
+  }
+
+  .nav-search {
+    max-width: 100px;
   }
 }
 
@@ -6881,8 +6947,10 @@ input:checked + .slider:before {
   padding: auto !important;
   gap: 8px !important;
   cursor: pointer !important;
-  
+      
 }
+
+
 
 /* --- Mobile Styles for Signup Page --- */
 @media (max-width: 600px) {
@@ -6908,6 +6976,7 @@ form#registrationForm {
   padding-right: 2vw !important;
   box-sizing: border-box !important;   /* Always include padding in width */
 }
+
  
  
   
@@ -7329,4 +7398,212 @@ form#registrationForm {
 }
 }
 
+/* nav notification bell and settings cog */
+
+/* === NAV + BADGE FIX (≤600px) ========================================= */
+@media (max-width: 600px) {
+
+  /* hide the decorative banner image on phones */
+
+  /* the wrapper that contains both <nav> menus + actions */
+  .navbar .navii > div,
+  .navbar1 .navii > div {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+  .navbar nav, .navbar1 nav { top:auto !important; left:auto !important; right:auto !important; }
+}
+
+
+  /* each <nav> becomes its own full-width row */
+  .navbar .navii nav,
+  .navbar1 .navii nav {
+    order: 1;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* STOP overlap: kill any floats/absolute/widths on nav items */
+  .navbar nav li,
+  .navbar1 nav li {
+    position: static !important;
+    float: none !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    /* two per row, but never exceed the row width */
+    flex: 1 1 calc(50% - 8px);
+    max-width: calc(50% - 8px);
+    min-width: 0;
+  }
+  .navbar nav li a,
+  .navbar1 nav li a {
+    flex: 1 1 auto;
+    width: 100% !important;
+    white-space: nowrap;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  /* put the bell + gear on their OWN row, right-aligned */
+  nav li#settings-notif-bar,
+  .navbar nav li#settings-notif-bar,
+  .navbar1 nav li#settings-notif-bar {
+    order: 3;
+    flex: 0 0 100% !important;     /* full-width row */
+    max-width: 30% !important;
+    display: flex !important;
+    justify-content: flex-end;
+    gap: 0px !important;
+    padding: 0 !important;
+    
+
+  }
+
+  /* keep the icons compact (don’t stretch) */
+  #settings-notif-bar button,
+  #settings-notif-bar a,
+  #settings-notif-bar .icon-btn {
+    flex: 0 0 auto !important;
+    width: 20px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    position: relative !important; /* anchor for the badge */
+  }
+
+  /* badge back on the bell */
+  /* use whichever class/id your red bubble uses */
+  #settings-notif-bar .notif-badge,
+  #settings-notif-bar .notification-count,
+  #settings-notif-bar .notify-count {
+    position: absolute !important;
+    top: -6px;
+    right: -6px;
+    transform: none !important;
+  }
+
+  #settings-notif-bar {
+    width: 50px !important;
+  }
+}
+
+
+
+@media (max-width: 600px) {
+  .navbar nav, .navbar1 nav { top:auto !important; left:auto !important; right:auto !important; }
+}
+
+
+/* dashboard mobile fixs */
+
+/* === LISTING CARDS: make them fit on phones (≤600px) ================== */
+@media (max-width: 600px) {
+
+  /* the container row */
+  #listing-container,
+  .active-listings {
+    overflow-x: hidden !important;
+  }
+
+  /* the card wrapper that’s currently 670px wide */
+  .listing-stage {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;          /* <-- cancel any 650–670px min-widths */
+    flex: 1 1 100% !important;         /* allow shrink & wrap */
+    box-sizing: border-box;
+  }
+
+  /* typical children that also force side-scroll */
+  .card-top,
+  .card-content,
+  .stage-content,
+  .offer-card,
+  .offer-meta,
+  .offer-actions,
+  .offer-buttons {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* action buttons: stack full-width */
+  .offer-buttons .btn,
+  .offer-buttons button,
+  .card-content .btn {
+    display: block;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  /* the row of platform/social icons: wrap so it never widens the card */
+  .platform-icons,
+  .social-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* any images inside the card */
+  .listing-stage img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+    /* 3) Tables: keep page width at 100%, scroll inside if needed */
+  /* If you have a wrapper like .table-responsive/.admin-table-scroll,
+     this will work too. Otherwise we make the table itself the scroller. */
+  .dashboard table,
+  table {
+    display: block !important;             /* contain inner width */
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;           /* horizontal scroll inside */
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+    table-layout: fixed;                    /* allow cell wrapping */
+  }
+  .dashboard table th, .dashboard table td,
+  table th, table td {
+    white-space: normal !important;        /* wrap long content */
+    word-break: break-word !important;
+  }
+
+    /* 2) Sections: width must include their padding (no overflow) */
+  section.dashboard,
+  section.userprofile,
+  section.section,
+  section {
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    width: calc(100% - -10px) !important;  /* 100% minus the padding */
+    max-width: 100% !important;
+    min-width: 0 !important;
+    left: auto !important; right: auto !important; transform: none !important;
+  }
+    /* 1) Banner image: make it a block and clamp to the viewport */
+  background-img.navimg,
+  .navimg {
+    width: 100vw !important;      /* exactly the viewport width */
+    max-width: 100% !important;
+    height: auto !important;       /* or set your fixed mobile height */
+    object-fit: cover;
+    padding-left: -10px !important;
+    margin-left: -15px !important;
+    
+  }
+}
 
