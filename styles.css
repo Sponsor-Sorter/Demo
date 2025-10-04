@@ -6206,7 +6206,7 @@ input:checked + .slider:before {
 }
 
 /* Extra hard override for extra skinny screens */
-@media (max-width: 450px) {
+@media (max-width: 550px) {
   .referral-banner,
   main,
   .home-cont,
@@ -6237,7 +6237,7 @@ input:checked + .slider:before {
   }
 
   .gold-star {
-    font-size: 1.2em !important;
+    font-size: .8em !important;
   }
   
 }
