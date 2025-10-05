@@ -7788,7 +7788,35 @@ input:checked + .slider:before {
   margin-left: auto;
 }
 
+.profile-info
+.profile-info p {
+  padding-left: 0;
+  margin-left: 0px !important;
+  padding-right: 10px;
+}
 
-  
+.profile-info > p:nth-child(6) {
+  margin-left: 0px;
+}
+
+  .modal-content {
+    max-width: 90vw;
+    align-self: center;
+  top: 20vw;
+  left: 50vw;
+  background: #191a1d;
+  color: #fff;
+  border-radius: 22px;
+  box-shadow: 0 10px 48px 0 #000a;
+  max-width: 600px;
+  width: 94vw;
+  max-height: 500px;
+  padding: 32px 34px 26px 34px;
+  position: relative;
+  font-size: 1.12em;
+  min-width: 350px;
+  border: 1.5px solid #222;
+
+  }
 }
 
