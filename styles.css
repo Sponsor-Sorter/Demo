@@ -7490,8 +7490,9 @@ form#registrationForm {
     display: flex !important;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px;
+    gap: 0px;
     width: 100%;
+    margin: 0;
   }
 
   /* STOP overlap: kill any floats/absolute/widths on nav items */
@@ -7506,7 +7507,7 @@ form#registrationForm {
     padding: 0 !important;
     /* two per row, but never exceed the row width */
     flex: 1 1 calc(50% - 8px);
-    max-width: calc(50% - 8px);
+    max-width: calc(50% - 10px);
     min-width: 0;
   }
   .navbar nav li a,
@@ -7587,6 +7588,15 @@ form#registrationForm {
 }
 }
 
+.navbar nav a:last-child {
+    margin-right: 0 !important; 
+    margin-left: 0 !important;
+  }
+
+  .navimg > nav:nth-child(1) > li:nth-child(3) {
+  margin-right: 0px;
+  width: 14vw;
+}
 
 
 @media (max-width: 600px) {
@@ -7818,5 +7828,25 @@ input:checked + .slider:before {
   border: 1.5px solid #222;
 
   }
+  #global-search-input {
+    width: fit-content;
+  }
+
+  .nav-search{
+  max-width: 60px;
+  }
+
 }
 
+@media (min-width: 1200px) {
+body{
+  font-size: 1.2em;
+}
+  .profile-header .profile-info p {
+    font-size: 1.2em;
+  }
+
+  .section section div p {
+    font-size: 1.4em !important;
+  }
+}
