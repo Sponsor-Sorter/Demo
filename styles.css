@@ -6951,7 +6951,6 @@ input:checked + .slider:before {
 /* nav/header < wallet < dropdown < modals */
 :root{
   --z-nav: 1000;
-  --z-wallet: 3000;
   --z-dropdown: 4000;
   --z-modal: 5000;
 }
@@ -6980,6 +6979,7 @@ input:checked + .slider:before {
     width: 100%;
     max-width: 340px;                      /* keeps content tidy */
     text-align: right;                      /* labels stay left-aligned */
+  padding-left: 30% !important;
   }
 }
 
@@ -7571,7 +7571,6 @@ form#registrationForm {
     padding-left: 12px !important;
   }
   .settings-dropdown li, .settings-dropdown .dropdown-item {
-    all: unset;
     display: block;
     width: 100% !important;
     background: none !important;
@@ -7758,10 +7757,10 @@ input:checked + .slider:before {
   }
   /* Center the dropdown panel */
 #settings-notif-bar .settings-dropdown{
-  left: 50% !important;
-  right: 50% !important;
+  position: static;
   transform: translateX(-50%) !important;
   width: min(92vw, 420px) !important;
+  margin-top: 290px;
 }
 
 /* Make each row fill the width + center its background */
@@ -7769,7 +7768,7 @@ input:checked + .slider:before {
 #settings-notif-bar .settings-dropdown li > button,
 #settings-notif-bar .settings-dropdown li > .dropdown-item{
   display: flex;
-  align-items: center;
+  align-items: right;
   width: 100%;
   background-position: center center !important;
   background-size: 100% 100% !important;
