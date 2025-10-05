@@ -5,6 +5,9 @@ import { notifyComment, notifyOfferUpdate } from './alerts.js';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
+// ⬇️ NEW: snapshot helpers (no extra API calls)
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js';
+
 let allSponsorOffers = [];
 let sponsor_username = '';
 let sponsor_email = '';
@@ -230,7 +233,7 @@ async function renderSingleOffer(offer) {
   document.body.addEventListener('click', (e) => {
     if (e.target.classList.contains('review')) {
       const offerId = e.target.dataset.offerId;
-      if (offerId) window.location.href = `/review.html?offer_id=${offerId}`;
+      if (offerId) window.location.href = `review.html?offer_id=${offerId}`;
     }
   });
 
@@ -241,12 +244,11 @@ async function renderSingleOffer(offer) {
     actionButton = '<button class="delete-offer-btn">Remove Offer</button>';
   }
 
-const pairs = pairUrlsAndDates(offer);
-let platformBadgeHtml = '';
-if (offer.platforms && offer.platforms.length) {
-  platformBadgeHtml = renderPlatformBadges(offer.platforms, pairs);
-}
-
+  const pairs = pairUrlsAndDates(offer);
+  let platformBadgeHtml = '';
+  if (offer.platforms && offer.platforms.length) {
+    platformBadgeHtml = renderPlatformBadges(offer.platforms, pairs);
+  }
 
   // Build URL/date display
   const firstLiveDate =
@@ -254,18 +256,7 @@ if (offer.platforms && offer.platforms.length) {
     earliestDate(offer.url_dates) ||
     (pairs.length ? pairs[0].date : null);
 
-  const liveLinksHtml = (pairs.length && offer.stage >= 4)
-    ? `<p><strong>Live URL${pairs.length > 1 ? 's' : ''} & Dates:</strong><br>${
-        pairs.map(({ url, date }) => {
-          const d = date ? new Date(date).toLocaleDateString() : '—';
-          return `<span style="display:block;margin:2px 0;">
-            <a class="live-url-link" href="${url}" target="_blank">${url}</a> <em style="color:#888;">(${d})</em>
-          </span>`;
-        }).join('')
-      }</p>`
-    : (offer.stage >= 4 && offer.live_url
-        ? `<p><strong>Live URL:</strong> <a class="live-url-link" href="${offer.live_url}" target="_blank">${offer.live_url}</a></p>`
-        : '');
+
 
   const reportBtnHtml = `
     <button 
@@ -306,7 +297,6 @@ if (offer.platforms && offer.platforms.length) {
               <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
               ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
               ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
-              
             </div>
             <div class="offer-right">
               <p><strong>Amount:</strong> $${offer.offer_amount}</p>
@@ -461,6 +451,62 @@ function epochToDateString(n) {
   }
 }
 
+// NEW: generic snapshot block (used on live fetch failures)
+function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subtitle = '') {
+  const logos = {
+    youtube: 'youtubelogo.png',
+    tiktok: 'tiktoklogo.png',
+    instagram: 'instagramlogo.png',
+    facebook: 'facebooklogo.png',
+    twitch: 'twitchlogo.png'
+  };
+  const colors = {
+    youtube: '#e74c3c',
+    tiktok: '#ff3b5c',
+    instagram: '#ff8bd2',
+    facebook: '#7fb4ff',
+    twitch: '#c9b6ff'
+  };
+  const title = {
+    youtube: 'YouTube (cached)',
+    tiktok: 'TikTok (cached)',
+    instagram: 'Instagram (cached)',
+    facebook: 'Facebook (cached)',
+    twitch: 'Twitch (cached)'
+  }[platform] || 'Cached Stats';
+
+  // show common metrics if present
+  const rows = [];
+  if (metrics.views != null) rows.push(`<div><b>👀 Views:</b><br>${fmtNum(metrics.views)}</div>`);
+  if (metrics.likes != null) rows.push(`<div><b>👍 Likes:</b><br>${fmtNum(metrics.likes)}</div>`);
+  if (metrics.comments != null) rows.push(`<div><b>💬 Comments:</b><br>${fmtNum(metrics.comments)}</div>`);
+  if (metrics.shares != null) rows.push(`<div><b>🔁 Shares:</b><br>${fmtNum(metrics.shares)}</div>`);
+  if (metrics.impressions != null) rows.push(`<div><b>👁️ Impressions:</b><br>${fmtNum(metrics.impressions)}</div>`);
+  if (metrics.reach != null) rows.push(`<div><b>📣 Reach:</b><br>${fmtNum(metrics.reach)}</div>`);
+  if (metrics.engaged_users != null) rows.push(`<div><b>🤝 Engaged Users:</b><br>${fmtNum(metrics.engaged_users)}</div>`);
+  if (metrics.video_views != null) rows.push(`<div><b>▶️ Video Views:</b><br>${fmtNum(metrics.video_views)}</div>`);
+
+  const color = colors[platform] || '#ddd';
+  const logo = logos[platform] || '';
+
+  return `
+    <div style="background:none;border-radius:15px;box-shadow:none;padding:22px 26px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.02em;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        ${logo ? `<img src="${logo}" style="height:22px;vertical-align:-2px;margin-right:4px;border-radius:6px">` : ''}
+        <b style="color:${color};">${title}</b>
+      </div>
+      ${subtitle ? `<div style="color:#ddd;margin:-2px 0 8px 0;font-size:0.95em;">${subtitle}</div>` : ''}
+      ${dateBadge || ''}
+      <div style="display:flex;flex-wrap:wrap;gap:18px 26px;margin-top:6px;">
+        ${rows.length ? rows.join('') : `<div style="color:#ccc;">No cached metrics available yet.</div>`}
+      </div>
+      <div style="margin-top:10px;text-align:right;">
+        <a href="${link}" target="_blank" style="color:${color};text-decoration:underline;font-size:0.94em;">Open link ↗</a>
+      </div>
+    </div>
+  `;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session || !session.user) {
@@ -602,7 +648,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // --- DATA SUMMARY (progressive "Loading X of N" with spinner that disappears when done) ---
+    // --- DATA SUMMARY with snapshot fallback ---
     if (e.target.classList.contains('data-summary-btn')) {
       const isCurrentlyVisible = dataSummarySection.style.display === 'block';
       if (isCurrentlyVisible) {
@@ -685,7 +731,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (isYouTubeUrl(liveUrl)) {
             const videoId = extractYouTubeVideoId(liveUrl);
             if (!videoId) {
-              addBlock(`<div style="color:#faa;">Invalid or unrecognized YouTube URL: ${liveUrl}</div>`);
+              const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'youtube' });
+              if (fb) {
+                addBlock(renderSnapshotBlock('youtube', liveUrl, fb.metrics, dateBadge, 'Could not parse YouTube URL — showing cached stats.'));
+              } else {
+                addBlock(`<div style="color:#faa;">Invalid or unrecognized YouTube URL: ${liveUrl}</div>`);
+              }
               continue;
             }
             const body = { videoId, userId: sponseeUserId, offerId };
@@ -695,9 +746,25 @@ document.addEventListener("DOMContentLoaded", async () => {
               body: JSON.stringify(body)
             });
             const stats = await resp.json();
-            if (stats && stats.success) {
-              const thumbnail = stats.video.snippet.thumbnails?.medium?.url || '';
-              const duration = parseISO8601Duration(stats.video.contentDetails.duration);
+            if (resp.ok && stats?.success) {
+              const metrics = {
+                views: Number(stats.video?.statistics?.viewCount) || 0,
+                likes: Number(stats.video?.statistics?.likeCount) || 0,
+                comments: Number(stats.video?.statistics?.commentCount) || 0
+              };
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: liveUrl,
+                  platformHint: 'youtube',
+                  offerId,
+                  liveMetrics: metrics,
+                  raw: stats.video
+                });
+              } catch {}
+
+              const thumbnail = stats.video.snippet?.thumbnails?.medium?.url || '';
+              const duration = parseISO8601Duration(stats.video.contentDetails?.duration || '');
               addBlock(container(`
                 <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
                   ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:auto;height:80px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
@@ -721,7 +788,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else {
-              addBlock(`<div style="color:#faa;">${stats?.error ? stats.error : 'Could not fetch video stats.'}</div>`);
+              // ❌ Live failed → snapshot
+              const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'youtube' });
+              if (fb) {
+                addBlock(renderSnapshotBlock('youtube', liveUrl, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                addBlock(`<div style="color:#faa;">${stats?.error ? stats.error : 'Could not fetch video stats.'}</div>`);
+              }
             }
             continue;
           }
@@ -747,10 +820,22 @@ document.addEventListener("DOMContentLoaded", async () => {
               const desc = (v.description || '').trim();
               const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
               const vurl = v.url || liveUrl;
-              const views    = fmtNum(v.stats?.view_count);
-              const likes    = fmtNum(v.stats?.like_count);
-              const comments = fmtNum(v.stats?.comment_count);
-              const shares   = fmtNum(v.stats?.share_count);
+
+              const views = Number(v.stats?.view_count ?? 0);
+              const likes = Number(v.stats?.like_count ?? 0);
+              const comments = Number(v.stats?.comment_count ?? 0);
+              const shares = Number(v.stats?.share_count ?? 0);
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: liveUrl,
+                  platformHint: 'tiktok',
+                  offerId,
+                  liveMetrics: { views, likes, comments, shares },
+                  raw: v
+                });
+              } catch {}
 
               addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
@@ -766,34 +851,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                   </div>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${wrapRow('👀 Views:', views)}
-                  ${wrapRow('👍 Likes:', likes)}
-                  ${wrapRow('💬 Comments:', comments)}
-                  ${wrapRow('🔁 Shares:', shares)}
+                  ${wrapRow('👀 Views:', fmtNum(views))}
+                  ${wrapRow('👍 Likes:', fmtNum(likes))}
+                  ${wrapRow('💬 Comments:', fmtNum(comments))}
+                  ${wrapRow('🔁 Shares:', fmtNum(shares))}
                 </div>
                 <div style="margin-top:10px;text-align:right;">
                   <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
                 </div>
               `));
-            } else if (resp.ok && tk?.error === 'not_connected') {
-              addBlock(container(`
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
-                  <img src="tiktoklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                  <b style="color:#ffb1bf;font-size:1.05em;">TikTok not connected</b>
-                </div>
-                <div style="color:#ddd;">
-                  The creator hasn’t connected TikTok (or hasn’t granted the necessary permissions),
-                  so we can’t fetch stats for
-                  <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">this link</a>.
-                  Ask them to connect TikTok from their dashboard and try again.
-                </div>
-              `));
-            } else if (resp.status === 403 || tk?.error === 'forbidden') {
-              addBlock(`<div style="color:#faa;">You’re not authorized to view TikTok stats for this link. (Sponsor must be attributed to this offer.)</div>`);
-            } else if (resp.ok && tk?.ok && tk?.found === false) {
-              addBlock(`<div style="color:#faa;">Couldn’t match this TikTok link to the creator’s connected account’s videos: <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">${liveUrl}</a></div>`);
             } else {
-              addBlock(`<div style="color:#faa;">Could not fetch TikTok stats for ${liveUrl}.</div>`);
+              // ❌ any failure → snapshot
+              const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'tiktok' });
+              if (fb) {
+                addBlock(renderSnapshotBlock('tiktok', liveUrl, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else if (resp.ok && tk?.ok && tk?.found === false) {
+                addBlock(`<div style="color:#faa;">Couldn’t match this TikTok link to the creator’s connected account’s videos: <a href="${liveUrl}" target="_blank" style="color:#ff3b5c;">${liveUrl}</a></div>`);
+              } else if (resp.ok && tk?.error === 'not_connected') {
+                addBlock(container(`
+                  <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+                    <img src="tiktoklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
+                    <b style="color:#ffb1bf;font-size:1.05em;">TikTok not connected</b>
+                  </div>
+                  <div style="color:#ddd;">
+                    The creator hasn’t connected TikTok (or hasn’t granted the necessary permissions).
+                    We also don’t have a cached snapshot for this URL yet.
+                  </div>
+                `));
+              } else {
+                addBlock(`<div style="color:#faa;">Could not fetch TikTok stats for ${liveUrl}.</div>`);
+              }
             }
             continue;
           }
@@ -819,19 +906,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!resp.ok || !data?.success) {
               if (looksUnavailable) {
-                addBlock(container(`
-                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                    <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                    <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
-                  </div>
-                  <div style="color:#ddd;margin-bottom:6px;">
-                    This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
-                    ${dateBadge}
-                  </div>
-                  <div><a href="${liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                `));
+                const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'twitch' });
+                if (fb) {
+                  addBlock(renderSnapshotBlock('twitch', liveUrl, fb.metrics, dateBadge, 'VOD unavailable — showing cached stats.'));
+                } else {
+                  addBlock(container(`
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                    </div>
+                    <div style="color:#ddd;margin-bottom:6px;">
+                      This VOD appears to be deleted or has expired on Twitch, and no cached stats were found.
+                      ${dateBadge}
+                    </div>
+                    <div><a href="${liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                  `));
+                }
               } else {
-                addBlock("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
+                const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'twitch' });
+                if (fb) {
+                  addBlock(renderSnapshotBlock('twitch', liveUrl, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+                } else {
+                  addBlock("<div style='color:#faa;'>Could not fetch Twitch VOD stats.</div>");
+                }
               }
             } else {
               const v = data.vod || {};
@@ -840,18 +937,39 @@ document.addEventListener("DOMContentLoaded", async () => {
                 /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
 
               if (vDeleted) {
-                addBlock(container(`
-                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                    <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                    <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
-                  </div>
-                  <div style="color:#ddd;margin-bottom:6px;">
-                    This VOD was removed or has expired on Twitch. Stats are no longer available.
-                    ${dateBadge}
-                  </div>
-                  <div><a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                `));
+                const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'twitch' });
+                if (fb) {
+                  addBlock(renderSnapshotBlock('twitch', liveUrl, fb.metrics, dateBadge, 'VOD removed — showing cached stats.'));
+                } else {
+                  addBlock(container(`
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                    </div>
+                    <div style="color:#ddd;margin-bottom:6px;">
+                      This VOD was removed or has expired on Twitch. No cached stats available.
+                      ${dateBadge}
+                    </div>
+                    <div><a href="${v.url || liveUrl}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
+                  `));
+                }
               } else {
+                // ✅ Save snapshot
+                const metrics = {
+                  views: Number(v.view_count ?? 0),
+                  likes: 0,
+                  comments: 0
+                };
+                try {
+                  await statsnapSaveAfterSuccess({
+                    originalUrl: liveUrl,
+                    platformHint: 'twitch',
+                    offerId,
+                    liveMetrics: metrics,
+                    raw: v
+                  });
+                } catch {}
+
                 const thumb = normalizeTwitchThumb(v.thumbnail_url);
                 const durationText = v.duration?.text || null;
                 const creator = v.user_display_name || v.user_login || '-';
@@ -901,8 +1019,33 @@ document.addEventListener("DOMContentLoaded", async () => {
               const ins = ig.insights || {};
               const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
               const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
+
+              const likes = Number(m.like_count ?? 0);
+              const comments = Number(m.comments_count ?? 0);
+              const vviews = (m.video_views != null) ? Number(m.video_views) : null;
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: liveUrl,
+                  platformHint: 'instagram',
+                  offerId,
+                  liveMetrics: {
+                    likes,
+                    comments,
+                    video_views: vviews ?? 0,
+                    impressions: Number(ins.impressions ?? 0),
+                    reach: Number(ins.reach ?? 0),
+                    saved: Number(ins.saved ?? 0),
+                    engagement: Number(ins.engagement ?? 0)
+                  },
+                  raw: { media: m, insights: ins }
+                });
+              } catch {}
+
               const cap = (m.caption || '').trim();
               const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
+
               addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
                   <img src="${thumb}" referrerpolicy="no-referrer" alt="Instagram media" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
@@ -917,9 +1060,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                   </div>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${wrapRow('👍 Likes:', fmtNum(m.like_count))}
-                  ${wrapRow('💬 Comments:', fmtNum(m.comments_count))}
-                  ${m.video_views != null ? wrapRow('▶️ Video Views:', fmtNum(m.video_views)) : ''}
+                  ${wrapRow('👍 Likes:', fmtNum(likes))}
+                  ${wrapRow('💬 Comments:', fmtNum(comments))}
+                  ${vviews != null ? wrapRow('▶️ Video Views:', fmtNum(vviews)) : ''}
                   ${wrapRow('👁️ Impressions:', fmtNum(ins.impressions))}
                   ${wrapRow('📣 Reach:', fmtNum(ins.reach))}
                   ${wrapRow('💾 Saved:', fmtNum(ins.saved))}
@@ -929,10 +1072,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                   <a href="${m.permalink || liveUrl}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
                 </div>
               `));
-            } else if (resp.ok && ig?.ok && ig?.found === false) {
-              addBlock(`<div style="color:#faa;">Couldn’t match this Instagram link to the creator’s connected account: <a href="${liveUrl}" target="_blank" style="color:#ff8bd2;">${liveUrl}</a></div>`);
             } else {
-              addBlock(`<div style="color:#faa;">Could not fetch Instagram stats for ${liveUrl}.</div>`);
+              const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'instagram' });
+              if (fb) {
+                addBlock(renderSnapshotBlock('instagram', liveUrl, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else if (resp.ok && ig?.ok && ig?.found === false) {
+                addBlock(`<div style="color:#faa;">Couldn’t match this Instagram link to the creator’s connected account: <a href="${liveUrl}" target="_blank" style="color:#ff8bd2;">${liveUrl}</a></div>`);
+              } else {
+                addBlock(`<div style="color:#faa;">Could not fetch Instagram stats for ${liveUrl}.</div>`);
+              }
             }
             continue;
           }
@@ -955,12 +1103,6 @@ document.addEventListener("DOMContentLoaded", async () => {
               const p = fb.post || fb.data || {};
               const ins = fb.insights || p.insights || fb.metrics || null;
 
-              const permalink = p.permalink_url || p.link || liveUrl;
-              const created = p.created_time || p.created_at || p.created || null;
-              const message = (p.message || p.story || '').toString().trim();
-              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
-              const thumb = fbFindImage(p) || 'facebooklogo.png';
-
               const reactions =
                 pick(p, 'reactions.summary.total_count', 'reaction_count', 'reactions') ?? fb.reactions_count ?? null;
               const comments =
@@ -971,6 +1113,31 @@ document.addEventListener("DOMContentLoaded", async () => {
               const impressions = readMetric(ins, ['post_impressions','impressions']);
               const reach       = readMetric(ins, ['post_impressions_unique','reach']);
               const engaged     = readMetric(ins, ['post_engaged_users','engaged_users']);
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: liveUrl,
+                  platformHint: 'facebook',
+                  offerId,
+                  liveMetrics: {
+                    reactions: Number(reactions ?? 0),
+                    comments: Number(comments ?? 0),
+                    shares: Number(shares ?? 0),
+                    impressions: Number(impressions ?? 0),
+                    reach: Number(reach ?? 0),
+                    engaged_users: Number(engaged ?? 0)
+                  },
+                  raw: { post: p, insights: ins }
+                });
+              } catch {}
+
+              const permalink = p.permalink_url || p.link || liveUrl;
+              const created = p.created_time || p.created_at || p.created || null;
+              const message = (p.message || p.story || '').toString().trim();
+              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
+
+              const thumb = fbFindImage(p) || 'facebooklogo.png';
 
               addBlock(container(`
                 <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
@@ -998,8 +1165,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `));
             } else {
-              const reason = fb?.error || fb?.message || fb?.detail || 'Unknown error';
-              addBlock(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${liveUrl}" target="_blank" style="color:#7fb4ff;">${liveUrl}</a>. ${reason ? `(${reason})` : ''}</div>`);
+              const fbSnap = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'facebook' });
+              if (fbSnap) {
+                addBlock(renderSnapshotBlock('facebook', liveUrl, fbSnap.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                const reason = fb?.error || fb?.message || fb?.detail || 'Unknown error';
+                addBlock(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${liveUrl}" target="_blank" style="color:#7fb4ff;">${liveUrl}</a>. ${reason ? `(${reason})` : ''}</div>`);
+              }
             }
             continue;
           }
@@ -1008,7 +1180,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           addBlock(`<div style="color:#ccc;">No stats integration for: <a href="${liveUrl}" target="_blank" style="color:#9ad;">${liveUrl}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
 
         } catch {
-          addBlock(`<div style="color:#faa;">Error loading stats for ${liveUrl}.</div>`);
+          // Any unexpected error → snapshot try
+          const platform = detectPlatformFromURL(liveUrl) || 'unknown';
+          const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: platform });
+          if (fb && platform !== 'unknown') {
+            addBlock(renderSnapshotBlock(platform, liveUrl, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+          } else {
+            addBlock(`<div style="color:#faa;">Error loading stats for ${liveUrl}.</div>`);
+          }
         }
       }
 
