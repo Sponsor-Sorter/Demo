@@ -9,6 +9,9 @@ import {
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
+// ⬇️ NEW: snapshot helpers (no extra API calls)
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js';
+
 let allSponseeOffers = [];
 let currentPage = 1;
 const offersPerPage = 5;
@@ -676,7 +679,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (/youtube\.com|youtu\.be/i.test(link)) {
           const videoId = extractYouTubeVideoId(link);
           if (!videoId) {
-            blocks.push(`<div style="color:#faa;">Invalid YouTube URL: ${link}</div>`);
+            // Try snapshot since live link is invalid
+            const fb = await statsnapFallback({ originalUrl: link, platformHint: 'youtube' });
+            if (fb) {
+              blocks.push(renderSnapshotBlock('youtube', link, fb.metrics, dateBadge, 'Could not parse YouTube URL — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Invalid YouTube URL: ${link}</div>`);
+            }
             resultsNode.innerHTML = blocks.join('');
             continue;
           }
@@ -687,7 +696,24 @@ document.addEventListener("DOMContentLoaded", async () => {
               body: JSON.stringify({ videoId })
             });
             const stats = await resp.json();
-            if (stats?.success) {
+
+            if (resp.ok && stats?.success) {
+              // ✅ Save snapshot
+              const metrics = {
+                views: Number(stats.video?.statistics?.viewCount) || 0,
+                likes: Number(stats.video?.statistics?.likeCount) || 0,
+                comments: Number(stats.video?.statistics?.commentCount) || 0
+              };
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: link,
+                  platformHint: 'youtube',
+                  offerId,
+                  liveMetrics: metrics,
+                  raw: stats.video
+                });
+              } catch {}
+
               const thumb = stats.video.snippet.thumbnails?.medium?.url || stats.video.snippet.thumbnails?.default?.url || '';
               const duration = stats.video.contentDetails?.duration
                 ? parseISO8601Duration(stats.video.contentDetails.duration)
@@ -717,10 +743,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `);
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch YouTube stats for ${link}.</div>`);
+              // ❌ Live failed → try snapshot
+              const fb = await statsnapFallback({ originalUrl: link, platformHint: 'youtube' });
+              if (fb) {
+                blocks.push(renderSnapshotBlock('youtube', link, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch YouTube stats for ${link}.</div>`);
+              }
             }
           } catch {
-            blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
+            const fb = await statsnapFallback({ originalUrl: link, platformHint: 'youtube' });
+            if (fb) {
+              blocks.push(renderSnapshotBlock('youtube', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Error loading YouTube stats for ${link}.</div>`);
+            }
           }
           resultsNode.innerHTML = blocks.join('');
           continue;
@@ -744,10 +781,26 @@ document.addEventListener("DOMContentLoaded", async () => {
               const shortDesc = desc ? (desc.length > 140 ? desc.slice(0, 140) + '…' : desc) : '';
               const vurl = v.url || link;
 
-              const views = fmtNum(v.stats?.view_count);
-              const likes = fmtNum(v.stats?.like_count);
-              const comments = fmtNum(v.stats?.comment_count);
-              const shares = fmtNum(v.stats?.share_count);
+              const views = Number(v.stats?.view_count ?? 0);
+              const likes = Number(v.stats?.like_count ?? 0);
+              const comments = Number(v.stats?.comment_count ?? 0);
+              const shares = Number(v.stats?.share_count ?? 0);
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: link,
+                  platformHint: 'tiktok',
+                  offerId,
+                  liveMetrics: { views, likes, comments, shares },
+                  raw: v
+                });
+              } catch {}
+
+              const viewsTxt = fmtNum(views);
+              const likesTxt = fmtNum(likes);
+              const commentsTxt = fmtNum(comments);
+              const sharesTxt = fmtNum(shares);
 
               blocks.push(`
                 <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
@@ -764,10 +817,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                   </div>
                   <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                    <div><b>👀 Views:</b><br>${views}</div>
-                    <div><b>👍 Likes:</b><br>${likes}</div>
-                    <div><b>💬 Comments:</b><br>${comments}</div>
-                    <div><b>🔁 Shares:</b><br>${shares}</div>
+                    <div><b>👀 Views:</b><br>${viewsTxt}</div>
+                    <div><b>👍 Likes:</b><br>${likesTxt}</div>
+                    <div><b>💬 Comments:</b><br>${commentsTxt}</div>
+                    <div><b>🔁 Shares:</b><br>${sharesTxt}</div>
                   </div>
                   <div style="margin-top:10px;text-align:right;">
                     <a href="${vurl}" target="_blank" style="color:#ff3b5c;text-decoration:underline;font-size:0.96em;">Open on TikTok ↗</a>
@@ -775,12 +828,28 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `);
             } else if (resp.ok && tk?.ok && tk?.found === false) {
-              blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos: <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
+              // Try snapshot — maybe it was fetched earlier
+              const fb = await statsnapFallback({ originalUrl: link, platformHint: 'tiktok' });
+              if (fb) {
+                blocks.push(renderSnapshotBlock('tiktok', link, fb.metrics, dateBadge, 'Couldn’t match account — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Couldn’t match this TikTok link to your connected account’s videos: <a href="${link}" target="_blank" style="color:#ff3b5c;">${link}</a></div>`);
+              }
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
+              const fb = await statsnapFallback({ originalUrl: link, platformHint: 'tiktok' });
+              if (fb) {
+                blocks.push(renderSnapshotBlock('tiktok', link, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch TikTok stats for ${link}.</div>`);
+              }
             }
           } catch {
-            blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${link}.</div>`);
+            const fb = await statsnapFallback({ originalUrl: link, platformHint: 'tiktok' });
+            if (fb) {
+              blocks.push(renderSnapshotBlock('tiktok', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Error loading TikTok stats for ${link}.</div>`);
+            }
           }
           resultsNode.innerHTML = blocks.join('');
           continue;
@@ -808,21 +877,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!resp.ok || !data?.success) {
               if (looksUnavailable) {
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                // Try snapshot
+                const fb = await statsnapFallback({ originalUrl: link, platformHint: 'twitch' });
+                if (fb) {
+                  blocks.push(renderSnapshotBlock('twitch', link, fb.metrics, dateBadge, 'VOD unavailable — showing cached stats.'));
+                } else {
+                  blocks.push(`
+                    <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                        <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                        <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                      </div>
+                      <div style="color:#ddd;margin-bottom:6px;">
+                        This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
+                        ${dateBadge}
+                      </div>
+                      <div><a href="${link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
                     </div>
-                    <div style="color:#ddd;margin-bottom:6px;">
-                      This VOD appears to be deleted or has expired on Twitch, so detailed stats are no longer available.
-                      ${dateBadge}
-                    </div>
-                    <div><a href="${link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                  </div>
-                `);
+                  `);
+                }
               } else {
-                blocks.push(`<div style="color:#faa;">Could not fetch Twitch stats for ${link}.</div>`);
+                const fb = await statsnapFallback({ originalUrl: link, platformHint: 'twitch' });
+                if (fb) {
+                  blocks.push(renderSnapshotBlock('twitch', link, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+                } else {
+                  blocks.push(`<div style="color:#faa;">Could not fetch Twitch stats for ${link}.</div>`);
+                }
               }
             } else {
               const v = data.vod || {};
@@ -831,20 +911,41 @@ document.addEventListener("DOMContentLoaded", async () => {
                 /deleted|expired|removed|pruned/.test(String(v?.status || v?.state || ''));
 
               if (vDeleted) {
-                blocks.push(`
-                  <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
-                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                      <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
-                      <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                const fb = await statsnapFallback({ originalUrl: link, platformHint: 'twitch' });
+                if (fb) {
+                  blocks.push(renderSnapshotBlock('twitch', link, fb.metrics, dateBadge, 'VOD removed — showing cached stats.'));
+                } else {
+                  blocks.push(`
+                    <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
+                      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                        <img src="twitchlogo.png" style="height:25px;vertical-align:-2px;margin-right:6px;border-radius:5px;">
+                        <b style="color:#c9b6ff;font-size:1.05em;">Twitch VOD unavailable</b>
+                      </div>
+                      <div style="color:#ddd;margin-bottom:6px;">
+                        This VOD was removed or has expired on Twitch. Stats are no longer available.
+                        ${dateBadge}
+                      </div>
+                      <div><a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
                     </div>
-                    <div style="color:#ddd;margin-bottom:6px;">
-                      This VOD was removed or has expired on Twitch. Stats are no longer available.
-                      ${dateBadge}
-                    </div>
-                    <div><a href="${v.url || link}" target="_blank" style="color:#a88cff;text-decoration:underline;">Open original link ↗</a></div>
-                  </div>
-                `);
+                  `);
+                }
               } else {
+                // ✅ Save snapshot
+                const metrics = {
+                  views: Number(v.view_count ?? 0),
+                  likes: 0,
+                  comments: 0
+                };
+                try {
+                  await statsnapSaveAfterSuccess({
+                    originalUrl: link,
+                    platformHint: 'twitch',
+                    offerId,
+                    liveMetrics: metrics,
+                    raw: v
+                  });
+                } catch {}
+
                 const thumb = normalizeTwitchThumb(v.thumbnail_url) || 'twitchlogo.png';
                 const durationText = v.duration?.text || null;
                 const creator = v.user_display_name || v.user_login || '-';
@@ -875,7 +976,12 @@ document.addEventListener("DOMContentLoaded", async () => {
               }
             }
           } catch {
-            blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
+            const fb = await statsnapFallback({ originalUrl: link, platformHint: 'twitch' });
+            if (fb) {
+              blocks.push(renderSnapshotBlock('twitch', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Error loading Twitch stats for ${link}.</div>`);
+            }
           }
           resultsNode.innerHTML = blocks.join('');
           continue;
@@ -895,11 +1001,35 @@ document.addEventListener("DOMContentLoaded", async () => {
               const ins = ig.insights || {};
               const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
               const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
-              const likes = fmtNum(m.like_count);
-              const comments = fmtNum(m.comments_count);
-              const vviews = (m.video_views != null) ? fmtNum(m.video_views) : null;
+              const likes = Number(m.like_count ?? 0);
+              const comments = Number(m.comments_count ?? 0);
+              const vviews = (m.video_views != null) ? Number(m.video_views) : null;
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: link,
+                  platformHint: 'instagram',
+                  offerId,
+                  liveMetrics: {
+                    likes,
+                    comments,
+                    video_views: vviews ?? 0,
+                    impressions: Number(ins.impressions ?? 0),
+                    reach: Number(ins.reach ?? 0),
+                    saved: Number(ins.saved ?? 0),
+                    engagement: Number(ins.engagement ?? 0)
+                  },
+                  raw: { media: m, insights: ins }
+                });
+              } catch {}
+
               const cap = (m.caption || '').trim();
               const shortCap = cap ? (cap.length > 120 ? cap.slice(0, 120) + '…' : cap) : '';
+
+              const likesTxt = fmtNum(likes);
+              const commentsTxt = fmtNum(comments);
+              const viewsTxt = vviews != null ? fmtNum(vviews) : null;
 
               blocks.push(`
                 <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
@@ -916,9 +1046,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                   </div>
                   <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                    <div><b>👍 Likes:</b><br>${likes}</div>
-                    <div><b>💬 Comments:</b><br>${comments}</div>
-                    ${vviews ? `<div><b>▶️ Video Views:</b><br>${vviews}</div>` : ''}
+                    <div><b>👍 Likes:</b><br>${likesTxt}</div>
+                    <div><b>💬 Comments:</b><br>${commentsTxt}</div>
+                    ${viewsTxt ? `<div><b>▶️ Video Views:</b><br>${viewsTxt}</div>` : ''}
                     <div><b>👁️ Impressions:</b><br>${fmtNum(ins.impressions)}</div>
                     <div><b>📣 Reach:</b><br>${fmtNum(ins.reach)}</div>
                     <div><b>💾 Saved:</b><br>${fmtNum(ins.saved)}</div>
@@ -930,12 +1060,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `);
             } else if (resp.ok && ig?.ok && ig?.found === false) {
-              blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to your connected account’s media: <a href="${link}" target="_blank" style="color:#ff8bd2;">${link}</a></div>`);
+              const fb = await statsnapFallback({ originalUrl: link, platformHint: 'instagram' });
+              if (fb) {
+                blocks.push(renderSnapshotBlock('instagram', link, fb.metrics, dateBadge, 'Couldn’t match account — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Couldn’t match this Instagram link to your connected account’s media: <a href="${link}" target="_blank" style="color:#ff8bd2;">${link}</a></div>`);
+              }
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
+              const fb = await statsnapFallback({ originalUrl: link, platformHint: 'instagram' });
+              if (fb) {
+                blocks.push(renderSnapshotBlock('instagram', link, fb.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
+              }
             }
           } catch {
-            blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
+            const fb = await statsnapFallback({ originalUrl: link, platformHint: 'instagram' });
+            if (fb) {
+              blocks.push(renderSnapshotBlock('instagram', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
+            }
           }
           resultsNode.innerHTML = blocks.join('');
           continue;
@@ -955,13 +1100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               const p = fb.post || fb.data || {};
               const ins = fb.insights || p.insights || fb.metrics || null;
 
-              const permalink = p.permalink_url || p.link || link;
-              const created = p.created_time || p.created_at || p.created || null;
-              const message = (p.message || p.story || '').toString().trim();
-              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
-
-              const thumb = fbFindImage(p) || 'facebooklogo.png';
-
+              // Metrics for snapshot
               const reactions =
                 pick(p, 'reactions.summary.total_count', 'reaction_count', 'reactions') ?? fb.reactions_count ?? null;
               const comments =
@@ -972,6 +1111,31 @@ document.addEventListener("DOMContentLoaded", async () => {
               const impressions = readMetric(ins, ['post_impressions','impressions']);
               const reach = readMetric(ins, ['post_impressions_unique','reach']);
               const engaged = readMetric(ins, ['post_engaged_users','engaged_users']);
+
+              // ✅ Save snapshot
+              try {
+                await statsnapSaveAfterSuccess({
+                  originalUrl: link,
+                  platformHint: 'facebook',
+                  offerId,
+                  liveMetrics: {
+                    reactions: Number(reactions ?? 0),
+                    comments: Number(comments ?? 0),
+                    shares: Number(shares ?? 0),
+                    impressions: Number(impressions ?? 0),
+                    reach: Number(reach ?? 0),
+                    engaged_users: Number(engaged ?? 0)
+                  },
+                  raw: { post: p, insights: ins }
+                });
+              } catch {}
+
+              const permalink = p.permalink_url || p.link || link;
+              const created = p.created_time || p.created_at || p.created || null;
+              const message = (p.message || p.story || '').toString().trim();
+              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
+
+              const thumb = fbFindImage(p) || 'facebooklogo.png';
 
               blocks.push(`
                 <div style="background:none;border-radius:15px;box-shadow:none;padding:26px 30px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.09em;">
@@ -1001,10 +1165,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               `);
             } else {
-              blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${link}" target="_blank" style="color:#7fb4ff;">${link}</a>.</div>`);
+              const fbSnap = await statsnapFallback({ originalUrl: link, platformHint: 'facebook' });
+              if (fbSnap) {
+                blocks.push(renderSnapshotBlock('facebook', link, fbSnap.metrics, dateBadge, 'Live fetch failed — showing cached stats.'));
+              } else {
+                blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${link}" target="_blank" style="color:#7fb4ff;">${link}</a>.</div>`);
+              }
             }
           } catch {
-            blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
+            const fbSnap = await statsnapFallback({ originalUrl: link, platformHint: 'facebook' });
+            if (fbSnap) {
+              blocks.push(renderSnapshotBlock('facebook', link, fbSnap.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            } else {
+              blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
+            }
           }
           resultsNode.innerHTML = blocks.join('');
           continue;
@@ -1440,6 +1614,62 @@ function epochToDateString(n) {
   }
 }
 
+// Render a generic "snapshot" (cached) block for any platform
+function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subtitle = '') {
+  const logos = {
+    youtube: 'youtubelogo.png',
+    tiktok: 'tiktoklogo.png',
+    instagram: 'instagramlogo.png',
+    facebook: 'facebooklogo.png',
+    twitch: 'twitchlogo.png'
+  };
+  const colors = {
+    youtube: '#e74c3c',
+    tiktok: '#ff3b5c',
+    instagram: '#ff8bd2',
+    facebook: '#7fb4ff',
+    twitch: '#c9b6ff'
+  };
+  const title = {
+    youtube: 'YouTube (cached)',
+    tiktok: 'TikTok (cached)',
+    instagram: 'Instagram (cached)',
+    facebook: 'Facebook (cached)',
+    twitch: 'Twitch (cached)'
+  }[platform] || 'Cached Stats';
+
+  // show common metrics if present
+  const rows = [];
+  if (metrics.views != null) rows.push(`<div><b>👀 Views:</b><br>${fmtNum(metrics.views)}</div>`);
+  if (metrics.likes != null) rows.push(`<div><b>👍 Likes:</b><br>${fmtNum(metrics.likes)}</div>`);
+  if (metrics.comments != null) rows.push(`<div><b>💬 Comments:</b><br>${fmtNum(metrics.comments)}</div>`);
+  if (metrics.shares != null) rows.push(`<div><b>🔁 Shares:</b><br>${fmtNum(metrics.shares)}</div>`);
+  if (metrics.impressions != null) rows.push(`<div><b>👁️ Impressions:</b><br>${fmtNum(metrics.impressions)}</div>`);
+  if (metrics.reach != null) rows.push(`<div><b>📣 Reach:</b><br>${fmtNum(metrics.reach)}</div>`);
+  if (metrics.engaged_users != null) rows.push(`<div><b>🤝 Engaged Users:</b><br>${fmtNum(metrics.engaged_users)}</div>`);
+  if (metrics.video_views != null) rows.push(`<div><b>▶️ Video Views:</b><br>${fmtNum(metrics.video_views)}</div>`);
+
+  const color = colors[platform] || '#ddd';
+  const logo = logos[platform] || '';
+
+  return `
+    <div style="background:none;border-radius:15px;box-shadow:none;padding:22px 26px;margin:0 auto 14px;max-width:560px;color:#f6f6f6;font-size:1.02em;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        ${logo ? `<img src="${logo}" style="height:22px;vertical-align:-2px;margin-right:4px;border-radius:6px">` : ''}
+        <b style="color:${color};">${title}</b>
+      </div>
+      ${subtitle ? `<div style="color:#ddd;margin:-2px 0 8px 0;font-size:0.95em;">${subtitle}</div>` : ''}
+      ${dateBadge || ''}
+      <div style="display:flex;flex-wrap:wrap;gap:18px 26px;margin-top:6px;">
+        ${rows.length ? rows.join('') : `<div style="color:#ccc;">No cached metrics available yet.</div>`}
+      </div>
+      <div style="margin-top:10px;text-align:right;">
+        <a href="${link}" target="_blank" style="color:${color};text-decoration:underline;font-size:0.94em;">Open link ↗</a>
+      </div>
+    </div>
+  `;
+}
+
 // Make all profile logos with .profile-link open the user's profile
 document.addEventListener('click', function(e) {
   const profileImg = e.target.closest('.profile-link');
@@ -1447,3 +1677,5 @@ document.addEventListener('click', function(e) {
     window.location.href = `./viewprofile.html?username=${encodeURIComponent(profileImg.dataset.username)}`;
   }
 });
+
+//new statsnap.js integration 
