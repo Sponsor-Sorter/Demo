@@ -11,6 +11,8 @@
   <script type="module" src="./js/sponsorCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/globalSearch.js"></script>
+    <script type="module" src="./js/wallet.js"></script>
+
 </head>
 
 <body>
@@ -21,7 +23,7 @@
       <div>
         <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
-                    <!-- Global Search (Nav) -->
+       <!-- Global Search (Nav) -->
         <div class="nav-search">
           <input
             id="global-search-input"
@@ -32,6 +34,8 @@
           />
           <div id="global-search-results" class="search-popover" hidden></div>
         </div>
+
+
           <li><a href="./index.html">Home</a></li>
           <li><a href="./finder.html">Finder</a></li>
         </nav>
@@ -75,7 +79,7 @@
                       <span class="slider round"></span>
                     </label>
                   </li>
-                  <li>
+                   <li>
                     <span style="font-size:1em;">Completion Recaps</span>
                     <label class="switch">
                       <input type="checkbox" id="toggle-recap-slider">
@@ -155,7 +159,7 @@
       <div class="dashboard-cards">
         <div class="card-row">
           <div class="card"><h3>Total Offers</h3><p id="sponsored-deals">0</p></div>
-          <div class="card"><h3>Ongoing Campaigns</h3><p id="ongoing-campaigns">0</p></div>
+          <div class="card"><h3>Completed Campaigns</h3><p id="ongoing-campaigns">0</p></div>
         </div>
         <div class="card-row">
           <div class="card"><h3>Total Spend</h3><p id="total-spend">$0</p></div>
@@ -532,7 +536,3 @@
 
 </body>
 </html>
-
-
-
-
