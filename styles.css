@@ -4732,11 +4732,27 @@ fieldset:focus-within, fieldset:hover {
 }
 
 @media (max-width: 600px) {
-  .settings-dropdown {
-    min-width: 90vw;
-    right: -10vw;
-  }
+  
+    .settings-dropdown li,
+.settings-dropdown .dropdown-item {
+  all: unset ;
+  display: block;
+  width: 100% !important;
+  background: none !important;
+  min-width: 0;
+  min-height: 0;
+  height: 20px;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: auto !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  display: flex;
+      
 }
+  }
+
 
 .dropdown-item:hover { background: #f2f3fe; color: #2a0ea0; }
 
@@ -6607,6 +6623,7 @@ input:checked + .slider:before {
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 80px;
   }
   .navbar nav a {
     padding: 2px 5px !important;
@@ -6930,6 +6947,52 @@ input:checked + .slider:before {
   .blurbbit {
     font-size: .79em !important;
   }
+  /* --- Layer order ------------------------------------------------------- */
+/* nav/header < wallet < dropdown < modals */
+:root{
+  --z-nav: 1000;
+  --z-wallet: 3000;
+  --z-dropdown: 4000;
+  --z-modal: 5000;
+}
+
+/* nav */
+.navbar, .navbar1, .navii { position: relative; z-index: var(--z-nav);margin-bottom: 50px; }
+/* keep nav containers from clipping the dropdown */
+.navbar .navii, .navbar1 .navii { overflow: visible !important;margin-bottom: 50px; }
+
+/* settings trigger + dropdown */
+#settings-notif-bar{ position: relative; }
+#settings-notif-bar .settings-dropdown{
+  position: absolute;            /* desktop */
+  z-index: var(--z-dropdown); 
+}
+@media (max-width:600px){
+  #settings-notif-bar .settings-dropdown{
+    position: fixed;             /* mobile: avoid clipping */
+    z-index: var(--z-dropdown);
+    right: 10px !important; top: 58px !important;
+  }
+   .settings-dropdown ul{
+    list-style: none;
+    margin: 8px auto !important;          /* center the UL */
+    padding: 0 !important;
+    width: 100%;
+    max-width: 340px;                      /* keeps content tidy */
+    text-align: right;                      /* labels stay left-aligned */
+  }
+}
+
+/* wallet above nav but below modals */
+.wallet{ position: relative; z-index: var(--z-wallet);
+top: 0px;
+width: fit-content; }
+
+/* page content stays at normal layer */
+section.userprofile,
+section.dashboard,
+main { position: relative; z-index: auto; }  /* <-- remove any z-index you added */
+
 }
 
 .settings-dropdown li,
@@ -6947,6 +7010,7 @@ input:checked + .slider:before {
   padding: auto !important;
   gap: 8px !important;
   cursor: pointer !important;
+  
       
 }
 
@@ -7480,6 +7544,14 @@ form#registrationForm {
     position: relative !important; /* anchor for the badge */
   }
 
+  #settings-notif-bar button {
+    display: block;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
+
   /* badge back on the bell */
   /* use whichever class/id your red bubble uses */
   #settings-notif-bar .notif-badge,
@@ -7494,12 +7566,90 @@ form#registrationForm {
   #settings-notif-bar {
     width: 50px !important;
   }
+
+  .settings-dropdown li > span, .settings-dropdown li > label.switch {
+    padding-left: 12px !important;
+  }
+  .settings-dropdown li, .settings-dropdown .dropdown-item {
+    all: unset;
+    display: block;
+    width: 100% !important;
+    background: none !important;
+    min-width: 0;
+    min-height: 0;
+    height: 20px;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: auto !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    background: url('navimg.png') center center/cover no-repeat !important;
+}
 }
 
 
 
 @media (max-width: 600px) {
   .navbar nav, .navbar1 nav { top:auto !important; left:auto !important; right:auto !important; }
+
+
+  .settings-dropdown .dropdown-item {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  background: url('navimg.png') center center/cover no-repeat !important;
+  border: none;
+  color: inherit;
+  font-size: 1.09em;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+#settings-dropdown {
+  left: auto !important;
+  right: 40px !important;
+  top: 200px !important;
+}
+
+/*settings email switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  vertical-align: middle;
+}
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: -20px; bottom: 0;
+  background-color: #ccc;
+  transition: .2s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #36a2eb;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
 }
 
 
@@ -7589,6 +7739,7 @@ form#registrationForm {
     margin: 0 auto !important;
     padding-left: 0px !important;
     padding-right: 0px !important;
+    padding-top: 20px !important;
     width: calc(100% - -10px) !important;  /* 100% minus the padding */
     max-width: 100% !important;
     min-width: 0 !important;
@@ -7605,5 +7756,40 @@ form#registrationForm {
     margin-left: -15px !important;
     
   }
+  /* Center the dropdown panel */
+#settings-notif-bar .settings-dropdown{
+  left: 50% !important;
+  right: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(92vw, 420px) !important;
+}
+
+/* Make each row fill the width + center its background */
+#settings-notif-bar .settings-dropdown li > a,
+#settings-notif-bar .settings-dropdown li > button,
+#settings-notif-bar .settings-dropdown li > .dropdown-item{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-position: center center !important;
+  background-size: 100% 100% !important;
+}
+
+/* Center the text label inside the row */
+#settings-notif-bar .settings-dropdown li > * > span{
+  margin: 0 auto;                 /* centers the label */
+  text-align: center !important;
+  padding: 0 !important;          /* kills stray left padding */
+}
+
+/* Keep the toggle on the far right (if present) */
+#settings-notif-bar .settings-dropdown li .switch,
+#settings-notif-bar .settings-dropdown li input[type="checkbox"],
+#settings-notif-bar .settings-dropdown li .toggle{
+  margin-left: auto;
+}
+
+
+  
 }
 
