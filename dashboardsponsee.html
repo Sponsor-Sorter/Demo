@@ -183,7 +183,7 @@
       </div>
     </fieldset>
 
-    <!-- Summary Cards -->
+       <!-- Summary Cards -->
     <fieldset>
       <div class="dashboard-cards">
         <div class="card-row">
@@ -220,6 +220,79 @@
       </div>
     </fieldset>
 
+
+    <!-- =========================
+     FRIENDS & GROUPS
+     ========================= -->
+<fieldset id="friends-and-groups">
+  <legend>👥 Friends & Creator Groups</legend>
+
+  <!-- Friends: add + lists -->
+  <section class="friends-panel">
+    <h3 style="margin:0 0 10px 0;">Add Friends</h3>
+
+    <!-- Add friend by username -->
+    <form id="friend-add-form" style="display:flex;gap:8px;align-items:center;margin:6px 0 14px 0;">
+      <input id="friend-username" type="text" placeholder="Add friend by @username" style="flex:1;min-width:220px;">
+    </form>
+
+    <div class="friends-columns" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+      <div>
+        <h4 style="margin:0 0 8px 0;">Pending</h4>
+        <div id="friends-pending" class="card-col"></div>
+      </div>
+      <div>
+        <h4 style="margin:0 0 8px 0;">Friends</h4>
+        <div id="friends-accepted" class="card-col"></div>
+      </div>
+    </div>
+
+    <div class="help-block" style="margin-top:10px;">
+      <em>
+        <strong>How it works:</strong> Send a request by username. They’ll appear under “Pending” until accepted.
+        Either side can remove the connection at any time. You can also block users if needed.
+      </em>
+    </div>
+  </section>
+
+  <hr style="margin:18px 0;opacity:.25;">
+
+  <!-- Groups: create + list + members -->
+  <section class="groups-panel">
+    <h3 style="margin:0 0 10px 0;">Creator Groups</h3>
+
+    <!-- Create group -->
+    <form id="group-create-form" style="display:grid;grid-template-columns:1fr 1fr 160px auto;gap:8px;align-items:center;margin-bottom:12px;">
+      <input id="group-name" type="text" placeholder="Group name (e.g., Podcast Crew)" required>
+      <input id="group-desc" type="text" placeholder="Short description (optional)">
+      <select id="group-visibility" title="Visibility">
+        <option value="private">private</option>
+        <option value="friends">friends</option>
+        <option value="public">public</option>
+      </select>
+      <button type="submit">Create</button>
+    </form>
+
+    <!-- Groups list -->
+    <div id="groups-list" class="card-col" style="margin-bottom:12px;"></div>
+
+    <!-- Selected group's members panel (rendered on 'View') -->
+    <div id="groups-members" class="card-col"></div>
+    <div id="group-offer-tabs"></div>
+    <div id="group-offers-container"></div>
+<!-- Selected group's members+offers now render inline beneath the clicked card -->
+<div class="help-block" style="margin-top:10px;">
+  <em>
+    <strong>Tip:</strong> Click a group’s <b>View</b> to expand its details right below the card — you’ll see members (badges & roles)
+    and the group’s offers there. Only owners/admins can manage members. Visibility can be <b>private</b>, <b>friends</b>, or <b>public</b>.
+  </em>
+</div>
+
+  </section>
+</fieldset>
+
+
+ 
     <!-- Active Listings -->
    <fieldset class="Active-offers">
   <legend>🎯 Active Listings for Sponsorship</legend>
@@ -910,6 +983,7 @@
 <script type="module">import './js/userReports.js';</script>
 <script type="module">import './js/privacy.js';</script>
 <script type="module">import './js/alerts.js';</script>
+<script type="module" src="./js/groupOffers.js"></script>
 <script type="module">
   import { renderSponseePublicOffers } from './js/publicOffers.js';
 
@@ -1058,6 +1132,8 @@
 
 <script type="module" src="./js/invoices.js"></script>
 <script type="module" src="./js/recaps.js"></script>
+<script type="module" src="./js/friends.js"></script>
+<script type="module" src="./js/friendGroups.js"></script>
 
 </body>
 </html>
