@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Make Group Offer - Sponsor Sorter">
+  <title>Offer to Group</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section class="userprofile">
+  <fieldset>
+    <legend>Target Group</legend>
+    <div class="profile-header">
+      <div class="profile-picture">
+        <img id="group-image" src="logos.png" class="profile-img" alt="Group Image"
+             onerror="this.src='logos.png'">
+        <p>Visibility: <span id="group-visibility">-</span></p>
+      </div>
+      <div class="profile-info">
+        <p>Group Name: <span id="group-name">[Group]</span></p>
+        <p>Description: <span id="group-desc">-</span></p>
+        <p>Members: <span id="group-members">0</span></p>
+        <p>Owner/Admins: <span id="group-admins">-</span></p>
+      </div>
+    </div>
+    <div class="help-block" style="margin-top:10px;">
+      <em>
+        This offer will be visible to the group’s admins/members in the Group page under “Pending Offers”.
+        Members can accept or reject individually. Those who accept and complete by your deadline will
+        split the offer amount.
+      </em>
+    </div>
+  </fieldset>
+</section>
+
+<form id="offerForm" enctype="multipart/form-data">
+  <section>
+    <fieldset>
+      <legend>Basic Details</legend>
+      <div>
+        <label for="offerTitle">Offer Title / Product Name:</label>
+        <input type="text" id="offerTitle" name="offerTitle" required>
+        <br><br>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="price">Total Offer Amount (USD):</label>
+            <input type="number" id="price" name="price" step="1" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="payment">Payment:</label>
+            <select id="payment" name="payment" required>
+              <option value="">--Select--</option>
+              <option value="weekly">Weekly</option>
+              <option value="fortnightly">Fortnightly</option>
+              <option value="monthly">Monthly</option>
+              <option value="full on completion">FULL - On Completion</option>
+            </select>
+          </div>
+        </div>
+
+        <br>
+        <label for="productImage">Offer Images:</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" multiple><br><br>
+        <div id="dropZone" class="drop-zone">
+          <p>Drag & drop images here, or click “Choose Files”</p>
+        </div><br>
+        <div id="productImagePreviewContainer" class="image-preview-container">
+          <div id="mainPreview" class="main-preview"><p><em>Preview will appear here.</em></p></div>
+          <div id="thumbnailGallery" class="thumbnail-gallery"></div>
+        </div><br>
+
+        <label for="offerDescription">Offer Description:</label><br>
+        <textarea id="offerDescription" name="offerDescription" rows="4" cols="50" required></textarea><br><br>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Job Specifics</legend>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="jobType">Type of Job:</label>
+          <select id="jobType" name="jobType" required>
+            <option value="">--Select Type--</option>
+            <option value="Shoutout">Shoutout</option>
+            <option value="Product Placement">Product Placement</option>
+            <option value="Dedicated Video">Dedicated Video</option>
+            <option value="Story Mention">Story Mention</option>
+            <option value="Event Sponsorship">Event Sponsorship</option>
+            <option value="Ongoing Deal">Ongoing Deal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="deliverableType">Deliverable Type:</label>
+          <select id="deliverableType" name="deliverableType" required>
+            <option value="">--Select Deliverable--</option>
+            <option value="Include in next video">Include in Next Video</option>
+            <option value="Standalone Post">Standalone Post</option>
+            <option value="Story Mention">Story Mention</option>
+            <option value="Product Review">Product Review</option>
+            <option value="Custom Content">Custom Content</option>
+          </select>
+        </div>
+      </div><br>
+
+      <label for="instructions">Detailed Instructions:</label><br>
+      <textarea id="instructions" name="instructions" rows="4" cols="50"></textarea><br><br>
+
+      <label for="sponsorshipDuration">Sponsorship Duration:</label>
+      <select id="sponsorshipDuration" name="sponsorshipDuration" required>
+        <option value="">--Select Duration--</option>
+        <option value="One Off">One Off</option>
+        <option value="1 Month">1 Month</option>
+        <option value="3 Months">3 Months</option>
+        <option value="6 Months">6 Months</option>
+        <option value="1 Year">1 Year</option>
+      </select><br><br>
+
+      <label for="deadline">Deadline (Date by which job should be completed):</label>
+      <input type="date" id="deadline" name="deadline"><br><br>
+
+      <label for="optionalFile">Optional File Upload (e.g., sample video, ad clip):</label>
+      <input type="file" id="optionalFile" name="optionalFile"><br><br>
+
+      <div id="offer-platforms-section" style="margin:8px 0 14px 0;">
+        <div style="margin-bottom:6px;"><strong>Platforms:</strong></div>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="instagram"> Instagram</label>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="youtube"> YouTube</label>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="tiktok"> TikTok</label>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="twitch"> Twitch</label>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="twitter"> Twitter</label>
+        <label style="margin-right:12px;"><input type="checkbox" name="offer_platforms" value="facebook"> Facebook</label>
+        <label><input type="checkbox" name="offer_platforms" value="snapchat"> Snapchat</label>
+      </div>
+
+      <fieldset style="border-color: aliceblue; margin-top: 20px;">
+        <legend>Cost</legend>
+        <div id="offer-cost-summary" style="font-size: 1.12em; color: #e0eaff; margin-bottom: 6px; font-weight: 500;">
+          Base Amount: <span id="offer-cost-amount" style="color: #6fe3d9;">$0.00</span>
+        </div>
+        <div id="listing-fee-line" style="font-size: 1.04em; color: #FFD600; margin-bottom: 4px;">
+          Listing Fee (10%): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
+        </div>
+        <div id="total-cost-line" style="font-size: 1.14em; color: #99f1b8;">
+          Total Including Fee: <span id="total-cost-amount" style="color:#50ffa4;">$0.00</span>
+        </div>
+        <div id="cost-details" style="font-size: .99em; color: #c7dcfc;">
+          For group offers we charge a simple 10% listing fee upfront. This covers secure payments and platform operations.
+        </div>
+      </fieldset>
+
+      <button type="submit" style="margin-top:14px;">Pay & Submit Group Offer</button>
+    </fieldset>
+  </section>
+</form>
+
+<section class="userprofile">
+  <fieldset>
+    <legend>Your details</legend>
+    <div class="profile-header">
+      <div class="profile-picture">
+        <img id="sponsor-profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
+        <p>Account Type: <span id="account-type">Sponsor</span></p>
+      </div>
+      <div class="profile-info">
+        <p>Email: <span id="sponsor-email">[Email]</span></p>
+        <p>Company: <span id="company">[Company]</span></p>
+        <p>Location: <span id="sponsor-location">[Location]</span></p>
+      </div>
+    </div>
+  </fieldset>
+</section>
+
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo"/>
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
+
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+import { famBotModerateWithModal } from './js/FamBot.js';
+
+const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
+const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3'; // swap to live on prod
+
+let cachedSponsor;
+let imageFiles = [];
+let currentPreviewIndex = 0;
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = val ?? '-';
+}
+
+// Simple cost calc (10% fee)
+function calcCost() {
+  const amount = parseFloat(document.getElementById('price').value) || 0;
+  const fee = amount * 0.10;
+  const total = amount + fee;
+  document.getElementById('offer-cost-amount').textContent = '$' + amount.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('listing-fee-amount').textContent = '$' + fee.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('total-cost-amount').textContent = '$' + total.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Require auth
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    alert('Please log in first.');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Load sponsor details
+  const { data: sponsor, error: sponsorErr } = await supabase
+    .from('users_extended_data')
+    .select('*')
+    .eq('user_id', user.id)
+    .single();
+  if (sponsorErr || !sponsor) {
+    alert('Sponsor data not found.');
+    return;
+  }
+  cachedSponsor = sponsor;
+  setText('sponsor-email', sponsor.email);
+  setText('company', sponsor.company_name);
+  setText('sponsor-location', sponsor.location);
+  const spPic = document.getElementById('sponsor-profile-pic');
+  if (spPic) spPic.src = sponsor.profile_pic
+    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`
+    : 'logos.png';
+
+  // Get groupId
+  const params = new URLSearchParams(window.location.search);
+  const groupId = params.get('groupId');
+  if (!groupId) {
+    alert('No group specified.');
+    return;
+  }
+
+  // Load group info (fields match your current group table usage)
+  const { data: group, error: gErr } = await supabase
+    .from('friend_groups')
+    .select('*')
+    .eq('id', groupId)
+    .single();
+  if (gErr || !group) {
+    alert('Group not found.');
+    return;
+  }
+
+  // Display group fields (name/description/visibility/image_path if present)
+  setText('group-name', group.name ?? group.group_name ?? '[Group]');
+  setText('group-desc', group.description ?? '-');
+  setText('group-visibility', group.visibility || 'private');
+  const gImg = document.getElementById('group-image');
+  if (gImg) gImg.src = group.image_path
+    ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${group.image_path}`
+    : 'logos.png';
+
+  // Admins & member count
+  const { data: members } = await supabase
+    .from('friend_group_members')
+    .select('user_id, role')
+    .eq('group_id', groupId);
+  const count = Array.isArray(members) ? members.length : 0;
+  setText('group-members', count.toString());
+  const admins = (members || []).filter(m => ['owner','admin'].includes((m.role||'').toLowerCase()));
+  setText('group-admins', admins.length ? admins.length + ' admin(s)' : '—');
+
+  // Image upload UI
+  const productImageInput = document.getElementById('productImage');
+  const dropZone = document.getElementById('dropZone');
+  const mainPreview = document.getElementById('mainPreview');
+  const thumbnailGallery = document.getElementById('thumbnailGallery');
+
+  function renderThumbnails() {
+    thumbnailGallery.innerHTML = '';
+    imageFiles.forEach((imgObj, index) => {
+      const wrap = document.createElement('div');
+      wrap.classList.add('thumbnail-container');
+      const img = document.createElement('img');
+      img.src = imgObj.dataUrl;
+      img.classList.add('thumbnail');
+      img.addEventListener('click', () => showPreview(index));
+      const btn = document.createElement('button');
+      btn.innerText = '✖';
+      btn.classList.add('remove-thumb-btn');
+      btn.title = 'Remove this image';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        imageFiles.splice(index, 1);
+        renderThumbnails();
+        if (currentPreviewIndex === index) showPreview(imageFiles.length ? 0 : -1);
+        else if (currentPreviewIndex > index) currentPreviewIndex--;
+      });
+      wrap.appendChild(img); wrap.appendChild(btn);
+      thumbnailGallery.appendChild(wrap);
+    });
+  }
+  function showPreview(index) {
+    if (imageFiles.length === 0 || index < 0) {
+      mainPreview.innerHTML = '<p><em>No images selected.</em></p>';
+      return;
+    }
+    const img = document.createElement('img');
+    img.src = imageFiles[index].dataUrl;
+    mainPreview.innerHTML = '';
+    mainPreview.appendChild(img);
+    currentPreviewIndex = index;
+  }
+  function addImages(files) {
+    const remainingSlots = 5 - imageFiles.length;
+    const filesToAdd = files.slice(0, remainingSlots);
+    if (filesToAdd.length < files.length) alert('You can only upload up to 5 images.');
+    filesToAdd.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageFiles.push({ file, dataUrl: e.target.result });
+        renderThumbnails();
+        showPreview(imageFiles.length - 1);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  productImageInput.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length) addImages(files);
+  });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) addImages(files);
+  });
+  dropZone.addEventListener('click', () => productImageInput.click());
+
+  // cost listeners
+  ['price'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calcCost);
+      el.addEventListener('change', calcCost);
+    }
+  });
+  calcCost();
+
+  // Submit (Stripe first, DB insert happens on success page)
+  document.getElementById('offerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Collect
+    const title = document.getElementById('offerTitle').value.trim();
+    const description = document.getElementById('offerDescription').value.trim();
+    const amount = parseFloat(document.getElementById('price').value);
+    const payment = document.getElementById('payment').value;
+    const jobType = document.getElementById('jobType').value;
+    const deliverableType = document.getElementById('deliverableType').value;
+    const instructions = document.getElementById('instructions').value;
+    const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
+    const deadline = document.getElementById('deadline').value || null;
+    const platforms = Array.from(document.querySelectorAll('input[name="offer_platforms"]:checked')).map(cb => cb.value.toLowerCase());
+
+    if (!title || isNaN(amount)) {
+      alert('Please provide a valid title and amount.');
+      return;
+    }
+
+    // Moderate user text (block if flagged)
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    const user_id = session?.user?.id;
+    const toCheck = [
+      { field: "Title", value: title },
+      { field: "Description", value: description },
+      { field: "Instructions", value: instructions }
+    ];
+    for (const f of toCheck) {
+      if (f.value) {
+        const result = await famBotModerateWithModal({ user_id, content: f.value, jwt, type: 'offer' });
+        if (!result.allowed) return;
+      }
+    }
+
+    // Upload images (offers bucket)
+    const uploadedImageNames = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+      const { file } = imageFiles[i];
+      const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+      const { error: upErr } = await supabase.storage.from('offers').upload(uniqueName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+      if (upErr) {
+        alert('Failed to upload an image: ' + upErr.message);
+        return;
+      }
+      uploadedImageNames.push(uniqueName);
+    }
+
+    // Optional file
+    const optionalFileInput = document.getElementById('optionalFile');
+    const optionalFile = optionalFileInput.files[0];
+    let optionalFileName = null;
+    if (optionalFile) {
+      const uniqueOpt = `${crypto.randomUUID()}_${optionalFile.name}`;
+      const { error: optErr } = await supabase.storage.from('offers').upload(uniqueOpt, optionalFile, {
+        cacheControl: '3600', upsert: false
+      });
+      if (optErr) {
+        alert('Optional file upload failed.');
+        return;
+      }
+      optionalFileName = uniqueOpt;
+    }
+
+    // Build pending payload (insert will occur on success page)
+    const pending = {
+      group_id: groupId,
+      sponsor_id: sponsor.user_id || sponsor.id,
+      sponsor_username: sponsor.username,
+      sponsor_email: sponsor.email,
+      sponsor_company: sponsor.company_name,
+
+      offer_title: title,
+      offer_description: description,
+      offer_amount: amount,
+      payment_schedule: payment,
+      job_type: jobType,
+      deliverable_type: deliverableType,
+      instructions,
+      sponsorship_duration: sponsorshipDuration,
+      deadline,
+      offer_images: uploadedImageNames,
+      optional_file: optionalFileName,
+      platforms,
+      status: 'pending'
+    };
+
+    localStorage.setItem('pendingGroupOfferData', JSON.stringify(pending));
+
+    // Calculate fee & total
+    const fee = amount * 0.10;
+    const totalWithFee = amount + fee;
+
+    // Start Stripe Checkout
+    try {
+      const { data: { session: authSession } } = await supabase.auth.getSession();
+      const jwt2 = authSession?.access_token;
+
+      // Same frontendBaseUrl pattern as public offers
+      const frontendBaseUrl = window.location.origin.includes('github.io')
+        ? 'https://sponsor-sorter.github.io/Demo'
+        : window.location.origin;
+
+      const res = await fetch(STRIPE_BACKEND, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(jwt2 ? { 'Authorization': `Bearer ${jwt2}` } : {})
+        },
+        body: JSON.stringify({
+          amount: totalWithFee,
+          offerId: `group-${title}-${Date.now()}`,
+          offerType: 'group',            // backend should route to payment-success-group.html
+          frontendBaseUrl                // used by your Edge Function to build success/cancel URLs
+        })
+      });
+
+      const data = await res.json();
+      if (!data.sessionId) {
+        alert('Could not start payment. ' + (data.error || 'Unknown error.'));
+        return;
+      }
+      const stripe = Stripe(STRIPE_PK);
+      const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+      if (error) {
+        alert('Stripe redirect failed: ' + error.message);
+        return;
+      }
+    } catch (err) {
+      alert('Failed to initiate payment: ' + err.message);
+      return;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
