@@ -2525,7 +2525,7 @@ fieldset {
   .card h3 {
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
-    color: #333;
+    color: #fff;
   }
   
   .card p {
@@ -5121,6 +5121,83 @@ fieldset:focus-within, fieldset:hover {
   align-items: flex-start;
 }
 
+/* Friends lists: keep tidy with scroll */
+#friends-pending,
+#friends-accepted {
+  max-height: clamp(160px, 30vh, 320px); /* responsive cap */
+  overflow-y: auto;
+  margin: 5px;
+  padding-right: 6px;            /* space for scrollbar */
+  scrollbar-gutter: stable both-edges;
+  
+  /* subtle top/bottom fade so it feels neat */
+  -webkit-mask-image: linear-gradient(180deg,
+                      transparent 0,
+                      black 10px,
+                      black calc(100% - 10px),
+                      transparent 100%);
+          mask-image: linear-gradient(180deg,
+                      transparent 0,
+                      black 10px,
+                      black calc(100% - 10px),
+                      transparent 100%);
+}
+
+/* Chrome/Safari scrollbar styling */
+#friends-pending::-webkit-scrollbar,
+#friends-accepted::-webkit-scrollbar {
+  width: 10px;
+}
+#friends-pending::-webkit-scrollbar-track,
+#friends-accepted::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.06);
+  border-radius: 10px;
+}
+#friends-pending::-webkit-scrollbar-thumb,
+#friends-accepted::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.25);
+  border-radius: 10px;
+  border: 2px solid rgba(0,0,0,.25);
+}
+#friends-pending::-webkit-scrollbar-thumb:hover,
+#friends-accepted::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,.35);
+}
+
+/* Firefox scrollbar styling */
+#friends-pending,
+#friends-accepted {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.35) rgba(255,255,255,.08);
+}
+
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#friends-accepted > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(1) {
+  margin: 5px !important;
+}
+#friends-accepted .card, #friends-pending .card {
+  margin: 8px 0px;
+  padding-top: 8.0px;
+  padding-bottom: 3.0px;
+  padding-left: 8.0px;
+}
+
+/* Replace the old .member-list rule */
+.member-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Keep your existing .member-chip styles; no max-width needed */
+
+/* 1-per-line on small screens */
+@media (max-width: 720px) {
+  .member-list { grid-template-columns: 1fr; }
+}
 
 
 
@@ -7850,3 +7927,8 @@ body{
     font-size: 1.4em !important;
   }
 }
+
+.card {
+   
+    background: #242424;
+  }
