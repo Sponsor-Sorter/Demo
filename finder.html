@@ -8,11 +8,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script type="module" src="auth.js" defer></script>
-    <script type="module" src="./js/onboarding.js"></script>
+  <script type="module" src="./js/onboarding.js"></script>
 
   <style>
     #recent-offers-list {
       display: flex;
+      width: 98vw;
       flex-direction: row;
       gap: 16px;
       min-height: 70px;
@@ -21,14 +22,76 @@
       padding-bottom: 6px;
       scrollbar-width: thin;
     }
-    #recent-offers-list::-webkit-scrollbar {
-      height: 9px;
+    #recent-offers-list::-webkit-scrollbar { height: 9px; }
+    #recent-offers-list::-webkit-scrollbar-thumb { border-radius: 8px; }
+
+    /* Group cards */
+    .group-card {
+      background:#2b2b2f;
+      border-radius:16px;
+      padding:18px;
+      margin:18px 0;
+      box-shadow:0 4px 20px #0006;
     }
-    #recent-offers-list::-webkit-scrollbar-thumb {
-      border-radius: 8px;
+    .group-card h4 { margin:0 0 6px 0; font-size:1.18em; }
+    .group-meta { display:flex; gap:16px; flex-wrap:wrap; font-size:.95em; opacity:.9; }
+
+    /* member rows */
+ /* Centered two-up grid */
+.member-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+  justify-items: center; /* <-- center each chip within its grid cell */
+}
+.member-top a {
+  background-color: unset !important;
+}
+/* Chip sizing: don’t stretch full width; cap width and let it center */
+.member-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #131316;
+    border: 2px solid #3838ff30;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  width: 80%;
+  max-width: 420px;       /* <-- keeps chips from getting too wide */
+}
+
+/* 1-per-line on small screens */
+@media (max-width: 720px) {
+  .member-list { grid-template-columns: 1fr; }
+}
+
+    .member-chip img.profile {
+      width:69px;height:69px;object-fit:cover;border-radius:50%;border:1px solid #222;background:#111;
     }
-    
-    
+    .member-chip .member-role { opacity:.75; font-size:.88em; margin-left:auto; }
+
+    .platform-logo-icon { width:16px; height:16px; vertical-align:middle; }
+    .member-badges { display:flex; gap:6px; align-items:center; margin-left:6px; }
+    .group-actions { margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
+    .toggle-row-spacer { margin-left:auto; }
+    .active-toggle { background:#f6c62e; color:#222; }
+    .pagination-controls { display:flex; gap:10px; align-items:center; margin-top:10px; }
+    .platforms-row img { width:18px; height:18px; }
+
+    /* NEW: Group Search bar styles */
+    .group-search-bar {
+      display:flex; gap:8px; align-items:center; margin:10px 0 14px 0;
+    }
+    .group-search-bar input {
+      flex:1; padding:8px 10px; border-radius:8px; border:1px solid #3a3a46;
+      background:#1a1a1f; color:#eee;
+    }
+    .group-search-bar button {
+      padding:8px 14px; border:none; border-radius:8px; cursor:pointer;
+      background:#4061b3; color:#fff; font-weight:600;
+    }
   </style>
 </head>
 <body>
@@ -45,79 +108,81 @@
         <nav>
           <li class="navr" id="dashboard-link"><a href="signup.html">Signup</a></li>
           <li><a href="login.html">Login</a></li>
-           <li id="settings-notif-bar" style="display:inline;">
-  <div class="icon-bar-bg">
-    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-    </button>
-    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-    </button>
-    <div id="settings-dropdown" class="settings-dropdown">
-      <div class="dropdown-arrow"></div>
-      <ul>
-        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-        <li>
-          <span style="font-size:1em;">Guided Onboarding</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-onboarding-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-help-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
-          <label class="switch">
-            <input type="checkbox" id="email-alert-toggle">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li><button type="button" class="dropdown-item" id="show-referral-link-btn">
-          Show Referral Link
-        </button></li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 50px !important;padding-top: 10px !important;">
-            Subscription & Free Month Rewards
-          </button>
-        </li>
-      </ul>
+          <li id="settings-notif-bar" style="display:inline;">
+            <div class="icon-bar-bg">
+              <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+                <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+              </button>
+              <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+              </button>
+              <div id="settings-dropdown" class="settings-dropdown">
+                <div class="dropdown-arrow"></div>
+                <ul>
+                  <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                  <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                  <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                  <li>
+                    <span style="font-size:1em;">Guided Onboarding</span>
+                    <label class="switch">
+                      <input type="checkbox" id="toggle-onboarding-slider">
+                      <span class="slider round"></span>
+                    </label>
+                  </li>
+                  <li>
+                    <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
+                    <label class="switch">
+                      <input type="checkbox" id="toggle-help-slider">
+                      <span class="slider round"></span>
+                    </label>
+                  </li>
+                  <li>
+                    <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
+                    <label class="switch">
+                      <input type="checkbox" id="email-alert-toggle">
+                      <span class="slider round"></span>
+                    </label>
+                  </li>
+                  <li><button type="button" class="dropdown-item" id="show-referral-link-btn">Show Referral Link</button></li>
+                  <li>
+                    <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 50px !important;padding-top: 10px !important;">
+                      Subscription & Free Month Rewards
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </nav>
+      </div>
     </div>
-  </div>
-</li>
-   
   </section>
 </header>
 
 
-<fieldset class="finder" >
-  <section class="search-section">
+<fieldset class="finder">
+  <section class="search-section" style="width: 85vw;">
     <h2>Welcome, <span id="sponsorName"></span>!</h2>
-    <div class="search-toggle-row" style="margin-bottom:18px;">
+    <div class="search-toggle-row" style="margin-bottom:18px;display:flex;gap:10px;align-items:center;">
       <button id="user-search-toggle" class="active-toggle">User Search</button>
       <button id="offer-search-toggle">Offer Search</button>
-      <button id="create-public-offer-btn" style="margin-left:auto;display:none;">+ Create Public Offer</button>
+      <button id="group-search-toggle">Group Search</button>
+      <button id="create-public-offer-btn" class="toggle-row-spacer" style="margin-left:auto;display:none;">+ Create Public Offer</button>
     </div>
     <div class="help-block" style="margin-bottom:14px;">
-  <em>
-    <strong>Sponsor Sorter Finder Help:</strong><br>
-    Use this page to <b>search for creators/influencers</b> or <b>browse open sponsorship offers</b>.  
-    <ul style="margin:6px 0 0 20px; padding:0; list-style:disc;">
-     <b>User Search:</b> Find creators/influencers by name, content type, location, or platform. <br>
-      <b>Offer Search:</b> Browse and apply for active public sponsorship offers.
-      Switch between searches using the toggle buttons above.
-    </ul>
-  </em>
-</div>
+      <em>
+        <strong>Sponsor Sorter Finder Help:</strong><br>
+        Use this page to <b>search for creators/influencers</b>, <b>browse open sponsorship offers</b>, or <b>find groups that accept offers</b>.
+        <ul style="margin:6px 0 0 20px; padding:0; list-style:disc;">
+          <li><b>User Search:</b> Find creators/influencers by name, content type, location, or platform.</li>
+          <li><b>Offer Search:</b> Browse and apply for active public sponsorship offers.</li>
+          <li><b>Group Search:</b> Discover groups with <em>Allow Offers</em> enabled. Open a card to <b>Offer to Group</b>.</li>
+        </ul>
+      </em>
+    </div>
 
+    <!-- USER SEARCH -->
     <div id="user-search-form-block">
       <h3>Find Active Users and Influencers</h3>
 
@@ -137,18 +202,17 @@
         </select>
         <button type="submit">Search</button>
         <div class="help-block" style="margin-bottom:8px;">
-  <em>
-    <strong>Find Active Users and Influencers:</strong><br>
-    Fill out one or more fields to filter users.  
-    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
-      Enter <b>Name</b> for specific users. <br>
-      Use <b>Content Type</b> (e.g., Gaming, Fitness, Fashion). <br>
-      Filter by <b>Location</b> or choose a <b>Platform</b> (YouTube, Instagram, etc.). <br>
-      Click <b>Search</b> to see matching user profiles below. <br>
-      Use <b>Previous/Next</b> to browse more results. 
-    </ul>
-  </em>
-</div>
+          <em>
+            <strong>Find Active Users and Influencers:</strong><br>
+            Fill out one or more fields to filter users.
+            <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+              <li>Enter <b>Name</b> for specific users.</li>
+              <li>Use <b>Content Type</b> (e.g., Gaming, Fitness, Fashion).</li>
+              <li>Filter by <b>Location</b> or choose a <b>Platform</b>.</li>
+              <li>Use <b>Previous/Next</b> to browse more results.</li>
+            </ul>
+          </em>
+        </div>
       </form>
       <div id="searchResults"></div>
       <div id="searchPagination" class="pagination-controls">
@@ -158,20 +222,19 @@
       </div>
     </div>
 
+    <!-- OFFER SEARCH -->
     <div id="offer-search-form-block" style="display:none;">
       <h3>Browse Open Sponsorship Offers</h3>
       <div class="help-block" style="margin-bottom:8px;">
-  <em>
-    <strong>Browse Sponsorship Offers:</strong><br>
-    Use the form to filter open offers by title, sponsor, platform, or amount.<br>
-    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
-      Enter keywords for <b>Offer Title</b> or <b>Sponsor Username</b>. 
-      Filter by <b>Platform</b> or set a <b>Min/Max Amount</b>. <br>
-      Click <b>Search</b> to see available offers below.
-      Use <b>Previous/Next</b> to paginate through results. <br>
-    </ul>
-  </em>
-</div>
+        <em>
+          <strong>Browse Sponsorship Offers:</strong><br>
+          Filter open offers by title, sponsor, platform, or amount.
+          <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+            <li>Enter keywords for <b>Offer Title</b> or <b>Sponsor Username</b>.</li>
+            <li>Filter by <b>Platform</b> or set a <b>Min/Max Amount</b>.</li>
+          </ul>
+        </em>
+      </div>
 
       <form id="offerSearchForm" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
         <input type="text" id="offer-search-title" placeholder="Offer Title" style="flex:1;">
@@ -188,7 +251,7 @@
         </select>
         <input type="number" min="0" id="offer-search-minamount" placeholder="Min $" style="width:80px;">
         <input type="number" min="0" id="offer-search-maxamount" placeholder="Max $" style="width:80px;">
-        <button type="submit" style="padding:7px 22px;">Search</button>    
+        <button type="submit" style="padding:7px 22px;">Search</button>
       </form>
       <div id="offers-container" class="public-offers-container"></div>
       <div id="offers-error" style="color:red;"></div>
@@ -198,6 +261,30 @@
         <button id="offer-nextPage">Next</button>
       </div>
     </div>
+
+    <!-- GROUP SEARCH -->
+    <div id="group-search-form-block" style="display:none;">
+      <h3>Find Groups That Accept Offers</h3>
+
+      <!-- NEW: Group Search bar -->
+      <div class="group-search-bar">
+        <input id="group-search-input" type="text" placeholder="Search groups (name or description)…">
+        <button id="group-search-btn">Search</button>
+      </div>
+
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Tip:</strong> These groups have <b>Allow Offers</b> turned on. Click <b>Offer to Group</b> to submit a pending group offer.
+        </em>
+      </div>
+      <div id="group-results"></div>
+      <div id="groupPagination" class="pagination-controls">
+        <button id="group-prevPage">Previous</button>
+        <span id="group-currentPage">Page 1</span>
+        <button id="group-nextPage">Next</button>
+      </div>
+    </div>
+
   </section>
 </fieldset>
 
@@ -211,12 +298,11 @@
   <div class="help-block" style="margin-bottom:10px;">
     <em>
       <strong>Recommended for You:</strong><br>
-      Based on your profile and activity, here are the top matches our system found for you.<br>
+      Based on your profile and activity, here are the top matches our system found for you.
       Click <b>View Profile</b> to see more, or <b>Connect</b> to start a conversation or application.
     </em>
   </div>
 </fieldset>
-
 
 <fieldset class="otheraccounts">
   <legend><h3>Other Accounts:</h3></legend>
@@ -224,28 +310,27 @@
     <div class="user-profiles" id="otherAccountsProfiles" style="display:flex;flex-wrap:nowrap;gap:18px;"></div>
   </div>
   <div class="help-block" style="margin-bottom:10px;">
-  <em>
-    <strong>Other Accounts:</strong><br>
-    Here are a few random <b id="help-accounts-label"></b> you may wish to view or connect with.<br>
-    Click <b>View Profile</b> for more details.
-  </em>
-</div>
+    <em>
+      <strong>Other Accounts:</strong><br>
+      Here are a few random <b id="help-accounts-label"></b> you may wish to view or connect with.
+      Click <b>View Profile</b> for more details.
+    </em>
+  </div>
 </fieldset>
 
 <fieldset class="recentoffers">
   <legend><h3>Recently Added Offers</h3></legend>
   <div id="recent-offers-list"></div>
   <div class="help-block" style="margin-bottom:10px;">
-  <em>
-    <strong>Recently Added Offers:</strong><br>
-    Here you’ll find the latest sponsorship opportunities posted by sponsors.<br>
-    <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
-      <li>Click <b>View All Offers</b> to browse or apply for more sponsorships.</li>
-      <li>Switch between user and offer searches using the tabs above.</li>
-    </ul>
-  </em>
-</div>
-
+    <em>
+      <strong>Recently Added Offers:</strong><br>
+      The latest sponsorship opportunities posted by sponsors.
+      <ul style="margin:4px 0 0 18px;padding:0;list-style:disc;">
+        <li>Click <b>View All Offers</b> to browse or apply for more sponsorships.</li>
+        <li>Switch between tabs above.</li>
+      </ul>
+    </em>
+  </div>
 </fieldset>
 
 <script type="module">
@@ -276,8 +361,10 @@ async function renderRecentOffers() {
         .select('profile_pic')
         .eq('user_id', offer.sponsor_id)
         .maybeSingle();
-      if (sponsor && sponsor.profile_pic)
-        sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
+      if (sponsor && sponsor.profile_pic) {
+        const r = supabase.storage.from('logos').getPublicUrl(sponsor.profile_pic);
+        sponsorLogo = r?.data?.publicUrl || sponsorLogo;
+      }
     } catch {}
 
     let applicantCount = 0, successfulCount = 0;
@@ -304,7 +391,7 @@ async function renderRecentOffers() {
         </div>
         <div style="display:flex;flex-direction:row;gap:16px;">
           <div style="flex-shrink:0;text-align:center;">
-            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;">
+            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;" onerror="this.src='logos.png'">
             <div style="font-size:.95em;opacity:.85;color:#e4e9fc;">By<br><span style="font-weight:500;color:#d5d5ff">${offer.sponsor_username}</span></div>
           </div>
           <div style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:.99em;color:#fff;">
@@ -324,28 +411,26 @@ async function renderRecentOffers() {
 document.addEventListener('DOMContentLoaded', renderRecentOffers);
 </script>
 
- <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./forum.html">Forum</a></li>
-                <li><a href="./stats.html">Stats</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
-    </footer>
+<!-- FOOTER -->
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+      <li><a href="./blog.html">Blog</a></li>
+      <li><a href="./forum.html">Forum</a></li>
+      <li><a href="./stats.html">Stats</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+    Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+  </div>
+</footer>
 
 <div id="cookie-banner" class="cookie-banner">
   <p>
@@ -417,11 +502,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentPage = 1;
   const resultsPerPage = 20;
 
+  /* helper: platform badges */
   function extractPlatformBadges(socialHandles) {
-    if (!socialHandles) return 'N/A';
+    if (!socialHandles) return '';
     let handlesObj = socialHandles;
     if (typeof handlesObj === 'string') {
-      try { handlesObj = JSON.parse(handlesObj); } catch (e) { return 'N/A'; }
+      try { handlesObj = JSON.parse(handlesObj); } catch (e) { return ''; }
     }
     const platformLogos = {
       instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
@@ -434,15 +520,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     const platformsArray = Object.keys(handlesObj).filter(platform => {
       const handle = handlesObj[platform];
-      return handle && handle.trim() !== '';
+      return handle && String(handle).trim() !== '';
     });
-    if (platformsArray.length === 0) return 'N/A';
+    if (!platformsArray.length) return '';
     return platformsArray.map(p => {
       const logoSrc = platformLogos[p.toLowerCase()];
       return logoSrc
         ? `<img src="${logoSrc}" alt="${p}" title="${p}" class="platform-logo-icon">`
         : `<span class="platform-badge">${p}</span>`;
     }).join(' ');
+  }
+
+  /* helper: storage public URL */
+  function safePublicUrl(bucket, path){
+    if (!path) return null;
+    if (/^https?:\/\//i.test(path)) return path;
+    const r = supabase.storage.from(bucket).getPublicUrl(path);
+    return r?.data?.publicUrl || null;
   }
 
   const targetType = isSponsor ? 'besponsored' : 'sponsor';
@@ -459,9 +553,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const createOfferBtn = document.getElementById('create-public-offer-btn');
   if (isSponsor && createOfferBtn) {
     createOfferBtn.style.display = '';
-    createOfferBtn.onclick = () => {
-      window.location.href = 'publicOffers.html';
-    };
+    createOfferBtn.onclick = () => { window.location.href = 'publicOffers.html'; };
   } else if (createOfferBtn) {
     createOfferBtn.style.display = 'none';
   }
@@ -496,13 +588,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const div = document.createElement('div');
       div.classList.add('user-profile');
       const imgSrc = user.profile_pic
-        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+        ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
         : 'logos.png';
       const platformsHTML = extractPlatformBadges(user.social_handles);
 
       div.innerHTML = `
         <figure>
-          <img src="${imgSrc}" alt="${user.username}" class="profile-pic">
+          <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
           <div class="platforms-row">${platformsHTML}</div>
         </figure>
         <div class="user-profile-content">
@@ -520,6 +612,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   loadOtherAccounts();
 
+  /* ---------- USER SEARCH ---------- */
   async function fetchAndRenderResults(isSearch = false) {
     if (!isSearch) currentPage = 1;
     const name = document.getElementById('search-name').value.trim();
@@ -561,13 +654,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const div = document.createElement('div');
         div.classList.add('user-profile');
         const imgSrc = user.profile_pic
-          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+          ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
           : 'logos.png';
         const platformsHTML = extractPlatformBadges(user.social_handles);
 
         div.innerHTML = `
           <figure>
-            <img src="${imgSrc}" alt="${user.username}" class="profile-pic">
+            <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
             <div class="platforms-row">${platformsHTML}</div>
           </figure>
           <div class="user-profile-content">
@@ -622,6 +715,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  /* ---------- PUBLIC OFFER SEARCH ---------- */
   const offerSearchForm = document.getElementById('offerSearchForm');
   const offerTitleInput = document.getElementById('offer-search-title');
   const offerSponsorInput = document.getElementById('offer-search-sponsor');
@@ -715,237 +809,455 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPublicOffers({});
   };
 
+  /* ---------- GROUP SEARCH (allow_offers = true + search bar) ---------- */
+  const groupResults = document.getElementById('group-results');
+  const groupPrev = document.getElementById('group-prevPage');
+  const groupNext = document.getElementById('group-nextPage');
+  const groupPageLabel = document.getElementById('group-currentPage');
+
+  let groupPage = 1;
+  const groupsPerPage = 8;
+  let groupSearchTerm = '';
+
+  // Search bar wiring (debounced typing + button)
+  const groupInput = document.getElementById('group-search-input');
+  const groupBtn = document.getElementById('group-search-btn');
+  let debounceT;
+  groupInput?.addEventListener('input', () => {
+    clearTimeout(debounceT);
+    debounceT = setTimeout(() => {
+      groupSearchTerm = groupInput.value.trim();
+      groupPage = 1;
+      loadGroups();
+    }, 250);
+  });
+  groupBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    groupSearchTerm = groupInput.value.trim();
+    groupPage = 1;
+    loadGroups();
+  });
+
+  async function loadGroups() {
+    groupResults.innerHTML = '<div style="opacity:.75;">Loading groups...</div>';
+
+    const from = (groupPage - 1) * groupsPerPage;
+    const to = from + groupsPerPage - 1;
+
+    let query = supabase
+      .from('friend_groups')
+      .select('id, name, description, visibility, image_path, allow_offers, created_at')
+      .eq('allow_offers', true)
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (groupSearchTerm) {
+      // server-side name ilike; we’ll also filter description client-side
+      query = query.ilike('name', `%${groupSearchTerm}%`);
+    }
+
+    const { data: groups, error } = await query;
+
+    if (error) {
+      groupResults.innerHTML = '<div style="color:#f66;">Could not load groups.</div>';
+      return;
+    }
+    const filtered = (groups || []).filter(g => {
+      if (!groupSearchTerm) return true;
+      const t = groupSearchTerm.toLowerCase();
+      return (g.name || '').toLowerCase().includes(t) || (g.description || '').toLowerCase().includes(t);
+    });
+
+    if (!filtered.length) {
+      groupResults.innerHTML = '<div>No groups currently accepting offers.</div>';
+      groupPageLabel.textContent = `Page ${groupPage}`;
+      groupPrev.disabled = groupPage === 1;
+      groupNext.disabled = true;
+      return;
+    }
+
+    // For each group, load members + a few platform badges for each member
+    groupResults.innerHTML = '';
+    for (const g of filtered) {
+      const card = document.createElement('div');
+      card.className = 'group-card';
+
+      let memberRows = [];
+      let memberCount = 0;
+
+      try {
+        const { data: members } = await supabase
+          .from('friend_group_members')
+          .select('user_id, role')
+          .eq('group_id', g.id);
+
+        memberCount = members?.length || 0;
+
+        // fetch user details for first 6 members
+        const firstSix = (members || []).slice(0, 6);
+        if (firstSix.length) {
+          const ids = firstSix.map(m => m.user_id);
+          const { data: profiles } = await supabase
+            .from('users_extended_data')
+            .select('user_id, username, userType, profile_pic, social_handles, contenttype')
+            .in('user_id', ids);
+
+          const byId = Object.fromEntries((profiles || []).map(p => [p.user_id, p]));
+         memberRows = firstSix.map(m => {
+  const p = byId[m.user_id] || {};
+  const img = p.profile_pic
+    ? (safePublicUrl('logos', p.profile_pic) || 'logos.png')
+    : 'logos.png';
+  const badges = extractPlatformBadges(p.social_handles);
+  const role = (m.role || 'member').toUpperCase();
+  const name = p.username || 'user';
+  const profilePage = p.userType === 'sponsor' ? 'viewprofiles.html' : 'viewprofile.html';
+
+  return `
+    <div class="member-chip">
+      <img class="profile" src="${img}" alt="${name}" onerror="this.src='logos.png'">
+      <div class="member-info" style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;">
+        <!-- username + status inline -->
+        <div class="member-top" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <a href="${profilePage}?username=${encodeURIComponent(name)}"
+             style="text-decoration:none;color:#eaeaff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin: 20px;">
+             <strong>@${name}</strong>
+          </a>
+          <span class="member-role" style="margin-left:6px;padding:2px 6px;border:1px solid #3b824e;border-radius:6px;color:#9be7ae;background:#1f3825;">${role}</span>
+        </div>
+        <!-- badges on line below -->
+        <div class="member-badges" style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${badges || '<span style="opacity:.5;">&nbsp;</span>'}
+        </div>
+      </div>
+    </div>
+  `;
 });
 
-const userSearchToggle = document.getElementById('user-search-toggle');
-const offerSearchToggle = document.getElementById('offer-search-toggle');
-const userSearchBlock = document.getElementById('user-search-form-block');
-const offerSearchBlock = document.getElementById('offer-search-form-block');
 
-userSearchToggle.onclick = () => {
-  userSearchToggle.classList.add('active-toggle');
-  offerSearchToggle.classList.remove('active-toggle');
-  userSearchBlock.style.display = '';
-  offerSearchBlock.style.display = 'none';
-};
-offerSearchToggle.onclick = () => {
-  offerSearchToggle.classList.add('active-toggle');
-  userSearchToggle.classList.remove('active-toggle');
-  userSearchBlock.style.display = 'none';
-  offerSearchBlock.style.display = '';
-  if (window.loadPublicOffersTab) window.loadPublicOffersTab();
-};
 
-window.renderOfferCard = async function(offer) {
-  let sponsorLogo = 'logos.png';
-  let sponsor_company = offer.sponsor_company || '';
-  try {
-    const { data: sponsor } = await supabase
-      .from('users_extended_data')
-      .select('profile_pic, company_name')
-      .eq('username', offer.sponsor_username)
-      .single();
-    if (sponsor && sponsor.profile_pic)
-      sponsorLogo = `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsor.profile_pic}`;
-    if (sponsor && sponsor.company_name)
-      sponsor_company = sponsor.company_name;
-  } catch {}
 
-  let platformBadge = '';
-  if (offer.platforms && offer.platforms.length) {
-    const p = offer.platforms[0];
-    const logos = {
-      youtube: 'youtubelogo.png',
-      instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
-      tiktok: 'tiktoklogo.png',
-      twitter: 'twitterlogo.png',
-      facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
-      twitch: 'twitchlogo.png',
-      snapchat: 'snaplogo.png'
-    };
-    platformBadge = `<img src="${logos[p] || ''}" alt="${p}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${p}">`;
+
+        }
+      } catch {}
+
+// Group image — robust public URL + fallback  (FIXED: use `group-logos` bucket)
+let groupImg = 'grouplogo.png';
+if (g.image_path) {
+  const raw = String(g.image_path).trim();
+
+  // If DB already stores a full URL, use it as-is
+  if (/^https?:\/\//i.test(raw)) {
+    groupImg = raw;
+  } else {
+    // Normalize to an object key inside the group-logos bucket
+    // Accepts: "groups/<id>/file.png", "/groups/<id>/file.png",
+    //          "group-logos/groups/<id>/file.png"
+    let key = raw.replace(/^\/+/, ''); // strip leading slash
+    if (/^group-logos\//i.test(key)) key = key.split('/').slice(1).join('/');
+
+    const { data } = supabase.storage.from('group-logos').getPublicUrl(key);
+    if (data?.publicUrl) groupImg = data.publicUrl;
   }
-  let detailsId = `details-${offer.id}`;
-  let imagesId = `images-${offer.id}`;
-  let constraintsHtml = '';
-  if (offer.max_applicants) constraintsHtml += `<strong>Max Applicants:</strong> ${offer.max_applicants} <br>`;
-  if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
-  if (offer.audience_country) constraintsHtml += `<strong>Audience Country:</strong> ${offer.audience_country} <br>`;
+}
 
-  let alreadyApplied = false;
-  if (window.currentUser && window.isSponsee) {
-    const { data: existing } = await supabase
-      .from('public_offer_applications')
-      .select('id')
-      .eq('offer_id', offer.id)
-      .eq('sponsee_id', window.currentUser.id)
-      .maybeSingle();
-    alreadyApplied = !!existing;
-  }
 
-  const div = document.createElement('div');
-  div.className = 'public-offer-card';
-  div.style.background = '#343434';
-  div.style.borderRadius = '16px';
-  div.style.padding = '24px 28px 18px 28px';
-  div.style.margin = '32px 0 0 0';
-  div.style.maxWidth = '730px';
-  div.style.marginLeft = 'auto';
-  div.style.marginRight = 'auto';
-  div.style.boxShadow = '0 4px 24px #0008';
-
-  div.innerHTML = `
-    <div style="display:flex;align-items:flex-start;gap:28px;">
-      <div style="flex-shrink:0;text-align:center;">
-        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
-        <div style="margin-top:7px;font-size:1em;line-height:1.2;">
-          <div style="margin-bottom:5px;"><strong>By:</strong> ${offer.sponsor_username}</div>
-          <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
-        </div>
-      </div>
+      card.innerHTML = `
+  <div>
+    <!-- TOP: group logo + name/meta/description -->
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <img src="${groupImg}" alt="${g.name}"
+           style="width:100px;height:100px;border-radius:10px;border:1px solid #333;object-fit:cover;background:unset;"
+           onerror="this.src='grouplogo.png'">
       <div style="flex:1;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          ${platformBadge}
-          <span style="font-size:1.24em;font-weight:700;letter-spacing:0.01em;">Offer: ${offer.offer_title}</span>
+        <h4 style="margin:0 0 4px 0;">${g.name}</h4>
+        <div class="group-meta">
+          <div><strong>Visibility:</strong> ${g.visibility || 'private'}</div>
+          <div><strong>Members:</strong> ${memberCount}</div>
+          <div style="color:#9bf59b;"><strong>Accepting Offers</strong></div>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:13px 46px;margin:14px 0 7px 0;">
-          <div><strong>Status:</strong> OPEN</div>
-          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
-          <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
-          <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
-          <div><strong>Payment Schedule:</strong> ${offer.payment_schedule}</div>
-          <div><strong>Duration:</strong> ${offer.sponsorship_duration}</div>
-        </div>
-        ${constraintsHtml ? `<div style="font-size:0.96em;margin:0 0 8px 0;">${constraintsHtml}</div>` : ''}
-        <div style="margin:9px 0 5px 0;">
-          <button style="background:#4061b3;color:#fff;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${detailsId}').style.display = (document.getElementById('${detailsId}').style.display==='block') ? 'none' : 'block';">View Details</button>
-          <button style="background:#ccbb22;color:#222;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${imagesId}').style.display = (document.getElementById('${imagesId}').style.display==='block') ? 'none' : 'block';">Offer Images</button>
-          ${window.currentUser && window.isSponsee && window.currentUser.id !== offer.sponsor_id
-  ? alreadyApplied
-    ? `<button style="background:#888;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:not-allowed;" disabled>Applied!</button>`
-    : `<button style="background:#13b257;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:pointer;" onclick="window.showApplicationModal('${offer.id}', this)">Apply to Offer</button>`
-  : ''}
-        </div>
-        <div id="${detailsId}" class="public-offer-details" style="display:none;margin:12px 0 6px 0;">
-          <strong>Description:</strong><br>${offer.offer_description || ''}
-          <br><strong>Instructions:</strong><br>${offer.instructions || ''}
-          <br><strong>Job Type:</strong> ${offer.job_type || ''} <br>
-          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
-        </div>
-        <div id="${imagesId}" class="public-offer-images" style="display:none;margin:12px 0;">
-          ${(offer.offer_images && offer.offer_images.length)
-            ? offer.offer_images.map(img =>
-              `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:110px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid #222;margin-right:7px;margin-bottom:7px;">`
-            ).join('')
-            : '<i>No offer images.</i>'
-          }
-        </div>
+        <div style="margin-top:8px;opacity:.9;">${g.description || ''}</div>
       </div>
     </div>
-  `;
-  return div;
-};
 
-window.showApplicationModal = function(offerId, btn) {
-  let modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
-  modal.style.background = 'rgba(0,0,0,0.65)';
-  modal.style.zIndex = '9999';
-  modal.innerHTML = `
-    <div style="background:#232333;padding:28px 28px 18px 28px;max-width:420px;border-radius:18px;box-shadow:0 4px 24px #0008;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-      <h3 style="margin-bottom:14px;">Application Message</h3>
-      <textarea id="application-message" style="width:100%;height:90px;border-radius:7px;border:1px solid #444;padding:7px;resize:vertical;background:#18181c;color:#fff;"></textarea>
-      <div style="margin-top:16px;text-align:right;">
-        <button id="cancel-modal" style="background:#444;color:#fff;padding:7px 16px;margin-right:7px;border-radius:6px;border:none;cursor:pointer;">Cancel</button>
-        <button id="submit-application" style="background:#13b257;color:#fff;padding:7px 16px;border-radius:6px;border:none;cursor:pointer;">Apply</button>
-      </div>
+    <!-- BELOW: members list + action -->
+    <div class="member-list" style="margin-top:14px;">
+      ${memberRows.join('')}
     </div>
-  `;
-  document.body.appendChild(modal);
+    ${memberCount > 6 ? `<div style="margin-top:8px;opacity:.8;">+ ${memberCount - 6} more member(s)</div>` : ''}
 
-  document.getElementById('cancel-modal').onclick = () => modal.remove();
+    <div class="group-actions" style="margin-top:12px;">
+      <a href="groupoffer.html?groupId=${encodeURIComponent(g.id)}"
+         style="background:#f6c62e;color:#222;font-weight:700;border:none;border-radius:8px;padding:8px 16px;display:inline-block;text-decoration:none;cursor:pointer;margin-top: 10px;margin-bottom: 10px;">
+         Offer to Group
+      </a>
+    </div>
+  </div>
+`;
 
-  document.getElementById('submit-application').onclick = async () => {
-    const msg = document.getElementById('application-message').value.trim();
-    modal.remove();
-    await window.applyToOffer(offerId, btn, msg);
-  };
-};
+      groupResults.appendChild(card);
+    }
 
-window.applyToOffer = async function(offerId, btn, applicationText = '') {
-  btn.disabled = true;
-  btn.innerText = 'Applying...';
-  const userId = window.currentUser.id;
-  const { data: userExt, error: userExtErr } = await supabase
-    .from('users_extended_data')
-    .select('username, email')
-    .eq('user_id', userId)
-    .single();
-  if (userExtErr || !userExt) {
-    btn.innerText = 'Error';
-    btn.disabled = false;
-    return;
+    groupPageLabel.textContent = `Page ${groupPage}`;
+    groupPrev.disabled = groupPage === 1;
+    groupNext.disabled = filtered.length < groupsPerPage;
   }
-  const { error: applyErr } = await supabase
-    .from('public_offer_applications')
-    .insert([{
-      offer_id: offerId,
-      sponsee_id: userId,
-      sponsee_username: userExt.username,
-      sponsee_email: userExt.email,
-      status: 'pending',
-      application_text: applicationText,
-      created_at: new Date().toISOString()
-    }]);
-  if (applyErr) {
-    btn.innerText = 'Error';
-    btn.disabled = false;
-    return;
-  }
-  btn.innerText = 'Applied!';
-  btn.style.background = '#13b257';
 
-  await notifySponsorOnApplication({
-    offer_id: offerId,
-    sponsee_user_id: userId,
-    sponsee_username: userExt.username
+  document.getElementById('group-prevPage').addEventListener('click', () => {
+    if (groupPage > 1) { groupPage--; loadGroups(); }
   });
-};
+  document.getElementById('group-nextPage').addEventListener('click', () => {
+    groupPage++; loadGroups();
+  });
 
+  /* Expose card renderer used by public offers section */
+  window.renderOfferCard = async function(offer) {
+    let sponsorLogo = 'logos.png';
+    let sponsor_company = offer.sponsor_company || '';
+    try {
+      const { data: sponsor } = await supabase
+        .from('users_extended_data')
+        .select('profile_pic, company_name')
+        .eq('username', offer.sponsor_username)
+        .single();
+      if (sponsor && sponsor.profile_pic) {
+        const r = supabase.storage.from('logos').getPublicUrl(sponsor.profile_pic);
+        sponsorLogo = r?.data?.publicUrl || sponsorLogo;
+      }
+      if (sponsor && sponsor.company_name)
+        sponsor_company = sponsor.company_name;
+    } catch {}
+
+    let platformBadge = '';
+    if (offer.platforms && offer.platforms.length) {
+      const p = offer.platforms[0];
+      const logos = {
+        youtube: 'youtubelogo.png',
+        instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+        tiktok: 'tiktoklogo.png',
+        twitter: 'twitterlogo.png',
+        facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+        twitch: 'twitchlogo.png',
+        snapchat: 'snaplogo.png'
+      };
+      platformBadge = `<img src="${logos[p] || ''}" alt="${p}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${p}">`;
+    }
+    let detailsId = `details-${offer.id}`;
+    let imagesId = `images-${offer.id}`;
+    let constraintsHtml = '';
+    if (offer.max_applicants) constraintsHtml += `<strong>Max Applicants:</strong> ${offer.max_applicants} <br>`;
+    if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+    if (offer.audience_country) constraintsHtml += `<strong>Audience Country:</strong> ${offer.audience_country} <br>`;
+
+    let alreadyApplied = false;
+    if (window.currentUser && window.isSponsee) {
+      const { data: existing } = await supabase
+        .from('public_offer_applications')
+        .select('id')
+        .eq('offer_id', offer.id)
+        .eq('sponsee_id', window.currentUser.id)
+        .maybeSingle();
+      alreadyApplied = !!existing;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'public-offer-card';
+    div.style.background = '#343434';
+    div.style.borderRadius = '16px';
+    div.style.padding = '24px 28px 18px 28px';
+    div.style.margin = '32px 0 0 0';
+    div.style.maxWidth = '730px';
+    div.style.marginLeft = 'auto';
+    div.style.marginRight = 'auto';
+    div.style.boxShadow = '0 4px 24px #0008';
+
+    div.innerHTML = `
+      <div style="display:flex;align-items:flex-start;gap:28px;">
+        <div style="flex-shrink:0;text-align:center;">
+          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='logos.png'">
+          <div style="margin-top:7px;font-size:1em;line-height:1.2;">
+            <div style="margin-bottom:5px;"><strong>By:</strong> ${offer.sponsor_username}</div>
+            <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            ${platformBadge}
+            <span style="font-size:1.24em;font-weight:700;letter-spacing:0.01em;">Offer: ${offer.offer_title}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:13px 46px;margin:14px 0 7px 0;">
+            <div><strong>Status:</strong> OPEN</div>
+            <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+            <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
+            <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
+            <div><strong>Payment Schedule:</strong> ${offer.payment_schedule}</div>
+            <div><strong>Duration:</strong> ${offer.sponsorship_duration}</div>
+          </div>
+          ${constraintsHtml ? `<div style="font-size:0.96em;margin:0 0 8px 0;">${constraintsHtml}</div>` : ''}
+          <div style="margin:9px 0 5px 0;">
+            <button style="background:#4061b3;color:#fff;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${detailsId}').style.display = (document.getElementById('${detailsId}').style.display==='block') ? 'none' : 'block';">View Details</button>
+            <button style="background:#ccbb22;color:#222;font-weight:600;padding:7px 22px;margin-right:7px;border-radius:7px;border:none;cursor:pointer;" onclick="document.getElementById('${imagesId}').style.display = (document.getElementById('${imagesId}').style.display==='block') ? 'none' : 'block';">Offer Images</button>
+            ${window.currentUser && window.isSponsee && window.currentUser.id !== offer.sponsor_id
+      ? alreadyApplied
+        ? `<button style="background:#888;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:not-allowed;" disabled>Applied!</button>`
+        : `<button style="background:#13b257;color:#fff;font-weight:600;padding:7px 22px;border-radius:7px;border:none;cursor:pointer;" onclick="window.showApplicationModal('${offer.id}', this)">Apply to Offer</button>`
+      : ''}
+          </div>
+          <div id="${detailsId}" class="public-offer-details" style="display:none;margin:12px 0 6px 0;">
+            <strong>Description:</strong><br>${offer.offer_description || ''}
+            <br><strong>Instructions:</strong><br>${offer.instructions || ''}
+            <br><strong>Job Type:</strong> ${offer.job_type || ''} <br>
+            <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+          </div>
+          <div id="${imagesId}" class="public-offer-images" style="display:none;margin:12px 0;">
+            ${(offer.offer_images && offer.offer_images.length)
+              ? offer.offer_images.map(img =>
+                `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:110px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid #222;margin-right:7px;margin-bottom:7px;">`
+              ).join('')
+              : '<i>No offer images.</i>'
+            }
+          </div>
+        </div>
+      </div>
+    `;
+    return div;
+  };
+
+  window.showApplicationModal = function(offerId, btn) {
+    let modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0'; modal.style.left = '0'; modal.style.width = '100vw'; modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.65)';
+    modal.style.zIndex = '9999';
+    modal.innerHTML = `
+      <div style="background:#232333;padding:28px 28px 18px 28px;max-width:420px;border-radius:18px;box-shadow:0 4px 24px #0008;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+        <h3 style="margin-bottom:14px;">Application Message</h3>
+        <textarea id="application-message" style="width:100%;height:90px;border-radius:7px;border:1px solid #444;padding:7px;resize:vertical;background:#18181c;color:#fff;"></textarea>
+        <div style="margin-top:16px;text-align:right;">
+          <button id="cancel-modal" style="background:#444;color:#fff;padding:7px 16px;margin-right:7px;border-radius:6px;border:none;cursor:pointer;">Cancel</button>
+          <button id="submit-application" style="background:#13b257;color:#fff;padding:7px 16px;border-radius:6px;border:none;cursor:pointer;">Apply</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById('cancel-modal').onclick = () => modal.remove();
+    document.getElementById('submit-application').onclick = async () => {
+      const msg = document.getElementById('application-message').value.trim();
+      modal.remove();
+      await window.applyToOffer(offerId, btn, msg);
+    };
+  };
+
+  window.applyToOffer = async function(offerId, btn, applicationText = '') {
+    btn.disabled = true;
+    btn.innerText = 'Applying...';
+    const userId = window.currentUser.id;
+    const { data: userExt, error: userExtErr } = await supabase
+      .from('users_extended_data')
+      .select('username, email')
+      .eq('user_id', userId)
+      .single();
+    if (userExtErr || !userExt) {
+      btn.innerText = 'Error';
+      btn.disabled = false;
+      return;
+    }
+    const { error: applyErr } = await supabase
+      .from('public_offer_applications')
+      .insert([{
+        offer_id: offerId,
+        sponsee_id: userId,
+        sponsee_username: userExt.username,
+        sponsee_email: userExt.email,
+        status: 'pending',
+        application_text: applicationText,
+        created_at: new Date().toISOString()
+      }]);
+    if (applyErr) {
+      btn.innerText = 'Error';
+      btn.disabled = false;
+      return;
+    }
+    btn.innerText = 'Applied!';
+    btn.style.background = '#13b257';
+
+    await notifySponsorOnApplication({
+      offer_id: offerId,
+      sponsee_user_id: userId,
+      sponsee_username: userExt.username
+    });
+  };
+
+  /* ---------- Toggle wiring (add Group Search) ---------- */
+  const userSearchToggle = document.getElementById('user-search-toggle');
+  const offerSearchToggle = document.getElementById('offer-search-toggle');
+  const groupSearchToggle = document.getElementById('group-search-toggle');
+
+  const userSearchBlock = document.getElementById('user-search-form-block');
+  const offerSearchBlock = document.getElementById('offer-search-form-block');
+  const groupSearchBlock = document.getElementById('group-search-form-block');
+
+  function setActiveToggle(target) {
+    [userSearchToggle, offerSearchToggle, groupSearchToggle].forEach(b => b.classList.remove('active-toggle'));
+    target.classList.add('active-toggle');
+  }
+
+  userSearchToggle.onclick = () => {
+    setActiveToggle(userSearchToggle);
+    userSearchBlock.style.display = '';
+    offerSearchBlock.style.display = 'none';
+    groupSearchBlock.style.display = 'none';
+  };
+  offerSearchToggle.onclick = () => {
+    setActiveToggle(offerSearchToggle);
+    userSearchBlock.style.display = 'none';
+    offerSearchBlock.style.display = '';
+    groupSearchBlock.style.display = 'none';
+    if (window.loadPublicOffersTab) window.loadPublicOffersTab();
+  };
+  groupSearchToggle.onclick = () => {
+    setActiveToggle(groupSearchToggle);
+    userSearchBlock.style.display = 'none';
+    offerSearchBlock.style.display = 'none';
+    groupSearchBlock.style.display = '';
+    // reset search and load
+    const input = document.getElementById('group-search-input');
+    if (input) input.value = groupSearchTerm;
+    groupPage = 1;
+    loadGroups();
+  };
+});
 </script>
+
 <style>
- .recommended-matches,
-.otheraccounts,
-.recentoffers {
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
-
-/* For recommended matches section: */
-.matches-scroll-viewport {
-  max-width: 900px;
-  width: 100%;
-  overflow-x: auto;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding-left: 0;
-  padding-right: 0;
-}
- #recommendedMatches {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 18px;
-  max-width: 900px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-
-
+  .recommended-matches,
+  .otheraccounts,
+  .recentoffers {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .matches-scroll-viewport {
+    max-width: 900px;
+    width: 100%;
+    overflow-x: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  #recommendedMatches {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 18px;
+max-width: 92vw;
+    width: 100%;
+    box-sizing: border-box;
+  }
 </style>
+
 <script type="module" src="./js/alerts.js"></script>
 <script type="module" src="./js/settings.js"></script>
 <script type="module" src="./js/recmatch.js"></script>
