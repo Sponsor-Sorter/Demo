@@ -313,6 +313,59 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch { return ''; }
   }
 
+  // ============== Group Offer: compute current per-member share ==============
+async function computeGroupShare(offer) {
+  const isGroup =
+    offer?.group_offer === true ||
+    String(offer?.group_offer).toLowerCase() === 'true' ||
+    Number(offer?.group_offer) === 1;
+
+  if (!isGroup) return null;
+
+  const total = Number(offer?.offer_amount) || 0;
+
+  // Try to find a stable grouping key on the row (handle multiple schemas)
+  const keyCandidates = [
+    'group_offer_id','group_offer_uuid','group_offer_key','group_offer_ref','group_offer_token',
+    'group_id','group_uuid','group_ref','group_code',
+    'root_offer_id','parent_offer_id','bundle_id','offer_group_id'
+  ];
+  let keyName = null, keyVal = null;
+  for (const k of keyCandidates) {
+    if (offer && offer[k] != null && offer[k] !== '') { keyName = k; keyVal = offer[k]; break; }
+  }
+
+  // Base query: all private_offers rows for this same group offer
+  let q = supabase
+    .from('private_offers')
+    .select('id, status, stage')
+    .eq('group_offer', true);
+
+  if (keyName) {
+    q = q.eq(keyName, keyVal);
+  } else {
+    // Fallback (best-effort): match by same sponsor + same title
+    // (keeps it practical when an explicit key isn't present)
+    q = q
+      .eq('sponsor_username', offer.sponsor_username)
+      .eq('sponsor_email', offer.sponsor_email)
+      .eq('offer_title', offer.offer_title);
+  }
+
+  const { data: rows, error } = await q;
+  if (error || !Array.isArray(rows)) {
+    return { accepted: 1, share: total }; // safe fallback
+  }
+
+  // Count members who are effectively "in" (accepted or beyond)
+  const okStatuses = new Set(['accepted','in_progress','live','completed','review_completed','review-completed']);
+  const acceptedRows = rows.filter(r => (Number(r.stage) >= 2) || (r.status && okStatuses.has(String(r.status))));
+  const accepted = Math.max(acceptedRows.length, 1);
+
+  return { accepted, share: total / accepted };
+}
+
+
   async function renderSingleOfferCard(offer, forceShowReview = false) {
     let sponsorPicUrl = 'logos.png';
     let sponsor_id = '';
@@ -404,21 +457,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
     } else if (offer.stage === 4) {
-      if (offer.sponsor_live_confirmed) {
-        actionButtons = `
-          <div class="stage-4-actions">
-            <button class="receive-payment">Accept Payment</button>
-          </div>
-        `;
-      } else {
-        actionButtons = `
-          <div class="stage-4-actions">
-            <button class="receive-payment" disabled style="opacity:0.65;cursor:not-allowed;">Waiting for Sponsor Confirmation</button>
-          </div>
-          <small style="color:#e87f00;font-size:0.98em;">Waiting for sponsor to confirm content is live.</small>
-        `;
-      }
-    } else if (offer.stage === 5) {
+  if (offer.sponsor_live_confirmed) {
+    const isGroupOffer =
+      offer?.group_offer === true ||
+      String(offer?.group_offer).toLowerCase() === 'true' ||
+      Number(offer?.group_offer) === 1;
+
+    actionButtons = isGroupOffer ? `
+      <div class="stage-4-actions">
+        <button class="receive-payment"
+                disabled
+                data-group-lock="true"
+                style="opacity:.5;cursor:not-allowed;"
+                title="Group payouts are processed after the group deadline by an admin.">
+          Payout after deadline
+        </button>
+        <small style="display:block;margin-top:6px;color:#bbb;">
+          Group offer — payouts are scheduled after the deadline.
+        </small>
+      </div>
+    ` : `
+      <div class="stage-4-actions">
+        <button class="receive-payment">Accept Payment</button>
+      </div>
+    `;
+  } else {
+    actionButtons = `
+      <div class="stage-4-actions">
+        <button class="receive-payment" disabled style="opacity:.5;cursor:not-allowed;">Waiting for Sponsor Confirmation</button>
+      </div>
+      <small style="color:#e87f00;font-size:0.98em;">Waiting for sponsor to confirm content is live.</small>
+    `;
+  }
+}
+ else if (offer.stage === 5) {
       actionButtons = `
         <div class="stage-5-summary">
           <p><strong>✅ Sponsorship complete. Thank you!</strong></p>
@@ -455,14 +527,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         onclick="window.openReportModal('offer', '${offer.id}')"
       >🚩</button>
     `;
+    // --- Group offer share / payout display ---
+let amountHtml = `<p><strong>Amount:</strong> $${Number(offer.offer_amount).toLocaleString()}</p>`;
+let payoutAmount = Number(offer.offer_amount) || 0;
+
+if (
+  offer?.group_offer === true ||
+  String(offer?.group_offer).toLowerCase() === 'true' ||
+  Number(offer?.group_offer) === 1
+) {
+  const shareInfo = await computeGroupShare(offer);
+  if (shareInfo) {
+    payoutAmount = shareInfo.share;
+    amountHtml = `
+      <p><strong>Total Amount (Group):</strong> $${Number(offer.offer_amount).toLocaleString()}</p>
+      <p><strong>Your current share:</strong>
+        $${shareInfo.share.toFixed(2)}
+        <small style="color:#bbb;">(${shareInfo.accepted} accepted)</small>
+      </p>
+    `;
+  }
+}
 
     const card = document.createElement('div');
     card.className = 'listing-stage';
     card.dataset.offerId = offer.id;
+    card.dataset.payoutAmount = String(payoutAmount);
     card.dataset.sponsorUsername = offer.sponsor_username;
     card.dataset.sponseeUsername = sponsee_username;
     card.dataset.sponsorId = sponsor_id;
     card.dataset.sponsorEmail = offer.sponsor_email;
+
+    // NEW: mark as group offer
+const _isGroupOffer =
+  offer?.group_offer === true ||
+  String(offer?.group_offer).toLowerCase() === 'true' ||
+  Number(offer?.group_offer) === 1;
+card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
 
     card.innerHTML = `
       <div class="card-content" style="position:relative;">
@@ -491,9 +592,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
               </div>
               <div class="offer-right">
-                <p><strong>Amount:</strong> $${offer.offer_amount}</p>
-                <p><strong>Payment Schedule:</strong> ${offer.payment_schedule}</p>
-                <p><strong>Duration:</strong> ${offer.sponsorship_duration}</p>
+                ${(() => {
+  // This string is built before card.innerHTML below — see code right above card creation.
+  return amountHtml;
+})()}
+<p><strong>Payment Schedule:</strong> ${offer.payment_schedule}</p>
+<p><strong>Duration:</strong> ${offer.sponsorship_duration}</p>
+
               </div>
             </div>
           </div>
@@ -1403,8 +1508,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Accept Payment (triggers payout)
 if (e.target.classList.contains('receive-payment')) {
+  const isLockedGroup = offerCard?.dataset?.groupOffer === 'true';
+  if (isLockedGroup) {
+    try {
+      notifyPayout?.({
+        type: 'info',
+        title: 'Group payout',
+        message: 'Group offer payouts are processed after the deadline by an admin.'
+      });
+    } catch (_) {
+      alert('Group offer payouts are processed after the deadline by an admin.');
+    }
+    return; // stop here — no modal, no payout
+  }
+
   let modal = document.createElement('div');
-  modal.innerHTML = `
+  modal.innerHTML = ` 
+
     <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
     <div class="modal-content" style="width:70%;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
       background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
@@ -1421,9 +1541,8 @@ if (e.target.classList.contains('receive-payment')) {
   modal.querySelector('#cancel-payout').onclick = () => modal.remove();
 
   modal.querySelector('#confirm-payout').onclick = async () => {
-    const offerAmount = parseFloat(
-      offerCard.querySelector('.offer-right').textContent.match(/\$(\d+(\.\d+)?)/)?.[1] || "0"
-    );
+    const offerAmount = parseFloat(offerCard.dataset.payoutAmount || "0");
+
 
     // 1. Mark offer stage = 5
     const { error: updateError } = await supabase
