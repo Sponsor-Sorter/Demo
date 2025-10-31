@@ -54,12 +54,18 @@ body
      }
      header {
         padding: 10px;
-        padding-top: 1%;
+        padding-top: 0.2%;
         font-size: xxx-large;
         text-align: center;
-        
      }
-     
+
+     header h5 {
+        font-family: "Cinzel", serif;
+        font-optical-sizing: auto;
+        font-weight: 900;
+        font-style: normal;
+      }
+           
      section {
         padding: 5px;
         display: inline-block
@@ -300,7 +306,7 @@ section.userpass {
             text-decoration: none;
             color: white;
             margin: 50px;
-            background-color: black;
+            background-color: unset;
 
         }
 
@@ -3643,7 +3649,7 @@ fieldset {
 .admin-tabs {
   display: flex;
   gap: 0.6rem;
-  margin: 0 auto 2rem auto;
+  margin: 2rem auto 2rem auto;
   background: #181c27;
   padding: 0.4rem 1vw;
   border-radius: 8px;
