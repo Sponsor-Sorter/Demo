@@ -83,7 +83,30 @@ body
             
      }
 
-     
+     /* header container */
+.navii header{
+  display: flex;
+  align-items: center;     /* vertical-centers img + text */
+  gap: 12px;               /* space between logo and text */
+  margin: auto;
+  width: 530px;
+  padding-bottom: 0;
+}
+
+/* logo image */
+.navii header img{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #000;
+  object-fit: cover;       /* fill the circle */
+  object-position: center !important; /* keep the middle of the image centered */
+  display: block;          /* remove inline-img baseline gap */
+}
+
+
+
+
     .upllogo {
         width: 93%;
         display: flex;
@@ -4873,7 +4896,7 @@ fieldset:focus-within, fieldset:hover {
   background: #fff; border-radius: 15px; padding: 28px 22px 18px 22px; box-shadow: 0 4px 28px #312ef644; max-width: 380px; width: 95vw; position: relative;
 }
 .close-modal {
-  position: absolute; right: 16px; top: 9px; font-size: 1.2em; color: #3100d2; cursor: pointer;
+  position: absolute; right: 16px; top: 9px; font-size: 1.2em; color: #d20000; cursor: pointer;
 }
 #drop-zone {
   transition: border-color 0.18s;
@@ -5212,6 +5235,9 @@ fieldset:focus-within, fieldset:hover {
   #listing-container {
     grid-template-columns: 1fr 1fr;
   }
+  .dashboard {
+    padding-top: 10px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -5220,7 +5246,7 @@ fieldset:focus-within, fieldset:hover {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 80px; /* or whatever gap looks best */
     max-width: 800px;
-    margin: 0 auto 20px auto;
+    margin: 8px auto 8px auto;
     justify-content: center; /* Ensures centering */
   }
   .dashboard-cards .card {
@@ -5480,7 +5506,7 @@ fieldset.recentoffers {
 .wallet {
   position: absolute;        /* Take out of normal flow */
   left: 32px;                /* Distance from the left edge (adjust as needed) */
-  top: 200px;                 /* Distance from the top (adjust as needed) */
+  top: 220px;                 /* Distance from the top (adjust as needed) */
   background: #4b4b4b;       /* Subtle dark green background */
   color:  white;
   font-size: 1.15em;
@@ -7921,13 +7947,20 @@ input:checked + .slider:before {
 
 }
 
-@media (min-width: 1200px) {
+/**@media (min-width: 1200px) {
 body{
   font-size: 1.2em;
 }
-  .profile-header .profile-info p {
-    font-size: 1.2em;
-  }
+ #social_handles {
+  display: none !important;
+ }
+ fieldset {
+  width: 450px;
+ }
+
+ .dashboard {
+  margin-left: -100px;
+}
 
   .section section div p {
     font-size: 1.4em !important;
@@ -7938,3 +7971,241 @@ body{
    
     background: #242424;
   }
+
+
+**/
+  
+
+@media (min-width: 1200px) {
+  /* Make the container a 4-column grid */
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;                 /* equal spacing between cards */
+    align-items: stretch;      /* equal heights */
+  }
+
+  /* Flatten the .card-row wrappers so all 4 cards sit in one row */
+  .dashboard-cards .card-row {
+    display: contents;
+  }
+
+  /* Let each card fill its grid column */
+  .dashboard-cards .card {
+    max-width: none;
+    min-width: 0;
+    width: 16vw;
+    margin: 0 0 0 0;
+  }
+
+  /* --- Fix the global section rule just for this panel --- */
+section.friends-panel {
+  display: block !important;   /* override the inline-block */
+  width: 100%;
+}
+
+/* Stack on mobile by default */
+#friends-and-groups .friends-columns {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+/* Two columns side-by-side on wide screens */
+@media (min-width: 1000px) {
+  #friends-and-groups .friends-columns {
+    grid-template-columns: 1fr 1fr;          /* left = Pending, right = Friends */
+  }
+}
+
+/* Make sure the inner column wrappers don’t impose widths */
+#friends-and-groups .friends-columns > div {
+  min-width: 0;
+}
+
+/* Optional: tidy cards inside the columns */
+#friends-and-groups .card-col > div {
+  margin-bottom: 12px;
+}
+#friends-accepted .card {
+  height: 120px;
+}
+
+#friends-accepted .btns {
+  margin: auto;
+  height: 30px;
+}
+
+ .groups-panel {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;   /* left = list, right = members */
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Title and create form span both columns */
+  .groups-panel > h3,
+  #group-create-form,
+  #pending-group-invites,
+  #group-offer-tabs,
+  #group-offers-container,
+  .groups-panel .help-block {
+    grid-column: 1 / -1;
+  }
+
+  /* Left / Right columns */
+  #groups-list {
+    grid-column: 1;
+    margin: 0 !important;      /* override inline margins */
+  }
+  #groups-members {
+    grid-column: 2;
+    margin: 0 !important;
+    min-height: 280px;          /* keeps the area visible before selection */
+  }
+
+  /* Nice spacing for cards inside each column */
+  #groups-list.card-col > div,
+  #groups-members.card-col > div {
+    margin-bottom: 12px;
+  }
+ 
+  #gm-list {
+    gap: 56px !important;
+  }
+
+  #group-offers-container {
+  display: block;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(520px, 1fr));
+}
+
+  .active-listings {
+    display: block !important;        /* override your grid */
+    column-count: 2;                  /* two vertical stacks */
+    column-gap: 30px;                 /* space between columns */
+  }
+
+  /* Each card should stay intact within a column */
+  .active-listings > * {
+    break-inside: avoid;              /* standard */
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    display: inline-block;            /* ensures proper column boxing */
+    width: 100%;
+    margin: 0 0 18px;                 /* vertical spacing between cards */
+    
+ 
+  }
+
+  /* If you have a footer row (pagination) under the list, make it span both columns */
+  #pagination-row {
+    column-span: all;                 /* Chrome/Edge support */
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .active-listings {
+    display: block !important;        /* override your grid */
+    column-count: 2;                  /* two vertical stacks */
+    column-gap: 200px !important;                 /* space between columns */
+    margin-left: 90px !important;
+    margin-right: 20px !important;
+  }
+ 
+
+  #sponsee-public-offers-container{
+      display: grid !important;
+  grid-template-columns: repeat(2, minmax(520px, 1fr));
+
+  }
+  .offer-dets fieldset {
+    height:max-content
+  }
+   .offer-dets {
+    display: flex !important;
+    gap: 24px;
+    align-items: flex-start;
+
+  }
+  .offer-dets .recent-deals,
+  .offer-dets .Archived-deals {
+    flex: 1 1 0;         /* split evenly */
+    width: auto !important;
+    margin: 0 !important;
+    min-width: 0;        /* prevent overflow */
+    display: block !important;
+  }
+
+    .oauth-platforms {
+    column-count: 2;
+    column-gap: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Each stats card stays intact within a column */
+  .oauth-platforms > div {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    display: inline-block;     /* required for multi-column masonry */
+    width: 95% !important;    /* override inline 550px max + 90% width */
+    max-width: none !important;
+    margin: 0 0 18px !important;
+  }
+
+  .graph-section {
+          display: grid !important;
+  grid-template-columns: repeat(3, minmax(300px, 2fr));
+
+  }
+
+   #affiliate-dashboard-section {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;  /* left = link, right = stats */
+    gap: 30px;
+    align-items: start;
+    margin-top: 10px
+  }
+
+  /* Header spans both columns */
+  #affiliate-dashboard-section .panel-header {
+    grid-column: 1 / -1;
+  }
+
+  /* Left / Right cards */
+  #aff-link-card {
+    grid-column: 1;
+  }
+  #aff-stats-card {
+    grid-column: 2;
+    margin-top: 0 !important; /* override inline margin */
+  }
+
+  /* Make sure cards fill their grid cells */
+  #aff-link-card,
+  #aff-stats-card {
+    width: 95% !important;
+  }
+  .aff-sec {
+    margin-bottom: 100px;
+    bottom: 30px;
+    margin-top: 25px;
+  }
+  .footer-text {
+   margin-top: 125px;
+  }
+
+  .footercomplete {
+  position: relative;
+  z-index: 0;
+  padding-top: 5px;
+  
+  max-width: 1500px;
+  margin: auto;
+}
+
+
+}
