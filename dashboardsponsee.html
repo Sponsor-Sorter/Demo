@@ -7,7 +7,7 @@
   <title>Sponsee Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- Google Fonts: Cinzel 900 -->
+  <!-- Google Fonts: Cinzel 900 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
@@ -30,9 +30,15 @@
 
 <header class="navbar1">
   <section class="navbar">
-    <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
-      <div>
+  <div class="navii">
+  <h5>
+    <header>
+      <img src="./logos.png" alt="Sponsor Sorter logo">
+      <span class="brand-title">Sponsor Sorter</span>
+    </header>
+  </h5>
+</div>
+
         <background-img class="navimg" src="navimg.png" alt="">
         <nav>
           <!-- Global Search (Nav) -->
@@ -121,6 +127,12 @@
             Apply to be an Affiliate
           </button>
         </li>
+        <li>
+          <button type="button" class="dropdown-item" id="open-privacy-settings">
+            Privacy & Data
+          </button>
+        </li>
+
 
       </ul>
     </div>
@@ -350,9 +362,11 @@
 </fieldset>
 
 
-
+  <section class="offer-dets" >
     <fieldset class="recent-deals">
-      <h2>Recent Sponsorship Deals</h2>
+    <legend><h2>Recent Sponsorship Deals</h2></legend>
+
+      
       <table>
         <thead>
           <tr>
@@ -406,7 +420,7 @@
         </em>
       </div>
     </fieldset>
-
+  </section>
     <!-- Linked Accounts -->
     <fieldset>
       <legend>Linked Accounts</legend>
@@ -420,7 +434,7 @@
 
       </div>
 
-
+ <section class="oauth-platforms" >
 <!-- tiktok stats -->
 <div class="tiktok-stats-card" id="tiktok-stats-block" style="
   display:none;
@@ -684,7 +698,7 @@
   </div>
 </div>
 
-
+</section>
 
 
     </fieldset>
@@ -752,25 +766,15 @@
         <div id="social-modal-msg" style="margin-top:10px;"></div>
       </div>
     </div>
-  </section>
 
-  <section>
-    <fieldset>
-      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
-      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
-      <div id="privacy-request-status"></div>
-      <div class="help-block" style="margin-top:8px;">
-        <em>
-          <strong>Your Privacy Controls:</strong><br>
-          Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
-        </em>
-      </div>
-    </fieldset>
-  </section>
+    
+  
+
+  
 
 </section>
 
-<fieldset>
+<fieldset class="aff-sec">
   <section id="affiliate-dashboard-section" class="panel">
     <div class="panel-header">
       <h2>Affiliate</h2>
@@ -833,7 +837,7 @@
     </div>
   </section>
 </fieldset>
-
+</section>
 <style>
 
   
@@ -1015,6 +1019,31 @@
   </div>
 </div>
 
+<!--privacy request modal-->
+<!-- Privacy & Data Modal -->
+<div id="privacy-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:560px;">
+    <span class="close-modal" id="close-privacy-modal">&times;</span>
+    <h3>Privacy & Data</h3>
+
+    <!-- keep the same IDs so privacy.js keeps working -->
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
+      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
+    </div>
+
+    <div id="privacy-request-status" style="margin-top:10px;"></div>
+
+    <div class="help-block" style="margin-top:12px;">
+      <em>
+        <strong>Your Privacy Controls:</strong><br>
+        Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
+      </em>
+    </div>
+  </div>
+</div>
+
+
 <!-- Subscription & Rewards Modal - styled like Withdraw Funds -->
 <div id="subscription-modal"
   style="
@@ -1140,6 +1169,26 @@
 <script type="module" src="./js/friends.js"></script>
 <script type="module" src="./js/friendGroups.js"></script>
 
+<script type="module">
+  const openPrivacyBtn = document.getElementById('open-privacy-settings');
+  const privacyModal   = document.getElementById('privacy-modal');
+  const closePrivacy   = document.getElementById('close-privacy-modal');
+
+  openPrivacyBtn?.addEventListener('click', () => {
+    privacyModal.style.display = 'block';
+    // optional: hide the dropdown after click
+    document.getElementById('settings-dropdown')?.classList.remove('open');
+  });
+
+  closePrivacy?.addEventListener('click', () => {
+    privacyModal.style.display = 'none';
+  });
+
+  // close when clicking outside content
+  window.addEventListener('click', (e) => {
+    if (e.target === privacyModal) privacyModal.style.display = 'none';
+  });
+</script>
+
 </body>
 </html>
-
