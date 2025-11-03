@@ -3036,6 +3036,18 @@ fieldset {
     border-top: 1px solid #444;
     padding-top: 10px;
   }
+
+  .details-section fieldset {
+    border-color: rgb(213, 213, 213) !important;
+    background: linear-gradient(#000000, #212121) padding-box, linear-gradient(220deg, #5ee0ff, #fff 65%) border-box;  /* gradient border */
+  border: 3px solid transparent;
+  border-radius: 18px;
+  padding: 22px 26px;
+  margin-bottom: 26px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 18px 0 rgba(49,16,210,0.06);
+  transition: box-shadow 0.18s;
+  }
   
   .job-deliverable-row {
     display: flex;
@@ -8207,5 +8219,48 @@ section.friends-panel {
   margin: auto;
 }
 
+#friends-pending,
+#friends-accepted {
+  max-height: clamp(160px, 30vh, 520px); /* responsive cap */
+  overflow-y: auto;
+  margin: 5px;
+  padding-right: 6px;            /* space for scrollbar */
+  scrollbar-gutter: stable both-edges;
+  max-height: 400px !important;
+   display: grid !important;
+    grid-template-columns: 1fr 1fr;  /* left = link, right = stats */
+    gap: 8px;
+    
+}
+ #friends-pending div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+}
+
+ #friends-accepted div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+  margin-right: auto;
+  margin-left: a;
+}
+
+.ig-top-media-row, 
+.ig-last-media-link {
+ display: grid !important;
+    grid-template-columns: 1fr 1fr;  /* left = link, right = stats */
+    gap: 30px;
+    align-items: start;
+    margin-top: 10px
+}
 
 }
