@@ -158,20 +158,30 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
     console.warn('Could not load social badges:', e)
   }
 
-  // 5) Inject into DOM
-  const badgeSlot = document.querySelector(selector)
-  if (badgeSlot) {
-    const rows = []
-    // supporter crown on its own row at the top (if present)
-    if (supporterHTML) {
-      rows.push(`<div class="badge-row badge-supporter-row" aria-label="Supporter badge">${supporterHTML}</div>`)
-    }
-    if (levelHTML) {
-      rows.push(`<div class="badge-row badge-tier-row" aria-label="Offer/Affiliate badges">${levelHTML}</div>`)
-    }
-    if (socialHTML) {
-      rows.push(`<div class="badge-row badge-social-row" aria-label="Connected platforms" style="margin-top:6px;">${socialHTML}</div>`)
-    }
-    badgeSlot.innerHTML = rows.join('')
+ // 5) Inject into DOM (supporter crown + tier on the same row)
+const badgeSlot = document.querySelector(selector);
+if (badgeSlot) {
+  const rows = [];
+
+  // Row 1: supporter (if any) + tier (if any) on one line
+  if (supporterHTML || levelHTML) {
+    rows.push(
+      `<div class="badge-row badge-tier-row" aria-label="Supporter & tier badges">
+         ${[supporterHTML, levelHTML].filter(Boolean).join('')}
+       </div>`
+    );
   }
+
+  // Row 2: social (unchanged)
+  if (socialHTML) {
+    rows.push(
+      `<div class="badge-row badge-social-row" aria-label="Connected platforms" style="margin-top:6px;">
+         ${socialHTML}
+       </div>`
+    );
+  }
+
+  badgeSlot.innerHTML = rows.join('');
+}
+
 }
