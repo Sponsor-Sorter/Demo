@@ -1117,7 +1117,7 @@ export async function renderGroupsUI(opts = {}) {
         const cts       = countsByGroup[g.id] || { pending: 0, active: 0 };
 
         const pill = (label, bg, border, color='#111') =>
-          `<small style="margin-left:6px;padding:2px 8px;border:1px solid ${border};border-radius:999px;color:${color};background:${bg};font-weight:600;">${label}</small>`;
+          `<small style="margin-left:6px;padding:2px 8px;border:1px solid ${border};border-radius:999px;color:${color};background:${bg};font-weight:600;display:inline-flex">${label}</small>`;
 
         const pendingPill = cts.pending > 0
           ? pill(`pending ${cts.pending}`, '#F6C62E', '#b48a0a')
@@ -1142,7 +1142,7 @@ export async function renderGroupsUI(opts = {}) {
               <div style="text-align:left;">
                 <div>
                   <strong>${g.name}</strong>
-                  <small style="opacity:.7">(${g.visibility})</small>
+                  <small style="opacity:.7;display:inline-flex!important">(${g.visibility})</small>
                   ${allowOffersPill}
                   ${pendingPill}
                   ${activePill}
