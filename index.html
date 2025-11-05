@@ -7,7 +7,7 @@
     <title>Sponsor Sorter – Creators Meet Brands</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-      <!-- Google Fonts: Cinzel 900 -->
+        <!-- Google Fonts: Cinzel 900 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
@@ -18,7 +18,11 @@
    <header class="navbar1">
     <section class="navbar"> 
      <div class="navii">
-         <h5>  <header>Sponsor Sorter</header> </h5>
+         <h5>  <header>
+            <img src="logos.png" height="70px" style="background-color: #000000;border-radius: 50px;">
+            Sponsor Sorter</header> </h5>
+              <div id="sparkle-overlay" aria-hidden="true"></div>
+
          <div>
             <background-img class="navimg" src="navimg.png" alt="">
             <nav> 
@@ -39,7 +43,7 @@
 
     <!-- REFERRAL BANNER -->
     <section>
-        <div class="referral-banner" style="width:100%;border-radius:25px;background:linear-gradient(180deg,#000000 10%,#4b4b4b 100%);padding:11px 0;text-align:center;font-size:1.08em;color:#efefef;letter-spacing:0.01em;">
+        <div class="referral-banner" style="width:100%;border-radius:15px;background: linear-gradient(0deg,#0d0d0d 10%,#4b4b4b 100%);;padding:11px 0;text-align:center;font-size:1.08em;color:#efefef;letter-spacing:0.01em;margin-left:10px;margin-right:10px;">
             <b>Invite a friend—both get a free month!</b>
             <span style="margin-left:12px;font-size:0.98em;">
                 Referral rewards are automatic with every new sign-up. <br>
@@ -277,8 +281,45 @@
             Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
         </div>
     </footer>
-    <script type="module" src="./js/homepage.js"></script>
+    <script type="module" src="/public/js/homepage.js"></script>
+
+    
+        <script>
+  (function(){
+    const overlay = document.getElementById('sparkle-overlay');
+    if (!overlay) return;
+
+    const COUNT = 100;               // how many dots
+    for (let i = 0; i < COUNT; i++){
+      const s = document.createElement('span');
+      s.className = 'sparkle' + (Math.random() < 0.18 ? ' big' : '');
+      s.style.left  = (Math.random()*100).toFixed(2) + '%';
+      s.style.top   = (Math.random()*100).toFixed(2) + '%';
+      s.style.setProperty('--delay', (Math.random()*4).toFixed(2) + 's');
+      s.style.setProperty('--dur',   (3 + Math.random()*4).toFixed(2) + 's');
+
+      // vary glow intensity a bit
+      const glow = (1 + Math.random()*3).toFixed(1);
+      s.style.filter = `drop-shadow(0 0 ${glow}px rgba(246,198,46,.9))`;
+      overlay.appendChild(s);
+    }
+  })();
+</script>
+
+<style>
+.navii {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar {
+  width: 100%;
+}
+
+.navii > div:nth-child(3) {
+  width: 100%;
+}
+
+</style>
 </body>
 </html>
-
-
