@@ -1,5 +1,6 @@
 // ./js/friends.js
 import { supabase } from './supabaseClient.js';
+import { injectUserBadge } from './badges.js'; // badges for the accepted-friend modal
 
 // Simple toast fallback
 let toast = (msg) => { try { console.log(msg); } catch (_) {} };
@@ -9,7 +10,6 @@ let toast = (msg) => { try { console.log(msg); } catch (_) {} };
 ========================= */
 
 function isSponsorType(t) {
-  // decide using the normalized value
   return prettyUserType(t) === 'sponsor';
 }
 
@@ -24,15 +24,14 @@ function prettyUserType(t) {
   if (!s) return '';
   if (s.includes('besponsored') || s === 'sponsee') return 'sponsee';
   if (s.includes('sponsor') || s.includes('brand') || s.includes('advertiser')) return 'sponsor';
-  // fallback: simple title-case
   return s.replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1));
 }
 
-// Minimal user details for cards (include type so we can build the profile link)
+// Minimal user details for cards (include type + email so we can build badges)
 async function getUserSummary(userId) {
   const { data, error } = await supabase
     .from('users_extended_data')
-    .select('username, profile_pic, "userType"')   // quoted column name
+    .select('username, profile_pic, "userType", email')
     .eq('user_id', userId)
     .limit(1)
     .maybeSingle();
@@ -45,6 +44,7 @@ async function getUserSummary(userId) {
     username,
     typeRaw: rawType,
     typeNice: niceType,
+    email: data?.email || null,
     profileUrl: profileLinkFor(userId, username, rawType),
     avatar: resolveProfilePicURL(data?.profile_pic)
   };
@@ -261,7 +261,7 @@ async function searchUsersByUsernameFragment(fragment, myId, limit = 8) {
     .ilike('username', `%${q}%`)
     .neq('user_id', myId)
     .order('username', { ascending: true })
-    .limit(limit * 3); // overfetch a bit, then slice after dedupe
+    .limit(limit * 3);
   if (error) throw error;
   return dedupeUsers(data).slice(0, limit);
 }
@@ -303,7 +303,7 @@ function providerIconSrc(provider) {
   return map[provider] || 'logos.png';
 }
 
-// Build result row UI (adds "View Profile" button)
+// Build result row UI (search dropdown)
 async function buildResultRow(myId, user) {
   const row = document.createElement('div');
   row.className = 'friend-suggest-row';
@@ -457,6 +457,122 @@ function showDropdown(dd) { dd.style.display = 'block'; }
 function hideDropdown(dd) { dd.style.display = 'none'; dd.innerHTML = ''; }
 
 /* =========================
+   Friend Action Modal (for accepted)
+========================= */
+
+function ensureActionModal() {
+  let overlay = document.getElementById('friend-action-modal-overlay');
+  if (overlay) return overlay;
+
+  overlay = document.createElement('div');
+  overlay.id = 'friend-action-modal-overlay';
+  overlay.style.cssText = `
+    position: fixed; inset: 0; z-index: 5000; display: none;
+    background: rgba(0,0,0,.55);
+  `;
+
+  const modal = document.createElement('div');
+  modal.id = 'friend-action-modal';
+  modal.style.cssText = `
+    background:#2b2b2f; color:#fff; width:min(92vw, 420px);
+    border-radius:16px; box-shadow:0 18px 60px rgba(0,0,0,.45);
+    margin: 10vh auto; padding: 22px 20px; position: relative;
+  `;
+
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.style.cssText = `
+    position:absolute; right:12px; top:8px; background:none; border:none;
+    color:#f44; font-size:28px; cursor:pointer; line-height:1;
+  `;
+  closeBtn.addEventListener('click', () => { overlay.style.display = 'none'; });
+
+  modal.appendChild(closeBtn);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.style.display = 'none';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (overlay.style.display !== 'none' && e.key === 'Escape') overlay.style.display = 'none';
+  });
+
+  return overlay;
+}
+
+function openFriendActionModal({ username, avatar, typeNice, profileUrl, userEmail, onRemove, onBlock }) {
+  const overlay = ensureActionModal();
+  const modal = overlay.querySelector('#friend-action-modal');
+
+  // wipe content (& re-add close)
+  modal.innerHTML = '';
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.style.cssText = `
+    position:absolute; right:12px; top:8px; background:none; border:none;
+    color:#f44; font-size:28px; cursor:pointer; line-height:1;box-shadow:none;
+  `;
+  closeBtn.addEventListener('click', () => { overlay.style.display = 'none'; });
+  modal.appendChild(closeBtn);
+
+  const header = document.createElement('div');
+  header.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:10px;';
+  header.innerHTML = `
+    <img src="${avatar}" alt="@${username}" style="width:66px;height:66px;border-radius:50%;object-fit:cover;background:#222;">
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div style="font-weight:700;font-size:1.05em;">@${username}</div>
+      ${typeNice ? `<div style="opacity:.85;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;max-width:max-content;">${typeNice}</div>` : ''}
+    </div>
+  `;
+  modal.appendChild(header);
+
+  // BADGES ROW (supporter + tier + socials)
+  const badgesRow = document.createElement('div');
+  badgesRow.id = 'friend-badges-row';
+  badgesRow.style.cssText = 'margin:6px 0 12px 0;';
+  modal.appendChild(badgesRow);
+
+  // Inject badges (choose email field by user type)
+  if (userEmail) {
+    const emailField = (typeNice === 'sponsor') ? 'sponsor_email' : 'sponsee_email';
+    try {
+      injectUserBadge(userEmail, '#friend-badges-row', emailField);
+    } catch (e) {
+      console.warn('badge inject failed:', e);
+    }
+  }
+
+  const actions = document.createElement('div');
+  actions.style.cssText = 'display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;';
+  actions.innerHTML = `
+    <a href="${profileUrl}" style="
+      text-decoration:none;background:#6b7280;color:#fff;border:1px solid #4b5563;margin: auto;
+      padding:9px 14px;border-radius:10px;">Profile</a>
+    <button id="modal-remove" style="
+      background:#c62828;color:#fff;border:1px solid #a61f1f;box-shadow:none; height:fit-content;
+      padding:9px 14px;border-radius:10px;cursor:pointer;">Remove</button>
+    <button id="modal-block" style="
+      background:#5a5a5a;color:#fff;border:1px solid #444;box-shadow:none; height:fit-content;
+      padding:9px 14px;border-radius:10px;cursor:pointer;">Block</button>
+  `;
+  modal.appendChild(actions);
+
+  actions.querySelector('#modal-remove').addEventListener('click', async () => {
+    overlay.style.display = 'none';
+    await onRemove?.();
+  });
+  actions.querySelector('#modal-block').addEventListener('click', async () => {
+    overlay.style.display = 'none';
+    await onBlock?.();
+  });
+
+  overlay.style.display = 'block';
+}
+
+/* =========================
    Lists + UI
 ========================= */
 
@@ -479,13 +595,22 @@ export async function renderFriendsUI(opts = {}) {
     const myId = await getMyUserId();
     const rows = await listMyFriendships();
 
+    // Two-column layout: Pending (left) | Friends (right)
+    const columns = document.querySelector('.friends-columns');
+    if (columns) {
+      columns.style.display = 'grid';
+      columns.style.gridTemplateColumns = '1fr 3fr';
+      columns.style.gap = '14px';
+      columns.style.alignItems = 'start';
+    }
+
     /* ---------- Pending ---------- */
     if (pendingListEl) {
       const pend = rows.filter(r => r.status === 'pending');
       pendingListEl.innerHTML = '';
 
       for (const r of pend) {
-        const isOutgoing = r.user_id === myId;          // you sent the request
+        const isOutgoing = r.user_id === myId;
         const otherId    = isOutgoing ? r.friend_id : r.user_id;
         const { username, avatar, typeNice, profileUrl } = await getUserSummary(otherId);
 
@@ -493,32 +618,36 @@ export async function renderFriendsUI(opts = {}) {
         card.className = 'card';
         card.style.margin = '8px 0';
 
-        // Column layout so buttons are BELOW the identity row
         card.innerHTML = `
           <div class="card-body" style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;width:100%;">
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-              <img src="${avatar}" alt="@${username}" width="60" height="60" style="border-radius:50%;object-fit:cover;background:#222;">
+              <img class="pending-avatar" src="${avatar}" alt="@${username}" width="60" height="60"
+                   style="border-radius:50%;object-fit:cover;background:#222;cursor:pointer;">
               <span style="font-weight:600;">@${username}</span>
               ${typeNice ? `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;">${typeNice}</span>` : ''}
               ${isOutgoing
-                ? `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;">Sent</span>`
-                : `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;">Received</span>`
+                ? `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;margin-left: 60px;
+  margin-top: -30px;
+  margin-bottom: 10px;;">Sent</span>`
+                : `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;margin-left: 60px;
+  margin-top: -30px;
+  margin-bottom: 10px;">Received</span>`
               }
             </div>
             <div class="btns" style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap; margin:5px;"></div>
           </div>
         `;
 
-        const btnWrap = card.querySelector('.btns');
+        // Avatar opens profile (no separate Profile button)
+        const avatarEl = card.querySelector('.pending-avatar');
+        avatarEl.addEventListener('click', () => { window.location.href = profileUrl; });
+        avatarEl.setAttribute('role', 'button');
+        avatarEl.setAttribute('tabindex', '0');
+        avatarEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = profileUrl; }
+        });
 
-        // View Profile (shown for both incoming & outgoing)
-        const viewBtn = document.createElement('a');
-        viewBtn.href = profileUrl;
-        viewBtn.textContent = 'Profile';
-        viewBtn.style.cssText = `
-          text-decoration:none; background:#6b7280; color:#fff; margin:5px;
-          border:1px solid #4b5563; padding:7px 12px; border-radius:9px;
-        `;
+        const btnWrap = card.querySelector('.btns');
 
         // Remove button (red)
         const btnRemove = document.createElement('button');
@@ -533,9 +662,10 @@ export async function renderFriendsUI(opts = {}) {
         });
 
         if (isOutgoing) {
-          btnWrap.appendChild(viewBtn);
+          // Outgoing: only Remove
           btnWrap.appendChild(btnRemove);
         } else {
+          // Incoming: Accept + Remove
           const btnAccept = document.createElement('button');
           btnAccept.textContent = 'Accept';
           btnAccept.style.cssText = `
@@ -549,7 +679,6 @@ export async function renderFriendsUI(opts = {}) {
             renderFriendsUI(opts);
           });
 
-          btnWrap.appendChild(viewBtn);
           btnWrap.appendChild(btnAccept);
           btnWrap.appendChild(btnRemove);
         }
@@ -558,56 +687,57 @@ export async function renderFriendsUI(opts = {}) {
       }
     }
 
-    /* ---------- Friends (accepted) ---------- */
+    /* ---------- Friends (accepted) — small cards; avatar opens modal ---------- */
     if (acceptedListEl) {
       const acc = rows.filter(r => r.status === 'accepted');
       acceptedListEl.innerHTML = '';
 
       for (const r of acc) {
         const otherId = r.user_id === myId ? r.friend_id : r.user_id;
-        const { username, avatar, typeNice, profileUrl } = await getUserSummary(otherId);
+        const { username, avatar, typeNice, profileUrl, email } = await getUserSummary(otherId);
 
         const card = document.createElement('div');
         card.className = 'card';
         card.style.margin = '8px 0';
 
         card.innerHTML = `
-          <div class="card-body" style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;width:100%;">
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-              <img src="${avatar}" alt="@${username}" width="60" height="60" style="border-radius:50%;object-fit:cover;background:#222;">
-              <span style="font-weight:600;">@${username}</span>
-              ${typeNice ? `<span style="opacity:.9;font-size:.9em;padding:2px 8px;border-radius:999px;background:#444a;color:#ddd;">${typeNice}</span>` : ''}
-            </div>
-            <div class="btns" style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap; margin:5px !important;">
-              <a href="${profileUrl}" style="
-                text-decoration:none;background:#6b7280;color:#fff;border:1px solid #4b5563;
-                padding:7px 12px;border-radius:9px;">Profile</a>
-              <button class="btn-remove" style="
-                background:#c62828;color:#fff;border:1px solid #a61f1f;box-shadow:none !important;  margin:5px
-                padding:7px 12px;border-radius:9px;cursor:pointer;">
-                Remove
-              </button>
-              <button class="btn-block" style="
-                background:#5a5a5a;color:#fff;border:1px solid #444;box-shadow:none; margin:5px
-                padding:7px 12px;border-radius:9px;cursor:pointer;">
-                Block
-              </button>
-            </div>
+          <div class="card-body"
+               style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;text-align:center;padding:14px 12px;">
+            <button class="avatar-btn"
+                    aria-label="Open actions for @${username}"
+                    style="border:none;background:none;padding:0;cursor:pointer;line-height:0;border-radius:50%;box-shadow:none">
+              <img src="${avatar}" alt="@${username}"
+                   style="width:60px;height:60px;border-radius:50%;object-fit:cover;background:#222;
+                          box-shadow:0 6px 18px rgba(0,0,0,.35);">
+            </button>
+            <div class="friend-name" style="font-weight:700;margin-top:4px;">@${username}</div>
+            ${typeNice ? `
+              <div class="friend-type"
+                   style="opacity:.9;font-size:.9em;padding:4px 10px;border-radius:999px;background:#444a;color:#ddd;margin-top:2px;">
+                ${typeNice}
+              </div>` : ''}
           </div>
         `;
 
-        card.querySelector('.btn-remove').addEventListener('click', async () => {
-          await cancelFriendRequest({ withUserId: otherId });
-          renderFriendsUI(opts);
-        });
-        card.querySelector('.btn-block').addEventListener('click', async () => {
-          await blockUser({ withUserId: otherId });
-          renderFriendsUI(opts);
+        // Avatar opens modal with actions + BADGES
+        card.querySelector('.avatar-btn').addEventListener('click', () => {
+          openFriendActionModal({
+            username, avatar, typeNice, profileUrl, userEmail: email,
+            onRemove: async () => {
+              await cancelFriendRequest({ withUserId: otherId });
+              renderFriendsUI(opts);
+            },
+            onBlock: async () => {
+              await blockUser({ withUserId: otherId });
+              renderFriendsUI(opts);
+            }
+          });
         });
 
         acceptedListEl.appendChild(card);
       }
     }
+
   } catch (err) {
     console.error(err);
     toast(`Friends UI error: ${err.message || err}`);
