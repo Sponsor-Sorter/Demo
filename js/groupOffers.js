@@ -203,7 +203,7 @@ function badge(status) {
 function ensureScaffold() {
   let host = $('#group-offers-host');
   if (!host) {
-    host = el('div', { id: 'group-offers-host', style: 'width:min(1100px,96vw);margin:10px auto;' });
+    host = el('div', { id: 'group-offers-host', style: 'width:min(1100px,96vw);margin:auto auto;' });
     document.body.prepend(host);
   }
   let tabs = $('#group-offer-tabs');
@@ -1245,3 +1245,4 @@ async function main() {
   observeMembersPanel();
 }
 document.addEventListener('DOMContentLoaded', main);
+
