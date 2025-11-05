@@ -152,14 +152,13 @@ body
 
      .navii{
         width: 100%;
-        background-image: url(handslogo.jpg);
-        height: 139px;
+        background-image: url(handslogo2.jpg);
+        background-position: -80px;
+        height: 150px;
         background-repeat: no-repeat;
-        align-items: center;
-        background-position: center;
         background-position-y: bottom;
         padding: 5px;
-        border-radius: 40px;
+        border-radius: 10px;
         
      }
     .navimg {
@@ -4128,6 +4127,14 @@ body, .admin-table, .admin-tab, .pagination-btn {
   }
 }
 
+ #social_handles {
+   display: grid !important;
+  grid-template-columns: repeat(3, minmax(110px, 1fr));
+
+  max-width: 100px ;
+  margin-left: 15%;
+ }
+
 @media (max-width: 500px) {
   .stat-card, .summary-card, .dashboard-card, .offer-card {
     width: 100% !important;
@@ -4893,7 +4900,19 @@ fieldset:focus-within, fieldset:hover {
     transition: filter 0.13s;
   }
 
-
+#friends-pending,
+#friends-accepted {
+  max-height: clamp(160px, 30vh, 520px); /* responsive cap */
+  overflow-y: auto;
+  margin: 5px;
+  padding-right: 6px;            /* space for scrollbar */
+  scrollbar-gutter: stable both-edges;
+  max-height: 400px !important;
+   display: grid !important;
+    grid-template-columns: 1fr 1fr;  /* left = link, right = stats */
+    gap: 8px;
+    
+}
   
 #settings-cog-li {
   margin-top: -5px;
@@ -5223,6 +5242,34 @@ fieldset:focus-within, fieldset:hover {
   padding-top: 8.0px;
   padding-bottom: 3.0px;
   padding-left: 8.0px;
+  height: fit-content;
+}
+
+#friends-pending{
+  width: 290px;
+  scroll-behavior: smooth;
+}
+
+ #friends-pending div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+}
+
+ #friends-accepted div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+  margin-right: auto;
+  margin-left: a;
 }
 
 /* Replace the old .member-list rule */
@@ -5293,10 +5340,16 @@ fieldset:focus-within, fieldset:hover {
   }
 }
 
+
+
 legend {
   padding-bottom: 20px;
 }
-
+#friends-pending {
+  width: 290px;
+  scroll-behavior: smooth;
+  display: block !important;
+}
 
 .active-toggle {
   background: #3c0097;
@@ -5518,7 +5571,7 @@ fieldset.recentoffers {
 .wallet {
   position: absolute;        /* Take out of normal flow */
   left: 32px;                /* Distance from the left edge (adjust as needed) */
-  top: 220px;                 /* Distance from the top (adjust as needed) */
+  top: 240px;                 /* Distance from the top (adjust as needed) */
   background: #4b4b4b;       /* Subtle dark green background */
   color:  white;
   font-size: 1.15em;
@@ -5714,6 +5767,29 @@ input:checked + .slider:before {
 #invoice-offer-list {
   margin-bottom: 22px;
 }
+
+ #friends-pending div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+}
+
+ #friends-accepted div div .btns {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:nowrap;
+  margin:5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+  margin-right: auto;
+  margin-left: a;
+}
+
 
 .invoice-table {
   width: 100%;
@@ -7783,6 +7859,11 @@ input:checked + .slider:before {
 }
 
 
+.navbar {
+  width: 100%;
+}
+
+
 /* dashboard mobile fixs */
 
 /* === LISTING CARDS: make them fit on phones (≤600px) ================== */
@@ -7989,6 +8070,95 @@ body{
   
 
 @media (min-width: 1200px) {
+
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+.nav > li:nth-child(2) {
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#auth-link {
+  height: 55px;
+}
+
+/* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+nav {
+  /* height: fit-content; */
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+.navimg {
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+.navimg > nav:nth-child(1) > li:nth-child(3) {
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+.navimg > nav:nth-child(1) > li:nth-child(4) {
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+.icon-bar-bg {
+  height: 55px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#settings-notif-bar {
+  height: 55px;
+}
+ 
+ .wallet {
+  top: 270px;
+  left: 160px
+ }
+
+ /* Center the whole reviews row */
+.review-stars-block,
+#sponsee-review-stars {
+  text-align: center;
+}
+
+.stars-row {
+  display: flex;
+  justify-content: center;       /* ← centers the items */
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;                /* keep it centered as a block */
+  width: max-content;            /* shrink to content so margin:auto works */
+  flex-wrap: wrap;               /* wrap nicely on small screens */
+}
+
+/* Each metric + its stars */
+.stars-row .star-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The stars themselves stay inline & centered */
+.stars-row .star-item .stars,
+.stars-row .star-item .fa-star,
+.stars-row .star-item .star {
+  display: inline-flex;
+  align-items: center;
+}
+
+  
+
   /* Make the container a 4-column grid */
   .dashboard-cards {
     display: grid;
@@ -8009,6 +8179,48 @@ body{
     width: 16vw;
     margin: 0 0 0 0;
   }
+
+
+/* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+  .aff-sec {
+    width: 85vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#view-all-reviews-btn {
+  /* padding: 9px 18px; */
+  padding: 10px 1px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#generate-recap-btn {
+  margin-right: 5px;
+}
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#generate-invoices-btn {
+  /* margin-left: 12px; */
+  margin-left: 5px;
+}
+
+/* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+.btn, .modal-content .btn {
+  /* padding: 8px 22px; */
+  padding: 9px 1px;
+}
+
+
 
   /* --- Fix the global section rule just for this panel --- */
 section.friends-panel {
@@ -8041,7 +8253,8 @@ section.friends-panel {
   margin-bottom: 12px;
 }
 #friends-accepted .card {
-  height: 120px;
+  height: 150px;
+  width: 120px;
 }
 
 #friends-accepted .btns {
@@ -8051,7 +8264,7 @@ section.friends-panel {
 
  .groups-panel {
     display: grid !important;
-    grid-template-columns: 1fr 1fr;   /* left = list, right = members */
+    grid-template-columns: 1fr 2fr;   /* left = list, right = members */
     gap: 16px;
     align-items: start;
   }
@@ -8065,7 +8278,7 @@ section.friends-panel {
   .groups-panel .help-block {
     grid-column: 1 / -1;
   }
-
+ 
   /* Left / Right columns */
   #groups-list {
     grid-column: 1;
@@ -8127,7 +8340,7 @@ section.friends-panel {
   }
  
 
-  #sponsee-public-offers-container{
+  #sponsee-public-offers-container, #offers-container {
       display: grid !important;
   grid-template-columns: repeat(2, minmax(520px, 1fr));
 
@@ -8217,6 +8430,7 @@ section.friends-panel {
   
   max-width: 1500px;
   margin: auto;
+  margin-top: 50px
 }
 
 #friends-pending,
@@ -8262,5 +8476,156 @@ section.friends-panel {
     align-items: start;
     margin-top: 10px
 }
+ #friends-pending {
+  grid-template-columns: 1fr;
+  width: 312px;
+ }
 
+ #friends-accepted {
+  display: grid !important;
+  gap: 10px;
+  min-height: 400px;
+ }
+
+ .card-column .card {
+  width: 140px;
+ }
+
+ /* ===== Friends — accepted grid (5 per row) ===== */
+#friends-accepted {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr);  /* always 5 across */
+  gap: 12px;
+  align-items: start;
+}
+
+/* make the tiny cards fill their grid cell */
+#friends-accepted > .card {
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+}
+#friends-accepted > .card .card-body {
+  padding: 14px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* Optional: keep all cards the same height for a neat grid */
+#friends-accepted > .card .card-body {
+  min-height: 150px;
+}
+
+/* ===== (Optional) cap to exactly 2 rows; scroll for more ===== */
+/* Remove this block if you want unlimited rows */
+@media (min-width: 1200px) {
+  #friends-accepted {
+    --card-h: 150px;            /* match min-height above */
+    grid-auto-rows: var(--card-h);
+    max-height: calc(2 * var(--card-h) + 12px); /* two rows + one gap */
+    overflow-y: auto;           /* scroll to see more than 10 */
+    padding-right: 4px;
+    padding-top: 10px;
+  }
+}
+
+.navii {
+  width: 100%;
+  background-image: url(handslogo2.jpg);
+  background-position: 69px;
+    background-position-y: center;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-position-y: -571px;
+  padding: 5px;
+  border-radius: 40px;
+}
+
+/* Keep Pending (left) | Friends (right) columns tidy */
+.friends-columns {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+
+/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+#groups-list > div:nth-child(1) {
+  margin: 0px 0px ;
+}
+
+
+}
+
+
+/* your banner container */
+.site-hero{
+  position: relative;
+  /* keep your current background image */
+  /* background: url("./header-bg.png") center/cover no-repeat; */
+  overflow: hidden;
+}
+
+/* ensure content sits above the overlay */
+.site-hero > * { position: relative; z-index: 1; }
+
+/* the sparkle layer */
+#sparkle-overlay{
+  position: absolute;
+  inset: 0;
+  height: 160px;
+  pointer-events: none;
+  z-index: 0;
+  contain: layout paint;              /* perf hint */
+}
+
+/* each sparkle */
+#sparkle-overlay .sparkle{
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  /* soft glowing dot */
+  background: radial-gradient(closest-side, rgba(255,255,255,.95), rgba(255,255,255,0));
+  filter: drop-shadow(0 0 3px rgba(246,198,46,.9)); /* Sponsor Sorter gold glow */
+  opacity: .15;
+  animation: twinkle var(--dur,4s) ease-in-out var(--delay,0s) infinite;
+  will-change: opacity, transform;
+}
+
+/* occasional slightly bigger stars */
+#sparkle-overlay .sparkle.big{
+  width: 3px;
+  height: 3px;
+  filter: drop-shadow(0 0 5px rgba(246,198,46,.95));
+}
+
+/* subtle slow drift + brightness pulse */
+@keyframes twinkle{
+  0%,100% { opacity: .15; transform: translateY(0) scale(1); }
+  50%     { opacity: .95; transform: translateY(-2px) scale(1.7); }
+}
+
+/* optional: a super-subtle moving haze to sell the effect */
+.site-hero::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(120px 120px at 10% 20%, rgba(255,255,255,.04), transparent 70%),
+    radial-gradient(120px 120px at 80% 70%, rgba(246,198,46,.03), transparent 70%);
+  mix-blend-mode: screen;
+  animation: haze 18s linear infinite;
+}
+@keyframes haze{
+  0%   { background-position: 0% 0%, 100% 100%; }
+  100% { background-position: 100% 0%, 0% 100%; }
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce){
+  #sparkle-overlay, .site-hero::after { display:none; }
 }
