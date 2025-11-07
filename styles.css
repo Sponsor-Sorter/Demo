@@ -2801,6 +2801,8 @@ fieldset {
     border: 1px solid #393939;
     border-radius: 8px;
     background-color: #454545;
+    width: fit-content;
+    
     
   }
   
@@ -4128,8 +4130,7 @@ body, .admin-table, .admin-tab, .pagination-btn {
 }
 
  #social_handles {
-   display: grid !important;
-  grid-template-columns: repeat(3, minmax(110px, 1fr));
+   display: inline !important;
 
   max-width: 100px ;
   margin-left: 15%;
