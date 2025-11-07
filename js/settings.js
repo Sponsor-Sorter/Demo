@@ -5,6 +5,76 @@ import { getActiveUser } from './impersonationHelper.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+  async function requireAuthOrToast() {
+  const { data: { session} } = await supabase.auth.getSession();
+  if (!session?.access_token) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; background: #f53838; color: #fff; font-size: 1.05em;
+      padding: 10px 16px; border-radius: 10px; box-shadow: 0 3px 22px #2222;
+    `;
+    el.textContent = 'Please sign in to link or disconnect platforms.';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+    return false;
+  }
+  return true;
+}
+
+
+
+  // Remove a platform string from users_extended_data.platforms[]
+async function removePlatformFromArray(userId, platformKey) {
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('id, platforms')
+    .eq('user_id', userId)
+    .single();
+  if (error || !data) return false;
+  const arr = Array.isArray(data.platforms) ? data.platforms : [];
+  const filtered = arr.filter(p => (p || '').toLowerCase() != String(platformKey).toLowerCase());
+  if (filtered.length == arr.length) return true;
+  const { error: updErr } = await supabase
+    .from('users_extended_data')
+    .update({ platforms: filtered })
+    .eq('id', data.id);
+  return !updErr;
+}
+
+
+
+  // === Edge Function helper: revoke_platforms ===
+// === Edge Function helper: revoke_platforms (robust URL fallback) ===
+const SUPA_FN_BASE =
+  (supabase && supabase.functionsUrl) // if your client exposes it
+  || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; // your project
+
+async function revokePlatforms(platform, tokenHints = {}) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.access_token) throw new Error('Not signed in');
+
+  const url = `${SUPA_FN_BASE}/revoke_platforms`;
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({ platform, ...tokenHints }),
+  });
+
+  let json = null;
+  try { json = await resp.json(); } catch {}
+  if (!resp.ok || !json?.ok) {
+    throw new Error(json?.error || `HTTP ${resp.status}`);
+  }
+  return json; // { ok:true, db_updated:boolean, warning?:string }
+}
+
+
+
   // --- User & Vars ---
   let currentUser = await getActiveUser();
   if (!currentUser) return;
@@ -1010,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ${connected ? "Linked" : "Not linked"}
           </span>
           <button 
-            class="oauth-connect-btn" 
+            type="button" class="oauth-connect-btn" 
             data-platform="${p.key}"
             style="background:${connected ? "#f55" : "#2d7bfa"};color:#fff;font-weight:600;border:none;padding:6px 18px;border-radius:8px;cursor:pointer;"
           >
@@ -1023,14 +1093,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Connect/disconnect logic
     document.querySelectorAll('.oauth-connect-btn').forEach(btn => {
-      btn.onclick = async () => {
-        const plat = btn.getAttribute('data-platform');
-        const user = await getActiveUser(true);
-
-        if (plat === "youtube") {
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!(await requireAuthOrToast())) return;
+    const plat = btn.getAttribute('data-platform');
+    const user = await getActiveUser(true);
+if (plat === "youtube") {
           if (user.youtube_connected) {
             // --- DISCONNECT YOUTUBE ---
             btn.innerText = "Disconnecting...";
+
+            await revokePlatforms('youtube', { refresh_token: user.youtube_refresh_token || null, access_token: user.youtube_access_token || null });
+
             btn.disabled = true;
             const { error } = await supabase
               .from("users_extended_data")
@@ -1042,6 +1117,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               })
               .eq("user_id", user.user_id);
             if (!error) {
+              await removePlatformFromArray(user.user_id, 'youtube');
+
               btn.innerText = "Connect";
               btn.style.background = "#2d7bfa";
               document.getElementById('youtube-status-badge').innerText = "Not linked";
@@ -1065,6 +1142,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (user.twitch_connected) {
             // --- DISCONNECT TWITCH ---
             btn.innerText = "Disconnecting...";
+
+            await revokePlatforms('twitch', { access_token: user.twitch_access_token || null, twitch_client_id: (window.__twitch_client_id__ || null) });
+
             btn.disabled = true;
 
             const { error } = await supabase
@@ -1078,6 +1158,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               .eq('user_id', user.user_id);
 
             if (!error) {
+              await removePlatformFromArray(user.user_id, 'twitch');
+
               btn.innerText = "Connect";
               btn.style.background = "#2d7bfa";
               const badge = document.getElementById('twitch-status-badge');
@@ -1098,6 +1180,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (user.instagram_connected) {
             // --- DISCONNECT INSTAGRAM ---
             btn.innerText = "Disconnecting...";
+
+            await revokePlatforms('instagram', { access_token: user.instagram_access_token || null });
+
             btn.disabled = true;
 
             const { error } = await supabase
@@ -1112,6 +1197,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               .eq('user_id', user.user_id);
 
             if (!error) {
+              await removePlatformFromArray(user.user_id, 'instagram');
+
               btn.innerText = "Connect";
               btn.style.background = "#2d7bfa";
               const badge = document.getElementById('instagram-status-badge');
@@ -1139,6 +1226,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (fbConnected) {
             // --- DISCONNECT FACEBOOK ---
             btn.innerText = "Disconnecting...";
+
+            await revokePlatforms('facebook', { access_token: user.facebook_access_token || null });
+
             btn.disabled = true;
 
             const update = {
@@ -1155,6 +1245,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               .eq('user_id', user.user_id);
 
             if (!error) {
+              await removePlatformFromArray(user.user_id, 'facebook');
+
               btn.innerText = "Connect";
               btn.style.background = "#2d7bfa";
               const badge = document.getElementById('facebook-status-badge');
@@ -1178,6 +1270,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (isPlatformConnected(user, 'tiktok')) {
             // --- DISCONNECT TIKTOK ---
             btn.innerText = "Disconnecting...";
+
+            await revokePlatforms('tiktok', { access_token: user.tiktok_access_token || null });
+
             btn.disabled = true;
 
             const { error } = await supabase
@@ -1193,6 +1288,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               .eq('user_id', user.user_id);
 
             if (!error) {
+              await removePlatformFromArray(user.user_id, 'tiktok');
+
               btn.innerText = "Connect";
               btn.style.background = "#2d7bfa";
               const badge = document.getElementById('tiktok-status-badge');
@@ -1224,7 +1321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert("Kick OAuth coming soon!");
           }
         }
-      };
+      });
     });
   }
 
@@ -1385,7 +1482,7 @@ if (recapToggle) {
 // =========================
 
 // ---------- Small helpers ----------
-function aff_functionsBase(){ return supabase.functionsUrl || `${location.origin}/functions/v1`; }
+function aff_functionsBase(){ return (supabase && supabase.functionsUrl) || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; }
 async function aff_getJwt(){ return (await supabase.auth.getSession()).data.session?.access_token || ''; }
 function aff_esc(v){ return v==null?'':String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
