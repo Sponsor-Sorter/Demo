@@ -1219,51 +1219,67 @@ if (plat === "youtube") {
         }
 
         // --- NEW: FACEBOOK CONNECT/DISCONNECT ---
-        else if (plat === "facebook") {
-          // We treat connected if page id/token present OR facebook_connected flag is true
-          const fbConnected = isPlatformConnected(user, 'facebook');
+       // --- FACEBOOK CONNECT/DISCONNECT (correct token param + no update to generated column) ---
+else if (plat === "facebook") {
+  const fbConnected = isPlatformConnected(user, 'facebook');
 
-          if (fbConnected) {
-            // --- DISCONNECT FACEBOOK ---
-            btn.innerText = "Disconnecting...";
+  if (fbConnected) {
+    // --- DISCONNECT FACEBOOK ---
+    btn.innerText = "Disconnecting...";
 
-            await revokePlatforms('facebook', { access_token: user.facebook_access_token || null });
+    try {
+      // IMPORTANT: Edge function expects `access_token`; include `page_id` when using a Page token.
+      // If you later store a user token (e.g. facebook_user_access_token), prefer that first:
+      const accessToken =
+        user.facebook_user_access_token /* optional future column */ ||
+        user.facebook_access_token      /* current schema: page token */ ||
+        null;
 
-            btn.disabled = true;
+      await revokePlatforms('facebook', {
+        access_token: accessToken,
+        page_id: user.facebook_page_id || null
+      });
+    } catch (e) {
+      console.warn('Facebook revoke warning:', e?.message || e);
+      // Continue to local unlink either way
+    }
 
-            const update = {
-              facebook_user_id: null,
-              facebook_page_id: null,
-              facebook_page_name: null,
-              facebook_access_token: null,
-              facebook_token_expires_at: null
-            };
+    btn.disabled = true;
 
-            const { error } = await supabase
-              .from('users_extended_data')
-              .update(update)
-              .eq('user_id', user.user_id);
+    // DO NOT include `facebook_connected` here (it's a generated column).
+    const { error } = await supabase
+      .from('users_extended_data')
+      .update({
+        facebook_user_id: null,
+        facebook_page_id: null,
+        facebook_page_name: null,
+        facebook_access_token: null,
+        // facebook_user_access_token: null, // uncomment if you add that column later
+        facebook_token_expires_at: null
+      })
+      .eq('user_id', user.user_id);
 
-            if (!error) {
-              await removePlatformFromArray(user.user_id, 'facebook');
+    if (!error) {
+      await removePlatformFromArray(user.user_id, 'facebook');
 
-              btn.innerText = "Connect";
-              btn.style.background = "#2d7bfa";
-              const badge = document.getElementById('facebook-status-badge');
-              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
-              showFacebookDisconnectedNotification();
-              await refreshOauthAccountsUI();
-            } else {
-              btn.innerText = "Failed!"; btn.style.background = "#e22";
-              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-            }
-          } else {
-            // --- CONNECT FACEBOOK ---
-            const url = buildFacebookAuthUrl(); // state=facebook
-            oauthLinkModal.style.display = "none";
-            window.location.href = url; // full redirect (Meta-friendly)
-          }
-        }
+      btn.innerText = "Connect";
+      btn.style.background = "#2d7bfa";
+      const badge = document.getElementById('facebook-status-badge');
+      if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
+      showFacebookDisconnectedNotification?.();
+      await refreshOauthAccountsUI();
+    } else {
+      btn.innerText = "Failed!"; btn.style.background = "#e22";
+      setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
+    }
+  } else {
+    // --- CONNECT FACEBOOK ---
+    const url = buildFacebookAuthUrl(); // state=facebook
+    oauthLinkModal.style.display = "none";
+    window.location.href = url; // full redirect (Meta-friendly)
+  }
+}
+
 
         // --- NEW: TIKTOK CONNECT/DISCONNECT ---
         else if (plat === "tiktok") {
