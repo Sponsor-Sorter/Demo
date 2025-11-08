@@ -1956,4 +1956,148 @@ async function aff_refreshMyApplications(){
   `;
 }
 
+/* =========================
+   PREMIUM: Featured Star checkout (Settings dropdown → modal)
+   Paste this whole block just ABOVE the closing "});" of DOMContentLoaded
+========================= */
+
+// --- Config ---
+const FEATURED_STAR_PRICE_ID = 'price_1SRAl62eA1800fRN56wtcQbH';
+
+// Optional: label/amount to show in the modal
+const FEATURED_STAR_DISPLAY = {
+  title: 'Featured Star',
+  blurb: 'Buy a sparkle placement on the homepage that links visitors to your public spotlight.',
+  // purely visual; the price comes from Stripe Price ID in checkout
+  displayPrice: '$10 one-time' 
+};
+
+// --- Utility: robust functions URL + JWT (same style as your other blocks) ---
+function prem_functionsBase(){ 
+  return (supabase && supabase.functionsUrl) || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; 
+}
+async function prem_getJwt(){ 
+  return (await supabase.auth.getSession()).data.session?.access_token || ''; 
+}
+
+// --- Ensure we have the modal markup only once ---
+function ensurePremiumModal(){
+  if (document.getElementById('premium-modal')) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'premium-modal';
+  modal.className = 'modal';
+  modal.style.cssText = `
+    display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh;
+    background:rgba(16,18,32,0.86); align-items:center; justify-content:center;
+  `;
+
+  modal.innerHTML = `
+    <div class="modal-content" style="
+      background:#111; color:#eee; max-width:520px; width:92vw;
+      padding:28px 24px 20px 24px; border-radius:16px; box-shadow:0 8px 30px #0008; position:relative;">
+      <button id="close-premium-modal" aria-label="Close" style="
+        position:absolute; right:16px; top:12px; font-size:1.4em; background:none; border:none; color:red; cursor:pointer;box-shadow:none;">&times;</button>
+
+      <h3 style="margin:0 0 8px 0; letter-spacing:.02em;">${FEATURED_STAR_DISPLAY.title}</h3>
+      <div style="margin-bottom:10px; color:#bbb;">${FEATURED_STAR_DISPLAY.blurb}</div>
+
+      <div style="margin:10px 0 14px 0;">
+        <span style="background:#222; color:#ffd062; padding:6px 12px; border-radius:10px; font-weight:700;">
+          ${FEATURED_STAR_DISPLAY.displayPrice}
+        </span>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+        <button id="buy-featured-star" class="btn btn-primary" style="
+          background:#ffd062; color:#222; border:none; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:800;">
+          Buy Featured Star
+        </button>
+        <button id="premium-cancel" class="btn btn-secondary" style="
+          background:#333; color:#eee; border:none; padding:10px 16px; border-radius:10px; cursor:pointer;">
+          Not now
+        </button>
+      </div>
+
+      <div id="premium-status" style="margin-top:12px; color:#7fbaff; min-height:1.2em;"></div>
+      <div style="margin-top:12px; color:#888; font-size:.95em;">
+        After checkout, you’ll be redirected back here. We’ll email you with scheduling/slot details.
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Close handlers
+  document.getElementById('close-premium-modal')?.addEventListener('click', () => closeModal('premium-modal'));
+  document.getElementById('premium-cancel')?.addEventListener('click', () => closeModal('premium-modal'));
+
+  // Buy button (REPLACE this whole handler)
+document.getElementById('buy-featured-star')?.addEventListener('click', async () => {
+  const status = document.getElementById('premium-status');
+  try {
+    status.textContent = 'Creating checkout…';
+
+    // Absolute URLs relative to current file (works from /public/* too)
+    const successUrl = new URL('./settings.html?premium=success', location.href).href;
+    const cancelUrl  = new URL('./settings.html?premium=cancel',  location.href).href;
+
+    const payload = {
+      mode: 'payment',
+      price_id: FEATURED_STAR_PRICE_ID,
+      quantity: 1,
+      amount: 5,
+      metadata: { product: 'featured_star' },
+      success_url: successUrl,
+      cancel_url: cancelUrl
+    };
+
+    let checkoutUrl;
+
+    // 1) Try supabase.functions.invoke, but gracefully fall back if its base URL isn't set
+    let invoked = false;
+    try {
+      if (supabase.functions?.invoke) {
+        const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
+        if (error) throw error;
+        checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
+        invoked = true;
+      }
+    } catch (e) {
+      console.warn('invoke failed; falling back to fetch()', e);
+    }
+
+    // 2) Fallback: direct fetch to your Functions endpoint
+    if (!checkoutUrl) {
+      const jwt = (await supabase.auth.getSession()).data.session?.access_token || '';
+      const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}) },
+        body: JSON.stringify(payload),
+      });
+      const json = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
+      checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
+    }
+
+    if (!checkoutUrl) throw new Error('No checkout URL returned');
+
+    status.textContent = 'Redirecting to Stripe…';
+    window.location.href = checkoutUrl;
+
+  } catch (err) {
+    console.error(err);
+    if (status) status.textContent = 'Could not create checkout. Please try again.';
+    alert('Sorry, we could not start checkout. If this keeps happening, contact support.');
+  }
+});
+
+}
+
+// --- Wire dropdown item ---
+document.getElementById('open-premium-settings')?.addEventListener('click', () => {
+  ensurePremiumModal();
+  openModal('premium-modal'); // uses your existing helper
+});
+
+
 });
