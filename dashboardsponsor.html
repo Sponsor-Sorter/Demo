@@ -7,7 +7,7 @@
   <title>Sponsor Dashboard</title>
   <link rel="stylesheet" href="./styles.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-   <!-- Google Fonts: Cinzel 900 -->
+  <!-- Google Fonts: Cinzel 900 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
@@ -24,8 +24,14 @@
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
-      <div>
+  <h5>
+    <header>
+      <img src="./logos.png" alt="Sponsor Sorter logo">
+      <span class="brand-title">Sponsor Sorter</span>
+    </header>
+  </h5>
+</div>
+
         <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
        <!-- Global Search (Nav) -->
@@ -97,6 +103,17 @@
                       Subscription & Free Month Rewards
                     </button>
                   </li>
+                  <li>
+          <button type="button" class="dropdown-item" id="open-privacy-settings">
+            Privacy & Data
+          </button>
+        </li>
+                  <li>
+                    <button type="button" class="dropdown-item" id="open-premium-settings">
+                      Premium
+                    </button>
+                  </li>
+
                 </ul>
               </div>
             </div>
@@ -307,20 +324,6 @@
     </fieldset>
   </section>
 
-  <section>
-    <fieldset>
-      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
-      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
-      <div id="privacy-request-status"></div>
-      <div class="help-block" style="margin-top:8px;">
-        <em>
-          <strong>Your Privacy Controls:</strong><br>
-          Download all your personal data or permanently delete your Sponsor Sorter account. All privacy requests are handled securely in accordance with GDPR and CCPA.
-        </em>
-      </div>
-    </fieldset>
-  </section>
-
 </section>
 
 <!-- FOOTER -->
@@ -420,6 +423,30 @@
       <button type="submit" style="margin-top:12px;">Upload</button>
     </form>
     <div id="profile-logo-modal-msg" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+<!--privacy request modal-->
+<!-- Privacy & Data Modal -->
+<div id="privacy-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:560px;">
+    <span class="close-modal" id="close-privacy-modal">&times;</span>
+    <h3>Privacy & Data</h3>
+
+    <!-- keep the same IDs so privacy.js keeps working -->
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
+      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
+    </div>
+
+    <div id="privacy-request-status" style="margin-top:10px;"></div>
+
+    <div class="help-block" style="margin-top:12px;">
+      <em>
+        <strong>Your Privacy Controls:</strong><br>
+        Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
+      </em>
+    </div>
   </div>
 </div>
 
@@ -539,6 +566,26 @@
 <!-- Invoices -->
 <script type="module" src="./js/invoices.js"></script>
 
+
+<script type="module">
+  const openPrivacyBtn = document.getElementById('open-privacy-settings');
+  const privacyModal   = document.getElementById('privacy-modal');
+  const closePrivacy   = document.getElementById('close-privacy-modal');
+
+  openPrivacyBtn?.addEventListener('click', () => {
+    privacyModal.style.display = 'block';
+    // optional: hide the dropdown after click
+    document.getElementById('settings-dropdown')?.classList.remove('open');
+  });
+
+  closePrivacy?.addEventListener('click', () => {
+    privacyModal.style.display = 'none';
+  });
+
+  // close when clicking outside content
+  window.addEventListener('click', (e) => {
+    if (e.target === privacyModal) privacyModal.style.display = 'none';
+  });
+</script>
 </body>
 </html>
-
