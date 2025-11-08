@@ -20,7 +20,7 @@
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav>
-            <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
+            <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
           <li><a href="login.html">Logout</a></li>
         </nav>
       </div>
@@ -36,11 +36,11 @@
 <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
+                <li><a href="/public/help.html">Help</a></li>
+                <li><a href="/public/contact.html">Contact</a></li>
+                <li><a href="/public/privacy.html">Privacy Policy</a></li>
+                <li><a href="/public/terms.html">Terms of Service</a></li>
+                <li><a href="/public/reviews.html">Reviews</a></li>
 
             </ul>
         </div>
@@ -48,8 +48,8 @@
         <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
     </footer>
 <script type="module">
-import { supabase } from './js/supabaseClient.js';
-import { notifyNewOffer } from './js/alerts.js';
+import { supabase } from '/public/js/supabaseClient.js';
+import { notifyNewOffer } from '/public/js/alerts.js';
 
 async function createOfferFromSession() {
   const statusDiv = document.getElementById('insert-status');
@@ -102,10 +102,186 @@ let offerData = localStorage.getItem('pendingOfferData');
   // Success!
   statusDiv.innerHTML = `<span style="color:green;">Offer created successfully! Redirecting...</span>`;
   localStorage.removeItem('pendingOfferData');
-  setTimeout(() => window.location.href = './dashboardsponsor.html', 2200);
+  setTimeout(() => window.location.href = '/public/dashboardsponsor.html', 2200);
 }
 
 document.addEventListener('DOMContentLoaded', createOfferFromSession);
 </script>
+
+<script type="module">
+/* payment-success handler (REPLACE the whole previous block with this) */
+import { supabase } from './js/supabaseClient.js';
+import { notifyNewOffer } from './js/alerts.js';
+
+const statusDiv = document.getElementById('insert-status');
+
+/* -----------------------------
+   Helpers
+----------------------------- */
+const qp = (name) => new URL(window.location.href).searchParams.get(name);
+
+function successRedirect(url) {
+  setTimeout(() => (window.location.href = url), 1800);
+}
+
+function safeJson(str) {
+  try { return JSON.parse(str); } catch { return null; }
+}
+
+/* -----------------------------
+   Offer creation (existing flow)
+----------------------------- */
+async function handleOfferCreate(offerData) {
+  const { data: inserted, error: insertErr } = await supabase
+    .from('private_offers')
+    .insert([offerData])
+    .select()
+    .limit(1);
+
+  if (insertErr || !inserted?.length) {
+    throw new Error(insertErr?.message || 'Offer insert failed');
+  }
+  const offer = inserted[0];
+
+  // Initial comment (best-effort)
+  try {
+    await supabase.from('private_offer_comments').insert([{
+      offer_id: offer.id,
+      user_id: offerData.sponsor_id,
+      comment_text: `Offer submitted by ${offerData.sponsor_username}`
+    }]);
+  } catch {}
+
+  // Notify sponsee (best-effort)
+  try {
+    await notifyNewOffer({
+      offer_id: offer.id,
+      to_user_id: offerData.sponsee_id,
+      from_username: offerData.sponsor_username,
+      offer_title: offerData.offer_title
+    });
+  } catch {}
+
+  return offer.id;
+}
+
+/* -----------------------------
+   Featured Star assignment
+----------------------------- */
+const FUNCTIONS_BASE = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
+
+async function assignFeaturedStar({ months = 1, label = 'Featured Star' } = {}) {
+  // Try supabase.functions.invoke first; fall back to direct fetch if needed.
+  try {
+    if (supabase.functions?.invoke) {
+      const { data, error } = await supabase.functions.invoke('assign-featured-star', {
+        body: { months, label }
+      });
+      if (error) throw error;
+      return data?.slot_index ?? null;
+    }
+  } catch (e) {
+    console.warn('invoke(assign-featured-star) failed; falling back to fetch()', e);
+  }
+
+  // Fallback: fetch with JWT
+  const { data: s } = await supabase.auth.getSession();
+  const jwt = s?.session?.access_token || '';
+
+  const resp = await fetch(`${FUNCTIONS_BASE}/assign-featured-star`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(jwt ? { Authorization: `Bearer ${jwt}` } : {})
+    },
+    body: JSON.stringify({ months, label })
+  });
+  const json = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(json?.error || 'Failed to assign featured star');
+  return json?.slot_index ?? null;
+}
+
+function renderPremiumResult({ slotIndex, product = 'featured_star' } = {}) {
+  const nice = product === 'featured_star' ? 'Featured Star' : 'Premium';
+  const link = slotIndex ? `./featured.html?slot=${slotIndex}` : './featured.html';
+  statusDiv.innerHTML = `
+    <div style="color:#0a8a0a;margin:8px 0 10px 0;"><b>${nice} purchase confirmed!</b></div>
+    <div style="color:#444;">Your spotlight is scheduled${slotIndex ? ` (slot #${slotIndex})` : ''}.</div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="${link}" style="background:#ffd062;color:#222;padding:9px 14px;border-radius:10px;font-weight:800;text-decoration:none;">View your spotlight</a>
+      <a href="./index.html" style="background:#333;color:#fff;padding:9px 14px;border-radius:10px;text-decoration:none;">Back to Home</a>
+    </div>
+  `;
+}
+
+/* -----------------------------
+   Main
+----------------------------- */
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const session_id = qp('session_id');
+    const payment_status = qp('payment_status');
+
+    if (!session_id || payment_status !== 'success') {
+      statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
+      return;
+    }
+
+    // Branch A: pending private offer from checkout flow
+    const rawOffer = localStorage.getItem('pendingOfferData');
+    if (rawOffer) {
+      statusDiv.textContent = 'Finalizing your offer…';
+      const offerData = safeJson(rawOffer);
+      if (!offerData) {
+        statusDiv.innerHTML = `<span style="color:red;">Could not read offer data. Please resubmit your offer.</span>`;
+        return;
+      }
+
+      try {
+        await handleOfferCreate(offerData);
+        statusDiv.innerHTML = `<span style="color:green;">Offer created successfully! Redirecting…</span>`;
+        localStorage.removeItem('pendingOfferData');
+        successRedirect('./dashboardsponsor.html');
+      } catch (e) {
+        statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${e?.message || 'Unknown error.'}</span>`;
+      }
+      return;
+    }
+
+    // Branch B: Premium purchase (Featured Star)
+    const product =
+      localStorage.getItem('premiumCheckout') ||
+      localStorage.getItem('premiumProduct') ||
+      'featured_star';
+
+    // Clean up hints
+    localStorage.removeItem('premiumCheckout');
+    localStorage.removeItem('premiumProduct');
+
+    statusDiv.textContent = 'Finalizing your Featured Star…';
+
+    // Must be authenticated to assign a star
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess?.session) {
+      // Let the user finish auth and then assign from settings later
+      renderPremiumResult({ slotIndex: null, product });
+      return;
+    }
+
+    try {
+      const slotIndex = await assignFeaturedStar({ months: 1, label: 'Featured Star' });
+      renderPremiumResult({ slotIndex, product });
+    } catch (e) {
+      console.warn('assign-featured-star failed; showing success without slot number', e);
+      renderPremiumResult({ slotIndex: null, product });
+    }
+  } catch (err) {
+    console.error(err);
+    statusDiv.innerHTML = `<span style="color:red;">Something went wrong handling the payment. If this keeps happening, contact support.</span>`;
+  }
+});
+</script>
+
+
 </body>
 </html>
