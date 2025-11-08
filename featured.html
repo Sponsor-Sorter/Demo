@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Featured Creator – Sponsor Sorter</title>
+
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Google Fonts: Cinzel 900 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Page-specific sprinkles while staying consistent with your dashboard styling */
+    .featured-wrap { max-width: 1100px; margin: 0 auto; padding: 20px 14px; }
+    .featured-hero { 
+      background: linear-gradient(180deg,#000000cc 20%, #4f4f4f 120%);
+      color: #fff; border-radius: 18px; padding: 18px 16px; 
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .featured-title {margin: 0; letter-spacing: .03em; }
+    .role-pill { display:inline-block; padding:4px 10px; border-radius:999px; font-size:.82em; font-weight:700; background:#2b2b2b; color:#f6c62e; margin-left:8px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .grid { grid-template-columns: 420px 1fr; } }
+
+    .card-like { background:#383838; border-radius:16px; box-shadow:0 1px 10px #00000022; padding:16px; }
+    .profile-face { display:flex; align-items:center; gap:14px; }
+    .profile-face img { width:96px; height:96px; border-radius:50%; background:#111; object-fit:cover; }
+    .muted { color:#666; }
+    .platform-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;align-items: center; }
+    .platform-badges span { background:#5e5e5e; border-radius:999px; padding:4px 10px; font-size:.85em; }
+    .badges-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; align-items:center; }
+    .platform-chip {margin: auto;}
+    .cta-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .btn {
+      display:inline-block; padding:10px 16px; border-radius:10px; font-weight:700; text-decoration:none; cursor:pointer; border:none;
+      background:#3100d2; color:#fff; box-shadow:0 1px 6px #c2c2ff;
+    }
+    .btn.secondary { background:#930edb; box-shadow:0 1px 6px #ffc2e5; }
+    
+    .mini-list { display:grid; gap:10px; }
+    .mini-item { display:flex; align-items:center; gap:10px; padding:8px; background:#131313; border-radius:12px; cursor:pointer; }
+    .mini-item img { width:40px; height:40px; border-radius:50%; object-fit:cover; background:#222; }
+    .help-note { font-size:.92em; color:#777; margin-top:8px; }
+
+div.badge-row:nth-child(1) {
+  /* margin-top: 6px; */
+  /* margin-top: 8px; */
+  margin-top: 15px;
+  margin-left: auto;
+}
+
+div.badge-row:nth-child(2) {
+  margin-right: auto;
+}
+
+#cta-offer {
+  margin-right: 2px;
+  margin-left: auto;
+}
+#cta-view {
+  margin-left: 2px;
+  margin-right: auto;
+}
+
+    .empty { text-align:center; padding:28px 14px; color:#ddd; }
+  </style>
+</head>
+<body>
+  <!-- Simple top bar -->
+  <!-- NAVBAR -->
+   <header class="navbar1">
+    <section class="navbar"> 
+     <div class="navii">
+         <h5>  <header>
+            <img src="logos.png" height="70px" style="background-color: #000000;border-radius: 50px;">
+            Sponsor Sorter</header> </h5>
+              <div id="sparkle-overlay" aria-hidden="true"></div>
+
+         <div>
+            <background-img class="navimg" src="navimg.png" alt="">
+            <nav> 
+               <li><a href="index.html">Home</a></li>
+               <li><a href="finder.html">Finder</a></li>
+            </nav>
+            <nav>
+            <li class="navr"><a href="signup.html">Signup</a></li>
+            <li><a href="login.html">Login</a></li>
+         </div>
+   </div> 
+            </ul>
+         </nav>
+         </h5>
+   <p></p>  
+
+ </header>
+
+  <main class="featured-wrap">
+    <!-- Hero -->
+    <section class="featured-hero">
+      <div>
+        <h2 class="featured-title" id="hero-heading" style="font-size:1.5em;">Featured Creator</h2>
+        <div class="muted" id="hero-sub" style="font-size:.98em;">Click “Message/Offer” to work with them.</div>
+      </div>
+      <div class="muted" id="slot-label" title="Featured Slot" style="font-weight:700;">Slot —</div>
+    </section>
+
+    <section class="grid" style="margin-top:14px;">
+      <!-- Left: Profile summary -->
+      <aside class="card-like" id="profile-card">
+        <div class="profile-face">
+          <img id="profile-pic" src="./logos.png" alt="Profile picture"/>
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <h3 id="username" style="margin:0;">@username</h3>
+              <span class="role-pill" id="role-pill">Sponsee</span>
+            </div>
+            <div class="muted" id="location">Location</div>
+          </div>
+        </div>
+
+        <div id="about" style="margin-top:12px; white-space:pre-wrap;"></div>
+
+        <div style="margin-top:12px;">
+          <strong>Company:</strong>
+          <span id="company">—</span>
+        </div>
+
+        <div style="margin-top:12px;">
+          <strong>Platforms</strong>
+          <div class="platform-badges" id="platforms"></div>
+        </div>
+
+        <!-- NEW: Badges row -->
+        <div style="margin-top:12px;">
+          <strong>Badges</strong>
+          <div id="badges" class="badges-row" aria-live="polite"></div>
+        </div>
+
+        <div class="cta-row">
+          <a id="cta-offer" class="btn">Message / Offer</a>
+          <a id="cta-view" class="btn secondary">View in Finder</a>
+        </div>
+
+        <div class="help-note">
+          You’re viewing a public profile preview. For full details and messaging, create a free account.
+        </div>
+      </aside>
+
+      <!-- Right: other featured + safety -->
+      <section class="card-like">
+        <h3 style="margin-top:0;">Other Featured Creators</h3>
+        <div id="other-featured" class="mini-list"></div>
+        <div class="help-note">Click any card to load their spotlight without leaving this page.</div>
+
+        <hr style="margin:18px 0;opacity:.25;">
+        <h4 style="margin:0 0 6px 0;">Safety & Moderation</h4>
+        <div class="help-note">
+          We verify creators via OAuth and human review. See something off?
+          <a href="./contact.html">Report it</a>.
+        </div>
+      </section>
+    </section>
+
+    <!-- Empty fallback -->
+    <section id="empty-state" class="empty" style="display:none;">
+      No creators are featured right now. <br>Want the spotlight? <a href="./signup.html">Get featured</a>.
+    </section>
+  </main>
+
+  <!-- FOOTER (matches your site) -->
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul>
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
+        <li><a href="./blog.html">Blog</a></li>
+        <li><a href="./forum.html">Forum</a></li>
+        <li><a href="./stats.html">Stats</a></li>
+      </ul>
+    </div>
+    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+      Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+    </div>
+  </footer>
+
+  <!-- JS: load supabase, then badges.js (global), then the page module -->
+  <script type="module" src="./js/supabaseClient.js"></script>
+  <script type="module" src="./js/badges.js"></script>
+  <script type="module" src="./js/featuredPage.js"></script>
+</body>
+</html>
