@@ -19,16 +19,17 @@ function timeAgo(dateString) {
 }
 
 const staticLines = [
-  "Over $500,000 paid out to creators",
+  "Paid out to creators",
   "4.9/5 average user rating ⭐️⭐️⭐️⭐️⭐️",
   "Brands are searching for creators right now!",
   "Sponsor Sorter – No bots. No spam. Just real connections.",
   "100% escrow protection for every campaign",
   "New! Invite friends—both get a free month!",
-  "Every offer is reviewed for safety and trust",
+  "Every offer is reviewed by FamBot for safety and trust",
   "Our support team is available 24/7 for your success",
   "Join the fastest-growing sponsorship community!",
   "Stripe payments supported for all users.",
+  "Paypal Payments supported for all users.",
   "Our support team is available 24/7 for your success",
   "Review spotlight: 'The safest platform for collabs.'",
   "Tom matched with 2 brands in his first week!",
@@ -39,7 +40,7 @@ const staticLines = [
   "Join creators earning on Sponsor Sorter",
   "New! Invite friends—both get a free month!",
   "Brand offer: Looking for podcasters, $1,500 budget",
-  "12 public offers posted in the last hour!",
+  "more public offers posted every hour!",
   "Creator testimonial: 'Escrow made me feel safe!'"
 ];
 
