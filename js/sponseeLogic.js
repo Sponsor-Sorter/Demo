@@ -1224,8 +1224,7 @@ async function loadTikTokStats() {
       headers: { 'Authorization': `Bearer ${jwt}` }
     });
     const payload = await resp.json();
-    // For visibility while we sort scopes / API quirks:
-    console.debug('TikTok payload:', payload);
+   
 
     if (!resp.ok || !payload?.ok) throw new Error(payload?.error || 'Failed');
 
@@ -1415,3 +1414,4 @@ window.addEventListener('message', (event) => {
     }
   }
 });
+
