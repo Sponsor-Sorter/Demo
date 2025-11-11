@@ -5,6 +5,8 @@ import { injectUserBadge } from './badges.js';
 /** CONFIG **/
 const STORAGE_LOGOS = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/';
 const FALLBACK_IMG = './logos.png';
+// Base for public dashboard URL (see public shareable dashboard thread)
+const PUBLIC_DASHBOARD_BASE = './u/index.html?u=';
 
 /** DOM helpers **/
 const $ = (id) => document.getElementById(id);
@@ -22,6 +24,8 @@ const platformsEl = $('platforms');
 
 const ctaOffer    = $('cta-offer');
 const ctaView     = $('cta-view');
+// Optional placeholder in HTML; if absent, we’ll create it next to the other CTAs
+const ctaPublic   = $('cta-public');
 
 const otherWrap   = $('other-featured');
 const emptyState  = $('empty-state');
@@ -279,6 +283,60 @@ async function fetchUserPublic(userId) {
   return user;
 }
 
+// Pull the full row once (defensive) to detect a variety of flag names without schema coupling
+async function fetchUserPublicFlags(userId) {
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('*')
+    .eq('user_id', userId)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.warn('users_extended_data flags error:', error);
+    return null;
+  }
+  return data || null;
+}
+
+function hasPublicDashboardFlag(row) {
+  if (!row || typeof row !== 'object') return false;
+
+  // Common/likely flag names we support
+  const candidates = [
+    'public_dashboard_enabled',
+    'public_profile_enabled',
+    'public_share_enabled',
+    'public_enabled',
+    'public_page_enabled',
+    'public_dashboard',
+    'share_profile_publicly',
+    'public_profile',
+    'public_page'
+  ];
+
+  for (const key of candidates) {
+    if (key in row) {
+      const v = row[key];
+      if (typeof v === 'boolean') return v;
+      if (typeof v === 'number') return v === 1;
+      if (typeof v === 'string') {
+        const s = v.trim().toLowerCase();
+        if (['true', 'yes', '1', 'enabled', 'on'].includes(s)) return true;
+      }
+    }
+  }
+
+  // Optional nested structures some implementations use
+  const nested = row.privacy || row.public_settings || null;
+  if (nested && typeof nested === 'object') {
+    const nv = nested.public_dashboard ?? nested.public_profile ?? nested.enabled;
+    return !!nv;
+  }
+
+  return false;
+}
+
 /** Render **/
 function renderUser(user, slot) {
   if (!user) {
@@ -316,6 +374,9 @@ function renderUser(user, slot) {
   const handle   = encodeURIComponent(user.username || '');
   ctaOffer.href  = `./signup.html?intent=message&to=${handle}&redirect=${redirect}`;
   ctaView.href   = `./finder.html?user=${handle}`;
+
+  // NEW: Public Dashboard button (only if enabled in users_extended_data)
+  ensurePublicDashboardCTA(user).catch((e) => console.warn('public dashboard CTA error:', e));
 }
 
 function renderOther(slots, activeSlotIdx) {
@@ -352,6 +413,44 @@ function renderOther(slots, activeSlotIdx) {
       name.textContent = u.username ? `@${u.username}` : `Slot ${s.slot_index}`;
       img.src = imgUrlFromProfilePic(u.profile_pic);
     });
+  }
+}
+
+// Create/show the Public Dashboard CTA if the user has it enabled
+async function ensurePublicDashboardCTA(user) {
+  // Need both a username (slug) and user_id (for flags)
+  if (!user?.user_id || !user?.username) {
+    // Hide if pre-existing element
+    const pre = $('cta-public');
+    if (pre) pre.style.display = 'none';
+    return;
+  }
+
+  const row = await fetchUserPublicFlags(user.user_id);
+  const enabled = hasPublicDashboardFlag(row);
+
+  // Get or create the button
+  let btn = $('cta-public') || ctaPublic;
+  if (!btn) {
+    btn = document.createElement('a');
+    btn.id = 'cta-public';
+    // Try to inherit styling from existing CTA buttons
+    btn.className = (ctaView?.className || ctaOffer?.className || '').trim();
+    btn.textContent = 'Public Dashboard';
+    btn.style.display = 'none';
+    const parent =
+      (ctaView && ctaView.parentNode) ||
+      (ctaOffer && ctaOffer.parentNode) ||
+      profileCard ||
+      document.body;
+    parent.appendChild(btn);
+  }
+
+  if (enabled) {
+    btn.href = `${PUBLIC_DASHBOARD_BASE}${encodeURIComponent(user.username)}`;
+    btn.style.display = '';
+  } else {
+    btn.style.display = 'none';
   }
 }
 
