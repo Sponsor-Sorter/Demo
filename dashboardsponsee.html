@@ -7,10 +7,6 @@
   <title>Sponsee Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <!-- Google Fonts: Cinzel 900 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
 
 <!-- replace the current script tag -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -35,7 +31,6 @@
     <header>
       <img src="./logos.png" alt="Sponsor Sorter logo">
       <span class="brand-title">Sponsor Sorter</span>
-        <div id="sparkle-overlay" aria-hidden="true"></div>
     </header>
   </h5>
 </div>
@@ -134,10 +129,10 @@
           </button>
         </li>
         <li>
-  <button type="button" class="dropdown-item" id="open-premium-settings">
-    Premium
-  </button>
-</li>
+          <button type="button" class="dropdown-item" id="open-premium-settings">
+            Featured Stars 
+          </button>
+        </li>
 
 
 
@@ -1047,6 +1042,41 @@
         Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
       </em>
     </div>
+
+    <!-- Public Dashboard (shareable) -->
+<hr style="margin:14px 0;opacity:.25;">
+<div>
+  <h4 style="margin:6px 0 8px;">Public Dashboard</h4>
+  <p style="margin:0 0 8px;opacity:.85;">
+    When enabled, anyone with your link can view a read-only version of your dashboard:
+    profile, socials, and ratings. Sensitive info (email, phone, wallet) is never shown.
+  </p>
+
+  <!-- Toggle -->
+  <label style="display:flex;align-items:center;gap:10px;margin:6px 0 12px;">
+    <input type="checkbox" id="public-dash-toggle">
+    <span>Enable public, shareable dashboard</span>
+  </label>
+
+  <!-- Slug editor + share link (only visible when enabled) -->
+  <div id="public-dash-row" style="display:none;">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <label for="public-dash-slug" style="min-width:80px;">Your link</label>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span style="opacity:.8;">https://sponsorsorter.com/u/</span>
+        <input id="public-dash-slug" type="text" style="width:180px;" placeholder="your-handle">
+        <button id="public-dash-save">Save</button>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <a id="public-dash-link" href="#" target="_blank" rel="noopener">Open public page</a>
+      <button id="public-dash-copy">Copy link</button>
+      <span id="public-dash-status" style="opacity:.85;"></span>
+    </div>
+  </div>
+</div>
+
   </div>
 </div>
 
