@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Public Profile — Sponsor Sorter</title>
+
+  <!-- Brand + base styles (your existing site CSS) -->
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
+
+  <meta property="og:title" content="Public Profile — Sponsor Sorter">
+  <meta property="og:description" content="Read-only, shareable dashboard page." />
+  <meta property="og:image" content="../logos.png" />
+  <meta name="twitter:title" content="Public Profile — Sponsor Sorter" />
+  <meta name="twitter:description" content="Read-only, shareable dashboard page." />
+
+  <style>
+    /* Small layer to ensure a clean public look without wallet/payout controls */
+    .public-note { color:#c7c7c7; font-size:0.95em; margin:8px 0 0 0; }
+    .muted { color:#9aa3af; }
+    .pill { display:none; padding:3px 8px; border-radius:999px; background:#243b8a; color:#fff; font-size:12px; margin-right:6px; }
+    .handles { display:flex; flex-wrap:wrap; gap:8px; }
+    .handles a.handle, .handles span.handle { padding:6px 10px; border-radius:10px; background:#212430; color:#dbe7ff; text-decoration:none; font-size:0.95em; border:1px solid #2b3350;margin: auto;padding: 1px; }
+    .stars { font-size:1.2em; letter-spacing:1px; }
+    .review { padding:10px 12px; background:#171923; border:1px solid #2b3350; border-radius:12px; margin-bottom:10px; }
+    .wrap { max-width:1100px; margin:22px auto; padding:0 14px; }
+    .profile-card {
+  background: #222;
+  border: 2px solid;
+  background: linear-gradient(#000000, #212121) padding-box, linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box;
+  border: 3px solid transparent;
+  border-radius: 18px;
+  padding: 22px 26px;
+  margin-bottom: 26px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 18px 0 rgba(49, 16, 210, 0.06);
+  transition: box-shadow 0.18s;
+}
+    .recent-deals, .Archived-deals {border-color: white;border-left-width: 1px;border-right-width: 1px;}
+    .profile-header { display:flex; gap:18px; align-items:flex-start; }
+    .profile-picture img { width:120px !important; height:120px !important; border-radius:50%; object-fit:cover; background:#222; }
+    .profile-picture .initial { width:120px; height:120px; display:grid; place-items:center; border-radius:50%; background:#222; font-size:1.6em; color:#e6e6e6; }
+    .profile-info p { margin:3px 0; }
+    .cta-row a { display:inline-block; margin-right:8px; margin-top:6px; padding:9px 14px; border-radius:10px; background:#233b90; color:#fff; text-decoration:none; }
+    hr.rule { border:0; border-top:1px solid #2b3350; margin:18px 0; opacity:.65;}
+    .section { margin:16px 0; }
+    .section legend, .section h3 { margin:0 0 10px 0; }
+    .err { color:#ff6b6b; text-align:center; margin-top:40px; }
+    /* Stars: gold for filled, grey for empty */
+.stars { display:inline-flex; gap:2px; }
+.stars .star.full  { color:#F6C62E; }   /* brand gold */
+.stars .star.empty { color:#666; }      /* muted grey */
+.stars .star { font-size:1.2em; line-height:1; }
+
+/* Put CTAs under avatar and center them */
+
+.profile-picture .cta-row a { min-width:120px; text-align:center; }
+
+/* Inline | http://127.0.0.1:5500/public/u/index.html?u=fitstyle */
+
+.profile-picture .cta-row a {
+  /* min-width: 120px; */
+  min-width: 127px;
+  padding: 5px;
+  margin: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+
+.cta-row {
+  width: 210px;
+}
+
+  </style>
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar">
+    <div class="navii">
+      <h5>
+        <header>
+          <img src="../logos.png" alt="Sponsor Sorter logo">
+          <span class="brand-title">Sponsor Sorter</span>
+        </header>
+      </h5>
+    </div>
+    <background-img class="navimg" src="../navimg.png" alt=""></background-img>
+    <nav>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../finder.html">Finder</a></li>
+    </nav>
+    <nav class="nav">
+      <li class="navr"><a href="../signup.html">Signup</a></li>
+      <li><a href="../login.html">Login</a></li>
+    </nav>
+  </section>
+</header>
+
+<section class="dashboard">
+  <div class="wrap">
+
+    <!-- PROFILE -->
+    <section class="userprofile">
+      <fieldset class="profile-card">
+        <div class="profile-header">
+          <div class="profile-picture">
+            <div id="avatar" class="initial">S</div>
+            <p class="public-note">Read-only public page.</p>
+          </div>
+          <div class="profile-info" style="flex:1;">
+            <h2 style="margin:0 0 6px 0;">
+              <span id="role-pill" class="pill"></span>
+              <span id="loc-pill" class="pill"></span>
+              <span id="reviews-pill" class="pill"></span>
+            </h2>
+
+            <div class="muted" id="brand-sub" style="margin:0 0 8px 0;">Public profile</div>
+
+            <!-- mirror your internal dashboard IDs so rendering JS can reuse logic -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <p>Username: <span id="user-username">—</span></p>
+              <p>Title: <span id="user-gender">—</span></p>
+              <p>Location: <span id="user-location">—</span></p>
+              <p>Content Type: <span id="contenttype">—</span></p>
+            </div>
+
+            <div style="margin:8px 0;">
+              <strong>Overall Rating:</strong>
+              <span id="stars" class="stars">☆☆☆☆☆</span>
+              <span id="avg" class="muted" style="margin-left:6px;">—</span>
+            </div>
+                
+            <div class="section">
+              <div style="margin:6px 0 4px 0;"><strong>Linked Platforms</strong></div>
+              <div id="handles" class="handles"></div>
+            </div>
+
+            <div class="cta-row">
+              <a id="cta-offer" href="../login.html">Send Offer</a>
+              <a id="cta-message" href="../login.html">Send Message</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats like main dashboard -->
+<section class="kpi-row" style="display:grid;grid-template-columns:repeat(3, minmax(140px, 1fr));gap:12px;max-width:900px;margin:12px auto 18px;">
+  <div class="card"><h3>Total Offers</h3><p id="kpi-total">—</p></div>
+  <div class="card"><h3>Active</h3><p id="kpi-active">—</p></div>
+  <div class="card"><h3>Completed</h3><p id="kpi-completed">—</p></div>
+</section>
+
+<!-- Recent deals -->
+<fieldset class="recent-deals" style="max-width:980px;margin:0 auto 16px;">
+  <legend><h2>Recent Sponsorship Deals</h2></legend>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sponsee</th><th>Status</th><th>Amount</th><th>Offer Date</th><th>Deadline</th><th>Live</th>
+      </tr>
+    </thead>
+    <tbody id="recent-deals-body"></tbody>
+  </table>
+</fieldset>
+
+<!-- Sponsorship history (completed/archived) -->
+<fieldset class="Archived-deals" style="max-width:980px;margin:0 auto 20px;">
+  <legend><h2>Sponsorship History</h2></legend>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sponsee</th><th>Amount</th><th>Offer Date</th><th>Live</th><th>Deadline</th><th>Sponsor → Sponsee</th><th>Sponsee → Sponsor</th>
+      </tr>
+    </thead>
+    <tbody id="history-body"></tbody>
+  </table>
+</fieldset>
+
+
+        <hr class="rule">
+
+        <div class="section">
+          <div style="margin:6px 0 8px 0;"><strong>Description</strong></div>
+          <div id="about" style="color:#dbe7ff;">—</div>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- LINKED ACCOUNTS (read-only) -->
+    <fieldset class="section profile-card">
+      <legend>Linked Accounts</legend>
+      <div id="linked-accounts" class="handles"></div>
+      <div class="help-block" style="margin-top:8px;">
+        <em>
+          This section shows any social handles the user has chosen to display publicly. OAuth-only data (tokens, emails, phone, wallet) is never exposed.
+        </em>
+      </div>
+    </fieldset>
+
+    <!-- REVIEWS -->
+    <fieldset class="section profile-card">
+      <legend>Recent Reviews</legend>
+      <div id="reviews"></div>
+    </fieldset>
+
+  </div>
+</section>
+
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="../help.html">Help</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="../privacy.html">Privacy Policy</a></li>
+      <li><a href="../terms.html">Terms of Service</a></li>
+      <li><a href="../reviews.html">Reviews</a></li>
+      <li><a href="../blog.html">Blog</a></li>
+      <li><a href="../forum.html">Forum</a></li>
+      <li><a href="../stats.html">Stats</a></li>
+    </ul>
+  </div>
+  <img src="../Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+</footer>
+
+<!-- Public dashboard logic -->
+<script type="module" src="../js/publicDashboard.js"></script>
+</body>
+</html>
