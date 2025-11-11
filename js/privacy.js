@@ -83,7 +83,7 @@ const elMsg    = $('public-dash-status');
 
 // If the UI isn't present, skip the rest.
 if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
-  const PUBLIC_BASE = `${location.origin}/u/`;
+  const PUBLIC_BASE = `${location.origin}/u/index.html?u=`;
 
   const setMsg = (text, ok = true) => {
     elMsg.textContent = text || '';
@@ -275,3 +275,4 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
   // Initial load
   loadPublicState();
 }
+
