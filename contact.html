@@ -1,133 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find and view active users, discover sponsorship opportunities, and connect with influencers and creators.">
-    <title>SponsorFinder - Sponsor Sorter</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="main.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Contact Sponsor Sorter — questions, feedback, and support." />
+  <title>Contact — Sponsor Sorter</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    /* lightweight, in-case styles.css is minimal */
+    .contact-page{max-width:1000px;margin:40px auto;padding:0 16px}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .contact-info,.contact-form,.about-ceo,.social-followers{background:#111; border:1px solid #222; border-radius:12px; padding:16px}
+    .contact-form form{display:grid; gap:10px}
+    .contact-form input,.contact-form textarea{padding:10px;border:1px solid #333;border-radius:8px;background:#0b0b0b;color:#eee}
+    .contact-form button{padding:12px 16px;border:0;border-radius:10px;background:#4061b3;color:#fff;cursor:pointer}
+    .contact-form button[disabled]{opacity:.6;cursor:not-allowed}
+    .form-response{min-height:1.5em;font-size:.95em}
+    .footercomplete{margin-top:60px;text-align:center;padding:24px 12px;border-top:1px solid #111;background:#0b0b0b}
+    .social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .social-box{background:#0b0b0b;border:1px solid #222;border-radius:10px;padding:12px;text-align:center}
+    .hidden-hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+  </style>
 </head>
 <body>
-    <!-- Navbar and Header -->
-    <header class="navbar1">
-        <section class="navbar"> 
-            <div class="navii">
-                <h5><header>Sponsor Sorter</header></h5>
-                <div>
-                    <background-img class="navimg" src="navimg.png" alt="">
-                    <nav> 
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="finder.html">Finder</a></li>
-                    </nav>
-                    <li class="navr"><a href="signup.html">Signup</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </div>
-            </div> 
-        </section>
-    </header>
+    <!-- NAVBAR -->
+   <header class="navbar1">
+    <section class="navbar"> 
+     <div class="navii">
+         <h5>  <header>Sponsor Sorter</header> </h5>
+         <div>
+            <background-img class="navimg" src="navimg.png" alt="">
+            <nav> 
+               <li><a href="index.html">Home</a></li>
+               <li><a href="finder.html">Finder</a></li>
+            </nav>
+            <nav>
+            <li class="navr"><a href="signup.html">Signup</a></li>
+            <li><a href="login.html">Login</a></li>
+         </div>
+   </div> 
+            </ul>
+         </nav>
+         </h5>
+   <p></p>  
 
-    <section class="contact-page">
+ </header>
 
-        <!-- CEO Intro & Company Story -->
-        <div class="about-ceo">
-            <h1>About Sponsor Sorter</h1>
-            <p>
-                Founded by visionary entrepreneur <strong>Johnathan Buschman</strong> in 2021, Sponsor Sorter was born out of a simple idea:
-                to empower creators and brands to connect more seamlessly and transparently. What started as a side project in a shared co-working
-                space has now grown into a thriving sponsorship ecosystem powering <strong>thousands of deals</strong> every month.
-            </p>
-            <p>
-                Johnathan, a former creator himself, understood the pain points of negotiating deals, chasing payments, and building trust with sponsors.
-                Sponsor Sorter solves that with verified profiles, real-time analytics, and automation tools that let creators focus on what they do best — creating.
-            </p>
-            <p>
-                Today, Sponsor Sorter stands as a beacon for digital talent and brand partnerships, trusted by industry leaders and emerging influencers alike.
-            </p>
-        </div>
-    
-        <!-- Contact Information -->
-        <fieldset class="contact-fieldset">
-            <legend>📞 Contact Us</legend>
-    
-            <div class="contact-grid">
-    
-                <!-- Email / Phone -->
-                <div class="contact-info">
-                    <h3>Customer Support</h3>
-                    <p><strong>Email:</strong> <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a></p>
-                    <p><strong>Phone:</strong> +1 (800) 555-0123</p>
-                    <p><strong>Hours:</strong> Mon–Fri, 9am–6pm EST</p>
-                </div>
-    
-                <!-- Office Info -->
-                <div class="contact-info">
-                    <h3>Our Headquarters</h3>
-                    <p>123 Influence Blvd</p>
-                    <p>Suite 404</p>
-                    <p>Los Angeles, CA 90001</p>
-                </div>
-
-            </fieldset>
-            <fieldset>
-    
-       <!-- Contact Form -->
-       <div class="contact-form">
-        <h3>Send Us a Message</h3>
-        <form id="supportForm">
-            <input type="text" id="name" name="name" placeholder="Your Name" required>
-            <input type="email" id="email" name="email" placeholder="Your Email" required>
-            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Send</button>
-            <p id="form-response" class="form-response"></p>
-        </form>
+  <section class="contact-page">
+    <!-- CEO Intro & Company Story -->
+    <div class="about-ceo">
+      <h1>About Sponsor Sorter</h1>
+      <p>
+        Sponsor Sorter empowers creators and brands to connect transparently with verified profiles,
+        real-time analytics, and streamlined deal tools.
+      </p>
+      <p>
+        If you have questions, feedback, or need a hand—drop us a line below and we’ll get back to you.
+      </p>
     </div>
-            </fieldset>
 
-            <fieldset class="followus">
+    <fieldset class="contact-fieldset" style="margin-top:18px">
+      <legend>📞 Contact Us</legend>
 
-    <!-- Social Media Followers -->
-    <div class="social-followers">
+      <div class="contact-grid">
+        <!-- Email / Phone -->
+        <div class="contact-info">
+          <h3>Customer Support</h3>
+          <p><strong>Email:</strong> <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a></p>
+          <p><strong>Hours:</strong> Mon–Fri, 9am–6pm (AET)</p>
+        </div>
+
+        <!-- Office Info (optional placeholder) -->
+        <div class="contact-info">
+          <h3>Our Headquarters</h3>
+          <p>Melbourne, Australia</p>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Contact Form -->
+    <fieldset style="margin-top:18px">
+      <div class="contact-form">
+        <h3>Send Us a Message</h3>
+        <form id="supportForm" novalidate>
+          <!-- Honeypot (basic) -->
+          <input type="text" id="website" name="website" class="hidden-hp" autocomplete="off" tabindex="-1" aria-hidden="true" />
+
+          <input type="text" id="name" name="name" placeholder="Your Name" required />
+          <input type="email" id="email" name="email" placeholder="Your Email" required />
+          <textarea id="message" name="message" placeholder="Your Message" rows="6" required></textarea>
+
+          <button id="submitBtn" type="submit">Send</button>
+          <p id="form-response" class="form-response" aria-live="polite"></p>
+        </form>
+      </div>
+    </fieldset>
+
+    <!-- Social Media Followers (static placeholders) -->
+    <fieldset class="followus" style="margin-top:18px">
+      <div class="social-followers">
         <h3 class="follow">Follow Us</h3>
         <div class="social-grid">
-            <div class="social-box">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/instagram.svg" alt="Instagram Logo" style="width:30px;">
-
-                <p>Instagram</p>
-                <span id="insta-followers">7,899</span>
-            </div>
-            <div class="social-box">
-                <img src="twitterlogo.png" alt="Twitter">
-                <p>Twitter</p>
-                <span id="twitter-followers">3,455</span>
-            </div>
-            <div class="social-box">
-                <img src="youtubelogo.png" alt="YouTube">
-                <p>YouTube</p>
-                <span id="youtube-followers">6,787</span>
-            </div>
+          <div class="social-box">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/instagram.svg" alt="Instagram" style="width:30px" />
+            <p>Instagram</p>
+            <span id="insta-followers">—</span>
+          </div>
+          <div class="social-box">
+            <img src="./twitterlogo.png" alt="Twitter/X" style="width:30px" />
+            <p>Twitter/X</p>
+            <span id="twitter-followers">—</span>
+          </div>
+          <div class="social-box">
+            <img src="./youtubelogo.png" alt="YouTube" style="width:30px" />
+            <p>YouTube</p>
+            <span id="youtube-followers">—</span>
+          </div>
         </div>
+      </div>
+    </fieldset>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;list-style:none;padding:0;margin:0">
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
+        <li><a href="./blog.html">Blog</a></li>
+        <li><a href="./forum.html">Forum</a></li>
+        <li><a href="./stats.html">Stats</a></li>
+      </ul>
     </div>
-</div>
-</fieldset>
-</section>
+    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br />
+      Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> |
+      Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+    </div>
+  </footer>
 
+  <!-- Inline JS (module) -->
+  <script type="module">
+    import { supabase } from "./js/supabaseClient.js";
 
-    <!-- Footer Section -->
-    <footer class="footercomplete">
-        <div class="footer-branding">
-            <div class="footer-text">
-                <ul>
-                    <li><a href="/Demo/help.html">Help</a></li>
-                    <li><a href="/Demo/contact.html">Contact</a></li>
-                    <li><a href="/Demo/privacy.html">Privacy Policy</a></li>
-                    <li><a href="/Demo/terms.html">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="">
-    </footer>
+    const form = document.getElementById("supportForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const resp = document.getElementById("form-response");
 
+    // Helpers
+    const setStatus = (text, isError = false) => {
+      resp.textContent = text || "";
+      resp.style.color = isError ? "#ff6b6b" : "#8ef58e";
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus("");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+
+      // Honeypot
+      const hp = (document.getElementById("website") || {}).value || "";
+      if (hp.trim() !== "") {
+        // Pretend success for bots
+        setStatus("Thanks! We'll be in touch shortly.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send";
+        form.reset();
+        return;
+      }
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !email || !message) {
+        setStatus("Please fill out all fields.", true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send";
+        return;
+      }
+
+      try {
+        // Try to fetch current user (may be null if not logged in)
+        const { data: userData, error: userErr } = await supabase.auth.getUser();
+        if (userErr) {
+          console.warn("auth.getUser error:", userErr.message);
+        }
+        const user_id = userData?.user?.id ?? null;
+
+        // Build metadata
+        const metadata = {
+          ua: navigator.userAgent,
+          url: location.href,
+          referrer: document.referrer || null,
+          ts: new Date().toISOString(),
+        };
+
+        // Insert row
+        const { error: insertErr } = await supabase
+          .from("contact_me")
+          .insert([{ user_id, name, email, message, status: "new", metadata }]);
+
+        if (insertErr) {
+          console.error(insertErr);
+          // Common cause: RLS denies insert. Surface a friendly message.
+          setStatus(
+            "We couldn't submit your message just now. If you're signed in, please try again; otherwise, try logging in first.",
+            true
+          );
+        } else {
+          setStatus("Thanks! Your message has been received.");
+          form.reset();
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus("An unexpected error occurred. Please try again.", true);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send";
+      }
+    });
+  </script>
 </body>
 </html>
-
