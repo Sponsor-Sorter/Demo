@@ -1,9 +1,13 @@
 /* Load Cinzel 900 for every page */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap');
 
-:root { --brand-font: "Cinzel", serif; }
+/* Shared */
+:root { 
+  --brand-font: "Cinzel", serif; 
+  --logo-size: 70px;
+}
 
-/* Brand wordmark */
+/* Normal pages that already have <span class="brand-title"> */
 header .brand-title {
   font-family: var(--brand-font);
   font-weight: 900;
@@ -11,6 +15,34 @@ header .brand-title {
   line-height: 1.05;
   letter-spacing: .6px;
   color: #fff;
+}
+
+/* Pages with just: <h5><header>Sponsor Sorter</header></h5> */
+.navii h5 > header {
+  display: inline-flex;              /* put logo and text on one line */
+  align-items: center;
+  gap: 12px;
+  font-family: var(--brand-font);
+  font-weight: 900;
+  font-optical-sizing: auto;
+  line-height: 1.05;
+  letter-spacing: .6px;
+  color: #fff;
+}
+
+/* Auto-add the logo before the text */
+.navii h5 > header::before {
+  content: "";
+  width: var(--logo-size);
+  height: var(--logo-size);
+  background: url("./logos.png") center/cover no-repeat #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Small screens */
+@media (max-width: 520px) {
+  :root { --logo-size: 52px; }
 }
 
 
