@@ -1968,16 +1968,85 @@ const FEATURED_STAR_PRICE_ID = 'price_1SRAl62eA1800fRN56wtcQbH';
 const FEATURED_STAR_DISPLAY = {
   title: 'Featured Star',
   blurb: 'Buy a sparkle placement on the homepage that links visitors to your public spotlight.',
-  // purely visual; the price comes from Stripe Price ID in checkout
-  displayPrice: '$10 one-time' 
+  displayPrice: '$10 one-time for 1 month'
 };
 
-// --- Utility: robust functions URL + JWT (same style as your other blocks) ---
-function prem_functionsBase(){ 
-  return (supabase && supabase.functionsUrl) || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; 
+// --- Utility: Functions URL + JWT ---
+function prem_functionsBase(){
+  return (supabase && supabase.functionsUrl) || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
 }
-async function prem_getJwt(){ 
-  return (await supabase.auth.getSession()).data.session?.access_token || ''; 
+async function prem_getJwt(){
+  return (await supabase.auth.getSession()).data.session?.access_token || '';
+}
+function fmtDate(v){
+  try { return new Date(v).toLocaleDateString(); } catch { return '—'; }
+}
+function slotStatus(starts_at, ends_at){
+  const now = Date.now();
+  const s = starts_at ? Date.parse(starts_at) : 0;
+  const e = ends_at ? Date.parse(ends_at) : 0;
+  if (s && now < s) return 'Scheduled';
+  if (e && now > e) return 'Expired';
+  return 'Active';
+}
+
+// --- Render user's existing featured slots ---
+async function loadMyFeaturedSlots(){
+  const list = document.getElementById('premium-slots');
+  const empty = document.getElementById('premium-slots-empty');
+  if (!list) return;
+
+  list.innerHTML = '<div style="color:#9fc2ff;">Loading your placements…</div>';
+  empty.style.display = 'none';
+
+  const { data: userResp } = await supabase.auth.getUser();
+  const user = userResp?.user;
+  if (!user) {
+    list.innerHTML = `
+      <div style="color:#bbb;">
+        You’re not signed in. <a href="./login.html" style="color:#ffd062;text-decoration:underline;">Log in</a> to see your placements.
+      </div>`;
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('featured_slots')
+    .select('slot_index,label,starts_at,ends_at')
+    .eq('user_id', user.id)
+    .order('starts_at', { ascending: false })
+    .limit(50);
+
+  if (error) {
+    list.innerHTML = `<div style="color:#ff8a8a;">Could not load placements.</div>`;
+    return;
+  }
+
+  if (!data?.length) {
+    list.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+
+  list.innerHTML = '';
+  for (const row of data) {
+    const st = slotStatus(row.starts_at, row.ends_at);
+    const viewHref = `./featured.html?slot=${row.slot_index}`;
+    const item = document.createElement('div');
+    item.className = 'mini-item';
+    item.style.margin = '6px 0';
+    item.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+        <div>
+          <div style="font-weight:800;color:#fff;">Slot #${row.slot_index} ${row.label ? `— ${row.label}` : ''}</div>
+          <div style="color:#bbb;font-size:.92em;">
+            ${fmtDate(row.starts_at)} → ${fmtDate(row.ends_at)} • <span style="color:${st==='Active' ? '#7CFFA1' : st==='Scheduled' ? '#FFD062' : '#999'}">${st}</span>
+          </div>
+        </div>
+        <a href="${viewHref}" style="background:#ffd062;color:#222;padding:6px 10px;border-radius:10px;font-weight:800;text-decoration:none;">View</a>
+      </div>
+    `;
+    list.appendChild(item);
+  }
 }
 
 // --- Ensure we have the modal markup only once ---
@@ -1994,10 +2063,10 @@ function ensurePremiumModal(){
 
   modal.innerHTML = `
     <div class="modal-content" style="
-      background:#111; color:#eee; max-width:520px; width:92vw;
+      background:#111; color:#eee; max-width:620px; width:92vw;max-height:none;
       padding:28px 24px 20px 24px; border-radius:16px; box-shadow:0 8px 30px #0008; position:relative;">
       <button id="close-premium-modal" aria-label="Close" style="
-        position:absolute; right:16px; top:12px; font-size:1.4em; background:none; border:none; color:red; cursor:pointer;box-shadow:none;">&times;</button>
+        position:absolute; right:16px; top:12px; font-size:1.4em; background:none; border:none; color:red; cursor:pointer; box-shadow:none;">&times;</button>
 
       <h3 style="margin:0 0 8px 0; letter-spacing:.02em;">${FEATURED_STAR_DISPLAY.title}</h3>
       <div style="margin-bottom:10px; color:#bbb;">${FEATURED_STAR_DISPLAY.blurb}</div>
@@ -2013,91 +2082,98 @@ function ensurePremiumModal(){
           background:#ffd062; color:#222; border:none; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:800;">
           Buy Featured Star
         </button>
+        <button id="premium-refresh" class="btn btn-secondary" style="
+          background:#333; color:#eee; border:none; padding:10px 16px; border-radius:10px; cursor:pointer;">
+          Refresh
+        </button>
         <button id="premium-cancel" class="btn btn-secondary" style="
           background:#333; color:#eee; border:none; padding:10px 16px; border-radius:10px; cursor:pointer;">
-          Not now
+          Close
         </button>
       </div>
 
       <div id="premium-status" style="margin-top:12px; color:#7fbaff; min-height:1.2em;"></div>
-      <div style="margin-top:12px; color:#888; font-size:.95em;">
-        After checkout, you’ll be redirected back here. We’ll email you with scheduling/slot details.
-      </div>
+
+      <hr style="opacity:.15;margin:16px 0;">
+      <div style="font-weight:800;margin-bottom:6px;">Your Featured Placements</div>
+      <div id="premium-slots" class="mini-list" style="min-height:24px;"></div>
+      <div id="premium-slots-empty" style="display:none;color:#bbb;">No placements yet.</div>
     </div>
   `;
   document.body.appendChild(modal);
 
-  // Close handlers
+  // Close + refresh
   document.getElementById('close-premium-modal')?.addEventListener('click', () => closeModal('premium-modal'));
   document.getElementById('premium-cancel')?.addEventListener('click', () => closeModal('premium-modal'));
+  document.getElementById('premium-refresh')?.addEventListener('click', loadMyFeaturedSlots);
 
-  // Buy button (REPLACE this whole handler)
-document.getElementById('buy-featured-star')?.addEventListener('click', async () => {
-  const status = document.getElementById('premium-status');
-  try {
-    status.textContent = 'Creating checkout…';
-
-    // Absolute URLs relative to current file (works from /public/* too)
-    const successUrl = new URL('./settings.html?premium=success', location.href).href;
-    const cancelUrl  = new URL('./settings.html?premium=cancel',  location.href).href;
-
-    const payload = {
-      mode: 'payment',
-      price_id: FEATURED_STAR_PRICE_ID,
-      quantity: 1,
-      amount: 5,
-      metadata: { product: 'featured_star' },
-      success_url: successUrl,
-      cancel_url: cancelUrl
-    };
-
-    let checkoutUrl;
-
-    // 1) Try supabase.functions.invoke, but gracefully fall back if its base URL isn't set
-    let invoked = false;
+  // Buy button
+  document.getElementById('buy-featured-star')?.addEventListener('click', async () => {
+    const status = document.getElementById('premium-status');
     try {
-      if (supabase.functions?.invoke) {
-        const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
-        if (error) throw error;
-        checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
-        invoked = true;
+      status.textContent = 'Creating checkout…';
+
+      const successUrl = new URL('./payment-success.html?premium=success', location.href).href;
+      const cancelUrl  = new URL('./settings.html?premium=cancel',  location.href).href;
+
+      const payload = {
+        mode: 'payment',
+        price_id: FEATURED_STAR_PRICE_ID,
+        quantity: 1,
+        amount: 10, // your Edge Function requires amount; keep in sync with display
+        metadata: { product: 'featured_star' },
+        success_url: successUrl,
+        cancel_url: cancelUrl
+      };
+
+      let checkoutUrl;
+
+      // Try invoke first
+      try {
+        if (supabase.functions?.invoke) {
+          const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
+          if (error) throw error;
+          checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
+        }
+      } catch (e) {
+        console.warn('invoke failed; falling back to fetch()', e);
       }
-    } catch (e) {
-      console.warn('invoke failed; falling back to fetch()', e);
+
+      // Fallback: direct fetch
+      if (!checkoutUrl) {
+        const jwt = await prem_getJwt();
+        const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}) },
+          body: JSON.stringify(payload)
+        });
+        const json = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
+        checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
+      }
+
+      if (!checkoutUrl) throw new Error('No checkout URL returned');
+
+      // Mark intent locally (optional)
+      localStorage.setItem('premiumCheckout', 'featured_star');
+
+      status.textContent = 'Redirecting to Stripe…';
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      console.error(err);
+      if (status) status.textContent = 'Could not create checkout. Please try again.';
+      alert('Sorry, we could not start checkout. If this keeps happening, contact support.');
     }
-
-    // 2) Fallback: direct fetch to your Functions endpoint
-    if (!checkoutUrl) {
-      const jwt = (await supabase.auth.getSession()).data.session?.access_token || '';
-      const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}) },
-        body: JSON.stringify(payload),
-      });
-      const json = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
-      checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
-    }
-
-    if (!checkoutUrl) throw new Error('No checkout URL returned');
-
-    status.textContent = 'Redirecting to Stripe…';
-    window.location.href = checkoutUrl;
-
-  } catch (err) {
-    console.error(err);
-    if (status) status.textContent = 'Could not create checkout. Please try again.';
-    alert('Sorry, we could not start checkout. If this keeps happening, contact support.');
-  }
-});
-
+  });
 }
 
 // --- Wire dropdown item ---
-document.getElementById('open-premium-settings')?.addEventListener('click', () => {
+document.getElementById('open-premium-settings')?.addEventListener('click', async () => {
   ensurePremiumModal();
-  openModal('premium-modal'); // uses your existing helper
+  openModal('premium-modal');               // your existing helper
+  await loadMyFeaturedSlots();              // <-- populate rows on open
 });
+
 
 
 });
