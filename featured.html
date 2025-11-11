@@ -42,7 +42,7 @@
     .btn.secondary { background:#930edb; box-shadow:0 1px 6px #ffc2e5; }
     
     .mini-list { display:grid; gap:10px; }
-    .mini-item { display:flex; align-items:center; gap:10px; padding:8px; background:#131313; border-radius:12px; cursor:pointer; }
+    .mini-item { display:flex; align-items:center; gap:10px; padding:8px; background:#131313; border-radius:12px; cursor:pointer;height: 40px; }
     .mini-item img { width:40px; height:40px; border-radius:50%; object-fit:cover; background:#222; }
     .help-note { font-size:.92em; color:#777; margin-top:8px; }
 
@@ -66,6 +66,11 @@ div.badge-row:nth-child(2) {
   margin-right: auto;
 }
 
+#cta-public {
+  margin: auto;
+}
+
+
     .empty { text-align:center; padding:28px 14px; color:#ddd; }
   </style>
 </head>
@@ -76,7 +81,6 @@ div.badge-row:nth-child(2) {
     <section class="navbar"> 
      <div class="navii">
          <h5>  <header>
-           
             Sponsor Sorter</header> </h5>
               <div id="sparkle-overlay" aria-hidden="true"></div>
 
@@ -143,6 +147,7 @@ div.badge-row:nth-child(2) {
         <div class="cta-row">
           <a id="cta-offer" class="btn">Message / Offer</a>
           <a id="cta-view" class="btn secondary">View in Finder</a>
+          <a id="cta-public" class="btn btn-secondary" style="display:none;">Public Spotlight</a>
         </div>
 
         <div class="help-note">
@@ -198,4 +203,3 @@ div.badge-row:nth-child(2) {
   <script type="module" src="./js/featuredPage.js"></script>
 </body>
 </html>
-
