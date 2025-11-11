@@ -1,3 +1,19 @@
+/* Load Cinzel 900 for every page */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap');
+
+:root { --brand-font: "Cinzel", serif; }
+
+/* Brand wordmark */
+header .brand-title {
+  font-family: var(--brand-font);
+  font-weight: 900;
+  font-optical-sizing: auto;
+  line-height: 1.05;
+  letter-spacing: .6px;
+  color: #fff;
+}
+
+
 body 
    {background: black;
     color: white;
@@ -8,6 +24,8 @@ body
     display: 100%;
     
     }
+
+
     .StartNow.button {
         background-color: #04AA6D; /* Green */
       border: none;
@@ -4659,6 +4677,18 @@ body, .admin-table, .admin-tab, .pagination-btn {
   
 }
 
+
+
+#premium-modal > div:nth-child(1) {
+  height: fit-content !important;
+}
+
+
+div.mini-item:nth-child(1) {
+  height: 40px;
+}
+
+
 .recent-deals {
   margin-top: 36px;
   display: flex;
@@ -6162,7 +6192,7 @@ input:checked + .slider:before {
 /* Panel */
 .modal .modal-content{
   width: min(800px, 92vw);
-  max-height: 60vh;              /* keep inside viewport */
+  max-height: max-content;              /* keep inside viewport */
   border-radius: 14px;
   display: flex;                 /* header/body/footer layout */
   flex-direction: column;
@@ -8535,7 +8565,7 @@ section.friends-panel {
 .navii {
   width: 100%;
   background-image: url(handslogo2.jpg);
-  background-position: 69px;
+  background-position: 238px;
     background-position-y: center;
   height: 150px;
   background-repeat: no-repeat;
@@ -8553,14 +8583,38 @@ section.friends-panel {
 }
 
 
-/* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
-
 #groups-list > div:nth-child(1) {
   margin: 0px 0px ;
 }
 
 
 }
+
+.navii > div:nth-child(3) {
+  height: 63px;
+}
+
+
+.navimg > nav:nth-child(1) > li:nth-child(1) {
+  height: 55px;
+}
+
+
+.navimg > nav:nth-child(1) > li:nth-child(2) {
+  height: 55px;
+}
+
+
+
+
+.navbar nav li {
+  height: 55px;
+}
+
+.navimg > nav:nth-child(2) > li:nth-child(2) {
+  height: 55px;
+}
+
 
 
 /* your banner container */
