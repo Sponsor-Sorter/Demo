@@ -43,6 +43,17 @@ header .brand-title {
 /* Small screens */
 @media (max-width: 520px) {
   :root { --logo-size: 52px; }
+
+.navii > h5:nth-child(1) > header:nth-child(1) {
+  /* font-size-adjust: revert; */
+  font-size: xx-large;
+}
+
+.navii > h5:nth-child(1) {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 }
 
 
