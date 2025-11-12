@@ -47,11 +47,13 @@ header .brand-title {
 .navii > h5:nth-child(1) > header:nth-child(1) {
   /* font-size-adjust: revert; */
   font-size: xx-large;
+  width: 95vw;
 }
 
 .navii > h5:nth-child(1) {
   margin-left: auto;
   margin-right: auto;
+  width: 95vw !important;
 }
 
 }
@@ -388,7 +390,7 @@ section.userpass {
     a {
             text-decoration: none;
             color: white;
-            margin: 50px;
+            margin: 20px;
             background-color: unset;
 
         }
@@ -2639,7 +2641,6 @@ fieldset {
   nav li a:hover {
     color: #fff;
     box-shadow: 0 0 10px #f6f6f6, 0 0 20px #ffffff, 0 0 30px #00ffff;
-    background-color: rgba(0, 255, 255, 0.1);
   }
   
   .recent-activity th {
@@ -4549,6 +4550,12 @@ body, .admin-table, .admin-tab, .pagination-btn {
   margin-left: 1px;
 }
 
+.approved-plats img {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px;
+}
+
  /* Category Stars Section (3 categories in a row, stars below) */
     .category-stars-block-row {
       display: flex;
@@ -4749,6 +4756,8 @@ fieldset {
   box-sizing: border-box;
   box-shadow: 0 2px 18px 0 rgba(49,16,210,0.06);
   transition: box-shadow 0.18s;
+  border-left-width: 2px ;
+  border-right-width: 2px;
 
   
 }
@@ -4757,6 +4766,10 @@ fieldset {
 fieldset:focus-within, fieldset:hover {
   box-shadow: 0 4px 32px 0 rgba(115,103,240,0.10);
   border-width: 3.5px;
+   border-left-width: 2px ;
+  border-right-width: 2px;
+
+
 }
 
 
