@@ -548,6 +548,18 @@
       letter-spacing: 0.06em;
     }
 
+      @media (max-width: 1180px) {
+      .hero-phone-img {
+  width: 250px;          /* width of the visible area */
+  height: 480px;         /* height of the visible area */
+  border-radius: 15px;
+  object-fit: cover;     /* crop to fill the box */
+  object-position: left center;  /* show the RIGHT phone only */
+}
+
+      
+    }
+
     /* Mobile: stack columns */
     @media (max-width: 900px) {
       .hero-grid {
@@ -560,8 +572,13 @@
       .hero-copy .cta-main {
         display: flex;
         justify-content: center;
+        
       }
+
+            
     }
+
+  
     </style>
 </body>
 </html>
