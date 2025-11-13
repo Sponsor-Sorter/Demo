@@ -21,7 +21,7 @@ function timeAgo(dateString) {
 const staticLines = [
   "Paid out to creators",
   "4.9/5 average user rating ⭐️⭐️⭐️⭐️⭐️",
-  "Brands are searching for creators right now!",
+  "Brands could be searching for creators like you right now!",
   "Sponsor Sorter – No bots. No spam. Just real connections.",
   "100% escrow protection for every campaign",
   "New! Invite friends—both get a free month!",
@@ -34,13 +34,10 @@ const staticLines = [
   "Review spotlight: 'The safest platform for collabs.'",
   "Tom matched with 2 brands in his first week!",
   "Now trending: Fitness offers in your area",
-  "Creator applications up 30% this month!",
   "Sponsor Sorter partners with Stripe for secure payments",
-  "Our average match time is under 48 hours",
+  "Our average match time is under _ hours",
   "Join creators earning on Sponsor Sorter",
   "New! Invite friends—both get a free month!",
-  "Brand offer: Looking for podcasters, $1,500 budget",
-  "more public offers posted every hour!",
   "Creator testimonial: 'Escrow made me feel safe!'"
 ];
 
