@@ -75,20 +75,11 @@
 
                             <div class="cta-main">
                                 <a href="signup.html" class="cta-button">Get Started now</a>
+                                <a href="supporters.html" class="cta-button">Join Supporters</a>
+
                             </div>
                             <br>
 
-                            <button class="cta-button"
-                                onclick="window.location.href='guest.html?role=sponsor'"
-                                style="font-size:1.15em;padding:14px 34px;margin:14px 18px 0 0;background:#3100d2;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #c2c2ff;">
-                                View Sponsor Dashboard
-                            </button>
-
-                            <button class="cta-button"
-                                onclick="window.location.href='guest.html?role=sponsee'"
-                                style="font-size:1.15em;padding:14px 34px;margin:14px 0 0 18px;background:#930edb;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #ffc2e5;">
-                                View Sponsee Dashboard
-                            </button>
                         </div>
 
                         <!-- RIGHT: phone image + captions -->
@@ -106,6 +97,19 @@
                     </div>
 
                     <!-- Who Uses Section (full-width under the hero columns) -->
+                     <div>
+                                                  <button class="cta-button"
+                                onclick="window.location.href='guest.html?role=sponsor'"
+                                style="font-size:1.15em;padding:14px 34px;margin:14px 18px 0 0;background:#3100d2;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #c2c2ff;">
+                                View Sponsor Dashboard
+                            </button>
+
+                            <button class="cta-button"
+                                onclick="window.location.href='guest.html?role=sponsee'"
+                                style="font-size:1.15em;padding:14px 34px;margin:14px 0 0 18px;background:#930edb;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #ffc2e5;">
+                                View Sponsee Dashboard
+                            </button>
+                     </div>
                     <div class="section-title" style="margin-top:36px;color:#ffffff;">
                         Who Uses Sponsor Sorter?
                     </div>
@@ -419,167 +423,176 @@
       })();
     </script>
 
-    <style>
-    .navii {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .navbar {
-      width: 100%;
-    }
-
-    .navii > div:nth-child(3) {
-      width: 100%;
-    }
-
-    /* Approved Platforms toggles */
-    #approved-platforms {
-        color:#fff; 
-        border-color: white;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .plat-grid {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:10px;
-    }
-    .plat-toggle {
-      position:relative;
-      display:inline-block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .plat-toggle input {
-      position:absolute;
-      opacity:0;
-      pointer-events:none;
-    }
-    .plat-toggle .ui {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#ffffff;
-      color:#242a46;
-      border-radius:12px;
-      padding:8px 12px;
-      box-shadow:0 1px 6px #2b2e6a11;
-      transition:box-shadow .2s, transform .08s;
-    }
-    .plat-toggle .ui:hover {
-      transform:translateY(-1px);
-      box-shadow:0 4px 14px #0000001a;
-    }
-    .plat-toggle img {
-      height:24px;
-      width:auto;
-      display:block;
-    }
-    .plat-toggle .check {
-      width:18px;
-      height:18px;
-      margin-left:4px;
-      flex:0 0 auto;
-      opacity:0;
-      transform:scale(.8);
-      transition:opacity .12s ease, transform .12s ease;
-      fill:#18c36b;
-    }
-    /* Checked state */
-    .plat-toggle input:checked + .ui {
-      outline:2px solid #18c36b;
-      outline-offset:2px;
-      background:#f6fff9;
-    }
-    .plat-toggle input:checked + .ui .check {
-      opacity:1;
-      transform:scale(1);
-    }
-
-    .hero-grid {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .hero-copy {
-      flex: 1 1 360px;
-      max-width: 560px;
-    }
-
-    .hero-image {
-      flex: 1 1 320px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 12px;
-    }
-
-    .hero-phone-img {
-      height: 480px;
-      width: 480px;
-      max-width: 100%;
-      border-radius: 15px;
-      object-fit: cover;
-    }
-
-    .hero-subtitle {
-      font-size: 1.25em;
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    .hero-badge {
-      margin-top: 4px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: #ffcc33;
-      color: #000;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-      @media (max-width: 1180px) {
-      .hero-phone-img {
-  width: 250px;          /* width of the visible area */
-  height: 480px;         /* height of the visible area */
-  border-radius: 45px;
-  object-fit: cover;     /* crop to fill the box */
-  object-position: left center;  /* show the RIGHT phone only */
+   <style>
+.navii {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-      
-    }
+.navbar {
+  width: 100%;
+}
 
-    /* Mobile: stack columns */
-    @media (max-width: 900px) {
-      .hero-grid {
-        flex-direction: column;
-        padding: 0 16px;
-      }
-      .hero-copy {
-        text-align: center;
-      }
-      .hero-copy .cta-main {
-        display: flex;
-        justify-content: center;
-        
-      }
+.navii > div:nth-child(3) {
+  width: 100%;
+}
 
-            
-    }
+/* Approved Platforms toggles */
+#approved-platforms {
+  color:#fff; 
+  border-color: white;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.plat-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:10px;
+}
+.plat-toggle {
+  position:relative;
+  display:inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.plat-toggle input {
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.plat-toggle .ui {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#ffffff;
+  color:#242a46;
+  border-radius:12px;
+  padding:8px 12px;
+  box-shadow:0 1px 6px #2b2e6a11;
+  transition:box-shadow .2s, transform .08s;
+}
+.plat-toggle .ui:hover {
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px #0000001a;
+}
+.plat-toggle img {
+  height:24px;
+  width:auto;
+  display:block;
+}
+.plat-toggle .check {
+  width:18px;
+  height:18px;
+  margin-left:4px;
+  flex:0 0 auto;
+  opacity:0;
+  transform:scale(.8);
+  transition:opacity .12s ease, transform .12s ease;
+  fill:#18c36b;
+}
+/* Checked state */
+.plat-toggle input:checked + .ui {
+  outline:2px solid #18c36b;
+  outline-offset:2px;
+  background:#f6fff9;
+}
+.plat-toggle input:checked + .ui .check {
+  opacity:1;
+  transform:scale(1);
+}
 
-  
-    </style>
+/* HERO LAYOUT */
+.hero-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hero-copy {
+  flex: 1 1 360px;
+  max-width: 560px;
+}
+
+/* Make the two main CTAs play nice together */
+.hero-copy .cta-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.hero-copy .cta-main .cta-button {
+  position: static;      /* override any absolute centering from global styles */
+  margin-top: 20px;
+}
+
+.hero-image {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.hero-phone-img {
+  height: 480px;
+  width: 480px;
+  max-width: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  object-position: left center; /* crop to one phone */
+}
+
+.hero-subtitle {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.hero-badge {
+  margin-top: 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #ffcc33;
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Slightly smaller screens: shrink phone a bit */
+@media (max-width: 1180px) {
+  .hero-phone-img {
+    width: 250px;
+    height: 480px;
+    border-radius: 45px;
+    object-fit: cover;
+    object-position: left center;
+  }
+}
+
+/* Mobile: stack columns and center buttons */
+@media (max-width: 900px) {
+  .hero-grid {
+    flex-direction: column;
+    padding: 0 16px;
+  }
+  .hero-copy {
+    text-align: center;
+  }
+  .hero-copy .cta-main {
+    justify-content: center;
+  }
+}
+</style>
+
 </body>
 </html>
-
