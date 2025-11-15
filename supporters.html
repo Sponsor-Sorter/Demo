@@ -102,9 +102,9 @@
                 <div class="supporter-badge-grid">
                     <div class="supporter-badge-card">
                         <span class="badge badge-crown badge-bronze" title="Supporter" style="margin-bottom: 8px; border-left-width: 1px; border-top-width: 1px;">
-                        <img src="./crown-bronze.png"
-                            alt="Supporter crown"
-                            style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
+                            <img src="./crown-bronze.png"
+                                alt="Supporter crown"
+                                style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
                         </span>
 
                         <h3>Bronze Crown – Early Supporter</h3>
@@ -112,9 +112,9 @@
                     </div>
                     <div class="supporter-badge-card">
                         <span class="badge badge-crown badge-silver" title="Founder" style="margin-bottom: 8px; border-left-width: 1px; border-top-width: 1px;">
-                        <img src="./crown-silver.png"
-                            alt="Founder crown"
-                            style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
+                            <img src="./crown-silver.png"
+                                alt="Founder crown"
+                                style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
                         </span>
 
                         <h3>Silver Crown – Super Supporter</h3>
@@ -122,9 +122,9 @@
                     </div>
                     <div class="supporter-badge-card">
                         <span class="badge badge-crown badge-gold" title="Champion" style="margin-bottom: 8px; border-left-width: 1px; border-top-width: 1px;">
-                        <img src="./crown-gold.png"
-                            alt="Champion crown"
-                            style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
+                            <img src="./crown-gold.png"
+                                alt="Champion crown"
+                                style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;">
                         </span>
 
                         <h3>Gold Crown – Founding Supporter</h3>
@@ -179,7 +179,7 @@
             <div class="section-title">Choose Your Support Amount</div>
             <section class="support-amount">
                 <p style="text-align:center;margin-bottom:18px;font-size:0.98em;">
-                    Pick a suggested tier or enter a custom amount. Your final badge (Bronze / Silver / Gold) and free months (1 / 6 / 12)
+                    Pick a suggested tier or enter a custom amount (USD). Your final badge (Bronze / Silver / Gold) and free months (1 / 6 / 12)
                     will be matched to your total support when we launch.
                 </p>
 
@@ -198,16 +198,32 @@
                     When we launch, we’ll match your support level with the correct supporter badge and free subscription time.
                 </p>
 
-                <!-- Donation link: update supporters-checkout.html to your real checkout / external link -->
+                <!-- PayPal donate form wired to sponsorsorter@gmail.com -->
                 <div class="donate-btn-row">
-                    <a href="supporters-checkout.html" id="support-donate-link" class="cta-button">
-                        Continue to donation
-                    </a>
+                    <form id="paypal-donate-form"
+                          action="https://www.paypal.com/cgi-bin/webscr"
+                          method="post"
+                          target="_blank"
+                          style="margin:0;">
+                        <!-- Donate button command -->
+                        <input type="hidden" name="cmd" value="_donations">
+                        <!-- Your PayPal account email -->
+                        <input type="hidden" name="business" value="sponsorsorter@gmail.com">
+                        <!-- What shows on the PayPal side -->
+                        <input type="hidden" name="item_name" value="Support Sponsor Sorter launch">
+                        <!-- Currency -->
+                        <input type="hidden" name="currency_code" value="USD">
+                        <!-- Amount gets filled in by JS -->
+                        <input type="hidden" id="paypal-amount" name="amount" value="20.00">
+                        <button type="submit" id="support-donate-button" class="cta-button">
+                            Continue to donation
+                        </button>
+                    </form>
                 </div>
             </section>
         </fieldset>
 
-        <!-- WHAT YOUR SUPPORT FUNDS -->
+             <!-- WHAT YOUR SUPPORT FUNDS -->
         <fieldset class="home-cont">
             <div class="section-title">What Your Support Helps Build</div>
             <section class="support-why-grid">
@@ -226,6 +242,24 @@
             </section>
         </fieldset>
 
+        <!-- EARLY SUPPORTERS WALL -->
+        <fieldset class="home-cont" id="supporter-wall">
+            <div class="section-title">Early Supporters Wall</div>
+            <section>
+                <p style="text-align:center;margin-bottom:16px;font-size:0.96em;color:#ddd;">
+                    These legends chose to have their name shown publicly as early supporters of Sponsor Sorter.
+                    Badges match the same crowns used on the dashboards.
+                </p>
+
+                <p id="supporter-wall-empty" class="supporter-wall-empty">
+                    No public supporters listed yet — your name could be one of the first here.
+                </p>
+
+                <div id="supporter-wall-list" class="supporter-wall-grid"></div>
+            </section>
+        </fieldset>
+
+
         <!-- FAQ -->
         <fieldset class="home-cont">
             <div class="section-title">Supporter FAQ</div>
@@ -236,7 +270,7 @@
                 </details>
                 <details>
                     <summary>Do I need an account to become a supporter?</summary>
-                    <p>We recommend creating a Sponsor Sorter account with the same email you use to donate so we can automatically attach your rewards. If you don’t have one yet, you can still support now and create your account later.</p>
+                    <p>No. Currently Sign-Ups are for Beta testers. We recommend creating a Sponsor Sorter account with the same email you use to donate so we can automatically attach your rewards when the website launches. This ensures your rewards are granted automatically after signup. After launch you'll be emailed a code for your subscription reward. This is tied to your email address.</p>
                 </details>
                 <details>
                     <summary>Is this a one-time contribution?</summary>
@@ -244,7 +278,7 @@
                 </details>
                 <details>
                     <summary>How are payments processed?</summary>
-                    <p>Donations are handled by our payment partners (like Stripe or PayPal). We never store your full card details directly.</p>
+                    <p>Donations are handled by our payment partners (like PayPal and Stripe). We never store your full card details directly.</p>
                 </details>
             </section>
         </fieldset>
@@ -289,22 +323,24 @@
 
     <!-- JS -->
     <script type="module" src="./js/supabaseClient.js"></script>
-
+    <script type="module" src="./js/supportersWall.js"></script>
     <script>
-      // Simple amount selection logic; updates selected button and donate link query string
+      // Simple amount selection logic; updates hidden PayPal amount field
       (function initSupportAmounts() {
         const options = Array.from(document.querySelectorAll('.amount-option'));
         const customInput = document.getElementById('custom-amount');
-        const donateLink = document.getElementById('support-donate-link');
+        const amountField = document.getElementById('paypal-amount');
 
-        let selectedAmount = 25;
+        // default to Tier 1 ($20)
+        let selectedAmount = 20;
 
-        function updateLink() {
-          if (!donateLink) return;
-          if (selectedAmount && !isNaN(selectedAmount)) {
-            donateLink.href = 'supporters-checkout.html?amount=' + encodeURIComponent(selectedAmount);
+        function updateAmountField() {
+          if (!amountField) return;
+          if (selectedAmount && !isNaN(selectedAmount) && selectedAmount > 0) {
+            amountField.value = selectedAmount.toFixed(2);
           } else {
-            donateLink.href = 'supporters-checkout.html';
+            // If no valid amount, leave blank so PayPal lets the user type it there
+            amountField.value = '';
           }
         }
 
@@ -317,7 +353,7 @@
               selectedAmount = amt;
             }
             if (customInput) customInput.value = '';
-            updateLink();
+            updateAmountField();
           });
         });
 
@@ -330,11 +366,11 @@
             } else {
               selectedAmount = 0;
             }
-            updateLink();
+            updateAmountField();
           });
         }
 
-        updateLink();
+        updateAmountField();
       })();
     </script>
 
@@ -381,6 +417,8 @@
     .hero-copy .cta-main .cta-button {
       position: static;
       margin-top: 8px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .hero-image {
@@ -466,38 +504,6 @@
     .supporter-badge-card p {
       font-size: 0.96em;
       color: #d4d4d4;
-    }
-
-    /* Medal + crown combo (match dashboard look) */
-    .supporter-medal {
-      position: relative;
-      width: 72px;
-      height: 72px;
-      margin: 0 auto;
-    }
-
-    /* Medal – grey circular disk behind */
-    .supporter-medal::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #d6d6d6 45%, #7c7c7c 80%);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8);
-    }
-
-    /* Inner tile – dark rounded square sitting on the medal */
-    .supporter-medal img {
-      position: relative;
-      z-index: 1;
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-      padding: 12px;
-      border-radius: 24px;
-      background: #050505;
-      object-fit: contain;
-      display: block;
     }
 
     /* Tiers */
@@ -723,6 +729,75 @@
       opacity:1;
       transform:scale(1);
     }
+
+        /* Early Supporters Wall */
+    .supporter-wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .supporter-wall-card {
+      background: #090909;
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      color: #f5f5f5;
+    }
+
+    .supporter-wall-card.supporter-bronze {
+      border: 1px solid #d68a3a;
+    }
+    .supporter-wall-card.supporter-silver {
+      border: 1px solid #c7cbd6;
+    }
+    .supporter-wall-card.supporter-gold {
+      border: 1px solid #f4d03f;
+    }
+
+    .supporter-wall-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .supporter-wall-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .supporter-wall-name {
+      font-weight: 600;
+      font-size: 1.02em;
+    }
+
+    .supporter-wall-badge {
+      font-size: 0.88em;
+      color: #ddd;
+    }
+
+    .supporter-wall-message {
+      margin-top: 8px;
+      font-size: 0.9em;
+      color: #cfcfcf;
+    }
+
+    .supporter-wall-rank {
+      font-size: 0.8em;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+
+    .supporter-wall-empty,
+    .supporter-wall-loading,
+    .supporter-wall-error {
+      text-align: center;
+      font-size: 0.95em;
+      color: #ccc;
+    }
+
     </style>
 </body>
 </html>
