@@ -131,6 +131,274 @@
       </div>
     </fieldset>
 
+    <!-- Social Platform Stats -->
+    <fieldset>
+      <legend><h3>Social Platform Stats</h3></legend>
+      <section class="oauth-platforms">
+
+        <!-- TikTok stats -->
+        <div class="tiktok-stats-card" id="tiktok-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(255, 255, 255, 0.799);
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="tt-profile-pic" src="tiktoklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="tiktoklogo.png" alt="TikTok" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="tt-display-name">Loading…</span>
+              </h2>
+              <span id="tt-openid" style="font-size:0.97em;color:#c7f9ff;display:none;">open_id: …</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="tt-followers">-</span></div>
+            <div id="tt-following-wrap" style="display:none;"><b>Following:</b> <span id="tt-following">-</span></div>
+            <div id="tt-likes-wrap" style="display:none;"><b>Total Likes:</b> <span id="tt-likes">-</span></div>
+            <div id="tt-videos-wrap" style="display:none;"><b>Videos:</b> <span id="tt-videos">-</span></div>
+            <div id="tt-updated-wrap"><b>Updated:</b> <span id="tt-updated">-</span></div>
+          </div>
+
+          <div id="tt-last-video-row" style="margin-top:14px;display:none;">
+            <b>Latest Video:</b>
+            <a id="tt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="tt-last-video-desc">Latest video</span>
+            </a>
+            <span id="tt-last-video-date" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="tt-last-video-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Views: <span id="tt-last-video-views">-</span></div>
+                <div>Likes: <span id="tt-last-video-likes">-</span></div>
+                <div>Comments: <span id="tt-last-video-comments">-</span></div>
+                <div>Shares: <span id="tt-last-video-shares">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- YouTube stats -->
+        <div class="youtube-stats-card" id="youtube-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 2px 8px #c70000;
+          max-width: 550px;
+          margin: 0 auto 16px auto;
+          color: #fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="yt-profile-pic" src="youtubelogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="youtubelogo.png" alt="YouTube" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="yt-channel-title">Loading...</span>
+              </h2>
+              <span id="yt-channel-desc" style="font-size:0.97em;color:#ffd;">Channel Description...</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Subscribers:</b> <span id="yt-subs">-</span></div>
+            <div><b>Total Views:</b> <span id="yt-views">-</span></div>
+            <div><b>Videos:</b> <span id="yt-videos">-</span></div>
+            <div><b>Created:</b> <span id="yt-created">-</span></div>
+          </div>
+          <div id="yt-banner-row" style="margin:18px 0 10px 0;display:none;">
+            <img id="yt-banner" src="" style="width:100%;max-height:90px;object-fit:cover;border-radius:11px;">
+          </div>
+          <div id="yt-last-video-row" style="margin-top:14px;display:none;">
+            <b>Latest Video:</b>
+            <a id="yt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;">
+              <span id="yt-last-video-title">Title</span>
+            </a>
+            <span id="yt-last-video-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="yt-last-video-thumb" src="" style="width:98px;height:55px;border-radius:7px;background:#222;">
+              <div>
+                <span style="font-size:0.97em;">Views: <span id="yt-last-video-views">-</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Twitch stats -->
+        <div class="twitch-stats-card" id="twitch-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px #9046ff87;
+          max-width: 550px;
+          margin: 0 auto 16px auto;
+          color: #fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="tw-profile-pic" src="twitchlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="twitchlogo.png" alt="Twitch" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="tw-display-name">Loading…</span>
+                <span id="tw-login" style="margin-left:8px;font-size:.9em;color:#dcd3ff;">(@login)</span>
+              </h2>
+              <span id="tw-bio" style="font-size:0.97em;color:#ffd;">Channel bio…</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="tw-followers">-</span></div>
+            <div id="tw-created-wrap"><b>Created:</b> <span id="tw-created">-</span></div>
+            <div><b>Status:</b> <span id="tw-live-status">-</span></div>
+            <div id="tw-viewers-wrap" style="display:none;"><b>Viewers:</b> <span id="tw-viewers">-</span></div>
+          </div>
+
+          <div id="tw-last-stream-row" style="margin-top:14px;display:none;">
+            <b>Current/Last Stream:</b>
+            <span id="tw-stream-title" style="margin-left:6px;">Title</span>
+            <span id="tw-stream-started" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="tw-stream-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Game: <span id="tw-game-name">-</span></div>
+                <div id="tw-vod-views-wrap" style="display:none;">Views: <span id="tw-vod-views">-</span></div>
+                <div id="tw-duration-wrap" style="display:none;">Duration: <span id="tw-vod-duration">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instagram stats -->
+        <div class="instagram-stats-card" id="instagram-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(225,48,108,.45);
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="ig-profile-pic" src="instagramlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="instagramlogo.png" alt="Instagram" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius: 6px;">
+                <span id="ig-username">Loading…</span>
+                <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;display:none;">(Professional)</span>
+              </h2>
+              <span id="ig-bio" style="font-size:0.97em;color:#ffd;display:none;">Bio…</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="ig-followers">-</span></div>
+            <div><b>Following:</b> <span id="ig-following">-</span></div>
+            <div><b>Posts:</b> <span id="ig-posts">-</span></div>
+            <div><b>Eng. Rate (12):</b> <span id="ig-eng-rate">-</span></div>
+            <div id="ig-updated-wrap"><b>Updated:</b> <span id="ig-updated">-</span></div>
+          </div>
+
+          <div id="ig-insights-row" style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-top:6px;">
+            <div><b>Impressions (7d):</b> <span id="ig-impressions-7d">-</span></div>
+            <div><b>Reach (7d):</b> <span id="ig-reach-7d">-</span></div>
+            <div><b>Profile Views (7d):</b> <span id="ig-profile-views-7d">-</span></div>
+          </div>
+
+          <div id="ig-last-media-row" style="margin-top:14px;display:none;">
+            <b>Latest Post:</b>
+            <a id="ig-last-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="ig-last-media-caption">Latest post</span>
+            </a>
+            <span id="ig-last-media-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="ig-last-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Likes: <span id="ig-last-media-likes">-</span></div>
+                <div>Comments: <span id="ig-last-media-comments">-</span></div>
+                <div id="ig-last-media-views-wrap" style="display:none;">Views: <span id="ig-last-media-views">-</span></div>
+              </div>
+            </div>
+
+            <div id="ig-last-post-insights" style="margin-top:6px; font-size:0.95em; color:#eee; display:none;">
+              <span>Impr: <span id="ig-last-impr">-</span></span>
+              <span style="margin-left:12px;">Reach: <span id="ig-last-reach">-</span></span>
+              <span style="margin-left:12px;">Saved: <span id="ig-last-saved">-</span></span>
+              <span id="ig-last-views-wrap" style="margin-left:12px; display:none;">Views: <span id="ig-last-views">-</span></span>
+            </div>
+          </div>
+
+          <div id="ig-top-media-row" style="margin-top:16px;display:none;">
+            <b>Top Recent Post:</b>
+            <a id="ig-top-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="ig-top-media-caption">Top post</span>
+            </a>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="ig-top-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Likes: <span id="ig-top-media-likes">-</span></div>
+                <div>Comments: <span id="ig-top-media-comments">-</span></div>
+                <div id="ig-top-media-views-wrap" style="display:none;">Views: <span id="ig-top-media-views">-</span></div>
+                <div>Eng: <span id="ig-top-media-eng">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Facebook stats -->
+        <div class="facebook-stats-card" id="facebook-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(24,119,242,.45);
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <small id="fb-insights-note" style="display:none;opacity:.9"></small>
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="fb-profile-pic" src="facebooklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="facebooklogo.png" alt="Facebook" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius:6px;">
+                <span id="fb-page-name">Loading…</span>
+                <span id="fb-page-category" style="margin-left:8px;font-size:.9em;color:#cfe3ff;display:none;">(Category)</span>
+              </h2>
+              <span id="fb-about" style="font-size:0.97em;color:#ffd;display:none;">About…</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="fb-followers">-</span></div>
+            <div><b>Page Likes:</b> <span id="fb-likes">-</span></div>
+            <div><b>Reach (28d):</b> <span id="fb-reach-28d">-</span></div>
+            <div><b>Impressions (28d):</b> <span id="fb-impressions-28d">-</span></div>
+            <div><b>Engaged (28d):</b> <span id="fb-engaged-28d">-</span></div>
+            <div id="fb-updated-wrap"><b>Updated:</b> <span id="fb-updated">-</span></div>
+          </div>
+
+          <div id="fb-last-post-row" style="margin-top:14px;display:none;">
+            <b>Latest Post:</b>
+            <a id="fb-last-post-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="fb-last-post-message">Latest post</span>
+            </a>
+            <span id="fb-last-post-created" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="fb-last-post-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </fieldset>
+
     <!-- Recent Activity -->
     <fieldset>
       <legend><h3>Recent Sponsorship Activity</h3></legend>
@@ -203,6 +471,17 @@ const PROFILE_CTX = {
   connectedCount: 0,
   fallbackTotalFollowers: 0
 };
+
+/* ---------- small helpers for numbers/dates ---------- */
+function formatNumber(val) {
+  const n = Number(val);
+  return Number.isFinite(n) ? n.toLocaleString() : '-';
+}
+function formatDate(val) {
+  if (!val) return '-';
+  const d = new Date(val);
+  return isNaN(d) ? val : d.toLocaleString();
+}
 
 /* ---------- Dynamic Nav Bar ---------- */
 async function updateNavBar() {
@@ -469,18 +748,452 @@ async function loadFollowersTotalViaRLS(username) {
       setFollowersUpdated(data.last_updated);
       el.title = 'Combined audience across linked accounts (not deduped)';
     } else {
-      // fallback to any profile-stored value
       const n = Number(PROFILE_CTX.fallbackTotalFollowers || 0);
       el.textContent = n.toLocaleString();
       setFollowersUpdated(null);
     }
   } catch (e) {
-    // graceful fallback
     const el = document.getElementById('total-followers');
     if (el) el.textContent = Number(PROFILE_CTX.fallbackTotalFollowers || 0).toLocaleString();
     setFollowersUpdated(null);
   }
   renderFollowersNote();
+}
+
+/* ---------- Live cross-platform stats (Edge Function) ---------- */
+async function loadProfileLiveStats(username) {
+  try {
+    const { data, error } = await supabase.functions.invoke('get-profile-live-stats', {
+      body: { username }
+    });
+
+    if (error || !data || data.error || data.ok === false) {
+      console.warn('get-profile-live-stats error:', error || data?.error);
+      return;
+    }
+
+    const totalFollowersEl = document.getElementById('total-followers');
+    if (!totalFollowersEl) return;
+
+    const tiktokBlock    = document.getElementById('tiktok-stats-block');
+    const youtubeBlock   = document.getElementById('youtube-stats-block');
+    const twitchBlock    = document.getElementById('twitch-stats-block');
+    const instagramBlock = document.getElementById('instagram-stats-block');
+    const facebookBlock  = document.getElementById('facebook-stats-block');
+
+    [tiktokBlock, youtubeBlock, twitchBlock, instagramBlock, facebookBlock].forEach(b => {
+      if (b) b.style.display = 'none';
+    });
+
+    const isConnected = (obj) => !!(obj && (obj.connected || obj.is_connected || obj.status === 'connected'));
+    const $id = (id) => document.getElementById(id);
+
+    const yt  = data.youtube   || null;
+    const ig  = data.instagram || null;
+    const twt = data.twitch    || null;
+    const tt  = data.tiktok    || null;
+    const fb  = data.facebook  || null;
+
+    let connectedFromFunction = 0;
+    let total = 0;
+    const addVal = (val) => {
+      const n = Number(val);
+      if (Number.isFinite(n) && n > 0) total += n;
+    };
+
+    if (isConnected(yt)) {
+      connectedFromFunction++;
+      addVal(yt.subscriber_count ?? yt.subscribers ?? yt.follower_count ?? yt.followers);
+    }
+    if (isConnected(ig)) {
+      connectedFromFunction++;
+      addVal(ig.follower_count ?? ig.followers);
+    }
+    if (isConnected(twt)) {
+      connectedFromFunction++;
+      addVal(twt.follower_count ?? twt.followers);
+    }
+    if (isConnected(tt)) {
+      connectedFromFunction++;
+      addVal(tt.follower_count ?? tt.followers);
+    }
+    if (isConnected(fb)) {
+      connectedFromFunction++;
+      addVal(fb.follower_count ?? fb.followers);
+    }
+
+    if (total > 0) {
+      totalFollowersEl.textContent = total.toLocaleString();
+      PROFILE_CTX.fallbackTotalFollowers = total;
+      setFollowersUpdated(data.fetched_at || new Date().toISOString());
+      totalFollowersEl.title = 'Combined live audience across linked accounts (not deduped)';
+    }
+
+    if (connectedFromFunction > 0) {
+      PROFILE_CTX.connectedCount = connectedFromFunction;
+      renderFollowersNote();
+    }
+
+    /* ---- TikTok card ---- */
+    if (isConnected(tt) && tiktokBlock) {
+      tiktokBlock.style.display = 'block';
+
+      if ($id('tt-display-name')) {
+        $id('tt-display-name').textContent =
+          tt.display_name || tt.username || tt.handle || 'TikTok';
+      }
+
+      if ($id('tt-openid') && tt.open_id) {
+        $id('tt-openid').textContent = `open_id: ${tt.open_id}`;
+        $id('tt-openid').style.display = 'inline';
+      }
+
+      if ($id('tt-profile-pic') && (tt.profile_pic || tt.profile_image_url || tt.avatar_url)) {
+        $id('tt-profile-pic').src = tt.profile_pic || tt.profile_image_url || tt.avatar_url;
+      }
+
+      if ($id('tt-followers')) {
+        $id('tt-followers').textContent = formatNumber(tt.follower_count ?? tt.followers);
+      }
+
+      if ($id('tt-following') && (tt.following_count ?? tt.following)) {
+        $id('tt-following').textContent = formatNumber(tt.following_count ?? tt.following);
+        const wrap = $id('tt-following-wrap'); if (wrap) wrap.style.display = 'block';
+      }
+
+      if ($id('tt-likes') && (tt.likes_count ?? tt.total_likes)) {
+        $id('tt-likes').textContent = formatNumber(tt.likes_count ?? tt.total_likes);
+        const wrap = $id('tt-likes-wrap'); if (wrap) wrap.style.display = 'block';
+      }
+
+      if ($id('tt-videos') && (tt.video_count ?? tt.videos)) {
+        $id('tt-videos').textContent = formatNumber(tt.video_count ?? tt.videos);
+        const wrap = $id('tt-videos-wrap'); if (wrap) wrap.style.display = 'block';
+      }
+
+      if ($id('tt-updated') && (tt.updated_at || data.fetched_at)) {
+        $id('tt-updated').textContent = formatDate(tt.updated_at || data.fetched_at);
+        const wrap = $id('tt-updated-wrap'); if (wrap) wrap.style.display = 'block';
+      }
+
+      const last = tt.last_video || tt.latest_video;
+      if (last && $id('tt-last-video-row')) {
+        $id('tt-last-video-row').style.display = 'block';
+        if ($id('tt-last-video-desc')) {
+          $id('tt-last-video-desc').textContent = last.description || last.caption || 'Latest video';
+        }
+        if ($id('tt-last-video-link') && (last.url || last.share_url)) {
+          $id('tt-last-video-link').href = last.url || last.share_url;
+        }
+        if ($id('tt-last-video-date') && last.create_time) {
+          $id('tt-last-video-date').textContent = formatDate(last.create_time);
+        }
+        if ($id('tt-last-video-thumb') && (last.cover_image_url || last.thumbnail_url || last.thumbnail)) {
+          $id('tt-last-video-thumb').src = last.cover_image_url || last.thumbnail_url || last.thumbnail;
+        }
+        if ($id('tt-last-video-views') && last.view_count != null) {
+          $id('tt-last-video-views').textContent = formatNumber(last.view_count);
+        }
+        if ($id('tt-last-video-likes') && last.like_count != null) {
+          $id('tt-last-video-likes').textContent = formatNumber(last.like_count);
+        }
+        if ($id('tt-last-video-comments') && last.comment_count != null) {
+          $id('tt-last-video-comments').textContent = formatNumber(last.comment_count);
+        }
+        if ($id('tt-last-video-shares') && last.share_count != null) {
+          $id('tt-last-video-shares').textContent = formatNumber(last.share_count);
+        }
+      }
+    }
+
+    /* ---- YouTube card ---- */
+    if (isConnected(yt) && youtubeBlock) {
+      youtubeBlock.style.display = 'block';
+
+      if ($id('yt-channel-title')) {
+        $id('yt-channel-title').textContent =
+          yt.channel_title || yt.title || yt.handle || 'YouTube Channel';
+      }
+      if ($id('yt-channel-desc') && (yt.channel_description || yt.description)) {
+        $id('yt-channel-desc').textContent = yt.channel_description || yt.description;
+      }
+      if ($id('yt-profile-pic') && (yt.profile_pic || yt.profile_image_url || yt.avatar_url)) {
+        $id('yt-profile-pic').src = yt.profile_pic || yt.profile_image_url || yt.avatar_url;
+      }
+
+      if ($id('yt-subs')) {
+        $id('yt-subs').textContent = formatNumber(yt.subscriber_count ?? yt.subscribers);
+      }
+      if ($id('yt-views')) {
+        $id('yt-views').textContent = formatNumber(yt.view_count ?? yt.views);
+      }
+      if ($id('yt-videos')) {
+        $id('yt-videos').textContent = formatNumber(yt.video_count ?? yt.videos);
+      }
+      if ($id('yt-created') && (yt.created_at || yt.published_at)) {
+        $id('yt-created').textContent = formatDate(yt.created_at || yt.published_at);
+      }
+
+      if (yt.banner_url && $id('yt-banner')) {
+        $id('yt-banner').src = yt.banner_url;
+        const row = $id('yt-banner-row'); if (row) row.style.display = 'block';
+      }
+
+      const last = yt.last_video;
+      if (last && $id('yt-last-video-row')) {
+        $id('yt-last-video-row').style.display = 'block';
+        if ($id('yt-last-video-title')) {
+          $id('yt-last-video-title').textContent = last.title || 'Latest video';
+        }
+        if ($id('yt-last-video-link')) {
+          if (last.url || last.video_url) {
+            $id('yt-last-video-link').href = last.url || last.video_url;
+          } else if (last.video_id) {
+            $id('yt-last-video-link').href = `https://youtube.com/watch?v=${last.video_id}`;
+          }
+        }
+        if ($id('yt-last-video-published') && last.published_at) {
+          $id('yt-last-video-published').textContent = formatDate(last.published_at);
+        }
+        if ($id('yt-last-video-thumb') && (last.thumbnail_url || last.thumbnail)) {
+          $id('yt-last-video-thumb').src = last.thumbnail_url || last.thumbnail;
+        }
+        if ($id('yt-last-video-views') && last.view_count != null) {
+          $id('yt-last-video-views').textContent = formatNumber(last.view_count);
+        }
+      }
+    }
+
+    /* ---- Twitch card ---- */
+    if (isConnected(twt) && twitchBlock) {
+      twitchBlock.style.display = 'block';
+
+      if ($id('tw-display-name')) {
+        $id('tw-display-name').textContent =
+          twt.display_name || twt.username || twt.login || 'Twitch';
+      }
+      if ($id('tw-login') && (twt.login || twt.username)) {
+        $id('tw-login').textContent = `@${twt.login || twt.username}`;
+      }
+      if ($id('tw-bio') && twt.bio) {
+        $id('tw-bio').textContent = twt.bio;
+      }
+      if ($id('tw-profile-pic') && (twt.profile_pic || twt.profile_image_url || twt.avatar_url)) {
+        $id('tw-profile-pic').src = twt.profile_pic || twt.profile_image_url || twt.avatar_url;
+      }
+
+      if ($id('tw-followers')) {
+        $id('tw-followers').textContent = formatNumber(twt.follower_count ?? twt.followers);
+      }
+      if ($id('tw-created') && (twt.created_at || twt.started_at)) {
+        $id('tw-created').textContent = formatDate(twt.created_at || twt.started_at);
+      }
+      if ($id('tw-live-status')) {
+        $id('tw-live-status').textContent = twt.is_live ? 'Live' : 'Offline';
+      }
+      if (twt.is_live && $id('tw-viewers') && (twt.viewer_count ?? twt.viewers)) {
+        $id('tw-viewers').textContent = formatNumber(twt.viewer_count ?? twt.viewers);
+        const wrap = $id('tw-viewers-wrap'); if (wrap) wrap.style.display = 'block';
+      }
+
+      const last = twt.last_stream || twt.current_stream;
+      if (last && $id('tw-last-stream-row')) {
+        $id('tw-last-stream-row').style.display = 'block';
+        if ($id('tw-stream-title')) {
+          $id('tw-stream-title').textContent = last.title || 'Last stream';
+        }
+        if ($id('tw-stream-started') && last.started_at) {
+          $id('tw-stream-started').textContent = formatDate(last.started_at);
+        }
+        if ($id('tw-stream-thumb') && (last.thumbnail_url || last.thumbnail)) {
+          $id('tw-stream-thumb').src = last.thumbnail_url || last.thumbnail;
+        }
+        if ($id('tw-game-name') && last.game_name) {
+          $id('tw-game-name').textContent = last.game_name;
+        }
+        if ($id('tw-vod-views') && last.view_count != null) {
+          $id('tw-vod-views').textContent = formatNumber(last.view_count);
+          const wrap = $id('tw-vod-views-wrap'); if (wrap) wrap.style.display = 'block';
+        }
+      }
+    }
+
+    /* ---- Instagram card ---- */
+    if (isConnected(ig) && instagramBlock) {
+      instagramBlock.style.display = 'block';
+
+      if ($id('ig-username')) {
+        $id('ig-username').textContent = ig.username || ig.handle || 'Instagram';
+      }
+      if ($id('ig-profile-pic') && (ig.profile_pic || ig.profile_image_url || ig.avatar_url)) {
+        $id('ig-profile-pic').src = ig.profile_pic || ig.profile_image_url || ig.avatar_url;
+      }
+      if ($id('ig-account-type') && ig.account_type) {
+        $id('ig-account-type').textContent = `(${ig.account_type})`;
+        $id('ig-account-type').style.display = 'inline';
+      }
+      if ($id('ig-bio') && ig.bio) {
+        $id('ig-bio').textContent = ig.bio;
+        $id('ig-bio').style.display = 'inline';
+      }
+
+      if ($id('ig-followers')) {
+        $id('ig-followers').textContent = formatNumber(ig.follower_count ?? ig.followers);
+      }
+      if ($id('ig-following')) {
+        $id('ig-following').textContent = formatNumber(ig.follows_count ?? ig.following);
+      }
+      if ($id('ig-posts')) {
+        $id('ig-posts').textContent = formatNumber(ig.media_count ?? ig.posts);
+      }
+
+      if ($id('ig-eng-rate') && (ig.engagement_rate_recent ?? ig.engagement_rate)) {
+        const er = Number(ig.engagement_rate_recent ?? ig.engagement_rate);
+        $id('ig-eng-rate').textContent = Number.isFinite(er) ? `${er.toFixed(1)}%` : '-';
+      }
+
+      if ($id('ig-updated') && (ig.updated_at || data.fetched_at)) {
+        $id('ig-updated').textContent = formatDate(ig.updated_at || data.fetched_at);
+      }
+
+      if (ig.insights_7d) {
+        const ins7 = ig.insights_7d;
+        if ($id('ig-impressions-7d') && ins7.impressions != null) {
+          $id('ig-impressions-7d').textContent = formatNumber(ins7.impressions);
+        }
+        if ($id('ig-reach-7d') && ins7.reach != null) {
+          $id('ig-reach-7d').textContent = formatNumber(ins7.reach);
+        }
+        if ($id('ig-profile-views-7d') && ins7.profile_views != null) {
+          $id('ig-profile-views-7d').textContent = formatNumber(ins7.profile_views);
+        }
+      }
+
+      const last = ig.last_media;
+      if (last && $id('ig-last-media-row')) {
+        $id('ig-last-media-row').style.display = 'block';
+        if ($id('ig-last-media-caption')) {
+          $id('ig-last-media-caption').textContent = last.caption || 'Latest post';
+        }
+        if ($id('ig-last-media-link') && last.permalink) {
+          $id('ig-last-media-link').href = last.permalink;
+        }
+        if ($id('ig-last-media-published') && last.timestamp) {
+          $id('ig-last-media-published').textContent = formatDate(last.timestamp);
+        }
+        if ($id('ig-last-media-thumb') && (last.media_url || last.thumbnail_url)) {
+          $id('ig-last-media-thumb').src = last.media_url || last.thumbnail_url;
+        }
+        if ($id('ig-last-media-likes') && last.like_count != null) {
+          $id('ig-last-media-likes').textContent = formatNumber(last.like_count);
+        }
+        if ($id('ig-last-media-comments') && last.comments_count != null) {
+          $id('ig-last-media-comments').textContent = formatNumber(last.comments_count);
+        }
+        if ($id('ig-last-media-views') && last.view_count != null) {
+          $id('ig-last-media-views').textContent = formatNumber(last.view_count);
+          const wrap = $id('ig-last-media-views-wrap'); if (wrap) wrap.style.display = 'block';
+        }
+      }
+
+      const top = ig.top_media;
+      if (top && $id('ig-top-media-row')) {
+        $id('ig-top-media-row').style.display = 'block';
+        if ($id('ig-top-media-caption')) {
+          $id('ig-top-media-caption').textContent = top.caption || 'Top post';
+        }
+        if ($id('ig-top-media-link') && top.permalink) {
+          $id('ig-top-media-link').href = top.permalink;
+        }
+        if ($id('ig-top-media-thumb') && (top.media_url || top.thumbnail_url)) {
+          $id('ig-top-media-thumb').src = top.media_url || top.thumbnail_url;
+        }
+        if ($id('ig-top-media-likes') && top.like_count != null) {
+          $id('ig-top-media-likes').textContent = formatNumber(top.like_count);
+        }
+        if ($id('ig-top-media-comments') && top.comments_count != null) {
+          $id('ig-top-media-comments').textContent = formatNumber(top.comments_count);
+        }
+        if ($id('ig-top-media-views') && top.view_count != null) {
+          $id('ig-top-media-views').textContent = formatNumber(top.view_count);
+          const wrap = $id('ig-top-media-views-wrap'); if (wrap) wrap.style.display = 'block';
+        }
+        if ($id('ig-top-media-eng') && (top.engagement_rate ?? top.eng)) {
+          const eng = Number(top.engagement_rate ?? top.eng);
+          $id('ig-top-media-eng').textContent = Number.isFinite(eng) ? `${eng.toFixed(1)}%` : '-';
+        }
+      }
+    }
+
+    /* ---- Facebook card ---- */
+    if (isConnected(fb) && facebookBlock) {
+      facebookBlock.style.display = 'block';
+
+      if ($id('fb-page-name')) {
+        $id('fb-page-name').textContent = fb.page_name || fb.name || 'Facebook Page';
+      }
+      if ($id('fb-page-category') && fb.category) {
+        $id('fb-page-category').textContent = fb.category;
+        $id('fb-page-category').style.display = 'inline';
+      }
+      if ($id('fb-about') && fb.about) {
+        $id('fb-about').textContent = fb.about;
+        $id('fb-about').style.display = 'inline';
+      }
+      if ($id('fb-profile-pic') && (fb.profile_pic || fb.profile_image_url || fb.avatar_url)) {
+        $id('fb-profile-pic').src = fb.profile_pic || fb.profile_image_url || fb.avatar_url;
+      }
+
+      if ($id('fb-followers')) {
+        $id('fb-followers').textContent = formatNumber(fb.follower_count ?? fb.followers);
+      }
+      if ($id('fb-likes')) {
+        $id('fb-likes').textContent = formatNumber(fb.page_likes ?? fb.likes);
+      }
+
+      if ($id('fb-updated') && (fb.updated_at || data.fetched_at)) {
+        $id('fb-updated').textContent = formatDate(fb.updated_at || data.fetched_at);
+      }
+
+      if (fb.insights_28d) {
+        const ins28 = fb.insights_28d;
+        if ($id('fb-reach-28d') && ins28.reach != null) {
+          $id('fb-reach-28d').textContent = formatNumber(ins28.reach);
+        }
+        if ($id('fb-impressions-28d') && ins28.impressions != null) {
+          $id('fb-impressions-28d').textContent = formatNumber(ins28.impressions);
+        }
+        if ($id('fb-engaged-28d') && ins28.engaged != null) {
+          $id('fb-engaged-28d').textContent = formatNumber(ins28.engaged);
+        }
+      }
+
+      if ($id('fb-insights-note') && fb.insights_note) {
+        $id('fb-insights-note').textContent = fb.insights_note;
+        $id('fb-insights-note').style.display = 'block';
+      }
+
+      const last = fb.last_post;
+      if (last && $id('fb-last-post-row')) {
+        $id('fb-last-post-row').style.display = 'block';
+        if ($id('fb-last-post-message')) {
+          $id('fb-last-post-message').textContent =
+            last.message || last.story || 'Latest post';
+        }
+        if ($id('fb-last-post-link') && last.permalink_url) {
+          $id('fb-last-post-link').href = last.permalink_url;
+        }
+        if ($id('fb-last-post-created') && last.created_time) {
+          $id('fb-last-post-created').textContent = formatDate(last.created_time);
+        }
+        if ($id('fb-last-post-thumb') && last.full_picture) {
+          $id('fb-last-post-thumb').src = last.full_picture;
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('loadProfileLiveStats error:', e);
+  }
 }
 
 /* ---------- Profile & Stats ---------- */
@@ -512,7 +1225,6 @@ async function loadProfileAndStats(username) {
 
   injectBadge(username, data.email);
 
-  // Capture context for followers UI (connected flags + fallback total)
   PROFILE_CTX.fallbackTotalFollowers = Number(data.total_followers || 0);
   const connectedFlags = [
     data.youtube_connected,
@@ -525,7 +1237,6 @@ async function loadProfileAndStats(username) {
   PROFILE_CTX.connectedCount = connectedFlags.length;
   renderFollowersNote();
 
-  // Insert Report button
   const fieldset = document.querySelector('.userprofile fieldset');
   if (fieldset && !document.querySelector('.report-profile-btn')) {
     const reportBtn = document.createElement('button');
@@ -542,7 +1253,6 @@ async function loadProfileAndStats(username) {
     fieldset.insertBefore(reportBtn, fieldset.firstChild.nextSibling);
   }
 
-  // Offer stats
   const { data: offers } = await supabase
     .from('private_offers')
     .select('status, offer_amount')
@@ -567,10 +1277,9 @@ async function loadProfileAndStats(username) {
     ratioEl.innerText = `${accepted}:${rejected} ${total>0 ? Math.round((accepted/total)*100) : 0}%`;
   }
 
-  const earningsEl = document.getElementById('total-earnings'); // optional if present
+  const earningsEl = document.getElementById('total-earnings');
   if (earningsEl) earningsEl.innerText = `$${totalEarnings.toFixed(2)}`;
 
-  // Load persisted followers total (+ last updated)
   await loadFollowersTotalViaRLS(username);
 
   await updateOverallStars(username);
@@ -610,7 +1319,7 @@ async function updateOverallStars(username) {
   if (el) el.innerHTML = renderStars(Math.round(avg));
 }
 
-/* ---------- Category Stars (with default 0/5 & correct IDs) ---------- */
+/* ---------- Category Stars ---------- */
 async function updateProfileCategoryStars(username) {
   const STAR_EL_IDS = {
     communication: 'communication-stars',
@@ -618,7 +1327,6 @@ async function updateProfileCategoryStars(username) {
     work_output: 'work-output-stars',
   };
 
-  // Show 0/5 by default
   Object.values(STAR_EL_IDS).forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = renderStars(0);
@@ -691,7 +1399,7 @@ function renderPaged(bodyId, pagerId, rows, page = 1, pageSize = PAGE_SIZE, empt
   });
 }
 
-/* ---------- Recent Activity (paged) ---------- */
+/* ---------- Recent Activity ---------- */
 async function loadProfileRecentActivity(username) {
   const { data: offers } = await supabase
     .from('private_offers')
@@ -749,7 +1457,7 @@ async function loadProfileRecentActivity(username) {
   );
 }
 
-/* ---------- Archived Deals (paged) ---------- */
+/* ---------- Archived Deals ---------- */
 async function loadProfileArchivedDeals(username) {
   const { data: offers } = await supabase
     .from('private_offers')
@@ -826,6 +1534,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadProfileAndStats(username);
   await loadProfileRecentActivity(username);
   await loadProfileArchivedDeals(username);
+  await loadProfileLiveStats(username);
 });
 </script>
 
