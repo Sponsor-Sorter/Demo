@@ -174,96 +174,164 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadNotifications();
   }
 
-  function renderDropdown() {
-    if (!dropdown) return;
-    dropdown.innerHTML = '';
+  // NEW: Mark all notifications as read (no delete, just flip read=true)
+  async function markAllNotificationsRead() {
+    const unreadNotifs = notifications.filter(n => !n.read);
+    if (!unreadNotifs.length) return;
 
-    const readCount = notifications.filter(n => n.read).length;
+    const { error } = await supabase
+      .from('user_notifications')
+      .update({ read: true })
+      .eq('notification_uuid', notification_uuid)
+      .eq('read', false);
+
+    if (error) {
+      console.error('alerts.js: markAllNotificationsRead failed:', error.message);
+      return;
+    }
+
+    await loadNotifications();
+  }
+
+ function renderDropdown() {
+  if (!dropdown) return;
+  dropdown.innerHTML = '';
+
+  const readCount   = notifications.filter(n => n.read).length;
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  // === Actions row (Mark all read + Clear read) on ONE line ===
+  if (unreadCount > 0 || readCount > 0) {
+    const actionsRow = document.createElement('div');
+    actionsRow.style.display = 'flex';
+    actionsRow.style.justifyContent = 'space-between';
+    actionsRow.style.alignItems = 'center';
+    actionsRow.style.gap = '8px';
+    actionsRow.style.padding = '4px 12px 10px 12px';
+    actionsRow.style.borderBottom = '1px solid #333';
+    actionsRow.style.marginBottom = '6px';
+
+    // Mark all read (left)
+    if (unreadCount > 0) {
+      const markAllBtn = document.createElement('button');
+      markAllBtn.innerText = `Mark all read (${unreadCount})`;
+      markAllBtn.style.flex = '1';
+      markAllBtn.style.boxShadow = 'none';
+      markAllBtn.style.padding = '6px 10px';
+      markAllBtn.style.background = '#444';
+      markAllBtn.style.color = '#fff';
+      markAllBtn.style.border = 'none';
+      markAllBtn.style.borderRadius = '6px';
+      markAllBtn.style.cursor = 'pointer';
+      markAllBtn.style.fontWeight = 'bold';
+      markAllBtn.style.fontSize = '0.85rem';
+      markAllBtn.onmouseenter = () => (markAllBtn.style.background = '#555');
+      markAllBtn.onmouseleave = () => (markAllBtn.style.background = '#444');
+      markAllBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await markAllNotificationsRead();
+      };
+      actionsRow.appendChild(markAllBtn);
+    }
+
+    // Clear read (right)
     if (readCount > 0) {
       const clearBtn = document.createElement('button');
       clearBtn.innerText = `Clear Read (${readCount})`;
-      clearBtn.style.display = 'block';
-      clearBtn.style.margin = '5px auto 15px auto';
-      clearBtn.style.padding = '6px 18px';
+      clearBtn.style.flex = '1';
+      clearBtn.style.padding = '6px 10px';
       clearBtn.style.background = '#0096FF';
       clearBtn.style.color = '#fff';
       clearBtn.style.border = 'none';
       clearBtn.style.borderRadius = '6px';
       clearBtn.style.cursor = 'pointer';
       clearBtn.style.fontWeight = 'bold';
+      clearBtn.style.fontSize = '0.85rem';
       clearBtn.onmouseenter = () => (clearBtn.style.background = '#006ed1');
       clearBtn.onmouseleave = () => (clearBtn.style.background = '#0096FF');
       clearBtn.onclick = async (e) => {
         e.stopPropagation();
         await clearReadNotifications();
       };
-      dropdown.appendChild(clearBtn);
+      actionsRow.appendChild(clearBtn);
     }
 
-    if (!notifications.length) {
-      dropdown.innerHTML += `<div class="notif-item" style="padding:20px;text-align:center;color:#aaa;">No notifications.</div>`;
-      return;
-    }
-
-    notifications.forEach(n => {
-      const notif = document.createElement('div');
-      notif.className = 'notif-item';
-      notif.style.padding = '12px 18px';
-      notif.style.cursor = 'pointer';
-      notif.style.borderBottom = '1px solid #333';
-      notif.style.background = n.read ? 'transparent' : '#292929';
-      notif.innerHTML = `
-        <div style="font-weight:bold;font-size:1em;color:${n.read ? '#fff' : '#3498fd'}">${n.title || '[No Title]'}</div>
-        <div style="font-size:0.95em;line-height:1.5;">${n.message || ''}</div>
-        <div style="font-size:0.85em;color:#aaa;margin-top:3px;">${n.created_at ? new Date(n.created_at).toLocaleString() : ''}</div>
-      `;
-
-      notif.onclick = async () => {
-        // Mark read if needed
-        if (!n.read) {
-          const { error } = await supabase
-            .from('user_notifications')
-            .update({ read: true })
-            .eq('id', n.id);
-          if (error) console.error('alerts.js: mark read failed:', error.message);
-          n.read = true;
-          loadNotifications();
-        }
-
-        // Build deep link for the correct dashboard
-        const dashboard = resolveDashboardPath(userType);
-        const target = new URL(dashboard, window.location.href);
-        if (n.related_offer_id) target.searchParams.set('offer', n.related_offer_id);
-        if (n.type)            target.searchParams.set('type', n.type);
-        target.searchParams.set('notif', String(n.id));
-
-        // If not on the dashboard for this user, redirect; else in-page jump.
-        const onSponsor = location.pathname.toLowerCase().endsWith('dashboardsponsor.html');
-        const onSponsee = location.pathname.toLowerCase().endsWith('dashboardsponsee.html');
-        const shouldBeSponsor = dashboard.toLowerCase().includes('dashboardsponsor.html');
-        const isCorrectDashboard = (shouldBeSponsor && onSponsor) || (!shouldBeSponsor && onSponsee);
-
-        dropdown.style.display = 'none';
-
-        if (!isCorrectDashboard) {
-          window.location.href = target.toString();
-          return;
-        }
-
-        // Already on correct dashboard: smooth scroll + highlight
-        setTimeout(() => {
-          if (n.related_offer_id) {
-            if (!jumpToOfferId(n.related_offer_id)) {
-              // If card not yet rendered, poll briefly
-              waitAndJumpToOffer(n.related_offer_id);
-            }
-          }
-        }, 100);
-      };
-
-      dropdown.appendChild(notif);
-    });
+    dropdown.appendChild(actionsRow);
   }
+
+  // If no notifications at all
+  if (!notifications.length) {
+    dropdown.innerHTML += `
+      <div class="notif-item"
+           style="padding:20px;text-align:center;color:#aaa;">
+        No notifications.
+      </div>`;
+    return;
+  }
+
+  // === Notification list ===
+  notifications.forEach(n => {
+    const notif = document.createElement('div');
+    notif.className = 'notif-item';
+    notif.style.padding = '12px 18px';
+    notif.style.cursor = 'pointer';
+    notif.style.borderBottom = '1px solid #333';
+    notif.style.background = n.read ? 'transparent' : '#292929';
+    notif.innerHTML = `
+      <div style="font-weight:bold;font-size:1em;color:${n.read ? '#fff' : '#3498fd'}">
+        ${n.title || '[No Title]'}
+      </div>
+      <div style="font-size:0.95em;line-height:1.5;">
+        ${n.message || ''}
+      </div>
+      <div style="font-size:0.85em;color:#aaa;margin-top:3px;">
+        ${n.created_at ? new Date(n.created_at).toLocaleString() : ''}
+      </div>
+    `;
+
+    notif.onclick = async () => {
+      // Mark read if needed
+      if (!n.read) {
+        const { error } = await supabase
+          .from('user_notifications')
+          .update({ read: true })
+          .eq('id', n.id);
+        if (error) console.error('alerts.js: mark read failed:', error.message);
+        n.read = true;
+        loadNotifications();
+      }
+
+      const dashboard = resolveDashboardPath(userType);
+      const target = new URL(dashboard, window.location.href);
+      if (n.related_offer_id) target.searchParams.set('offer', n.related_offer_id);
+      if (n.type)            target.searchParams.set('type', n.type);
+      target.searchParams.set('notif', String(n.id));
+
+      const onSponsor = location.pathname.toLowerCase().endsWith('dashboardsponsor.html');
+      const onSponsee = location.pathname.toLowerCase().endsWith('dashboardsponsee.html');
+      const shouldBeSponsor = dashboard.toLowerCase().includes('dashboardsponsor.html');
+      const isCorrectDashboard = (shouldBeSponsor && onSponsor) || (!shouldBeSponsor && onSponsee);
+
+      dropdown.style.display = 'none';
+
+      if (!isCorrectDashboard) {
+        window.location.href = target.toString();
+        return;
+      }
+
+      setTimeout(() => {
+        if (n.related_offer_id) {
+          if (!jumpToOfferId(n.related_offer_id)) {
+            waitAndJumpToOffer(n.related_offer_id);
+          }
+        }
+      }, 100);
+    };
+
+    dropdown.appendChild(notif);
+  });
+}
+
 
   // Bell open/close
   bell.addEventListener('click', (e) => {
@@ -441,4 +509,3 @@ export async function notifyNewOffer({ offer_id, to_user_id, from_username, offe
     related_offer_id: offer_id
   });
 }
-
