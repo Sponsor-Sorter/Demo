@@ -29,17 +29,17 @@
     .review { padding:10px 12px; background:#171923; border:1px solid #2b3350; border-radius:12px; margin-bottom:10px; }
     .wrap { max-width:1100px; margin:22px auto; padding:0 14px; }
     .profile-card {
-  background: #222;
-  border: 2px solid;
-  background: linear-gradient(#000000, #212121) padding-box, linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box;
-  border: 3px solid transparent;
-  border-radius: 18px;
-  padding: 22px 26px;
-  margin-bottom: 26px;
-  box-sizing: border-box;
-  box-shadow: 0 2px 18px 0 rgba(49, 16, 210, 0.06);
-  transition: box-shadow 0.18s;
-}
+      background: #222;
+      border: 2px solid;
+      background: linear-gradient(#000000, #212121) padding-box, linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box;
+      border: 3px solid transparent;
+      border-radius: 18px;
+      padding: 22px 26px;
+      margin-bottom: 26px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 18px 0 rgba(49, 16, 210, 0.06);
+      transition: box-shadow 0.18s;
+    }
     .recent-deals, .Archived-deals {border-color: white;border-left-width: 1px;border-right-width: 1px;}
     .profile-header { display:flex; gap:18px; align-items:flex-start; }
     .profile-picture img { width:120px !important; height:120px !important; border-radius:50%; object-fit:cover; background:#222; }
@@ -50,33 +50,102 @@
     .section { margin:16px 0; }
     .section legend, .section h3 { margin:0 0 10px 0; }
     .err { color:#ff6b6b; text-align:center; margin-top:40px; }
+
     /* Stars: gold for filled, grey for empty */
-.stars { display:inline-flex; gap:2px; }
-.stars .star.full  { color:#F6C62E; }   /* brand gold */
-.stars .star.empty { color:#666; }      /* muted grey */
-.stars .star { font-size:1.2em; line-height:1; }
+    .stars { display:inline-flex; gap:2px; }
+    .stars .star.full  { color:#F6C62E; }
+    .stars .star.empty { color:#666; }
+    .stars .star { font-size:1.2em; line-height:1; }
 
-/* Put CTAs under avatar and center them */
+    /* Put CTAs under avatar and center them */
+    .profile-picture .cta-row a { min-width:120px; text-align:center; }
 
-.profile-picture .cta-row a { min-width:120px; text-align:center; }
+    /* Inline | http://127.0.0.1:5500/public/u/index.html?u=fitstyle */
+    .profile-picture .cta-row a {
+      /* min-width: 120px; */
+      min-width: 127px;
+      padding: 5px;
+      margin: 8px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-row { width: 210px; }
 
-/* Inline | http://127.0.0.1:5500/public/u/index.html?u=fitstyle */
-
-.profile-picture .cta-row a {
-  /* min-width: 120px; */
-  min-width: 127px;
-  padding: 5px;
-  margin: 8px;
-  margin-left: auto;
-  margin-right: auto;
-  
-}
-
-
-.cta-row {
-  width: 210px;
-}
-
+    /* Platform stats grid */
+    .platform-stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:12px;
+    }
+    .platform-card {
+      background:#111827;
+      border-radius:14px;
+      border:1px solid #2b3350;
+      padding:12px 14px;
+      box-sizing:border-box;
+    }
+    .platform-header {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .platform-avatar img {
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#000;
+    }
+    .platform-meta-title {
+      font-weight:600;
+      font-size:0.98rem;
+    }
+    .platform-meta-sub {
+      font-size:0.85rem;
+      color:#9aa3af;
+    }
+    .platform-kpis {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:4px 12px;
+      font-size:0.88rem;
+      margin-bottom:8px;
+    }
+    .platform-kpis div strong {
+      display:block;
+      font-size:0.78rem;
+      color:#9aa3af;
+    }
+    .platform-latest {
+      border-top:1px solid #2b3350;
+      padding-top:8px;
+      margin-top:4px;
+    }
+    .platform-latest h4 {
+      font-size:0.9rem;
+      margin:0 0 6px 0;
+    }
+    .platform-latest-inner {
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .platform-latest-inner img {
+      width:90px;
+      height:50px;
+      border-radius:8px;
+      object-fit:cover;
+      background:#000;
+    }
+    .platform-latest-meta {
+      font-size:0.88rem;
+    }
+    .platform-latest-meta .small,
+    .small {
+      font-size:0.8rem;
+      color:#9aa3af;
+    }
   </style>
 </head>
 <body>
@@ -149,38 +218,37 @@
         </div>
 
         <!-- Stats like main dashboard -->
-<section class="kpi-row" style="display:grid;grid-template-columns:repeat(3, minmax(140px, 1fr));gap:12px;max-width:900px;margin:12px auto 18px;">
-  <div class="card"><h3>Total Offers</h3><p id="kpi-total">—</p></div>
-  <div class="card"><h3>Active</h3><p id="kpi-active">—</p></div>
-  <div class="card"><h3>Completed</h3><p id="kpi-completed">—</p></div>
-</section>
+        <section class="kpi-row" style="display:grid;grid-template-columns:repeat(3, minmax(140px, 1fr));gap:12px;max-width:900px;margin:12px auto 18px;">
+          <div class="card"><h3>Total Offers</h3><p id="kpi-total">—</p></div>
+          <div class="card"><h3>Active</h3><p id="kpi-active">—</p></div>
+          <div class="card"><h3>Completed</h3><p id="kpi-completed">—</p></div>
+        </section>
 
-<!-- Recent deals -->
-<fieldset class="recent-deals" style="max-width:980px;margin:0 auto 16px;">
-  <legend><h2>Recent Sponsorship Deals</h2></legend>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Sponsee</th><th>Status</th><th>Amount</th><th>Offer Date</th><th>Deadline</th><th>Live</th>
-      </tr>
-    </thead>
-    <tbody id="recent-deals-body"></tbody>
-  </table>
-</fieldset>
+        <!-- Recent deals -->
+        <fieldset class="recent-deals" style="max-width:980px;margin:0 auto 16px;">
+          <legend><h2>Recent Sponsorship Deals</h2></legend>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sponsee</th><th>Status</th><th>Amount</th><th>Offer Date</th><th>Deadline</th><th>Live</th>
+              </tr>
+            </thead>
+            <tbody id="recent-deals-body"></tbody>
+          </table>
+        </fieldset>
 
-<!-- Sponsorship history (completed/archived) -->
-<fieldset class="Archived-deals" style="max-width:980px;margin:0 auto 20px;">
-  <legend><h2>Sponsorship History</h2></legend>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Sponsee</th><th>Amount</th><th>Offer Date</th><th>Live</th><th>Deadline</th><th>Sponsor → Sponsee</th><th>Sponsee → Sponsor</th>
-      </tr>
-    </thead>
-    <tbody id="history-body"></tbody>
-  </table>
-</fieldset>
-
+        <!-- Sponsorship history (completed/archived) -->
+        <fieldset class="Archived-deals" style="max-width:980px;margin:0 auto 20px;">
+          <legend><h2>Sponsorship History</h2></legend>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sponsee</th><th>Amount</th><th>Offer Date</th><th>Live</th><th>Deadline</th><th>Sponsor → Sponsee</th><th>Sponsee → Sponsor</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </fieldset>
 
         <hr class="rule">
 
@@ -199,6 +267,257 @@
         <em>
           This section shows any social handles the user has chosen to display publicly. OAuth-only data (tokens, emails, phone, wallet) is never exposed.
         </em>
+      </div>
+    </fieldset>
+
+    <!-- PLATFORM STATS (live, read-only) -->
+    <fieldset class="section profile-card">
+      <legend>Platform Stats</legend>
+      <div id="platform-stats-grid" class="platform-stats-grid">
+
+        <!-- YouTube -->
+        <div id="platform-youtube" class="platform-card" style="display:none;">
+          <div class="platform-header">
+            <div class="platform-avatar">
+              <img id="yt-profile-pic" src="../logos.png" alt="YouTube profile">
+            </div>
+            <div>
+              <div class="platform-meta-title">YouTube</div>
+              <div id="yt-channel-title" class="platform-meta-sub">—</div>
+            </div>
+          </div>
+          <div class="platform-kpis">
+            <div>
+              <strong>Subscribers</strong>
+              <span id="yt-subscribers">—</span>
+            </div>
+            <div>
+              <strong>Total views</strong>
+              <span id="yt-views">—</span>
+            </div>
+            <div>
+              <strong>Videos</strong>
+              <span id="yt-videos">—</span>
+            </div>
+          </div>
+          <div class="platform-latest" id="yt-latest-wrapper" style="display:none;">
+            <h4>Latest Video</h4>
+            <div class="platform-latest-inner">
+              <a id="yt-last-video-link" href="#" target="_blank" rel="noopener">
+                <img id="yt-last-thumb" src="../logos.png" alt="Latest YouTube video thumbnail">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="yt-last-title">—</div>
+                <div class="small">
+                  <span id="yt-last-views">—</span>
+                  <span> • </span>
+                  <span id="yt-last-date">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TikTok -->
+        <div id="platform-tiktok" class="platform-card" style="display:none;">
+          <div class="platform-header">
+            <div class="platform-avatar">
+              <img id="tt-profile-pic" src="../logos.png" alt="TikTok profile">
+            </div>
+            <div>
+              <div class="platform-meta-title">TikTok</div>
+              <div id="tt-username" class="platform-meta-sub">—</div>
+            </div>
+          </div>
+          <div class="platform-kpis">
+            <div>
+              <strong>Followers</strong>
+              <span id="tt-followers">—</span>
+            </div>
+            <div>
+              <strong>Total likes</strong>
+              <span id="tt-likes">—</span>
+            </div>
+            <div>
+              <strong>Videos</strong>
+              <span id="tt-videos">—</span>
+            </div>
+          </div>
+          <div class="platform-latest" id="tt-latest-wrapper" style="display:none;">
+            <h4>Latest Video</h4>
+            <div class="platform-latest-inner">
+              <a id="tt-last-link" href="#" target="_blank" rel="noopener">
+                <img id="tt-last-thumb" src="../logos.png" alt="Latest TikTok video thumbnail">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="tt-last-desc">—</div>
+                <div class="small">
+                  <span id="tt-last-views">—</span>
+                  <span> • </span>
+                  <span id="tt-last-date">—</span>
+                </div>
+                <div class="small">
+                  <span id="tt-last-likes">—</span>,
+                  <span id="tt-last-comments">—</span>,
+                  <span id="tt-last-shares">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Twitch -->
+        <div id="platform-twitch" class="platform-card" style="display:none;">
+          <div class="platform-header">
+            <div class="platform-avatar">
+              <img id="tw-profile-pic" src="../logos.png" alt="Twitch profile">
+            </div>
+            <div>
+              <div class="platform-meta-title">Twitch</div>
+              <div id="tw-display-name" class="platform-meta-sub">—</div>
+            </div>
+          </div>
+          <div class="platform-kpis">
+            <div>
+              <strong>Followers</strong>
+              <span id="tw-followers">—</span>
+            </div>
+            <div>
+              <strong>Status</strong>
+              <span id="tw-status">—</span>
+            </div>
+            <div>
+              <strong>Viewers</strong>
+              <span id="tw-viewers">—</span>
+            </div>
+          </div>
+          <div class="platform-latest" id="tw-latest-wrapper" style="display:none;">
+            <h4>Last Stream</h4>
+            <div class="platform-latest-inner">
+              <a id="tw-last-link" href="#" target="_blank" rel="noopener">
+                <img id="tw-last-thumb" src="../logos.png" alt="Last Twitch stream thumbnail">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="tw-last-title">—</div>
+                <div class="small">
+                  <span id="tw-last-game">—</span>
+                  <span> • </span>
+                  <span id="tw-last-views">—</span>
+                </div>
+                <div class="small">
+                  <span id="tw-last-date">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instagram -->
+        <div id="platform-instagram" class="platform-card" style="display:none;">
+          <div class="platform-header">
+            <div class="platform-avatar">
+              <img id="ig-profile-pic" src="../logos.png" alt="Instagram profile">
+            </div>
+            <div>
+              <div class="platform-meta-title">Instagram</div>
+              <div id="ig-username" class="platform-meta-sub">—</div>
+            </div>
+          </div>
+          <div class="platform-kpis">
+            <div>
+              <strong>Followers</strong>
+              <span id="ig-followers">—</span>
+            </div>
+            <div>
+              <strong>Posts</strong>
+              <span id="ig-posts">—</span>
+            </div>
+            <div>
+              <strong>7-day Reach</strong>
+              <span id="ig-reach-7d">—</span>
+            </div>
+          </div>
+          <div class="platform-latest" id="ig-last-wrapper" style="display:none;">
+            <h4>Latest Post</h4>
+            <div class="platform-latest-inner">
+              <a id="ig-last-link" href="#" target="_blank" rel="noopener">
+                <img id="ig-last-thumb" src="../logos.png" alt="Latest Instagram post">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="ig-last-caption">—</div>
+                <div class="small">
+                  <span id="ig-last-likes">—</span>,
+                  <span id="ig-last-comments">—</span>,
+                  <span id="ig-last-views">—</span>
+                </div>
+                <div class="small">
+                  <span id="ig-last-date">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="platform-latest" id="ig-top-wrapper" style="display:none;">
+            <h4>Top Recent Post</h4>
+            <div class="platform-latest-inner">
+              <a id="ig-top-link" href="#" target="_blank" rel="noopener">
+                <img id="ig-top-thumb" src="../logos.png" alt="Top Instagram post">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="ig-top-caption">—</div>
+                <div class="small">
+                  <span id="ig-top-likes">—</span>,
+                  <span id="ig-top-comments">—</span>,
+                  <span id="ig-top-views">—</span>
+                </div>
+                <div class="small">
+                  <span id="ig-top-engagement">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Facebook -->
+        <div id="platform-facebook" class="platform-card" style="display:none;">
+          <div class="platform-header">
+            <div class="platform-avatar">
+              <img id="fb-profile-pic" src="../logos.png" alt="Facebook page profile">
+            </div>
+            <div>
+              <div class="platform-meta-title">Facebook Page</div>
+              <div id="fb-page-name" class="platform-meta-sub">—</div>
+            </div>
+          </div>
+          <div class="platform-kpis">
+            <div>
+              <strong>Followers</strong>
+              <span id="fb-followers">—</span>
+            </div>
+            <div>
+              <strong>Page likes</strong>
+              <span id="fb-likes">—</span>
+            </div>
+            <div>
+              <strong>28d Reach</strong>
+              <span id="fb-28d-reach">—</span>
+            </div>
+          </div>
+          <div class="platform-latest" id="fb-latest-wrapper" style="display:none;">
+            <h4>Latest Post</h4>
+            <div class="platform-latest-inner">
+              <a id="fb-last-link" href="#" target="_blank" rel="noopener">
+                <img id="fb-last-thumb" src="../logos.png" alt="Latest Facebook post">
+              </a>
+              <div class="platform-latest-meta">
+                <div id="fb-last-message">—</div>
+                <div class="small">
+                  <span id="fb-last-date">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </fieldset>
 
@@ -231,4 +550,3 @@
 <script type="module" src="../js/publicDashboard.js"></script>
 </body>
 </html>
-
