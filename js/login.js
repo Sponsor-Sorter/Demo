@@ -212,7 +212,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const { error } = await supabase.auth.resetPasswordForEmail(email);
+// Build an absolute URL for this environment (prod or local)
+const redirectTo = `${window.location.origin}/reset-password.html`;
+
+const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  redirectTo
+});
         if (error) {
           if (resetStatus) {
             resetStatus.textContent = 'Error sending reset email: ' + error.message;
