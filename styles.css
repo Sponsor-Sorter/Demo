@@ -1852,6 +1852,40 @@ background-color:  #28a745;
     text-align: center;
 }
 
+/* Password strength meter (used on reset-password.html) */
+.password-strength {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.password-strength-bar {
+  width: 0%;
+  height: 6px;
+  border-radius: 999px;
+  background-color: #444; /* default / empty */
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.password-strength-text {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+
+#new-password {
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+#confirm-password {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
+
 .home-cont {
   width: 90%;
   margin: 0 auto;      /* <-- THIS centers it horizontally */
