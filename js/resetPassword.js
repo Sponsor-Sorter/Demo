@@ -18,13 +18,121 @@ window.addEventListener('DOMContentLoaded', async () => {
   const confirmPasswordInput = document.getElementById('confirm-password');
   const statusEl = document.getElementById('new-password-status');
 
+  // Eye toggle elements
+  const newPasswordToggle = document.getElementById('new-password-toggle');
+  const confirmPasswordToggle = document.getElementById('confirm-password-toggle');
+
+  // Strength meter elements
+  const strengthBar = document.getElementById('password-strength-bar');
+  const strengthText = document.getElementById('password-strength-text');
+
   function setStatus(message, isError = false) {
     if (!statusEl) return;
     statusEl.textContent = message;
     statusEl.className = 'reset-status ' + (isError ? 'error' : 'success');
   }
 
-  // Make sure this link actually gave us a session
+  // -------- Password eye toggles (same icons as login) --------
+  function attachToggle(inputEl, toggleEl) {
+    if (!inputEl || !toggleEl) return;
+
+    const ICON_SHOW = '👁'; // field hidden → show password
+    const ICON_HIDE = '◡';  // field visible → "closed eye"
+
+    const toggleVisibility = () => {
+      const isHidden = inputEl.type === 'password';
+      inputEl.type = isHidden ? 'text' : 'password';
+
+      toggleEl.textContent = isHidden ? ICON_HIDE : ICON_SHOW;
+      toggleEl.setAttribute(
+        'aria-label',
+        isHidden ? 'Hide password' : 'Show password'
+      );
+    };
+
+    toggleEl.addEventListener('click', toggleVisibility);
+    toggleEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleVisibility();
+      }
+    });
+  }
+
+  attachToggle(newPasswordInput, newPasswordToggle);
+  attachToggle(confirmPasswordInput, confirmPasswordToggle);
+
+  // -------- Password strength evaluation --------
+  function evaluatePasswordStrength(pw) {
+    if (!pw) {
+      return { score: 0, label: 'Minimum 8 characters.' };
+    }
+
+    let score = 0;
+
+    // Basic length
+    if (pw.length >= 8) score++;
+    // Mixed case
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    // Numbers
+    if (/\d/.test(pw)) score++;
+    // Symbols
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    // Extra length bonus
+    if (pw.length >= 12) score++;
+
+    let label;
+    if (score <= 1) {
+      label = 'Very weak';
+    } else if (score === 2) {
+      label = 'Weak';
+    } else if (score === 3) {
+      label = 'Medium';
+    } else {
+      label = 'Strong';
+    }
+
+    return { score, label };
+  }
+
+  function updateStrengthMeter() {
+    if (!newPasswordInput || !strengthBar || !strengthText) return;
+
+    const pw = newPasswordInput.value;
+    if (!pw) {
+      strengthBar.style.width = '0%';
+      strengthBar.style.backgroundColor = '#444';
+      strengthText.textContent = 'Minimum 8 characters.';
+      return;
+    }
+
+    const { score, label } = evaluatePasswordStrength(pw);
+    const normalized = Math.min(score, 4); // clamp to 0–4
+    const widthPct = (normalized / 4) * 100;
+
+    let color;
+    if (normalized <= 1) {
+      color = '#ff4d4d';      // red
+    } else if (normalized === 2) {
+      color = '#ffb74d';      // orange
+    } else if (normalized === 3) {
+      color = '#ffd95e';      // yellow
+    } else {
+      color = '#66ff99';      // green
+    }
+
+    strengthBar.style.width = widthPct + '%';
+    strengthBar.style.backgroundColor = color;
+    strengthText.textContent = 'Strength: ' + label;
+  }
+
+  if (newPasswordInput) {
+    newPasswordInput.addEventListener('input', updateStrengthMeter);
+    // initialise empty state
+    updateStrengthMeter();
+  }
+
+  // -------- Ensure the recovery link actually gave us a session --------
   try {
     const { data, error } = await supabase.auth.getSession();
     if (error) {
@@ -48,6 +156,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   if (!form || !newPasswordInput || !confirmPasswordInput) return;
 
+  // -------- Form submit: actually update the password via Supabase --------
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     setStatus('');
