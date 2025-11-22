@@ -2,30 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Login to your Sponsor Sorter account to manage your profile, linked accounts, and sponsorship opportunities.">
-    <title>Login - Sponsor Sorter</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script type="module" src="./js/login.js"></script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKW1Q9PH7Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Login to your Sponsor Sorter account to manage your profile, linked accounts, and sponsorship opportunities.">
+  <title>Login - Sponsor Sorter</title>
 
-  gtag('config', 'G-FKW1Q9PH7Z');
-</script>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-    
+  <!-- Use relative path so it works locally and on GitHub Pages -->
+  <script type="module" src="./js/login.js"></script>
 </head>
 
 <body>
-    
 
-<header class="navbar1">
+ <header class="navbar1">
     <section class="navbar"> 
      <div class="navii">
          <h5>  <header>Sponsor Sorter</header> </h5>
@@ -47,71 +38,296 @@
 
  </header>
 
-    <!-- Login Section -->
-    <section class="loginbox-section">
-        <div class="login-wrapper">
-            <!-- Sponsor List on Left -->
-            <div class="sponsor-list-left">
-                <ul id="sponsor-list-left"></ul>
-           </div>
+  <!-- Login Section -->
+  <section class="loginbox-section">
+    <div class="login-wrapper">
+      <!-- Sponsor List on Left -->
+      <div class="sponsor-list-left">
+        <ul id="sponsor-list-left"></ul>
+      </div>
 
-            <!-- Login Form -->
-            <div class="loginbox">
-                <div class="logo">
-                    <img src="Logo1.jpg" alt="Sponsor Sorter Logo" height="100" width="300">
-                </div>
-                <h2>Login to Your Account</h2>
-                <form id="loginForm" class="login-form">
-                    <div class="form-group">
-                        <label for="username">Username or Email:</label>
-                        <input type="text" id="username" name="username" placeholder="Enter Username or Email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" placeholder="********" minlength="8" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Sign In</button>
-                    </div>
-                </form>
-                <p>Don't have an account?</P>
-                    <p><a href="signup.html">Sign up here</a></p>
+      <!-- Login Form -->
+      <div class="loginbox">
+        <div class="logo">
+          <img src="Logo1.jpg" alt="Sponsor Sorter Logo" height="100" width="300" />
+        </div>
+        <h2>Login to Your Account</h2>
+
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="username">Username or Email:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter Username or Email"
+              required
+            />
+          </div>
+
+          <!-- Password + eye toggle INSIDE the input -->
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <div class="password-input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="********"
+                minlength="8"
+                required
+              />
+              <span
+                id="password-toggle"
+                class="password-toggle"
+                aria-label="Show password"
+                role="button"
+                tabindex="0"
+              >
+                👁
+              </span>
             </div>
+          </div>
 
-            <!-- Sponsor List on Right -->
-            <div class="sponsor-list-right">
-                <ul id="sponsor-list-right"></ul>
-            </div>
-        </div>
-    </section>
+          <!-- Error box shown when login fails -->
+<div id="login-error-box" class="login-error-box" style="display:none;">
+  Incorrect details.
+  <button
+    type="button"
+    id="reset-password-trigger"
+    class="reset-password-link"
+  >
+    Click here to reset password.
+  </button>
+</div>
 
-    
-        
 
-    </section>
+          <div class="form-group">
+            <button type="submit">Sign In</button>
+          </div>
+        </form>
 
-    <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div class="blurbbit" style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN/ACN: 00 000 000 000 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
-    </footer>
-     
-        
+        <p>Don't have an account?</p>
+        <p><a href="signup.html">Sign up here</a></p>
+      </div>
 
+      <!-- Sponsor List on Right -->
+      <div class="sponsor-list-right">
+        <ul id="sponsor-list-right"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul>
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
+        <li><a href="./blog.html">Blog</a></li>
+        <li><a href="./forum.html">Forum</a></li>
+        <li><a href="./stats.html">Stats</a></li>
+      </ul>
+    </div>
+    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480
+      <br />
+      Data protected by
+      <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a>
+      | Powered by
+      <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+    </div>
+  </footer>
+ <style>
+    .password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input[type="password"],
+.password-input-wrapper input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 2rem; /* room for the eye icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
+  color: black;
+}
+
+#password {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+
+.login-form input {
+  width: 90%;
+}
+
+/* Error box under password */
+.login-error-box {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background-color: #641d1dd1;
+  border: 1px solid #ff4d4d;
+  color: #ffe5e5;
+  font-size: 0.9rem;
+}
+
+.reset-password-link {
+  background-color: initial !important;
+  border: none;
+  color: #ffb3b3;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  box-shadow: none;
+}
+
+
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+  background: #111;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  border: 1px solid #444;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* Reset status text */
+.reset-status {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.reset-status.error {
+  color: #ff8080;
+}
+
+.reset-status.success {
+  color: #80ff80;
+}
+
+/* Already existing password-eye wrapper (for reference) */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input[type="password"],
+.password-input-wrapper input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 2.5rem; /* room for eye icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
+}
+
+
+
+
+ </style>
+
+ <!-- Reset Password Modal -->
+<div id="reset-password-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <button
+      type="button"
+      id="reset-password-close"
+      class="modal-close"
+      aria-label="Close"
+      style="box-shadow: none;color: red;"
+
+    >
+      &times;
+    </button>
+    <h3>Reset your password</h3>
+    <p>Enter your account email and we’ll send you a reset link.</p>
+
+    <form id="reset-password-form">
+      <div class="form-group">
+        <label for="reset-email">Email address</label>
+        <input
+          type="email"
+          id="reset-email"
+          name="reset-email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="reset-last-password">
+          Last password you remember
+          <span style="font-weight:normal;font-size:0.9em;">(optional)</span>
+        </label>
+        <input
+          type="password"
+          id="reset-last-password"
+          name="reset-last-password"
+        />
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Send Reset Link</button>
+      </div>
+
+      <p id="reset-password-status" class="reset-status"></p>
+    </form>
+  </div>
+</div>
 
 </body>
 
