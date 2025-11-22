@@ -1761,7 +1761,7 @@ background-color:  #28a745;
 .sponsor-list-left figure:hover img,
 .sponsor-list-right figure:hover img {
   transform: scale(1.07) rotate(-3deg);
-  border-color: #4ad1a0;
+  border-color: #532678;
 }
 
 /* Username/handle style */
@@ -1800,6 +1800,7 @@ background-color:  #28a745;
     display: flex;
     flex-direction: column;
     justify-content: center; /* Center the content inside the login box */
+      max-width: 350px;
 }
 
 
@@ -1840,6 +1841,7 @@ background-color:  #28a745;
 
 .login-form button:hover {
     background-color: #45a049;
+    box-shadow: none;
 }
 
 /* Footer */
@@ -2880,7 +2882,7 @@ fieldset {
   }
 
   .userprofile  {
-    width: 95%;
+    width: 98%;
   }
 
  
@@ -7200,7 +7202,7 @@ input:checked + .slider:before {
     text-decoration: none !important;
     background: none !important;
     border-radius: 12px !important;
-    padding: 11px 0 !important;
+    padding: 15px 0 !important;
     letter-spacing: 0.01em;
     transition: background 0.17s, color 0.15s;
   }
@@ -8231,7 +8233,7 @@ nav {
 
 /* Each metric + its stars */
 .stars-row .star-item {
-  display: inline-flex;
+  display: grid;
   align-items: center;
   gap: 8px;
 }
@@ -8420,7 +8422,7 @@ section.friends-panel {
 
   .active-listings {
     display: block !important;        /* override your grid */
-    column-count: 2;                  /* two vertical stacks */
+    column-count: 1;                  /* two vertical stacks */
     column-gap: 200px !important;                 /* space between columns */
     margin-left: 90px !important;
     margin-right: 20px !important;
@@ -8567,6 +8569,67 @@ section.friends-panel {
   grid-template-columns: 1fr;
   width: 312px;
  }
+ 
+
+ /* Two-column layout: badges (left) + platforms (right) */
+.grid2{
+  display:grid !important;
+  grid-template-columns: minmax(320px,1fr) minmax(420px,1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "badges platforms"
+    "meta   platforms";
+  column-gap:18px;
+  row-gap:12px;
+  align-items:start !important;
+  margin-top:10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toppers {
+  display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
+
+/* Left column: trust badges */
+.grid2 .trust-badges{
+  grid-area:badges;
+}
+
+/* Right column: Supported Platforms (span both rows) */
+.grid2 #approved-platforms{
+  grid-area:platforms;
+  align-self:start;
+  justify-self:stretch;
+  width:100%;
+  max-width:600px;
+  /* override earlier centering so it sits in the right column */
+}
+
+/* The small stats line below the badges */
+.grid2 > div:not(.trust-badges):not(#approved-platforms){
+  grid-area:meta;
+  text-align:left;
+}
+
+/* Kill the line break that was creating extra space */
+.grid2 br{ display:none; }
+
+/* Responsive: stack on small screens */
+@media (max-width: 920px){
+  .grid2{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "badges"
+      "platforms"
+      "meta";
+  }
+  .grid2 > div:not(.trust-badges):not(#approved-platforms){ text-align:center; }
+  .grid2 #approved-platforms{ justify-self:center; }
+}
+
 
  #friends-accepted {
   display: grid !important;
@@ -8581,9 +8644,11 @@ section.friends-panel {
  /* ===== Friends — accepted grid (5 per row) ===== */
 #friends-accepted {
   display: grid !important;
-  grid-template-columns: repeat(5, 1fr);  /* always 5 across */
-  gap: 12px;
+ grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+    margin-left: 45px;
   align-items: start;
+
 }
 
 /* make the tiny cards fill their grid cell */
@@ -8645,6 +8710,16 @@ section.friends-panel {
 
 
 }
+@media (min-width:1400px ) {
+  
+
+ .active-listings {
+    display: block !important;        /* override your grid */
+    column-count: 2;                  /* two vertical stacks */
+    column-gap: 200px !important;                 /* space between columns */
+    margin-left: 90px !important;
+    margin-right: 20px !important;
+  }}
 
 .navii > div:nth-child(3) {
   height: 63px;
@@ -8661,7 +8736,11 @@ section.friends-panel {
 }
 
 
-
+@media (max-width: 1190px){
+  .activity-feed-fieldset {
+display: none !important;
+  }
+}
 
 .navbar nav li {
   height: 55px;
