@@ -90,25 +90,35 @@
           </div>
 
           <!-- Error box shown when login fails -->
-<div id="login-error-box" class="login-error-box" style="display:none;">
-  Incorrect details.
-  <button
-    type="button"
-    id="reset-password-trigger"
-    class="reset-password-link"
-  >
-    Click here to reset password.
-  </button>
-</div>
-
+          <div id="login-error-box" class="login-error-box" style="display:none;">
+            Incorrect details.
+            <button
+              type="button"
+              id="reset-password-trigger"
+              class="reset-password-link"
+            >
+              Click here to reset password.
+            </button>
+          </div>
 
           <div class="form-group">
             <button type="submit">Sign In</button>
           </div>
         </form>
 
-        <p>Don't have an account?</p>
-        <p><a href="signup.html">Sign up here</a></p>
+        <!-- Inline signup + reset password links -->
+        <p class="login-extra-line">
+          Don't have an account?
+          <a href="signup.html">Sign up here</a>
+          
+          <button
+            type="button"
+            id="reset-password-open"
+            class="reset-password-link"
+          >
+            Reset password
+          </button>
+        </p>
       </div>
 
       <!-- Sponsor List on Right -->
@@ -142,142 +152,205 @@
       <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
     </div>
   </footer>
+
  <style>
     .password-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
 
-.password-input-wrapper input[type="password"],
-.password-input-wrapper input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;
-  padding-right: 2rem; /* room for the eye icon */
-}
+    .password-input-wrapper input[type="password"],
+    .password-input-wrapper input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 2rem; /* room for the eye icon */
+    }
 
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.1rem;
-  line-height: 1;
-  user-select: none;
-  color: black;
-}
+    .password-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      user-select: none;
+      color: black;
+    }
 
-#password {
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
+    #password {
+      margin-bottom: 5px;
+      margin-top: 5px;
+    }
 
+    .login-form input {
+      width: 90%;
+    }
 
-.login-form input {
-  width: 90%;
-}
+    /* Error box under password */
+    .login-error-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      background-color: #641d1dd1;
+      border: 1px solid #ff4d4d;
+      color: #ffe5e5;
+      font-size: 0.9rem;
+    }
 
-/* Error box under password */
-.login-error-box {
-  margin-top: 8px;
-  padding: 8px 10px;
-  border-radius: 4px;
-  background-color: #641d1dd1;
-  border: 1px solid #ff4d4d;
-  color: #ffe5e5;
-  font-size: 0.9rem;
-}
+    .reset-password-link {
+      background-color: initial !important;
+      border: none;
+      color: #cfcfcf;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 4px;
+      box-shadow: none;
+    }
 
-.reset-password-link {
-  background-color: initial !important;
-  border: none;
-  color: #ffb3b3;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 4px;
-  box-shadow: none;
-}
+    /* Inline text line for signup + reset */
+    .login-extra-line {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #eee;
+    }
 
+    .login-extra-line a {
+      color: #f0f0f0;
+      text-decoration: underline;
+    }
 
+    /* Modal overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
 
-/* Modal overlay */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+    /* Modal content box */
+    .modal-content {
+      background: #111;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      border: 1px solid #444;
+      position: relative;
+    }
 
-/* Modal content box */
-.modal-content {
-  background: #111;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-  border: 1px solid #444;
-  position: relative;
-}
+    .modal-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
 
-.modal-close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.4rem;
-  cursor: pointer;
-}
+    /* Reset status text */
+    .reset-status {
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
 
-/* Reset status text */
-.reset-status {
-  margin-top: 8px;
-  font-size: 0.9rem;
-}
+    .reset-status.error {
+      color: #ff8080;
+    }
 
-.reset-status.error {
-  color: #ff8080;
-}
+    .reset-status.success {
+      color: #80ff80;
+    }
 
-.reset-status.success {
-  color: #80ff80;
-}
+    /* Already existing password-eye wrapper (for reference) */
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
 
-/* Already existing password-eye wrapper (for reference) */
-.password-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+    .password-input-wrapper input[type="password"],
+    .password-input-wrapper input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 2.5rem; /* room for eye icon */
+    }
 
-.password-input-wrapper input[type="password"],
-.password-input-wrapper input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;
-  padding-right: 2.5rem; /* room for eye icon */
-}
+    .password-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      user-select: none;
+    }
 
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 1.1rem;
-  line-height: 1;
-  user-select: none;
-}
+    /* Base banner with your static PNG */
+    .banner-animated {
+      position: relative;
+      background-image: url('./sponsor-sorter-banner.png'); /* <-- your header image */
+      background-size: cover;
+      background-position: center;
+      padding: 20px 40px;          /* keep whatever padding you already use */
+      overflow: hidden;            /* hide animated overflow */
+    }
 
+    /* Vertical light-blue lines sliding across */
+    .banner-animated::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(120, 220, 255, 0.25) 0px,
+        rgba(120, 220, 255, 0.25) 2px,
+        rgba(120, 220, 255, 0) 2px,
+        rgba(120, 220, 255, 0) 70px
+      );
+      opacity: 0.5;
+      mix-blend-mode: screen;      /* lets it sit “on” your existing blue grid */
+      pointer-events: none;
+      animation: banner-lines-move 12s linear infinite;
+    }
 
+    /* A sweeping glow that travels along the lines */
+    .banner-animated::after {
+      content: "";
+      position: absolute;
+      inset: -20%;                 /* a bit bigger so the skew doesn’t show edges */
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(120, 220, 255, 0.7) 50%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      transform: skewX(-12deg);
+      pointer-events: none;
+      animation: banner-sweep 5s linear infinite;
+    }
 
+    @keyframes banner-lines-move {
+      from { background-position: 0 0; }
+      to   { background-position: 600px 0; }  /* tweak for speed/distance */
+    }
 
+    @keyframes banner-sweep {
+      from { background-position: -200% 0; }
+      to   { background-position: 200% 0; }
+    }
  </style>
 
  <!-- Reset Password Modal -->
@@ -289,7 +362,6 @@
       class="modal-close"
       aria-label="Close"
       style="box-shadow: none;color: red;"
-
     >
       &times;
     </button>
