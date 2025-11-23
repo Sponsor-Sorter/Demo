@@ -112,7 +112,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const errorBox = document.getElementById('login-error-box');
 
   // Reset password modal elements
-  const resetTrigger = document.getElementById('reset-password-trigger');
+  const resetTrigger = document.getElementById('reset-password-trigger'); // in error box
+  const resetOpen = document.getElementById('reset-password-open');       // inline below form
   const resetModal = document.getElementById('reset-password-modal');
   const resetClose = document.getElementById('reset-password-close');
   const resetForm = document.getElementById('reset-password-form');
@@ -180,6 +181,9 @@ window.addEventListener('DOMContentLoaded', () => {
   if (resetTrigger) {
     resetTrigger.addEventListener('click', openResetModal);
   }
+  if (resetOpen) {
+    resetOpen.addEventListener('click', openResetModal);
+  }
   if (resetClose) {
     resetClose.addEventListener('click', closeResetModal);
   }
@@ -212,12 +216,13 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-// Build an absolute URL for this environment (prod or local)
-const redirectTo = `${window.location.origin}/reset-password.html`;
+        // Build an absolute URL for this environment (prod or local)
+        const redirectTo = `${window.location.origin}/reset-password.html`;
 
-const { error } = await supabase.auth.resetPasswordForEmail(email, {
-  redirectTo
-});
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo
+        });
+
         if (error) {
           if (resetStatus) {
             resetStatus.textContent = 'Error sending reset email: ' + error.message;
