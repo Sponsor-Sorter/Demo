@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Payment Success - Sponsor Sorter">
   <title>Payment Success | Sponsor Sorter</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
 </head>
 <body>
 <header class="navbar1">
@@ -14,14 +14,14 @@
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
       <div>
-        <background-img class="navimg" src="navimg.png" alt="">
+        <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
           <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
-          <li><a href="login.html">Logout</a></li>
+          <li><a href="./login.html">Logout</a></li>
         </nav>
       </div>
     </div>
@@ -29,8 +29,8 @@
 </header>
 <main style="min-height:40vh;">
   <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
-    <h2 style="color:green;">🎉 Payment successful!</h2>
-    <div id="signup-status">Creating your account...</div>
+    <h2 style="color:green;">🎉 Almost done!</h2>
+    <div id="signup-status">Finalizing your account...</div>
   </div>
 </main>
 <footer class="footercomplete">
@@ -43,7 +43,7 @@
       <li><a href="./reviews.html">Reviews</a></li>
     </ul>
   </div>
-  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
   <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
 </footer>
 <script type="module">
@@ -98,12 +98,18 @@ async function cleanupPendingLogo() {
 async function finalizeSignupAfterPayment() {
   const statusDiv = document.getElementById('signup-status');
   const url = new URL(window.location.href);
+
   const session_id = url.searchParams.get('session_id');
   const payment_status = url.searchParams.get('payment_status');
-  if (!session_id || payment_status !== 'success') {
-    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
-    await cleanupPendingLogo();
-    return;
+  const mode = url.searchParams.get('mode') || 'paid'; // 'paid' (Stripe) or 'free'
+
+  // For paid mode, ensure we have a valid payment
+  if (mode === 'paid') {
+    if (!session_id || payment_status !== 'success') {
+      statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
+      await cleanupPendingLogo();
+      return;
+    }
   }
 
   let regData = localStorage.getItem('pendingRegistration');
@@ -125,12 +131,19 @@ async function finalizeSignupAfterPayment() {
     }
   }
 
-  // 1. Get Stripe customer ID (with feedback + retry)
-  statusDiv.innerHTML = `<span style="color:blue;">Searching for Stripe customer ID...</span>`;
-  let stripe_customer_id = await fetchStripeCustomerIdWithFeedback(session_id, statusDiv, 3, 1200);
+  let stripe_customer_id = null;
+
+  if (mode === 'paid') {
+    // 1. Get Stripe customer ID (with feedback + retry)
+    statusDiv.innerHTML = `<span style="color:blue;">Searching for Stripe customer ID...</span>`;
+    stripe_customer_id = await fetchStripeCustomerIdWithFeedback(session_id, statusDiv, 3, 1200);
+  } else {
+    // Free mode – no Stripe call
+    statusDiv.innerHTML = `<span style="color:blue;">Creating your free Sponsor Sorter account...</span>`;
+  }
 
   // 2. Create Supabase Auth account
-  statusDiv.innerHTML = `<span style="color:blue;">Creating your Sponsor Sorter account...</span>`;
+  statusDiv.innerHTML += `<br><span style="color:blue;">Creating your Sponsor Sorter account...</span>`;
   let authData, signUpError;
   try {
     ({ data: authData, error: signUpError } = await supabase.auth.signUp({
@@ -178,6 +191,9 @@ async function finalizeSignupAfterPayment() {
   // 4. Insert into users_extended_data
   statusDiv.innerHTML = `<span style="color:blue;">Saving your details to our database...</span>`;
   const refCode = localStorage.getItem('pendingReferralCode');
+
+  const planType = regData.planType || 'pro';
+
   const extendedData = {
     username: regData.username,
     email: regData.email,
@@ -202,8 +218,10 @@ async function finalizeSignupAfterPayment() {
     contenttype: regData.contenttype,
     agreed_tos: true,
     referral_code: refCode || null,
-    stripe_customer_id: stripe_customer_id || null
+    stripe_customer_id: stripe_customer_id || null,
+    planType: planType
   };
+
   try {
     const { error: insertError } = await supabase
       .from('users_extended_data')
@@ -211,7 +229,11 @@ async function finalizeSignupAfterPayment() {
     if (insertError) {
       statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but failed to save profile: ${insertError.message}</span>`;
     } else {
-      statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account.<br>Redirecting to login...</span>`;
+      if (mode === 'free') {
+        statusDiv.innerHTML = `<span style="color:green;">Signup successful! You're on the Free plan. Please check your email to verify your account.<br>Redirecting to login...</span>`;
+      } else {
+        statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account.<br>Redirecting to login...</span>`;
+      }
     }
   } catch (e) {
     statusDiv.innerHTML = `<span style="color:orange;">Signup succeeded, but profile could not be completed.</span>`;
