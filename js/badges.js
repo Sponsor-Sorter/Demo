@@ -3,14 +3,16 @@ import { supabase } from './supabaseClient.js'
 
 /**
  * Injects:
- * 1) Supporter crown (from user_badges: supporter level 1/2/3)
- * 2) Offer medals (bronze/silver/gold) + affiliate badge
- * 3) Social OAuth badges on a new line beneath
+ * 1) Plan badge (Free / Pro) from users_extended_data.planType
+ * 2) Supporter crown (from user_badges: supporter level 1/2/3)
+ * 3) Offer medals (bronze/silver/gold) + affiliate badge
+ * 4) Social OAuth badges on a new line beneath
  */
 export async function injectUserBadge(userEmail, selector, emailField = 'sponsor_email') {
   let reviewCompletedCount = 0
   let isAffiliate = false
   let supporterHTML = ''
+  let planBadgeHTML = ''
 
   // 1) Offer-based badges (bronze/silver/gold) — counts review_completed offers
   try {
@@ -26,18 +28,44 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
     console.warn('Could not load offer badge count:', e)
   }
 
-  // 2) Resolve user_id once (used for affiliate + supporter crown)
+  // 2) Resolve user_id once (used for affiliate + supporter crown + plan badge)
   let userRow = null
   try {
     const { data, error } = await supabase
       .from('users_extended_data')
-      .select('user_id')
+      .select('user_id, planType')
       .eq('email', userEmail)
       .maybeSingle()
     if (error) throw error
     userRow = data
 
-    // 2a) Affiliate check
+    // 2a) Plan badge from planType (free / pro)
+    if (userRow) {
+      const planType = (userRow.planType || '').toLowerCase()
+      if (planType === 'pro') {
+        planBadgeHTML = `
+          <img
+            src="./probadge.png"
+            alt="Pro account"
+            title="Pro account"
+            class="badge-plan badge-plan-pro"
+            style="height:35px;width:auto;vertical-align:middle;display:inline-block;margin-right:0px;"
+          >
+        `
+      } else if (planType === 'free') {
+        planBadgeHTML = `
+          <img
+            src="./freebadge.png"
+            alt="Free account"
+            title="Free account — 1 verified Account"
+            class="badge-plan badge-plan-free"
+            style="height:35px;width:auto;vertical-align:middle;display:inline-block;margin-right:0px;"
+          >
+        `
+      }
+    }
+
+    // 2b) Affiliate check
     if (userRow?.user_id) {
       const { data: aff, error: affErr } = await supabase
         .from('affiliate_partners')
@@ -49,10 +77,10 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
       if (aff) isAffiliate = true
     }
   } catch (e) {
-    console.warn('Could not check affiliate status:', e)
+    console.warn('Could not check affiliate/plan status:', e)
   }
 
-  // 2b) Supporter crown from user_badges (badge_key='supporter', visible=true)
+  // 2c) Supporter crown from user_badges (badge_key='supporter', visible=true)
   try {
     if (userRow?.user_id) {
       const { data: badge, error: badgeErr } = await supabase
@@ -72,11 +100,9 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
         const icon = badge.icon_url || `./crown-${color}.png`
 
         supporterHTML = `
-          <span class="badge badge-crown badge-${color}" title="${label}" style="    margin-bottom: 8px; border-left-width: 1px; border-top-width: 1px;
-">
+          <span class="badge badge-crown badge-${color}" title="${label}" style="margin-bottom:8px;border-left-width:1px;border-top-width:1px;">
             <img src="${icon}" alt="${label} crown"
-                 style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom: 5px;" />
-            
+                 style="height:21px;width:21px;vertical-align:middle;display:inline-block;margin-right:6px;border-radius:4px;margin-bottom:5px;" />
           </span>
         `
       }
@@ -106,7 +132,7 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
       : ''
 
     const countBadge = reviewCompletedCount
-      ? `<span class="badge-count" style="margin-left:5px; font-size:13px; vertical-align:middle;">${reviewCompletedCount}</span>`
+      ? `<span class="badge-count" style="margin-left:5px;font-size:13px;vertical-align:middle;">${reviewCompletedCount}</span>`
       : ''
 
     levelHTML = medals + countBadge + affiliateIcon
@@ -132,17 +158,17 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
 
   let socialHTML = ''
   try {
-    const { data: socials, error } = await supabase
+    const { data: profile, error } = await supabase
       .from('users_extended_data')
       .select(SOCIAL_FIELDS.join(','))
       .eq('email', userEmail)
       .maybeSingle()
     if (error) throw error
 
-    if (socials) {
+    if (profile) {
       const icons = []
       for (const key of SOCIAL_FIELDS) {
-        if (socials[key]) {
+        if (profile[key]) {
           const { src, title } = SOCIAL_LOGOS[key] || {}
           if (src) {
             icons.push(
@@ -158,30 +184,29 @@ export async function injectUserBadge(userEmail, selector, emailField = 'sponsor
     console.warn('Could not load social badges:', e)
   }
 
- // 5) Inject into DOM (supporter crown + tier on the same row)
-const badgeSlot = document.querySelector(selector);
-if (badgeSlot) {
-  const rows = [];
+  // 5) Inject into DOM
+  const badgeSlot = document.querySelector(selector)
+  if (badgeSlot) {
+    const rows = []
 
-  // Row 1: supporter (if any) + tier (if any) on one line
-  if (supporterHTML || levelHTML) {
-    rows.push(
-      `<div class="badge-row badge-tier-row" aria-label="Supporter & tier badges">
-         ${[supporterHTML, levelHTML].filter(Boolean).join('')}
-       </div>`
-    );
+    // Row 1: plan badge + supporter crown + tier badges all in one line
+    if (planBadgeHTML || supporterHTML || levelHTML) {
+      rows.push(
+        `<div class="badge-row badge-tier-row" aria-label="Account plan, supporter & tier badges">
+           ${[planBadgeHTML, supporterHTML, levelHTML].filter(Boolean).join('')}
+         </div>`
+      )
+    }
+
+    // Row 2: social (unchanged)
+    if (socialHTML) {
+      rows.push(
+        `<div class="badge-row badge-social-row" aria-label="Connected platforms" style="margin-top:6px;">
+           ${socialHTML}
+         </div>`
+      )
+    }
+
+    badgeSlot.innerHTML = rows.join('')
   }
-
-  // Row 2: social (unchanged)
-  if (socialHTML) {
-    rows.push(
-      `<div class="badge-row badge-social-row" aria-label="Connected platforms" style="margin-top:6px;">
-         ${socialHTML}
-       </div>`
-    );
-  }
-
-  badgeSlot.innerHTML = rows.join('');
-}
-
 }
