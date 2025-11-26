@@ -1065,6 +1065,57 @@ async function revokePlatforms(platform, tokenHints = {}) {
     if (key === 'tiktok')   return !!(user.tiktok_access_token); // NEW: TikTok
     return false;
   }
+    // === Free plan: limit OAuth-linked platforms to 1 ===
+  async function enforceFreePlanOauthLimitOrToast(user, platKey) {
+    try {
+      if (!user) return false;
+
+      const planType = (user.planType || 'free').toLowerCase();
+
+      // Only Free plan is limited
+      if (planType !== 'free') {
+        return true;
+      }
+
+      // Count linked platforms using the same logic as the UI
+      let linkedCount = 0;
+      for (const p of supportedPlatforms) {
+        if (isPlatformConnected(user, p.key)) {
+          linkedCount++;
+        }
+      }
+
+      const thisConnected = isPlatformConnected(user, platKey);
+
+      // If trying to CONNECT a new platform and already at limit, block
+      if (!thisConnected && linkedCount >= 1) {
+        let toast = document.getElementById('free-plan-oauth-limit-toast');
+        if (toast) toast.remove();
+
+        toast = document.createElement('div');
+        toast.id = 'free-plan-oauth-limit-toast';
+        toast.style.cssText = `
+          position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+          z-index: 9999; background: #f6c62e; color: #000; font-size: 1.05em;
+          padding: 10px 18px; border-radius: 10px; box-shadow: 0 3px 22px #2222;
+          border: 2px solid #fff; font-weight: 600; letter-spacing: .01em;
+        `;
+        toast.textContent =
+          'Free accounts can link only one platform. Disconnect an existing one or upgrade to Pro to link more.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Error enforcing free-plan OAuth limit:', err);
+      // Fail-open so we don't completely break linking if something goes wrong
+      return true;
+    }
+  }
+
 
   async function refreshOauthAccountsUI() {
     let user = await getActiveUser(true); // Get latest user data
@@ -1091,14 +1142,21 @@ async function revokePlatforms(platform, tokenHints = {}) {
     }).join('');
     oauthAccountsList.innerHTML = html;
 
-    // Connect/disconnect logic
+  // Connect/disconnect logic
     document.querySelectorAll('.oauth-connect-btn').forEach(btn => {
-  btn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!(await requireAuthOrToast())) return;
-    const plat = btn.getAttribute('data-platform');
-    const user = await getActiveUser(true);
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!(await requireAuthOrToast())) return;
+
+        const plat = btn.getAttribute('data-platform');
+        const user = await getActiveUser(true);
+
+        // NEW: enforce Free plan limit of 1 OAuth-linked platform
+        if (!(await enforceFreePlanOauthLimitOrToast(user, plat))) {
+          return; // stop here if user is at limit on Free
+        }
+
 if (plat === "youtube") {
           if (user.youtube_connected) {
             // --- DISCONNECT YOUTUBE ---
