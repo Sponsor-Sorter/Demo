@@ -85,9 +85,119 @@ async function updateCategoryStars(category, elementId) {
   if (starsEl) starsEl.innerHTML = renderStars(Math.round(avg));
 }
 
+
 /* =========================
    Summary Stat Cards
 ========================= */
+
+// === Free plan limits stat card ===
+
+// hard-coded free plan limits (keep in sync with your publicOffers.js logic)
+const FREE_ACTIVE_OFFER_LIMIT = 1;
+const FREE_PUBLIC_APPLICATION_LIMIT = 10;
+
+async function loadFreePlanLimitCard() {
+  try {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError) {
+      console.error('Error fetching auth user for plan card:', userError);
+      return;
+    }
+    if (!user) return;
+
+    // 1) Get planType + email from users_extended_data
+    const { data: ext, error: extError } = await supabase
+      .from('users_extended_data')
+      .select('email, planType')
+      .eq('user_id', user.id)
+      .single();
+
+    if (extError) {
+      console.error('Error fetching extended data for plan card:', extError);
+      return;
+    }
+
+    const planTypeRaw = ext?.planType;
+    const planType = (planTypeRaw || 'free').toLowerCase(); // default to free if null/missing
+
+    const cardEl = document.getElementById('free-plan-limit-card');
+    if (!cardEl) return;
+
+    // Only show this card for free-plan users
+    if (planType !== 'free') {
+      cardEl.style.display = 'none';
+      return;
+    }
+
+    cardEl.style.display = ''; // unhide (respect CSS)
+
+    const email = ext?.email || user.email;
+
+// 2) Count active private offers for this sponsee
+const { data: offers, error: offersError } = await supabase
+  .from('private_offers')
+  .select('id, status')
+  .eq('sponsee_email', email);
+
+if (offersError) {
+  console.error('Error fetching private offers for plan card:', offersError);
+}
+
+const activeOfferCount = Array.isArray(offers)
+  ? offers.filter(o =>
+      ['accepted', 'pending', 'in_progress', 'live'].includes(o.status)
+    ).length
+  : 0;
+
+    // 3) Count public applications for this user (assuming table public_offer_applications)
+    //    Adjust table/column names if yours differ.
+    const { data: publicApps, error: publicAppsError } = await supabase
+      .from('public_offer_applications')
+      .select('id')
+      .eq('sponsee_email', email);
+
+    if (publicAppsError) {
+      console.error('Error fetching public applications for plan card:', publicAppsError);
+    }
+
+    const publicAppCount = Array.isArray(publicApps) ? publicApps.length : 0;
+
+    // 4) Update DOM
+    const activeOffersEl = document.getElementById('free-plan-active-offers');
+    const publicAppsEl = document.getElementById('free-plan-public-applications');
+
+    if (activeOffersEl) {
+      activeOffersEl.textContent = `${activeOfferCount} / ${FREE_ACTIVE_OFFER_LIMIT}`;
+    }
+    if (publicAppsEl) {
+      publicAppsEl.textContent = `${publicAppCount} / ${FREE_PUBLIC_APPLICATION_LIMIT}`;
+    }
+
+    // Optional: change hint copy if at limit
+    const hintEl = document.getElementById('free-plan-limit-hint');
+    if (hintEl) {
+      const atOfferLimit = activeOfferCount >= FREE_ACTIVE_OFFER_LIMIT;
+      const atPublicLimit = publicAppCount >= FREE_PUBLIC_APPLICATION_LIMIT;
+
+      if (atOfferLimit && atPublicLimit) {
+        hintEl.textContent =
+          'You’ve hit all Free plan limits. Finish an offer or upgrade to Pro to unlock more.';
+      } else if (atOfferLimit) {
+        hintEl.textContent =
+          'You’ve reached the active offer limit for the Free plan.';
+      } else if (atPublicLimit) {
+        hintEl.textContent =
+          'You’ve reached the public applications limit for the Free plan.';
+      } else {
+        hintEl.textContent =
+          'You’re on the Free plan. Complete your current offer or upgrade to apply for more.';
+      }
+    }
+  } catch (err) {
+    console.error('Unexpected error in loadFreePlanLimitCard:', err);
+  }
+}
+
 async function updateSummaryStats() {
   const actEl = document.getElementById('active-sponsorships');
   const compEl = document.getElementById('completed-deals');
@@ -1224,7 +1334,7 @@ async function loadTikTokStats() {
       headers: { 'Authorization': `Bearer ${jwt}` }
     });
     const payload = await resp.json();
-   
+    // For visibility while we sort scopes / API quirks:
 
     if (!resp.ok || !payload?.ok) throw new Error(payload?.error || 'Failed');
 
@@ -1323,6 +1433,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   safeCall(updateSummaryStats);
   safeCall(loadRecentActivity);
   safeCall(loadArchivedDeals);
+  safeCall(loadFreePlanLimitCard);          
   safeCall(updateOverallStars);          // <- guarded to prevent page crash
   safeCall(() => updateCategoryStars('communication', 'communication-stars'));
   safeCall(() => updateCategoryStars('punctuality', 'punctuality-stars'));
@@ -1332,27 +1443,47 @@ document.addEventListener('DOMContentLoaded', async () => {
   const userId = session?.user?.id;
   if (!userId) return;
 
-  let youtubeConnected = false;
+    let youtubeConnected = false;
   let twitchConnected = false;
   let instagramConnected = false;
   let facebookConnected = false;
   let tiktokConnected = false;
+  let planType = 'pro'; // default / safety
 
   try {
     const { data: userData } = await supabase
       .from('users_extended_data')
-      .select('youtube_connected, twitch_connected, instagram_connected, facebook_connected, tiktok_connected, tiktok_access_token')
+      .select('youtube_connected, twitch_connected, instagram_connected, facebook_connected, tiktok_connected, tiktok_access_token, planType')
       .eq('user_id', userId)
       .single();
-    youtubeConnected = !!userData?.youtube_connected;
-    twitchConnected = !!userData?.twitch_connected;
+
+    youtubeConnected   = !!userData?.youtube_connected;
+    twitchConnected    = !!userData?.twitch_connected;
     instagramConnected = !!userData?.instagram_connected;
-    facebookConnected = !!userData?.facebook_connected;
+    facebookConnected  = !!userData?.facebook_connected;
     // treat as connected if either flag or token exists
-    tiktokConnected = !!(userData?.tiktok_connected || userData?.tiktok_access_token);
-  } catch {
+    tiktokConnected    = !!(userData?.tiktok_connected || userData?.tiktok_access_token);
+
+    // Normalise plan type
+    planType = (userData?.planType || '').toLowerCase() === 'free' ? 'free' : 'pro';
+
+    // expose globally so other scripts (sponseeOffers, groups, etc.) can read it
+    window.SS_PLAN_TYPE = planType;
+
+    // Update “Account Type” label on the dashboard
+    const accountTypeEl = document.getElementById('user-account-type');
+    if (accountTypeEl) {
+      accountTypeEl.textContent = planType === 'free'
+        ? 'Sponsee – Free'
+        : 'Sponsee – Pro';
+    }
+  } catch (err) {
+    console.warn('Failed to load extended data for sponsee dashboard:', err);
     youtubeConnected = twitchConnected = instagramConnected = facebookConnected = tiktokConnected = false;
+    // still expose something so other scripts don’t explode
+    window.SS_PLAN_TYPE = planType;
   }
+
 
   const ytBlock = document.getElementById('youtube-stats-block');
   if (ytBlock) ytBlock.style.display = youtubeConnected ? 'block' : 'none';
@@ -1414,4 +1545,3 @@ window.addEventListener('message', (event) => {
     }
   }
 });
-
