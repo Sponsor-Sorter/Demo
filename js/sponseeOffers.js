@@ -9,6 +9,34 @@ import {
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
+// ---------- Free-plan helpers ----------
+
+// Count "active" sponsorships for the current sponsee.
+// Here we treat stages 2–4 as active (accepted / submitted / live).
+async function getCurrentSponseeActiveOfferCount() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const email = session?.user?.email;
+    if (!email) return 0;
+
+    const { count, error } = await supabase
+      .from('private_offers')
+      .select('id', { count: 'exact', head: true })
+      .eq('sponsee_email', email)
+      .in('stage', [2, 3, 4]);
+
+    if (error) {
+      console.warn('Could not fetch active offers for free-plan check:', error);
+      return 0;
+    }
+    return count || 0;
+  } catch (err) {
+    console.warn('Error checking active offers for free-plan:', err);
+    return 0;
+  }
+}
+
+
 // ⬇️ NEW: snapshot helpers (no extra API calls)
 import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js';
 
@@ -1382,13 +1410,29 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     }
 
     if (e.target.classList.contains('confirm-offer')) {
+
+      // -------- Free-plan cap: max 1 active sponsorship --------
+      const plan = (window.SS_PLAN_TYPE || '').toLowerCase();
+      if (plan === 'free') {
+        const activeCount = await getCurrentSponseeActiveOfferCount();
+        if (activeCount >= 1) {
+          alert(
+            'Free Sponsor Sorter accounts can only have one active sponsorship at a time.\n\n' +
+            'Complete or finish your current sponsorship, or upgrade to Pro to accept more offers.'
+          );
+          return; // stop here – do NOT accept this offer
+        }
+      }
+      // ---------------------------------------------------------
+
       if (window.confirm("Are you sure you want to accept this offer?")) {
         const { error } = await supabase
           .from('private_offers')
           .update({ status: 'accepted', stage: 2 })
           .eq('id', offerId);
-        if (error) alert(`Error accepting offer: ${error.message}`);
-        else {
+        if (error) {
+          alert(`Error accepting offer: ${error.message}`);
+        } else {
           await notifyOfferStatus({
             offer_id: offerId,
             to_user_id: sponsorId,
