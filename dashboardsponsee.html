@@ -8,140 +8,133 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-<!-- replace the current script tag -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <!-- replace the current script tag -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
-    <script type="module" src="./js/wallet.js"></script>
+  <script type="module" src="./js/wallet.js"></script>
 
-<script type="module">
-  import { supabase } from './js/supabaseClient.js';
-  // Point to your Supabase Functions endpoint
-  supabase.functionsUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
-</script>
+  <script type="module">
+    import { supabase } from './js/supabaseClient.js';
+    // Point to your Supabase Functions endpoint
+    supabase.functionsUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
+  </script>
 
 </head>
 <body>
 
 <header class="navbar1">
   <section class="navbar">
-  <div class="navii">
-  <h5>
-    <header>
-    <span class="brand-title">Sponsor Sorter</span>
-    </header>
-  </h5>
-</div>
-
-        <background-img class="navimg" src="navimg.png" alt="">
-        <nav>
-          <!-- Global Search (Nav) -->
-<div class="nav-search">
-  <input
-    id="global-search-input"
-    type="search"
-    placeholder="Global Search..."
-    autocomplete="off"
-    aria-label="Global search"
-  />
-  <div id="global-search-results" class="search-popover" hidden></div>
-</div>
-
-<!-- Load the search logic after supabaseClient.js -->
-<script type="module" src="./js/globalSearch.js"></script>
-
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
-        </nav>
-        <nav class="nav">
-          
-          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Logout</a></li>
-        <li id="settings-notif-bar" style="display:inline;">
-  <div class="icon-bar-bg">
-    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-    </button>
-    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-    </button>
-    <div id="settings-dropdown" class="settings-dropdown">
-      <div class="dropdown-arrow"></div>
-      <ul>
-        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-        <li>
-          <span style="font-size:1em;">Guided Onboarding</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-onboarding-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-help-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
-          <label class="switch">
-            <input type="checkbox" id="email-alert-toggle">
-            <span class="slider round"></span>
-          </label>
-        </li>
-         <li>
-          <span style="font-size:1em;">Completion Recaps</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-recap-slider">
-            <span class="slider round"></span>
-          </label>
-       </li>
-        <li>
-
-          <button type="button" class="dropdown-item" id="oauth-link-btn">
-            OAuth Link
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-referral-link-btn">
-            Show Referral Link
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 45px !important;">
-            Subscription & Free Month Rewards
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="open-affiliate-apply">
-            Apply to be an Affiliate
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="open-privacy-settings">
-            Privacy & Data
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="open-premium-settings">
-            Featured Stars 
-          </button>
-        </li>
-
-
-
-      </ul>
+    <div class="navii">
+      <h5>
+        <header>
+          <span class="brand-title">Sponsor Sorter</span>
+        </header>
+      </h5>
     </div>
-  </div>
-</li>
 
-        </nav>
-      </div>
+    <background-img class="navimg" src="navimg.png" alt="">
+      <nav>
+        <!-- Global Search (Nav) -->
+        <div class="nav-search">
+          <input
+            id="global-search-input"
+            type="search"
+            placeholder="Global Search..."
+            autocomplete="off"
+            aria-label="Global search"
+          />
+          <div id="global-search-results" class="search-popover" hidden></div>
+        </div>
+
+        <!-- Load the search logic after supabaseClient.js -->
+        <script type="module" src="./js/globalSearch.js"></script>
+
+        <li><a href="index.html">Home</a></li>
+        <li><a href="finder.html">Finder</a></li>
+      </nav>
+      <nav class="nav">
+        <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
+        <li><a href="login.html">Logout</a></li>
+        <li id="settings-notif-bar" style="display:inline;">
+          <div class="icon-bar-bg">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            </button>
+            <div id="settings-dropdown" class="settings-dropdown">
+              <div class="dropdown-arrow"></div>
+              <ul>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                <li>
+                  <span style="font-size:1em;">Guided Onboarding</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggle-onboarding-slider">
+                    <span class="slider round"></span>
+                  </label>
+                </li>
+                <li>
+                  <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggle-help-slider">
+                    <span class="slider round"></span>
+                  </label>
+                </li>
+                <li>
+                  <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
+                  <label class="switch">
+                    <input type="checkbox" id="email-alert-toggle">
+                    <span class="slider round"></span>
+                  </label>
+                </li>
+                <li>
+                  <span style="font-size:1em;">Completion Recaps</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggle-recap-slider">
+                    <span class="slider round"></span>
+                  </label>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="oauth-link-btn">
+                    OAuth Link
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="show-referral-link-btn">
+                    Show Referral Link
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 45px !important;">
+                    Subscription & Free Month Rewards
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="open-affiliate-apply">
+                    Apply to be an Affiliate
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="open-privacy-settings">
+                    Privacy & Data
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item" id="open-premium-settings">
+                    Featured Stars 
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </nav>
     </div>
   </section>
 </header>
@@ -155,53 +148,71 @@
       <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
     </div>
 
-    <fieldset>
-      <div class="profile-header">
-        <div class="profile-picture">
-          <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
-          <p>Account Type: <span id="user-account-type">Sponsee</span></p>
-          <div id="overall-rating" style="margin-top: 10px;">
-            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
-            <div id="profile-badge-slot" style="margin-top: 8px;"></div>
+    <!-- Profile + Activity row (each in its own fieldset) -->
+    <div class="top-profile-activity-layout">
+      <!-- Profile fieldset (existing content) -->
+      <fieldset class="profile-main-fieldset">
+        <div class="profile-header">
+          <div class="profile-picture">
+            <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
+            <p>Account Type: <span id="user-account-type">Sponsee</span></p>
+            <div id="overall-rating" style="margin-top: 10px;">
+              <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
+              <div id="profile-badge-slot" style="margin-top: 8px;"></div>
+            </div>
+          </div>
+          <div class="profile-info">
+            <p>Email: <span id="user-email">[Email]</span></p>
+            <p>Username: <span id="user-username">[Username]</span></p>
+            <p>Location: <span id="user-location">[Location]</span></p>
+            <p>Title: <span id="user-gender">[Title]</span></p>
+            <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+            <p>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </p>
           </div>
         </div>
-        <div class="profile-info">
-          <p>Email: <span id="user-email">[Email]</span></p>
-          <p>Username: <span id="user-username">[Username]</span></p>
-          <p>Location: <span id="user-location">[Location]</span></p>
-          <p>Title: <span id="user-gender">[Title]</span></p>
-          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
-          <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
+        <div class="help-block">
+          <em>
+            <strong>What is this section?</strong><br>
+            This area shows your public profile as sponsors see it: your username, email, location, profile picture, badges, content type, social accounts, and bio.  
+            Make sure to keep your info and linked platforms up to date for more sponsorship opportunities.
+          </em>
         </div>
-      </div>
-      <div class="help-block">
-        <em>
-          <strong>What is this section?</strong><br>
-          This area shows your public profile as sponsors see it: your username, email, location, profile picture, badges, content type, social accounts, and bio.  
-          Make sure to keep your info and linked platforms up to date for more sponsorship opportunities.
-        </em>
-      </div>
-      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
-      <div id="sponsee-review-stars" class="review-stars-block">
-        <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
-        <div class="stars-row" style="display: flex; gap: 32px;">
-          <div class="star-item">
-            <span class="star-label">Communication</span>
-            <span id="communication-stars" class="stars"></span>
-          </div>
-          <div class="star-item">
-            <span class="star-label">Punctuality</span>
-            <span id="punctuality-stars" class="stars"></span>
-          </div>
-          <div class="star-item">
-            <span class="star-label">Work Output</span>
-            <span id="work-output-stars" class="stars"></span>
+        <p>Description: <span id="about-yourself">[about yourself]</span> </p>
+        <div id="sponsee-review-stars" class="review-stars-block">
+          <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
+          <div class="stars-row" style="display: flex; gap: 32px;">
+            <div class="star-item">
+              <span class="star-label">Communication</span>
+              <span id="communication-stars" class="stars"></span>
+            </div>
+            <div class="star-item">
+              <span class="star-label">Punctuality</span>
+              <span id="punctuality-stars" class="stars"></span>
+            </div>
+            <div class="star-item">
+              <span class="star-label">Work Output</span>
+              <span id="work-output-stars" class="stars"></span>
+            </div>
           </div>
         </div>
-      </div>
-    </fieldset>
+      </fieldset>
 
-       <!-- Summary Cards -->
+      <!-- New Activity Feed fieldset -->
+      <fieldset class="activity-feed-fieldset">
+        <h4>Recent Activity</h4>
+        <ul id="sponsee-activity-feed" class="activity-list">
+          <li class="activity-empty">Loading recent activity…</li>
+        </ul>
+        <div class="help-block" style="margin-top:10px;">
+          <em>
+            Short highlights of your latest sponsorship activity (new offers, deal updates, and earnings)
+            shown in a quick-feed format. The full tables still live further down the page.
+          </em>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Summary Cards -->
     <fieldset>
       <div class="dashboard-cards">
         <div class="card-row">
@@ -225,6 +236,34 @@
           </div>
         </div>
       </div>
+      <!-- Free plan limits card (hidden by default, shown only for free users) -->
+<div class="summary-card plan-limit-card" id="free-plan-limit-card" style="display:none;">
+  <h3>Free Plan Limits</h3>
+
+ <div class="card-row">
+   <div class="card">
+    <p>
+    Active private offers:
+    <br>
+    <strong id="free-plan-active-offers">0 / 1</strong>
+  </p>
+  </div>
+
+<div class="card">
+    <p>
+    Public applications:
+    <br>
+    <strong id="free-plan-public-applications">0 / 10</strong>
+  </p>
+</div>
+ </div>
+
+  <!-- Optional small hint / CTA -->
+  <p class="small-text" id="free-plan-limit-hint" style="color: red;padding-top: 8px;">
+    You’re on the Free plan. Complete your current offer or upgrade to apply for more.
+  </p>
+</div>
+
       <div class="help-block" style="margin-bottom:8px;">
         <em>
           <strong>What do these numbers mean?</strong><br>
@@ -238,470 +277,459 @@
       </div>
     </fieldset>
 
-
     <!-- =========================
      FRIENDS & GROUPS
      ========================= -->
-<fieldset id="friends-and-groups">
-  <legend>👥 Friends & Creator Groups</legend>
+    <fieldset id="friends-and-groups">
+      <legend>👥 Friends & Creator Groups</legend>
 
-  <!-- Friends: add + lists -->
-  <section class="friends-panel">
-    <h3 style="margin:0 0 10px 0;">Add Friends</h3>
+      <!-- Friends: add + lists -->
+      <section class="friends-panel">
+        <h3 style="margin:0 0 10px 0;">Add Friends</h3>
 
-    <!-- Add friend by username -->
-    <form id="friend-add-form" style="display:flex;gap:8px;align-items:center;margin:6px 0 14px 0;">
-      <input id="friend-username" type="text" placeholder="Add friend by @username" style="flex:1;min-width:220px;">
-    </form>
+        <!-- Add friend by username -->
+        <form id="friend-add-form" style="display:flex;gap:8px;align-items:center;margin:6px 0 14px 0;">
+          <input id="friend-username" type="text" placeholder="Add friend by @username" style="flex:1;min-width:220px;">
+        </form>
 
-    <div class="friends-columns" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
-      <div>
-        <h4 style="margin:0 0 8px 0;">Pending</h4>
-        <div id="friends-pending" class="card-col"></div>
-      </div>
-      <div>
-        <h4 style="margin:0 0 8px 0;">Friends</h4>
-        <div id="friends-accepted" class="card-col"></div>
-      </div>
-    </div>
+        <div class="friends-columns" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+          <div>
+            <h4 style="margin:0 0 8px 0;">Pending</h4>
+            <div id="friends-pending" class="card-col"></div>
+          </div>
+          <div>
+            <h4 style="margin:0 0 8px 0;">Friends</h4>
+            <div id="friends-accepted" class="card-col"></div>
+          </div>
+        </div>
 
-    <div class="help-block" style="margin-top:10px;">
-      <em>
-        <strong>How it works:</strong> Send a request by username. They’ll appear under “Pending” until accepted.
-        Either side can remove the connection at any time. You can also block users if needed.
-      </em>
-    </div>
-  </section>
+        <div class="help-block" style="margin-top:10px;">
+          <em>
+            <strong>How it works:</strong> Send a request by username. They’ll appear under “Pending” until accepted.
+            Either side can remove the connection at any time. You can also block users if needed.
+          </em>
+        </div>
+      </section>
 
-  <hr style="margin:18px 0;opacity:.25;">
+      <hr style="margin:18px 0;opacity:.25;">
 
-  <!-- Groups: create + list + members -->
-  <section class="groups-panel">
-    <h3 style="margin:0 0 10px 0;">Creator Groups</h3>
+      <!-- Groups: create + list + members -->
+      <section class="groups-panel">
+        <h3 style="margin:0 0 10px 0;">Creator Groups</h3>
 
-    <!-- Create group -->
-    <form id="group-create-form" style="display:grid;grid-template-columns:1fr 1fr 160px auto;gap:8px;align-items:center;margin-bottom:12px;">
-      <input id="group-name" type="text" placeholder="Group name (e.g., Podcast Crew)" required>
-      <input id="group-desc" type="text" placeholder="Short description (optional)">
-      <select id="group-visibility" title="Visibility">
-        <option value="private">private</option>
-        <option value="friends">friends</option>
-        <option value="public">public</option>
-      </select>
-      <button type="submit">Create</button>
-    </form>
+        <!-- Create group -->
+        <form id="group-create-form" style="display:grid;grid-template-columns:1fr 1fr 160px auto;gap:8px;align-items:center;margin-bottom:12px;">
+          <input id="group-name" type="text" placeholder="Group name (e.g., Podcast Crew)" required>
+          <input id="group-desc" type="text" placeholder="Short description (optional)">
+          <select id="group-visibility" title="Visibility">
+            <option value="private">private</option>
+            <option value="friends">friends</option>
+            <option value="public">public</option>
+          </select>
+          <button type="submit">Create</button>
+        </form>
 
-    <!-- Groups list -->
-    <div id="groups-list" class="card-col" style="margin-bottom:12px;"></div>
+        <!-- Groups list -->
+        <div id="groups-list" class="card-col" style="margin-bottom:12px;"></div>
 
-    <!-- Selected group's members panel (rendered on 'View') -->
-    <div id="groups-members" class="card-col"></div>
-    <div id="group-offer-tabs"></div>
-    <div id="group-offers-container"></div>
-<!-- Selected group's members+offers now render inline beneath the clicked card -->
-<div class="help-block" style="margin-top:10px;">
-  <em>
-    <strong>Tip:</strong> Click a group’s <b>View</b> to expand its details right below the card — you’ll see members (badges & roles)
-    and the group’s offers there. Only owners/admins can manage members. Visibility can be <b>private</b>, <b>friends</b>, or <b>public</b>.
-  </em>
-</div>
+        <!-- Selected group's members panel (rendered on 'View') -->
+        <div id="groups-members" class="card-col"></div>
+        <div id="group-offer-tabs"></div>
+        <div id="group-offers-container"></div>
+        <!-- Selected group's members+offers now render inline beneath the clicked card -->
+        <div class="help-block" style="margin-top:10px;">
+          <em>
+            <strong>Tip:</strong> Click a group’s <b>View</b> to expand its details right below the card — you’ll see members (badges & roles)
+            and the group’s offers there. Only owners/admins can manage members. Visibility can be <b>private</b>, <b>friends</b>, or <b>public</b>.
+          </em>
+        </div>
 
-  </section>
-</fieldset>
+      </section>
+    </fieldset>
 
-
- 
     <!-- Active Listings -->
-   <fieldset class="Active-offers">
-  <legend>🎯 Active Listings for Sponsorship</legend>
-  <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
-  <div class="active-listings" id="listing-container"></div>
- <div id="pagination-row" class="pagination-controls" >
-  <button id="prev-page">Prev</button>
-  <span id="pagination-label"></span>
-  <button id="next-page">Next</button>
-  <span id="sponsee-offer-total-label" style="margin-left:20px;font-weight:500;color:#ccc;"></span>
-</div>
+    <fieldset class="Active-offers">
+      <legend>🎯 Active Listings for Sponsorship</legend>
+      <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
+      <div class="active-listings" id="listing-container"></div>
+      <div id="pagination-row" class="pagination-controls">
+        <button id="prev-page">Prev</button>
+        <span id="pagination-label"></span>
+        <button id="next-page">Next</button>
+        <span id="sponsee-offer-total-label" style="margin-left:20px;font-weight:500;color:#ccc;"></span>
+      </div>
 
-  <div class="help-block" style="margin-bottom:8px;">
-    <em>
-      <strong>Active Listings:</strong>  
-      Here you can view and manage all your ongoing sponsorship offers. Use the tabs to filter by deal stage. Click into any listing for details or to interact with sponsors.
-    </em>
-  </div>
-</fieldset>
-
+      <div class="help-block" style="margin-bottom:8px;">
+        <em>
+          <strong>Active Listings:</strong>  
+          Here you can view and manage all your ongoing sponsorship offers. Use the tabs to filter by deal stage. Click into any listing for details or to interact with sponsors.
+        </em>
+      </div>
+    </fieldset>
 
     <fieldset>
-  <legend>Public Offers You've Applied For</legend>
-  <div style="margin-bottom:14px;">
-    <label for="public-offer-status-filter">Filter by Status:</label>
-    <select id="public-offer-status-filter">
-      <option value="">All</option>
-      <option value="pending">Pending</option>
-      <option value="accepted">Accepted</option>
-      <option value="rejected">Rejected</option>
-      <option value="withdrawn">Withdrawn</option>
-    </select>
-  </div>
-  <div id="sponsee-public-offers-container"></div>
-<div class="pagination-controls">
-  <button id="public-offer-prev-page">Previous</button>
-  <span id="public-offer-pagination-label">Page 1</span>
-  <button id="public-offer-next-page">Next</button>
-    <span id="public-offer-total-label" style="margin-left: 15px; font-weight: 500; color: #ccc;"></span>
+      <legend>Public Offers You've Applied For</legend>
+      <div style="margin-bottom:14px;">
+        <label for="public-offer-status-filter">Filter by Status:</label>
+        <select id="public-offer-status-filter">
+          <option value="">All</option>
+          <option value="pending">Pending</option>
+          <option value="accepted">Accepted</option>
+          <option value="rejected">Rejected</option>
+          <option value="withdrawn">Withdrawn</option>
+        </select>
+      </div>
+      <div id="sponsee-public-offers-container"></div>
+      <div class="pagination-controls">
+        <button id="public-offer-prev-page">Previous</button>
+        <span id="public-offer-pagination-label">Page 1</span>
+        <button id="public-offer-next-page">Next</button>
+        <span id="public-offer-total-label" style="margin-left: 15px; font-weight: 500; color: #ccc;"></span>
+      </div>
 
-</div>
-
-
-   <div class="help-block" style="margin-bottom:8px;">
+      <div class="help-block" style="margin-bottom:8px;">
         <em>
           <strong>Active Public Applications:</strong>  
           Here you can view your public offer Applications. See your applications status, message and date. View offer details, images and more.  
         </em>
       </div>
-</fieldset>
-
-
-  <section class="offer-dets" >
-    <fieldset class="recent-deals">
-    <legend><h2>Recent Sponsorship Deals</h2></legend>
-
-      
-      <table>
-        <thead>
-          <tr>
-            <th>Sponsee</th>
-            <th>Status</th>
-            <th>Amount</th>
-            <th>Offer Date</th>
-            <th>Deadline</th>
-            <th>Created By</th>
-            <th>live</th>
-          </tr>
-        </thead>
-        <tbody id="activity-table-body"></tbody>
-      </table>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Recent Deals:</strong>  
-          This table shows your latest sponsorships, their status, amounts, dates, and sponsor details. Use it to track your most recent activity.
-        </em>
-      </div>
     </fieldset>
+
+    <section class="offer-dets">
+      <fieldset class="recent-deals">
+        <legend><h2>Recent Sponsorship Deals</h2></legend>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Sponsee</th>
+              <th>Status</th>
+              <th>Amount</th>
+              <th>Offer Date</th>
+              <th>Deadline</th>
+              <th>Created By</th>
+              <th>live</th>
+            </tr>
+          </thead>
+          <tbody id="activity-table-body"></tbody>
+        </table>
+        <div class="help-block" style="margin-bottom:8px;">
+          <em>
+            <strong>Recent Deals:</strong>  
+            This table shows your latest sponsorships, their status, amounts, dates, and sponsor details. Use it to track your most recent activity.
+          </em>
+        </div>
+      </fieldset>
   
-    <fieldset class="Archived-deals">
-      <legend><h2>Sponsorship History</h2></legend>
-      <table>
-        <thead>
-          <tr>
-            <th>Sponsee</th>
-            <th>Amount</th>
-            <th>Offer Date</th>
-            <th>Live</th>
-            <th>Deadline</th>
-            <th>Sponsor → Sponsee</th>
-            <th>Sponsee → Sponsor</th>
-          </tr>
-        </thead>
-        <tbody id="archived-table-body"></tbody>
-      </table>
-          <button id="generate-recap-btn" class="btn btn-secondary" style="margin-left: 12px;">
-  Generate Recap
-</button>
-      <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
-      <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
-  Generate Invoices
-</button>
+      <fieldset class="Archived-deals">
+        <legend><h2>Sponsorship History</h2></legend>
+        <table>
+          <thead>
+            <tr>
+              <th>Sponsee</th>
+              <th>Amount</th>
+              <th>Offer Date</th>
+              <th>Live</th>
+              <th>Deadline</th>
+              <th>Sponsor → Sponsee</th>
+              <th>Sponsee → Sponsor</th>
+            </tr>
+          </thead>
+          <tbody id="archived-table-body"></tbody>
+        </table>
+        <button id="generate-recap-btn" class="btn btn-secondary" style="margin-left: 12px;">
+          Generate Recap
+        </button>
+        <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
+        <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
+          Generate Invoices
+        </button>
 
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Sponsorship History:</strong>  
-          All past/archived sponsorships are listed here, including your and your sponsor’s ratings for each deal. Click “View & Respond to All Reviews” to see feedback and reply.
-        </em>
-      </div>
-    </fieldset>
-  </section>
+        <div class="help-block" style="margin-bottom:8px;">
+          <em>
+            <strong>Sponsorship History:</strong>  
+            All past/archived sponsorships are listed here, including your and your sponsor’s ratings for each deal. Click “View & Respond to All Reviews” to see feedback and reply.
+          </em>
+        </div>
+      </fieldset>
+    </section>
+
     <!-- Linked Accounts -->
     <fieldset>
       <legend>Linked Accounts</legend>
       <div class="linked-accounts" id="linked-accounts"></div>
       <div class="help-block" style="margin-bottom:8px;">
         <em>
-  <strong>Linked Accounts:</strong>
-  This section displays your verified social media accounts, securely linked using OAuth. Connecting your accounts via Sponsor Sorter’s OAuth flow does more than just show your handles like above; it allows us to display your live stats and verify your authenticity as a creator. This builds trust with potential sponsors and can significantly increase your chances of receiving offers.<br><br>
-  OAuth linking also enables Sponsor Sorter to track campaign performance and verify completed sponsorships by directly accessing platform stats (with your permission). If an account is missing or showing outdated info, please check your handles or reconnect via the OAuth button.
-</em>
-
+          <strong>Linked Accounts:</strong>
+          This section displays your verified social media accounts, securely linked using OAuth. Connecting your accounts via Sponsor Sorter’s OAuth flow does more than just show your handles like above; it allows us to display your live stats and verify your authenticity as a creator. This builds trust with potential sponsors and can significantly increase your chances of receiving offers.<br><br>
+          OAuth linking also enables Sponsor Sorter to track campaign performance and verify completed sponsorships by directly accessing platform stats (with your permission). If an account is missing or showing outdated info, please check your handles or reconnect via the OAuth button.
+        </em>
       </div>
 
- <section class="oauth-platforms" >
-<!-- tiktok stats -->
-<div class="tiktok-stats-card" id="tiktok-stats-block" style="
-  display:none;
-  padding:24px 22px;
-  background:#5e5e5e;
-  border-radius:16px;
-  box-shadow:0 5px 9px rgba(255, 255, 255, 0.799); /* TikTok red glow */
-  max-width:550px;
-  margin:0 auto 16px auto;
-  color:#fff;
-">
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="tt-profile-pic" src="tiktoklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="tiktoklogo.png" alt="TikTok" style="height:26px;vertical-align:-4px;margin-right:6px;">
-        <span id="tt-display-name">Loading…</span>
-      </h2>
-      <span id="tt-openid" style="font-size:0.97em;color:#c7f9ff;display:none;">open_id: …</span>
-    </div>
-  </div>
+      <section class="oauth-platforms">
+        <!-- tiktok stats -->
+        <div class="tiktok-stats-card" id="tiktok-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(255, 255, 255, 0.799); /* TikTok red glow */
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="tt-profile-pic" src="tiktoklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="tiktoklogo.png" alt="TikTok" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="tt-display-name">Loading…</span>
+              </h2>
+              <span id="tt-openid" style="font-size:0.97em;color:#c7f9ff;display:none;">open_id: …</span>
+            </div>
+          </div>
 
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Followers:</b> <span id="tt-followers">-</span></div>
-    <div id="tt-following-wrap" style="display:none;"><b>Following:</b> <span id="tt-following">-</span></div>
-    <div id="tt-likes-wrap" style="display:none;"><b>Total Likes:</b> <span id="tt-likes">-</span></div>
-    <div id="tt-videos-wrap" style="display:none;"><b>Videos:</b> <span id="tt-videos">-</span></div>
-    <div id="tt-updated-wrap"><b>Updated:</b> <span id="tt-updated">-</span></div>
-  </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="tt-followers">-</span></div>
+            <div id="tt-following-wrap" style="display:none;"><b>Following:</b> <span id="tt-following">-</span></div>
+            <div id="tt-likes-wrap" style="display:none;"><b>Total Likes:</b> <span id="tt-likes">-</span></div>
+            <div id="tt-videos-wrap" style="display:none;"><b>Videos:</b> <span id="tt-videos">-</span></div>
+            <div id="tt-updated-wrap"><b>Updated:</b> <span id="tt-updated">-</span></div>
+          </div>
 
-  <!-- Latest owned video (optional) -->
-  <div id="tt-last-video-row" style="margin-top:14px;display:none;">
-    <b>Latest Video:</b>
-    <a id="tt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
-      <span id="tt-last-video-desc">Latest video</span>
-    </a>
-    <span id="tt-last-video-date" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="tt-last-video-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
-      <div style="font-size:0.97em;">
-        <div>Views: <span id="tt-last-video-views">-</span></div>
-        <div>Likes: <span id="tt-last-video-likes">-</span></div>
-        <div>Comments: <span id="tt-last-video-comments">-</span></div>
-        <div>Shares: <span id="tt-last-video-shares">-</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
+          <!-- Latest owned video (optional) -->
+          <div id="tt-last-video-row" style="margin-top:14px;display:none;">
+            <b>Latest Video:</b>
+            <a id="tt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="tt-last-video-desc">Latest video</span>
+            </a>
+            <span id="tt-last-video-date" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="tt-last-video-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Views: <span id="tt-last-video-views">-</span></div>
+                <div>Likes: <span id="tt-last-video-likes">-</span></div>
+                <div>Comments: <span id="tt-last-video-comments">-</span></div>
+                <div>Shares: <span id="tt-last-video-shares">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
       
-      <!-- youtube stats -->
-     <div class="youtube-stats-card" id="youtube-stats-block" style="
-  padding:24px 22px;
-  background:#5e5e5e;
-  border-radius:16px;
-  box-shadow:0 2px 8px #c70000;
-  max-width: 550px;
-  margin: 0 auto 16px auto;
-  color: #fff;
-">
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="yt-profile-pic" src="youtubelogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="youtubelogo.png" alt="YouTube" style="height:26px;vertical-align:-4px;margin-right:6px;">
-        <span id="yt-channel-title">Loading...</span>
-      </h2>
-      <span id="yt-channel-desc" style="font-size:0.97em;color:#ffd;">Channel Description...</span>
-    </div>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Subscribers:</b> <span id="yt-subs">-</span></div>
-    <div><b>Total Views:</b> <span id="yt-views">-</span></div>
-    <div><b>Videos:</b> <span id="yt-videos">-</span></div>
-    <div><b>Created:</b> <span id="yt-created">-</span></div>
-  </div>
-  <div id="yt-banner-row" style="margin:18px 0 10px 0;display:none;">
-    <img id="yt-banner" src="" style="width:100%;max-height:90px;object-fit:cover;border-radius:11px;">
-  </div>
-  <div id="yt-last-video-row" style="margin-top:14px;display:none;">
-    <b>Latest Video:</b>
-    <a id="yt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;">
-      <span id="yt-last-video-title">Title</span>
-    </a>
-    <span id="yt-last-video-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="yt-last-video-thumb" src="" style="width:98px;height:55px;border-radius:7px;background:#222;">
-      <div>
-        <span style="font-size:0.97em;">Views: <span id="yt-last-video-views">-</span></span>
-      </div>
-    </div>
-  </div>
-</div>
+        <!-- youtube stats -->
+        <div class="youtube-stats-card" id="youtube-stats-block" style="
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 2px 8px #c70000;
+          max-width: 550px;
+          margin: 0 auto 16px auto;
+          color: #fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="yt-profile-pic" src="youtubelogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="youtubelogo.png" alt="YouTube" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="yt-channel-title">Loading...</span>
+              </h2>
+              <span id="yt-channel-desc" style="font-size:0.97em;color:#ffd;">Channel Description...</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Subscribers:</b> <span id="yt-subs">-</span></div>
+            <div><b>Total Views:</b> <span id="yt-views">-</span></div>
+            <div><b>Videos:</b> <span id="yt-videos">-</span></div>
+            <div><b>Created:</b> <span id="yt-created">-</span></div>
+          </div>
+          <div id="yt-banner-row" style="margin:18px 0 10px 0;display:none;">
+            <img id="yt-banner" src="" style="width:100%;max-height:90px;object-fit:cover;border-radius:11px;">
+          </div>
+          <div id="yt-last-video-row" style="margin-top:14px;display:none;">
+            <b>Latest Video:</b>
+            <a id="yt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;">
+              <span id="yt-last-video-title">Title</span>
+            </a>
+            <span id="yt-last-video-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="yt-last-video-thumb" src="" style="width:98px;height:55px;border-radius:7px;background:#222;">
+              <div>
+                <span style="font-size:0.97em;">Views: <span id="yt-last-video-views">-</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- twitch stats -->
-<div class="twitch-stats-card" id="twitch-stats-block" style="
-  display:none;
- padding:24px 22px;
-  background:#5e5e5e;
-  border-radius:16px;
-  box-shadow:0 5px 9px #9046ff87;
-  max-width: 550px;
-  margin: 0 auto 16px auto;
-  color: #fff;
-">
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="tw-profile-pic" src="twitchlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="twitchlogo.png" alt="Twitch" style="height:26px;vertical-align:-4px;margin-right:6px;">
-        <span id="tw-display-name">Loading…</span>
-        <span id="tw-login" style="margin-left:8px;font-size:.9em;color:#dcd3ff;">(@login)</span>
-      </h2>
-      <span id="tw-bio" style="font-size:0.97em;color:#ffd;">Channel bio…</span>
-    </div>
-  </div>
+        <!-- twitch stats -->
+        <div class="twitch-stats-card" id="twitch-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px #9046ff87;
+          max-width: 550px;
+          margin: 0 auto 16px auto;
+          color: #fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="tw-profile-pic" src="twitchlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="twitchlogo.png" alt="Twitch" style="height:26px;vertical-align:-4px;margin-right:6px;">
+                <span id="tw-display-name">Loading…</span>
+                <span id="tw-login" style="margin-left:8px;font-size:.9em;color:#dcd3ff;">(@login)</span>
+              </h2>
+              <span id="tw-bio" style="font-size:0.97em;color:#ffd;">Channel bio…</span>
+            </div>
+          </div>
 
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Followers:</b> <span id="tw-followers">-</span></div>
-    <div id="tw-created-wrap"><b>Created:</b> <span id="tw-created">-</span></div>
-    <div><b>Status:</b> <span id="tw-live-status">-</span></div>
-    <div id="tw-viewers-wrap" style="display:none;"><b>Viewers:</b> <span id="tw-viewers">-</span></div>
-  </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="tw-followers">-</span></div>
+            <div id="tw-created-wrap"><b>Created:</b> <span id="tw-created">-</span></div>
+            <div><b>Status:</b> <span id="tw-live-status">-</span></div>
+            <div id="tw-viewers-wrap" style="display:none;"><b>Viewers:</b> <span id="tw-viewers">-</span></div>
+          </div>
 
-  <div id="tw-last-stream-row" style="margin-top:14px;display:none;">
-    <b>Current/Last Stream:</b>
-    <span id="tw-stream-title" style="margin-left:6px;">Title</span>
-    <span id="tw-stream-started" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="tw-stream-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
-    <div style="font-size:0.97em;">
-      <div>Game: <span id="tw-game-name">-</span></div>
-      <div id="tw-vod-views-wrap" style="display:none;">Views: <span id="tw-vod-views">-</span></div>
-      <div id="tw-duration-wrap" style="display:none;">Duration: <span id="tw-vod-duration">-</span></div>
-    </div>
-  </div>
-</div>
-</div>
+          <div id="tw-last-stream-row" style="margin-top:14px;display:none;">
+            <b>Current/Last Stream:</b>
+            <span id="tw-stream-title" style="margin-left:6px;">Title</span>
+            <span id="tw-stream-started" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="tw-stream-thumb" src="" style="width:120px;height:68px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Game: <span id="tw-game-name">-</span></div>
+                <div id="tw-vod-views-wrap" style="display:none;">Views: <span id="tw-vod-views">-</span></div>
+                <div id="tw-duration-wrap" style="display:none;">Duration: <span id="tw-vod-duration">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- instagram stats -->
-<div class="instagram-stats-card" id="instagram-stats-block" style="
-  display:none;
-  padding:24px 22px;
-  background:#5e5e5e;
-  border-radius:16px;
-  box-shadow:0 5px 9px rgba(225,48,108,.45);
-  max-width:550px;
-  margin:0 auto 16px auto;
-  color:#fff;
-">
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="ig-profile-pic" src="instagramlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="instagramlogo.png" alt="Instagram" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius: 6px;">
-        <span id="ig-username">Loading…</span>
-        <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;display:none;">(Professional)</span>
-      </h2>
-      <span id="ig-bio" style="font-size:0.97em;color:#ffd;display:none;">Bio…</span>
-    </div>
-  </div>
+        <!-- instagram stats -->
+        <div class="instagram-stats-card" id="instagram-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(225,48,108,.45);
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="ig-profile-pic" src="instagramlogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="instagramlogo.png" alt="Instagram" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius: 6px;">
+                <span id="ig-username">Loading…</span>
+                <span id="ig-account-type" style="margin-left:8px;font-size:.9em;color:#ffd;display:none;">(Professional)</span>
+              </h2>
+              <span id="ig-bio" style="font-size:0.97em;color:#ffd;display:none;">Bio…</span>
+            </div>
+          </div>
 
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Followers:</b> <span id="ig-followers">-</span></div>
-    <div><b>Following:</b> <span id="ig-following">-</span></div>
-    <div><b>Posts:</b> <span id="ig-posts">-</span></div>
-    <div><b>Eng. Rate (12):</b> <span id="ig-eng-rate">-</span></div>
-    <div id="ig-updated-wrap"><b>Updated:</b> <span id="ig-updated">-</span></div>
-  </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="ig-followers">-</span></div>
+            <div><b>Following:</b> <span id="ig-following">-</span></div>
+            <div><b>Posts:</b> <span id="ig-posts">-</span></div>
+            <div><b>Eng. Rate (12):</b> <span id="ig-eng-rate">-</span></div>
+            <div id="ig-updated-wrap"><b>Updated:</b> <span id="ig-updated">-</span></div>
+          </div>
 
-  <div id="ig-insights-row" style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-top:6px;">
-    <div><b>Impressions (7d):</b> <span id="ig-impressions-7d">-</span></div>
-    <div><b>Reach (7d):</b> <span id="ig-reach-7d">-</span></div>
-    <div><b>Profile Views (7d):</b> <span id="ig-profile-views-7d">-</span></div>
-  </div>
+          <div id="ig-insights-row" style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-top:6px;">
+            <div><b>Impressions (7d):</b> <span id="ig-impressions-7d">-</span></div>
+            <div><b>Reach (7d):</b> <span id="ig-reach-7d">-</span></div>
+            <div><b>Profile Views (7d):</b> <span id="ig-profile-views-7d">-</span></div>
+          </div>
 
-  <div id="ig-last-media-row" style="margin-top:14px;display:none;">
-    <b>Latest Post:</b>
-    <a id="ig-last-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
-      <span id="ig-last-media-caption">Latest post</span>
-    </a>
-    <span id="ig-last-media-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="ig-last-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
-      <div style="font-size:0.97em;">
-        <div>Likes: <span id="ig-last-media-likes">-</span></div>
-        <div>Comments: <span id="ig-last-media-comments">-</span></div>
-        <div id="ig-last-media-views-wrap" style="display:none;">Views: <span id="ig-last-media-views">-</span></div>
-      </div>
-    </div>
+          <div id="ig-last-media-row" style="margin-top:14px;display:none;">
+            <b>Latest Post:</b>
+            <a id="ig-last-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="ig-last-media-caption">Latest post</span>
+            </a>
+            <span id="ig-last-media-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="ig-last-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Likes: <span id="ig-last-media-likes">-</span></div>
+                <div>Comments: <span id="ig-last-media-comments">-</span></div>
+                <div id="ig-last-media-views-wrap" style="display:none;">Views: <span id="ig-last-media-views">-</span></div>
+              </div>
+            </div>
 
-    <!-- Lifetime insights for latest media -->
-    <div id="ig-last-post-insights" style="margin-top:6px; font-size:0.95em; color:#eee; display:none;">
-      <span>Impr: <span id="ig-last-impr">-</span></span>
-      <span style="margin-left:12px;">Reach: <span id="ig-last-reach">-</span></span>
-      <span style="margin-left:12px;">Saved: <span id="ig-last-saved">-</span></span>
-      <span id="ig-last-views-wrap" style="margin-left:12px; display:none;">Views: <span id="ig-last-views">-</span></span>
-    </div>
-  </div>
+            <!-- Lifetime insights for latest media -->
+            <div id="ig-last-post-insights" style="margin-top:6px; font-size:0.95em; color:#eee; display:none;">
+              <span>Impr: <span id="ig-last-impr">-</span></span>
+              <span style="margin-left:12px;">Reach: <span id="ig-last-reach">-</span></span>
+              <span style="margin-left:12px;">Saved: <span id="ig-last-saved">-</span></span>
+              <span id="ig-last-views-wrap" style="margin-left:12px; display:none;">Views: <span id="ig-last-views">-</span></span>
+            </div>
+          </div>
 
-  <!-- Top recent post by engagement (last 12) -->
-<div id="ig-top-media-row" style="margin-top:16px;display:none;">
-  <b>Top Recent Post:</b>
-  <a id="ig-top-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
-    <span id="ig-top-media-caption">Top post</span>
-  </a>
-  <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-    <img id="ig-top-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
-    <div style="font-size:0.97em;">
-      <div>Likes: <span id="ig-top-media-likes">-</span></div>
-      <div>Comments: <span id="ig-top-media-comments">-</span></div>
-      <div id="ig-top-media-views-wrap" style="display:none;">Views: <span id="ig-top-media-views">-</span></div>
-      <div>Eng: <span id="ig-top-media-eng">-</span></div>
-    </div>
-  </div>
-</div>
-</div>
+          <!-- Top recent post by engagement (last 12) -->
+          <div id="ig-top-media-row" style="margin-top:16px;display:none;">
+            <b>Top Recent Post:</b>
+            <a id="ig-top-media-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="ig-top-media-caption">Top post</span>
+            </a>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="ig-top-media-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+              <div style="font-size:0.97em;">
+                <div>Likes: <span id="ig-top-media-likes">-</span></div>
+                <div>Comments: <span id="ig-top-media-comments">-</span></div>
+                <div id="ig-top-media-views-wrap" style="display:none;">Views: <span id="ig-top-media-views">-</span></div>
+                <div>Eng: <span id="ig-top-media-eng">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<!-- facebook stats -->
-<div class="facebook-stats-card" id="facebook-stats-block" style="
-  display:none;
-  padding:24px 22px;
-  background:#5e5e5e;
-  border-radius:16px;
-  box-shadow:0 5px 9px rgba(24,119,242,.45);
-  max-width:550px;
-  margin:0 auto 16px auto;
-  color:#fff;
-">
-<small id="fb-insights-note" style="display:none;opacity:.9"></small>
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="fb-profile-pic" src="facebooklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="facebooklogo.png" alt="Facebook" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius:6px;">
-        <span id="fb-page-name">Loading…</span>
-        <span id="fb-page-category" style="margin-left:8px;font-size:.9em;color:#cfe3ff;display:none;">(Category)</span>
-      </h2>
-      <span id="fb-about" style="font-size:0.97em;color:#ffd;display:none;">About…</span>
-    </div>
-  </div>
+        <!-- facebook stats -->
+        <div class="facebook-stats-card" id="facebook-stats-block" style="
+          display:none;
+          padding:24px 22px;
+          background:#5e5e5e;
+          border-radius:16px;
+          box-shadow:0 5px 9px rgba(24,119,242,.45);
+          max-width:550px;
+          margin:0 auto 16px auto;
+          color:#fff;
+        ">
+          <small id="fb-insights-note" style="display:none;opacity:.9"></small>
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
+            <img id="fb-profile-pic" src="facebooklogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:1.35em;">
+                <img src="facebooklogo.png" alt="Facebook" style="height:26px;vertical-align:-4px;margin-right:6px;border-radius:6px;">
+                <span id="fb-page-name">Loading…</span>
+                <span id="fb-page-category" style="margin-left:8px;font-size:.9em;color:#cfe3ff;display:none;">(Category)</span>
+              </h2>
+              <span id="fb-about" style="font-size:0.97em;color:#ffd;display:none;">About…</span>
+            </div>
+          </div>
 
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Followers:</b> <span id="fb-followers">-</span></div>
-    <div><b>Page Likes:</b> <span id="fb-likes">-</span></div>
-    <div><b>Reach (28d):</b> <span id="fb-reach-28d">-</span></div>
-    <div><b>Impressions (28d):</b> <span id="fb-impressions-28d">-</span></div>
-    <div><b>Engaged (28d):</b> <span id="fb-engaged-28d">-</span></div>
-    <div id="fb-updated-wrap"><b>Updated:</b> <span id="fb-updated">-</span></div>
-  </div>
+          <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
+            <div><b>Followers:</b> <span id="fb-followers">-</span></div>
+            <div><b>Page Likes:</b> <span id="fb-likes">-</span></div>
+            <div><b>Reach (28d):</b> <span id="fb-reach-28d">-</span></div>
+            <div><b>Impressions (28d):</b> <span id="fb-impressions-28d">-</span></div>
+            <div><b>Engaged (28d):</b> <span id="fb-engaged-28d">-</span></div>
+            <div id="fb-updated-wrap"><b>Updated:</b> <span id="fb-updated">-</span></div>
+          </div>
 
-  <div id="fb-last-post-row" style="margin-top:14px;display:none;">
-    <b>Latest Post:</b>
-    <a id="fb-last-post-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
-      <span id="fb-last-post-message">Latest post</span>
-    </a>
-    <span id="fb-last-post-created" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="fb-last-post-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
-    </div>
-  </div>
-</div>
+          <div id="fb-last-post-row" style="margin-top:14px;display:none;">
+            <b>Latest Post:</b>
+            <a id="fb-last-post-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;margin-left:6px;">
+              <span id="fb-last-post-message">Latest post</span>
+            </a>
+            <span id="fb-last-post-created" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
+            <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
+              <img id="fb-last-post-thumb" src="" style="width:98px;height:98px;border-radius:7px;background:#222;object-fit:cover;">
+            </div>
+          </div>
+        </div>
 
-</section>
-
-
+      </section>
     </fieldset>
 
     <!-- Graph Section -->
@@ -768,116 +796,203 @@
       </div>
     </div>
 
-    
-  
-
-  
-
-</section>
-
-<fieldset class="aff-sec">
-  <section id="affiliate-dashboard-section" class="panel">
-    <div class="panel-header">
-      <h2>Affiliate</h2>
-      <p class="muted">Share your referral link and track your commissions.</p>
-    </div>
-
-    <div class="card" id="aff-link-card">
-      <div class="card-header"><h3>Your Referral Link</h3></div>
-      <div class="card-body">
-        <div class="row" style="gap:10px; align-items:center;">
-          <input id="aff-link-input" type="text" readonly />
-          <button id="aff-copy-btn">Copy</button>
-          <button id="aff-share-btn">Share</button><br>
-          <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
-        </div>
-        <p class="muted" style="margin-top:8px;">
-          Want a custom code? Contact support — code creation/changes are admin-only.
-        </p>
-      </div>
-    </div>
-
-    <div class="card" id="aff-stats-card" style="margin-top:16px;">
-      <div class="card-header"><h3>Your Totals</h3></div>
-      <div class="card-body">
-        <div id="aff-stats" class="stats-grid">
-          <!-- Row 1 -->
-          <div class="stat">
-            <div class="label">Pending Comm.</div>
-            <div class="value" id="aff-pending">—</div>
-          </div>
-          <div class="stat">
-            <div class="label">Conversions</div>
-            <div class="value" id="aff-total-conv">—</div>
-          </div>
-          <div class="stat">
-            <div class="label">Approved Comm.</div>
-            <div class="value" id="aff-approved">—</div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="stat">
-            <div class="label">Total GMV</div>
-            <div class="value" id="aff-gmv">—</div>
-          </div>
-          <div class="stat">
-            <div class="label">Paid Comm.</div>
-            <div class="value" id="aff-paid">—</div>
-          </div>
-          <div class="stat">
-            <div class="label">Commission Rate</div>
-            <!-- read-only; filled by JS from affiliate_partners.commission_rate -->
-            <div class="value" id="aff-rate">—</div>
-          </div>
-        </div>
-
-        <div style="margin-top:12px;">
-          <button id="aff-request-payout-btn">Pay to Wallet</button>
-        </div>
-      </div>
-    </div>
   </section>
-</fieldset>
+
+  <fieldset class="aff-sec">
+    <section id="affiliate-dashboard-section" class="panel">
+      <div class="panel-header">
+        <h2>Affiliate</h2>
+        <p class="muted">Share your referral link and track your commissions.</p>
+      </div>
+
+      <div class="card" id="aff-link-card">
+        <div class="card-header"><h3>Your Referral Link</h3></div>
+        <div class="card-body">
+          <div class="row" style="gap:10px; align-items:center;">
+            <input id="aff-link-input" type="text" readonly />
+            <button id="aff-copy-btn">Copy</button>
+            <button id="aff-share-btn">Share</button><br>
+            <small id="affiliate-copy-ok" style="display:none;color:#77e48f;margin-left:8px;">Copied!</small>
+          </div>
+          <p class="muted" style="margin-top:8px;">
+            Want a custom code? Contact support — code creation/changes are admin-only.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" id="aff-stats-card" style="margin-top:16px;">
+        <div class="card-header"><h3>Your Totals</h3></div>
+        <div class="card-body">
+          <div id="aff-stats" class="stats-grid">
+            <!-- Row 1 -->
+            <div class="stat">
+              <div class="label">Pending Comm.</div>
+              <div class="value" id="aff-pending">—</div>
+            </div>
+            <div class="stat">
+              <div class="label">Conversions</div>
+              <div class="value" id="aff-total-conv">—</div>
+            </div>
+            <div class="stat">
+              <div class="label">Approved Comm.</div>
+              <div class="value" id="aff-approved">—</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="stat">
+              <div class="label">Total GMV</div>
+              <div class="value" id="aff-gmv">—</div>
+            </div>
+            <div class="stat">
+              <div class="label">Paid Comm.</div>
+              <div class="value" id="aff-paid">—</div>
+            </div>
+            <div class="stat">
+              <div class="label">Commission Rate</div>
+              <!-- read-only; filled by JS from affiliate_partners.commission_rate -->
+              <div class="value" id="aff-rate">—</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <button id="aff-request-payout-btn">Pay to Wallet</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </fieldset>
 </section>
+
 <style>
+  /* Profile + Activity layout */
+  .top-profile-activity-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-  
-  #aff-stats.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
-  gap: 16px;
+  .profile-main-fieldset {
+    min-width: 0;
+  }
+
+ .activity-feed-fieldset {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
-#aff-stats .stat:nth-last-child(2) { grid-column: 1 / 2; }
-#aff-stats .stat:nth-last-child(1) { grid-column: 3 / 4; }
 
+/* Make the activity list scroll when it gets tall */
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+
+  max-height: 450px;       /* adjust height to taste */
+  overflow-y: auto;        /* vertical scrollbar when needed */
+  padding-right: 4px;      /* a bit of space so text doesn't sit under the scrollbar */
+}
+
+
+  .activity-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 6px;
+  }
+
+  .activity-list li:last-child {
+    border-bottom: none;
+  }
+
+  .activity-meta {
+    display: block;
+    font-size: 0.78rem;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+
+  .activity-empty {
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  @media (min-width: 1200px) {
+    .top-profile-activity-layout {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .profile-main-fieldset {
+      flex: 3 1 0;
+    }
+
+    .activity-feed-fieldset {
+      flex: 1.3 1 0;
+      max-width: 420px;
+    }
+  }
+
+
+
+section li {
+  /* background-color: rgb(0, 0, 0); */
+  background-color: rgb(36, 36, 36);
+}
+
+
+
+
+@media (min-width: 1200px) {
+  .profile-main-fieldset {
+    height: 570px;
+  }
+
+
+.activity-feed-fieldset {
+  height: 570px;
+}
+.activity-feed-fieldset ul li {
+  width: 20vw;
+}
+}
+
+
+  #aff-stats.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  #aff-stats .stat:nth-last-child(2) { grid-column: 1 / 2; }
+  #aff-stats .stat:nth-last-child(1) { grid-column: 3 / 4; }
 </style>
 
 <script type="module" src="./js/AffiliateDashboard.js"></script>
 
 </section>
 
- <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./forum.html">Forum</a></li>
-                <li><a href="./stats.html">Stats</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+<!-- FOOTER -->
+<footer class="footercomplete">
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+      <li><a href="./blog.html">Blog</a></li>
+      <li><a href="./forum.html">Forum</a></li>
+      <li><a href="./stats.html">Stats</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
         
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
-    </footer>
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+    Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+  </div>
+</footer>
 
 <script type="module">
   import { supabase } from './js/supabaseClient.js';
@@ -890,7 +1005,7 @@
     const user = await getActiveUser();
     if (!user) {
       alert("You must be logged in to view this page.");
-      window.location.href = '/login.html';
+      window.location.href = './login.html';
       return;
     }
     // Set nav auth link correctly
@@ -914,8 +1029,6 @@
       : "logos.png";
     document.getElementById("profile-pic").src = profilePic;
 
-
-    
     // ==== BADGE LOGIC FOR SPONSEE ====
     injectUserBadge(user.email, '#profile-badge-slot', 'sponsee_email');
 
@@ -970,22 +1083,103 @@
     socialHandlesSpan.innerHTML = linkedPlatformsHTML;
     linkedAccountsDiv.innerHTML = linkedPlatformsHTML;
 
-    // RECENT ACTIVITY TABLE (populate with your logic as needed)
-    const activityTable = document.getElementById("activity-table-body");
-    (user.recent_activity || []).forEach(act => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${act.brand}</td>
-        <td>${act.status}</td>
-        <td>${act.date}</td>
-        <td>${act.earnings}</td>
-      `;
-      activityTable.appendChild(row);
-    });
-    
+    // ===== RECENT ACTIVITY SIDE FEED =====
+    async function loadActivityFeed(currentUser) {
+      const activityFeed = document.getElementById("sponsee-activity-feed");
+      if (!activityFeed) return;
+
+      // helper: format timestamps nicely
+      const fmt = (iso) => {
+        if (!iso) return '';
+        try {
+          return new Date(iso).toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        } catch {
+          return iso;
+        }
+      };
+
+      let items = [];
+
+      // 1) Pull from user_notifications (primary activity source)
+      try {
+        const { data: notifications, error: notifErr } = await supabase
+          .from('user_notifications')
+          .select('title, message, type, created_at, related_offer_id')
+          .eq('email', currentUser.email)
+          .order('created_at', { ascending: false })
+          .limit(10);
+
+        if (notifErr) {
+          console.error('Error loading user_notifications for activity feed', notifErr);
+        } else if (notifications && notifications.length) {
+          items = notifications.map(n => ({
+            primary: n.title || 'Update',
+            secondary: n.message || '',
+            date: fmt(n.created_at),
+            tag: n.type || ''
+          }));
+        }
+      } catch (err) {
+        console.error('Unexpected error loading notifications for activity feed', err);
+      }
+
+      // 2) Fallback: pull from private_offers if there were no notifications
+      if (!items.length) {
+        try {
+          const orFilter = [
+            `sponsee_email.eq.${currentUser.email}`,
+            `sponsee_username.eq.${currentUser.username}`
+          ].join(',');
+
+          const { data: offers, error: offersErr } = await supabase
+            .from('private_offers')
+            .select('offer_title, sponsor_company, status, offer_amount, created_at, deadline')
+            .or(orFilter)
+            .order('created_at', { ascending: false })
+            .limit(6);
+
+          if (offersErr) {
+            console.error('Error loading private_offers for activity feed', offersErr);
+          } else if (offers && offers.length) {
+            items = offers.map(o => ({
+              primary: o.sponsor_company || o.offer_title || 'Sponsorship',
+              secondary: o.status || 'Offer update',
+              date: fmt(o.created_at),
+              tag: o.offer_amount ? `$${o.offer_amount}` : ''
+            }));
+          }
+        } catch (err) {
+          console.error('Unexpected error loading offers for activity feed', err);
+        }
+      }
+
+      // 3) Render into the side feed
+      if (!items.length) {
+        activityFeed.innerHTML = `<li class="activity-empty">No recent activity yet.</li>`;
+        return;
+      }
+
+      activityFeed.innerHTML = '';
+      items.slice(0, 6).forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>${item.primary}</strong>
+          — ${item.secondary}
+          <span class="activity-meta">${item.date}${item.tag ? ' · ' + item.tag : ''}</span>
+        `;
+        activityFeed.appendChild(li);
+      });
+    }
+
+    await loadActivityFeed(user);
   });
 </script>
-
 
 <script type="module" src="./js/settings.js"></script>
 <script type="module">import './js/sponseeOffers.js';</script>
@@ -1002,9 +1196,7 @@
   });
 </script>
 
-
 <!-- Referral Link Modal -->
-
 <div id="referral-link-modal" style="display:none;position:fixed;z-index:3000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.18);align-items:center;justify-content:center;">
   <div style="margin:auto;background:white;max-width:390px;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 4px 28px 0 #dedede;position:relative;">
     <button id="close-ref-link-modal" style="position:absolute;top:16px;right:16px;background:none;box-shadow:none;border:none;font-size:1.7em;color:rgb(255, 0, 0);cursor:pointer;">×</button>
@@ -1016,7 +1208,6 @@
       Share this link—anyone who signs up with it will earn you a free month!
     </div>
     <div id="referral-medal-info" style="margin-top:10px;text-align:center;"></div>
-
   </div>
 </div>
 
@@ -1043,42 +1234,41 @@
     </div>
 
     <!-- Public Dashboard (shareable) -->
-<hr style="margin:14px 0;opacity:.25;">
-<div>
-  <h4 style="margin:6px 0 8px;">Public Dashboard</h4>
-  <p style="margin:0 0 8px;opacity:.85;">
-    When enabled, anyone with your link can view a read-only version of your dashboard:
-    profile, socials, and ratings. Sensitive info (email, phone, wallet) is never shown.
-  </p>
+    <hr style="margin:14px 0;opacity:.25;">
+    <div>
+      <h4 style="margin:6px 0 8px;">Public Dashboard</h4>
+      <p style="margin:0 0 8px;opacity:.85;">
+        When enabled, anyone with your link can view a read-only version of your dashboard:
+        profile, socials, and ratings. Sensitive info (email, phone, wallet) is never shown.
+      </p>
 
-  <!-- Toggle -->
-  <label style="display:flex;align-items:center;gap:10px;margin:6px 0 12px;">
-    <input type="checkbox" id="public-dash-toggle">
-    <span>Enable public, shareable dashboard</span>
-  </label>
+      <!-- Toggle -->
+      <label style="display:flex;align-items:center;gap:10px;margin:6px 0 12px;">
+        <input type="checkbox" id="public-dash-toggle" style="margin-left: auto;" >
+        <span style="margin-right: auto;" >Enable public, shareable dashboard</span>
+      </label>
 
-  <!-- Slug editor + share link (only visible when enabled) -->
-  <div id="public-dash-row" style="display:none;">
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <label for="public-dash-slug" style="min-width:80px;">Your link</label>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span style="opacity:.8;">https://sponsorsorter.com/u/index.html?u=</span>
-        <input id="public-dash-slug" type="text" style="width:180px;" placeholder="your-handle">
-        <button id="public-dash-save">Save</button>
+      <!-- Slug editor + share link (only visible when enabled) -->
+      <div id="public-dash-row" style="display:none;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label for="public-dash-slug" style="min-width:80px;margin-left: auto;margin-right: auto;">Your link</label>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="opacity:.8;">https://sponsorsorter.com/u/index.html?u=</span>
+            <input id="public-dash-slug" type="text" style="width:180px;" placeholder="your-handle">
+            <button id="public-dash-save" style="margin-left: auto;margin-right: auto;" >Save</button>
+          </div>
+        </div>
+
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <a id="public-dash-link" href="#" target="_blank" rel="noopener">Open public page</a>
+          <button id="public-dash-copy">Copy link</button>
+          <span id="public-dash-status" style="opacity:.85;"></span>
+        </div>
       </div>
     </div>
 
-    <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <a id="public-dash-link" href="#" target="_blank" rel="noopener">Open public page</a>
-      <button id="public-dash-copy">Copy link</button>
-      <span id="public-dash-status" style="opacity:.85;"></span>
-    </div>
   </div>
 </div>
-
-  </div>
-</div>
-
 
 <!-- Subscription & Rewards Modal - styled like Withdraw Funds -->
 <div id="subscription-modal"
@@ -1136,7 +1326,6 @@
 </div>
 
 <!-- Oauth link Modal-->
-
 <div id="oauth-link-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(16,18,32,0.86);align-items:center;justify-content:center;">
   <div style="background:#353535;max-width:410px;padding:30px 26px 28px 26px;border-radius:16px;box-shadow:0 4px 30px #2222;position:relative;">
     <button id="close-oauth-link-modal" style="position:absolute;right:2px;top:2px;font-size:1.4em;background:none;box-shadow: none;border:none;color:#df0202;cursor:pointer;">&times;</button>
@@ -1147,7 +1336,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- modal for youtube oauth -->
 <div id="youtube-oauth-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(16,18,32,0.86);align-items:center;justify-content:center;">
@@ -1226,8 +1414,5 @@
   });
 </script>
 
-
 </body>
 </html>
-
-
