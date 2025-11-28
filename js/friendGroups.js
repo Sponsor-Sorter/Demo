@@ -53,6 +53,31 @@ async function getUserBasics(uid) {
   return { username: data?.username || '-', profile_pic: data?.profile_pic || null };
 }
 
+
+async function getPlanTypeForUser(uid) {
+  try {
+    if (!uid) return 'free';
+
+    const { data, error } = await supabase
+      .from('users_extended_data')
+      .select('planType')
+      .eq('user_id', uid)
+      .maybeSingle();
+
+    if (error) {
+      console.warn('getPlanTypeForUser error:', error.message || error);
+      return 'free';
+    }
+
+    return data?.planType || 'free';
+  } catch (err) {
+    console.warn('getPlanTypeForUser failed:', err?.message || err);
+    return 'free';
+  }
+}
+
+
+
 async function getGroupById(groupId) {
   const { data, error } = await supabase
     .from('friend_groups')
@@ -318,67 +343,81 @@ export async function createGroup({ name, description = '', visibility = 'privat
     if (!name) throw new Error('Group name required');
     const myId = await getMyUserId();
 
+    // Only Pro accounts can CREATE groups
+    const myPlan = await getPlanTypeForUser(myId);
+    if (String(myPlan || '').toLowerCase() !== 'pro') {
+      toast('Creator groups are a Pro feature. Upgrade to Pro to create groups.');
+      return null;
+    }
+
     // Try insert WITH allow_offers (current schema supports it). Fallback if legacy.
     let newGroup = null;
     {
       const insertPayload = { owner_id: myId, name, description, visibility, allow_offers: !!allowOffers };
-      let ins = await supabase.from('friend_groups').insert([insertPayload]).select().maybeSingle();
+      let ins = await supabase
+        .from('friend_groups')
+        .insert([insertPayload])
+        .select()
+        .maybeSingle();
+
       if (ins.error && /column .*allow_offers/i.test(ins.error.message || '')) {
-        ins = await supabase.from('friend_groups').insert([{ owner_id: myId, name, description, visibility }]).select().maybeSingle();
+        // Legacy schema: no allow_offers column
+        ins = await supabase
+          .from('friend_groups')
+          .insert([{ owner_id: myId, name, description, visibility }])
+          .select()
+          .maybeSingle();
       }
+
       if (ins.error) throw ins.error;
       newGroup = ins.data;
     }
 
-   // Optional: upload image and persist *public URL* into image_path
-if (imageFile) {
-  try {
-    const uploaded = await uploadGroupImage(newGroup.id, imageFile);
+    // Optional: upload image and persist *public URL* into image_path/image_url/etc.
+    if (imageFile) {
+      try {
+        const uploaded = await uploadGroupImage(newGroup.id, imageFile);
 
-    // Always resolve a public URL string (we want to store the URL, not the storage key)
-    const publicUrl =
-      uploaded?.publicUrl ||
-      supabase.storage.from(GROUP_IMAGE_BUCKET).getPublicUrl(uploaded?.path || '').data?.publicUrl ||
-      null;
+        const publicUrl =
+          uploaded?.publicUrl ||
+          supabase.storage.from(GROUP_IMAGE_BUCKET).getPublicUrl(uploaded?.path || '').data?.publicUrl ||
+          null;
 
-    if (publicUrl) {
-      const usedCol = await persistGroupImageURL(newGroup.id, publicUrl);
-      if (usedCol) newGroup[usedCol] = publicUrl; // reflect locally for immediate UI use
+        if (publicUrl) {
+          const usedCol = await persistGroupImageURL(newGroup.id, publicUrl);
+          if (usedCol) newGroup[usedCol] = publicUrl; // reflect locally for immediate UI use
+        }
+
+        // Keep localStorage fallback around for any legacy readers
+        if (uploaded?.path) lsSet(newGroup.id, uploaded.path);
+      } catch (imgErr) {
+        console.warn('Group image upload failed:', imgErr);
+      }
     }
 
-    // Keep localStorage fallback around for any legacy readers
-    if (uploaded?.path) lsSet(newGroup.id, uploaded.path);
-  } catch (imgErr) {
-    console.warn('Group image upload failed:', imgErr);
-  }
-}
+    // Auto-add creator to the group as ADMIN (valid roles: 'member' | 'admin').
+    // Note: the actual owner is tracked in friend_groups.owner_id.
+    try {
+      const myId2 = await getMyUserId();
 
+      // avoid duplicate row if something retried
+      const { data: existing, error: exErr } = await supabase
+        .from('friend_group_members')
+        .select('user_id')
+        .eq('group_id', newGroup.id)
+        .eq('user_id', myId2)
+        .maybeSingle();
+      if (exErr) throw exErr;
 
-    // Auto-add owner to members
-   // Auto-add creator to the group as ADMIN (valid roles: 'member' | 'admin').
-// Note: the actual owner is tracked in friend_groups.owner_id.
-try {
-  const myId2 = await getMyUserId();
-
-  // avoid duplicate row if something retried
-  const { data: existing, error: exErr } = await supabase
-    .from('friend_group_members')
-    .select('user_id')
-    .eq('group_id', newGroup.id)
-    .eq('user_id', myId2)
-    .maybeSingle();
-  if (exErr) throw exErr;
-
-  if (!existing?.user_id) {
-    const { error: insErr } = await supabase
-      .from('friend_group_members')
-      .insert([{ group_id: newGroup.id, user_id: myId2, role: 'admin' }], { returning: 'minimal' });
-    if (insErr) throw insErr;
-  }
-} catch (mErr) {
-  console.warn('Owner auto-member add failed:', mErr?.message || mErr);
-}
-
+      if (!existing?.user_id) {
+        const { error: insErr } = await supabase
+          .from('friend_group_members')
+          .insert([{ group_id: newGroup.id, user_id: myId2, role: 'admin' }], { returning: 'minimal' });
+        if (insErr) throw insErr;
+      }
+    } catch (mErr) {
+      console.warn('Owner auto-member add failed:', mErr?.message || mErr);
+    }
 
     toast('Group created.');
     return newGroup;
@@ -388,6 +427,8 @@ try {
     return null;
   }
 }
+
+
 
 export async function deleteGroup({ groupId }) {
   try {
@@ -713,33 +754,60 @@ export async function listMyPendingInvites() {
 }
 
 export async function acceptInvite({ inviteId }) {
-  const me = await getMyUserId();
-  const { data: inv, error: invErr } = await supabase
-    .from('friend_group_invites')
-    .select('group_id, invitee_id, status')
-    .eq('id', inviteId).maybeSingle();
-  if (invErr) throw invErr;
-  if (!inv || inv.status !== 'pending' || inv.invitee_id !== me) throw new Error('Invite not valid.');
+  try {
+    const me = await getMyUserId();
 
-  // idempotent insert
-  const { data: existing } = await supabase
-    .from('friend_group_members')
-    .select('user_id').eq('group_id', inv.group_id).eq('user_id', me).maybeSingle();
-  if (!existing?.user_id) {
-    const { error: insErr } = await supabase
+    // Fetch & validate invite first
+    const { data: inv, error: invErr } = await supabase
+      .from('friend_group_invites')
+      .select('group_id, invitee_id, status')
+      .eq('id', inviteId)
+      .maybeSingle();
+
+    if (invErr) throw invErr;
+    if (!inv || inv.status !== 'pending' || inv.invitee_id !== me) {
+      throw new Error('Invite not valid.');
+    }
+
+    // Only Pro accounts can JOIN groups
+    const myPlan = await getPlanTypeForUser(me);
+    if (String(myPlan || '').toLowerCase() !== 'pro') {
+      toast('Creator groups are a Pro feature. Upgrade to Pro to join groups.');
+      return false;
+    }
+
+    // idempotent insert
+    const { data: existing } = await supabase
       .from('friend_group_members')
-      .insert([{ group_id: inv.group_id, user_id: me, role: 'member' }], { returning: 'minimal' });
-    if (insErr) throw insErr;
-  }
+      .select('user_id')
+      .eq('group_id', inv.group_id)
+      .eq('user_id', me)
+      .maybeSingle();
 
-  const { error } = await supabase
-    .from('friend_group_invites')
-    .update({ status: 'accepted', responded_at: new Date().toISOString() })
-    .eq('id', inviteId);
-  if (error) throw error;
-  toast('Invite accepted.');
-  return true;
+    if (!existing?.user_id) {
+      const { error: insErr } = await supabase
+        .from('friend_group_members')
+        .insert([{ group_id: inv.group_id, user_id: me, role: 'member' }], { returning: 'minimal' });
+      if (insErr) throw insErr;
+    }
+
+    const { error } = await supabase
+      .from('friend_group_invites')
+      .update({ status: 'accepted', responded_at: new Date().toISOString() })
+      .eq('id', inviteId);
+
+    if (error) throw error;
+    toast('Invite accepted.');
+    return true;
+  } catch (err) {
+    console.error(err);
+    toast(`Invite accept failed: ${err.message || err}`);
+    return false;
+  }
 }
+
+
+
 
 export async function declineInvite({ inviteId }) {
   const me = await getMyUserId();
@@ -1637,38 +1705,117 @@ function openBulkInviteModal({ groupId, excludeSet, onDone }) {
 /* ---------- Wire-up ---------- */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const createForm = document.getElementById('group-create-form');
-  const nameInput  = document.getElementById('group-name');
-  const descInput  = document.getElementById('group-desc');
-  const visSelect  = document.getElementById('group-visibility');
-  const imgInput   = document.getElementById('group-image'); // optional <input type="file" />
-  const allowCb    = document.getElementById('group-allow-offers'); // optional <input type="checkbox" />
+  (async () => {
+    const createForm = document.getElementById('group-create-form');
+    const nameInput  = document.getElementById('group-name');
+    const descInput  = document.getElementById('group-desc');
+    const visSelect  = document.getElementById('group-visibility');
+    const imgInput   = document.getElementById('group-image'); // optional <input type="file" />
+    const allowCb    = document.getElementById('group-allow-offers'); // optional <input type="checkbox" />
+    const groupsList = document.getElementById('groups-list');
+    const invitesList = document.getElementById('group-invites-list'); // optional
 
-  if (createForm && nameInput) {
-    createForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = (nameInput.value || '').trim();
-      const description = (descInput?.value || '').trim();
-      const visibility = (visSelect?.value || 'private');
-      const imageFile  = (imgInput?.files && imgInput.files[0]) ? imgInput.files[0] : null;
-      const allowOffers = !!(allowCb?.checked);
+    // If this page doesn't have groups UI, nothing to do
+    if (!createForm && !groupsList) return;
 
-      const g = await createGroup({ name, description, visibility, imageFile, allowOffers });
-      if (g) {
-        nameInput.value = '';
-        if (descInput) descInput.value = '';
-        if (visSelect) visSelect.value = 'private';
-        if (imgInput) imgInput.value = '';
-        if (allowCb) allowCb.checked = false;
-        await renderGroupsUI({});
+    // Figure out planType
+    let myPlan = 'free';
+    try {
+      const me = await getMyUserId();
+      myPlan = await getPlanTypeForUser(me);
+    } catch (e) {
+      console.warn('Could not resolve planType for groups:', e?.message || e);
+    }
+
+    const isPro = String(myPlan || '').toLowerCase() === 'pro';
+
+    // ======== FREE USERS: show upgrade card, hide interactive groups ========
+    if (!isPro) {
+      const host = groupsList || createForm;
+      if (!host) return;
+
+      const wrapper =
+        (typeof host.closest === 'function'
+          ? host.closest('fieldset, section, .card, .creator-groups-section')
+          : null) ||
+        host.parentElement ||
+        host;
+
+      // Hide the actual groups UI
+      if (createForm) createForm.style.display = 'none';
+      if (groupsList) groupsList.style.display = 'none';
+      if (invitesList) invitesList.style.display = 'none';
+
+      // Build a simple Pro upsell card
+      const lock = document.createElement('div');
+      lock.className = 'groups-locked-message pro-upsell-card';
+      lock.innerHTML = `
+        <h3 class="groups-locked-title">
+          Creator Groups Require a Pro account
+        </h3>
+        <p class="groups-locked-text">
+          Creator groups are available on Pro accounts. Upgrade to Pro to unlock private collab groups and group offers.
+        </p>
+        <button type="button" id="groups-upgrade-pro-btn" class="btn btn-primary btn-upgrade-pro">
+          Upgrade to Pro
+        </button>
+      `;
+
+      if (wrapper.firstChild) {
+        wrapper.insertBefore(lock, wrapper.firstChild);
+      } else {
+        wrapper.appendChild(lock);
       }
-    });
-  }
 
-  if (document.getElementById('groups-list')) {
-    renderGroupsUI({});
-  }
+      const btn = lock.querySelector('#groups-upgrade-pro-btn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          // If you already have a global upgrade helper, use it
+          if (window.startProUpgradeFlow) {
+            window.startProUpgradeFlow('creator_groups');
+          } else {
+            // Fallback: generic message – you can replace this with a direct redirect
+            toast('Head to your upgrade/billing section to go Pro and unlock Creator Groups.');
+          }
+        });
+      }
+
+      // Don’t wire up any Pro-only handlers for Free users
+      return;
+    }
+
+    // ======== PRO USERS: keep existing behaviour ========
+
+    if (createForm && nameInput) {
+      createForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = (nameInput.value || '').trim();
+        const description = (descInput?.value || '').trim();
+        const visibility = (visSelect?.value || 'private');
+        const imageFile  = (imgInput?.files && imgInput.files[0]) ? imgInput.files[0] : null;
+        const allowOffers = !!(allowCb?.checked);
+
+        const g = await createGroup({ name, description, visibility, imageFile, allowOffers });
+        if (g) {
+          nameInput.value = '';
+          if (descInput) descInput.value = '';
+          if (visSelect) visSelect.value = 'private';
+          if (imgInput) imgInput.value = '';
+          if (allowCb) allowCb.checked = false;
+          await renderGroupsUI({});
+        }
+      });
+    }
+
+    if (groupsList) {
+      renderGroupsUI({});
+    }
+  })().catch(err => {
+    console.error('friendGroups init failed:', err);
+  });
 });
+
+
 
 window.FriendGroupsAPI = {
   createGroup,
