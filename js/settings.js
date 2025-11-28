@@ -462,6 +462,75 @@ async function revokePlatforms(platform, tokenHints = {}) {
     // Stripe Price ID for the Pro monthly subscription (replace with your real ID)
   const PRO_MONTHLY_PRICE_ID = 'price_1RTjwk2eA1800fRNzvisgTuO';
 
+    // Shared Pro upgrade helper so other parts of the app (e.g. Creator Groups)
+  // can start the same Stripe checkout flow.
+  window.startProUpgradeFlow = async function startProUpgradeFlow(source = 'general') {
+    const upgradeBtn = document.getElementById('upgrade-to-pro-btn');
+    const originalText = upgradeBtn?.textContent;
+
+    if (upgradeBtn) {
+      upgradeBtn.disabled = true;
+      upgradeBtn.textContent = 'Redirecting…';
+    }
+
+    try {
+      const successUrl = new URL(`./payment-success.html?plan=pro&from=${encodeURIComponent(source)}`, location.href).href;
+      const cancelUrl  = new URL(`./settings.html?plan=pro_cancel&from=${encodeURIComponent(source)}`, location.href).href;
+
+      const payload = {
+        mode: 'subscription',
+        price_id: PRO_MONTHLY_PRICE_ID,
+        quantity: 1,
+        metadata: { product: 'pro_subscription', source },
+        success_url: successUrl,
+        cancel_url: cancelUrl
+      };
+
+      let checkoutUrl;
+
+      // Try Supabase functions.invoke first
+      try {
+        if (supabase.functions?.invoke) {
+          const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
+          if (error) throw error;
+          checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
+        }
+      } catch (err) {
+        console.warn('invoke stripe-checkout (pro) failed; falling back to fetch()', err);
+      }
+
+      // Fallback: direct fetch to Functions endpoint
+      if (!checkoutUrl) {
+        const jwt = await prem_getJwt();              // already defined later in settings.js
+        const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(jwt ? { Authorization: `Bearer ${jwt}` } : {})
+          },
+          body: JSON.stringify(payload)
+        });
+        const json = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
+        checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
+      }
+
+      if (!checkoutUrl) throw new Error('No checkout URL returned from stripe-checkout');
+
+      // Send user to Stripe Checkout
+      location.href = checkoutUrl;
+    } catch (err) {
+      console.error('Error starting Pro upgrade checkout:', err);
+      if (upgradeBtn) {
+        upgradeBtn.disabled = false;
+        upgradeBtn.textContent = originalText || 'Upgrade to Pro';
+      } else {
+        alert('There was a problem starting your Pro upgrade. Please try again.');
+      }
+    }
+  };
+
+
   document.getElementById('show-subscription-modal-btn')?.addEventListener('click', async () => {
     const modal = document.getElementById('subscription-modal');
     const detailsDiv = document.getElementById('subscription-details');
@@ -653,64 +722,12 @@ async function revokePlatforms(platform, tokenHints = {}) {
   const upgradeBtn = document.getElementById('upgrade-to-pro-btn');
   if (upgradeBtn) {
     upgradeBtn.addEventListener('click', async () => {
-      const originalText = upgradeBtn.textContent;
-      upgradeBtn.disabled = true;
-      upgradeBtn.textContent = 'Redirecting…';
-
-      try {
-        const successUrl = new URL('./payment-success.html?plan=pro', location.href).href;
-        const cancelUrl  = new URL('./settings.html?plan=pro_cancel', location.href).href;
-
-        const payload = {
-          mode: 'subscription',
-          price_id: PRO_MONTHLY_PRICE_ID,
-          quantity: 1,
-          metadata: { product: 'pro_subscription' },
-          success_url: successUrl,
-          cancel_url: cancelUrl
-        };
-
-        let checkoutUrl;
-
-        // Try Supabase functions.invoke first
-        try {
-          if (supabase.functions?.invoke) {
-            const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
-            if (error) throw error;
-            checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
-          }
-        } catch (err) {
-          console.warn('invoke stripe-checkout (pro) failed; falling back to fetch()', err);
-        }
-
-        // Fallback: direct fetch to functions endpoint
-        if (!checkoutUrl) {
-          const jwt = await prem_getJwt();
-          const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              ...(jwt ? { Authorization: `Bearer ${jwt}` } : {})
-            },
-            body: JSON.stringify(payload)
-          });
-          const json = await resp.json().catch(() => ({}));
-          if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
-          checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
-        }
-
-        if (!checkoutUrl) throw new Error('No checkout URL returned from stripe-checkout');
-
-        // Send user to Stripe Checkout
-        location.href = checkoutUrl;
-      } catch (err) {
-        console.error('Error starting Pro upgrade checkout:', err);
-        upgradeBtn.disabled = false;
-        upgradeBtn.textContent = originalText;
-        alert('There was a problem starting your Pro upgrade. Please try again.');
+      if (window.startProUpgradeFlow) {
+        await window.startProUpgradeFlow('subscription_modal');
       }
     });
   }
+
 
     // --- Add claim button logic ---
     document.querySelectorAll('.claim-reward-btn').forEach(btn => {
