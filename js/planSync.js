@@ -23,7 +23,8 @@ export async function syncPlanTypeFromStripe(options = {}) {
   const { silent = false } = options;
 
   try {
-    const user = await getActiveUser();
+    // getActiveUser(true) = fresh DB read (same pattern as settings.js)
+    const user = await getActiveUser(true);
     if (!user || !user.user_id) {
       if (!silent) console.warn('[planSync] No active user; skipping plan sync.');
       return null;
@@ -60,14 +61,40 @@ export async function syncPlanTypeFromStripe(options = {}) {
       return currentPlan;
     }
 
-    // Call the Edge Function to see if there is an ACTIVE subscription for this customer.
+    // --- Call the stripe_subscription_info Edge Function ---
+    // Use the exact same pattern as settings.js for consistency.
+    const { data: sessionData } = await supabase.auth.getSession();
+    const jwt = sessionData?.session?.access_token || sessionData?.access_token;
+
+    if (!jwt) {
+      if (!silent) {
+        console.warn('[planSync] No JWT available; cannot call stripe_subscription_info.');
+      }
+      return currentPlan;
+    }
+
     let info;
     try {
-      const { data, error } = await supabase.functions.invoke('stripe_subscription_info', {
-        body: { customer_id: user.stripe_customer_id },
-      });
-      if (error) throw error;
-      info = data;
+      const resp = await fetch(
+        'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe_subscription_info',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+          },
+          body: JSON.stringify({ customer_id: user.stripe_customer_id })
+        }
+      );
+
+      if (!resp.ok) {
+        if (!silent) {
+          console.warn('[planSync] stripe_subscription_info HTTP error:', resp.status);
+        }
+        return currentPlan;
+      }
+
+      info = await resp.json();
     } catch (err) {
       if (!silent) {
         console.warn('[planSync] Error calling stripe_subscription_info:', err?.message || err);
@@ -76,7 +103,7 @@ export async function syncPlanTypeFromStripe(options = {}) {
       return currentPlan;
     }
 
-    // Per your settings.js usage: data.subscription is only set if there is an *active* subscription.
+    // Per settings.js: data.subscription is only set if there is an *active* subscription.
     const hasActiveSubscription = !!info?.subscription;
     const desiredPlan = hasActiveSubscription ? 'pro' : 'free';
 
@@ -122,7 +149,7 @@ export async function syncPlanTypeFromStripe(options = {}) {
 // Auto-run on any page that imports this module.
 // Fire-and-forget; nothing critical in the app should depend on this finishing.
 document.addEventListener('DOMContentLoaded', () => {
-  syncPlanTypeFromStripe({ silent: true }).catch(() => {
-    // swallow errors; this is a best-effort sync only
+  syncPlanTypeFromStripe({ silent: true }).catch((err) => {
+    console.warn('[planSync] Auto-sync failed:', err?.message || err);
   });
 });
