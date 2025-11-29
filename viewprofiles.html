@@ -14,24 +14,23 @@
   <section class="navbar"> 
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
-<div>
-  <background-img class="navimg" src="navimg.png" alt="">
-  <nav>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="finder.html">Finder</a></li>
-  </nav>
- <nav>
-  <li class="navr" id="dashboard-link"><a href="dashboardsponsee.html">Dashboard</a></li>
-  <li><a href="login.html">Logout</a></li>
-  <li id="notification-bell-li" style="display:inline;">
-    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-    </button>
-  </li>
-</nav>
-
-</div>
+      <div id="nav-dynamic">
+        <background-img class="navimg" src="navimg.png" alt="">
+        <nav>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr" id="dashboard-link"><a href="dashboardsponsee.html">Dashboard</a></li>
+          <li><a href="login.html">Logout</a></li>
+          <li id="notification-bell-li" style="display:inline;">
+            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+          </li>
+        </nav>
+      </div>
     </div> 
   </section>
 </header>
@@ -55,7 +54,11 @@
           <p>Username: <span id="user-username">[Username]</span></p>
           <p>Location: <span id="user-location">[Location]</span></p>
           <p>Title: <span id="user-gender">[Title]</span></p>
-          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+          <p>Content Preferences: <span id="contenttype">[Content Type]</span> </p>
+          <p id="website-row" style="display:none;">
+            Website:
+            <a id="user-website-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+          </p>
           <p>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </p>
         </div>
       </div>
@@ -64,7 +67,6 @@
         <legend><h3>Brand Ratings</h3></legend>
         <div id="profile-review-stars" class="review-stars-block">
           <div class="stars-row" style="display: flex; gap: 32px;">
-           
             <div class="star-item">
               <span class="star-label">Communication</span>
               <span id="communication-stars" class="stars"></span>
@@ -146,19 +148,19 @@
 </section>
 
 <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="help.html">Help</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="reviews.html">Reviews</a></li>
+  <div class="footer-text">
+    <ul>
+      <li><a href="./help.html">Help</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="./privacy.html">Privacy Policy</a></li>
+      <li><a href="./terms.html">Terms of Service</a></li>
+      <li><a href="./reviews.html">Reviews</a></li>
+    </ul>
+  </div>
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
+</footer>
 
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
-    </footer>
 <script type="module" src="./js/alerts.js"></script>
 
 <script type="module">
@@ -290,6 +292,25 @@ async function loadProfileAndStats(username) {
   setElementText('user-gender', data.title);
   setElementText('about-yourself', data.about_yourself);
   setElementText('contenttype', data.contenttype);
+
+  // Website URL display
+  const websiteRow = document.getElementById('website-row');
+  const websiteLink = document.getElementById('user-website-link');
+  const rawWebsite = data.website_url || data.website;
+  if (websiteRow && websiteLink) {
+    if (rawWebsite && rawWebsite.trim() !== '') {
+      let url = rawWebsite.trim();
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      websiteLink.href = url;
+      websiteLink.textContent = rawWebsite.trim();
+      websiteRow.style.display = 'block';
+    } else {
+      websiteRow.style.display = 'none';
+    }
+  }
+
   const profilePic = data.profile_pic
     ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${data.profile_pic}`
     : "logos.png";
@@ -422,7 +443,7 @@ async function loadProfileRecentActivity(username) {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td style="text-align: center;">
-        <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
+        <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Pic" style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
         ${offer.sponsee_username}
       </td>
       <td style="color: ${statusColor}">${offer.status}</td>
@@ -491,7 +512,7 @@ async function loadProfileArchivedDeals(username) {
     archivedTableBody.innerHTML += `
       <tr>
         <td style="text-align: center;">
-          <img src="${sponseePicUrl}" onerror="this.src='/public/logos.png'" alt="Sponsee Pic"
+          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Pic"
                style="width: 40px; height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px;">
           ${offer.sponsee_username}
         </td>
@@ -516,8 +537,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadProfileArchivedDeals(username);
 });
 </script> 
+
 <script type="module">
-    import { supabase } from './js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const dashboardLink = document.getElementById('dashboard-link');
@@ -543,7 +565,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     dashboardLink.firstElementChild.textContent = "Login";
   }
 });
-
 </script>
 </body>
 </html>
