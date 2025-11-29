@@ -18,9 +18,13 @@ import { getActiveUser } from './impersonationHelper.js';
  *  - 'pro'  if user ends up marked Pro
  *  - 'free' if user ends up marked Free
  *  - null   on error / no user
+ *
+ * Options:
+ *  - silent: boolean (default false) -> suppress console logs when true
+ *  - reloadOnChange: boolean (default false) -> auto-reload page if planType flips
  */
 export async function syncPlanTypeFromStripe(options = {}) {
-  const { silent = false } = options;
+  const { silent = false, reloadOnChange = false } = options;
 
   try {
     // getActiveUser(true) = fresh DB read (same pattern as settings.js)
@@ -47,8 +51,14 @@ export async function syncPlanTypeFromStripe(options = {}) {
             if (!silent) {
               console.error('[planSync] Failed to downgrade planType to free (no stripe_customer_id):', error);
             }
-          } else if (!silent) {
-            console.info('[planSync] Downgraded planType from pro -> free (no stripe_customer_id).');
+          } else {
+            if (!silent) {
+              console.info('[planSync] Downgraded planType from pro -> free (no stripe_customer_id).');
+            }
+            if (reloadOnChange && typeof window !== 'undefined') {
+              // Allow any pending logs to flush, then reload once
+              setTimeout(() => window.location.reload(), 250);
+            }
           }
         } catch (err) {
           if (!silent) {
@@ -62,7 +72,7 @@ export async function syncPlanTypeFromStripe(options = {}) {
     }
 
     // --- Call the stripe_subscription_info Edge Function ---
-    // Use the exact same pattern as settings.js for consistency.
+    // Use the same pattern as settings.js: direct fetch with JWT.
     const { data: sessionData } = await supabase.auth.getSession();
     const jwt = sessionData?.session?.access_token || sessionData?.access_token;
 
@@ -131,6 +141,12 @@ export async function syncPlanTypeFromStripe(options = {}) {
       if (!silent) {
         console.info(`[planSync] planType updated from ${currentPlan} -> ${desiredPlan} based on Stripe.`);
       }
+
+      if (reloadOnChange && typeof window !== 'undefined') {
+        // Small delay so logs/toasts can show, then hard refresh so all JS re-runs with new plan
+        setTimeout(() => window.location.reload(), 250);
+      }
+
       return desiredPlan;
     } catch (err) {
       if (!silent) {
@@ -149,7 +165,7 @@ export async function syncPlanTypeFromStripe(options = {}) {
 // Auto-run on any page that imports this module.
 // Fire-and-forget; nothing critical in the app should depend on this finishing.
 document.addEventListener('DOMContentLoaded', () => {
-  syncPlanTypeFromStripe({ silent: true }).catch((err) => {
+  syncPlanTypeFromStripe({ silent: true, reloadOnChange: true }).catch((err) => {
     console.warn('[planSync] Auto-sync failed:', err?.message || err);
   });
 });
