@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-<script type="module" src="./js/planSync.js"></script>  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script type="module" src="./js/planSync.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
@@ -70,6 +71,8 @@
               <ul>
                 <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
                 <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="add-website-url">Link Website</button></li>
+
                 <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
                 <li>
                   <span style="font-size:1em;">Guided Onboarding</span>
@@ -166,7 +169,13 @@
             <p>Location: <span id="user-location">[Location]</span></p>
             <p>Title: <span id="user-gender">[Title]</span></p>
             <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
+             <p id="website-row" style="display:none;">
+                Website:
+                <a id="user-website-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+              </p>
             <p>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </p>
+           
+
           </div>
         </div>
         <div class="help-block">
@@ -1022,6 +1031,19 @@ section li {
     setText('about-yourself', user.about_yourself);
     setText('contenttype', user.contenttype);
 
+        // --- Website display (from users_extended_data.website_url) ---
+    const websiteRow  = document.getElementById('website-row');
+    const websiteLink = document.getElementById('user-website-link');
+    const websiteUrl  = (user.website_url || '').trim(); // users_extended_data.website_url
+
+    if (websiteRow && websiteLink && websiteUrl) {
+      websiteRow.style.display = 'block';
+      websiteLink.href = websiteUrl;
+      // Strip protocol for a cleaner label
+      websiteLink.textContent = websiteUrl.replace(/^https?:\/\//i, '');
+    }
+
+
     // Profile pic fallback
     const profilePic = user.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
@@ -1177,6 +1199,7 @@ section li {
     }
 
     await loadActivityFeed(user);
+    
   });
 </script>
 
