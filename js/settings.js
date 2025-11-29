@@ -1674,6 +1674,215 @@ if (recapToggle) {
 // Affiliate Application (Settings dropdown → modal)
 // Paste this whole block just ABOVE the closing "});" of DOMContentLoaded
 // =========================
+  // --- Website URL Modal (Link Website) ---
+
+  function ensureWebsiteModal() {
+    if (document.getElementById('website-url-modal')) return;
+
+    const modal = document.createElement('div');
+    modal.id = 'website-url-modal';
+    modal.className = 'modal';
+    modal.style.cssText = `
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:rgba(0,0,0,0.7);
+      align-items:center;
+      justify-content:center;
+    `;
+
+    modal.innerHTML = `
+      <div class="modal-content" style="
+        background:#111;
+        color:#eee;
+        max-width:480px;
+        width:92vw;
+        padding:24px 20px 18px;
+        border-radius:14px;
+        box-shadow:0 8px 24px #0009;
+        position:relative;
+      ">
+        <button type="button" id="close-website-url-modal" aria-label="Close" style="
+          position:absolute;
+          right:14px;
+          top:10px;
+          background:none;
+          border:none;
+          color:#f55;
+          font-size:1.4em;
+          cursor:pointer;
+          box-shadow:none;
+        ">&times;</button>
+
+        <h3 style="margin:0 0 10px 0; font-size:1.2rem;">Link your website</h3>
+        <p style="margin:0 0 12px 0; font-size:0.95rem; color:#ccc;">
+          Add your main website, store, or portfolio so sponsors can click through from your profile.
+        </p>
+
+        <label for="website-url-input" style="display:block; font-size:0.95rem; margin-bottom:4px;">
+          Website URL
+        </label>
+        <input
+          id="website-url-input"
+          type="url"
+          placeholder="https://your-site.com"
+          style="
+            width:100%;
+            padding:8px 10px;
+            border-radius:8px;
+            border:1px solid #444;
+            background:#000;
+            color:#fff;
+            box-sizing:border-box;
+            margin-bottom:6px;
+          "
+        >
+
+        <div style="font-size:0.85rem; color:#888; margin-bottom:12px;">
+          We’ll automatically add “https://” if you leave it off. Leave blank and save to remove your website.
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+          <button
+            type="button"
+            id="website-url-cancel-btn"
+            style="
+              padding:7px 14px;
+              border-radius:8px;
+              border:1px solid #444;
+              background:#222;
+              color:#eee;
+              cursor:pointer;
+              box-shadow:none;
+            "
+          >Cancel</button>
+
+          <button
+            type="button"
+            id="website-url-save-btn"
+            style="
+              padding:7px 16px;
+              border-radius:8px;
+              border:none;
+              background:#36a2eb;
+              color:#fff;
+              font-weight:600;
+              cursor:pointer;
+              box-shadow:none;
+            "
+          >Save</button>
+        </div>
+
+        <div id="website-url-msg" style="margin-top:8px; font-size:0.9rem; color:#bbb;"></div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Close handlers
+    modal.addEventListener('mousedown', (e) => {
+      if (e.target === modal) closeModal('website-url-modal');
+    });
+    document.getElementById('close-website-url-modal')?.addEventListener('click', () => {
+      closeModal('website-url-modal');
+    });
+    document.getElementById('website-url-cancel-btn')?.addEventListener('click', () => {
+      closeModal('website-url-modal');
+    });
+
+    // Save handler
+    document.getElementById('website-url-save-btn')?.addEventListener('click', async () => {
+      const input = document.getElementById('website-url-input');
+      const msgEl = document.getElementById('website-url-msg');
+      if (!input || !msgEl) return;
+
+      let raw = input.value.trim();
+      const user = await getActiveUser();
+      if (!user?.user_id) return;
+
+      // Clear website if empty
+      if (!raw) {
+        msgEl.style.color = '#bbb';
+        msgEl.textContent = 'Saving...';
+
+        const { error } = await supabase
+          .from('users_extended_data')
+          .update({ website_url: null })
+          .eq('user_id', user.user_id);
+
+        if (error) {
+          msgEl.style.color = '#f66';
+          msgEl.textContent = 'Error saving website. Please try again.';
+          return;
+        }
+
+        msgEl.style.color = '#7CFFA1';
+        msgEl.textContent = 'Website removed.';
+        setTimeout(() => closeModal('website-url-modal'), 900);
+        return;
+      }
+
+      // Normalise + basic validation
+      if (!/^https?:\/\//i.test(raw)) {
+        raw = `https://${raw}`;
+      }
+
+      try {
+        const u = new URL(raw);
+        raw = u.toString();
+      } catch {
+        msgEl.style.color = '#f66';
+        msgEl.textContent = 'That does not look like a valid URL.';
+        return;
+      }
+
+      msgEl.style.color = '#bbb';
+      msgEl.textContent = 'Saving...';
+
+      const { error } = await supabase
+        .from('users_extended_data')
+        .update({ website_url: raw })
+        .eq('user_id', user.user_id);
+
+      if (error) {
+        msgEl.style.color = '#f66';
+        msgEl.textContent = 'Error saving website. Please try again.';
+        return;
+      }
+
+      msgEl.style.color = '#7CFFA1';
+      msgEl.textContent = 'Website saved!';
+      setTimeout(() => closeModal('website-url-modal'), 900);
+    });
+  }
+
+  // Wire the “Link Website” item in the settings dropdown
+  const addWebsiteBtn = document.getElementById('add-website-url');
+  if (addWebsiteBtn) {
+    addWebsiteBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      ensureWebsiteModal();
+
+      // Prefill from current user data
+      const user = await getActiveUser();
+      const input = document.getElementById('website-url-input');
+      const msgEl = document.getElementById('website-url-msg');
+      if (input && user) {
+        input.value = user.website_url || '';
+      }
+      if (msgEl) {
+        msgEl.style.color = '#bbb';
+        msgEl.textContent = '';
+      }
+
+      // Close dropdown, open modal
+      if (settingsDropdown) settingsDropdown.style.display = 'none';
+      openModal('website-url-modal');
+    });
+  }
 
 // ---------- Small helpers ----------
 function aff_functionsBase(){ return (supabase && supabase.functionsUrl) || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; }
