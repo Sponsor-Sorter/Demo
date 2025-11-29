@@ -56,6 +56,11 @@
           <p>Location: <span id="user-location">[Location]</span></p>
           <p>Title: <span id="user-gender">[Title]</span></p>
           <p>Content Type: <span id="contenttype">[Content Type]</span></p>
+          <p id="website-row" style="display:none;">
+            Website:
+            <a id="user-website-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+          </p>
+
           <p>Linked Platforms: <span id="social_handles">[Linked Platforms]</span></p>
 
           <button class="make-offer-btn">Make Offer</button>
@@ -82,7 +87,7 @@
 
       <p style="margin-top: 14px;">Description: <span id="about-yourself">[about yourself]</span></p>
 
-      <fieldset>
+      <fieldset style="border-color: white;">
         <legend><h3>User Ratings</h3></legend>
         <div id="profile-review-stars" class="review-stars-block">
           <div class="stars-row" style="display: flex; gap: 32px;">
@@ -1214,6 +1219,26 @@ async function loadProfileAndStats(username) {
   setText('user-gender', data.title);
   setText('about-yourself', data.about_yourself);
   setText('contenttype', data.contenttype);
+
+  // === Website display on public profile ===
+  const websiteRow = document.getElementById('website-row');
+  const websiteLink = document.getElementById('user-website-link');
+  if (websiteRow && websiteLink) {
+    if (data.website_url && typeof data.website_url === 'string' && data.website_url.trim() !== '') {
+      let url = data.website_url.trim();
+      // Auto-add https:// if missing
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      websiteLink.href = url;
+      websiteLink.textContent = data.website_url.trim();
+      websiteRow.style.display = 'block';
+    } else {
+      websiteRow.style.display = 'none';
+      websiteLink.removeAttribute('href');
+      websiteLink.textContent = '';
+    }
+  }
 
   const profilePic = data.profile_pic
     ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${data.profile_pic}`
