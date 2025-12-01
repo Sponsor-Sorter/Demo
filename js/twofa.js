@@ -1,9 +1,12 @@
 // ./js/twofa.js
 //
 // Two-Factor Authentication helpers for Sponsor Sorter.
-// - Settings page: initTwoFASettings() wires up the Security modal UI.
+// - Settings page: initTwoFASettings() wires up the Security modal UI
+//   (email 2FA, authenticator app, backup codes).
 // - Login page:    loginWith2FA() wraps signInWithPassword and, if needed,
-//                  runs an email or authenticator-app (TOTP) 2FA challenge step.
+//                  runs an email / authenticator (TOTP) 2FA challenge step.
+//                  Users can also enter one of their backup codes instead
+//                  of the 6-digit code.
 //
 // This file assumes:
 // - supabaseClient.js exports `supabase` (v2 client)
@@ -21,6 +24,9 @@ import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/o
 const TWOFA_METHOD_NONE  = 'none';
 const TWOFA_METHOD_EMAIL = 'email';
 const TWOFA_METHOD_TOTP  = 'totp';
+
+// How many backup codes to generate per set
+const BACKUP_CODES_COUNT = 10;
 
 // ---- Toast helper ----------------------------------------------------------
 
@@ -48,10 +54,8 @@ function resolveDashboardPath(userType) {
     : './dashboardsponsor.html';
 }
 
-// Functions base URL, copied from settings.js: prem_functionsBase()
+// Functions base URL, kept here in case we need functions later
 function functionsBase() {
-  // supabase.functionsUrl will be undefined on some local setups;
-  // fall back to the known project URL.
   return (supabase && supabase.functionsUrl) ||
          'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
 }
@@ -262,7 +266,7 @@ function populateTotpDisplay(secret, labelHint) {
   logo.style.background = '#111';
   logo.style.padding = '4px';
   logo.style.boxSizing = 'border-box';
-  logo.style.pointerEvents = 'none'; // don’t interfere with clicks if any
+  logo.style.pointerEvents = 'none';
 
   wrapper.appendChild(logo);
 
@@ -272,10 +276,127 @@ function populateTotpDisplay(secret, labelHint) {
   }
 }
 
+// ---- Backup codes helpers --------------------------------------------------
+//
+// DB column on users_extended_data:
+//   - twofa_backup_codes text[]  (stores hashed backup codes)
+
+function generateBackupCode() {
+  // Example format: XXXX-YYYY (A–Z, 0–9; no easily-confused chars)
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // avoid 0,1,I,O for clarity
+  const pick = () => chars[Math.floor(Math.random() * chars.length)];
+
+  const part1 = Array.from({ length: 4 }, pick).join('');
+  const part2 = Array.from({ length: 4 }, pick).join('');
+  return `${part1}-${part2}`;
+}
+
+async function hashStringSHA256(str) {
+  try {
+    if (
+      typeof window === 'undefined' ||
+      !window.crypto ||
+      !window.crypto.subtle ||
+      typeof TextEncoder === 'undefined'
+    ) {
+      // Fallback: return the plain string if crypto API unavailable
+      return str;
+    }
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const bytes = new Uint8Array(hashBuffer);
+
+    // Convert to hex
+    let hex = '';
+    for (let i = 0; i < bytes.length; i += 1) {
+      const b = bytes[i].toString(16).padStart(2, '0');
+      hex += b;
+    }
+    return hex;
+  } catch (err) {
+    console.warn('[2FA] Failed to hash backup code; storing plain text instead.', err);
+    return str;
+  }
+}
+
+/**
+ * Generate a fresh set of backup codes for a user, store only hashed values
+ * in users_extended_data.twofa_backup_codes, and return the plaintext codes
+ * so the UI can display them once.
+ */
+async function generateAndSaveBackupCodes(userId, count = BACKUP_CODES_COUNT) {
+  const plainCodes = [];
+  for (let i = 0; i < count; i += 1) {
+    plainCodes.push(generateBackupCode());
+  }
+
+  const hashedCodes = [];
+  for (const code of plainCodes) {
+    const hashed = await hashStringSHA256(code);
+    hashedCodes.push(hashed);
+  }
+
+  const { error } = await supabase
+    .from('users_extended_data')
+    .update({ twofa_backup_codes: hashedCodes })
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('[2FA] Error saving backup codes:', error);
+    throw error;
+  }
+
+  return plainCodes;
+}
+
+// Consume a backup code at login.
+//  - hash the candidate
+//  - check if it’s in the array
+//  - if so, remove it and save the new array
+export async function tryConsumeBackupCode(userId, code) {
+  const candidateHash = await hashStringSHA256(code.trim());
+
+  const { data, error } = await supabase
+    .from('users_extended_data')
+    .select('twofa_backup_codes')
+    .eq('user_id', userId)
+    .single();
+
+  if (error || !data) {
+    console.error('[2FA] Failed to load backup codes for verification:', error);
+    return { ok: false, reason: 'lookup_failed' };
+  }
+
+  const existing = Array.isArray(data.twofa_backup_codes)
+    ? data.twofa_backup_codes
+    : [];
+
+  const idx = existing.indexOf(candidateHash);
+  if (idx === -1) {
+    return { ok: false, reason: 'not_found' };
+  }
+
+  // Remove used code
+  const updated = existing.slice();
+  updated.splice(idx, 1);
+
+  const { error: saveError } = await supabase
+    .from('users_extended_data')
+    .update({ twofa_backup_codes: updated })
+    .eq('user_id', userId);
+
+  if (saveError) {
+    console.error('[2FA] Failed to update backup codes after use:', saveError);
+    return { ok: false, reason: 'save_failed' };
+  }
+
+  return { ok: true, remaining: updated.length };
+}
 
 // ---- Edge Function call: sendNotificationEmail -----------------------------
 
-// === 2FA email helper ===
 async function sendTwoFAEmail(toEmail, code, context = 'login') {
   const subject =
     context === 'setup'
@@ -289,7 +410,6 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
     `If you did not request this, please secure your account immediately.\n\n` +
     `— Sponsor Sorter`;
 
-  // Local dev: DON'T hit the Edge Function (avoids CORS + lets you test)
   const origin = window.location.origin || '';
   const isLocalDev =
     origin.includes('127.0.0.1:5500') ||
@@ -303,12 +423,10 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
     return;
   }
 
-  // Production: call the Edge Function directly via fetch (same pattern as other functions)
   const functionsBaseUrl =
     (supabase && supabase.functionsUrl) ||
     'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
 
-  // Get the current JWT so the function can auth the user if it needs to
   const { data } = await supabase.auth.getSession();
   const jwt = data?.session?.access_token || '';
 
@@ -342,7 +460,6 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
   }
 }
 
-
 // ============================================================================
 //  2FA SETTINGS (Security modal on dashboards)
 // ============================================================================
@@ -355,7 +472,7 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
 //      - input#twofa-setup-code
 //      - button#twofa-setup-confirm
 //
-// New expected HTML elements (TOTP 2FA) – you can add these to the same modal:
+// New expected HTML elements (TOTP 2FA):
 //  - button#twofa-enable-totp
 //  - div#twofa-totp-setup
 //      - div#twofa-totp-qr
@@ -363,6 +480,12 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
 //      - input#twofa-totp-code    (user enters 6-digit token)
 //      - button#twofa-totp-confirm
 //      - small#twofa-totp-status  (optional message text)
+//
+// Backup codes UI (in Security modal):
+//  - small#twofa-backup-status
+//  - button#twofa-backup-generate
+//  - div#twofa-backup-codes-wrapper
+//      - ul#twofa-backup-codes-list
 
 export async function initTwoFASettings() {
   const statusSpan      = document.getElementById('twofa-status-text');
@@ -378,7 +501,13 @@ export async function initTwoFASettings() {
   const totpCodeInput   = document.getElementById('twofa-totp-code');
   const totpConfirmBtn  = document.getElementById('twofa-totp-confirm');
 
-  // If these don't exist, we're not on a page that needs 2FA settings.
+  // Backup codes elements (if present)
+  const backupStatusEl    = document.getElementById('twofa-backup-status');
+  const backupGenerateBtn = document.getElementById('twofa-backup-generate');
+  const backupWrapper     = document.getElementById('twofa-backup-codes-wrapper');
+  const backupList        = document.getElementById('twofa-backup-codes-list');
+
+  // If key controls don't exist, we're not on a page that needs 2FA settings.
   if (!statusSpan || !enableEmailBtn || !disableBtn) {
     return;
   }
@@ -409,9 +538,65 @@ export async function initTwoFASettings() {
 
   refreshStatusUi(profile.twofa_enabled, profile.twofa_method);
 
+  // ---------------- Backup codes status + generate button -------------------
+
+  if (backupStatusEl) {
+    const existingCount = Array.isArray(profile.twofa_backup_codes)
+      ? profile.twofa_backup_codes.length
+      : 0;
+
+    backupStatusEl.textContent =
+      existingCount > 0
+        ? 'You already have backup codes. Generating new ones will invalidate the old set.'
+        : 'No backup codes generated yet.';
+  }
+
+  if (backupGenerateBtn && backupWrapper && backupList) {
+    backupGenerateBtn.addEventListener('click', async () => {
+      try {
+        const confirmed = window.confirm(
+          'Generate new backup codes? Any existing backup codes will stop working.'
+        );
+        if (!confirmed) return;
+
+        backupGenerateBtn.disabled = true;
+        if (backupStatusEl) {
+          backupStatusEl.textContent = 'Generating new backup codes...';
+        }
+
+        // Generate & save hashed codes, returns plaintext list for display
+        const plainCodes = await generateAndSaveBackupCodes(user.id);
+
+        // Render codes for the user (one-time display)
+        backupList.innerHTML = '';
+        plainCodes.forEach((code) => {
+          const li = document.createElement('li');
+          li.textContent = code;
+          backupList.appendChild(li);
+        });
+
+        backupWrapper.style.display = 'block';
+
+        if (backupStatusEl) {
+          backupStatusEl.textContent =
+            'These codes will only be shown here once. Store them in a safe place.';
+        }
+
+        toast('Backup codes generated. Save them somewhere safe.', 'success');
+      } catch (err) {
+        console.error('Error generating backup codes', err);
+        if (backupStatusEl) {
+          backupStatusEl.textContent = 'Could not generate backup codes. Please try again.';
+        }
+        toast('Could not generate backup codes. Please try again.', 'error');
+      } finally {
+        backupGenerateBtn.disabled = false;
+      }
+    });
+  }
+
   // ---------------- Email 2FA setup ----------------------------------------
 
-  // Start enable-email 2FA setup
   enableEmailBtn.addEventListener('click', async () => {
     try {
       const code = generateSixDigitCode();
@@ -430,7 +615,6 @@ export async function initTwoFASettings() {
     }
   });
 
-  // Confirm setup code
   if (setupConfirmBtn && setupCodeInput) {
     setupConfirmBtn.addEventListener('click', async () => {
       try {
@@ -540,7 +724,6 @@ export async function initTwoFASettings() {
           return;
         }
 
-        // Mark TOTP as fully enabled
         const { error: updErr } = await supabase
           .from('users_extended_data')
           .update({
@@ -573,6 +756,11 @@ export async function initTwoFASettings() {
       await updateTwoFASettings(user.id, false, TWOFA_METHOD_NONE);
       await clearEmail2FACode(user.id);
       await clearTotpSecret(user.id);
+      await supabase
+        .from('users_extended_data')
+        .update({ twofa_backup_codes: [] })
+        .eq('user_id', user.id);
+
       refreshStatusUi(false, TWOFA_METHOD_NONE);
       toast('Two-factor authentication has been disabled.', 'info');
     } catch (err) {
@@ -600,15 +788,14 @@ export async function initTwoFASettings() {
 //  - input#twofa-login-totp-code
 //  - button#twofa-login-totp-confirm
 //
-// If any of those TOTP elements are missing, the TOTP step will gracefully
-// skip and redirect straight to the dashboard (so you can roll out UI later).
+// Backup codes:
+//  - No extra fields are required. Users can paste one of their backup
+//    codes into the same 2FA input. Anything that is *not* a 6-digit
+//    numeric code is treated as a backup code.
+//
+// If any of those elements are missing, the TOTP/email step will be
+// skipped and we’ll redirect straight to the dashboard.
 
-/**
- * @param {string} email
- * @param {string} password
- * @param {(msg: string) => void} onError    - show error in login UI
- * @param {(url: string) => void} onRedirect - redirect when fully logged in
- */
 export async function loginWith2FA(email, password, onError, onRedirect) {
   onError    = onError    || ((msg) => toast(msg, 'error'));
   onRedirect = onRedirect || ((url) => { window.location.href = url; });
@@ -630,7 +817,7 @@ export async function loginWith2FA(email, password, onError, onRedirect) {
   // Load profile to see if 2FA is enabled
   const { data: profile, error: profileErr } = await supabase
     .from('users_extended_data')
-    .select('userType, twofa_enabled, twofa_method, twofa_email_code, twofa_email_expires_at, twofa_totp_secret, twofa_totp_confirmed')
+    .select('userType, twofa_enabled, twofa_method, twofa_totp_secret, twofa_totp_confirmed')
     .eq('user_id', user.id)
     .single();
 
@@ -652,16 +839,17 @@ export async function loginWith2FA(email, password, onError, onRedirect) {
     return;
   }
 
-  if (profile.twofa_method === TWOFA_METHOD_TOTP) {
+  if (profile.twofa_method === TWOFA_METHOD_TOTP && profile.twofa_totp_confirmed) {
     await startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect);
     return;
   }
 
+  // Fallback: if method is unknown, just let them in (fail-open rather than lock-out)
   onRedirect(dashboardUrl);
 }
 
 /**
- * Email 2FA login challenge.
+ * Email 2FA login challenge (plus backup code support).
  */
 async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect) {
   const twofaStepDiv = document.getElementById('twofa-login-step');
@@ -675,7 +863,6 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
     return;
   }
 
-  // Helper: send a fresh code & persist
   const sendFreshCode = async () => {
     const code = generateSixDigitCode();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
@@ -688,7 +875,7 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
     await sendFreshCode();
     twofaStepDiv.style.display = 'block';
     codeInput.value = '';
-    toast('We emailed you a login code. Enter it to finish signing in.', 'info');
+    toast('We emailed you a login code. Enter it (or one of your backup codes) to finish signing in.', 'info');
   } catch (err) {
     console.error('Error starting email 2FA login challenge', err);
     onError('Could not send login code. Please try again.');
@@ -701,9 +888,24 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
 
   confirmBtn.onclick = async () => {
     try {
-      const userInput = (codeInput.value || '').trim();
-      if (!userInput) {
-        toast('Please enter the code we emailed you.', 'warn');
+      const userInputRaw = (codeInput.value || '').trim();
+      if (!userInputRaw) {
+        toast('Enter the 6-digit code or one of your backup codes.', 'warn');
+        return;
+      }
+
+      const isSixDigitNumeric = /^[0-9]{6}$/.test(userInputRaw);
+
+      // If it’s NOT a 6-digit numeric code, treat it as a backup code
+      if (!isSixDigitNumeric) {
+        const { ok } = await tryConsumeBackupCode(user.id, userInputRaw);
+        if (!ok) {
+          toast('That backup code is not valid or has already been used.', 'error');
+          return;
+        }
+
+        toast('Backup code accepted. Login verified.', 'success');
+        onRedirect(dashboardUrl);
         return;
       }
 
@@ -733,7 +935,7 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
         return;
       }
 
-      if (userInput !== twofa_email_code) {
+      if (userInputRaw !== twofa_email_code) {
         toast('Incorrect code. Please double-check and try again.', 'error');
         return;
       }
@@ -766,6 +968,9 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
  *  - div#twofa-login-totp-step
  *  - input#twofa-login-totp-code
  *  - button#twofa-login-totp-confirm
+ *
+ * Backup codes are supported via the same input; non-6-digit values
+ * are treated as backup codes.
  */
 async function startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect) {
   const stepDiv    = document.getElementById('twofa-login-totp-step');
@@ -783,12 +988,28 @@ async function startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onErro
 
   confirmBtn.onclick = async () => {
     try {
-      const token = (codeInput.value || '').trim();
-      if (!token || token.length < 6) {
-        toast('Enter the 6-digit code from your authenticator app.', 'warn');
+      const tokenRaw = (codeInput.value || '').trim();
+      if (!tokenRaw) {
+        toast('Enter the 6-digit code from your app or one of your backup codes.', 'warn');
         return;
       }
 
+      const isSixDigitNumeric = /^[0-9]{6}$/.test(tokenRaw);
+
+      // Backup code path
+      if (!isSixDigitNumeric) {
+        const { ok } = await tryConsumeBackupCode(user.id, tokenRaw);
+        if (!ok) {
+          toast('That backup code is not valid or has already been used.', 'error');
+          return;
+        }
+
+        toast('Backup code accepted. Login verified.', 'success');
+        onRedirect(dashboardUrl);
+        return;
+      }
+
+      // Normal TOTP path
       const { data: freshProfile, error: freshErr } = await supabase
         .from('users_extended_data')
         .select('twofa_totp_secret')
@@ -802,7 +1023,7 @@ async function startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onErro
       }
 
       const secret = freshProfile.twofa_totp_secret;
-      const ok = verifyTotpToken({ secret, token });
+      const ok = verifyTotpToken({ secret, token: tokenRaw });
 
       if (!ok) {
         toast('Invalid authenticator code. Please try again.', 'error');
