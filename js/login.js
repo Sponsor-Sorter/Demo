@@ -14,7 +14,7 @@ async function loadSponsorCarousels() {
   const { data: users, error } = await supabase
     .from('public_user_homepage_view')
     .select('profile_pic, username')
-    .limit(12); // extra for shuffling
+    .limit(12);
 
   if (error || !users || users.length === 0) return;
 
@@ -45,7 +45,6 @@ async function loadSponsorCarousels() {
 // Referral reward helper
 // =======================
 async function processReferralReward(user) {
-  // Fetch extended user data again (to get referral_code if still present)
   const { data: ext, error: extErr } = await supabase
     .from('users_extended_data')
     .select('referral_code')
@@ -59,11 +58,9 @@ async function processReferralReward(user) {
 
   const referral_code = ext?.referral_code;
   if (!referral_code) {
-    // Already rewarded or never had referral
     return;
   }
 
-  // Get JWT (must be fresh)
   const { data: sessionData } = await supabase.auth.getSession();
   const jwt = sessionData?.session?.access_token;
 
@@ -79,12 +76,14 @@ async function processReferralReward(user) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${jwt}`
+          'Authorization': `Bearer ${jwt}`,
         },
-        body: JSON.stringify({ referred_user_id: user.id })
+        body: JSON.stringify({ referred_user_id: user.id }),
       }
     );
-    const result = await response.json();
+
+    const result = await response.json().catch(() => ({}));
+
     if (response.ok && result.success) {
       console.log('[Referral Reward] Reward processed:', result);
     } else if (response.status === 409) {
@@ -98,19 +97,131 @@ async function processReferralReward(user) {
 }
 
 // =======================
+// 2FA constants & storage
+// =======================
+const TWOFA_CODE_LIFETIME_MINUTES = 10;
+const TWOFA_MAX_ATTEMPTS = 3;
+const TWOFA_LOCKOUT_HOURS = 24;
+const TWOFA_TRUST_DAYS = 30;
+
+const TWOFA_ATTEMPTS_KEY = 'ss_twofa_attempts';
+const TWOFA_TRUSTED_KEY = 'ss_twofa_trusted_devices';
+
+function readJsonFromStorage(key, fallback) {
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') return parsed;
+    return fallback;
+  } catch (e) {
+    console.warn('[2FA] Failed to read localStorage', e);
+    return fallback;
+  }
+}
+
+function writeJsonToStorage(key, value) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn('[2FA] Failed to write localStorage', e);
+  }
+}
+
+// Attempt tracking per user (device-local)
+function getTwofaAttemptInfo(userId) {
+  const all = readJsonFromStorage(TWOFA_ATTEMPTS_KEY, {});
+  return all[userId] || { count: 0, lockedUntil: null };
+}
+
+function setTwofaAttemptInfo(userId, info) {
+  const all = readJsonFromStorage(TWOFA_ATTEMPTS_KEY, {});
+  all[userId] = info;
+  writeJsonToStorage(TWOFA_ATTEMPTS_KEY, all);
+}
+
+function resetTwofaAttempts(userId) {
+  const all = readJsonFromStorage(TWOFA_ATTEMPTS_KEY, {});
+  if (userId in all) {
+    delete all[userId];
+    writeJsonToStorage(TWOFA_ATTEMPTS_KEY, all);
+  }
+}
+
+function isTwofaLocked(userId) {
+  const info = getTwofaAttemptInfo(userId);
+  if (!info.lockedUntil) {
+    return { locked: false, lockedUntil: null };
+  }
+  const now = Date.now();
+  if (now >= info.lockedUntil) {
+    // Lockout expired, reset attempts
+    resetTwofaAttempts(userId);
+    return { locked: false, lockedUntil: null };
+  }
+  return { locked: true, lockedUntil: info.lockedUntil };
+}
+
+function recordFailedTwofaAttempt(userId) {
+  const now = Date.now();
+  const prev = getTwofaAttemptInfo(userId);
+
+  // If currently locked and not expired, just keep lock
+  if (prev.lockedUntil && now < prev.lockedUntil) {
+    return prev;
+  }
+
+  const newCount = (prev.count || 0) + 1;
+  let lockedUntil = prev.lockedUntil || null;
+
+  if (newCount >= TWOFA_MAX_ATTEMPTS) {
+    lockedUntil = now + TWOFA_LOCKOUT_HOURS * 60 * 60 * 1000;
+  }
+
+  const info = { count: newCount, lockedUntil };
+  setTwofaAttemptInfo(userId, info);
+  return info;
+}
+
+// Trusted device helpers
+function isDeviceTrustedForUser(userId) {
+  const all = readJsonFromStorage(TWOFA_TRUSTED_KEY, {});
+  const entry = all[userId];
+  if (!entry || !entry.trustedUntil) return false;
+
+  const now = Date.now();
+  if (now >= entry.trustedUntil) {
+    // expired, clean it up
+    delete all[userId];
+    writeJsonToStorage(TWOFA_TRUSTED_KEY, all);
+    return false;
+  }
+  return true;
+}
+
+function setDeviceTrustedForUser(userId, days) {
+  const all = readJsonFromStorage(TWOFA_TRUSTED_KEY, {});
+  const now = Date.now();
+  all[userId] = { trustedUntil: now + days * 24 * 60 * 60 * 1000 };
+  writeJsonToStorage(TWOFA_TRUSTED_KEY, all);
+}
+
+// =======================
 // 2FA helpers (DB + email)
 // =======================
-
-/**
- * Generate a 6-digit code and store it in users_extended_data.twofa_email_code
- * for the given user.
- */
 async function generateAndStoreTwofaCode(userId) {
   const code = String(Math.floor(100000 + Math.random() * 900000));
+  const now = new Date();
+  const expiresAt = new Date(
+    now.getTime() + TWOFA_CODE_LIFETIME_MINUTES * 60 * 1000
+  ).toISOString();
 
   const { error } = await supabase
     .from('users_extended_data')
-    .update({ twofa_email_code: code })
+    .update({
+      twofa_email_code: code,
+      twofa_email_expires_at: expiresAt,
+    })
     .eq('user_id', userId);
 
   if (error) {
@@ -121,10 +232,6 @@ async function generateAndStoreTwofaCode(userId) {
   return code;
 }
 
-/**
- * Call sendNotificationEmail edge function to send the 2FA login code.
- * (We’ll wire the edge function to handle type: "twofa_login_code".)
- */
 async function sendTwofaEmail(email, code) {
   try {
     const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -138,29 +245,26 @@ async function sendTwofaEmail(email, code) {
       return { error: 'Missing auth session while sending 2FA email.' };
     }
 
-    const response = await fetch(
-      `${SUPABASE_URL}/functions/v1/sendNotificationEmail`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${jwt}`
-        },
-        body: JSON.stringify({
-          type: 'twofa_login_code',
-          to: email,
-          subject: 'Your Sponsor Sorter login code',
-          message: `Your Sponsor Sorter login code is ${code}. It expires in 10 minutes.`,
-          code
-        })
-      }
-    );
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/sendNotificationEmail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        type: 'twofa_login_code',
+        to: email,
+        subject: 'Your Sponsor Sorter login code',
+        message: `Your Sponsor Sorter login code is ${code}. It expires in ${TWOFA_CODE_LIFETIME_MINUTES} minutes.`,
+        code,
+      }),
+    });
 
     let result = {};
     try {
       result = await response.json();
-    } catch (_) {
-      // ignore JSON parse errors
+    } catch (_e) {
+      // ignore JSON parse error
     }
 
     if (!response.ok) {
@@ -194,8 +298,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const errorBox = document.getElementById('login-error-box');
 
   // Reset password modal elements
-  const resetTrigger = document.getElementById('reset-password-trigger'); // in error box
-  const resetOpen = document.getElementById('reset-password-open');       // inline below form
+  const resetTrigger = document.getElementById('reset-password-trigger');
+  const resetOpen = document.getElementById('reset-password-open');
   const resetModal = document.getElementById('reset-password-modal');
   const resetClose = document.getElementById('reset-password-close');
   const resetForm = document.getElementById('reset-password-form');
@@ -211,24 +315,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const twofaResendBtn = document.getElementById('twofa-resend-btn');
   const twofaCancelBtn = document.getElementById('twofa-cancel-btn');
   const twofaStatusEl = document.getElementById('twofa-status');
+  const twofaRememberCheckbox = document.getElementById('twofa-remember-device');
 
   // Current 2FA login context
   let twofaContext = null; // { userId, email, userType }
 
   // -------- Password eye toggle --------
   if (passwordInput && toggle) {
-    const ICON_SHOW = '👁'; // field hidden → show password
-    const ICON_HIDE = '◡';  // field visible → "closed eye"
+    const ICON_SHOW = '👁';
+    const ICON_HIDE = '◡';
 
     const toggleVisibility = () => {
       const isHidden = passwordInput.type === 'password';
       passwordInput.type = isHidden ? 'text' : 'password';
 
       toggle.textContent = isHidden ? ICON_HIDE : ICON_SHOW;
-      toggle.setAttribute(
-        'aria-label',
-        isHidden ? 'Hide password' : 'Show password'
-      );
+      toggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
     };
 
     toggle.addEventListener('click', toggleVisibility);
@@ -254,7 +356,6 @@ window.addEventListener('DOMContentLoaded', () => {
   function openResetModal() {
     if (!resetModal) return;
 
-    // Pre-fill email with whatever they tried to log in with
     if (resetEmailInput && usernameInput && usernameInput.value) {
       resetEmailInput.value = usernameInput.value.trim();
     }
@@ -304,17 +405,15 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // For security, we do NOT send or store the "last password" anywhere
       if (resetLastPasswordInput) {
         resetLastPasswordInput.value = '';
       }
 
       try {
-        // Build an absolute URL for this environment (prod or local)
         const redirectTo = `${window.location.origin}/reset-password.html`;
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo
+          redirectTo,
         });
 
         if (error) {
@@ -358,10 +457,46 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     if (twofaCodeInput) twofaCodeInput.value = '';
     hideLoginErrorBox();
+    if (twofaSubmitBtn) twofaSubmitBtn.disabled = false;
+    if (twofaResendBtn) twofaResendBtn.disabled = false;
+  }
+
+  function redirectToDashboardByType(userType) {
+    const t = (userType || '').toLowerCase();
+    if (t === 'sponsor') {
+      window.location.href = 'dashboardsponsor.html';
+    } else if (t === 'besponsored') {
+      window.location.href = 'dashboardsponsee.html';
+    } else {
+      alert('Unknown user type. Please contact support.');
+    }
+  }
+
+  function formatLockoutTime(timestampMs) {
+    try {
+      return new Date(timestampMs).toLocaleString();
+    } catch (_e) {
+      return '';
+    }
   }
 
   async function sendTwofaCodeForContext() {
     if (!twofaContext) return;
+
+    const lockInfo = isTwofaLocked(twofaContext.userId);
+    if (lockInfo.locked) {
+      const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+      setTwofaStatus(
+        untilStr
+          ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+          : 'Too many incorrect attempts. This device is temporarily locked.',
+        'error'
+      );
+      if (twofaSubmitBtn) twofaSubmitBtn.disabled = true;
+      if (twofaResendBtn) twofaResendBtn.disabled = true;
+      return;
+    }
+
     try {
       const code = await generateAndStoreTwofaCode(twofaContext.userId);
       const emailResult = await sendTwofaEmail(twofaContext.email, code);
@@ -377,17 +512,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function redirectToDashboardByType(userType) {
-    const t = (userType || '').toLowerCase();
-    if (t === 'sponsor') {
-      window.location.href = 'dashboardsponsor.html';
-    } else if (t === 'besponsored') {
-      window.location.href = 'dashboardsponsee.html';
-    } else {
-      alert('Unknown user type. Please contact support.');
-    }
-  }
-
   async function beginTwofaLoginFlow(freshUser, extendedData, loginEmail) {
     if (!twofaStep || !loginForm) {
       console.warn('[2FA] UI container missing; skipping 2FA and redirecting.');
@@ -398,7 +522,7 @@ window.addEventListener('DOMContentLoaded', () => {
     twofaContext = {
       userId: freshUser.id,
       email: loginEmail,
-      userType: extendedData.userType
+      userType: extendedData.userType,
     };
 
     if (twofaEmailLabel) {
@@ -415,6 +539,24 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Check lockout before sending code
+    const lockInfo = isTwofaLocked(freshUser.id);
+    if (lockInfo.locked) {
+      const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+      setTwofaStatus(
+        untilStr
+          ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+          : 'Too many incorrect attempts. This device is temporarily locked.',
+        'error'
+      );
+      if (twofaSubmitBtn) twofaSubmitBtn.disabled = true;
+      if (twofaResendBtn) twofaResendBtn.disabled = true;
+      return;
+    }
+
+    if (twofaSubmitBtn) twofaSubmitBtn.disabled = false;
+    if (twofaResendBtn) twofaResendBtn.disabled = false;
+
     setTwofaStatus('Sending verification code...', '');
     await sendTwofaCodeForContext();
   }
@@ -430,11 +572,24 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Check lockout state
+      const lockInfo = isTwofaLocked(twofaContext.userId);
+      if (lockInfo.locked) {
+        const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+        setTwofaStatus(
+          untilStr
+            ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+            : 'Too many incorrect attempts. This device is temporarily locked.',
+          'error'
+        );
+        return;
+      }
+
       setTwofaStatus('Verifying code...', '');
 
       const { data, error } = await supabase
         .from('users_extended_data')
-        .select('twofa_email_code, userType')
+        .select('twofa_email_code, twofa_email_expires_at, userType')
         .eq('user_id', twofaContext.userId)
         .single();
 
@@ -444,19 +599,62 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (data.twofa_email_code !== entered) {
-        setTwofaStatus('Incorrect code. Please check and try again.', 'error');
+      const now = new Date();
+      let failureReason = null;
+
+      if (!data.twofa_email_code) {
+        failureReason = 'missing';
+      } else if (data.twofa_email_expires_at) {
+        const expiresAt = new Date(data.twofa_email_expires_at);
+        if (now > expiresAt) {
+          failureReason = 'expired';
+        }
+      }
+
+      if (!failureReason && data.twofa_email_code !== entered) {
+        failureReason = 'mismatch';
+      }
+
+      if (failureReason) {
+        let message;
+        if (failureReason === 'expired') {
+          message = 'That code has expired. Please click "Resend code" to get a new one.';
+        } else {
+          message = 'Incorrect code. Please double-check and try again.';
+        }
+
+        const info = recordFailedTwofaAttempt(twofaContext.userId);
+        if (info.lockedUntil) {
+          const untilStr = formatLockoutTime(info.lockedUntil);
+          message =
+            untilStr
+              ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+              : 'Too many incorrect attempts. This device is temporarily locked.';
+        }
+
+        setTwofaStatus(message, 'error');
         return;
       }
 
-      // Clear the stored code (best effort)
+      // Success: clear code & expiry (best effort)
       const { error: clearError } = await supabase
         .from('users_extended_data')
-        .update({ twofa_email_code: null })
+        .update({
+          twofa_email_code: null,
+          twofa_email_expires_at: null,
+        })
         .eq('user_id', twofaContext.userId);
 
       if (clearError) {
         console.warn('[2FA] Failed to clear stored code:', clearError.message);
+      }
+
+      // Reset attempts on success
+      resetTwofaAttempts(twofaContext.userId);
+
+      // Remember device if checked
+      if (twofaRememberCheckbox && twofaRememberCheckbox.checked) {
+        setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
       }
 
       setTwofaStatus('Code verified! Signing you in...', 'success');
@@ -469,6 +667,19 @@ window.addEventListener('DOMContentLoaded', () => {
   if (twofaResendBtn) {
     twofaResendBtn.addEventListener('click', async () => {
       if (!twofaContext) return;
+
+      const lockInfo = isTwofaLocked(twofaContext.userId);
+      if (lockInfo.locked) {
+        const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+        setTwofaStatus(
+          untilStr
+            ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+            : 'Too many incorrect attempts. This device is temporarily locked.',
+          'error'
+        );
+        return;
+      }
+
       setTwofaStatus('Resending verification code...', '');
       await sendTwofaCodeForContext();
     });
@@ -505,10 +716,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
       hideLoginErrorBox();
 
-      // Attempt to sign in (this creates a Supabase session if password is correct)
       const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
 
       if (loginError) {
@@ -517,7 +727,6 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Force fetch fresh user object (with up-to-date confirmed_at)
       const { data: freshUserData, error: userFetchError } = await supabase.auth.getUser();
       if (userFetchError) {
         alert('Failed to fetch fresh user data: ' + userFetchError.message);
@@ -527,7 +736,6 @@ window.addEventListener('DOMContentLoaded', () => {
       const freshUser = freshUserData.user;
       console.log('Fresh user:', freshUser);
 
-      // Fetch extended user data from your custom table
       const { data: extendedData, error: dataError } = await supabase
         .from('users_extended_data')
         .select('userType, referral_code, twofa_enabled, twofa_method, email')
@@ -539,10 +747,8 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Check if email is confirmed
       const isEmailConfirmed = !!freshUser.confirmed_at;
 
-      // Sync email_verified field in your custom table
       const { error: updateError } = await supabase
         .from('users_extended_data')
         .update({ email_verified: isEmailConfirmed })
@@ -552,12 +758,10 @@ window.addEventListener('DOMContentLoaded', () => {
         console.warn('Failed to sync email_verified field:', updateError.message);
       }
 
-      // Run referral reward grant only if email is confirmed and referral_code exists
       if (isEmailConfirmed && extendedData.referral_code) {
         await processReferralReward(freshUser);
       }
 
-      // If email is not confirmed, go straight to limited dashboard (no 2FA)
       if (!isEmailConfirmed) {
         alert('Email not verified yet. Redirecting to limited dashboard.');
         window.location.href = 'limited-dashboard.html';
@@ -568,15 +772,16 @@ window.addEventListener('DOMContentLoaded', () => {
       const twofaEnabled = !!extendedData.twofa_enabled;
       const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
 
-      // If 2FA (email) is enabled, start the 2FA login flow instead of direct redirect
+      // If 2FA is enabled and device is trusted, skip 2FA
       if (twofaEnabled && twofaMethod === 'email') {
+        if (isDeviceTrustedForUser(freshUser.id)) {
+          console.log('[2FA] Trusted device detected, skipping 2FA step.');
+          redirectToDashboardByType(userType);
+          return;
+        }
+
         console.log('[2FA] Two-factor auth enabled for this user. Starting 2FA login flow.');
-
-        const loginEmail =
-          extendedData.email ||
-          freshUser.email ||
-          email;
-
+        const loginEmail = extendedData.email || freshUser.email || email;
         await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
         return;
       }
