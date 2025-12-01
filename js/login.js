@@ -1,4 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
 const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
 const SUPABASE_ANON_KEY =
@@ -284,6 +285,34 @@ async function sendTwofaEmail(email, code) {
 }
 
 // =======================
+// TOTP (authenticator app)
+// =======================
+function verifyTotpToken(secretBase32, token) {
+  if (!secretBase32 || !token) return false;
+
+  try {
+    const totp = new OTPAuth.TOTP({
+      issuer: 'Sponsor Sorter',
+      label: 'Login',
+      algorithm: 'SHA1',
+      digits: 6,
+      period: 30,
+      secret: OTPAuth.Secret.fromBase32(secretBase32),
+    });
+
+    const delta = totp.validate({
+      token: String(token).trim(),
+      window: 1, // ±30 seconds
+    });
+
+    return delta !== null;
+  } catch (e) {
+    console.error('[2FA] Error verifying TOTP token:', e);
+    return false;
+  }
+}
+
+// =======================
 // DOM wiring
 // =======================
 window.addEventListener('DOMContentLoaded', () => {
@@ -307,7 +336,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const resetLastPasswordInput = document.getElementById('reset-last-password');
   const resetStatus = document.getElementById('reset-password-status');
 
-  // 2FA elements
+  // 2FA elements (email)
   const twofaStep = document.getElementById('twofa-step');
   const twofaEmailLabel = document.getElementById('twofa-email-label');
   const twofaCodeInput = document.getElementById('twofa-code-input');
@@ -316,6 +345,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const twofaCancelBtn = document.getElementById('twofa-cancel-btn');
   const twofaStatusEl = document.getElementById('twofa-status');
   const twofaRememberCheckbox = document.getElementById('twofa-remember-device');
+
+  // 2FA elements (TOTP)
+  const totpStep = document.getElementById('twofa-totp-step');
+  const totpCodeInput = document.getElementById('twofa-totp-code-input');
+  const totpSubmitBtn = document.getElementById('twofa-totp-submit-btn');
+  const totpCancelBtn = document.getElementById('twofa-totp-cancel-btn');
+  const totpStatusEl = document.getElementById('twofa-totp-status');
+  const totpRememberCheckbox = document.getElementById('twofa-totp-remember-device');
 
   // Current 2FA login context
   let twofaContext = null; // { userId, email, userType }
@@ -447,18 +484,38 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function setTotpStatus(message, type) {
+    if (!totpStatusEl) return;
+    totpStatusEl.textContent = message || '';
+    totpStatusEl.className = 'twofa-status';
+    if (type) {
+      totpStatusEl.classList.add(type);
+    }
+  }
+
   function resetToLoginForm() {
     twofaContext = null;
     if (twofaStep) twofaStep.style.display = 'none';
+    if (totpStep) totpStep.style.display = 'none';
     if (loginForm) loginForm.style.display = 'block';
+
     if (twofaStatusEl) {
       twofaStatusEl.textContent = '';
       twofaStatusEl.className = 'twofa-status';
     }
+    if (totpStatusEl) {
+      totpStatusEl.textContent = '';
+      totpStatusEl.className = 'twofa-status';
+    }
+
     if (twofaCodeInput) twofaCodeInput.value = '';
+    if (totpCodeInput) totpCodeInput.value = '';
+
     hideLoginErrorBox();
+
     if (twofaSubmitBtn) twofaSubmitBtn.disabled = false;
     if (twofaResendBtn) twofaResendBtn.disabled = false;
+    if (totpSubmitBtn) totpSubmitBtn.disabled = false;
   }
 
   function redirectToDashboardByType(userType) {
@@ -531,6 +588,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     loginForm.style.display = 'none';
     twofaStep.style.display = 'block';
+    if (totpStep) totpStep.style.display = 'none';
 
     if (twofaCodeInput) {
       twofaCodeInput.value = '';
@@ -561,7 +619,48 @@ window.addEventListener('DOMContentLoaded', () => {
     await sendTwofaCodeForContext();
   }
 
-  // -------- 2FA button handlers --------
+  async function beginTotpLoginFlow(freshUser, extendedData, loginEmail) {
+    if (!totpStep || !loginForm) {
+      console.warn('[2FA] TOTP UI container missing; skipping TOTP and redirecting.');
+      redirectToDashboardByType(extendedData.userType);
+      return;
+    }
+
+    twofaContext = {
+      userId: freshUser.id,
+      email: loginEmail,
+      userType: extendedData.userType,
+    };
+
+    loginForm.style.display = 'none';
+    if (twofaStep) twofaStep.style.display = 'none';
+    totpStep.style.display = 'block';
+
+    if (totpCodeInput) {
+      totpCodeInput.value = '';
+      if (typeof totpCodeInput.focus === 'function') {
+        totpCodeInput.focus();
+      }
+    }
+
+    const lockInfo = isTwofaLocked(freshUser.id);
+    if (lockInfo.locked) {
+      const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+      setTotpStatus(
+        untilStr
+          ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+          : 'Too many incorrect attempts. This device is temporarily locked.',
+        'error'
+      );
+      if (totpSubmitBtn) totpSubmitBtn.disabled = true;
+      return;
+    }
+
+    if (totpSubmitBtn) totpSubmitBtn.disabled = false;
+    setTotpStatus('Enter the 6-digit code from your authenticator app.', '');
+  }
+
+  // -------- 2FA button handlers (email) --------
   if (twofaSubmitBtn) {
     twofaSubmitBtn.addEventListener('click', async () => {
       if (!twofaContext) return;
@@ -701,6 +800,90 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // -------- 2FA button handlers (TOTP) --------
+  if (totpSubmitBtn) {
+    totpSubmitBtn.addEventListener('click', async () => {
+      if (!twofaContext) return;
+
+      const entered = totpCodeInput?.value.trim();
+      if (!entered || !/^\d{6}$/.test(entered)) {
+        setTotpStatus('Please enter the 6-digit code from your authenticator app.', 'error');
+        return;
+      }
+
+      const lockInfo = isTwofaLocked(twofaContext.userId);
+      if (lockInfo.locked) {
+        const untilStr = formatLockoutTime(lockInfo.lockedUntil);
+        setTotpStatus(
+          untilStr
+            ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+            : 'Too many incorrect attempts. This device is temporarily locked.',
+          'error'
+        );
+        return;
+      }
+
+      setTotpStatus('Verifying code...', '');
+
+      const { data, error } = await supabase
+        .from('users_extended_data')
+        .select('twofa_totp_secret, userType')
+        .eq('user_id', twofaContext.userId)
+        .single();
+
+      if (error || !data || !data.twofa_totp_secret) {
+        console.error('[2FA] Could not fetch TOTP secret:', error?.message);
+        setTotpStatus('Could not verify code. Please try again.', 'error');
+        return;
+      }
+
+      const ok = verifyTotpToken(data.twofa_totp_secret, entered);
+      if (!ok) {
+        let message = 'Incorrect code. Please double-check and try again.';
+        const info = recordFailedTwofaAttempt(twofaContext.userId);
+        if (info.lockedUntil) {
+          const untilStr = formatLockoutTime(info.lockedUntil);
+          message =
+            untilStr
+              ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+              : 'Too many incorrect attempts. This device is temporarily locked.';
+        }
+
+        setTotpStatus(message, 'error');
+        return;
+      }
+
+      // Success: reset attempts
+      resetTwofaAttempts(twofaContext.userId);
+
+      // Remember device if checked
+      if (totpRememberCheckbox && totpRememberCheckbox.checked) {
+        setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
+      }
+
+      setTotpStatus('Code verified! Signing you in...', 'success');
+
+      const finalUserType = twofaContext.userType || data.userType;
+      redirectToDashboardByType(finalUserType);
+    });
+  }
+
+  if (totpCancelBtn) {
+    totpCancelBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      resetToLoginForm();
+    });
+  }
+
+  if (totpCodeInput && totpSubmitBtn) {
+    totpCodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        totpSubmitBtn.click();
+      }
+    });
+  }
+
   // -------- Login submit handler --------
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -772,18 +955,29 @@ window.addEventListener('DOMContentLoaded', () => {
       const twofaEnabled = !!extendedData.twofa_enabled;
       const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
 
-      // If 2FA is enabled and device is trusted, skip 2FA
-      if (twofaEnabled && twofaMethod === 'email') {
+      // 2FA enabled?
+      if (twofaEnabled) {
+        // If device is trusted, skip 2FA entirely
         if (isDeviceTrustedForUser(freshUser.id)) {
           console.log('[2FA] Trusted device detected, skipping 2FA step.');
           redirectToDashboardByType(userType);
           return;
         }
 
-        console.log('[2FA] Two-factor auth enabled for this user. Starting 2FA login flow.');
         const loginEmail = extendedData.email || freshUser.email || email;
-        await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
-        return;
+
+        if (twofaMethod === 'totp') {
+          console.log('[2FA] TOTP 2FA enabled for this user. Starting TOTP login flow.');
+          await beginTotpLoginFlow(freshUser, extendedData, loginEmail);
+          return;
+        }
+
+        // Default / email 2FA
+        if (twofaMethod === 'email' || !twofaMethod) {
+          console.log('[2FA] Email 2FA enabled for this user. Starting 2FA login flow.');
+          await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
+          return;
+        }
       }
 
       // No 2FA: redirect based on user type
