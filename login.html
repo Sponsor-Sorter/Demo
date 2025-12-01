@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Login to your Sponsor Sorter account to manage your profile, linked accounts, and sponsorship opportunities.">
+  <meta name="description" content="Login to your Sponsor Sorter... your profile, linked accounts, and sponsorship opportunities.">
   <title>Login - Sponsor Sorter</title>
 
   <link rel="stylesheet" href="styles.css" />
@@ -16,27 +16,27 @@
 
 <body>
 
- <header class="navbar1">
-    <section class="navbar"> 
-     <div class="navii">
-         <h5>  <header>Sponsor Sorter</header> </h5>
-         <div>
-            <background-img class="navimg" src="navimg.png" alt="">
-            <nav> 
-               <li><a href="index.html">Home</a></li>
-               <li><a href="finder.html">Finder</a></li>
-            </nav>
-            <nav>
+  <!-- NAVBAR -->
+  <header class="navbar1">
+    <section class="navbar">
+      <div class="navii">
+        <h5>
+          <header>Sponsor Sorter</header>
+        </h5>
+        <div>
+          <background-img class="navimg" src="navimg.png" alt=""></background-img>
+          <nav>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Finder</a></li>
+          </nav>
+          <nav>
             <li class="navr"><a href="signup.html">Signup</a></li>
             <li><a href="login.html">Login</a></li>
-         </div>
-   </div> 
-            </ul>
-         </nav>
-         </h5>
-   <p></p>  
-
- </header>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </header>
 
   <!-- Login Section -->
   <section class="loginbox-section">
@@ -53,6 +53,7 @@
         </div>
         <h2>Login to Your Account</h2>
 
+        <!-- STEP 1: Email + password -->
         <form id="loginForm" class="login-form">
           <div class="form-group">
             <label for="username">Your Email:</label>
@@ -106,11 +107,47 @@
           </div>
         </form>
 
+        <!-- STEP 2: 2FA code (shown only when needed) -->
+        <div id="twofa-step" class="twofa-step" style="display:none;">
+          <h3>Two-Factor Verification</h3>
+          <p>
+            We’ve sent a 6-digit code to
+            <span id="twofa-email-label"></span>. Enter it below to finish signing in.
+          </p>
+
+          <div class="form-group">
+            <label for="twofa-code-input">Verification code</label>
+            <input
+              type="text"
+              id="twofa-code-input"
+              name="twofa-code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              inputmode="numeric"
+              placeholder="123456"
+              autocomplete="one-time-code"
+              required
+            />
+          </div>
+
+          <div class="form-group twofa-actions">
+            <button type="button" id="twofa-submit-btn">Verify code</button>
+            <button type="button" id="twofa-resend-btn" class="secondary-button">
+              Resend code
+            </button>
+            <button type="button" id="twofa-cancel-btn" class="reset-password-link">
+              Back to login
+            </button>
+          </div>
+
+          <p id="twofa-status" class="twofa-status"></p>
+        </div>
+
         <!-- Inline signup + reset password links -->
         <p class="login-extra-line">
           Don't have an account?
           <a href="signup.html">Sign up here</a>
-          
+
           <button
             type="button"
             id="reset-password-open"
@@ -127,6 +164,34 @@
       </div>
     </div>
   </section>
+
+  <!-- Optional ad slots under login -->
+  <section class="loginAds">
+    <fieldset>
+      <div>Advertisement slot1</div>
+    </fieldset>
+
+    <fieldset>
+      <div>Advertisement slot2</div>
+    </fieldset>
+  </section>
+
+  <!-- Layout for ad grid -->
+  <style>
+    .loginAds {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px auto;
+      max-width: 900px;
+    }
+
+    .loginAds fieldset {
+      border: 1px solid white;
+      min-height: 150px;
+      padding: 8px;
+    }
+  </style>
 
   <!-- FOOTER -->
   <footer class="footercomplete">
@@ -153,7 +218,8 @@
     </div>
   </footer>
 
- <style>
+  <!-- Page-specific styles for login, password toggle, reset modal & 2FA -->
+  <style>
     .password-input-wrapper {
       position: relative;
       display: flex;
@@ -164,43 +230,35 @@
     .password-input-wrapper input[type="text"] {
       width: 100%;
       box-sizing: border-box;
-      padding-right: 2rem; /* room for the eye icon */
+      padding-right: 2.5rem; /* room for the eye icon */
     }
 
     .password-toggle {
       position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
+      right: 0.75rem;
       cursor: pointer;
-      font-size: 1.1rem;
-      line-height: 1;
       user-select: none;
-      color: black;
+      font-size: 1.1rem;
+      opacity: 0.8;
     }
 
-    #password {
-      margin-bottom: 5px;
-      margin-top: 5px;
+    .password-toggle:hover {
+      opacity: 1;
     }
 
-    .login-form input {
-      width: 90%;
-    }
-
-    /* Error box under password */
+    /* Login error box */
     .login-error-box {
       margin-top: 8px;
       padding: 8px 10px;
-      border-radius: 4px;
-      background-color: #641d1dd1;
+      border-radius: 6px;
+      background-color: #3b1f1f;
       border: 1px solid #ff4d4d;
       color: #ffe5e5;
       font-size: 0.9rem;
     }
 
     .reset-password-link {
-      background-color: initial !important;
+      background: none !important;
       border: none;
       color: #cfcfcf;
       text-decoration: underline;
@@ -208,6 +266,7 @@
       padding: 0;
       margin-left: 4px;
       box-shadow: none;
+      font-size: 0.9rem;
     }
 
     /* Inline text line for signup + reset */
@@ -222,18 +281,65 @@
       text-decoration: underline;
     }
 
+    /* 2FA step */
+    .twofa-step {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: rgba(0, 0, 0, 0.35);
+      border: 1px solid #444;
+    }
+
+    .twofa-step h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .twofa-step p {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+
+    .twofa-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .secondary-button {
+      background-color: #333;
+      border: 1px solid #666;
+    }
+
+    .twofa-status {
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+
+    .twofa-status.error {
+      color: #ff8080;
+    }
+
+    .twofa-status.success {
+      color: #80ff80;
+    }
+
     /* Modal overlay */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
     }
 
-    /* Modal content box */
     .modal-content {
       background: #111;
       border-radius: 8px;
@@ -248,15 +354,19 @@
     .modal-close {
       position: absolute;
       top: 8px;
-      right: 10px;
+      right: 8px;
       background: none;
       border: none;
-      color: #fff;
+      color: #aaa;
       font-size: 1.4rem;
       cursor: pointer;
+      box-shadow: none;
     }
 
-    /* Reset status text */
+    .modal-close:hover {
+      color: #fff;
+    }
+
     .reset-status {
       margin-top: 8px;
       font-size: 0.9rem;
@@ -270,42 +380,16 @@
       color: #80ff80;
     }
 
-    /* Already existing password-eye wrapper (for reference) */
-    .password-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-input-wrapper input[type="password"],
-    .password-input-wrapper input[type="text"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding-right: 2.5rem; /* room for eye icon */
-    }
-
-    .password-toggle {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.1rem;
-      line-height: 1;
-      user-select: none;
-    }
-
-    /* Base banner with your static PNG */
+    /* Optional banner animation (if you later add class="banner-animated" somewhere) */
     .banner-animated {
       position: relative;
-      background-image: url('./sponsor-sorter-banner.png'); /* <-- your header image */
+      background-image: url('./sponsor-sorter-banner.png');
       background-size: cover;
       background-position: center;
-      padding: 20px 40px;          /* keep whatever padding you already use */
-      overflow: hidden;            /* hide animated overflow */
+      padding: 20px 40px;
+      overflow: hidden;
     }
 
-    /* Vertical light-blue lines sliding across */
     .banner-animated::before {
       content: "";
       position: absolute;
@@ -318,88 +402,91 @@
         rgba(120, 220, 255, 0) 70px
       );
       opacity: 0.5;
-      mix-blend-mode: screen;      /* lets it sit “on” your existing blue grid */
+      mix-blend-mode: screen;
       pointer-events: none;
       animation: banner-lines-move 12s linear infinite;
     }
 
-    /* A sweeping glow that travels along the lines */
     .banner-animated::after {
       content: "";
       position: absolute;
-      inset: -20%;                 /* a bit bigger so the skew doesn’t show edges */
-      background-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(120, 220, 255, 0.7) 50%,
-        transparent 100%
+      inset: -20%;
+      background: radial-gradient(
+        circle at 0% 50%,
+        rgba(250, 255, 230, 0.25),
+        transparent 60%
       );
-      background-size: 200% 100%;
       mix-blend-mode: screen;
-      opacity: 0.6;
-      transform: skewX(-12deg);
       pointer-events: none;
       animation: banner-sweep 5s linear infinite;
     }
 
     @keyframes banner-lines-move {
-      from { background-position: 0 0; }
-      to   { background-position: 600px 0; }  /* tweak for speed/distance */
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 600px 0;
+      }
     }
 
     @keyframes banner-sweep {
-      from { background-position: -200% 0; }
-      to   { background-position: 200% 0; }
+      from {
+        transform: translateX(-50%) skewX(-12deg);
+      }
+      to {
+        transform: translateX(30%) skewX(-12deg);
+      }
     }
- </style>
+  </style>
 
- <!-- Reset Password Modal -->
-<div id="reset-password-modal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <button
-      type="button"
-      id="reset-password-close"
-      class="modal-close"
-      aria-label="Close"
-      style="box-shadow: none;color: red;"
-    >
-      &times;
-    </button>
-    <h3>Reset your password</h3>
-    <p>Enter your account email and we’ll send you a reset link.</p>
+  <!-- Reset Password Modal -->
+  <div id="reset-password-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <button
+        type="button"
+        id="reset-password-close"
+        class="modal-close"
+        aria-label="Close"
+        style="color: red;"
+      >
+        &times;
+      </button>
+      <h3>Reset your password</h3>
+      <p>Enter your account email and we’ll send you a reset link.</p>
 
-    <form id="reset-password-form">
-      <div class="form-group">
-        <label for="reset-email">Email address</label>
-        <input
-          type="email"
-          id="reset-email"
-          name="reset-email"
-          placeholder="you@example.com"
-          required
-        />
-      </div>
+      <form id="reset-password-form">
+        <div class="form-group">
+          <label for="reset-email">Email address</label>
+          <input
+            type="email"
+            id="reset-email"
+            name="reset-email"
+            placeholder="you@example.com"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="reset-last-password">
-          Last password you remember
-          <span style="font-weight:normal;font-size:0.9em;">(optional)</span>
-        </label>
-        <input
-          type="password"
-          id="reset-last-password"
-          name="reset-last-password"
-        />
-      </div>
+        <div class="form-group">
+          <label for="reset-last-password">
+            Your most recent password you remember
+            <span style="font-weight:normal;font-size:0.9em;">(optional)</span>
+          </label>
+          <input
+            type="password"
+            id="reset-last-password"
+            name="reset-last-password"
+          />
+        </div>
 
-      <div class="form-group">
-        <button type="submit">Send Reset Link</button>
-      </div>
+        <div class="form-group">
+          <button type="submit">Send Reset Link</button>
+        </div>
 
-      <p id="reset-password-status" class="reset-status"></p>
-    </form>
+        <p id="reset-password-status" class="reset-status"></p>
+      </form>
+    </div>
   </div>
-</div>
 
 </body>
 
