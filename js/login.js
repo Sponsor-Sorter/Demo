@@ -77,7 +77,7 @@ async function processReferralReward(user) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${jwt}`,
+          Authorization: `Bearer ${jwt}`,
         },
         body: JSON.stringify({ referred_user_id: user.id }),
       }
@@ -250,7 +250,7 @@ async function sendTwofaEmail(email, code) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({
         type: 'twofa_login_code',
@@ -313,6 +313,40 @@ function verifyTotpToken(secretBase32, token) {
 }
 
 // =======================
+// Backup code hashing
+// =======================
+//
+// This mirrors the SHA-256 logic used in twofa.js so hashes match those
+// stored in users_extended_data.twofa_backup_codes.
+async function hashBackupCode(code) {
+  try {
+    if (
+      typeof window === 'undefined' ||
+      !window.crypto ||
+      !window.crypto.subtle ||
+      typeof TextEncoder === 'undefined'
+    ) {
+      // Fallback: store raw string if crypto is unavailable
+      return code;
+    }
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(code);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const bytes = new Uint8Array(hashBuffer);
+
+    let hex = '';
+    for (let i = 0; i < bytes.length; i += 1) {
+      hex += bytes[i].toString(16).padStart(2, '0');
+    }
+    return hex;
+  } catch (e) {
+    console.warn('[2FA] Failed to hash backup code; falling back to raw code.', e);
+    return code;
+  }
+}
+
+// =======================
 // DOM wiring
 // =======================
 window.addEventListener('DOMContentLoaded', () => {
@@ -346,16 +380,24 @@ window.addEventListener('DOMContentLoaded', () => {
   const twofaStatusEl = document.getElementById('twofa-status');
   const twofaRememberCheckbox = document.getElementById('twofa-remember-device');
 
-  // 2FA elements (TOTP)
+  // 2FA elements (TOTP + backup)
   const totpStep = document.getElementById('twofa-totp-step');
+  const totpCodeGroup = document.getElementById('twofa-totp-code-group');
   const totpCodeInput = document.getElementById('twofa-totp-code-input');
   const totpSubmitBtn = document.getElementById('twofa-totp-submit-btn');
   const totpCancelBtn = document.getElementById('twofa-totp-cancel-btn');
   const totpStatusEl = document.getElementById('twofa-totp-status');
   const totpRememberCheckbox = document.getElementById('twofa-totp-remember-device');
 
+  const backupCodeGroup = document.getElementById('twofa-backup-code-group');
+  const backupCodeInput = document.getElementById('twofa-backup-code-input');
+  const useBackupBtn = document.getElementById('twofa-use-backup-btn');
+  const useTotpBtn = document.getElementById('twofa-use-totp-btn');
+
   // Current 2FA login context
   let twofaContext = null; // { userId, email, userType }
+  // Current TOTP mode: 'totp' (auth app) or 'backup'
+  let totpMode = 'totp';
 
   // -------- Password eye toggle --------
   if (passwordInput && toggle) {
@@ -495,6 +537,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function resetToLoginForm() {
     twofaContext = null;
+    totpMode = 'totp';
+
     if (twofaStep) twofaStep.style.display = 'none';
     if (totpStep) totpStep.style.display = 'none';
     if (loginForm) loginForm.style.display = 'block';
@@ -510,6 +554,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (twofaCodeInput) twofaCodeInput.value = '';
     if (totpCodeInput) totpCodeInput.value = '';
+    if (backupCodeInput) backupCodeInput.value = '';
+
+    if (totpCodeGroup) totpCodeGroup.style.display = 'block';
+    if (backupCodeGroup) backupCodeGroup.style.display = 'none';
+    if (useBackupBtn) useBackupBtn.style.display = 'inline';
+    if (useTotpBtn) useTotpBtn.style.display = 'none';
 
     hideLoginErrorBox();
 
@@ -636,11 +686,20 @@ window.addEventListener('DOMContentLoaded', () => {
     if (twofaStep) twofaStep.style.display = 'none';
     totpStep.style.display = 'block';
 
+    totpMode = 'totp';
+    if (totpCodeGroup) totpCodeGroup.style.display = 'block';
+    if (backupCodeGroup) backupCodeGroup.style.display = 'none';
+    if (useBackupBtn) useBackupBtn.style.display = 'inline';
+    if (useTotpBtn) useTotpBtn.style.display = 'none';
+
     if (totpCodeInput) {
       totpCodeInput.value = '';
       if (typeof totpCodeInput.focus === 'function') {
         totpCodeInput.focus();
       }
+    }
+    if (backupCodeInput) {
+      backupCodeInput.value = '';
     }
 
     const lockInfo = isTwofaLocked(freshUser.id);
@@ -658,6 +717,46 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (totpSubmitBtn) totpSubmitBtn.disabled = false;
     setTotpStatus('Enter the 6-digit code from your authenticator app.', '');
+  }
+
+  // -------- Toggle between authenticator and backup code modes --------
+  if (useBackupBtn && backupCodeGroup && totpCodeGroup) {
+    useBackupBtn.addEventListener('click', () => {
+      totpMode = 'backup';
+      if (totpCodeGroup) totpCodeGroup.style.display = 'none';
+      if (backupCodeGroup) backupCodeGroup.style.display = 'block';
+      if (backupCodeInput) {
+        backupCodeInput.value = '';
+        if (typeof backupCodeInput.focus === 'function') {
+          backupCodeInput.focus();
+        }
+      }
+      if (useBackupBtn) useBackupBtn.style.display = 'none';
+      if (useTotpBtn) useTotpBtn.style.display = 'inline';
+
+      setTotpStatus(
+        'Enter one of your backup codes (e.g. ABCD-EFGH). Each code can only be used once.',
+        ''
+      );
+    });
+  }
+
+  if (useTotpBtn && backupCodeGroup && totpCodeGroup) {
+    useTotpBtn.addEventListener('click', () => {
+      totpMode = 'totp';
+      if (backupCodeGroup) backupCodeGroup.style.display = 'none';
+      if (totpCodeGroup) totpCodeGroup.style.display = 'block';
+      if (totpCodeInput) {
+        totpCodeInput.value = '';
+        if (typeof totpCodeInput.focus === 'function') {
+          totpCodeInput.focus();
+        }
+      }
+      if (useTotpBtn) useTotpBtn.style.display = 'none';
+      if (useBackupBtn) useBackupBtn.style.display = 'inline';
+
+      setTotpStatus('Enter the 6-digit code from your authenticator app.', '');
+    });
   }
 
   // -------- 2FA button handlers (email) --------
@@ -800,16 +899,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // -------- 2FA button handlers (TOTP) --------
+  // -------- 2FA button handlers (TOTP + backup) --------
   if (totpSubmitBtn) {
     totpSubmitBtn.addEventListener('click', async () => {
       if (!twofaContext) return;
-
-      const entered = totpCodeInput?.value.trim();
-      if (!entered || !/^\d{6}$/.test(entered)) {
-        setTotpStatus('Please enter the 6-digit code from your authenticator app.', 'error');
-        return;
-      }
 
       const lockInfo = isTwofaLocked(twofaContext.userId);
       if (lockInfo.locked) {
@@ -820,6 +913,93 @@ window.addEventListener('DOMContentLoaded', () => {
             : 'Too many incorrect attempts. This device is temporarily locked.',
           'error'
         );
+        return;
+      }
+
+      // --- Backup code mode ---
+      if (totpMode === 'backup') {
+        const raw = (backupCodeInput?.value || '').trim();
+        if (!raw) {
+          setTotpStatus('Please enter a backup code (e.g. ABCD-EFGH).', 'error');
+          return;
+        }
+
+        setTotpStatus('Verifying backup code...', '');
+
+        try {
+          const normalized = raw.toUpperCase();
+          const candidateHash = await hashBackupCode(normalized);
+
+          const { data, error } = await supabase
+            .from('users_extended_data')
+            .select('twofa_backup_codes, userType')
+            .eq('user_id', twofaContext.userId)
+            .single();
+
+          if (error || !data) {
+            console.error('[2FA] Could not fetch backup codes:', error?.message);
+            setTotpStatus('Could not verify backup code. Please try again.', 'error');
+            return;
+          }
+
+          const list = Array.isArray(data.twofa_backup_codes)
+            ? data.twofa_backup_codes
+            : [];
+
+          const idx = list.indexOf(candidateHash);
+          if (idx === -1) {
+            let message =
+              'That backup code is not valid. Make sure you enter it exactly as saved (e.g. ABCD-EFGH).';
+
+            const info = recordFailedTwofaAttempt(twofaContext.userId);
+            if (info.lockedUntil) {
+              const untilStr = formatLockoutTime(info.lockedUntil);
+              message =
+                untilStr
+                  ? `Too many incorrect attempts. This device is locked until ${untilStr}.`
+                  : 'Too many incorrect attempts. This device is temporarily locked.';
+            }
+
+            setTotpStatus(message, 'error');
+            return;
+          }
+
+          const updated = list.slice();
+          updated.splice(idx, 1);
+
+          const { error: updateError } = await supabase
+            .from('users_extended_data')
+            .update({ twofa_backup_codes: updated })
+            .eq('user_id', twofaContext.userId);
+
+          if (updateError) {
+            console.error('[2FA] Failed to consume backup code:', updateError.message);
+            setTotpStatus('Error using backup code. Please try again.', 'error');
+            return;
+          }
+
+          resetTwofaAttempts(twofaContext.userId);
+
+          if (totpRememberCheckbox && totpRememberCheckbox.checked) {
+            setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
+          }
+
+          setTotpStatus('Backup code accepted! Signing you in...', 'success');
+
+          const finalUserType = twofaContext.userType || data.userType;
+          redirectToDashboardByType(finalUserType);
+        } catch (err) {
+          console.error('[2FA] Exception verifying backup code:', err);
+          setTotpStatus('Could not verify backup code. Please try again.', 'error');
+        }
+
+        return;
+      }
+
+      // --- Authenticator app (TOTP) mode ---
+      const entered = totpCodeInput?.value.trim();
+      if (!entered || !/^\d{6}$/.test(entered)) {
+        setTotpStatus('Please enter the 6-digit code from your authenticator app.', 'error');
         return;
       }
 
@@ -877,6 +1057,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (totpCodeInput && totpSubmitBtn) {
     totpCodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        totpSubmitBtn.click();
+      }
+    });
+  }
+
+  if (backupCodeInput && totpSubmitBtn) {
+    backupCodeInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         totpSubmitBtn.click();
