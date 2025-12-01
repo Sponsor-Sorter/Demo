@@ -161,9 +161,11 @@
           <p>
             Open your authenticator app (Google Authenticator, Authy, 1Password, etc.)
             and enter the 6-digit code to finish signing in.
+            If you no longer have access to your app, you can use one of your backup codes instead.
           </p>
 
-          <div class="form-group">
+          <!-- Authenticator app code -->
+          <div class="form-group" id="twofa-totp-code-group">
             <label for="twofa-totp-code-input">Authenticator code</label>
             <input
               type="text"
@@ -178,7 +180,24 @@
             />
           </div>
 
-          <!-- Remember this device (TOTP 2FA) -->
+          <!-- Backup code (hidden by default) -->
+          <div class="form-group" id="twofa-backup-code-group" style="display:none;">
+            <label for="twofa-backup-code-input">Backup code</label>
+            <input
+              type="text"
+              id="twofa-backup-code-input"
+              name="twofa-backup-code"
+              maxlength="9"
+              placeholder="ABCD-EFGH"
+              autocomplete="off"
+            />
+            <small style="display:block;font-size:0.85rem;color:#ccc;margin-top:4px;">
+              Enter one of the backup codes you saved when setting up 2FA (for example,
+              <code>ABCD-EFGH</code>). Each code can only be used once.
+            </small>
+          </div>
+
+          <!-- Remember this device (TOTP 2FA or backup) -->
           <div class="form-group twofa-remember">
             <label class="twofa-remember-label">
               <input
@@ -194,6 +213,17 @@
             <button type="button" id="twofa-totp-submit-btn">Verify code</button>
             <button type="button" id="twofa-totp-cancel-btn" class="reset-password-link">
               Back to login
+            </button>
+            <button type="button" id="twofa-use-backup-btn" class="reset-password-link">
+              Use backup code instead
+            </button>
+            <button
+              type="button"
+              id="twofa-use-totp-btn"
+              class="reset-password-link"
+              style="display:none;"
+            >
+              Use authenticator app instead
             </button>
           </div>
 
