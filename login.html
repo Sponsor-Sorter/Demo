@@ -107,7 +107,7 @@
           </div>
         </form>
 
-        <!-- STEP 2: 2FA code (shown only when needed) -->
+        <!-- STEP 2a: Email 2FA (shown only when needed, for email method) -->
         <div id="twofa-step" class="twofa-step" style="display:none;">
           <h3>Two-Factor Verification</h3>
           <p>
@@ -130,7 +130,7 @@
             />
           </div>
 
-          <!-- Remember this device -->
+          <!-- Remember this device (email 2FA) -->
           <div class="form-group twofa-remember">
             <label class="twofa-remember-label">
               <input
@@ -153,6 +153,51 @@
           </div>
 
           <p id="twofa-status" class="twofa-status"></p>
+        </div>
+
+        <!-- STEP 2b: Authenticator App (TOTP) 2FA (shown only when method = 'totp') -->
+        <div id="twofa-totp-step" class="twofa-step" style="display:none;">
+          <h3>Two-Factor Verification</h3>
+          <p>
+            Open your authenticator app (Google Authenticator, Authy, 1Password, etc.)
+            and enter the 6-digit code to finish signing in.
+          </p>
+
+          <div class="form-group">
+            <label for="twofa-totp-code-input">Authenticator code</label>
+            <input
+              type="text"
+              id="twofa-totp-code-input"
+              name="twofa-totp-code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              inputmode="numeric"
+              placeholder="123456"
+              autocomplete="one-time-code"
+              required
+            />
+          </div>
+
+          <!-- Remember this device (TOTP 2FA) -->
+          <div class="form-group twofa-remember">
+            <label class="twofa-remember-label">
+              <input
+                type="checkbox"
+                id="twofa-totp-remember-device"
+                name="twofa-totp-remember-device"
+              />
+              Remember this device for 30 days
+            </label>
+          </div>
+
+          <div class="form-group twofa-actions">
+            <button type="button" id="twofa-totp-submit-btn">Verify code</button>
+            <button type="button" id="twofa-totp-cancel-btn" class="reset-password-link">
+              Back to login
+            </button>
+          </div>
+
+          <p id="twofa-totp-status" class="twofa-status"></p>
         </div>
 
         <!-- Inline signup + reset password links -->
