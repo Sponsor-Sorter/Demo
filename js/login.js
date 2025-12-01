@@ -98,6 +98,88 @@ async function processReferralReward(user) {
 }
 
 // =======================
+// 2FA helpers (DB + email)
+// =======================
+
+/**
+ * Generate a 6-digit code and store it in users_extended_data.twofa_email_code
+ * for the given user.
+ */
+async function generateAndStoreTwofaCode(userId) {
+  const code = String(Math.floor(100000 + Math.random() * 900000));
+
+  const { error } = await supabase
+    .from('users_extended_data')
+    .update({ twofa_email_code: code })
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('[2FA] Failed to store verification code:', error.message);
+    throw new Error('Failed to store verification code.');
+  }
+
+  return code;
+}
+
+/**
+ * Call sendNotificationEmail edge function to send the 2FA login code.
+ * (We’ll wire the edge function to handle type: "twofa_login_code".)
+ */
+async function sendTwofaEmail(email, code) {
+  try {
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) {
+      console.warn('[2FA] Could not get session for email send:', sessionError.message);
+    }
+
+    const jwt = sessionData?.session?.access_token;
+    if (!jwt) {
+      console.warn('[2FA] No JWT available, cannot call sendNotificationEmail.');
+      return { error: 'Missing auth session while sending 2FA email.' };
+    }
+
+    const response = await fetch(
+      `${SUPABASE_URL}/functions/v1/sendNotificationEmail`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`
+        },
+        body: JSON.stringify({
+          type: 'twofa_login_code',
+          to: email,
+          subject: 'Your Sponsor Sorter login code',
+          message: `Your Sponsor Sorter login code is ${code}. It expires in 10 minutes.`,
+          code
+        })
+      }
+    );
+
+    let result = {};
+    try {
+      result = await response.json();
+    } catch (_) {
+      // ignore JSON parse errors
+    }
+
+    if (!response.ok) {
+      console.warn(
+        '[2FA] sendNotificationEmail error:',
+        result.error || result.message || response.statusText
+      );
+      return { error: result.error || 'Failed to send 2FA email.' };
+    }
+
+    console.log('[2FA] Login code email sent.');
+    return { success: true };
+  } catch (e) {
+    console.error('[2FA] Exception sending 2FA email:', e);
+    return { error: 'Unexpected error sending 2FA email.' };
+  }
+}
+
+// =======================
 // DOM wiring
 // =======================
 window.addEventListener('DOMContentLoaded', () => {
@@ -120,6 +202,18 @@ window.addEventListener('DOMContentLoaded', () => {
   const resetEmailInput = document.getElementById('reset-email');
   const resetLastPasswordInput = document.getElementById('reset-last-password');
   const resetStatus = document.getElementById('reset-password-status');
+
+  // 2FA elements
+  const twofaStep = document.getElementById('twofa-step');
+  const twofaEmailLabel = document.getElementById('twofa-email-label');
+  const twofaCodeInput = document.getElementById('twofa-code-input');
+  const twofaSubmitBtn = document.getElementById('twofa-submit-btn');
+  const twofaResendBtn = document.getElementById('twofa-resend-btn');
+  const twofaCancelBtn = document.getElementById('twofa-cancel-btn');
+  const twofaStatusEl = document.getElementById('twofa-status');
+
+  // Current 2FA login context
+  let twofaContext = null; // { userId, email, userType }
 
   // -------- Password eye toggle --------
   if (passwordInput && toggle) {
@@ -244,6 +338,158 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // -------- 2FA UI helpers --------
+  function setTwofaStatus(message, type) {
+    if (!twofaStatusEl) return;
+    twofaStatusEl.textContent = message || '';
+    twofaStatusEl.className = 'twofa-status';
+    if (type) {
+      twofaStatusEl.classList.add(type);
+    }
+  }
+
+  function resetToLoginForm() {
+    twofaContext = null;
+    if (twofaStep) twofaStep.style.display = 'none';
+    if (loginForm) loginForm.style.display = 'block';
+    if (twofaStatusEl) {
+      twofaStatusEl.textContent = '';
+      twofaStatusEl.className = 'twofa-status';
+    }
+    if (twofaCodeInput) twofaCodeInput.value = '';
+    hideLoginErrorBox();
+  }
+
+  async function sendTwofaCodeForContext() {
+    if (!twofaContext) return;
+    try {
+      const code = await generateAndStoreTwofaCode(twofaContext.userId);
+      const emailResult = await sendTwofaEmail(twofaContext.email, code);
+
+      if (emailResult.error) {
+        setTwofaStatus(emailResult.error, 'error');
+      } else {
+        setTwofaStatus('Verification code sent. Please check your email.', 'success');
+      }
+    } catch (err) {
+      console.error('[2FA] Error during code send:', err);
+      setTwofaStatus('Error sending verification code. Please try again.', 'error');
+    }
+  }
+
+  function redirectToDashboardByType(userType) {
+    const t = (userType || '').toLowerCase();
+    if (t === 'sponsor') {
+      window.location.href = 'dashboardsponsor.html';
+    } else if (t === 'besponsored') {
+      window.location.href = 'dashboardsponsee.html';
+    } else {
+      alert('Unknown user type. Please contact support.');
+    }
+  }
+
+  async function beginTwofaLoginFlow(freshUser, extendedData, loginEmail) {
+    if (!twofaStep || !loginForm) {
+      console.warn('[2FA] UI container missing; skipping 2FA and redirecting.');
+      redirectToDashboardByType(extendedData.userType);
+      return;
+    }
+
+    twofaContext = {
+      userId: freshUser.id,
+      email: loginEmail,
+      userType: extendedData.userType
+    };
+
+    if (twofaEmailLabel) {
+      twofaEmailLabel.textContent = loginEmail || '';
+    }
+
+    loginForm.style.display = 'none';
+    twofaStep.style.display = 'block';
+
+    if (twofaCodeInput) {
+      twofaCodeInput.value = '';
+      if (typeof twofaCodeInput.focus === 'function') {
+        twofaCodeInput.focus();
+      }
+    }
+
+    setTwofaStatus('Sending verification code...', '');
+    await sendTwofaCodeForContext();
+  }
+
+  // -------- 2FA button handlers --------
+  if (twofaSubmitBtn) {
+    twofaSubmitBtn.addEventListener('click', async () => {
+      if (!twofaContext) return;
+
+      const entered = twofaCodeInput?.value.trim();
+      if (!entered || !/^\d{6}$/.test(entered)) {
+        setTwofaStatus('Please enter the 6-digit code we sent you.', 'error');
+        return;
+      }
+
+      setTwofaStatus('Verifying code...', '');
+
+      const { data, error } = await supabase
+        .from('users_extended_data')
+        .select('twofa_email_code, userType')
+        .eq('user_id', twofaContext.userId)
+        .single();
+
+      if (error || !data) {
+        console.error('[2FA] Could not fetch stored code:', error?.message);
+        setTwofaStatus('Could not verify code. Please try again.', 'error');
+        return;
+      }
+
+      if (data.twofa_email_code !== entered) {
+        setTwofaStatus('Incorrect code. Please check and try again.', 'error');
+        return;
+      }
+
+      // Clear the stored code (best effort)
+      const { error: clearError } = await supabase
+        .from('users_extended_data')
+        .update({ twofa_email_code: null })
+        .eq('user_id', twofaContext.userId);
+
+      if (clearError) {
+        console.warn('[2FA] Failed to clear stored code:', clearError.message);
+      }
+
+      setTwofaStatus('Code verified! Signing you in...', 'success');
+
+      const finalUserType = twofaContext.userType || data.userType;
+      redirectToDashboardByType(finalUserType);
+    });
+  }
+
+  if (twofaResendBtn) {
+    twofaResendBtn.addEventListener('click', async () => {
+      if (!twofaContext) return;
+      setTwofaStatus('Resending verification code...', '');
+      await sendTwofaCodeForContext();
+    });
+  }
+
+  if (twofaCancelBtn) {
+    twofaCancelBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      resetToLoginForm();
+    });
+  }
+
+  if (twofaCodeInput && twofaSubmitBtn) {
+    twofaCodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        twofaSubmitBtn.click();
+      }
+    });
+  }
+
   // -------- Login submit handler --------
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -259,8 +505,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
       hideLoginErrorBox();
 
-      // Attempt to sign in
-      const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      // Attempt to sign in (this creates a Supabase session if password is correct)
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -284,7 +530,7 @@ window.addEventListener('DOMContentLoaded', () => {
       // Fetch extended user data from your custom table
       const { data: extendedData, error: dataError } = await supabase
         .from('users_extended_data')
-        .select('userType, referral_code')
+        .select('userType, referral_code, twofa_enabled, twofa_method, email')
         .eq('user_id', freshUser.id)
         .single();
 
@@ -311,22 +557,32 @@ window.addEventListener('DOMContentLoaded', () => {
         await processReferralReward(freshUser);
       }
 
-      // Redirect based on verification
+      // If email is not confirmed, go straight to limited dashboard (no 2FA)
       if (!isEmailConfirmed) {
         alert('Email not verified yet. Redirecting to limited dashboard.');
         window.location.href = 'limited-dashboard.html';
         return;
       }
 
-      // Redirect based on user type
       const userType = extendedData.userType?.toLowerCase();
-      if (userType === 'sponsor') {
-        window.location.href = 'dashboardsponsor.html';
-      } else if (userType === 'besponsored') {
-        window.location.href = 'dashboardsponsee.html';
-      } else {
-        alert('Unknown user type. Please contact support.');
+      const twofaEnabled = !!extendedData.twofa_enabled;
+      const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
+
+      // If 2FA (email) is enabled, start the 2FA login flow instead of direct redirect
+      if (twofaEnabled && twofaMethod === 'email') {
+        console.log('[2FA] Two-factor auth enabled for this user. Starting 2FA login flow.');
+
+        const loginEmail =
+          extendedData.email ||
+          freshUser.email ||
+          email;
+
+        await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
+        return;
       }
+
+      // No 2FA: redirect based on user type
+      redirectToDashboardByType(userType);
     });
   }
 });
