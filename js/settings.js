@@ -2583,7 +2583,7 @@ document.getElementById('open-premium-settings')?.addEventListener('click', asyn
   await loadMyFeaturedSlots();              // <-- populate rows on open
 });
 
-  // === Security / 2FA Modal ===
+ // === Security / 2FA Modal ===
 
 function ensureSecurityModal() {
   if (document.getElementById('security-modal')) return;
@@ -2606,6 +2606,7 @@ function ensureSecurityModal() {
       background:#111;
       color:#eee;
       max-width:520px;
+      top:30vw;
       width:92vw;
       padding:24px 20px 18px;
       border-radius:14px;
@@ -2808,6 +2809,96 @@ function ensureSecurityModal() {
         <small id="twofa-totp-status" style="display:block;font-size:0.8rem;color:#888;margin-top:4px;">
           After scanning, your authenticator app should show a 6-digit rotating code.
         </small>
+      </div>
+
+      <!-- Backup codes section -->
+      <div id="twofa-backup-section" style="
+        margin-top:12px;
+        padding:10px 12px;
+        border-radius:10px;
+        border:1px solid #444;
+        background:#151515;
+        font-size:0.86rem;
+        color:#ccc;
+      ">
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:flex-start;
+          gap:10px;
+          margin-bottom:6px;
+        ">
+          <div>
+            <div style="font-weight:600;margin-bottom:2px;">
+              Backup login codes
+            </div>
+            <small id="twofa-backup-status" style="font-size:0.8rem;color:#aaa;">
+              Loading backup code status…
+            </small>
+          </div>
+          <button type="button" id="twofa-backup-generate" style="
+            padding:6px 10px;
+            border-radius:8px;
+            border:none;
+            background:#f6c62e;
+            color:#111;
+            font-weight:600;
+            cursor:pointer;
+            box-shadow:none;
+            white-space:nowrap;
+          ">
+            Generate new codes
+          </button>
+        </div>
+
+        <div id="twofa-backup-codes-wrapper" style="
+          display:none;
+          margin-top:6px;
+          padding:8px 10px;
+          border-radius:8px;
+          border:1px dashed #555;
+          background:#101010;
+        ">
+          <p style="margin:0 0 4px 0;font-size:0.8rem;color:#ffd062;">
+            Copy or download these codes now. You won’t be able to see them again here.
+          </p>
+          <ul id="twofa-backup-codes-list" style="
+            margin:0;
+            padding-left:18px;
+            font-family:monospace;
+            font-size:0.82rem;
+            line-height:1.4;
+          "></ul>
+        </div>
+      </div>
+
+      <!-- Backup & Recovery section -->
+      <div style="
+        margin-top:12px;
+        padding:10px 12px;
+        border-radius:10px;
+        border:1px dashed #555;
+        background:#181818;
+        font-size:0.86rem;
+        color:#ccc;
+      ">
+        <div style="font-weight:600;margin-bottom:4px;">
+          Backup & Recovery
+        </div>
+        <p style="margin:0 0 6px 0;">
+          Treat your authenticator setup as something you <b>back up now</b>. If you change phones or uninstall your app,
+          you’ll need either this QR/manual secret or your backup codes to get back in.
+        </p>
+        <ul style="margin:0 0 6px 16px;padding:0;list-style:disc;">
+          <li>After enabling the authenticator app, save a screenshot of the QR <b>or</b> write down the secret in a safe place.</li>
+          <li>Generate backup codes and store them somewhere only you can access (password manager, printed copy, etc.).</li>
+          <li>If you ever lose access to your authenticator app and don’t have the secret, a single backup code can be used instead.</li>
+          <li>If you think someone else has access to your account, change your password immediately and then change or disable 2FA.</li>
+        </ul>
+        <p style="margin:0;">
+          You can reach us any time via the <a href="./help.html" style="color:#ffd062;text-decoration:underline;">Help</a>
+          or <a href="./contact.html" style="color:#ffd062;text-decoration:underline;">Contact</a> page if you’re locked out.
+        </p>
       </div>
 
       <div style="margin-top:14px;font-size:0.86rem;color:#888;">
