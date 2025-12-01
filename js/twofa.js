@@ -3,20 +3,24 @@
 // Two-Factor Authentication helpers for Sponsor Sorter.
 // - Settings page: initTwoFASettings() wires up the Security modal UI.
 // - Login page:    loginWith2FA() wraps signInWithPassword and, if needed,
-//                  runs an email 2FA challenge step.
+//                  runs an email or authenticator-app (TOTP) 2FA challenge step.
 //
 // This file assumes:
 // - supabaseClient.js exports `supabase` (v2 client)
 // - alerts.js registers `window.showToast(message, type?)` (global)
+// - (Optional) qrcode.js is loaded globally as `QRCode` for TOTP QR codes:
+//     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+// - TOTP is handled via OTPAuth, imported from cdnjs:
 //
-// No other modules are imported from here so that this stays lightweight.
+//     import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
 import { supabase } from './supabaseClient.js';
+import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
 // 2FA method constants
 const TWOFA_METHOD_NONE  = 'none';
 const TWOFA_METHOD_EMAIL = 'email';
-const TWOFA_METHOD_TOTP  = 'totp'; // reserved for future authenticator app support
+const TWOFA_METHOD_TOTP  = 'totp';
 
 // ---- Toast helper ----------------------------------------------------------
 
@@ -76,6 +80,8 @@ function generateSixDigitCode() {
   return String(num);
 }
 
+// ---- Email 2FA helpers -----------------------------------------------------
+
 async function saveEmail2FACode(userId, code, expiresAtIso) {
   const { error } = await supabase
     .from('users_extended_data')
@@ -112,6 +118,161 @@ async function updateTwoFASettings(userId, enabled, method) {
   if (error) throw error;
 }
 
+// ---- TOTP (authenticator-app) helpers -------------------------------------
+//
+// DB columns assumed to exist on users_extended_data:
+//   - twofa_totp_secret text
+//   - twofa_totp_confirmed boolean default false
+
+async function saveTotpSecret(userId, secret) {
+  const { error } = await supabase
+    .from('users_extended_data')
+    .update({
+      twofa_totp_secret: secret,
+      twofa_totp_confirmed: false
+    })
+    .eq('user_id', userId);
+
+  if (error) throw error;
+}
+
+async function clearTotpSecret(userId) {
+  const { error } = await supabase
+    .from('users_extended_data')
+    .update({
+      twofa_totp_secret: null,
+      twofa_totp_confirmed: false
+    })
+    .eq('user_id', userId);
+
+  if (error) throw error;
+}
+
+/**
+ * Generate a new random TOTP secret as a base32 string.
+ */
+function generateTotpSecret() {
+  const secret = new OTPAuth.Secret({ size: 20 }); // 20 bytes ~ 160 bits
+  return secret.base32;
+}
+
+/**
+ * Build an otpauth:// URI compatible with Google Authenticator, Authy, etc.
+ */
+function buildTotpUri({ secret, label, issuer }) {
+  const totp = new OTPAuth.TOTP({
+    issuer,
+    label,
+    algorithm: 'SHA1',
+    digits: 6,
+    period: 30,
+    secret: OTPAuth.Secret.fromBase32(secret),
+  });
+
+  return totp.toString(); // otpauth://totp/...
+}
+
+/**
+ * Verify a 6-digit TOTP token against the shared secret.
+ * We allow a small window for clock drift (±30s).
+ */
+function verifyTotpToken({ secret, token }) {
+  if (!secret || !token) return false;
+
+  const totp = new OTPAuth.TOTP({
+    issuer: 'Sponsor Sorter',
+    label: 'Login',
+    algorithm: 'SHA1',
+    digits: 6,
+    period: 30,
+    secret: OTPAuth.Secret.fromBase32(secret),
+  });
+
+  const delta = totp.validate({
+    token: String(token).trim(),
+    window: 1,
+  });
+
+  return delta !== null;
+}
+
+/**
+ * Render QR code + manual secret into provided DOM nodes (if present).
+ *
+ * Expected elements:
+ *  - div#twofa-totp-qr
+ *  - input#twofa-totp-secret (readonly)
+ *  - small#twofa-totp-status (optional)
+ *
+ * qrcode.js must be loaded globally as `QRCode` for QR rendering.
+ */
+function populateTotpDisplay(secret, labelHint) {
+  const qrContainer   = document.getElementById('twofa-totp-qr');
+  const secretInput   = document.getElementById('twofa-totp-secret');
+  const statusElement = document.getElementById('twofa-totp-status');
+
+  if (secretInput) {
+    secretInput.value = secret || '';
+  }
+
+  if (!secret || !qrContainer || typeof QRCode === 'undefined') {
+    if (statusElement) {
+      statusElement.textContent =
+        'Authenticator secret generated. Your browser may not support QR codes; use the manual secret above.';
+    }
+    return;
+  }
+
+  // Clear any previous QR/logo
+  qrContainer.innerHTML = '';
+
+  // Create a wrapper so we can absolutely-position the logo inside
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'relative';
+  wrapper.style.width = '160px';
+  wrapper.style.height = '160px';
+  wrapper.style.display = 'inline-block';
+  qrContainer.appendChild(wrapper);
+
+  const uri = buildTotpUri({
+    secret,
+    issuer: 'Sponsor Sorter',
+    label: labelHint || 'SponsorSorter',
+  });
+
+  // Render the QR code into the wrapper
+  // eslint-disable-next-line no-undef
+  new QRCode(wrapper, {
+    text: uri,
+    width: 160,
+    height: 160,
+  });
+
+  // Add centered logo overlay
+  const logo = document.createElement('img');
+  logo.src = './logos.png'; // <- your existing logo file
+  logo.alt = 'Sponsor Sorter';
+  logo.style.position = 'absolute';
+  logo.style.top = '50%';
+  logo.style.left = '50%';
+  logo.style.transform = 'translate(-50%, -50%)';
+  logo.style.width = '48px';   // ~30% of QR size to keep it scannable
+  logo.style.height = '48px';
+  logo.style.borderRadius = '8px';
+  logo.style.background = '#111';
+  logo.style.padding = '4px';
+  logo.style.boxSizing = 'border-box';
+  logo.style.pointerEvents = 'none'; // don’t interfere with clicks if any
+
+  wrapper.appendChild(logo);
+
+  if (statusElement) {
+    statusElement.textContent =
+      'Scan this QR code with your authenticator app, or use the manual secret above.';
+  }
+}
+
+
 // ---- Edge Function call: sendNotificationEmail -----------------------------
 
 // === 2FA email helper ===
@@ -143,7 +304,7 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
   }
 
   // Production: call the Edge Function directly via fetch (same pattern as other functions)
-  const functionsBase =
+  const functionsBaseUrl =
     (supabase && supabase.functionsUrl) ||
     'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1';
 
@@ -152,7 +313,7 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
   const jwt = data?.session?.access_token || '';
 
   try {
-    const resp = await fetch(`${functionsBase}/sendNotificationEmail`, {
+    const resp = await fetch(`${functionsBaseUrl}/sendNotificationEmail`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -185,18 +346,24 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
 // ============================================================================
 //  2FA SETTINGS (Security modal on dashboards)
 // ============================================================================
+//
+// Existing expected HTML elements (email 2FA):
+//  - span#twofa-status-text
+//  - button#twofa-enable-email
+//  - button#twofa-disable
+//  - div#twofa-email-setup
+//      - input#twofa-setup-code
+//      - button#twofa-setup-confirm
+//
+// New expected HTML elements (TOTP 2FA) – you can add these to the same modal:
+//  - button#twofa-enable-totp
+//  - div#twofa-totp-setup
+//      - div#twofa-totp-qr
+//      - input#twofa-totp-secret  (readonly, manual entry)
+//      - input#twofa-totp-code    (user enters 6-digit token)
+//      - button#twofa-totp-confirm
+//      - small#twofa-totp-status  (optional message text)
 
-/**
- * Initialize 2FA settings UI.
- *
- * Expected HTML elements:
- *  - span#twofa-status-text
- *  - button#twofa-enable-email
- *  - button#twofa-disable
- *  - div#twofa-email-setup  (optional, for setup code entry)
- *      - input#twofa-setup-code
- *      - button#twofa-setup-confirm
- */
 export async function initTwoFASettings() {
   const statusSpan      = document.getElementById('twofa-status-text');
   const enableEmailBtn  = document.getElementById('twofa-enable-email');
@@ -204,6 +371,12 @@ export async function initTwoFASettings() {
   const setupBlock      = document.getElementById('twofa-email-setup');
   const setupCodeInput  = document.getElementById('twofa-setup-code');
   const setupConfirmBtn = document.getElementById('twofa-setup-confirm');
+
+  // TOTP-related elements (if present)
+  const enableTotpBtn   = document.getElementById('twofa-enable-totp');
+  const totpSetupBlock  = document.getElementById('twofa-totp-setup');
+  const totpCodeInput   = document.getElementById('twofa-totp-code');
+  const totpConfirmBtn  = document.getElementById('twofa-totp-confirm');
 
   // If these don't exist, we're not on a page that needs 2FA settings.
   if (!statusSpan || !enableEmailBtn || !disableBtn) {
@@ -216,20 +389,27 @@ export async function initTwoFASettings() {
     return;
   }
 
+  let currentTotpSecret = profile.twofa_totp_secret || null;
+
   function refreshStatusUi(enabled, method) {
     if (!enabled || method === TWOFA_METHOD_NONE) {
       statusSpan.textContent = 'Disabled';
       if (setupBlock) setupBlock.style.display = 'none';
+      if (totpSetupBlock) totpSetupBlock.style.display = 'none';
     } else if (method === TWOFA_METHOD_EMAIL) {
       statusSpan.textContent = 'Email 2FA enabled';
       if (setupBlock) setupBlock.style.display = 'none';
+      if (totpSetupBlock) totpSetupBlock.style.display = 'none';
     } else if (method === TWOFA_METHOD_TOTP) {
       statusSpan.textContent = 'Authenticator app (TOTP) enabled';
       if (setupBlock) setupBlock.style.display = 'none';
+      if (totpSetupBlock) totpSetupBlock.style.display = 'none';
     }
   }
 
   refreshStatusUi(profile.twofa_enabled, profile.twofa_method);
+
+  // ---------------- Email 2FA setup ----------------------------------------
 
   // Start enable-email 2FA setup
   enableEmailBtn.addEventListener('click', async () => {
@@ -305,11 +485,94 @@ export async function initTwoFASettings() {
     });
   }
 
-  // Disable 2FA
+  // ---------------- TOTP 2FA setup -----------------------------------------
+
+  if (enableTotpBtn && totpSetupBlock && totpConfirmBtn && totpCodeInput) {
+    enableTotpBtn.addEventListener('click', async () => {
+      try {
+        // Generate or reuse a secret
+        if (!currentTotpSecret) {
+          currentTotpSecret = generateTotpSecret();
+          await saveTotpSecret(user.id, currentTotpSecret);
+        }
+
+        // Show the setup block + QR/manual secret
+        totpSetupBlock.style.display = 'block';
+        const labelHint = profile.username || profile.email || user.email || 'SponsorSorter';
+        populateTotpDisplay(currentTotpSecret, labelHint);
+
+        toast(
+          'Scan the QR with your authenticator app, then enter a 6-digit code to confirm.',
+          'info'
+        );
+      } catch (err) {
+        console.error('Error starting TOTP setup', err);
+        toast('Could not start authenticator app setup. Please try again.', 'error');
+      }
+    });
+
+    totpConfirmBtn.addEventListener('click', async () => {
+      try {
+        const token = (totpCodeInput.value || '').trim();
+        if (!token || token.length < 6) {
+          toast('Enter the 6-digit code from your authenticator app.', 'warn');
+          return;
+        }
+
+        // Reload the secret from DB to be safe
+        const { data: freshProfile, error: freshErr } = await supabase
+          .from('users_extended_data')
+          .select('twofa_totp_secret')
+          .eq('user_id', user.id)
+          .single();
+
+        if (freshErr || !freshProfile || !freshProfile.twofa_totp_secret) {
+          console.error('Error loading TOTP secret for verification', freshErr);
+          toast('Unable to verify authenticator code. Please try again.', 'error');
+          return;
+        }
+
+        const secret = freshProfile.twofa_totp_secret;
+        const ok = verifyTotpToken({ secret, token });
+
+        if (!ok) {
+          toast('Invalid authenticator code. Please try again.', 'error');
+          return;
+        }
+
+        // Mark TOTP as fully enabled
+        const { error: updErr } = await supabase
+          .from('users_extended_data')
+          .update({
+            twofa_enabled: true,
+            twofa_method: TWOFA_METHOD_TOTP,
+            twofa_totp_confirmed: true
+          })
+          .eq('user_id', user.id);
+
+        if (updErr) {
+          console.error('Error enabling TOTP 2FA', updErr);
+          toast('Failed to enable authenticator 2FA. Please try again.', 'error');
+          return;
+        }
+
+        refreshStatusUi(true, TWOFA_METHOD_TOTP);
+        totpSetupBlock.style.display = 'none';
+        toast('Authenticator app 2FA enabled for your account.', 'success');
+      } catch (err) {
+        console.error('Error confirming TOTP code', err);
+        toast('Could not verify authenticator code. Please try again.', 'error');
+      }
+    });
+  }
+
+  // ---------------- Disable 2FA (any method) --------------------------------
+
   disableBtn.addEventListener('click', async () => {
     try {
       await updateTwoFASettings(user.id, false, TWOFA_METHOD_NONE);
       await clearEmail2FACode(user.id);
+      await clearTotpSecret(user.id);
       refreshStatusUi(false, TWOFA_METHOD_NONE);
       toast('Two-factor authentication has been disabled.', 'info');
     } catch (err) {
@@ -322,10 +585,25 @@ export async function initTwoFASettings() {
 // ============================================================================
 //  LOGIN WRAPPER WITH OPTIONAL 2FA STEP
 // ============================================================================
+//
+// Call loginWith2FA() from login.js instead of directly calling
+// supabase.auth.signInWithPassword.
+//
+// For email 2FA login challenge, the page should have:
+//  - div#twofa-login-step
+//  - input#twofa-login-code
+//  - button#twofa-login-confirm
+//  - button#twofa-login-resend
+//
+// For TOTP 2FA login challenge, you can add:
+//  - div#twofa-login-totp-step
+//  - input#twofa-login-totp-code
+//  - button#twofa-login-totp-confirm
+//
+// If any of those TOTP elements are missing, the TOTP step will gracefully
+// skip and redirect straight to the dashboard (so you can roll out UI later).
 
 /**
- * Call this from login.js instead of directly calling supabase.auth.signInWithPassword.
- *
  * @param {string} email
  * @param {string} password
  * @param {(msg: string) => void} onError    - show error in login UI
@@ -352,7 +630,7 @@ export async function loginWith2FA(email, password, onError, onRedirect) {
   // Load profile to see if 2FA is enabled
   const { data: profile, error: profileErr } = await supabase
     .from('users_extended_data')
-    .select('userType, twofa_enabled, twofa_method, twofa_email_code, twofa_email_expires_at')
+    .select('userType, twofa_enabled, twofa_method, twofa_email_code, twofa_email_expires_at, twofa_totp_secret, twofa_totp_confirmed')
     .eq('user_id', user.id)
     .single();
 
@@ -375,8 +653,7 @@ export async function loginWith2FA(email, password, onError, onRedirect) {
   }
 
   if (profile.twofa_method === TWOFA_METHOD_TOTP) {
-    // Placeholder for future TOTP integration
-    onRedirect(dashboardUrl);
+    await startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect);
     return;
   }
 
@@ -385,13 +662,6 @@ export async function loginWith2FA(email, password, onError, onRedirect) {
 
 /**
  * Email 2FA login challenge.
- *
- * Expects these elements on the login page (optional, only if you want
- * an inline 2FA step instead of a separate page):
- *  - div#twofa-login-step
- *  - input#twofa-login-code
- *  - button#twofa-login-confirm
- *  - button#twofa-login-resend
  */
 async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect) {
   const twofaStepDiv = document.getElementById('twofa-login-step');
@@ -485,6 +755,65 @@ async function startEmail2FAChallengeForLogin(user, profile, dashboardUrl, onErr
     } catch (err) {
       console.error('Error resending login 2FA code', err);
       onError('Could not resend login code. Please try again.');
+    }
+  };
+}
+
+/**
+ * TOTP (authenticator-app) 2FA login challenge.
+ *
+ * Expected TOTP login HTML:
+ *  - div#twofa-login-totp-step
+ *  - input#twofa-login-totp-code
+ *  - button#twofa-login-totp-confirm
+ */
+async function startTotp2FAChallengeForLogin(user, profile, dashboardUrl, onError, onRedirect) {
+  const stepDiv    = document.getElementById('twofa-login-totp-step');
+  const codeInput  = document.getElementById('twofa-login-totp-code');
+  const confirmBtn = document.getElementById('twofa-login-totp-confirm');
+
+  if (!stepDiv || !codeInput || !confirmBtn) {
+    console.warn('TOTP 2FA login UI elements not found; skipping TOTP step.');
+    onRedirect(dashboardUrl);
+    return;
+  }
+
+  stepDiv.style.display = 'block';
+  codeInput.value = '';
+
+  confirmBtn.onclick = async () => {
+    try {
+      const token = (codeInput.value || '').trim();
+      if (!token || token.length < 6) {
+        toast('Enter the 6-digit code from your authenticator app.', 'warn');
+        return;
+      }
+
+      const { data: freshProfile, error: freshErr } = await supabase
+        .from('users_extended_data')
+        .select('twofa_totp_secret')
+        .eq('user_id', user.id)
+        .single();
+
+      if (freshErr || !freshProfile || !freshProfile.twofa_totp_secret) {
+        console.error('Error loading TOTP secret for login', freshErr);
+        onError('Unable to verify authenticator code. Please try again.');
+        return;
+      }
+
+      const secret = freshProfile.twofa_totp_secret;
+      const ok = verifyTotpToken({ secret, token });
+
+      if (!ok) {
+        toast('Invalid authenticator code. Please try again.', 'error');
+        return;
+      }
+
+      toast('Login verified.', 'success');
+      onRedirect(dashboardUrl);
+    } catch (err) {
+      console.error('Error verifying TOTP login code', err);
+      onError('Could not verify authenticator code. Please try again.');
     }
   };
 }
