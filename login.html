@@ -130,6 +130,18 @@
             />
           </div>
 
+          <!-- Remember this device -->
+          <div class="form-group twofa-remember">
+            <label class="twofa-remember-label">
+              <input
+                type="checkbox"
+                id="twofa-remember-device"
+                name="twofa-remember-device"
+              />
+              Remember this device for 30 days
+            </label>
+          </div>
+
           <div class="form-group twofa-actions">
             <button type="button" id="twofa-submit-btn">Verify code</button>
             <button type="button" id="twofa-resend-btn" class="secondary-button">
@@ -327,6 +339,25 @@
 
     .twofa-status.success {
       color: #80ff80;
+    }
+
+    /* Remember device row */
+    .twofa-remember {
+      margin-top: 6px;
+      margin-bottom: 2px;
+    }
+
+    .twofa-remember-label {
+      font-size: 0.9rem;
+      color: #ddd;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .twofa-remember-label input[type="checkbox"] {
+      transform: scale(1.1);
     }
 
     /* Modal overlay */
