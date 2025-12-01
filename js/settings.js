@@ -2585,99 +2585,200 @@ document.getElementById('open-premium-settings')?.addEventListener('click', asyn
 
   // === Security / 2FA Modal ===
 
-  function ensureSecurityModal() {
-    if (document.getElementById('security-modal')) return;
+function ensureSecurityModal() {
+  if (document.getElementById('security-modal')) return;
 
-    const modal = document.createElement('div');
-    modal.id = 'security-modal';
-    modal.className = 'modal';
-    modal.style.cssText = `
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:9999;
-      background:rgba(0,0,0,0.7);
-      align-items:center;
-      justify-content:center;
-    `;
+  const modal = document.createElement('div');
+  modal.id = 'security-modal';
+  modal.className = 'modal';
+  modal.style.cssText = `
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(0,0,0,0.7);
+    align-items:center;
+    justify-content:center;
+  `;
 
-    modal.innerHTML = `
-      <div class="modal-content" style="
-        background:#111;
-        color:#eee;
-        max-width:520px;
-        width:92vw;
-        padding:24px 20px 18px;
-        border-radius:14px;
-        box-shadow:0 8px 24px #0009;
-        position:relative;
+  modal.innerHTML = `
+    <div class="modal-content" style="
+      background:#111;
+      color:#eee;
+      max-width:520px;
+      width:92vw;
+      padding:24px 20px 18px;
+      border-radius:14px;
+      box-shadow:0 8px 24px #0009;
+      position:relative;
+    ">
+      <button type="button" id="close-security-modal" aria-label="Close" style="
+        position:absolute;
+        right:14px;
+        top:10px;
+        background:none;
+        border:none;
+        color:#f55;
+        font-size:1.4em;
+        cursor:pointer;
+        box-shadow:none;
+      ">&times;</button>
+
+      <h3 style="margin:0 0 8px 0; font-size:1.2rem;">Security & Two-Factor Authentication</h3>
+      <p style="margin:0 0 14px 0; font-size:0.95rem; color:#ccc;">
+        Add an extra layer of security to your Sponsor Sorter account.
+        Use email 2FA or an authenticator app (Google Authenticator, Authy, 1Password, etc.)
+        to require a one-time code after your password.
+      </p>
+
+      <div style="border-radius:10px;border:1px solid #333;padding:10px 12px;margin-bottom:10px;">
+        <div style="margin-bottom:6px;font-size:0.98rem;">
+          <b>Two-Factor Authentication status:</b>
+          <span id="twofa-status-text" style="margin-left:6px;color:#ffd062;">Loading…</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <button type="button" id="twofa-enable-email" style="
+            padding:7px 14px;
+            border-radius:8px;
+            border:none;
+            background:#36a2eb;
+            color:#fff;
+            font-weight:600;
+            cursor:pointer;
+            box-shadow:none;
+          ">
+            Enable Email 2FA
+          </button>
+          <button type="button" id="twofa-enable-totp" style="
+            padding:7px 14px;
+            border-radius:8px;
+            border:none;
+            background:#8e5ea2;
+            color:#fff;
+            font-weight:600;
+            cursor:pointer;
+            box-shadow:none;
+          ">
+            Enable Authenticator App
+          </button>
+          <button type="button" id="twofa-disable" style="
+            padding:7px 14px;
+            border-radius:8px;
+            border:1px solid #444;
+            background:#222;
+            color:#eee;
+            cursor:pointer;
+            box-shadow:none;
+          ">
+            Disable 2FA
+          </button>
+        </div>
+      </div>
+
+      <!-- Email 2FA setup -->
+      <div id="twofa-email-setup" style="
+        display:none;
+        margin-top:8px;
+        padding:10px 12px;
+        border-radius:10px;
+        border:1px solid #444;
+        background:#151515;
       ">
-        <button type="button" id="close-security-modal" aria-label="Close" style="
-          position:absolute;
-          right:14px;
-          top:10px;
-          background:none;
-          border:none;
-          color:#f55;
-          font-size:1.4em;
-          cursor:pointer;
-          box-shadow:none;
-        ">&times;</button>
+        <p style="margin:0 0 8px 0;font-size:0.94rem;color:#ccc;">
+          We’ve sent a 6-digit code to your email. Enter it below to finish enabling 2FA.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input
+            type="text"
+            id="twofa-setup-code"
+            maxlength="6"
+            placeholder="123456"
+            style="
+              flex:1 1 120px;
+              padding:7px 10px;
+              border-radius:8px;
+              border:1px solid #555;
+              background:#000;
+              color:#fff;
+              box-sizing:border-box;
+            "
+          >
+          <button type="button" id="twofa-setup-confirm" style="
+            padding:7px 16px;
+            border-radius:8px;
+            border:none;
+            background:#21d32e;
+            color:#fff;
+            font-weight:600;
+            cursor:pointer;
+            box-shadow:none;
+          ">
+            Confirm Code
+          </button>
+        </div>
+      </div>
 
-        <h3 style="margin:0 0 8px 0; font-size:1.2rem;">Security & Two-Factor Authentication</h3>
-        <p style="margin:0 0 14px 0; font-size:0.95rem; color:#ccc;">
-          Add an extra layer of security to your Sponsor Sorter account.
-          Turn on email 2FA to require a one-time code after your password.
+      <!-- Authenticator App (TOTP) setup -->
+      <div id="twofa-totp-setup" style="
+        display:none;
+        margin-top:10px;
+        padding:10px 12px;
+        border-radius:10px;
+        border:1px solid #444;
+        background:#151515;
+      ">
+        <p style="margin:0 0 8px 0;font-size:0.94rem;color:#ccc;">
+          Scan the QR code below with your authenticator app, or enter the secret manually.
+          Then enter a 6-digit code from your app to confirm.
         </p>
 
-        <div style="border-radius:10px;border:1px solid #333;padding:10px 12px;margin-bottom:10px;">
-          <div style="margin-bottom:6px;font-size:0.98rem;">
-            <b>Two-Factor Authentication status:</b>
-            <span id="twofa-status-text" style="margin-left:6px;color:#ffd062;">Loading…</span>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-bottom:8px;">
+          <div id="twofa-totp-qr" style="
+            width:160px;
+            height:160px;
+            background:#000;
+            border-radius:8px;
+            border:1px solid #333;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+          ">
+            <span style="font-size:0.8rem;color:#555;">QR will appear here</span>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" id="twofa-enable-email" style="
-              padding:7px 14px;
-              border-radius:8px;
-              border:none;
-              background:#36a2eb;
-              color:#fff;
-              font-weight:600;
-              cursor:pointer;
-              box-shadow:none;
-            ">
-              Enable Email 2FA
-            </button>
-            <button type="button" id="twofa-disable" style="
-              padding:7px 14px;
-              border-radius:8px;
-              border:1px solid #444;
-              background:#222;
-              color:#eee;
-              cursor:pointer;
-              box-shadow:none;
-            ">
-              Disable 2FA
-            </button>
+          <div style="flex:1 1 160px;">
+            <label for="twofa-totp-secret" style="display:block;font-size:0.85rem;color:#aaa;margin-bottom:4px;">
+              Manual secret (if you can’t scan the QR):
+            </label>
+            <input
+              type="text"
+              id="twofa-totp-secret"
+              readonly
+              style="
+                width:100%;
+                padding:7px 10px;
+                border-radius:8px;
+                border:1px solid #555;
+                background:#000;
+                color:#fff;
+                font-family:monospace;
+                box-sizing:border-box;
+              "
+            >
           </div>
         </div>
 
-        <div id="twofa-email-setup" style="
-          display:none;
-          margin-top:8px;
-          padding:10px 12px;
-          border-radius:10px;
-          border:1px solid #444;
-          background:#151515;
-        ">
-          <p style="margin:0 0 8px 0;font-size:0.94rem;color:#ccc;">
-            We’ve sent a 6-digit code to your email. Enter it below to finish enabling 2FA.
-          </p>
+        <div style="margin-bottom:8px;">
+          <label for="twofa-totp-code" style="display:block;font-size:0.85rem;color:#aaa;margin-bottom:4px;">
+            Enter a 6-digit code from your authenticator app:
+          </label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
             <input
               type="text"
-              id="twofa-setup-code"
+              id="twofa-totp-code"
               maxlength="6"
+              inputmode="numeric"
+              pattern="[0-9]*"
               placeholder="123456"
               style="
                 flex:1 1 120px;
@@ -2689,7 +2790,7 @@ document.getElementById('open-premium-settings')?.addEventListener('click', asyn
                 box-sizing:border-box;
               "
             >
-            <button type="button" id="twofa-setup-confirm" style="
+            <button type="button" id="twofa-totp-confirm" style="
               padding:7px 16px;
               border-radius:8px;
               border:none;
@@ -2699,65 +2800,70 @@ document.getElementById('open-premium-settings')?.addEventListener('click', asyn
               cursor:pointer;
               box-shadow:none;
             ">
-              Confirm Code
+              Confirm & Enable
             </button>
           </div>
         </div>
 
-        <div style="margin-top:14px;font-size:0.86rem;color:#888;">
-          Tip: if you lose access to your email, contact support so we can help you regain access
-          before you change payout details or accept big offers.
-        </div>
-
-        <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;">
-          <button type="button" id="security-cancel-btn" style="
-            padding:7px 14px;
-            border-radius:8px;
-            border:1px solid #444;
-            background:#222;
-            color:#eee;
-            cursor:pointer;
-            box-shadow:none;
-          ">
-            Close
-          </button>
-        </div>
+        <small id="twofa-totp-status" style="display:block;font-size:0.8rem;color:#888;margin-top:4px;">
+          After scanning, your authenticator app should show a 6-digit rotating code.
+        </small>
       </div>
-    `;
 
-    document.body.appendChild(modal);
+      <div style="margin-top:14px;font-size:0.86rem;color:#888;">
+        Tip: if you lose access to your email or authenticator app, contact support so we can help you regain access
+        before you change payout details or accept big offers.
+      </div>
 
-    // Close handlers
-    modal.addEventListener('mousedown', (e) => {
-      if (e.target === modal) closeModal('security-modal');
-    });
-    document.getElementById('close-security-modal')?.addEventListener('click', () => {
-      closeModal('security-modal');
-    });
-    document.getElementById('security-cancel-btn')?.addEventListener('click', () => {
-      closeModal('security-modal');
-    });
-  }
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" id="security-cancel-btn" style="
+          padding:7px 14px;
+          border-radius:8px;
+          border:1px solid #444;
+          background:#222;
+          color:#eee;
+          cursor:pointer;
+          box-shadow:none;
+        ">
+          Close
+        </button>
+      </div>
+    </div>
+  `;
 
-  // Wire the "Security" item in the settings dropdown
-  const openSecurityBtn = document.getElementById('open-security-settings');
-  if (openSecurityBtn) {
-    openSecurityBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  document.body.appendChild(modal);
 
-      ensureSecurityModal();
+  // Close handlers
+  modal.addEventListener('mousedown', (e) => {
+    if (e.target === modal) closeModal('security-modal');
+  });
+  document.getElementById('close-security-modal')?.addEventListener('click', () => {
+    closeModal('security-modal');
+  });
+  document.getElementById('security-cancel-btn')?.addEventListener('click', () => {
+    closeModal('security-modal');
+  });
+}
 
-      // Hide dropdown behind the modal
-      if (settingsDropdown) settingsDropdown.style.display = 'none';
+// Wire the "Security" item in the settings dropdown
+const openSecurityBtn = document.getElementById('open-security-settings');
+if (openSecurityBtn) {
+  openSecurityBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      // Initialise the 2FA UI inside the modal (reads current user + profile)
-      await initTwoFASettings();
+    ensureSecurityModal();
 
-      // Finally show the modal
-      openModal('security-modal');
-    });
-  }
+    // Hide dropdown behind the modal
+    if (settingsDropdown) settingsDropdown.style.display = 'none';
+
+    // Initialise the 2FA UI inside the modal (reads current user + profile)
+    await initTwoFASettings();
+
+    // Finally show the modal
+    openModal('security-modal');
+  });
+}
 
 
 
