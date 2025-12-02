@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Account & Profile Settings - Sponsor Sorter">
+  <title>Settings | Sponsor Sorter</title>
+
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+<header class="navbar1">
+  <section class="navbar"> 
+    <div class="navii">
+      <h5><header>Sponsor Sorter</header></h5>
+      <div>
+        <background-img class="navimg" src="./navimg.png" alt=""></background-img>
+        <nav>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./finder.html">Finder</a></li>
+        </nav>
+        <nav>
+          <li class="navr"><a href="./dashboardsponsee.html">Dashboard</a></li>
+        </nav>
+      </div>
+    </div>
+  </section>
+</header>
+
+<main class="page-content" style="max-width:1100px;margin:20px auto 40px auto;padding:0 12px;">
+  <section style="margin-bottom:18px;">
+    <h1 style="margin-bottom:6px;">Settings</h1>
+    <p style="color:#ccc;max-width:680px;">
+      Manage your profile, notifications, connected platforms, referrals, subscriptions,
+      security &amp; 2FA, and more — all in one place.
+    </p>
+  </section>
+
+  <section style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;">
+    <!-- Simple side nav -->
+    <aside style="flex:0 0 220px;max-width:220px;">
+      <fieldset class="sidenav" style="border-radius:10px;">
+        <legend>Sections</legend>
+        <ul style="list-style:none;padding-left:0;margin:0;font-size:0.95rem;">
+          <li><a href="#profile-settings">Profile</a></li>
+          <li><a href="#notifications-settings">Toggles</a></li>
+          <li><a href="#platforms-settings">Platforms &amp; Handles</a></li>
+          <li><a href="#referrals-settings">Referrals &amp; Subscription</a></li>
+          <li><a href="#premium-settings">Featured &amp; Affiliate</a></li>
+          <li><a href="#security-settings">Security &amp; 2FA</a></li>
+        </ul>
+      </fieldset>
+    </aside>
+
+    <section style="flex:1 1 0;min-width:0;">
+
+      <!-- PROFILE SETTINGS -->
+      <fieldset id="profile-settings" style="margin-bottom:18px;border-radius:10px;">
+  <legend>Profile</legend>
+
+  <div class="settings-profile-wrap"
+       style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;">
+    <!-- Avatar + click to change -->
+    <div class="settings-profile-avatar"
+         style="flex:0 0 140px;text-align:center;">
+      <button type="button"
+              id="change-profile-logo-btn"
+              class="btn"
+              style="
+                border-radius:50%;
+                padding:0;
+                border:none;
+                background:none;
+                cursor:pointer;
+                display:inline-block;
+                box-shadow: none;
+              ">
+        <img id="profile-avatar-img"
+             src="./logos.png"
+             alt="Profile picture"
+             style="
+               width:120px;
+               height:120px;
+               border-radius:50%;
+               object-fit:cover;
+               border:2px solid #36a2eb;
+               display:block;
+               margin:0 auto 6px auto;
+             ">
+        <span style="display:block;font-size:0.8rem;color:#999;margin-top:2px;">
+          Click image to change
+        </span>
+      </button>
+    </div>
+
+    <!-- Description + website + extra details -->
+    <div class="settings-profile-main"
+         style="flex:1 1 260px;min-width:0;">
+      <div style="margin-bottom:10px;">
+        <strong>Profile summary</strong>
+        <p style="color:#999;font-size:0.9rem;margin-top:2px;">
+          This is what sponsors see on your profile and public dashboard.
+        </p>
+      </div>
+
+      <!-- Description block -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:0.9rem;color:#aaa;margin-bottom:2px;">Description</div>
+        <p id="settings-profile-description"
+           style="margin:0 0 4px 0;font-size:0.95rem;color:#777;">
+          Loading description…
+        </p>
+        <button type="button"
+                id="edit-profile-description-btn"
+                class="btn"
+                style="padding:3px 10px;font-size:0.85rem;border-radius:999px;">
+          Edit description
+        </button>
+      </div>
+
+      <!-- Website block -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:0.9rem;color:#aaa;margin-bottom:2px;">Website</div>
+        <p style="margin:0 0 4px 0;font-size:0.95rem;">
+          <a id="settings-profile-website-link"
+             href="#"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="word-break:break-all;color:#777;">
+            No website linked yet.
+          </a>
+        </p>
+        <button type="button"
+                id="settings-open-website-btn"
+                class="btn"
+                style="padding:3px 10px;font-size:0.85rem;border-radius:999px;">
+          Edit website link
+        </button>
+      </div>
+
+      <!-- Extra details: title, company, location, content type -->
+      <div style="margin-top:8px;padding-top:10px;border-top:1px solid #333;">
+        <div style="font-size:0.9rem;color:#aaa;margin-bottom:6px;">
+          Additional details
+        </div>
+
+        <div class="settings-profile-grid"
+             style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+        <label style="font-size:0.85rem;color:#aaa;display:block;">
+        Title
+        <input
+            id="settings-title-input"
+            type="text"
+            list="settings-title-options"
+            placeholder="Select or type a title"
+            style="width:100%;margin-top:3px;border-radius:6px;padding:6px 8px;box-sizing:border-box;">
+        <datalist id="settings-title-options">
+            <option value="Mr."></option>
+            <option value="Mrs."></option>
+            <option value="Miss"></option>
+            <option value="Phd"></option>
+            <option value="Content Creator"></option>
+            <option value="Streamer"></option>
+            <option value="Influencer"></option>
+            <option value="Brand / Company"></option>
+            <option value="Marketing Manager"></option>
+            <option value="Agency Representative"></option>
+            <option value="Esports Player"></option>
+            <option value="Podcaster"></option>
+        </datalist>
+        </label>
+
+
+          <label style="font-size:0.85rem;color:#aaa;display:block;">
+            Company
+            <input
+              id="settings-company-input"
+              type="text"
+              placeholder="Company or brand name"
+              style="width:100%;margin-top:3px;border-radius:6px;padding:6px 8px;box-sizing:border-box;">
+          </label>
+
+          <label style="font-size:0.85rem;color:#aaa;display:block;">
+            Location
+            <input
+              id="settings-location-input"
+              type="text"
+              placeholder="City, Country"
+              style="width:100%;margin-top:3px;border-radius:6px;padding:6px 8px;box-sizing:border-box;">
+          </label>
+
+          <label style="font-size:0.85rem;color:#aaa;display:block;">
+            Content type
+            <input
+              id="settings-contenttype-input"
+              type="text"
+              placeholder="e.g. Gaming, IRL, Beauty, Tech"
+              style="width:100%;margin-top:3px;border-radius:6px;padding:6px 8px;box-sizing:border-box;">
+          </label>
+        </div>
+
+        <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button type="button"
+                  id="settings-profile-details-save-btn"
+                  class="btn"
+                  style="padding:6px 14px;border-radius:999px;font-size:0.9rem;">
+            Save details
+          </button>
+          <span id="settings-profile-details-msg"
+                style="font-size:0.85rem;color:#999;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <small style="color:#777;font-size:0.85rem;">
+    These fields map to <code>users_extended_data</code>:
+    <code>title</code>, <code>company_name</code>, <code>location</code>,
+    <code>contenttype</code>, <code>about_yourself</code>, <code>profile_pic</code>, <code>website_url</code>.
+  </small>
+</fieldset>
+    </section>
+
+  <section class="fullpage" >
+      <!-- NOTIFICATIONS SETTINGS -->
+      <fieldset id="notifications-settings" style="margin-bottom:18px;border-radius:10px; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 30px;">
+        <legend>Toggles</legend>
+
+        <!-- Help blocks -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;border-style: solid;
+  border-width: 2px;border-radius: 10px;padding: 5px;">
+          <div>
+            <div><strong>Help blocks</strong></div>
+            <small style="color:#999;">Show or hide the blue help blocks on dashboards and Finder.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-help-slider">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Onboarding -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;border-style: solid;
+  border-width: 2px;border-radius: 10px;padding: 5px;">
+          <div>
+            <div><strong>Onboarding tips</strong></div>
+            <small style="color:#999;">Show onboarding steps and coach marks.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-onboarding-slider">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Completion recaps -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;border-style: solid;
+  border-width: 2px;border-radius: 10px;padding: 5px;">
+          <div>
+            <div><strong>Completion recaps</strong></div>
+            <small style="color:#999;">Get summaries when offers are completed.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle-recap-slider">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Email alerts -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;border-style: solid;
+  border-width: 2px;border-radius: 10px;padding:8px;">
+          <div>
+            <div><strong>Email alerts</strong></div>
+            <small style="color:#999;">Receive emails when you get offers or important updates.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="email-alert-toggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </fieldset>
+
+<!-- PLATFORMS & HANDLES -->
+      <fieldset id="platforms-settings" style="margin-bottom:18px;border-radius:10px;">
+        <legend>Platforms &amp; Handles</legend>
+        <p style="color:#ccc;font-size:0.95rem;margin-bottom:10px;">
+          Link your social profiles and connect OAuth accounts for live stats.
+        </p>
+
+        <!-- Summary line populated by settingsPage.js -->
+        <div id="settings-platforms-summary"
+             style="margin-bottom:8px;font-size:0.9rem;color:#ccc;">
+          Loading your platforms…
+        </div>
+
+        <!-- Per-platform rows -->
+        <div id="settings-platforms-grid"
+             style=" display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;;margin-bottom:10px;">
+
+          <!-- YouTube -->
+          <div class="settings-platform-row"
+               data-platform="youtube"
+               style="display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:8px 10px;background:rgba(255,255,255,0.02);">
+            <div style="min-width:0;">
+              <div style="font-size:0.9rem;">YouTube</div>
+              <div id="settings-youtube-handle"
+                   style="font-size:0.85rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                Not linked yet
+              </div>
+              <div id="settings-youtube-status"
+                   style="font-size:0.8rem;color:#777;">
+                Not connected
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:12px;">
+              <button type="button"
+                      id="settings-youtube-edit-handle-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Edit handle
+              </button>
+              <button type="button"
+                      id="settings-youtube-manage-oauth-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Manage
+              </button>
+            </div>
+          </div>
+
+          <!-- Twitch -->
+          <div class="settings-platform-row"
+               data-platform="twitch"
+               style="display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:8px 10px;background:rgba(255,255,255,0.02);">
+            <div style="min-width:0;">
+              <div style="font-size:0.9rem;">Twitch</div>
+              <div id="settings-twitch-handle"
+                   style="font-size:0.85rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                Not linked yet
+              </div>
+              <div id="settings-twitch-status"
+                   style="font-size:0.8rem;color:#777;">
+                Not connected
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:12px;">
+              <button type="button"
+                      id="settings-twitch-edit-handle-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Edit handle
+              </button>
+              <button type="button"
+                      id="settings-twitch-manage-oauth-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Manage
+              </button>
+            </div>
+          </div>
+
+          <!-- Instagram -->
+          <div class="settings-platform-row"
+               data-platform="instagram"
+               style="display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:8px 10px;background:rgba(255,255,255,0.02);">
+            <div style="min-width:0;">
+              <div style="font-size:0.9rem;">Instagram</div>
+              <div id="settings-instagram-handle"
+                   style="font-size:0.85rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                Not linked yet
+              </div>
+              <div id="settings-instagram-status"
+                   style="font-size:0.8rem;color:#777;">
+                Not connected
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:12px;">
+              <button type="button"
+                      id="settings-instagram-edit-handle-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Edit handle
+              </button>
+              <button type="button"
+                      id="settings-instagram-manage-oauth-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Manage
+              </button>
+            </div>
+          </div>
+
+          <!-- TikTok -->
+          <div class="settings-platform-row"
+               data-platform="tiktok"
+               style="display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:8px 10px;background:rgba(255,255,255,0.02);">
+            <div style="min-width:0;">
+              <div style="font-size:0.9rem;">TikTok</div>
+              <div id="settings-tiktok-handle"
+                   style="font-size:0.85rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                Not linked yet
+              </div>
+              <div id="settings-tiktok-status"
+                   style="font-size:0.8rem;color:#777;">
+                Not connected
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:12px;">
+              <button type="button"
+                      id="settings-tiktok-edit-handle-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Edit handle
+              </button>
+              <button type="button"
+                      id="settings-tiktok-manage-oauth-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Manage
+              </button>
+            </div>
+          </div>
+
+          <!-- X / Twitter -->
+          <div class="settings-platform-row"
+               data-platform="x"
+               style="display:flex;align-items:center;justify-content:space-between;border-radius:8px;padding:8px 10px;background:rgba(255,255,255,0.02);">
+            <div style="min-width:0;">
+              <div style="font-size:0.9rem;">X / Twitter</div>
+              <div id="settings-x-handle"
+                   style="font-size:0.85rem;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                Not linked yet
+              </div>
+              <div id="settings-x-status"
+                   style="font-size:0.8rem;color:#777;">
+                Not connected
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-left:12px;">
+              <button type="button"
+                      id="settings-x-edit-handle-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Edit handle
+              </button>
+              <button type="button"
+                      id="settings-x-manage-oauth-btn"
+                      class="btn"
+                      style="padding:4px 10px;border-radius:999px;font-size:0.8rem;">
+                Manage
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Existing master buttons (kept, and wired in JS) -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;">
+          <button type="button" id="relink-social-btn" class="btn"
+                  style="padding:7px 14px;border-radius:8px;">
+            Edit all social handles
+          </button>
+
+          <button type="button" id="oauth-link-btn" class="btn"
+                  style="padding:7px 14px;border-radius:8px;">
+            Manage connected platforms
+          </button>
+        </div>
+      </fieldset>
+
+
+    <!-- REFERRALS & SUBSCRIPTION -->
+<fieldset id="referrals-settings" style="margin-bottom:18px;border-radius:10px;">
+  <legend>Referrals &amp; Subscription</legend>
+
+  <!-- Inline summary, populated by settingsPage.js -->
+  <div id="referrals-subscription-summary"
+       style="margin-bottom:6px;font-size:0.9rem;color:#ccc;">
+    Loading your referral &amp; subscription details...
+  </div>
+
+  <!-- Two-column layout -->
+  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px;font-size:0.9rem;">
+    <!-- LEFT: referral link + stats -->
+    <div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px;">
+      <div id="settings-referral-link-row" style="word-break:break-all;">
+        Referral link: —
+      </div>
+      <div id="settings-referral-stats-row">
+        Referrals: —
+      </div>
+    </div>
+
+    <!-- RIGHT: plan + subscription -->
+    <div style="flex:0 0 260px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;text-align:right;">
+      <div id="settings-plan-row" style="display:flex;align-items:center;gap:8px;">
+        <span id="settings-plan-text">Plan: —</span>
+        <img
+          id="settings-plan-badge"
+          src="./freebadge.png"
+          alt="Plan badge"
+          style="height:50px;display:none;"
+        />
+      </div>
+      <div id="settings-subscription-row">
+        Subscription: —
+      </div>
+    </div>
+  </div>
+
+  <!-- Existing buttons still work (open modals) -->
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
+    <button type="button" id="show-referral-link-btn" class="btn"
+            style="padding:7px 14px;border-radius:8px;">
+      Show my referral link
+    </button>
+
+    <button type="button" id="show-subscription-modal-btn" class="btn"
+            style="padding:7px 14px;border-radius:8px;">
+      View subscription &amp; rewards
+    </button>
+  </div>
+</fieldset>
+
+
+
+      <!-- PREMIUM & AFFILIATE -->
+      <fieldset id="premium-settings" style="margin-bottom:18px;border-radius:10px;">
+        <legend>Featured &amp; Affiliate</legend>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;">
+          <button type="button" id="settings-open-premium-visible" class="btn"
+                  style="padding:7px 14px;border-radius:8px;">
+            Manage Featured Star placement
+          </button>
+
+          <button type="button" id="settings-open-affiliate-visible" class="btn"
+                  style="padding:7px 14px;border-radius:8px;">
+            Apply to be an Affiliate
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- SECURITY & 2FA -->
+      <fieldset id="security-settings" style="margin-bottom:18px;border-radius:10px;">
+        <legend>Security &amp; 2FA</legend>
+
+        <p style="color:#ccc;font-size:0.95rem;margin-bottom:8px;">
+          Add an extra layer of security with email 2FA or an authenticator app.
+        </p>
+
+        <button type="button" id="settings-open-security-visible" class="btn"
+                style="padding:7px 14px;border-radius:8px;">
+          Open security &amp; 2FA settings
+        </button>
+      </fieldset>
+      </section>
+    </section>
+  </section>
+</main>
+
+<!-- Hidden dropdown hooks so settings.js still works -->
+<div id="settings-dropdown" style="display:none;">
+  <ul>
+    <li>
+      <button type="button" class="dropdown-item" id="open-premium-settings">
+        Featured Star (hook)
+      </button>
+    </li>
+    <li>
+      <button type="button" class="dropdown-item" id="open-affiliate-apply">
+        Affiliate Apply (hook)
+      </button>
+    </li>
+    <li>
+      <button type="button" class="dropdown-item" id="add-website-url">
+        Link Website (hook)
+      </button>
+    </li>
+    <li>
+      <button type="button" class="dropdown-item" id="open-security-settings">
+        Security &amp; 2FA (hook)
+      </button>
+    </li>
+  </ul>
+</div>
+<button id="settings-cog-btn" type="button" style="display:none;"></button>
+
+<!-- Hidden YouTube connect button (settings.js uses this) -->
+<button id="connect-youtube-btn" type="button" style="display:none;"></button>
+
+<!-- PROFILE LOGO MODAL -->
+<div id="profile-logo-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:420px;">
+    <button type="button" id="close-profile-logo-modal"
+      style="position:absolute;right:14px;top:10px;background:none;border:none;color:#f55;font-size:1.4em;cursor:pointer;">
+      &times;
+    </button>
+    <h3>Change profile logo</h3>
+    <form id="profile-logo-form">
+      <div id="drop-zone" style="
+        border:2px dashed #36a2eb;
+        border-radius:10px;
+        padding:18px 12px;
+        text-align:center;
+        margin-bottom:10px;
+        cursor:pointer;">
+        <span id="drop-zone-text">Click or Drag &amp; Drop image here</span>
+        <input type="file" id="profile-logo-input" accept="image/*" style="display:none;">
+      </div>
+      <button type="submit" class="btn" style="padding:7px 16px;border-radius:8px;">
+        Save logo
+      </button>
+      <div id="profile-logo-modal-msg" style="margin-top:8px;font-size:0.9rem;color:#ccc;"></div>
+    </form>
+  </div>
+</div>
+
+<!-- PROFILE DESCRIPTION MODAL -->
+<div id="profile-desc-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:520px;">
+    <button type="button" id="close-profile-desc-modal"
+      style="position:absolute;right:14px;top:10px;background:none;border:none;color:#f55;font-size:1.4em;cursor:pointer;">
+      &times;
+    </button>
+    <h3>Edit profile description</h3>
+    <textarea id="profile-desc-textarea" rows="5"
+              style="width:100%;box-sizing:border-box;margin-bottom:8px;border-radius:8px;"></textarea>
+    <button type="button" id="save-profile-desc-btn" class="btn"
+            style="padding:7px 16px;border-radius:8px;">
+      Save description
+    </button>
+    <div id="profile-desc-modal-msg" style="margin-top:8px;font-size:0.9rem;color:#ccc;"></div>
+  </div>
+</div>
+
+<!-- SOCIAL HANDLES MODAL -->
+<div id="social-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:540px;">
+    <button type="button" id="close-social-modal"
+      style="position:absolute;right:14px;top:10px;background:none;border:none;color:#f55;font-size:1.4em;cursor:pointer;">
+      &times;
+    </button>
+    <h3>Social media handles</h3>
+    <p style="color:#ccc;font-size:0.9rem;">
+      Add or edit your public profile handles.
+    </p>
+    <form id="social-form">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+        <select id="platform-select" style="flex:0 0 140px;">
+          <option value="">Platform</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitch">Twitch</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="twitter">X (Twitter)</option>
+          <option value="facebook">Facebook</option>
+          <option value="other">Other</option>
+        </select>
+        <input id="platform-handle-input" type="text" placeholder="@your_handle"
+               style="flex:1 1 160px;">
+        <button type="button" id="add-platform-btn" class="btn"
+                style="padding:7px 12px;border-radius:8px;">
+          Add
+        </button>
+      </div>
+      <div id="social-modal-msg" style="margin-bottom:8px;font-size:0.9rem;color:#ccc;"></div>
+      <div id="current-social-list" style="min-height:20px;"></div>
+      <div style="margin-top:10px;">
+        <button type="submit" class="btn" style="padding:7px 16px;border-radius:8px;">
+          Save changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- REFERRAL LINK MODAL -->
+<div id="referral-link-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:520px;">
+    <button type="button" id="close-ref-link-modal"
+      style="position:absolute;right:14px;top:10px;background:none;border:none;color:#f55;font-size:1.4em;cursor:pointer;">
+      &times;
+    </button>
+    <h3>Your referral link</h3>
+    <p style="color:#ccc;font-size:0.9rem;">
+      Share this link with friends to earn rewards.
+    </p>
+    <input type="text" id="my-ref-link" readonly
+           style="width:100%;box-sizing:border-box;margin-bottom:8px;border-radius:8px;">
+    <button type="button" id="copy-ref-link-btn" class="btn"
+            style="padding:7px 16px;border-radius:8px;">
+      Copy link
+    </button>
+    <div id="ref-link-copied-msg" style="margin-top:6px;font-size:0.9rem;color:#7CFFA1;display:none;">
+      Copied!
+    </div>
+    <div id="referral-medal-info" style="margin-top:10px;font-size:0.9rem;color:#ccc;"></div>
+  </div>
+</div>
+
+<!-- SUBSCRIPTION MODAL -->
+<div id="subscription-modal" class="modal" style="display:none;">
+  <div class="modal-content" style="max-width:620px;top:1100px;">
+    <button type="button" id="close-subscription-modal"
+      style="position:absolute;right:14px;top:10px;background:none;border:none;color:#f55;font-size:1.4em;cursor:pointer;">
+      &times;
+    </button>
+    <h3>Subscription &amp; Free Month Rewards</h3>
+    <div id="subscription-details"
+         style="background:#19191a;border-radius:14px;min-height:54px;margin-top:7px;padding:18px 14px 14px 14px;color:#ddd;font-size:1.07em;">
+      <div style="text-align:center;color:#bbb;font-size:1em;">
+        Loading subscription details…
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OAUTH LINKED ACCOUNTS MODAL -->
+<div id="oauth-link-modal" class="modal" style="display:none;">
+  <div style="background:#353535;max-width:410px;padding:30px 26px;border-radius:16px;box-shadow:0 4px 30px #2222;position:relative;margin:40px auto;">
+    <button id="close-oauth-link-modal"
+      style="position:absolute;top:10px;right:12px;background:none;border:none;color:#df0202;cursor:pointer;font-size:1.4em;">
+      &times;
+    </button>
+    <h2 style="margin-top:0;margin-bottom:10px;">Linked Accounts</h2>
+    <div id="oauth-accounts-list" style="margin-bottom:16px;"></div>
+    <div style="font-size:0.97em;color:#e8e8e8;">
+      <b>Tip:</b> Connect your accounts to enable platform-specific analytics and advanced features!
+    </div>
+  </div>
+</div>
+
+<!-- YOUTUBE OAUTH MODAL -->
+<div id="youtube-oauth-modal" class="modal" style="display:none;">
+  <div style="background:#fff;max-width:400px;padding:32px 26px;border-radius:16px;box-shadow:0 4px 30px #2222;position:relative;margin:40px auto;">
+    <button id="close-youtube-oauth-modal"
+      style="position:absolute;top:10px;right:12px;background:none;border:none;color:#888;cursor:pointer;font-size:1.4em;">
+      &times;
+    </button>
+    <h2 style="margin-top:0;margin-bottom:10px;">Connect YouTube</h2>
+    <div style="margin-bottom:20px;">
+      Link your YouTube account to track engagement stats automatically on your offers.<br>
+      <img src="./youtubelogo.png" alt="YouTube" style="height:32px;margin-top:7px;border-radius:8px;background:#000;">
+    </div>
+    <div id="youtube-oauth-modal-msg" style="color:#4886f4;font-size:1.07em;">&nbsp;</div>
+    <!-- connect-youtube-btn is hidden elsewhere, but we leave this visible button for clarity if needed -->
+  </div>
+</div>
+
+<!-- Core settings logic (existing big file) -->
+<script type="module" src="./js/settings.js"></script>
+<!-- Page-specific glue for nicer layout -->
+<script type="module" src="./js/settingsPage.js"></script>
+<style>
+    .sidenav {
+        background: linear-gradient(#000000, #000000) padding-box, linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box !important;
+        padding-right: 10px ;
+    }
+    .sidenav ul li {
+        background: url('navimg.png') center center/cover no-repeat !important;
+        height: 40px;
+        width: 180px;
+           }
+    .sidenav ul li a {
+        position: relative;
+        margin: auto;
+        top: 11px;
+            }
+
+    .slider {
+    height: inherit;
+    width: 45px;
+    }
+    .fullpage {
+        width: 95vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .modal div {
+        top: 40px;
+    }
+
+#premium-modal > div:nth-child(1) {
+  margin-top: 29%;
+}
+
+#referrals-settings > div:nth-child(3) > div:nth-child(2) {
+  margin-top: -40px;
+}
+
+    
+
+</style>
+</body>
+</html>
