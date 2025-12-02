@@ -2583,6 +2583,17 @@ document.getElementById('open-premium-settings')?.addEventListener('click', asyn
   await loadMyFeaturedSlots();              // <-- populate rows on open
 });
 
+// --- Settings dropdown → open full settings page ---
+const openSettingsPageBtn = document.getElementById('open-settings-page');
+if (openSettingsPageBtn) {
+  openSettingsPageBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // keep dropdown from re-toggling
+    window.location.href = './settings.html';
+  });
+}
+
+
  // === Security / 2FA Modal ===
 
 function ensureSecurityModal() {
