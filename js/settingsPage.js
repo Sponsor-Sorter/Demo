@@ -1150,12 +1150,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentUser = await getActiveUser();
   if (!currentUser) return;
 
+  // ---- Dashboard link: route based on user type ----
+  const dashboardLink = document.getElementById('settings-dashboard-link');
+  if (dashboardLink) {
+    const userType = String(
+      currentUser.user_type || currentUser.userType || ''
+    ).toLowerCase();
+
+    const target =
+      userType === 'besponsored' || userType === 'to be sponsored'
+        ? './dashboardsponsee.html'
+        : './dashboardsponsor.html';
+
+    // Set href for proper “open in new tab”, etc.
+    dashboardLink.href = target;
+
+    dashboardLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = target;
+    });
+  }
+
   // ---- Avatar preview ----
   const avatarImg = document.getElementById('profile-avatar-img');
   if (avatarImg) {
     avatarImg.alt = currentUser.username
       ? `${currentUser.username}'s profile picture`
       : 'Profile picture';
+
 
     if (currentUser.profile_pic) {
       try {
