@@ -1,16 +1,53 @@
 // File: ./js/settingsPage.js
 //
-// Extra wiring just for settings.html:
-// - Show profile picture with "click to change".
-// - Show current description + website.
-// - Allow editing title, company_name, location, contenttype.
-// - Show Platforms & Handles with real connected status (same logic as settings.js).
-//   - If platform is connected via OAuth, disable its "Edit handle" button.
-// - Show inline Referrals & Subscription summary (plan, Stripe status, referral link, referral stats).
-// - Proxy the visible buttons to the hidden dropdown actions that settings.js already handles.
+// Page-specific glue for settings.html.
+// Uses the existing big ./js/settings.js for all the heavy lifting (modals,
+// FamBot moderation, 2FA UI, etc.) and just:
+//  - Shows profile picture with "click to change".
+//  - Shows current description + website.
+//  - Allows editing title, company_name, location, contenttype.
+//  - Shows Platforms & Handles with real connected status (same logic as settings.js),
+//    and disables the "Edit handle" button if the platform is connected via OAuth.
+//  - Shows inline Referrals & Subscription (plan badge, Stripe status, referral link, referral stats).
+//  - Shows inline Featured Star placements (only active spots).
+//  - Shows inline Affiliate summary + applications table.
+//  - Shows inline Security & 2FA status (method, backup codes, lockout).
+//  - Proxies the nice buttons on this page to the hidden hooks that settings.js already uses.
 
 import { supabase } from './supabaseClient.js';
+import { famBotModerateWithModal } from './FamBot.js';
 import { getActiveUser } from './impersonationHelper.js';
+
+// ---------- Small helpers ----------
+
+function escapeHtml(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Simple date helpers for Featured slots
+function fmtDate(v) {
+  try {
+    if (!v) return '—';
+    return new Date(v).toLocaleDateString();
+  } catch {
+    return '—';
+  }
+}
+
+function slotStatus(starts_at, ends_at) {
+  const now = Date.now();
+  const s = starts_at ? Date.parse(starts_at) : 0;
+  const e = ends_at ? Date.parse(ends_at) : 0;
+  if (s && now < s) return 'Scheduled';
+  if (e && now > e) return 'Expired';
+  return 'Active';
+}
 
 // ---------- Platform helpers ----------
 
@@ -76,8 +113,7 @@ function extractHandle(value) {
  */
 function populatePlatformsSection(user) {
   const platformsSummaryEl = document.getElementById('settings-platforms-summary');
-  // If the expanded platforms UI isn’t on this page, bail early.
-  if (!platformsSummaryEl || !user) return;
+  if (!user || !platformsSummaryEl) return;
 
   const platformRows = [
     {
@@ -223,17 +259,6 @@ function populatePlatformsSection(user) {
 /**
  * Wire the “Edit handle” / “Manage connections” buttons in the Platforms area
  * to the hidden hooks that settings.js already uses in the dashboard dropdown.
- *
- * Expects:
- *  - Hidden buttons somewhere on the page:
- *      #relink-social-btn   (opens manual handles modal)
- *      #oauth-link-btn      (opens OAuth accounts modal)
- *  - Per-row buttons:
- *      #settings-youtube-edit-handle-btn, #settings-youtube-manage-oauth-btn
- *      #settings-twitch-edit-handle-btn,  #settings-twitch-manage-oauth-btn
- *      #settings-instagram-edit-handle-btn, #settings-instagram-manage-oauth-btn
- *      #settings-tiktok-edit-handle-btn,    #settings-tiktok-manage-oauth-btn
- *      #settings-x-edit-handle-btn,         #settings-x-manage-oauth-btn
  */
 function wirePlatformRowShortcuts() {
   const relinkSocialBtn = document.getElementById('relink-social-btn');
@@ -296,40 +321,37 @@ async function populateReferralsAndSubscription(user) {
     summaryEl.style.color = '#999';
   }
 
-  // ---- Plan type (planType column on user) ----
   try {
     // ---- Plan type (planType column on user) ----
-const planTypeRaw = user.planType || 'free';
-const planType = String(planTypeRaw).toLowerCase();
-const isFreePlan = planType === 'free';
+    const planTypeRaw = user.planType || 'free';
+    const planType = String(planTypeRaw).toLowerCase();
+    const isFreePlan = planType === 'free';
 
-if (planRow) {
-  const label = isFreePlan ? 'Free' : 'Pro';
+    if (planRow) {
+      const label = isFreePlan ? 'Free' : 'Pro';
 
-  // Text span inside the row (fallback to planRow if span not found)
-  const planTextEl =
-    document.getElementById('settings-plan-text') || planRow;
+      const planTextEl =
+        document.getElementById('settings-plan-text') || planRow;
 
-  if (planTextEl) {
-    planTextEl.textContent = `Plan: ${label}`;
-  }
+      if (planTextEl) {
+        planTextEl.textContent = `Plan: ${label}`;
+      }
 
-  planRow.style.color = isFreePlan ? '#ffd062' : '#7CFFA1';
+      planRow.style.color = isFreePlan ? '#ffd062' : '#7CFFA1';
 
-  // Badge image
-  const badgeEl = document.getElementById('settings-plan-badge');
-  if (badgeEl) {
-    badgeEl.style.display = 'inline-block';
-    if (isFreePlan) {
-      badgeEl.src = './freebadge.png';
-      badgeEl.alt = 'Free plan badge';
-    } else {
-      badgeEl.src = './probadge.png';
-      badgeEl.alt = 'Pro plan badge';
+      // Badge image
+      const badgeEl = document.getElementById('settings-plan-badge');
+      if (badgeEl) {
+        badgeEl.style.display = 'inline-block';
+        if (isFreePlan) {
+          badgeEl.src = './freebadge.png';
+          badgeEl.alt = 'Free plan badge';
+        } else {
+          badgeEl.src = './probadge.png';
+          badgeEl.alt = 'Pro plan badge';
+        }
+      }
     }
-  }
-}
-
 
     // ---- Subscription summary (Stripe) ----
     if (subRow) {
@@ -342,7 +364,8 @@ if (planRow) {
           const jwt = sessionRes?.data?.session?.access_token;
 
           if (!jwt) {
-            subRow.textContent = 'Subscription: Unable to load subscription (missing session).';
+            subRow.textContent =
+              'Subscription: Unable to load subscription (missing session).';
             subRow.style.color = '#e93';
           } else {
             const resp = await fetch(
@@ -397,7 +420,7 @@ if (planRow) {
       }
     }
 
-    // ---- Referral link summary (same logic as modal, but inline) ----
+    // ---- Referral link summary ----
     if (linkRow) {
       linkRow.textContent = 'Referral link: Loading…';
       linkRow.style.color = '#bbb';
@@ -508,6 +531,619 @@ if (planRow) {
   }
 }
 
+// ---------- Featured Star inline helpers ----------
+
+async function populateFeaturedInline(user) {
+  const container = document.getElementById('settings-featured-inline');
+  if (!container || !user) return;
+
+  // Start clean
+  container.innerHTML = '';
+
+  try {
+    const { data, error } = await supabase
+      .from('featured_slots')
+      .select('slot_index,label,starts_at,ends_at')
+      .eq('user_id', user.user_id || user.id)
+      .order('starts_at', { ascending: false })
+      .limit(20);
+
+    if (error) {
+      console.error('Error loading featured slots for settings page:', error);
+      // Per request: if none or error, just show nothing.
+      container.innerHTML = '';
+      return;
+    }
+
+    if (!data || !data.length) {
+      // No placements at all; show nothing.
+      container.innerHTML = '';
+      return;
+    }
+
+    const activeRows = data.filter(
+      (row) => slotStatus(row.starts_at, row.ends_at) === 'Active'
+    );
+
+    if (!activeRows.length) {
+      // Has placements but none currently active – show nothing inline.
+      container.innerHTML = '';
+      return;
+    }
+
+    const itemsHtml = activeRows
+      .map((row) => {
+        const status = slotStatus(row.starts_at, row.ends_at);
+        const dates = `${fmtDate(row.starts_at)} → ${fmtDate(row.ends_at)}`;
+        const label = row.label ? ` — ${escapeHtml(row.label)}` : '';
+        const viewHref = `./featured.html?slot=${row.slot_index}`;
+        return `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <div>
+              <div style="font-weight:600;color:#fff;">Slot #${row.slot_index}${label}</div>
+              <div style="color:#bbb;font-size:0.82rem;">
+                ${dates}
+                · <span style="color:#7CFFA1;">${escapeHtml(status)}</span>
+              </div>
+            </div>
+            <a href="${viewHref}"
+               style="font-size:0.8rem;padding:4px 10px;border-radius:999px;background:#ffd062;color:#000;text-decoration:none;font-weight:600;">
+              View
+            </a>
+          </div>
+        `;
+      })
+      .join('');
+
+    container.innerHTML = itemsHtml;
+  } catch (err) {
+    console.error('Unexpected error loading featured slots for settings page:', err);
+    container.innerHTML = '';
+  }
+}
+
+// ---------- Affiliate inline helpers ----------
+
+async function populateAffiliateInline(user) {
+  const activeEl = document.getElementById('settings-affiliate-active');
+  const appsEl = document.getElementById('settings-affiliate-apps');
+
+  if (!activeEl && !appsEl) return;
+  if (!user) return;
+
+  if (appsEl) {
+    appsEl.innerHTML = '<span style="color:#999;">Loading applications…</span>';
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('affiliate_applications')
+      .select('*')
+      .eq('user_id', user.user_id || user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error loading affiliate applications for settings page:', error);
+      if (appsEl) {
+        appsEl.innerHTML =
+          '<span style="color:#f66;">Error loading affiliate applications.</span>';
+      }
+      if (activeEl) activeEl.textContent = '';
+      return;
+    }
+
+    if (!data || !data.length) {
+      if (appsEl) {
+        appsEl.innerHTML =
+          '<span style="color:#777;">No applications yet.</span>';
+      }
+      if (activeEl) activeEl.textContent = '';
+      return;
+    }
+
+    // Active affiliate summary – look for status "active" or "approved"
+    if (activeEl) {
+      const activeApp = data.find((a) => {
+        const s = String(a.status || '').toLowerCase();
+        return s === 'active' || s === 'approved';
+      });
+
+      if (activeApp) {
+        const started = activeApp.created_at
+          ? new Date(activeApp.created_at).toLocaleDateString()
+          : '';
+        const rate =
+          activeApp.desired_rate != null
+            ? `${Number(activeApp.desired_rate).toFixed(2)}%`
+            : null;
+
+        activeEl.innerHTML = `
+          <div style="padding:6px 10px;border-radius:8px;background:rgba(124,255,161,0.06);border:1px solid #2b7543;">
+            <div style="font-weight:600;color:#7CFFA1;margin-bottom:2px;">Active Affiliate</div>
+            <div style="font-size:0.85rem;color:#ccc;">
+              Type: <b>${escapeHtml(activeApp.partner_type || 'Affiliate')}</b>
+              ${rate ? ` · Rate: <b>${escapeHtml(rate)}</b>` : ''}
+              ${
+                started
+                  ? ` · Since: <b>${escapeHtml(started)}</b>`
+                  : ''
+              }
+              <br/>
+              Status: <b>${escapeHtml(activeApp.status || '')}</b>
+            </div>
+          </div>
+        `;
+      } else {
+        activeEl.textContent = '';
+      }
+    }
+
+    // Applications table
+    if (appsEl) {
+      const rowsHtml = data
+        .map((a) => {
+          const created = a.created_at
+            ? new Date(a.created_at).toLocaleString()
+            : '';
+          const rate =
+            a.desired_rate != null
+              ? `${Number(a.desired_rate).toFixed(2)}%`
+              : '-';
+          return `
+            <tr>
+              <td>${escapeHtml(a.id)}</td>
+              <td>${escapeHtml(a.partner_type || '')}</td>
+              <td>${escapeHtml(a.status || '')}</td>
+              <td>${escapeHtml(rate)}</td>
+              <td>${escapeHtml(created)}</td>
+            </tr>
+          `;
+        })
+        .join('');
+
+      appsEl.innerHTML = `
+        <div style="overflow:auto;max-height:220px;">
+          <table border="1" cellspacing="0" cellpadding="6" style="width:100%;border-color:#333;font-size:0.82rem;">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Desired Rate</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      `;
+    }
+  } catch (err) {
+    console.error('Unexpected error loading affiliate applications for settings page:', err);
+    if (appsEl) {
+      appsEl.innerHTML =
+        '<span style="color:#f66;">Error loading affiliate applications.</span>';
+    }
+    if (activeEl) activeEl.textContent = '';
+  }
+}
+
+// ---------- Security & 2FA inline helpers ----------
+
+async function populateSecurityTwoFA(user) {
+  const statusEl = document.getElementById('security-twofa-status');
+  const primaryEl = document.getElementById('security-twofa-primary');
+  const backupEl = document.getElementById('security-twofa-backup');
+  const lockoutEl = document.getElementById('security-twofa-lockout');
+
+  if (!statusEl && !primaryEl && !backupEl && !lockoutEl) return;
+  if (statusEl) {
+    statusEl.textContent = 'Loading 2FA status…';
+    statusEl.style.color = '#ccc';
+  }
+
+  try {
+    let twofaSource = user;
+
+    // If the basic fields aren't on the user object, fetch them directly.
+    if (
+      typeof user.twofa_enabled === 'undefined' ||
+      typeof user.twofa_method === 'undefined'
+    ) {
+      const { data, error } = await supabase
+        .from('users_extended_data')
+        .select('twofa_enabled, twofa_method, twofa_locked_until, twofa_backup_codes')
+        .eq('user_id', user.user_id)
+        .single();
+
+      if (!error && data) {
+        twofaSource = { ...user, ...data };
+      }
+    }
+
+    const enabled = !!twofaSource.twofa_enabled;
+    const methodRaw = String(twofaSource.twofa_method || 'none').toLowerCase();
+
+    let methodLabel = 'Off';
+    if (enabled) {
+      if (methodRaw === 'email') methodLabel = 'Email codes';
+      else if (methodRaw === 'totp' || methodRaw === 'app')
+        methodLabel = 'Authenticator app';
+      else if (methodRaw === 'both')
+        methodLabel = 'Email + Authenticator app';
+      else methodLabel = 'Enabled';
+    }
+
+    // Main line
+    if (statusEl) {
+      if (enabled) {
+        statusEl.textContent = `2FA: Enabled (${methodLabel})`;
+        statusEl.style.color = '#7CFFA1';
+      } else {
+        statusEl.textContent = '2FA: Disabled';
+        statusEl.style.color = '#ff6b6b';
+      }
+    }
+
+    // Primary method detail
+    if (primaryEl) {
+      primaryEl.textContent = enabled
+        ? `Primary method: ${methodLabel}`
+        : 'Primary method: None (2FA is turned off).';
+    }
+
+    // Backup codes
+    if (backupEl) {
+      let total = 0;
+      let remaining = 0;
+      let rawBackup = twofaSource.twofa_backup_codes;
+
+      if (rawBackup) {
+        let arr = rawBackup;
+        if (typeof arr === 'string') {
+          try {
+            arr = JSON.parse(arr);
+          } catch {
+            // ignore parse error; treat as no codes
+            arr = null;
+          }
+        }
+
+        if (Array.isArray(arr)) {
+          total = arr.length;
+          for (const entry of arr) {
+            if (!entry || typeof entry !== 'object') {
+              remaining += 1;
+              continue;
+            }
+            // Consider used_at or used flag as "used"
+            const used = !!(entry.used_at || entry.used);
+            if (!used) remaining += 1;
+          }
+        }
+      }
+
+      if (!total) {
+        backupEl.textContent =
+          'Backup codes: Not set up yet. Generate a set in the Security & 2FA modal.';
+      } else {
+        backupEl.textContent = `Backup codes: ${remaining}/${total} unused. You can regenerate a fresh set at any time.`;
+      }
+    }
+
+    // Lockout / trusted devices
+    if (lockoutEl) {
+      const lockedUntil = twofaSource.twofa_locked_until
+        ? new Date(twofaSource.twofa_locked_until)
+        : null;
+
+      if (lockedUntil && lockedUntil.getTime() > Date.now()) {
+        lockoutEl.textContent =
+          `Lockout: Too many incorrect 2FA attempts. New attempts allowed after ` +
+          lockedUntil.toLocaleString() +
+          '.';
+        lockoutEl.style.color = '#ff9f43';
+      } else {
+        lockoutEl.textContent =
+          "Lockout: No active lockout. Use “Remember this device” on login for trusted devices.";
+        lockoutEl.style.color = '#999';
+      }
+    }
+  } catch (err) {
+    console.error('Error loading 2FA status for settings page:', err);
+    if (statusEl) {
+      statusEl.textContent = 'Could not load 2FA status.';
+      statusEl.style.color = '#ff6b6b';
+    }
+    if (primaryEl) {
+      primaryEl.textContent = 'Primary method: Unable to load.';
+    }
+    if (backupEl) {
+      backupEl.textContent = 'Backup codes: Unable to load.';
+    }
+    if (lockoutEl) {
+      lockoutEl.textContent = 'Lockout: Unable to load.';
+      lockoutEl.style.color = '#ff6b6b';
+    }
+  }
+}
+
+// ---------- Public dashboard & privacy helpers ----------
+
+const PUBLIC_DASH_BASE = `${location.origin}/u/index.html?u=`;
+
+/**
+ * Normalise a slug into a URL-safe string (same style as privacy.js).
+ */
+function sanitizePublicSlug(value) {
+  if (!value) return '';
+  let out = String(value)
+    .normalize('NFD') // strip accents
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // collapse to hyphens
+    .replace(/^-+|-+$/g, '')     // trim leading/trailing hyphens
+    .slice(0, 64);
+  return out;
+}
+
+/**
+ * Best-effort slug suggestion based on username/email/user_id.
+ */
+function suggestPublicSlugFromUser(userLike) {
+  const src = userLike || {};
+  const username = (src.username || '').trim();
+  const email = (src.email || '').trim();
+  const rawUserId = (src.user_id || src.id || '').replace(/-/g, '');
+  let base = '';
+
+  if (username) {
+    base = username;
+  } else if (email && email.includes('@')) {
+    base = email.split('@')[0];
+  } else if (rawUserId) {
+    base = `user-${rawUserId.slice(0, 8)}`;
+  } else {
+    base = `user-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  let slug = sanitizePublicSlug(base);
+  if (!slug) {
+    slug =
+      'user-' +
+      (rawUserId ? rawUserId.slice(0, 8) : Math.random().toString(36).slice(2, 8));
+  }
+  if (slug.length < 4) {
+    slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
+  }
+  return slug;
+}
+
+/**
+ * Wire the "Public dashboard enabled" toggle + URL + copy button
+ * on the settings page to the same fields used by the privacy modal:
+ *   users_extended_data.public_dashboard_enabled
+ *   users_extended_data.public_dashboard_slug
+ */
+async function populatePublicDashboardInline(user) {
+  const toggleEl = document.getElementById('settings-public-dashboard-toggle');
+  const urlEl = document.getElementById('settings-public-url');
+  const copyBtn = document.getElementById('settings-public-url-copy-btn');
+
+  // If the HTML block isn't present, nothing to do.
+  if (!toggleEl || !urlEl || !copyBtn || !user) return;
+
+  const userId = user.user_id || user.id;
+  let currentEnabled = false;
+  let currentSlug = '';
+
+  urlEl.textContent = 'Loading…';
+  urlEl.style.color = '#9fc2ff';
+
+  try {
+    const { data, error } = await supabase
+      .from('users_extended_data')
+      .select(
+        'public_dashboard_enabled, public_dashboard_slug, username, email, user_id'
+      )
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error loading public dashboard state for settings page:', error);
+      urlEl.textContent = 'Unable to load public URL.';
+      urlEl.style.color = '#ff6b6b';
+      return;
+    }
+
+    currentEnabled = !!data.public_dashboard_enabled;
+    currentSlug = data.public_dashboard_slug || '';
+
+    toggleEl.checked = currentEnabled;
+
+    // Decide what to show in the URL box.
+    if (currentSlug) {
+      urlEl.textContent = `${PUBLIC_DASH_BASE}${currentSlug}`;
+      urlEl.style.color = '#9fc2ff';
+    } else {
+      // No slug yet – show a preview of what it will look like when enabled.
+      const previewSlug = suggestPublicSlugFromUser({
+        username: data.username || user.username,
+        email: data.email || user.email,
+        user_id: data.user_id || userId,
+        id: data.user_id || userId,
+      });
+      urlEl.textContent = `${PUBLIC_DASH_BASE}${previewSlug}`;
+      urlEl.style.color = '#777'; // more "disabled"/preview look
+    }
+  } catch (err) {
+    console.error('Unexpected error loading public dashboard state:', err);
+    urlEl.textContent = 'Unable to load public URL.';
+    urlEl.style.color = '#ff6b6b';
+    return;
+  }
+
+  // Toggle handler
+  toggleEl.addEventListener('change', async () => {
+    const wantEnabled = !!toggleEl.checked;
+    const prevEnabled = currentEnabled;
+
+    try {
+      let slugToUse = currentSlug;
+
+      if (wantEnabled) {
+        if (!slugToUse) {
+          slugToUse = suggestPublicSlugFromUser({
+            username: user.username,
+            email: user.email,
+            user_id: userId,
+            id: userId,
+          });
+        }
+        slugToUse = sanitizePublicSlug(slugToUse);
+        if (!slugToUse) {
+          if (window.showToast) {
+            window.showToast(
+              'Could not generate a public URL. Please contact support.',
+              'error'
+            );
+          }
+          toggleEl.checked = false;
+          return;
+        }
+      }
+
+      const payload = wantEnabled
+        ? {
+            public_dashboard_enabled: true,
+            public_dashboard_slug: slugToUse,
+          }
+        : {
+            // Keep the slug in the DB so the link stays reserved,
+            // but flip enabled off.
+            public_dashboard_enabled: false,
+          };
+
+      const { error } = await supabase
+        .from('users_extended_data')
+        .update(payload)
+        .eq('user_id', userId);
+
+      if (error) {
+        console.error(
+          'Error updating public dashboard enable flag from settings page:',
+          error
+        );
+
+        const msg = String(error.message || '');
+        if (msg.includes('public_dashboard_slug')) {
+          if (window.showToast) {
+            window.showToast(
+              'That public URL is already in use. Open the privacy settings modal from your dashboard to choose a different slug.',
+              'error'
+            );
+          }
+        } else if (window.showToast) {
+          window.showToast(
+            'Could not update public dashboard setting. Please try again.',
+            'error'
+          );
+        }
+
+        toggleEl.checked = prevEnabled;
+        return;
+      }
+
+      currentEnabled = wantEnabled;
+      if (wantEnabled) {
+        currentSlug = slugToUse;
+        urlEl.textContent = `${PUBLIC_DASH_BASE}${currentSlug}`;
+        urlEl.style.color = '#9fc2ff';
+        if (window.showToast) {
+          window.showToast('Public dashboard enabled.');
+        }
+      } else {
+        // Still show the URL but make it clear it's disabled.
+        if (currentSlug) {
+          urlEl.textContent = `${PUBLIC_DASH_BASE}${currentSlug} (disabled)`;
+        } else {
+          urlEl.textContent = 'Public dashboard disabled.';
+        }
+        urlEl.style.color = '#999';
+        if (window.showToast) {
+          window.showToast('Public dashboard disabled.');
+        }
+      }
+    } catch (err) {
+      console.error(
+        'Unexpected error while toggling public dashboard from settings page:',
+        err
+      );
+      toggleEl.checked = prevEnabled;
+      if (window.showToast) {
+        window.showToast('Error updating public dashboard setting.', 'error');
+      }
+    }
+  });
+
+  // Copy button
+  copyBtn.addEventListener('click', () => {
+    const slug = currentSlug;
+    if (!slug) {
+      if (window.showToast) {
+        window.showToast(
+          'Enable your public dashboard first to generate a link.',
+          'error'
+        );
+      }
+      return;
+    }
+
+    const url = `${PUBLIC_DASH_BASE}${slug}`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          if (window.showToast) {
+            window.showToast('Public dashboard link copied!');
+          }
+        })
+        .catch((err) => {
+          console.error('Clipboard API failed, falling back:', err);
+          if (window.showToast) {
+            window.showToast(
+              'Unable to copy link automatically. Please copy it manually.',
+              'error'
+            );
+          }
+        });
+    } else {
+      // Older browser fallback
+      try {
+        const tempInput = document.createElement('input');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        tempInput.remove();
+        if (window.showToast) {
+          window.showToast('Public dashboard link copied!');
+        }
+      } catch (err) {
+        console.error('execCommand copy failed:', err);
+        if (window.showToast) {
+          window.showToast(
+            'Unable to copy link automatically. Please copy it manually.',
+            'error'
+          );
+        }
+      }
+    }
+  });
+}
+
+
 // ---------- Main wiring ----------
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -606,6 +1242,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         ? contentTypeInput.value.trim()
         : '';
 
+      // -------- FamBot moderation for inline profile details --------
+      const combinedContent = [
+        titleVal && `Title: ${titleVal}`,
+        companyVal && `Company: ${companyVal}`,
+        locationVal && `Location: ${locationVal}`,
+        contentTypeVal && `Content type: ${contentTypeVal}`,
+      ]
+        .filter(Boolean)
+        .join('\n')
+        .trim();
+
+      if (combinedContent) {
+        try {
+          const {
+            data: sessionData,
+            error: sessionError,
+          } = await supabase.auth.getSession();
+          if (sessionError) {
+            console.warn('Could not fetch session for FamBot:', sessionError);
+          }
+
+          const jwt = sessionData?.session?.access_token || null;
+
+          const modResult = await famBotModerateWithModal({
+            user_id: currentUser.user_id,
+            content: combinedContent,
+            jwt,
+            type: 'profile',
+          });
+
+          if (modResult && modResult.allowed === false) {
+            const msg =
+              modResult.message ||
+              'Some of your profile details were blocked by moderation. Please adjust and try again.';
+            if (detailsMsg) {
+              detailsMsg.textContent = msg;
+              detailsMsg.style.color = '#ff6b6b';
+            }
+            if (window.showToast) {
+              window.showToast(msg, 'error');
+            }
+            return; // Do NOT write to Supabase if blocked
+          }
+        } catch (err) {
+          console.error('FamBot moderation failed (profile details):', err);
+          // If FamBot fails, fall through and allow the save instead of bricking the form.
+        }
+      }
+      // -------- End FamBot moderation --------
+
       if (detailsMsg) {
         detailsMsg.textContent = 'Saving…';
         detailsMsg.style.color = '#999';
@@ -637,7 +1323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           return;
         }
 
-        // Update local copy so UI stays in sync
+        // Update in-memory currentUser so the rest of the page stays in sync.
         currentUser = {
           ...currentUser,
           title: titleVal,
@@ -676,6 +1362,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ---- Referrals & Subscription section ----
   await populateReferralsAndSubscription(currentUser);
 
+  // ---- Featured Star & Affiliate inline sections ----
+  await populateFeaturedInline(currentUser);
+  await populateAffiliateInline(currentUser);
+
+  // ---- Security & 2FA inline status ----
+  await populateSecurityTwoFA(currentUser);
+
+  // ---- Public dashboard & privacy ----
+  await populatePublicDashboardInline(currentUser);
+
   // ---- Proxy buttons (pretty buttons -> hidden dropdown hooks from settings.js) ----
 
   // Website edit button → hidden "add-website-url" hook
@@ -686,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Featured / Premium → hidden "open-premium-settings"
+  // Featured/Premium → hidden "open-premium-settings"
   const premiumBtn = document.getElementById('settings-open-premium-visible');
   if (premiumBtn) {
     premiumBtn.addEventListener('click', () => {
