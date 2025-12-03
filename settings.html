@@ -594,11 +594,156 @@
           </div>
         </div>
 
-        <button type="button" id="settings-open-security-visible" class="btn"
-                style="padding:7px 14px;border-radius:8px;">
-          Open security &amp; 2FA settings
-        </button>
+       <button type="button" id="settings-open-security-visible" class="btn"
+        style="padding:7px 14px;border-radius:8px;">
+  Open security &amp; 2FA settings
+</button>
+
+        <!-- Change password -->
+        <hr style="margin:16px 0;border:0;border-top:1px solid #333;">
+
+        <div id="settings-change-password-section">
+          <h4 style="margin:0 0 6px 0;font-size:1rem;">Change password</h4>
+          <p style="color:#ccc;font-size:0.85rem;margin-bottom:8px;">
+            Confirm your current password and then choose a new one you'd like to use.
+          </p>
+
+          <!-- Two-column layout: left = current, right = new -->
+          <div style="display:flex;flex-wrap:wrap;gap:16px;max-width:720px;">
+            <!-- LEFT COLUMN: current password + confirm current -->
+            <div style="flex:1 1 260px;min-width:260px;display:flex;flex-direction:column;gap:8px;">
+              <!-- Current password -->
+              <label style="font-size:0.85rem;">
+                Current password
+                <div style="position:relative;margin-top:3px;">
+                  <input
+                    id="settings-current-password"
+                    placeholder="********"
+                    type="password"
+                    autocomplete="current-password"
+                    style="width:100%;margin-top:0;border-radius:6px;padding:6px 32px 6px 8px;box-sizing:border-box;"
+                  />
+                  <button
+                    type="button"
+                    class="password-eye-toggle"
+                    data-password-toggle-target="settings-current-password"
+                    style="position:absolute;right:6px;top:20%;transform:translateY(-50%);border:none;background:transparent;color:#ccc;cursor:pointer;font-size:0.85rem;padding:2px 4px;box-shadow: none;"
+                    aria-label="Show or hide current password"
+                  >
+                    👁
+                  </button>
+                </div>
+              </label>
+
+              <!-- Confirm current password -->
+              <label style="font-size:0.85rem;">
+                Confirm current password
+                <div style="position:relative;margin-top:3px;">
+                  <input
+                    id="settings-current-password-confirm"
+                    placeholder="********"
+                    type="password"
+                    autocomplete="current-password"
+                    style="width:100%;margin-top:0;border-radius:6px;padding:6px 32px 6px 8px;box-sizing:border-box;"
+                  />
+                  <button
+                    type="button"
+                    class="password-eye-toggle"
+                    data-password-toggle-target="settings-current-password-confirm"
+                    style="position:absolute;right:6px;top:20%;transform:translateY(-50%);border:none;background:transparent;color:#ccc;cursor:pointer;font-size:0.85rem;padding:2px 4px;box-shadow: none;"
+                    aria-label="Show or hide confirm current password"
+                  >
+                    👁
+                  </button>
+                </div>
+              </label>
+            </div>
+
+            <!-- RIGHT COLUMN: new password + confirm new + strength -->
+            <div style="flex:1 1 260px;min-width:260px;display:flex;flex-direction:column;gap:8px;">
+              <!-- New password -->
+              <label style="font-size:0.85rem;">
+                New password
+                <div style="position:relative;margin-top:3px;">
+                  <input
+                    id="settings-new-password"
+                    placeholder="********"
+                    type="password"
+                    autocomplete="new-password"
+                    style="width:100%;margin-top:0;border-radius:6px;padding:6px 32px 6px 8px;box-sizing:border-box;"
+                  />
+                  <button
+                    type="button"
+                    class="password-eye-toggle"
+                    data-password-toggle-target="settings-new-password"
+                    style="position:absolute;right:6px;top:20%;transform:translateY(-50%);border:none;background:transparent;color:#ccc;cursor:pointer;font-size:0.85rem;padding:2px 4px;box-shadow: none;"
+                    aria-label="Show or hide new password"
+                  >
+                    👁
+                  </button>
+                </div>
+
+                <!-- Strength bar -->
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+                  <div style="flex:1 1 auto;height:6px;border-radius:999px;background:#222;overflow:hidden;">
+                    <div
+                      id="settings-password-strength-bar"
+                      style="height:100%;width:0%;background:#ff6b6b;transition:width 0.25s ease;"
+                    ></div>
+                  </div>
+                  <span
+                    id="settings-password-strength-label"
+                    style="font-size:0.75rem;color:#999;min-width:72px;text-align:right;"
+                  >
+                    Too weak
+                  </span>
+                </div>
+              </label>
+
+              <!-- Confirm new password -->
+              <label style="font-size:0.85rem;">
+                Confirm new password
+                <div style="position:relative;margin-top:3px;">
+                  <input
+                    id="settings-confirm-password"
+                    placeholder="********"
+                    type="password"
+                    autocomplete="new-password"
+                    style="width:100%;margin-top:0;border-radius:6px;padding:6px 32px 6px 8px;box-sizing:border-box;"
+                  />
+                  <button
+                    type="button"
+                    class="password-eye-toggle"
+                    data-password-toggle-target="settings-confirm-password"
+                    style="position:absolute;right:6px;top:20%;transform:translateY(-50%);border:none;background:transparent;color:#ccc;cursor:pointer;font-size:0.85rem;padding:2px 4px;box-shadow: none;"
+                    aria-label="Show or hide confirm new password"
+                  >
+                    👁
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit + inline status message -->
+          <button
+            type="button"
+            id="settings-change-password-btn"
+            class="btn"
+            style="margin-top:10px;padding:7px 16px;border-radius:8px;"
+          >
+            Update password
+          </button>
+
+          <p
+            id="settings-change-password-message"
+            style="font-size:0.8rem;color:#999;margin-top:4px;min-height:1em;"
+          ></p>
+        </div>
       </fieldset>
+
+
+
 
       <!-- PUBLIC PROFILE & PRIVACY -->
       <fieldset id="privacy-settings" style="margin-bottom:18px;border-radius:10px;">
@@ -886,6 +1031,20 @@
     grid-template-columns: 1fr 2fr !important;
     gap: 2rem;
   }
+
+#settings-change-password-section > div:nth-child(3) > div:nth-child(2) > label:nth-child(1) {
+  padding-bottom: 0px;
+}
+
+#settings-change-password-section > div:nth-child(3) > div:nth-child(2) > label:nth-child(2) {
+  padding-top: 15px;
+}
+
+#settings-change-password-section > div:nth-child(3) {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 </style>
 </body>
 </html>
