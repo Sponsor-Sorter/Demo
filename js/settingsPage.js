@@ -49,6 +49,56 @@ function slotStatus(starts_at, ends_at) {
   return 'Active';
 }
 
+// ---------- Password helpers (change password UI) ----------
+
+function computePasswordStrength(password) {
+  if (!password) {
+    return { score: 0, percent: 0, label: 'Too weak' };
+  }
+
+  let score = 0;
+
+  if (password.length >= 8) score++;
+  if (password.length >= 12) score++;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+  if (/\d/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+
+  if (score > 5) score = 5;
+
+  let label = 'Too weak';
+  if (score === 0 || score === 1) label = 'Too weak';
+  else if (score === 2) label = 'Weak';
+  else if (score === 3) label = 'Okay';
+  else if (score === 4) label = 'Strong';
+  else if (score >= 5) label = 'Very strong';
+
+  return {
+    score,
+    percent: (score / 5) * 100,
+    label,
+  };
+}
+
+function wirePasswordVisibilityToggles() {
+  const toggles = document.querySelectorAll('[data-password-toggle-target]');
+  toggles.forEach((btn) => {
+    if (!(btn instanceof HTMLElement)) return;
+    const targetId = btn.getAttribute('data-password-toggle-target');
+    if (!targetId) return;
+    const input = document.getElementById(targetId);
+    if (!input) return;
+
+    btn.addEventListener('click', () => {
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      // Simple icon flip; initial content set in HTML as 👁
+      btn.textContent = isPassword ? '◡' : '👁';
+    });
+  });
+}
+
+
 // ---------- Platform helpers ----------
 
 /**
@@ -1146,11 +1196,15 @@ async function populatePublicDashboardInline(user) {
 
 // ---------- Main wiring ----------
 
-document.addEventListener('DOMContentLoaded', async () => {
+addEventListener('DOMContentLoaded', async () => {
   let currentUser = await getActiveUser();
   if (!currentUser) return;
 
+  // Wire up show/hide password toggles for any password fields
+  wirePasswordVisibilityToggles();
+
   // ---- Dashboard link: route based on user type ----
+
   const dashboardLink = document.getElementById('settings-dashboard-link');
   if (dashboardLink) {
     const userType = String(
@@ -1388,11 +1442,261 @@ document.addEventListener('DOMContentLoaded', async () => {
   await populateFeaturedInline(currentUser);
   await populateAffiliateInline(currentUser);
 
-  // ---- Security & 2FA inline status ----
+    // ---- Security & 2FA inline status ----
   await populateSecurityTwoFA(currentUser);
+
+    // ---- Change password section ----
+  (function setupChangePasswordSection() {
+    const currentPwInput = document.getElementById('settings-current-password');
+    const currentPwConfirmInput = document.getElementById(
+      'settings-current-password-confirm'
+    );
+    const newPwInput = document.getElementById('settings-new-password');
+    const confirmPwInput = document.getElementById('settings-confirm-password');
+    const strengthBar = document.getElementById('settings-password-strength-bar');
+    const strengthLabel = document.getElementById('settings-password-strength-label');
+    const btn = document.getElementById('settings-change-password-btn');
+    const msgEl = document.getElementById('settings-change-password-message');
+
+    if (!newPwInput || !confirmPwInput || !btn) return;
+
+    const updateStrengthUI = () => {
+      const { percent, label } = computePasswordStrength(newPwInput.value);
+      if (strengthBar) {
+        strengthBar.style.width = `${percent}%`;
+        let barColor = '#ff6b6b';
+        if (percent >= 80) barColor = '#4caf50';
+        else if (percent >= 60) barColor = '#8bc34a';
+        else if (percent >= 40) barColor = '#ffb74d';
+        else barColor = '#ff6b6b';
+        strengthBar.style.background = barColor;
+      }
+      if (strengthLabel) {
+        strengthLabel.textContent = label;
+      }
+    };
+
+    newPwInput.addEventListener('input', updateStrengthUI);
+    updateStrengthUI();
+
+    btn.addEventListener('click', async () => {
+      const currentVal = currentPwInput ? currentPwInput.value : '';
+      const currentConfirmVal = currentPwConfirmInput
+        ? currentPwConfirmInput.value
+        : '';
+      const newVal = newPwInput.value || '';
+      const confirmVal = confirmPwInput.value || '';
+
+      if (msgEl) {
+        msgEl.textContent = '';
+        msgEl.style.color = '#999';
+      }
+
+      // Basic required fields
+      if (!currentVal || !currentConfirmVal || !newVal || !confirmVal) {
+        if (msgEl) {
+          msgEl.textContent = 'Please fill in all password fields.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast('Please fill in all password fields.', 'error');
+        }
+        return;
+      }
+
+      // Current password must match its confirmation
+      if (currentVal !== currentConfirmVal) {
+        if (msgEl) {
+          msgEl.textContent =
+            'Current password and its confirmation do not match.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast(
+            'Current password and its confirmation do not match.',
+            'error'
+          );
+        }
+        return;
+      }
+
+      // New password must match its confirmation
+      if (newVal !== confirmVal) {
+        if (msgEl) {
+          msgEl.textContent = 'New password and confirmation do not match.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast(
+            'New password and confirmation do not match.',
+            'error'
+          );
+        }
+        return;
+      }
+
+      if (newVal.length < 8) {
+        if (msgEl) {
+          msgEl.textContent = 'New password should be at least 8 characters.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast(
+            'New password should be at least 8 characters.',
+            'error'
+          );
+        }
+        return;
+      }
+
+      if (currentVal === newVal) {
+        if (msgEl) {
+          msgEl.textContent =
+            'New password must be different from your current password.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast(
+            'New password must be different from your current password.',
+            'error'
+          );
+        }
+        return;
+      }
+
+      if (msgEl) {
+        msgEl.textContent = 'Verifying current password…';
+        msgEl.style.color = '#999';
+      }
+
+      try {
+        // 1) Get the current auth user so we know their email
+        const { data: authData, error: userErr } = await supabase.auth.getUser();
+        if (userErr || !authData?.user) {
+          console.error(
+            'Error loading auth user before password change:',
+            userErr
+          );
+          if (msgEl) {
+            msgEl.textContent =
+              'Could not load your account. Please reload the page and try again.';
+            msgEl.style.color = '#ff6b6b';
+          }
+          if (window.showToast) {
+            window.showToast(
+              'Could not load your account. Please reload the page and try again.',
+              'error'
+            );
+          }
+          return;
+        }
+
+        const email = authData.user.email;
+        if (!email) {
+          console.error('No email on auth user; cannot verify current password.');
+          if (msgEl) {
+            msgEl.textContent =
+              'Could not find your account email. Please log out and back in, then try again.';
+            msgEl.style.color = '#ff6b6b';
+          }
+          if (window.showToast) {
+            window.showToast(
+              'Could not find your account email. Please log out and back in, then try again.',
+              'error'
+            );
+          }
+          return;
+        }
+
+        // 2) Verify current password by re-signing in
+        if (msgEl) {
+          msgEl.textContent = 'Checking your current password…';
+          msgEl.style.color = '#999';
+        }
+
+        const {
+          data: signInData,
+          error: signInErr,
+        } = await supabase.auth.signInWithPassword({
+          email,
+          password: currentVal,
+        });
+
+        if (signInErr || !signInData?.session) {
+          console.error('Error verifying current password:', signInErr);
+          if (msgEl) {
+            msgEl.textContent = 'Current password is incorrect.';
+            msgEl.style.color = '#ff6b6b';
+          }
+          if (window.showToast) {
+            window.showToast('Current password is incorrect.', 'error');
+          }
+          return;
+        }
+
+        // 3) Now we know the current password is correct; update to the new one
+        if (msgEl) {
+          msgEl.textContent = 'Updating password…';
+          msgEl.style.color = '#999';
+        }
+
+        const { error: updateErr } = await supabase.auth.updateUser({
+          password: newVal,
+        });
+
+        if (updateErr) {
+          console.error('Error updating password:', updateErr);
+          if (msgEl) {
+            msgEl.textContent =
+              updateErr.message ||
+              'Could not update password. Please try again.';
+            msgEl.style.color = '#ff6b6b';
+          }
+          if (window.showToast) {
+            window.showToast(
+              updateErr.message ||
+                'Could not update password. Please try again.',
+              'error'
+            );
+          }
+          return;
+        }
+
+        // Clear inputs and refresh strength bar
+        if (currentPwInput) currentPwInput.value = '';
+        if (currentPwConfirmInput) currentPwConfirmInput.value = '';
+        newPwInput.value = '';
+        confirmPwInput.value = '';
+        updateStrengthUI();
+
+        if (msgEl) {
+          msgEl.textContent = 'Password updated successfully.';
+          msgEl.style.color = '#9fc2ff';
+        }
+        if (window.showToast) {
+          window.showToast('Password updated successfully.', 'success');
+        }
+      } catch (err) {
+        console.error('Unexpected error updating password:', err);
+        if (msgEl) {
+          msgEl.textContent =
+            'Unexpected error updating password. Please try again.';
+          msgEl.style.color = '#ff6b6b';
+        }
+        if (window.showToast) {
+          window.showToast(
+            'Unexpected error updating password. Please try again.',
+            'error'
+          );
+        }
+      }
+    });
+  })();
+
 
   // ---- Public dashboard & privacy ----
   await populatePublicDashboardInline(currentUser);
+
 
   // ---- Proxy buttons (pretty buttons -> hidden dropdown hooks from settings.js) ----
 
