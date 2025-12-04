@@ -51,15 +51,33 @@ function jumpToOfferId(offerId) {
 }
 
 /** Poll for target element to exist before jumping (for content rendered by other JS) */
-function waitAndJumpToOffer(offerId, { interval = 150, limit = 40 } = {}) {
+function waitAndJumpToOffer(offerId, opts = {}) {
+  const {
+    interval = 150,
+    limit = 10,
+    onFail
+  } = opts;
+
   let tries = 0;
   const timer = setInterval(() => {
     tries++;
-    if (jumpToOfferId(offerId) || tries >= limit) {
+
+    // If we successfully find and jump to the offer, stop polling
+    if (jumpToOfferId(offerId)) {
       clearInterval(timer);
+      return;
+    }
+
+    // If we've hit the limit and still didn't find it, stop and run fallback
+    if (tries >= limit) {
+      clearInterval(timer);
+      if (typeof onFail === 'function') {
+        onFail();
+      }
     }
   }, interval);
 }
+
 
 /** On dashboards, auto-consume ?offer=... deep links created by alert clicks */
 function consumeDeepLinkIfPresent() {
@@ -307,25 +325,42 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (n.type)            target.searchParams.set('type', n.type);
       target.searchParams.set('notif', String(n.id));
 
-      const onSponsor = location.pathname.toLowerCase().endsWith('dashboardsponsor.html');
+            const onSponsor = location.pathname.toLowerCase().endsWith('dashboardsponsor.html');
       const onSponsee = location.pathname.toLowerCase().endsWith('dashboardsponsee.html');
       const shouldBeSponsor = dashboard.toLowerCase().includes('dashboardsponsor.html');
       const isCorrectDashboard = (shouldBeSponsor && onSponsor) || (!shouldBeSponsor && onSponsee);
 
       dropdown.style.display = 'none';
 
+      // If we're on the wrong dashboard, just navigate there with deep-link params.
       if (!isCorrectDashboard) {
         window.location.href = target.toString();
         return;
       }
 
+      // Already on the correct dashboard:
+      // 1) Try an in-place jump.
+      // 2) If we fail to find the card after polling, reload the page
+      //    with the deep-link params so the dashboard scripts re-run
+      //    and `consumeDeepLinkIfPresent()` can try again.
+      if (!n.related_offer_id) {
+        return;
+      }
+
       setTimeout(() => {
-        if (n.related_offer_id) {
-          if (!jumpToOfferId(n.related_offer_id)) {
-            waitAndJumpToOffer(n.related_offer_id);
+        // Quick immediate attempt
+        if (jumpToOfferId(n.related_offer_id)) return;
+
+        // Poll for a bit; on failure, reload with deep link
+        waitAndJumpToOffer(n.related_offer_id, {
+          // Optionally tweak limit if you want a shorter/longer wait
+          // limit: 20,
+          onFail: () => {
+            window.location.href = target.toString();
           }
-        }
+        });
       }, 100);
+
     };
 
     dropdown.appendChild(notif);
