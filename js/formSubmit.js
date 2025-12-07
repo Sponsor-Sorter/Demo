@@ -14,8 +14,8 @@ const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functio
 
 // Stripe checkout Edge Function + keys
 const STRIPE_BACKEND = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout';
-const STRIPE_PK = 'pk_test_51RSqPq2eA1800fRNY8mN2SAy3gtGYMjaO6gzNWyl0FW87ltVe45yX6sm0EAX53Y1jyi081SXNI3pQMgCjOQrJ3co00uVPw3xC3';
-const STRIPE_SUBSCRIPTION_PRICE_ID = 'price_1RTjwk2eA1800fRNzvisgTuO';
+const STRIPE_PK = 'pk_live_51RSqPjGpIACU7TxK4XxMXjNPKpkEvhmfya1DgnxtZEcMeCe8wgzrhT9v6BxqbWXhl7s30nl23DRR9CclIQuvwAQX00zkJcVmOV';
+const STRIPE_SUBSCRIPTION_PRICE_ID = 'price_1SbWeEGpIACU7TxK1H3mXQfR';
 
 // Utility: loud error logging
 function logError(label, err) {
@@ -366,3 +366,4 @@ function showFamBotModal(result) {
   document.body.appendChild(modal);
   document.getElementById('fambot-close').onclick = () => modal.remove();
 }
+
