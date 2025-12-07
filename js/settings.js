@@ -2370,7 +2370,7 @@ async function aff_refreshMyApplications(){
 ========================= */
 
 // --- Config ---
-const FEATURED_STAR_PRICE_ID = 'price_1SRAl62eA1800fRN56wtcQbH';
+const FEATURED_STAR_PRICE_ID = 'price_1SbYhAGpIACU7TxKe1vZ9ZSP';
 
 // Optional: label/amount to show in the modal
 const FEATURED_STAR_DISPLAY = {
@@ -2969,4 +2969,5 @@ if (openSecurityBtn) {
 
 
 });
+
 
