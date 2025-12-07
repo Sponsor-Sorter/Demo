@@ -461,8 +461,7 @@ async function revokePlatforms(platform, tokenHints = {}) {
   });
 
   // --- Subscription & Free Month Rewards Modal Logic ---
-    // Stripe Price ID for the Pro monthly subscription (replace with your real ID)
-  const PRO_MONTHLY_PRICE_ID = 'price_1RTjwk2eA1800fRNzvisgTuO';
+  const PRO_MONTHLY_PRICE_ID = 'price_1SbWeEGpIACU7TxK1H3mXQfR';
 
     // Shared Pro upgrade helper so other parts of the app (e.g. Creator Groups)
   // can start the same Stripe checkout flow.
@@ -2970,3 +2969,4 @@ if (openSecurityBtn) {
 
 
 });
+
