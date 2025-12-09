@@ -1,11 +1,9 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+// Re-use the shared Supabase client so we’re consistent with the rest of the app
+import { supabase } from './supabaseClient.js';
 import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
+// Keep this so we can still call the edge function by URL
 const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
-const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xaXh0cm5ob3RxcXliYWdoZ255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzM1OTcsImV4cCI6MjA2MTA0OTU5N30.mlRfsBXfHkRv8SVQHHPUSDiI74ROs55xdq-yRS-XYnY';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // =======================
 // Sponsor logo carousels
@@ -1174,3 +1172,4 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
