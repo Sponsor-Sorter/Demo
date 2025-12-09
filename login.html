@@ -7,13 +7,8 @@
   <meta name="description" content="Login to your Sponsor Sorter... your profile, linked accounts, and sponsorship opportunities.">
   <title>Login - Sponsor Sorter</title>
 
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
-
-  <!-- Google AdSense: global loader (only include once per page) -->
-  <script async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2952658528120109"
-          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
   <!-- Use relative path so it works locally and on GitHub Pages -->
   <script type="module" src="./js/login.js"></script>
@@ -29,14 +24,14 @@
           <header>Sponsor Sorter</header>
         </h5>
         <div>
-          <background-img class="navimg" src="./navimg.png" alt=""></background-img>
+          <background-img class="navimg" src="navimg.png" alt=""></background-img>
           <nav>
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./finder.html">Finder</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Finder</a></li>
           </nav>
           <nav>
-            <li class="navr"><a href="./signup.html">Signup</a></li>
-            <li><a href="./login.html">Login</a></li>
+            <li class="navr"><a href="signup.html">Signup</a></li>
+            <li><a href="login.html">Login</a></li>
           </nav>
         </div>
       </div>
@@ -54,7 +49,7 @@
       <!-- Login Form -->
       <div class="loginbox">
         <div class="logo">
-          <img src="./Logo1.jpg" alt="Sponsor Sorter Logo" height="100" width="300" />
+          <img src="Logo1.jpg" alt="Sponsor Sorter Logo" height="100" width="300" />
         </div>
         <h2>Login to Your Account</h2>
 
@@ -238,7 +233,7 @@
         <!-- Inline signup + reset password links -->
         <p class="login-extra-line">
           Don't have an account?
-          <a href="./signup.html">Sign up here</a>
+          <a href="signup.html">Sign up here</a>
 
           <button
             type="button"
@@ -257,40 +252,14 @@
     </div>
   </section>
 
-  <!-- Ad slots under login -->
+  <!-- Optional ad slots under login -->
   <section class="loginAds">
-    <!-- Bottom-left ad slot -->
-    <fieldset class="ad-slot" data-slot-id="login_bottom_left">
-      <legend>Advertisement</legend>
-      <div class="ad-container" id="ad-login-bottom-left">
-        <!-- login_bottom_left -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2952658528120109"
-             data-ad-slot="4338950236"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+    <fieldset>
+      <div>Advertisement slot1</div>
     </fieldset>
 
-    <!-- Bottom-right ad slot -->
-    <fieldset class="ad-slot" data-slot-id="login_bottom_right">
-      <legend>Advertisement</legend>
-      <div class="ad-container" id="ad-login-bottom-right">
-        <!-- login_bottom_right -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2952658528120109"
-             data-ad-slot="1712786892"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
+    <fieldset>
+      <div>Advertisement slot2</div>
     </fieldset>
   </section>
 
@@ -308,16 +277,6 @@
       border: 1px solid white;
       min-height: 150px;
       padding: 8px;
-    }
-
-    .ad-container {
-      width: 100%;
-      height: 100%;
-      min-height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
     }
   </style>
 
