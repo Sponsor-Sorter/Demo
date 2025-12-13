@@ -8,6 +8,31 @@
   <link rel="stylesheet" href="./styles.css" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <script src="https://js.stripe.com/v3/"></script>
+
+  <style>
+    /* Simple processing spinner for submit button */
+    #submitOfferBtn.is-processing {
+      opacity: 0.78;
+      cursor: not-allowed;
+    }
+    #submitOfferBtn .btn-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: rgba(255,255,255,1);
+      border-radius: 50%;
+      margin-left: 10px;
+      vertical-align: middle;
+      animation: ssSpin 0.85s linear infinite;
+    }
+    #submitOfferBtn.is-processing .btn-spinner {
+      display: inline-block;
+    }
+    @keyframes ssSpin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
 
@@ -30,16 +55,17 @@
   </section>
 </header>
 
-<div class="wallet">Wallet: $[Wallet] 
-      <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
-    </div>
+<div class="wallet">
+  Wallet: $[Wallet]
+  <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
+</div>
 
 <section class="userprofile">
   <fieldset>
     <legend>Your Sponsor Profile</legend>
     <div class="profile-header">
       <div class="profile-picture">
-        <img id="sponsor-profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
+        <img id="sponsor-profile-pic" onerror="this.src='./logos.png';" alt="Profile Picture" class="profile-img">
         <p>Account Type: <span id="account-type">Sponsor</span></p>
         <div id="sponsor-overall-rating" style="margin-top: 10px;">
           <strong>Overall Rating:</strong> <span id="sponsor-average-stars">☆☆☆☆☆</span>
@@ -91,7 +117,7 @@
         <div class="form-group">
           <label for="deadline">Deadline:</label>
           <input type="date" id="deadline" name="deadline" required>
-          <span class="info-icon" data-tooltip="Date by which job must be completed by.">🛈</span>
+          <span class="info-icon" data-tooltip="Date by which job must be completed by. Must be more than 2 weeks from today.">🛈</span>
         </div>
 
         <label for="offerDescription">Offer Description:</label><br>
@@ -259,7 +285,10 @@
         <label for="optionalFile">Optional File Upload (e.g., sample video, ad clip):</label>
         <input type="file" id="optionalFile" name="optionalFile"><br><br>
 
-        <button type="submit">Submit Public Offer</button>
+        <button type="submit" id="submitOfferBtn">
+          <span class="btn-text">Submit Public Offer</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
       </fieldset>
 
     </fieldset>
@@ -284,15 +313,28 @@
 import { supabase } from './js/supabaseClient.js';
 import { famBotModerateWithModal } from './js/FamBot.js';
 
-
 const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
-
-// NOTE: Replace with LIVE key when live
 const STRIPE_PK = 'pk_live_51RSqPjGpIACU7TxK4XxMXjNPKpkEvhmfya1DgnxtZEcMeCe8wgzrhT9v6BxqbWXhl7s30nl23DRR9CclIQuvwAQX00zkJcVmOV';
 
 // HARDCODED PAYMENT MODEL (as requested)
 const HARD_PAYMENT_SCHEDULE = 'full on completion';
 const HARD_CYCLES = 1;
+
+// Deadline rule: must be MORE than 2 weeks from today
+const MIN_DEADLINE_DAYS = 15;
+
+function toISODateLocal(dateObj) {
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const d = String(dateObj.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+function getMinDeadlineISO() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + MIN_DEADLINE_DAYS);
+  return toISODateLocal(d);
+}
 
 const PRESETS = {
   shoutout: {
@@ -315,7 +357,7 @@ const PRESETS = {
     sponsorshipDuration: "One Off",
     offerPlatforms: ["youtube"],
   },
-   story_mention: {
+  story_mention: {
     offerTitle: "Instagram Story Mention",
     offerDescription: "I'll mention your brand in a story for 24 hours with a swipe-up link.",
     price: 50,
@@ -340,23 +382,12 @@ const PRESETS = {
 let imageFiles = [];
 let currentPreviewIndex = 0;
 
-// Deadline rule: must be MORE than 2 weeks from today
-const MIN_DEADLINE_DAYS = 15;
-
-function toISODateLocal(dateObj) {
-  const y = dateObj.getFullYear();
-  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-  const d = String(dateObj.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+function setProcessing(isProcessing) {
+  const btn = document.getElementById('submitOfferBtn');
+  if (!btn) return;
+  btn.disabled = !!isProcessing;
+  btn.classList.toggle('is-processing', !!isProcessing);
 }
-
-function getMinDeadlineISO() {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() + MIN_DEADLINE_DAYS);
-  return toISODateLocal(d);
-}
-
 
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { user } } = await supabase.auth.getUser();
@@ -388,27 +419,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
- // Enforce deadline cutoff in the date picker UI
-const deadlineEl = document.getElementById('deadline');
-if (deadlineEl) {
-  const minISO = getMinDeadlineISO();
-  deadlineEl.min = minISO;
+  // Enforce deadline cutoff in the date picker UI
+  const deadlineEl = document.getElementById('deadline');
+  if (deadlineEl) {
+    const minISO = getMinDeadlineISO();
+    deadlineEl.min = minISO;
 
-  deadlineEl.addEventListener('change', () => {
-    if (deadlineEl.value && deadlineEl.value < minISO) {
-      alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
-      deadlineEl.value = '';
-    }
-  });
-}
-
-
- const minISO = getMinDeadlineISO();
-if (!deadline || deadline < minISO) {
-  alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
-  return;
-}
-
+    deadlineEl.addEventListener('change', () => {
+      if (deadlineEl.value && deadlineEl.value < minISO) {
+        alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
+        deadlineEl.value = '';
+      }
+    });
+  }
 
   document.getElementById('sponsor-email').innerText = sponsorData.email || '';
   document.getElementById('company').innerText = sponsorData.company_name || '';
@@ -418,7 +441,7 @@ if (!deadline || deadline < minISO) {
   if (sponsorPicElement) {
     sponsorPicElement.src = sponsorData.profile_pic
       ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponsorData.profile_pic}`
-      : 'logos.png';
+      : './logos.png';
   }
 
   await loadSponsorOverallStars(sponsorData.username);
@@ -539,161 +562,231 @@ if (!deadline || deadline < minISO) {
     else if (currentPreviewIndex > index) currentPreviewIndex--;
   }
 
-  // === FORM SUBMIT + STRIPE PAYMENT ===
+  // === FORM SUBMIT + WALLET OR STRIPE ===
   const offerForm = document.getElementById('offerForm');
   offerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const title = document.getElementById('offerTitle').value.trim();
-    const description = document.getElementById('offerDescription').value.trim();
-    const amount = parseFloat(document.getElementById('price').value);
-    const jobType = document.getElementById('jobType').value;
-    const deliverableType = document.getElementById('deliverableType').value;
-    const instructions = document.getElementById('instructions').value;
-    const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
-    const deadline = document.getElementById('deadline').value;
-    const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || 1;
-    const minFollowers = parseInt(document.getElementById('minFollowers').value) || null;
-    const audienceCountry = document.getElementById('audienceCountry').value.trim() || null;
+    let keepProcessing = false;
+    setProcessing(true);
 
-    const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked'))
-      .map(cb => cb.value.toLowerCase());
-
-    if (!platforms.length) {
-      alert('Please select at least one platform for this offer.');
-      return;
-    }
-
-    // ==== FamBot Moderation ====
-    const { data: { session } } = await supabase.auth.getSession();
-    const user_id = session?.user?.id;
-    const jwt = session?.access_token;
-
-    const fieldsToModerate = [
-      { content: title, type: 'offer' },
-      { content: description, type: 'offer' },
-      { content: instructions, type: 'offer' }
-    ];
-
-    for (const field of fieldsToModerate) {
-      if (field.content && field.content.length > 0) {
-        const result = await famBotModerateWithModal({
-          user_id,
-          content: field.content,
-          jwt,
-          type: field.type
-        });
-        if (!result.allowed) return;
-      }
-    }
-    // ==== End FamBot Moderation ====
-
-    // 1. Upload images
-    const uploadedImageNames = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const { file } = imageFiles[i];
-      const uniqueName = `${crypto.randomUUID()}_${file.name}`;
-      const { error: uploadError } = await supabase
-        .storage
-        .from('offers')
-        .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
-
-      if (uploadError) {
-        alert(`Failed to upload ${file.name}`);
-        return;
-      }
-      uploadedImageNames.push(uniqueName);
-    }
-
-    // 2. Upload optional file (if any)
-    const optionalFileInput = document.getElementById('optionalFile');
-    const optionalFile = optionalFileInput.files[0];
-    let optionalFileName = null;
-
-    if (optionalFile) {
-      const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
-      const { error: optionalUploadError } = await supabase
-        .storage
-        .from('offers')
-        .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
-
-      if (optionalUploadError) {
-        alert('Optional file upload failed.');
-        return;
-      }
-      optionalFileName = uniqueOptFileName;
-    }
-
-    // 3. Prepare offer data for after payment
-    const offerData = {
-      sponsor_id: sponsorData.user_id || sponsorData.id,
-      sponsor_email: sponsorData.email,
-      sponsor_username: sponsorData.username,
-      sponsor_company: sponsorData.company_name,
-      offer_title: title,
-      offer_description: description,
-      offer_amount: amount,
-      payment_schedule: HARD_PAYMENT_SCHEDULE,
-      job_type: jobType,
-      deliverable_type: deliverableType,
-      instructions: instructions,
-      sponsorship_duration: sponsorshipDuration,
-      deadline: deadline,
-      offer_images: uploadedImageNames,
-      optional_file: optionalFileName,
-      platforms: platforms,
-      status: 'open',
-      max_applicants: maxApplicants,
-      min_followers: minFollowers,
-      audience_country: audienceCountry,
-      cycles: HARD_CYCLES
-    };
-
-    localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
-
-    // 4. Calculate total + fee (cycles always 1)
-    const total = amount * maxApplicants * HARD_CYCLES;
-    const fee = (total * 0.05) + (5 * maxApplicants * HARD_CYCLES);
-    const totalWithFee = total + fee;
-
-    // 5. Start Stripe Checkout
     try {
+      const title = document.getElementById('offerTitle').value.trim();
+      const description = document.getElementById('offerDescription').value.trim();
+      const amount = parseFloat(document.getElementById('price').value);
+      const jobType = document.getElementById('jobType').value;
+      const deliverableType = document.getElementById('deliverableType').value;
+      const instructions = document.getElementById('instructions').value;
+      const sponsorshipDuration = document.getElementById('sponsorshipDuration').value;
+      const deadline = document.getElementById('deadline').value;
+      const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || 1;
+      const minFollowers = parseInt(document.getElementById('minFollowers').value) || null;
+      const audienceCountry = document.getElementById('audienceCountry').value.trim() || null;
+
+      // Deadline enforcement (must be >= today+15 days)
+      const minISO = getMinDeadlineISO();
+      if (!deadline || deadline < minISO) {
+        alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
+        return;
+      }
+
+      const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked'))
+        .map(cb => cb.value.toLowerCase());
+
+      if (!platforms.length) {
+        alert('Please select at least one platform for this offer.');
+        return;
+      }
+
+      // ==== FamBot Moderation ====
       const { data: { session } } = await supabase.auth.getSession();
+      const user_id = session?.user?.id;
       const jwt = session?.access_token;
 
-      const frontendBaseUrl = window.location.origin.includes('github.io')
-        ? 'https://sponsor-sorter.github.io/Demo'
-        : window.location.origin;
+      const fieldsToModerate = [
+        { content: title, type: 'offer' },
+        { content: description, type: 'offer' },
+        { content: instructions, type: 'offer' }
+      ];
 
-      const sessionRes = await fetch(STRIPE_BACKEND, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
-        },
-        body: JSON.stringify({
-          amount: totalWithFee,
-          offerId: title + '-' + Date.now(),
-          offerType: 'public',
-          frontendBaseUrl
-        })
-      });
+      for (const field of fieldsToModerate) {
+        if (field.content && field.content.length > 0) {
+          const result = await famBotModerateWithModal({
+            user_id,
+            content: field.content,
+            jwt,
+            type: field.type
+          });
+          if (!result.allowed) return;
+        }
+      }
+      // ==== End FamBot Moderation ====
 
-      const sessionData = await sessionRes.json();
-      if (!sessionData.sessionId) {
-        alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
+      // 1) Upload images
+      const uploadedImageNames = [];
+      for (let i = 0; i < imageFiles.length; i++) {
+        const { file } = imageFiles[i];
+        const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+        const { error: uploadError } = await supabase
+          .storage
+          .from('offers')
+          .upload(uniqueName, file, { cacheControl: '3600', upsert: false });
+
+        if (uploadError) {
+          alert(`Failed to upload ${file.name}`);
+          return;
+        }
+        uploadedImageNames.push(uniqueName);
+      }
+
+      // 2) Upload optional file
+      const optionalFileInput = document.getElementById('optionalFile');
+      const optionalFile = optionalFileInput.files[0];
+      let optionalFileName = null;
+
+      if (optionalFile) {
+        const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
+        const { error: optionalUploadError } = await supabase
+          .storage
+          .from('offers')
+          .upload(uniqueOptFileName, optionalFile, { cacheControl: '3600', upsert: false });
+
+        if (optionalUploadError) {
+          alert('Optional file upload failed.');
+          return;
+        }
+        optionalFileName = uniqueOptFileName;
+      }
+
+      // 3) Prepare offer data
+      const offerData = {
+        sponsor_id: sponsorData.user_id || sponsorData.id,
+        sponsor_email: sponsorData.email,
+        sponsor_username: sponsorData.username,
+        sponsor_company: sponsorData.company_name,
+        offer_title: title,
+        offer_description: description,
+        offer_amount: amount,
+        payment_schedule: HARD_PAYMENT_SCHEDULE,
+        job_type: jobType,
+        deliverable_type: deliverableType,
+        instructions: instructions,
+        sponsorship_duration: sponsorshipDuration,
+        deadline: deadline,
+        offer_images: uploadedImageNames,
+        optional_file: optionalFileName,
+        platforms: platforms,
+        status: 'open',
+        max_applicants: maxApplicants,
+        min_followers: minFollowers,
+        audience_country: audienceCountry,
+        cycles: HARD_CYCLES
+      };
+
+      // 4) Calculate total + fee
+      const total = amount * maxApplicants * HARD_CYCLES;
+      const fee = (total * 0.05) + (5 * maxApplicants * HARD_CYCLES);
+      const totalWithFee = Number((total + fee).toFixed(2));
+
+      // ===== WALLET FIRST (same pattern as newoffer.html) =====
+      const { data: sponsorWalletRow, error: walletCheckErr } = await supabase
+        .from('users_extended_data')
+        .select('wallet')
+        .eq('id', sponsorData.id)   // IMPORTANT: match newoffer.html pattern
+        .single();
+
+      if (walletCheckErr) {
+        alert('Error checking wallet balance.');
         return;
       }
 
-      const stripe = Stripe(STRIPE_PK);
-      const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
-      if (error) {
-        alert('Stripe redirect failed: ' + error.message);
+      const walletBalance = parseFloat(sponsorWalletRow?.wallet || 0);
+
+      if (walletBalance >= totalWithFee) {
+        // Deduct total (offer payouts + platform fee) from wallet
+        const { data: walletResult, error: deductError } = await supabase.rpc('use_wallet_funds', {
+          user_id: sponsorData.id,
+          amount: totalWithFee
+        });
+
+        if (deductError) {
+          alert('Failed to deduct from wallet: ' + deductError.message);
+          return;
+        }
+        if (!walletResult) {
+          alert('Wallet balance changed, not enough funds!');
+          return;
+        }
+
+        // Insert the public offer as paid
+        const { error: insertErr } = await supabase
+          .from('public_offers')
+          .insert([ offerData ]);
+
+        if (insertErr) {
+          alert('Public offer creation failed: ' + insertErr.message);
+          return;
+        }
+
+        // Refresh wallet display (optional)
+        if (window.updateWallet) {
+          try { await window.updateWallet(); } catch (_) {}
+        }
+
+        alert('Public offer submitted and paid with wallet! Redirecting to dashboard...');
+        keepProcessing = true;
+        window.location.href = './dashboardsponsor.html';
         return;
       }
-    } catch (err) {
-      alert('Failed to initiate payment: ' + err.message);
-      return;
+
+      // ===== STRIPE FALLBACK =====
+      // Store the offer data for your existing payment-success-public flow
+      localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const jwt = session?.access_token;
+
+        const frontendBaseUrl = window.location.origin.includes('github.io')
+          ? 'https://sponsor-sorter.github.io/Demo'
+          : window.location.origin;
+
+        const sessionRes = await fetch(STRIPE_BACKEND, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
+          },
+          body: JSON.stringify({
+            amount: totalWithFee,
+            offerId: title + '-' + Date.now(),
+            offerType: 'public',
+            frontendBaseUrl
+          })
+        });
+
+        const sessionData = await sessionRes.json();
+        if (!sessionData.sessionId) {
+          alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
+          return;
+        }
+
+        const stripe = Stripe(STRIPE_PK);
+        const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+        if (error) {
+          alert('Stripe redirect failed: ' + error.message);
+          return;
+        }
+
+        // If redirect succeeds, page navigates away
+        keepProcessing = true;
+      } catch (err) {
+        alert('Failed to initiate payment: ' + err.message);
+        return;
+      }
+
+    } finally {
+      if (!keepProcessing) setProcessing(false);
     }
   });
 
@@ -773,8 +866,8 @@ function calcCost() {
     '$' + totalWithFee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 </script>
-  <script type="module" src="./js/wallet.js"></script>
 
+<script type="module" src="./js/wallet.js"></script>
 
 </body>
 </html>
