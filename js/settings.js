@@ -461,7 +461,8 @@ async function revokePlatforms(platform, tokenHints = {}) {
   });
 
   // --- Subscription & Free Month Rewards Modal Logic ---
-  const PRO_MONTHLY_PRICE_ID = 'price_1SbWeEGpIACU7TxK1H3mXQfR';
+    // Stripe Price ID for the Pro monthly subscription (replace with your real ID)
+  const PRO_MONTHLY_PRICE_ID = 'price_1RTjwk2eA1800fRNzvisgTuO';
 
     // Shared Pro upgrade helper so other parts of the app (e.g. Creator Groups)
   // can start the same Stripe checkout flow.
@@ -1199,11 +1200,20 @@ async function getCurrentUser() {
     if (boolFlag) return true;
 
     // Fallbacks by provider (when you haven't added *_connected yet)
-    if (key === 'twitch')   return !!(user.twitch_access_token);
-    if (key === 'youtube')  return !!(user.youtube_refresh_token || user.youtube_access_token);
-    if (key === 'instagram')return !!(user.instagram_user_id || user.instagram_access_token);
-    if (key === 'facebook') return !!(user.facebook_page_id || user.facebook_access_token);
-    if (key === 'tiktok')   return !!(user.tiktok_access_token); // NEW: TikTok
+    const hasToken = (v) => {
+      if (v == null) return false;
+      if (typeof v === 'string') {
+        const s = v.trim().toLowerCase();
+        return s !== '' && s !== 'null' && s !== 'undefined';
+      }
+      return true;
+    };
+
+    if (key === 'twitch')   return hasToken(user.twitch_access_token);
+    if (key === 'youtube')  return hasToken(user.youtube_refresh_token) || hasToken(user.youtube_access_token);
+    if (key === 'instagram')return hasToken(user.instagram_user_id) || hasToken(user.instagram_access_token);
+    if (key === 'facebook') return hasToken(user.facebook_page_id) || hasToken(user.facebook_access_token);
+    if (key === 'tiktok')   return hasToken(user.tiktok_access_token); // NEW: TikTok
     return false;
   }
     // === Free plan: limit OAuth-linked platforms to 1 ===
@@ -1282,6 +1292,8 @@ async function getCurrentUser() {
       `;
     }).join('');
     oauthAccountsList.innerHTML = html;
+
+    try { window.__refreshAffiliateApplyVisibility?.(); } catch {}
 
   // Connect/disconnect logic
     document.querySelectorAll('.oauth-connect-btn').forEach(btn => {
@@ -1965,6 +1977,51 @@ let AFF_SNAPSHOT_AT = null;    // ISO timestamp when captured
     ul.appendChild(li);
   }
 
+  // Hide by default; we only show this if the user has at least one OAuth connection.
+  const li = btn.closest('li');
+  if (li) li.style.display = 'none';
+  btn.style.display = 'none';
+
+  async function updateAffiliateApplyVisibility() {
+    try {
+      const user = await getActiveUser(true);
+
+      const hasToken = (v) => {
+        if (v == null) return false;
+        if (typeof v === 'string') {
+          const s = v.trim().toLowerCase();
+          return s !== '' && s !== 'null' && s !== 'undefined';
+        }
+        return true;
+      };
+
+      const anyOauth =
+        user?.youtube_connected === true   || hasToken(user?.youtube_access_token)   || hasToken(user?.youtube_refresh_token) ||
+        user?.tiktok_connected === true    || hasToken(user?.tiktok_access_token)    || hasToken(user?.tiktok_refresh_token)  ||
+        user?.instagram_connected === true || hasToken(user?.instagram_access_token) || hasToken(user?.instagram_refresh_token) || hasToken(user?.instagram_user_id) ||
+        user?.facebook_connected === true  || hasToken(user?.facebook_access_token)  || hasToken(user?.facebook_refresh_token)  || hasToken(user?.facebook_page_id) ||
+        user?.twitch_connected === true    || hasToken(user?.twitch_access_token);
+
+      if (anyOauth) {
+        if (li) li.style.display = '';
+        btn.style.display = '';
+      } else {
+        if (li) li.style.display = 'none';
+        btn.style.display = 'none';
+      }
+    } catch {
+      if (li) li.style.display = 'none';
+      btn.style.display = 'none';
+    }
+  }
+
+  // Expose so other parts of settings.js can refresh visibility after linking/unlinking.
+  window.__refreshAffiliateApplyVisibility = updateAffiliateApplyVisibility;
+
+  // Run once on load.
+  updateAffiliateApplyVisibility();
+
+
   if (!btn.dataset.bound) {
     btn.dataset.bound = '1';
     btn.addEventListener('click', async (e) => {
@@ -2141,14 +2198,47 @@ async function aff_refreshDetectedStats(){
     return r.json();
   }
 
-  const work = [
-    ['YouTube','get-youtube-stats'],
-    ['TikTok','get-tiktok-stats'],
-    ['Twitch','get-twitch-stats'],
-    ['Instagram','get-instagram-stats'],
-    ['Facebook','get-facebook-page-insights'],
-  ].map(([label, fn]) => callFn(fn).then(d => ({label, ok:true, data:d})).catch(err => ({label, ok:false, err:String(err?.message||err)})));
+  // Only call stats functions for platforms that are actually linked.
+  const u = await getActiveUser(true);
+  const hasToken = (v) => {
+    if (v == null) return false;
+    if (typeof v === 'string') {
+      const s = v.trim().toLowerCase();
+      return s !== '' && s !== 'null' && s !== 'undefined';
+    }
+    return true;
+  };
+  const isLinked = (key) => {
+    if (!u) return false;
+    if (u[`${key}_connected`] === true) return true;
+    if (key === 'youtube')   return hasToken(u.youtube_access_token)   || hasToken(u.youtube_refresh_token);
+    if (key === 'tiktok')    return hasToken(u.tiktok_access_token)    || hasToken(u.tiktok_refresh_token);
+    if (key === 'instagram') return hasToken(u.instagram_access_token) || hasToken(u.instagram_refresh_token) || hasToken(u.instagram_user_id);
+    if (key === 'facebook')  return hasToken(u.facebook_access_token)  || hasToken(u.facebook_refresh_token)  || hasToken(u.facebook_page_id);
+    if (key === 'twitch')    return hasToken(u.twitch_access_token);
+    return false;
+  };
 
+  const fnList = [
+    ['YouTube','get-youtube-stats','youtube'],
+    ['TikTok','get-tiktok-stats','tiktok'],
+    ['Twitch','get-twitch-stats','twitch'],
+    ['Instagram','get-instagram-stats','instagram'],
+    ['Facebook','get-facebook-page-insights','facebook'],
+  ].filter(([, , key]) => isLinked(key));
+
+  if (!fnList.length) {
+    box.innerHTML = '<div style="color:#bbb;">No connected accounts detected. Link at least one platform in <b>Connected Platforms</b>.</div>';
+    AFF_SNAPSHOT = null;
+    AFF_SNAPSHOT_AT = null;
+    return;
+  }
+
+  const work = fnList
+    .map(([label, fn]) => callFn(fn)
+      .then(d => ({label, ok:true, data:d}))
+      .catch(err => ({label, ok:false, err:String(err?.message||err)}))
+    );
   const results = await Promise.allSettled(work);
 
   // De-dupe by normalized URL; start with what's in the textarea already
@@ -2370,7 +2460,7 @@ async function aff_refreshMyApplications(){
 ========================= */
 
 // --- Config ---
-const FEATURED_STAR_PRICE_ID = 'price_1SbYhAGpIACU7TxKe1vZ9ZSP';
+const FEATURED_STAR_PRICE_ID = 'price_1SRAl62eA1800fRN56wtcQbH';
 
 // Optional: label/amount to show in the modal
 const FEATURED_STAR_DISPLAY = {
@@ -2969,5 +3059,3 @@ if (openSecurityBtn) {
 
 
 });
-
-
