@@ -30,6 +30,10 @@
   </section>
 </header>
 
+<div class="wallet">Wallet: $[Wallet] 
+      <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
+    </div>
+
 <section class="userprofile">
   <fieldset>
     <legend>Your Sponsor Profile</legend>
@@ -280,6 +284,7 @@
 import { supabase } from './js/supabaseClient.js';
 import { famBotModerateWithModal } from './js/FamBot.js';
 
+
 const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
 
 // NOTE: Replace with LIVE key when live
@@ -335,6 +340,24 @@ const PRESETS = {
 let imageFiles = [];
 let currentPreviewIndex = 0;
 
+// Deadline rule: must be MORE than 2 weeks from today
+const MIN_DEADLINE_DAYS = 15;
+
+function toISODateLocal(dateObj) {
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const d = String(dateObj.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function getMinDeadlineISO() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + MIN_DEADLINE_DAYS);
+  return toISODateLocal(d);
+}
+
+
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
@@ -364,6 +387,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert('Sponsor data not found.');
     return;
   }
+
+ // Enforce deadline cutoff in the date picker UI
+const deadlineEl = document.getElementById('deadline');
+if (deadlineEl) {
+  const minISO = getMinDeadlineISO();
+  deadlineEl.min = minISO;
+
+  deadlineEl.addEventListener('change', () => {
+    if (deadlineEl.value && deadlineEl.value < minISO) {
+      alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
+      deadlineEl.value = '';
+    }
+  });
+}
+
+
+ const minISO = getMinDeadlineISO();
+if (!deadline || deadline < minISO) {
+  alert(`Deadline must be more than 2 weeks from today. Earliest allowed date: ${minISO}`);
+  return;
+}
+
 
   document.getElementById('sponsor-email').innerText = sponsorData.email || '';
   document.getElementById('company').innerText = sponsorData.company_name || '';
@@ -728,6 +773,8 @@ function calcCost() {
     '$' + totalWithFee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 </script>
+  <script type="module" src="./js/wallet.js"></script>
+
 
 </body>
 </html>
