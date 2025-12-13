@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Find and view active users, discover sponsorship opportunities, and connect with influencers and creators.">
-  <title>Sponsor Sorter - Finder</title>
-
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <title>SponsorFinder - Sponsor Sorter</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 
   <!-- Google Fonts: Cinzel 900 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
 
+  <!-- Auth + onboarding -->
   <script type="module" src="./js/onboarding.js"></script>
 
   <style>
@@ -42,7 +42,7 @@
     .group-card h4 { margin:0 0 6px 0; font-size:1.18em; }
     .group-meta { display:flex; gap:16px; flex-wrap:wrap; font-size:.95em; opacity:.9; }
 
-    /* Centered two-up grid for members */
+    /* Centered two-up grid for group members */
     .member-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(280px, 1fr));
@@ -64,11 +64,9 @@
       width: 80%;
       max-width: 420px;
     }
-
     @media (max-width: 720px) {
       .member-list { grid-template-columns: 1fr; }
     }
-
     .member-chip img.profile {
       width:69px;height:69px;object-fit:cover;border-radius:50%;border:1px solid #222;background:#111;
     }
@@ -94,6 +92,37 @@
       padding:8px 14px; border:none; border-radius:8px; cursor:pointer;
       background:#4061b3; color:#fff; font-weight:600;
     }
+
+    /* NEW: Plan badges + follower pill on profile cards */
+    .user-header-row {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+    }
+    .plan-badge-img {
+      height:35px !important;
+      width:auto !important ;
+    }
+    .user-badge-row {
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .followers-pill {
+      font-size:0.82em;
+      background:#1f2635;
+      border-radius:999px;
+      padding:2px 8px;
+      color:#dbe3ff;
+      border:1px solid #303f6b;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
@@ -107,22 +136,22 @@
       </h5>
     </div>
 
-    <background-img class="navimg" src="./navimg.png" alt=""></background-img>
+    <background-img class="navimg" src="navimg.png" alt="">
     <nav>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./finder.html">Finder</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="finder.html">Finder</a></li>
     </nav>
     <nav>
-      <li class="navr" id="dashboard-link"><a href="./signup.html">Signup</a></li>
-      <li><a href="./login.html">Login</a></li>
+      <li class="navr" id="dashboard-link"><a href="signup.html">Signup</a></li>
+      <li><a href="login.html">Login</a></li>
       <li id="settings-notif-bar" style="display:inline;">
         <div class="icon-bar-bg">
           <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-            <img src="./bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+            <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
             <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
           </button>
           <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-            <img src="./cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+            <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
           </button>
           <div id="settings-dropdown" class="settings-dropdown">
             <div class="dropdown-arrow"></div>
@@ -270,7 +299,7 @@
     <div id="group-search-form-block" style="display:none;">
       <h3>Find Groups That Accept Offers</h3>
 
-      <!-- Group Search bar -->
+      <!-- NEW: Group Search bar -->
       <div class="group-search-bar">
         <input id="group-search-input" type="text" placeholder="Search groups (name or description)…">
         <button id="group-search-btn">Search</button>
@@ -358,7 +387,7 @@ async function renderRecentOffers() {
   }
 
   const cards = await Promise.all(offers.map(async offer => {
-    let sponsorLogo = './logos.png';
+    let sponsorLogo = 'logos.png';
     try {
       const { data: sponsor } = await supabase
         .from('users_extended_data')
@@ -395,7 +424,7 @@ async function renderRecentOffers() {
         </div>
         <div style="display:flex;flex-direction:row;gap:16px;">
           <div style="flex-shrink:0;text-align:center;">
-            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;" onerror="this.src='./logos.png'">
+            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;" onerror="this.src='logos.png'">
             <div style="font-size:.95em;opacity:.85;color:#e4e9fc;">By<br><span style="font-weight:500;color:#d5d5ff">${offer.sponsor_username}</span></div>
           </div>
           <div style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:.99em;color:#fff;">
@@ -429,7 +458,7 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
       <li><a href="./stats.html">Stats</a></li>
     </ul>
   </div>
-  <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
   <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
     &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
     Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
@@ -439,7 +468,7 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
 <div id="cookie-banner" class="cookie-banner">
   <p>
     🍪 We use cookies to personalize content, provide social media features, and analyze our traffic. By clicking “Accept”, you consent to the use of all cookies in accordance with our 
-    <a href="./privacy.html" target="_blank">Privacy Policy</a>.
+    <a href="privacy.html" target="_blank">Privacy Policy</a>.
   </p>
   <div class="cookie-buttons">
     <button id="accept-cookies">Accept</button>
@@ -478,11 +507,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     .eq('user_id', user.id)
     .single();
   if (profileError) return;
-
   const isSponsor = profile.userType === 'sponsor';
   const isSponsee = profile.userType === 'besponsored';
   window.isSponsee = isSponsee;
-
   const helpAccountsLabel = document.getElementById('help-accounts-label');
   if (helpAccountsLabel) helpAccountsLabel.textContent = isSponsor ? "creators/influencers" : "sponsors";
 
@@ -517,12 +544,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const platformLogos = {
       instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
-      tiktok: './tiktoklogo.png',
-      youtube: './youtubelogo.png',
-      twitter: './twitterlogo.png',
+      tiktok: 'tiktoklogo.png',
+      youtube: 'youtubelogo.png',
+      twitter: 'twitterlogo.png',
       facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
-      twitch: './twitchlogo.png',
-      snapchat: './snaplogo.png',
+      twitch: 'twitchlogo.png',
+      snapchat: 'snaplogo.png',
     };
     const platformsArray = Object.keys(handlesObj).filter(platform => {
       const handle = handlesObj[platform];
@@ -545,50 +572,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     return r?.data?.publicUrl || null;
   }
 
-  /* helper: compact follower count formatting */
-  function formatCompactNumber(value) {
-    if (!value || isNaN(value)) return '0';
-    try {
-      return new Intl.NumberFormat('en', {
-        notation: 'compact',
-        maximumFractionDigits: 1,
-      }).format(value);
-    } catch (e) {
-      const n = Number(value);
-      if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-      return String(n);
-    }
+  /* NEW: follower count + plan badge helpers */
+  function formatFollowers(num) {
+    if (!num || num <= 0) return '0';
+    if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return num.toLocaleString();
   }
 
-  /* helper: follower display row */
-  function renderFollowersHtml(followerRow) {
-    if (!followerRow || !followerRow.total_followers) return '';
-    const total = followerRow.total_followers;
-    const formatted = formatCompactNumber(total);
-    return `
-      <div class="user-followers" title="Estimated total audience across connected platforms">
-        Audience: <strong>${formatted}</strong>
-      </div>
-    `;
+  function renderPlanBadge(planType) {
+    const t = (planType || 'free').toLowerCase();
+    const src = t === 'pro' ? './probadge.png' : './freebadge.png';
+    const alt = t === 'pro' ? 'Pro plan' : 'Free plan';
+    return `<img src="${src}" alt="${alt}" class="plan-badge-img">`;
   }
 
-  /* helper: badges for user cards */
-  function renderUserBadgesHtml(user, followerRow) {
-    const badges = [];
+  async function fetchFollowerMap(userIds) {
+    if (!userIds || !userIds.length) return {};
+    const { data, error } = await supabase
+      .from('user_social_followers')
+      .select('user_id, total_followers')
+      .in('user_id', userIds);
 
-    if (user && user.email_verified) {
-      badges.push('<span class="user-badge user-badge-verified" title="Email verified">Verified</span>');
+    if (error || !data) {
+      console.error('Failed to fetch follower counts', error);
+      return {};
     }
-    if (user && user.is_admin) {
-      badges.push('<span class="user-badge user-badge-admin" title="Sponsor Sorter staff">Admin</span>');
+    const map = {};
+    for (const row of data) {
+      if (row.user_id) {
+        map[row.user_id] = row.total_followers || 0;
+      }
     }
-    if (followerRow && followerRow.total_followers && followerRow.total_followers >= 10000) {
-      badges.push('<span class="user-badge user-badge-audience" title="10k+ total followers">10k+ audience</span>');
-    }
-
-    if (!badges.length) return '';
-    return `<div class="user-badges-row">${badges.join(' ')}</div>`;
+    return map;
   }
 
   const targetType = isSponsor ? 'besponsored' : 'sponsor';
@@ -598,14 +614,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const dashboardLink = document.getElementById('dashboard-link');
   if (dashboardLink && dashboardLink.firstElementChild) {
-    dashboardLink.firstElementChild.href = isSponsor ? "./dashboardsponsor.html" : "./dashboardsponsee.html";
+    dashboardLink.firstElementChild.href = isSponsor ? "dashboardsponsor.html" : "dashboardsponsee.html";
     dashboardLink.firstElementChild.innerText = "Dashboard";
   }
 
   const createOfferBtn = document.getElementById('create-public-offer-btn');
   if (isSponsor && createOfferBtn) {
     createOfferBtn.style.display = '';
-    createOfferBtn.onclick = () => { window.location.href = './publicOffers.html'; };
+    createOfferBtn.onclick = () => { window.location.href = 'publicOffers.html'; };
   } else if (createOfferBtn) {
     createOfferBtn.style.display = 'none';
   }
@@ -620,77 +636,62 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Profile type not found.');
       return;
     }
-    const page = targetUser.userType === 'sponsor' ? './viewprofiles.html' : './viewprofile.html';
+    const page = targetUser.userType === 'sponsor' ? 'viewprofiles.html' : 'viewprofile.html';
     window.location.href = `${page}?username=${encodeURIComponent(username)}`;
   }
 
   async function loadOtherAccounts() {
     otherProfilesContainer.innerHTML = '';
-
     const { data: allUsers, error } = await supabase
       .from('users_extended_data')
-      .select('user_id, username, location, profile_pic, contenttype, social_handles, email_verified, is_admin')
+      .select('user_id, username, location, profile_pic, contenttype, social_handles, userType, planType')
       .eq('userType', targetType);
 
     if (error || !allUsers?.length) {
       otherProfilesContainer.innerHTML = '<div style="padding:18px 8px;">No other accounts found.</div>';
       return;
     }
-
     const shuffled = allUsers.sort(() => 0.4 - Math.random()).slice(0, 4);
-
-    // fetch follower stats for these users
-    let followersByUserId = {};
-    try {
-      const ids = shuffled
-        .map(u => u.user_id)
-        .filter(id => !!id);
-      if (ids.length) {
-        const { data: followerRows, error: followersError } = await supabase
-          .from('user_social_followers')
-          .select('user_id, total_followers')
-          .in('user_id', ids);
-        if (!followersError && followerRows) {
-          followerRows.forEach(row => {
-            followersByUserId[row.user_id] = row;
-          });
-        }
-      }
-    } catch (err) {
-      console.error('Error loading follower stats for other accounts', err);
-    }
+    const followerMap = await fetchFollowerMap(
+      shuffled.map(u => u.user_id).filter(Boolean)
+    );
 
     shuffled.forEach(user => {
       const div = document.createElement('div');
       div.classList.add('user-profile');
       const imgSrc = user.profile_pic
-        ? (safePublicUrl('logos', user.profile_pic) || './logos.png')
-        : './logos.png';
+        ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
+        : 'logos.png';
       const platformsHTML = extractPlatformBadges(user.social_handles);
 
-      const followerRow = followersByUserId[user.user_id] || null;
-      const badgesHtml = renderUserBadgesHtml(user, followerRow);
-      const followersHtml = renderFollowersHtml(followerRow);
-
-      const profilePage = targetType === 'sponsor' ? './viewprofiles.html' : './viewprofile.html';
+      const totalFollowers = followerMap[user.user_id] || 0;
+      const followersHtml = totalFollowers
+        ? `<span class="followers-pill" title="Approx combined followers across linked platforms">👥 ${formatFollowers(totalFollowers)} followers</span>`
+        : '';
 
       div.innerHTML = `
         <figure>
-          <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='./logos.png'">
+          <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
           <div class="platforms-row">${platformsHTML}</div>
         </figure>
         <div class="user-profile-content">
-          <figcaption><strong>${user.username}</strong><br>
-          ${user.contenttype || ''}<br>
-          ${user.location || ''}</figcaption>
-          ${badgesHtml}
-          ${followersHtml}
+          <figcaption>
+            <div class="user-header-row">
+              <strong>${user.username}</strong>
+              ${renderPlanBadge(user.planType)}
+            </div>
+            ${user.contenttype}<br>
+            ${user.location}
+            <div class="user-badge-row">
+              ${followersHtml}
+            </div>
+          </figcaption>
           <button class="view-profile">View Profile</button>
         </div>
       `;
       otherProfilesContainer.appendChild(div);
       div.querySelector('.view-profile').addEventListener('click', () => {
-        window.location.href = `${profilePage}?username=${encodeURIComponent(user.username)}`;
+        viewProfileByUserType(user.username);
       });
     });
   }
@@ -706,7 +707,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let query = supabase
       .from('users_extended_data')
-      .select('user_id, username, location, profile_pic, contenttype, social_handles, email_verified, is_admin')
+      .select('user_id, username, location, profile_pic, contenttype, social_handles, planType')
       .eq('userType', targetType);
 
     if (name) query = query.ilike('username', `%${name}%`);
@@ -731,53 +732,43 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    if (!data || !data.length) {
+    const followerMap = await fetchFollowerMap(
+      (data || []).map(u => u.user_id).filter(Boolean)
+    );
+
+    if (!data.length) {
       resultsDiv.textContent = 'No matching users found.';
     } else {
-      // fetch follower stats for these users
-      let followersByUserId = {};
-      try {
-        const ids = data
-          .map(u => u.user_id)
-          .filter(id => !!id);
-        if (ids.length) {
-          const { data: followerRows, error: followersError } = await supabase
-            .from('user_social_followers')
-            .select('user_id, total_followers')
-            .in('user_id', ids);
-          if (!followersError && followerRows) {
-            followerRows.forEach(row => {
-              followersByUserId[row.user_id] = row;
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error loading follower stats for finder users', err);
-      }
-
       data.forEach(user => {
         const div = document.createElement('div');
         div.classList.add('user-profile');
         const imgSrc = user.profile_pic
-          ? (safePublicUrl('logos', user.profile_pic) || './logos.png')
-          : './logos.png';
+          ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
+          : 'logos.png';
         const platformsHTML = extractPlatformBadges(user.social_handles);
 
-        const followerRow = followersByUserId[user.user_id] || null;
-        const badgesHtml = renderUserBadgesHtml(user, followerRow);
-        const followersHtml = renderFollowersHtml(followerRow);
+        const totalFollowers = followerMap[user.user_id] || 0;
+        const followersHtml = totalFollowers
+          ? `<span class="followers-pill" title="Approx combined followers across linked platforms">👥 ${formatFollowers(totalFollowers)} followers</span>`
+          : '';
 
         div.innerHTML = `
           <figure>
-            <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='./logos.png'">
+            <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
             <div class="platforms-row">${platformsHTML}</div>
           </figure>
           <div class="user-profile-content">
-            <figcaption><strong>${user.username}</strong><br>
-            ${user.contenttype || ''}<br>
-            ${user.location || ''}</figcaption>
-            ${badgesHtml}
-            ${followersHtml}
+            <figcaption>
+              <div class="user-header-row">
+                <strong>${user.username}</strong>
+                ${renderPlanBadge(user.planType)}
+              </div>
+              ${user.contenttype}<br>
+              ${user.location}
+              <div class="user-badge-row">
+                ${followersHtml}
+              </div>
+            </figcaption>
             <button class="view-profile">View Profile</button>
             ${isSponsor ? `<button class="make-offer-btn" data-username="${user.username}">Make Offer</button>` : ''}
           </div>
@@ -794,7 +785,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (offerBtn) {
             offerBtn.addEventListener('click', () => {
               const encodedUsername = encodeURIComponent(user.username);
-              window.location.href = `./newoffer.html?username=${encodedUsername}`;
+              window.location.href = `newoffer.html?username=${encodedUsername}`;
             });
           }
         }
@@ -803,7 +794,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     currentPageLabel.textContent = `Page ${currentPage}`;
     prevPageBtn.disabled = currentPage === 1;
-    nextPageBtn.disabled = !data || data.length < resultsPerPage;
+    nextPageBtn.disabled = data.length < resultsPerPage;
   }
 
   fetchAndRenderResults();
@@ -1017,16 +1008,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           memberRows = firstSix.map(m => {
             const p = byId[m.user_id] || {};
             const img = p.profile_pic
-              ? (safePublicUrl('logos', p.profile_pic) || './logos.png')
-              : './logos.png';
+              ? (safePublicUrl('logos', p.profile_pic) || 'logos.png')
+              : 'logos.png';
             const badges = extractPlatformBadges(p.social_handles);
             const role = (m.role || 'member').toUpperCase();
             const name = p.username || 'user';
-            const profilePage = p.userType === 'sponsor' ? './viewprofiles.html' : './viewprofile.html';
+            const profilePage = p.userType === 'sponsor' ? 'viewprofiles.html' : 'viewprofile.html';
 
             return `
               <div class="member-chip">
-                <img class="profile" src="${img}" alt="${name}" onerror="this.src='./logos.png'">
+                <img class="profile" src="${img}" alt="${name}" onerror="this.src='logos.png'">
                 <div class="member-info" style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;">
                   <!-- username + status inline -->
                   <div class="member-top" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
@@ -1047,15 +1038,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       } catch {}
 
-      // Group image
-      let groupImg = './grouplogo.png';
+      // Group image — robust public URL + fallback  (FIXED: use `group-logos` bucket)
+      let groupImg = 'grouplogo.png';
       if (g.image_path) {
         const raw = String(g.image_path).trim();
 
+        // If DB already stores a full URL, use it as-is
         if (/^https?:\/\//i.test(raw)) {
           groupImg = raw;
         } else {
-          let key = raw.replace(/^\/+/, '');
+          // Normalize to an object key inside the group-logos bucket
+          // Accepts: "groups/<id>/file.png", "/groups/<id>/file.png",
+          //          "group-logos/groups/<id>/file.png"
+          let key = raw.replace(/^\/+/, ''); // strip leading slash
           if (/^group-logos\//i.test(key)) key = key.split('/').slice(1).join('/');
 
           const { data } = supabase.storage.from('group-logos').getPublicUrl(key);
@@ -1069,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div style="display:flex;gap:16px;align-items:flex-start;">
             <img src="${groupImg}" alt="${g.name}"
                  style="width:100px;height:100px;border-radius:10px;border:1px solid #333;object-fit:cover;background:unset;"
-                 onerror="this.src='./grouplogo.png'">
+                 onerror="this.src='grouplogo.png'">
             <div style="flex:1;">
               <h4 style="margin:0 0 4px 0;">${g.name}</h4>
               <div class="group-meta">
@@ -1088,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           ${memberCount > 6 ? `<div style="margin-top:8px;opacity:.8;">+ ${memberCount - 6} more member(s)</div>` : ''}
 
           <div class="group-actions" style="margin-top:12px;">
-            <a href="./groupoffer.html?groupId=${encodeURIComponent(g.id)}"
+            <a href="groupoffer.html?groupId=${encodeURIComponent(g.id)}"
                style="background:#f6c62e;color:#222;font-weight:700;border:none;border-radius:8px;padding:8px 16px;display:inline-block;text-decoration:none;cursor:pointer;margin-top: 10px;margin-bottom: 10px;">
                Offer to Group
             </a>
@@ -1113,7 +1108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   /* Expose card renderer used by public offers section */
   window.renderOfferCard = async function(offer) {
-    let sponsorLogo = './logos.png';
+    let sponsorLogo = 'logos.png';
     let sponsor_company = offer.sponsor_company || '';
     try {
       const { data: sponsor } = await supabase
@@ -1133,13 +1128,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (offer.platforms && offer.platforms.length) {
       const p = offer.platforms[0];
       const logos = {
-        youtube: './youtubelogo.png',
+        youtube: 'youtubelogo.png',
         instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
-        tiktok: './tiktoklogo.png',
-        twitter: './twitterlogo.png',
+        tiktok: 'tiktoklogo.png',
+        twitter: 'twitterlogo.png',
         facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
-        twitch: './twitchlogo.png',
-        snapchat: './snaplogo.png'
+        twitch: 'twitchlogo.png',
+        snapchat: 'snaplogo.png'
       };
       platformBadge = `<img src="${logos[p] || ''}" alt="${p}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${p}">`;
     }
@@ -1175,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     div.innerHTML = `
       <div style="display:flex;align-items:flex-start;gap:28px;">
         <div style="flex-shrink:0;text-align:center;">
-          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='./logos.png'">
+          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='logos.png'">
           <div style="margin-top:7px;font-size:1em;line-height:1.2;">
             <div style="margin-bottom:5px;"><strong>By:</strong> ${offer.sponsor_username}</div>
             <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
@@ -1357,45 +1352,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     width: 100%;
     box-sizing: border-box;
   }
-
-  /* badges + followers on user cards */
-  .user-badges-row {
-    margin-top: 4px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .user-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid #3a3a46;
-    background: #14141a;
-    font-size: 0.75rem;
-    line-height: 1.1;
-    color: #eaeaff;
-  }
-  .user-badge-verified {
-    border-color: #3b824e;
-    background: #182a1d;
-    color: #a8ffc6;
-  }
-  .user-badge-admin {
-    border-color: #c89b3c;
-    background: #2a1e10;
-    color: #ffd886;
-  }
-  .user-badge-audience {
-    border-color: #4061b3;
-    background: #171b2b;
-    color: #d3ddff;
-  }
-  .user-followers {
-    margin-top: 2px;
-    font-size: 0.82rem;
-    opacity: 0.9;
-  }
 </style>
 
 <script type="module" src="./js/alerts.js"></script>
@@ -1404,4 +1360,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </body>
 </html>
-
