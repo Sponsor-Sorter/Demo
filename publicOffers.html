@@ -137,35 +137,24 @@
           <option value="6 Months">6 Months</option>
           <option value="1 Year">1 Year</option>
         </select>
-        <span class="info-icon" data-tooltip="How long sponsorship will last.">🛈</span>
+        <span class="info-icon" data-tooltip="How long sponsorship will last (informational only).">🛈</span>
         <br><br>
 
         <div class="form-double-row">
           <div class="form-group">
-            <label for="price">Offer Amount (USD):</label>
+            <label for="price">Offer Amount (USD) <span style="opacity:.8;">(paid per applicant)</span>:</label>
             <input type="number" id="price" name="price" step="1" min="1" required>
             <span class="info-icon" data-tooltip="How much each Sponsee will recieve upon completion.">🛈</span>
           </div>
+
           <div class="form-group">
-            <label for="payment">Payment Cycle:</label>
-            <span class="info-icon" data-tooltip="Frequency at which Sponsee will be paid.">🛈</span>
-            <select id="payment" name="payment" required>
-              <option value="">--Select--</option>
-              <option value="weekly">Weekly</option>
-              <option value="fortnightly">Fortnightly</option>
-              <option value="monthly">Monthly</option>
-              <option value="full on completion">FULL - On Completion</option>
-            </select>
+            <label>Payment:</label>
+            <input type="text" value="FULL - On Completion" disabled style="width: 100%; opacity: .9;">
+            <span class="info-icon" data-tooltip="Public offers are paid in full on completion (one-off).">🛈</span>
           </div>
         </div>
 
         <div class="form-double-row">
-          <div class="form-group">
-            <label for="cycleCount"># of Cycles:</label>
-            <input type="number" id="cycleCount" name="cycleCount" min="1" value="1" style="width: 90px;" required>
-            <span class="info-icon" data-tooltip="How many times this payment cycle will repeat. For a 3-month deal, enter 3. For a one-off deal, leave at 1.">🛈</span>
-          </div>
-
           <div class="form-group">
             <label for="maxApplicants">Max Applicants:</label>
             <span class="info-icon" data-tooltip="The max number of successful Applicants.">🛈</span>
@@ -177,20 +166,20 @@
           <legend>Cost:</legend>
           <div id="offer-cost-summary" style="font-size: 1.12em; color: #e0eaff; margin-bottom: 6px; font-weight: 500;">
             Total Cost: <span id="offer-cost-amount" style="color: #6fe3d9;">$0.00</span>
-            <span id="cost-cycle-label" style="color:#fff; opacity:.7;"></span>
           </div>
           <div id="listing-fee-line" style="font-size: 1.04em; color: #FFD600; margin-bottom: 4px;">
-            Listing Fee (5% + $5/applicant/cycle): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
+            Listing Fee (5% + $5/applicant): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
           </div>
           <div id="total-cost-line" style="font-size: 1.14em; color: #99f1b8;">
             Total Including Fee: <span id="total-cost-amount" style="color:#50ffa4;">$0.00</span>
           </div>
           <div id="cost-details" style="font-size: .99em; color: #c7dcfc;">
-            The sponsor pays the Offer Amount × Max Applicants × # of Cycles.<br>
-            <b>Listing Fee:</b> 5% of this amount + $5 per applicant per cycle.<br>
+            The sponsor pays the Offer Amount × Max Applicants.<br>
+            <b>Listing Fee:</b> 5% of this amount + $5 per applicant.<br>
             This fee covers secure payment processing and platform operations.
           </div>
         </fieldset>
+
       </fieldset>
 
       <fieldset>
@@ -202,13 +191,13 @@
           </div>
           <div class="form-group">
             <label for="audienceCountry">Audience Country (primary):</label>
-            <span class="info-icon" data-tooltip="Primary country you want to direct the offer to. (This can be helpful if your looking for a sponsee in a specific demographic area)">🛈</span>
+            <span class="info-icon" data-tooltip="Primary country you want to direct the offer to. (Helpful for demographic targeting)">🛈</span>
             <input type="text" id="audienceCountry" name="audienceCountry" maxlength="80" placeholder="E.g. Australia">
           </div>
         </div>
 
         <label>Offer Platforms:</label>
-        <span class="info-icon" data-tooltip="Select 1 or more platforms where your Sponsee(s) will deliver your offer. ">🛈</span>
+        <span class="info-icon" data-tooltip="Select 1 or more platforms where your Sponsee(s) will deliver your offer.">🛈</span>
         <div id="platformCheckboxes" style="margin-bottom:12px;">
           <label><input type="checkbox" name="offerPlatforms" value="instagram">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" title="Instagram" style="width:22px;vertical-align:middle;margin-right:3px;">
@@ -298,13 +287,15 @@ const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/st
 // NOTE: Replace with LIVE key when live
 const STRIPE_PK = 'pk_live_51RSqPjGpIACU7TxK4XxMXjNPKpkEvhmfya1DgnxtZEcMeCe8wgzrhT9v6BxqbWXhl7s30nl23DRR9CclIQuvwAQX00zkJcVmOV';
 
-// ====== Offer Presets ======
+// HARDCODED PAYMENT MODEL (as requested)
+const HARD_PAYMENT_SCHEDULE = 'full on completion';
+const HARD_CYCLES = 1;
+
 const PRESETS = {
   shoutout: {
     offerTitle: "Instagram Shoutout",
     offerDescription: "Get your brand noticed with an Instagram shoutout to my engaged followers.",
     price: 100,
-    payment: "full on completion",
     jobType: "Shoutout",
     deliverableType: "Standalone Post",
     instructions: "Please provide your post copy, preferred hashtags, and mention accounts.",
@@ -315,7 +306,6 @@ const PRESETS = {
     offerTitle: "YouTube Product Review",
     offerDescription: "I will feature your product in a dedicated YouTube review video.",
     price: 300,
-    payment: "full on completion",
     jobType: "Product Placement",
     deliverableType: "Product Review",
     instructions: "Send your product to my PO box. Review will be honest and detailed.",
@@ -326,7 +316,6 @@ const PRESETS = {
     offerTitle: "Ongoing Monthly Sponsorship",
     offerDescription: "Monthly brand mention in every video, story, and social post.",
     price: 500,
-    payment: "monthly",
     jobType: "Ongoing Deal",
     deliverableType: "Include in next video",
     instructions: "Your brand will be included in ongoing content for the sponsorship period.",
@@ -337,7 +326,6 @@ const PRESETS = {
     offerTitle: "Instagram Story Mention",
     offerDescription: "I'll mention your brand in a story for 24 hours with a swipe-up link.",
     price: 50,
-    payment: "full on completion",
     jobType: "Story Mention",
     deliverableType: "Story Mention",
     instructions: "Provide story assets and swipe-up link.",
@@ -348,7 +336,6 @@ const PRESETS = {
     offerTitle: "Event Sponsorship",
     offerDescription: "Become an official sponsor for my upcoming live event.",
     price: 1000,
-    payment: "full on completion",
     jobType: "Event Sponsorship",
     deliverableType: "Custom Content",
     instructions: "Your logo and brand will be promoted across all event materials and streams.",
@@ -374,7 +361,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  let hideHelp = !!(settingsRow && typeof settingsRow.hide_help_blocks === 'boolean' && settingsRow.hide_help_blocks);
+  const hideHelp = !!(settingsRow && typeof settingsRow.hide_help_blocks === 'boolean' && settingsRow.hide_help_blocks);
   document.querySelectorAll('.help-block').forEach(div => {
     div.style.display = hideHelp ? 'none' : '';
   });
@@ -414,7 +401,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('offerTitle').value = p.offerTitle;
         document.getElementById('offerDescription').value = p.offerDescription;
         document.getElementById('price').value = p.price;
-        document.getElementById('payment').value = p.payment;
         document.getElementById('jobType').value = p.jobType;
         document.getElementById('deliverableType').value = p.deliverableType;
         document.getElementById('instructions').value = p.instructions;
@@ -422,7 +408,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('input[name="offerPlatforms"]').forEach(cb => {
           cb.checked = (p.offerPlatforms.map(x => x.toLowerCase())).includes(cb.value.toLowerCase());
         });
-        autoFillCycles();
         calcCost();
       }
     };
@@ -464,9 +449,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function addImages(files) {
     const remainingSlots = 5 - imageFiles.length;
     const filesToAdd = files.slice(0, remainingSlots);
-    if (filesToAdd.length < files.length) {
-      alert('You can only upload up to 5 images.');
-    }
+    if (filesToAdd.length < files.length) alert('You can only upload up to 5 images.');
     filesToAdd.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -519,11 +502,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function removeImage(index) {
     imageFiles.splice(index, 1);
     renderThumbnails();
-    if (currentPreviewIndex === index) {
-      showPreview(imageFiles.length ? 0 : -1);
-    } else if (currentPreviewIndex > index) {
-      currentPreviewIndex--;
-    }
+    if (currentPreviewIndex === index) showPreview(imageFiles.length ? 0 : -1);
+    else if (currentPreviewIndex > index) currentPreviewIndex--;
   }
 
   // === FORM SUBMIT + STRIPE PAYMENT ===
@@ -534,7 +514,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const title = document.getElementById('offerTitle').value.trim();
     const description = document.getElementById('offerDescription').value.trim();
     const amount = parseFloat(document.getElementById('price').value);
-    const payment = document.getElementById('payment').value;
     const jobType = document.getElementById('jobType').value;
     const deliverableType = document.getElementById('deliverableType').value;
     const instructions = document.getElementById('instructions').value;
@@ -543,12 +522,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const maxApplicants = parseInt(document.getElementById('maxApplicants').value) || 1;
     const minFollowers = parseInt(document.getElementById('minFollowers').value) || null;
     const audienceCountry = document.getElementById('audienceCountry').value.trim() || null;
-    const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked')).map(cb => cb.value.toLowerCase());
-    const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
+
+    const platforms = Array.from(document.querySelectorAll('input[name="offerPlatforms"]:checked'))
+      .map(cb => cb.value.toLowerCase());
+
+    if (!platforms.length) {
+      alert('Please select at least one platform for this offer.');
+      return;
+    }
 
     // ==== FamBot Moderation ====
     const { data: { session } } = await supabase.auth.getSession();
-    const user_id = session?.user.id;
+    const user_id = session?.user?.id;
     const jwt = session?.access_token;
 
     const fieldsToModerate = [
@@ -556,6 +541,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       { content: description, type: 'offer' },
       { content: instructions, type: 'offer' }
     ];
+
     for (const field of fieldsToModerate) {
       if (field.content && field.content.length > 0) {
         const result = await famBotModerateWithModal({
@@ -590,6 +576,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const optionalFileInput = document.getElementById('optionalFile');
     const optionalFile = optionalFileInput.files[0];
     let optionalFileName = null;
+
     if (optionalFile) {
       const uniqueOptFileName = `${crypto.randomUUID()}_${optionalFile.name}`;
       const { error: optionalUploadError } = await supabase
@@ -604,7 +591,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       optionalFileName = uniqueOptFileName;
     }
 
-    // 3. Prepare offer data and save to localStorage for after payment
+    // 3. Prepare offer data for after payment
     const offerData = {
       sponsor_id: sponsorData.user_id || sponsorData.id,
       sponsor_email: sponsorData.email,
@@ -613,7 +600,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       offer_title: title,
       offer_description: description,
       offer_amount: amount,
-      payment_schedule: payment,
+      payment_schedule: HARD_PAYMENT_SCHEDULE,
       job_type: jobType,
       deliverable_type: deliverableType,
       instructions: instructions,
@@ -626,16 +613,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       max_applicants: maxApplicants,
       min_followers: minFollowers,
       audience_country: audienceCountry,
-      cycles: cycles,
+      cycles: HARD_CYCLES
     };
 
     localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
 
-    // 4. Calculate total + NEW fee model
-    const total = amount * maxApplicants * cycles;
-
-    // NEW: 5% of total + $5 per applicant per cycle
-    const fee = (total * 0.05) + (5 * maxApplicants * cycles);
+    // 4. Calculate total + fee (cycles always 1)
+    const total = amount * maxApplicants * HARD_CYCLES;
+    const fee = (total * 0.05) + (5 * maxApplicants * HARD_CYCLES);
     const totalWithFee = total + fee;
 
     // 5. Start Stripe Checkout
@@ -678,9 +663,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
   });
-});
 
-// Helper functions
+  // cost calc listeners
+  ['price', 'maxApplicants'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calcCost);
+      el.addEventListener('change', calcCost);
+    }
+  });
+
+  calcCost();
+});
 
 function renderStars(rating) {
   let out = '';
@@ -696,6 +690,7 @@ async function loadSponsorOverallStars(sponsorUsername) {
     if (avgStarsElem) avgStarsElem.innerHTML = renderStars(0);
     return;
   }
+
   const { data: offers } = await supabase
     .from('private_offers')
     .select('id')
@@ -730,73 +725,21 @@ async function loadSponsorOverallStars(sponsorUsername) {
 function calcCost() {
   const price = parseFloat(document.getElementById('price').value) || 0;
   const applicants = parseInt(document.getElementById('maxApplicants').value) || 1;
-  const payment = document.getElementById('payment').value || '';
-  const cycles = parseInt(document.getElementById('cycleCount').value) || 1;
 
-  const total = price * applicants * cycles;
-
-  // NEW: 5% of total + $5 per applicant per cycle
-  const fee = (total * 0.05) + (5 * applicants * cycles);
+  const total = price * applicants * HARD_CYCLES;
+  const fee = (total * 0.05) + (5 * applicants * HARD_CYCLES);
   const totalWithFee = total + fee;
 
-  let cycle = '';
-  if (payment === 'weekly') cycle = `per week × ${cycles} week${cycles>1?'s':''}`;
-  else if (payment === 'fortnightly') cycle = `per fortnight × ${cycles} fortnight${cycles>1?'s':''}`;
-  else if (payment === 'monthly') cycle = `per month × ${cycles} month${cycles>1?'s':''}`;
-  else if (payment === 'full on completion') cycle = `(one-off, on completion)`;
-
   document.getElementById('offer-cost-amount').textContent =
-    '$' + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById('cost-cycle-label').textContent = cycle ? ` ${cycle}` : '';
+    '$' + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
   document.getElementById('listing-fee-amount').textContent =
-    '$' + fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    '$' + fee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
   document.getElementById('total-cost-amount').textContent =
-    '$' + totalWithFee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    '$' + totalWithFee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-
-// Attach listeners for all involved fields:
-['price', 'maxApplicants', 'payment', 'cycleCount'].forEach(id => {
-  document.getElementById(id).addEventListener('input', calcCost);
-  document.getElementById(id).addEventListener('change', calcCost);
-});
-
-function autoFillCycles() {
-  const duration = document.getElementById('sponsorshipDuration').value;
-  const payment = document.getElementById('payment').value;
-  let cycles = 1;
-
-  const d = (duration || '').toLowerCase();
-  const p = (payment || '').toLowerCase();
-
-  if (d === 'one off' || p === 'full on completion') {
-    cycles = 1;
-  } else if (p === 'monthly') {
-    if (d === '1 month') cycles = 1;
-    else if (d === '3 months') cycles = 3;
-    else if (d === '6 months') cycles = 6;
-    else if (d === '1 year') cycles = 12;
-  } else if (p === 'weekly') {
-    if (d === '1 month') cycles = 4;
-    else if (d === '3 months') cycles = 12;
-    else if (d === '6 months') cycles = 24;
-    else if (d === '1 year') cycles = 52;
-  } else if (p === 'fortnightly') {
-    if (d === '1 month') cycles = 2;
-    else if (d === '3 months') cycles = 6;
-    else if (d === '6 months') cycles = 12;
-    else if (d === '1 year') cycles = 26;
-  }
-
-  document.getElementById('cycleCount').value = cycles;
-  calcCost();
-}
-
-document.getElementById('sponsorshipDuration').addEventListener('change', autoFillCycles);
-document.getElementById('payment').addEventListener('change', autoFillCycles);
-
-calcCost();
 </script>
 
 </body>
 </html>
-
