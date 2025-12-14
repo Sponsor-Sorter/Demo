@@ -20,33 +20,31 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <header class="navbar1">
-        <section class="navbar"> 
-            <div class="navii">
-                <h5>
-                    <header>Sponsor Sorter</header>
-                </h5>
-                <div id="sparkle-overlay" aria-hidden="true"></div>
+      <header class="navbar1">
+    <section class="navbar"> 
+     <div class="navii">
+         <h5>  <header>
+            Sponsor Sorter</header> </h5>
 
-                <div>
-                    <background-img class="navimg" src="./navimg.png" alt=""></background-img>
-                    <nav> 
-                        <li><a href="./index.html">Home</a></li>
-                        <li><a href="./finder.html">Finder</a></li>
-                    </nav>
-                    <nav>
-                        <li class="navr"><a href="./signup.html">Signup</a></li>
-                        <li><a href="./login.html">Login</a></li>
-                    </nav>
-                </div>
-            </div> 
-            </ul>
+              <div id="sparkle-overlay" aria-hidden="true"></div>
+
+         <div>
+            <background-img class="navimg" src="navimg.png" alt="">
+            <nav> 
+               <li><a href="index.html">Home</a></li>
+               <li><a href="finder.html">Finder</a></li>
             </nav>
-            </h5>
-            <p></p>  
-        </section>
-    </header>
+            <nav>
+            <li class="navr"><a href="signup.html">Signup</a></li>
+            <li><a href="login.html">Login</a></li>
+         </div>
+   </div> 
+            </ul>
+         </nav>
+         </h5>
+   <p></p>  
+
+ </header>
 
     <div class="leftmain">
         <!-- REFERRAL BANNER -->
@@ -246,6 +244,21 @@
                 </section>
             </fieldset>
         </main>
+
+            <!-- SAFETY FIRST / SCAM PREVENTION -->
+        <fieldset class="home-cont safety-strip">
+            <div class="section-title">Safety First</div>
+            <p class="safety-copy">
+                We take scams seriously. Every paid offer uses escrow, disputes can be reviewed by humans, and 2FA helps keep accounts secure.
+            </p>
+            <p class="safety-copy">
+                Before you accept any sponsorship, read our
+                <a href="./forum.html" class="safety-link">
+                    Safety &amp; Scam Prevention Guide
+                </a>
+                in the Forum (pinned at the top).
+            </p>
+        </fieldset>
 
         <!-- How It Works -->
         <fieldset class="home-cont">
@@ -475,6 +488,24 @@
 .ad-sidebar {
   display: none;
 }
+
+/* SAFETY STRIP */
+.safety-strip {
+  border-radius: 18px;
+}
+.safety-strip .section-title {
+  margin-bottom: 6px;
+}
+.safety-copy {
+  text-align: center;
+  color: #e5e5e5;
+  margin: 4px 0;
+}
+.safety-link {
+  color: #7bffb6;
+  text-decoration: underline;
+}
+
 
 /* Only show side ads on wide screens */
 @media (min-width: 1200px) {
