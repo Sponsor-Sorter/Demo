@@ -1,7 +1,10 @@
+// File: ./js/onboarding.js
+
 import { supabase } from './supabaseClient.js';
 
 const onboardingFlows = {
-  '/Demo/dashboardsponsee.html': [
+  // Support both root and /Demo paths (GitHub Pages vs local folder)
+  '/dashboardsponsee.html': [
     {
       selector: '.profile-header',
       message: 'Here you can view your sponsee profile, overall stats, and ratings. Make sure your profile is up-to-date!',
@@ -22,9 +25,20 @@ const onboardingFlows = {
     {
       selector: '#settings-cog-btn',
       message: 'Access your settings, change your profile info, connect platforms, or restart onboarding at any time.',
+    },
+    // ✅ NEW: last sponsee-only onboarding step -> open OAuth modal
+    {
+      selector: '#oauth-link-modal > div',
+      message:
+        'Final step (Sponsee): let’s connect your platforms! The “Linked Accounts” modal is now open — connect YouTube (and any other platforms) so we can unlock live stats and better matching.',
+      sponseeOnly: true,
+      openOauthModal: true,
+      noOverlay: true,            // allow clicking inside the modal
+      placeBubbleNearTarget: true // keep bubble off the modal
     }
   ],
-  '/Demo/dashboardsponsor.html': [
+
+  '/dashboardsponsor.html': [
     {
       selector: '.profile-header',
       message: 'This is your sponsor profile. Keep your company info and logo updated for best results.',
@@ -47,7 +61,8 @@ const onboardingFlows = {
       message: 'Adjust your account settings, company profile, or restart onboarding at any time from here.',
     }
   ],
-  '/Demo/finder.html': [
+
+  '/finder.html': [
     {
       selector: '.search-toggle-row',
       message: 'Switch between searching for users or offers using these buttons.',
@@ -87,6 +102,7 @@ const onboardingFlows = {
       optional: true
     }
   ],
+
   'default': [
     {
       selector: 'body',
@@ -95,15 +111,40 @@ const onboardingFlows = {
   ]
 };
 
+// also accept /Demo/* keys if you still use that folder
+onboardingFlows['/Demo/dashboardsponsee.html'] = onboardingFlows['/dashboardsponsee.html'];
+onboardingFlows['/Demo/dashboardsponsor.html'] = onboardingFlows['/dashboardsponsor.html'];
+onboardingFlows['/Demo/finder.html'] = onboardingFlows['/finder.html'];
+
 // GLOBALS
 let onboardingActive = false;
 let currentStepIdx = 0;
 let userIsSponsor = false; // set at load
+let userIsSponsee = false;
 
 // --- UTILITIES ---
+function pathEndsWith(file) {
+  return window.location.pathname.toLowerCase().endsWith('/' + file.toLowerCase());
+}
+
 function getPageFlow() {
   const path = window.location.pathname;
-  return onboardingFlows[path] || onboardingFlows['default'];
+
+  // exact match first
+  if (onboardingFlows[path]) return onboardingFlows[path];
+
+  // fallback: match by filename
+  const file = (path.split('/').pop() || '').toLowerCase();
+  const matchKey = Object.keys(onboardingFlows).find(k => k !== 'default' && (k.split('/').pop() || '').toLowerCase() === file);
+  if (matchKey) return onboardingFlows[matchKey];
+
+  return onboardingFlows['default'];
+}
+
+function isDisplayed(el) {
+  if (!el) return false;
+  const cs = window.getComputedStyle(el);
+  return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
 }
 
 async function getCurrentUserId() {
@@ -128,9 +169,10 @@ async function setOnboardingComplete(val = true) {
 async function setHideHelpBlocks(val = true) {
   const userId = await getCurrentUserId();
   if (userId) {
-    await supabase.from('user_settings').upsert([
-      { user_id: userId, hide_help_blocks: val }
-    ], { onConflict: 'user_id' });
+    await supabase.from('user_settings').upsert(
+      [{ user_id: userId, hide_help_blocks: val }],
+      { onConflict: 'user_id' }
+    );
   }
 }
 
@@ -138,22 +180,29 @@ async function setHideHelpBlocks(val = true) {
 async function preloadSponsorStatus() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
+
   const { data } = await supabase
     .from('users_extended_data')
     .select('userType')
     .eq('user_id', user.id)
     .single();
-  userIsSponsor = (data?.userType || '').toLowerCase() === 'sponsor';
+
+  const ut = (data?.userType || '').toLowerCase().trim();
+  userIsSponsor = ut === 'sponsor';
+  userIsSponsee = ut === 'sponsee';
 }
 
 // --- DEMO CARD HELPERS ---
 function addOnboardingDemoCard(selector) {
   const listings = document.querySelector(selector);
   if (!listings) return;
+
   listings.querySelectorAll('.onboarding-demo-offer').forEach(n => n.remove());
+
   const hasRealCards = [...listings.children].some(
     c => c.classList && c.classList.contains('public-offer-card')
   );
+
   if (!hasRealCards) {
     const demo = document.createElement('div');
     demo.className = 'onboarding-demo-offer public-offer-card';
@@ -182,10 +231,13 @@ function addOnboardingDemoCard(selector) {
 function addOnboardingPublicOfferCard() {
   const offersContainer = document.getElementById('offers-container');
   if (!offersContainer) return;
+
   offersContainer.querySelectorAll('.onboarding-demo-public-offer').forEach(n => n.remove());
+
   const hasRealCards = [...offersContainer.children].some(
     c => c.classList && c.classList.contains('public-offer-card')
   );
+
   if (!hasRealCards) {
     const demo = document.createElement('div');
     demo.className = 'onboarding-demo-public-offer public-offer-card';
@@ -210,6 +262,61 @@ function addOnboardingPublicOfferCard() {
   }
 }
 
+// --- SETTINGS / OAUTH HELPERS ---
+function ensureSettingsDropdownOpen() {
+  const cog = document.getElementById('settings-cog-btn');
+  const dropdown = document.getElementById('settings-dropdown');
+  if (!cog || !dropdown) return false;
+
+  if (!isDisplayed(dropdown)) {
+    try { cog.click(); } catch (_) {}
+  }
+  return isDisplayed(dropdown);
+}
+
+function ensureOauthLinkModalOpen() {
+  // Try the “normal” way first (via settings.js event listeners)
+  ensureSettingsDropdownOpen();
+
+  const oauthBtn = document.getElementById('oauth-link-btn');
+  const oauthModal = document.getElementById('oauth-link-modal');
+
+  if (oauthBtn) {
+    try { oauthBtn.click(); } catch (_) {}
+  }
+
+  // Fallback if settings.js isn’t ready yet
+  if (oauthModal && !isDisplayed(oauthModal)) {
+    oauthModal.style.display = 'flex';
+  }
+
+  return !!oauthModal && isDisplayed(oauthModal);
+}
+
+function positionBubbleNearTarget(bubble, el) {
+  if (!bubble || !el) return;
+
+  const rect = el.getBoundingClientRect();
+
+  // Measure bubble after it's in the DOM
+  const bw = bubble.offsetWidth || 360;
+  const bh = bubble.offsetHeight || 180;
+  const pad = 14;
+
+  // Prefer right side; fall back to left; then center
+  let left = rect.right + pad;
+  if (left + bw > window.innerWidth - 10) left = rect.left - bw - pad;
+  if (left < 10) left = Math.max(10, Math.round(window.innerWidth / 2 - bw / 2));
+
+  // Vertically center to target
+  let top = rect.top + rect.height / 2 - bh / 2;
+  if (top < 10) top = 10;
+  if (top + bh > window.innerHeight - 10) top = window.innerHeight - bh - 10;
+
+  bubble.style.top = `${Math.round(top)}px`;
+  bubble.style.left = `${Math.round(left)}px`;
+}
+
 // --- UI HELPERS ---
 function showStep(step, totalSteps) {
   // SPONSOR-ONLY logic (skip step if not sponsor)
@@ -218,14 +325,22 @@ function showStep(step, totalSteps) {
     return;
   }
 
+  // SPONSEE-ONLY logic
+  if (step.sponseeOnly && !userIsSponsee) {
+    nextStep();
+    return;
+  }
+
   // Inject demo card if needed
   if (step.selector === '.active-listings' || step.selector === '.listing-container') {
     addOnboardingDemoCard(step.selector);
   }
+
   if (step.selector === '#offers-container' || step.selector === '#offerSearchForm') {
     addOnboardingPublicOfferCard();
+
     // Finder page: Ensure Offer Search tab is active
-    if (window.location.pathname === '/Demo/finder.html') {
+    if (pathEndsWith('finder.html')) {
       const offerSearchToggle = document.getElementById('offer-search-toggle');
       const offerSearchBlock = document.getElementById('offer-search-form-block');
       if (offerSearchToggle && offerSearchBlock && offerSearchBlock.style.display === 'none') {
@@ -235,9 +350,15 @@ function showStep(step, totalSteps) {
   }
 
   setTimeout(() => {
+    // clear previous
     document.getElementById('onboarding-overlay')?.remove();
     document.querySelectorAll('.onboarding-bubble').forEach(b => b.remove());
     document.querySelectorAll('.onboarding-highlight').forEach(el => el.classList.remove('onboarding-highlight'));
+
+    // Step-specific actions (must happen BEFORE querying selector if it affects visibility)
+    if (step.openOauthModal) {
+      ensureOauthLinkModalOpen();
+    }
 
     let el = document.querySelector(step.selector);
 
@@ -248,36 +369,38 @@ function showStep(step, totalSteps) {
       el = document.querySelector('.onboarding-demo-public-offer') || el;
     }
 
-    // Overlay and bubble
-    let overlay = document.createElement('div');
-    overlay.id = 'onboarding-overlay';
-    overlay.style.position = 'fixed';
-    overlay.style.top = 0;
-    overlay.style.left = 0;
-    overlay.style.width = '100vw';
-    overlay.style.height = '100vh';
-    overlay.style.background = 'rgba(10,16,25,0.28)';
-    overlay.style.zIndex = 99998;
-    overlay.onclick = e => { if (e.target === overlay) hideOnboardingOverlay(); };
-    document.body.appendChild(overlay);
+    // Overlay (skippable for special steps that must remain interactive, like OAuth modal)
+    let overlay = null;
+    if (!step.noOverlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'onboarding-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.background = 'rgba(10,16,25,0.28)';
+      overlay.style.zIndex = 99998;
+      overlay.onclick = e => { if (e.target === overlay) hideOnboardingOverlay(); };
+      document.body.appendChild(overlay);
+    }
 
     if (el) el.classList.add('onboarding-highlight');
-    let bubble = document.createElement('div');
+
+    // Bubble
+    const bubble = document.createElement('div');
     bubble.className = 'onboarding-bubble';
 
-    let isLast = (currentStepIdx + 1 === totalSteps);
-    let isSponseeDash = window.location.pathname === './dashboardsponsee.html';
-    let isSponsorDash = window.location.pathname === './dashboardsponsor.html';
-    let isFinder = window.location.pathname.endsWith('/finder.html');
+    const isLast = (currentStepIdx + 1 === totalSteps);
+    const isSponseeDash = pathEndsWith('dashboardsponsee.html');
+    const isSponsorDash = pathEndsWith('dashboardsponsor.html');
+    const isFinder = pathEndsWith('finder.html');
 
-
-    let nextBtnLabel = isLast
+    const nextBtnLabel = isLast
       ? ((isSponseeDash || isSponsorDash) ? 'Continue' : 'Finish')
       : 'Next';
 
-    let nextBtnColor = isLast
-      ? '#15cb15'
-      : '#222';
+    const nextBtnColor = isLast ? '#15cb15' : '#222';
 
     bubble.innerHTML = `
       <div style="padding:18px 22px;background:#181b2c;color:#fff;border-radius:13px;box-shadow:0 4px 24px #2229;max-width:350px;">
@@ -291,15 +414,29 @@ function showStep(step, totalSteps) {
         <div style="font-size:0.95em;opacity:0.73;margin-top:5px;">Step ${currentStepIdx + 1} of ${totalSteps}</div>
       </div>
     `;
+
     bubble.style.position = 'fixed';
     bubble.style.zIndex = 99999;
     bubble.style.transition = 'opacity 0.2s';
+
+    // Default position (center)
     bubble.style.top = `${window.innerHeight / 2 - 100}px`;
     bubble.style.left = `${window.innerWidth / 2 - 175}px`;
 
-    overlay.appendChild(bubble);
+    // Append bubble
+    if (overlay) overlay.appendChild(bubble);
+    else document.body.appendChild(bubble);
 
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Scroll target into view (avoid yanking when modal is open)
+    if (el && !step.openOauthModal) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // If requested, move bubble away from target (e.g., modal)
+    if (step.placeBubbleNearTarget && el) {
+      // wait 1 frame so bubble has measurable size
+      requestAnimationFrame(() => positionBubbleNearTarget(bubble, el));
+    }
 
     bubble.querySelector('.onboarding-btn-skip').onclick = skipOnboarding;
 
