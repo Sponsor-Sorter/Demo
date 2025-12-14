@@ -144,6 +144,35 @@
             </fieldset>
         </fieldset>
 
+        <!-- NEW: Heard about Sponsor Sorter (Step 1, before Next) -->
+        <fieldset class="heardabout">
+            <legend>How did you hear about Sponsor Sorter?</legend>
+
+            <label for="heard_about">Where did you find us?</label>
+            <select id="heard_about" name="heard_about" required onchange="toggleHeardAboutOther()">
+                <option value="">Select one</option>
+                <option value="Google Search">Google Search</option>
+                <option value="YouTube">YouTube</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="X/Twitter">X / Twitter</option>
+                <option value="Friend/Word of mouth">Friend / Word of mouth</option>
+                <option value="Referral link">Referral link</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+
+            <div id="heard_about_other_wrap" style="display:none;margin-top:10px;">
+                <label for="heard_about_other">Tell us where:</label>
+                <input type="text" id="heard_about_other" name="heard_about_other" placeholder="e.g., Reddit, Discord, Podcast">
+            </div>
+
+            <p style="font-size:0.9em;color:#bbb;margin-top:8px;">
+                This helps us focus on the channels creators and brands actually use.
+            </p>
+        </fieldset>
+
         <div class="step-nav" style="margin-top:16px;text-align:right;">
             <button type="button" id="next-step-1">Next: Role & Plan →</button>
         </div>
@@ -587,6 +616,22 @@ function previewLogo() {
     }
 }
 
+function toggleHeardAboutOther() {
+    const select = document.getElementById('heard_about');
+    const wrap = document.getElementById('heard_about_other_wrap');
+    const other = document.getElementById('heard_about_other');
+    if (!select || !wrap || !other) return;
+
+    if (select.value === 'Other') {
+        wrap.style.display = 'block';
+        other.required = true;
+    } else {
+        wrap.style.display = 'none';
+        other.required = false;
+        other.value = '';
+    }
+}
+
 function setPlanType(type) {
     const hidden = document.getElementById('planType');
     if (hidden) hidden.value = type;
@@ -701,6 +746,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Default to sponsor on load
     toggleSponsorType('sponsor');
     showStep(1);
+
+    // Ensure "Other" input is hidden/required state correct on load
+    toggleHeardAboutOther();
 
     const next1 = document.getElementById('next-step-1');
     const next2 = document.getElementById('next-step-2');
