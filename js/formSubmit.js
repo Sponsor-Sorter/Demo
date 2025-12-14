@@ -80,6 +80,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // ===== NEW: Normalize "heard_about" into the DB column users_extended_data.heard_about =====
+      // signup.html provides:
+      //  - <select name="heard_about">
+      //  - optional <input name="heard_about_other"> when "Other" is selected
+      const heardAbout = (data.heard_about || '').trim();
+      const heardAboutOther = (data.heard_about_other || '').trim();
+
+      if (heardAbout) {
+        data.heard_about = (heardAbout === 'Other')
+          ? (heardAboutOther || 'Other')
+          : heardAbout;
+      } else if (heardAboutOther) {
+        // fallback (shouldn't happen if select is required, but harmless)
+        data.heard_about = heardAboutOther;
+      }
+
+      // We only store one value in the DB column, so remove the helper field
+      delete data.heard_about_other;
+      // ===== END NEW =====
+
       // ===== FamBot moderation before proceeding =====
       let famResult;
       try {
@@ -366,4 +386,3 @@ function showFamBotModal(result) {
   document.body.appendChild(modal);
   document.getElementById('fambot-close').onclick = () => modal.remove();
 }
-
