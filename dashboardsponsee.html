@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-  <script type="module" src="./js/planSync.js"></script>
+  <!-- <script type="module" src="./js/planSync.js"></script>  -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script type="module" src="./js/sponseeCharts.js"></script>
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
   <script type="module" src="./js/wallet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
   <script type="module">
@@ -71,15 +71,14 @@
             <div id="settings-dropdown" class="settings-dropdown">
               <div class="dropdown-arrow"></div>
               <ul>
-                 <li>
+                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                <li><button type="button" class="dropdown-item" id="add-website-url">Link Website</button></li>
+                <li>
                   <button type="button" class="dropdown-item" id="oauth-link-btn">
                     OAuth Link
                   </button>
                 </li>
-                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-                <li><button type="button" class="dropdown-item" id="add-website-url">Link Website</button></li>
-
                 <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
                 <li>
                   <span style="font-size:1em;">Guided Onboarding</span>
@@ -109,7 +108,7 @@
                     <span class="slider round"></span>
                   </label>
                 </li>
-                <li>
+                 <li>
                   <button type="button" class="dropdown-item" id="show-referral-link-btn">
                     Show Referral Link
                   </button>
@@ -158,9 +157,14 @@
   <!-- User Profile -->
   <section class="userprofile">
     <h2>Welcome, <span id="user-name">[Username]</span></h2>
-    <div class="wallet">Wallet: $[Wallet] 
-      <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
-    </div>
+   
+<div class="wallet-nextstep-row" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+  <div class="wallet">Wallet: $[Wallet] 
+    <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
+  </div>
+
+  <div class="setup-nextstep" id="setup-nextstep" role="button" tabindex="0" aria-label="Setup - next step">Setup: checking…</div>
+</div>
 
     <!-- Profile + Activity row (each in its own fieldset) -->
     <div class="top-profile-activity-layout">
@@ -185,7 +189,7 @@
                 Website:
                 <a id="user-website-link" href="#" target="_blank" rel="noopener noreferrer"></a>
               </p>
-            <p>Platforms Handles: <span id="social_handles">[Linked Platforms]</span> </p>
+            <p>Platform Handles: <span id="social_handles">[Linked Platforms]</span> </p>
            
 
           </div>
@@ -1216,6 +1220,7 @@ section li {
 </script>
 
 <script type="module" src="./js/settings.js"></script>
+<script type="module" src="./js/setupNextStep.js"></script>
 <script type="module">import './js/sponseeOffers.js';</script>
 <script type="module">import './js/sponseeLogic.js';</script>
 <script type="module">import './js/userReports.js';</script>
@@ -1457,8 +1462,3 @@ section li {
 
 </body>
 </html>
-
-
-
-
-
