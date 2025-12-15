@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function refresh() {
     try {
-      setPill(el, { text: 'Setup: checking…', subtext: '', status: 'info' });
+      setPill(el, { text: '', subtext: '', status: 'info' });
 
       const res = await computeSteps();
       latest = res;
@@ -333,3 +333,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await refresh();
 });
+
