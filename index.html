@@ -170,7 +170,7 @@
                             </div>
 
                             <div style="text-align:center;font-size:1.05em;color:#e9e9e9;margin-top:6px;width:100%;">
-                                <b>Offers paid out on Completion &nbsp;|&nbsp; Growing creators & brands &nbsp;|&nbsp; Userbased Ratings</b>
+                                <b>Offers paid out on Completion &nbsp;|&nbsp; Growing creators & brands &nbsp;|&nbsp; Userbased Rattings</b>
                             </div>
                         </div>
 
@@ -336,21 +336,54 @@
             </div>
         </section>
 
-        <!-- Calculator -->
-        <fieldset class="home-cont">
-            <div class="section-title">Estimate Your Sponsorship Earnings</div>
-            <section class="calculator">
-                <h2>Calculate Your Earnings</h2>
-                <form onsubmit="return false;">
-                    <label for="followers">Followers:</label>
-                    <input type="number" id="followers" name="followers" placeholder="e.g. 10000" min="0">
-                    <label for="engagement">Engagement Rate (%):</label>
-                    <input type="number" id="engagement" name="engagement" placeholder="e.g. 5" min="0" max="100">
-                    <button type="button" id="calc-earnings-btn">Calculate</button>
-                </form>
-                <div id="earningsResult"></div>
-            </section>
-        </fieldset>
+      <section class="calculator">
+  <h2>Calculate Your Earnings</h2>
+
+  <form onsubmit="return false;">
+    <label for="calcPlatform">Platform:</label>
+    <select id="calcPlatform">
+      <option value="instagram">Instagram</option>
+      <option value="tiktok">TikTok</option>
+      <option value="youtube">YouTube</option>
+      <option value="facebook">Facebook</option>
+      <option value="x">X (Twitter)</option>
+      <option value="snapchat">Snapchat</option>
+      <option value="twitch">Twitch</option>
+    </select>
+
+    <label for="calcDeliverable">Deliverable:</label>
+    <select id="calcDeliverable">
+      <option value="instagram_post">IG Post</option>
+      <option value="instagram_story">IG Story</option>
+      <option value="instagram_reel">IG Reel</option>
+      <option value="tiktok_video">TikTok Video</option>
+      <option value="youtube_integration">YouTube Integration</option>
+
+      <option value="twitch_sponsored_stream">Twitch Sponsored Stream</option>
+      <option value="twitch_overlay">Twitch Overlay + Mention</option>
+      <option value="twitch_chat_command">Twitch Chat Command</option>
+    </select>
+
+    <label for="followers">Followers / Subscribers:</label>
+    <input type="number" id="followers" name="followers" placeholder="e.g. 10000" min="0">
+
+    <label for="avgViews">Average views / reach per post (or Avg CCV for Twitch):</label>
+    <input type="number" id="avgViews" name="avgViews" placeholder="e.g. 4000 (or 75 CCV)" min="0">
+
+    <div id="streamHoursWrap" style="display:none;">
+      <label for="streamHours">Stream length (hours):</label>
+      <input type="number" id="streamHours" name="streamHours" placeholder="e.g. 2" min="0" step="0.25">
+    </div>
+
+    <label for="engagement">Engagement Rate (% optional):</label>
+    <input type="number" id="engagement" name="engagement" placeholder="e.g. 5" min="0" max="100">
+
+    <button type="button" id="calc-earnings-btn">Calculate</button>
+  </form>
+
+  <div id="earningsResult"></div>
+</section>
+
 
         <!-- POWERED BY SECTION -->
         <section class="powered-by" style="width:100%;padding:34px 0 24px 0;background:linear-gradient(90deg,#000000 60%,#000000 120%);text-align:center;">
@@ -446,11 +479,11 @@
     <script>
       // Set which platforms are approved (true = approved check is ON)
       const APPROVALS = {
-        facebook: false,
+        facebook: true,
         tiktok:   false,
         twitch:   true,
         youtube:  true,
-        instagram:false
+        instagram:true
       };
 
       // Public page should be read-only; set to false if you want to click-tick them while testing.
@@ -692,6 +725,3 @@
 
 </body>
 </html>
-
-
-
