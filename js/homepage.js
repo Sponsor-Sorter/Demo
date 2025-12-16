@@ -323,16 +323,101 @@ async function initTestimonialCarousel() {
 }
 
 /* ========== CALCULATOR ========== */
+function clamp(n, min, max) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function money(n) {
+  if (!isFinite(n)) return '$0';
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function setupCalculatorUi() {
+  const platformEl = document.getElementById('calcPlatform');
+  const deliverableEl = document.getElementById('calcDeliverable');
+  const hoursWrap = document.getElementById('streamHoursWrap');
+
+  if (!platformEl || !deliverableEl || !hoursWrap) return;
+
+  function refresh() {
+    const platform = (platformEl.value || '').toLowerCase();
+    const deliverable = (deliverableEl.value || '').toLowerCase();
+    const isTwitch = platform === 'twitch' || deliverable.startsWith('twitch_');
+    hoursWrap.style.display = isTwitch ? 'block' : 'none';
+  }
+
+  platformEl.addEventListener('change', refresh);
+  deliverableEl.addEventListener('change', refresh);
+  refresh();
+}
+
 function calculateEarnings() {
-  const followers = document.getElementById('followers').value;
-  const engagement = document.getElementById('engagement').value;
-  if (!followers || !engagement) {
-    document.getElementById('earningsResult').innerHTML = "<span style='color:red;'>Please enter both values.</span>";
+  const resultEl = document.getElementById('earningsResult');
+  if (!resultEl) return;
+
+  const platform = (document.getElementById('calcPlatform')?.value || 'instagram').toLowerCase();
+  const deliverable = (document.getElementById('calcDeliverable')?.value || 'instagram_post').toLowerCase();
+
+  const followers = parseFloat(document.getElementById('followers')?.value || '0');
+  const engagement = parseFloat(document.getElementById('engagement')?.value || '0');
+  const avgViews = parseFloat(document.getElementById('avgViews')?.value || '0');
+
+  const streamHours = parseFloat(document.getElementById('streamHours')?.value || '1') || 1;
+
+  if (!isFinite(followers) || followers < 0) {
+    resultEl.innerHTML = `<span style="color:red;">Please enter a valid follower/subscriber count.</span>`;
     return;
   }
+
+  // -------- Twitch path (uses Avg CCV * hours * $/viewer-hour) --------
+  // Benchmark: ~$0.80–$1.20 per average concurrent viewer per hour. :contentReference[oaicite:1]{index=1}
+  if (platform === 'twitch' || deliverable.startsWith('twitch_')) {
+    if (!isFinite(avgViews) || avgViews <= 0) {
+      resultEl.innerHTML = `<span style="color:red;">For Twitch, enter your Avg CCV in the “Average views / reach” field.</span>`;
+      return;
+    }
+
+    const baseLow = 0.80;
+    const baseMid = 1.00;
+    const baseHigh = 1.20;
+
+    // Discount lighter deliverables vs a full sponsored stream
+    let deliverableMult = 1.0;
+    if (deliverable === 'twitch_overlay') deliverableMult = 0.45;
+    if (deliverable === 'twitch_chat_command') deliverableMult = 0.30;
+
+    const low = avgViews * streamHours * baseLow * deliverableMult;
+    const mid = avgViews * streamHours * baseMid * deliverableMult;
+    const high = avgViews * streamHours * baseHigh * deliverableMult;
+
+    resultEl.innerHTML = `
+      <div style="margin-top:10px;">
+        <div><strong>Estimated Twitch rate:</strong></div>
+        <div style="margin-top:6px;">
+          <div>Low: <strong>${money(low)}</strong></div>
+          <div>Typical: <strong>${money(mid)}</strong></div>
+          <div>High: <strong>${money(high)}</strong></div>
+        </div>
+        <div style="margin-top:10px; opacity:0.9; font-size:0.95em;">
+          • Based on Avg CCV × hours × viewer-hour benchmark<br/>
+          • Overlay / chat command deliverables are discounted vs a full sponsored stream
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // -------- Non-Twitch fallback (keep your existing simple approach if you want) --------
+  // If you haven't wired the deeper multi-platform model yet, this keeps it functional:
+  if (!followers || !engagement) {
+    resultEl.innerHTML = "<span style='color:red;'>Please enter Followers/Subscribers and Engagement Rate.</span>";
+    return;
+  }
+
   const earnings = (followers * engagement * 0.01);
-  document.getElementById('earningsResult').innerHTML = "Estimated Earnings: <strong>$" + earnings.toFixed(2) + "</strong>";
+  resultEl.innerHTML = "Estimated Earnings: <strong>$" + earnings.toFixed(2) + "</strong>";
 }
+
 
 /* ========== PAGE INIT ========== */
 window.addEventListener('DOMContentLoaded', () => {
@@ -353,7 +438,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Testimonials
   initTestimonialCarousel();
 
-  // Calculator
-  const calcBtn = document.getElementById('calc-earnings-btn');
-  if (calcBtn) calcBtn.onclick = calculateEarnings;
+// Calculator
+const calcBtn = document.getElementById('calc-earnings-btn');
+if (calcBtn) calcBtn.onclick = calculateEarnings;
+setupCalculatorUi();
+
 });
