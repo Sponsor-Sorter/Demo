@@ -12,6 +12,11 @@
   <!-- Keep these if you want the logged-in settings dropdown + alerts to work on this page -->
   <script type="module" src="./js/settings.js"></script>
   <script type="module" src="./js/alerts.js"></script>
+
+  <!-- Google AdSense: global loader (only include once per page) -->
+  <script async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2952658528120109"
+          crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -20,7 +25,7 @@
     <div class="navii">
       <h5><header>Sponsor Sorter</header></h5>
       <div>
-        <background-img class="navimg" src="navimg.png" alt=""></background-img>
+        <background-img class="navimg" src="./navimg.png" alt=""></background-img>
 
         <nav>
           <li><a href="./index.html">Home</a></li>
@@ -35,12 +40,12 @@
           <li id="settings-notif-bar" style="display:none;">
             <div class="icon-bar-bg">
               <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-                <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+                <img src="./bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
                 <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
               </button>
 
               <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-                <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+                <img src="./cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
               </button>
 
               <div id="settings-dropdown" class="settings-dropdown">
@@ -62,68 +67,92 @@
   </section>
 </header>
 
-<section>
-  <div class="blog-hero">
-    <h1>📚 Blog & Resource Center</h1>
-    <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
-  </div>
-
-  <!-- Non-blocking guest banner -->
-  <div id="blog-guest-banner" class="blog-guest-banner" style="display:none;"></div>
-
-  <!-- Featured section -->
-  <div id="featured-wrap" class="featured-wrap" style="display:none;">
-    <h2 class="featured-title">⭐ Featured</h2>
-    <div id="featured-list" class="featured-list">
-      <div class="blog-loading">Loading featured articles...</div>
+<div class="leftmain">
+  <section>
+    <div class="blog-hero">
+      <h1>📚 Blog & Resource Center</h1>
+      <p>Actionable tips, guides, and platform updates for both creators and sponsors. Discover our latest resources, stories, and news.</p>
     </div>
-  </div>
 
-  <div class="blog-controls">
-    <input type="text" id="blog-search" placeholder="Search articles, guides, authors...">
-    <select id="blog-category">
-      <option value="">All Categories</option>
-      <option value="guides">Guides</option>
-      <option value="case_study">Case Studies</option>
-      <option value="platform">Platform News</option>
-      <option value="tips">Tips</option>
-      <option value="analytics">Analytics</option>
-    </select>
-    <button id="blog-add-btn" style="display:none;">➕ New Article</button>
-  </div>
+    <!-- Non-blocking guest banner -->
+    <div id="blog-guest-banner" class="blog-guest-banner" style="display:none;"></div>
 
-  <!-- Main list -->
-  <div id="blog-list" class="blog-list">
-    <div class="blog-loading">Loading articles...</div>
-  </div>
-</section>
+    <!-- Featured section -->
+    <div id="featured-wrap" class="featured-wrap" style="display:none;">
+      <h2 class="featured-title">⭐ Featured</h2>
+      <div id="featured-list" class="featured-list">
+        <div class="blog-loading">Loading featured articles...</div>
+      </div>
+    </div>
+
+    <div class="blog-controls">
+      <input type="text" id="blog-search" placeholder="Search articles, guides, authors...">
+      <select id="blog-category">
+        <option value="">All Categories</option>
+        <option value="guides">Guides</option>
+        <option value="case_study">Case Studies</option>
+        <option value="platform">Platform News</option>
+        <option value="tips">Tips</option>
+        <option value="analytics">Analytics</option>
+      </select>
+      <button id="blog-add-btn" style="display:none;">➕ New Article</button>
+    </div>
+
+    <!-- Main list -->
+    <div id="blog-list" class="blog-list">
+      <div class="blog-loading">Loading articles...</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footercomplete">
+    <div class="footer-text">
+      <ul>
+        <li><a href="./help.html">Help</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./privacy.html">Privacy Policy</a></li>
+        <li><a href="./terms.html">Terms of Service</a></li>
+        <li><a href="./reviews.html">Reviews</a></li>
+        <li><a href="./blog.html">Blog</a></li>
+        <li><a href="./forum.html">Forum</a></li>
+        <li><a href="./stats.html">Stats</a></li>
+      </ul>
+    </div>
+    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo">
+    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
+      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+      Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+    </div>
+  </footer>
+</div>
 
 <!-- Admin Blog Modal -->
 <div id="blog-modal-root"></div>
 
-<!-- Guest “keep reading” gate modal -->
-<div id="guest-gate-modal-root"></div>
+<!-- LEFT & RIGHT AD COLUMNS (only visible ≥1200px wide) -->
+<aside class="ad-sidebar ad-sidebar-left">
+  <div class="ad-slot-vertical">
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:160px;height:600px"
+         data-ad-client="ca-pub-2952658528120109"
+         data-ad-slot="4338950236"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</aside>
 
-<!-- FOOTER -->
-<footer class="footercomplete">
-  <div class="footer-text">
-    <ul>
-      <li><a href="./help.html">Help</a></li>
-      <li><a href="./contact.html">Contact</a></li>
-      <li><a href="./privacy.html">Privacy Policy</a></li>
-      <li><a href="./terms.html">Terms of Service</a></li>
-      <li><a href="./reviews.html">Reviews</a></li>
-      <li><a href="./blog.html">Blog</a></li>
-      <li><a href="./forum.html">Forum</a></li>
-      <li><a href="./stats.html">Stats</a></li>
-    </ul>
+<aside class="ad-sidebar ad-sidebar-right">
+  <div class="ad-slot-vertical">
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:160px;height:600px"
+         data-ad-client="ca-pub-2952658528120109"
+         data-ad-slot="1712786892"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
-  <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo">
-  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-    Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-  </div>
-</footer>
+</aside>
 
 <style>
 .blog-hero { margin: 40px auto 14px auto; max-width: 760px; text-align: center; }
@@ -234,35 +263,6 @@
 .blog-modal-cancel { background:#23232b; color:#fff;}
 .blog-modal-save { background:#f6c62e; color:#222; }
 
-/* Guest gate modal */
-#guest-gate-modal-root { position:fixed; inset:0; z-index:9200; display:none; }
-#guest-gate-modal-root.active { display:block; }
-.gate-backdrop { position:absolute; inset:0; background:#000c; }
-.gate-modal {
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  width: min(520px, 95vw);
-  background:#222436;
-  border: 1.5px solid #323247;
-  border-radius: 14px;
-  box-shadow: 0 10px 60px #000b;
-  padding: 22px 18px;
-  color:#f8f8ff;
-}
-.gate-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.gate-title { margin:0; color:#36a2eb; font-size:1.15em; }
-.gate-close {
-  background: transparent; border:none; color:#fff; cursor:pointer;
-  font-size: 18px; line-height: 1; padding: 6px 8px; border-radius: 8px;
-}
-.gate-close:hover { background:#23232b; }
-.gate-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-.gate-actions a {
-  display:inline-block; padding: 9px 14px; border-radius: 10px;
-  text-decoration:none; font-weight: 900;
-}
-.gate-actions .primary { background:#f6c62e; color:#222; }
-.gate-actions .secondary { background:#23232b; color:#fff; border:1px solid #3a3a4e; }
-
 @media (max-width: 950px) {
   .blog-list { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
   .blog-hero { padding: 0 8px; }
@@ -272,6 +272,58 @@
   .blog-hero h1 { font-size: 1.3em;}
   .blog-controls { flex-direction: column; gap: 10px; }
   .blog-guest-banner { flex-direction: column; align-items: flex-start; }
+}
+
+/* NAV + AD SIDEBARS */
+.navii {
+  margin-left: auto;
+  margin-right: auto;
+}
+.navbar {
+  width: 100%;
+}
+.navii > div:nth-child(3) {
+  width: 100%;
+}
+
+/* Ad sidebars hidden by default */
+.ad-sidebar {
+  display: none;
+}
+
+/* Show side ads on wide screens and center main column between them */
+@media (min-width: 1200px) {
+  .ad-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 120px;
+    width: 160px;
+    z-index: 50;
+  }
+
+  .ad-sidebar-left {
+    left: 20px;
+  }
+
+  .ad-sidebar-right {
+    right: 20px;
+  }
+
+  .ad-slot-vertical {
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  /* Main content centered between left and right ad columns */
+  .leftmain {
+    margin-left: 220px;
+    margin-right: 220px;
+  }
 }
 </style>
 
@@ -354,56 +406,6 @@ function hideGuestBanner() {
   if (!banner) return;
   banner.style.display = 'none';
   banner.innerHTML = '';
-}
-
-function openGuestGateModal(intendedUrl = './signup.html') {
-  const root = document.getElementById('guest-gate-modal-root');
-  if (!root) return;
-
-  const safeUrl = intendedUrl || './signup.html';
-  const loginNext = `./login.html?next=${encodeURIComponent(safeUrl)}`;
-  const signupNext = `./signup.html?next=${encodeURIComponent(safeUrl)}`;
-
-  root.classList.add('active');
-  root.innerHTML = `
-    <div class="gate-backdrop" id="gate-backdrop"></div>
-    <div class="gate-modal" role="dialog" aria-modal="true" aria-label="Sign up to keep reading">
-      <div class="gate-top">
-        <div>
-          <h3 class="gate-title">Sign up to keep reading</h3>
-          <div style="opacity:.92; margin-top:6px; line-height:1.55;">
-            This article is available to members. Create an account (or log in) to read the full post.
-          </div>
-        </div>
-        <button class="gate-close" type="button" id="gate-close" aria-label="Close">✕</button>
-      </div>
-
-      <div class="gate-actions">
-        <a class="secondary" href="${loginNext}">Log in</a>
-        <a class="primary" href="${signupNext}">Create account</a>
-      </div>
-
-      <div style="opacity:.75; font-size:.92em; margin-top:12px;">
-        Tip: Members also get access to dashboards, offers, and platform tools.
-      </div>
-    </div>
-  `;
-
-  const close = () => {
-    root.classList.remove('active');
-    root.innerHTML = '';
-  };
-
-  root.querySelector('#gate-close')?.addEventListener('click', close);
-  root.querySelector('#gate-backdrop')?.addEventListener('click', close);
-
-  // ESC to close
-  document.addEventListener('keydown', function onEsc(e) {
-    if (e.key === 'Escape') {
-      close();
-      document.removeEventListener('keydown', onEsc);
-    }
-  });
 }
 
 async function initAsAuthenticated(sessionUser) {
@@ -740,18 +742,6 @@ window.handleImgError = function(event, fallback = './logos.png') {
   if (!event.target.src.endsWith(fallback)) event.target.src = fallback;
 };
 
-// Gate anon users when they click "Read More"
-document.addEventListener('click', (e) => {
-  const link = e.target?.closest?.('a.read-more-link');
-  if (!link) return;
-
-  if (!currentSessionUser) {
-    e.preventDefault();
-    const intended = link.getAttribute('data-url') || link.getAttribute('href') || './signup.html';
-    openGuestGateModal(intended);
-  }
-});
-
 // --- Page bootstrap ---
 document.addEventListener('DOMContentLoaded', async () => {
   wireFilters();
@@ -776,4 +766,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </body>
 </html>
-
