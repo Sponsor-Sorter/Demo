@@ -170,7 +170,7 @@
                             </div>
 
                             <div style="text-align:center;font-size:1.05em;color:#e9e9e9;margin-top:6px;width:100%;">
-                                <b>Offers paid out on Completion &nbsp;|&nbsp; Growing creators & brands &nbsp;|&nbsp; Userbased Ratings</b>
+                                <b>Offers paid out on Completion &nbsp;|&nbsp; Growing creators & brands &nbsp;|&nbsp; Userbased Rattings</b>
                             </div>
                         </div>
 
@@ -336,78 +336,162 @@
             </div>
         </section>
 
-      <section class="calculator">
-  <h2>Calculate Your Earnings</h2>
+<section class="calculator2" id="rate-calculator">
+  <div class="calc-shell">
+    <!-- LEFT: platform icon rail -->
+    <div class="calc-rail" role="tablist" aria-label="Choose platform">
+      <button class="calc-tab is-active" type="button" data-platform="instagram" aria-selected="true" title="Instagram">
+        <img src="./instagramlogo.png" alt="Instagram">
+        <span>IG</span>
+      </button>
 
-  <form onsubmit="return false;">
-    <label for="calcPlatform">Platform:</label>
-    <select id="calcPlatform">
-      <option value="instagram">Instagram</option>
-      <option value="tiktok">TikTok</option>
-      <option value="youtube">YouTube</option>
-      <option value="facebook">Facebook</option>
-      <option value="x">X (Twitter)</option>
-      <option value="snapchat">Snapchat</option>
-      <option value="twitch">Twitch</option>
-    </select>
+      <button class="calc-tab" type="button" data-platform="tiktok" aria-selected="false" title="TikTok">
+        <img src="./tiktoklogo.png" alt="TikTok">
+        <span>TikTok</span>
+      </button>
 
-    <label for="calcDeliverable">Deliverable:</label>
-    <select id="calcDeliverable">
-      <option value="instagram_post">IG Post</option>
-      <option value="instagram_story">IG Story</option>
-      <option value="instagram_reel">IG Reel</option>
-      <option value="tiktok_video">TikTok Video</option>
-      <option value="youtube_integration">YouTube Integration</option>
+      <button class="calc-tab" type="button" data-platform="youtube" aria-selected="false" title="YouTube">
+        <img src="./youtubelogo.png" alt="YouTube">
+        <span>YT</span>
+      </button>
 
-      <option value="twitch_sponsored_stream">Twitch Sponsored Stream</option>
-      <option value="twitch_overlay">Twitch Overlay + Mention</option>
-      <option value="twitch_chat_command">Twitch Chat Command</option>
-    </select>
+      <button class="calc-tab" type="button" data-platform="twitch" aria-selected="false" title="Twitch">
+        <img src="./twitchlogo.png" alt="Twitch">
+        <span>Twitch</span>
+      </button>
 
-    <label for="followers">Followers / Subscribers:</label>
-    <input type="number" id="followers" name="followers" placeholder="e.g. 10000" min="0">
+      <button class="calc-tab" type="button" data-platform="facebook" aria-selected="false" title="Facebook">
+        <img src="./facebooklogo.png" alt="Facebook">
+        <span>FB</span>
+      </button>
 
-    <label for="avgViews">Average views / reach per post (or Avg CCV for Twitch):</label>
-    <input type="number" id="avgViews" name="avgViews" placeholder="e.g. 4000 (or 75 CCV)" min="0">
+      <button class="calc-tab" type="button" data-platform="x" aria-selected="false" title="X">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="X">
+        <span>X</span>
+      </button>
 
-    <div id="streamHoursWrap" style="display:none;">
-      <label for="streamHours">Stream length (hours):</label>
-      <input type="number" id="streamHours" name="streamHours" placeholder="e.g. 2" min="0" step="0.25">
+      <button class="calc-tab" type="button" data-platform="snapchat" aria-selected="false" title="Snapchat">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111466.png" alt="Snapchat">
+        <span>Snap</span>
+      </button>
     </div>
 
-    <label for="engagement">Engagement Rate (% optional):</label>
-    <input type="number" id="engagement" name="engagement" placeholder="e.g. 5" min="0" max="100">
+    <!-- RIGHT: calculator content -->
+    <div class="calc-main">
+      <div class="calc-head">
+        <div>
+          <h2 style="margin:0;">Rate Estimator</h2>
+          <div class="calc-sub">Transparent estimates based on your inputs. It’s a guide — niche & audience quality still matter.</div>
+        </div>
 
-    <button type="button" id="calc-earnings-btn">Calculate</button>
-  </form>
+        <div class="calc-badge" id="calc-platform-badge">Instagram</div>
+      </div>
 
-  <div id="earningsResult"></div>
+      <!-- Hidden fields used by JS -->
+      <input type="hidden" id="calcPlatform" value="instagram">
+      <input type="hidden" id="calcDeliverable" value="instagram_post">
+
+      <!-- Deliverables chips -->
+      <div class="calc-block">
+        <div class="calc-label">Deliverable</div>
+        <div class="chip-row" id="calcDeliverables"></div>
+      </div>
+
+      <!-- Inputs -->
+      <div class="calc-grid">
+        <div class="calc-block">
+          <label class="calc-label" for="followers">Followers / Subscribers</label>
+          <input type="number" id="followers" placeholder="e.g. 12,000" min="0">
+        </div>
+
+        <div class="calc-block">
+          <label class="calc-label" for="avgViews" id="avgViewsLabel">Average views / reach</label>
+          <input type="number" id="avgViews" placeholder="e.g. 3,500" min="0">
+          <div class="calc-hint" id="avgViewsHint">Tip: If you know your typical reach/views, this makes the estimate way more accurate.</div>
+        </div>
+
+        <div class="calc-block" id="streamHoursWrap" style="display:none;">
+          <label class="calc-label" for="streamHours">Stream length (hours)</label>
+          <input type="number" id="streamHours" placeholder="e.g. 2" min="0" step="0.25">
+        </div>
+
+        <div class="calc-block">
+          <label class="calc-label" for="engagement">Engagement rate % (optional)</label>
+          <input type="number" id="engagement" placeholder="e.g. 5" min="0" max="100" step="0.1">
+          <div class="calc-hint">Leave blank if you’re unsure — we’ll assume a baseline for the platform.</div>
+        </div>
+      </div>
+
+      <!-- Modifiers -->
+      <div class="calc-advanced">
+        <div class="calc-adv-title">Add-ons (optional)</div>
+
+        <div class="calc-grid" style="margin-top:10px;">
+          <div class="calc-block">
+            <label class="calc-label" for="usageRights">Usage rights</label>
+            <select id="usageRights">
+              <option value="none">None</option>
+              <option value="30d">30 days paid usage</option>
+              <option value="6m">6 months paid usage</option>
+              <option value="12m">12 months paid usage</option>
+            </select>
+          </div>
+
+          <div class="calc-block">
+            <label style="color: white;" class="calc-label" for="exclusivity">Category exclusivity</label>
+            <select id="exclusivity">
+              <option value="none">None</option>
+              <option value="7d">7 days</option>
+              <option value="30d">30 days</option>
+            </select>
+          </div>
+
+          <div class="calc-block">
+            <label class="calc-label" style="display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="whitelisting" style="transform:scale(1.1);">
+              Whitelisting / Ads run from your handle
+            </label>
+          </div>
+
+          <div class="calc-block">
+            <label class="calc-label" style="display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="rush" style="transform:scale(1.1);">
+              Rush delivery
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button type="button" id="calc-earnings-btn" class="calc-btn">Estimate rate</button>
+        <div class="calc-note">We show a range + the assumptions used. You can screenshot this for brands.</div>
+      </div>
+
+      <div id="earningsResult" class="calc-output"></div>
+    </div>
+  </div>
 </section>
 
 
-        <!-- POWERED BY SECTION -->
-        <section class="powered-by" style="width:100%;padding:34px 0 24px 0;background:linear-gradient(90deg,#000000 60%,#000000 120%);text-align:center;">
-            <div style="font-size:1.18em;font-weight:600;color:#ffffff;margin-bottom:19px;letter-spacing:0.02em;">Powered by up-incoming industry leaders</div>
-            <div style="display:flex;justify-content:center;gap:36px;flex-wrap:wrap;">
-                <div style="background:#fff;border-radius:13px;box-shadow:0 1px 7px #5a5b9212;display:flex;align-items:center;padding:10px 22px;gap:11px;min-width:210px;">
-                    <img src="./stripe.png" alt="Stripe" style="height:32px;width:auto;vertical-align:middle;">
-                    <span style="color:#242a46;font-size:1.09em;">Stripe Secure Payments</span>
+              <!-- Live stats -->
+              <div class="stat-strip" aria-label="Live platform stats">
+                <div class="stat-card">
+                  <div class="stat-k" id="stat-users">—</div>
+                  <div class="stat-l">profiles created</div>
                 </div>
-                <div style="background:#fff;border-radius:13px;box-shadow:0 1px 7px #5a5b9212;display:flex;align-items:center;padding:10px 22px;gap:11px;min-width:210px;">
-                    <img src="./supabase.png" alt="Supabase" style="height:32px;width:auto;vertical-align:middle;">
-                    <span style="color:#242a46;font-size:1.09em;">Powered by Supabase</span>
+                <div class="stat-card">
+                  <div class="stat-k" id="stat-offers">—</div>
+                  <div class="stat-l">offers posted</div>
                 </div>
-                <div style="background:#fff;border-radius:13px;box-shadow:0 1px 7px #5a5b9212;display:flex;align-items:center;padding:10px 22px;gap:11px;min-width:210px;">
-                    <img src="./resend.png" alt="Resend" style="height:32px;width:auto;vertical-align:middle;">
-                    <span style="color:#242a46;font-size:1.09em;">Transactional Email by Resend</span>
+                <div class="stat-card">
+                  <div class="stat-k" id="stat-reviews">—</div>
+                  <div class="stat-l">reviews written</div>
                 </div>
-                <div style="background:#fff;border-radius:13px;box-shadow:0 1px 7px #5a5b9212;display:flex;align-items:center;padding:10px 22px;gap:11px;min-width:210px;">
-                    <img src="./openai.png" alt="OpenAI" style="height:32px;width:auto;vertical-align:middle;">
-                    <span style="color:#242a46;font-size:1.09em;">AI-powered by OpenAI</span>
-                </div>
+              </div>
             </div>
-        </section>
-        <section>
+
+
+                <section>
             <!-- Newsletter -->
             <form class="newsletter" style="margin:22px 0 12px 0;text-align:center;">
                 <label for="newsletter-email" style="font-size:1em;">Stay up to date:</label>
@@ -522,6 +606,19 @@
   display: none;
 }
 
+   .stat-strip { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0 6px; }
+    .stat-card {
+      padding: 14px 14px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+    .stat-k { font-size: 1.35em; font-weight: 900; letter-spacing: .02em; }
+    .stat-l { font-size: .95em; color: rgba(255,255,255,0.78); margin-top: 4px; }
+
+
 /* SAFETY STRIP */
 .safety-strip {
   border-radius: 18px;
@@ -537,6 +634,10 @@
 .safety-link {
   color: #7bffb6;
   text-decoration: underline;
+}
+
+#exclusivity option, #usageRights option {
+    color: black;
 }
 
 
@@ -697,6 +798,158 @@
   letter-spacing: 0.06em;
 }
 
+/* ===== Sleek Rate Calculator ===== */
+.calculator2 { width: min(980px, 92vw); margin: 24px auto; }
+.calc-shell {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(10px);
+  padding: 14px;
+}
+
+.calc-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.calc-tab {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+  color: #fff;
+  font-weight: 800;
+  transition: transform .08s ease, background .18s ease, border-color .18s ease;
+}
+.calc-tab img { width: 22px; height: 22px; object-fit: contain; }
+.calc-tab span { font-size: .85em; opacity: .95; }
+.calc-tab:hover { transform: translateY(-1px); }
+.calc-tab.is-active {
+  background: rgba(246,198,46,0.18);
+  border-color: rgba(246,198,46,0.55);
+}
+
+.calc-main { padding: 6px 6px 10px; }
+.calc-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.calc-sub { margin-top:6px; color: rgba(255,255,255,0.78); line-height: 1.45; max-width: 700px; }
+.calc-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  background: rgba(49,0,210,0.30);
+  border: 1px solid rgba(49,0,210,0.40);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.calc-block { margin-top: 14px; }
+.calc-label { display:block; margin-bottom:6px; font-weight: 900; letter-spacing: .01em; }
+.calc-hint { margin-top: 6px; font-size: .92em; color: rgba(255,255,255,0.72); }
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.calc-main input, .calc-main select {
+  width: 90%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  outline: none;
+}
+.calc-main input::placeholder { color: rgba(255,255,255,0.55); }
+
+.chip-row { display:flex; flex-wrap:wrap; gap: 10px; }
+.calc-chip {
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  transition: transform .08s ease, background .18s ease, border-color .18s ease;
+}
+.calc-chip:hover { transform: translateY(-1px); }
+.calc-chip.is-active {
+  background: rgba(0,150,255,0.18);
+  border-color: rgba(0,150,255,0.55);
+}
+
+.calc-advanced {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+.calc-adv-title { font-weight: 900; color: rgba(255,255,255,0.92); }
+
+.calc-actions { display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap:wrap; margin-top: 16px; }
+.calc-btn {
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 900;
+  background: #3100d2;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0,0,0,.28);
+}
+.calc-note { color: rgba(255,255,255,0.74); font-size: .95em; }
+
+.calc-output {
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.22);
+  padding: 14px;
+}
+
+.calc-range {
+  display:flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.calc-range .big {
+  font-size: 1.6em;
+  font-weight: 1000;
+  letter-spacing: .02em;
+}
+.calc-range .mid { color: rgba(255,255,255,0.78); font-weight: 800; }
+
+.calc-break {
+  margin-top: 10px;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.55;
+}
+.calc-break b { color:#fff; }
+
+@media (max-width: 860px) {
+  .calc-shell { grid-template-columns: 1fr; }
+  .calc-rail { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+
 /* Slightly smaller screens: shrink phone a bit */
 @media (max-width: 1180px) {
   .hero-phone-img {
@@ -725,4 +978,3 @@
 
 </body>
 </html>
-
