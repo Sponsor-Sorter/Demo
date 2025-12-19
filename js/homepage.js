@@ -1,13 +1,36 @@
-// /public/js/homepage.js
+// ./js/homepage.js
 import { supabase } from './supabaseClient.js';
 
-/* ========== UTIL ========== */
+/* =========================
+   UTIL
+========================= */
 function escapeHtml(str) {
   return String(str ?? '')
     .replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;' }[c]));
 }
 
-/* ========== ACTIVITY TICKER ========== */
+function compactNumber(n) {
+  const num = Number(n);
+  if (!Number.isFinite(num)) return '—';
+  try {
+    return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(num);
+  } catch {
+    return String(num);
+  }
+}
+
+function clamp(n, min, max) {
+  const x = Number(n);
+  if (!Number.isFinite(x)) return min;
+  return Math.max(min, Math.min(max, x));
+}
+
+function money(n) {
+  const num = Number(n);
+  if (!Number.isFinite(num)) return '$0';
+  return '$' + Math.round(num).toLocaleString();
+}
+
 function timeAgo(dateString) {
   const now = new Date();
   const then = new Date(dateString);
@@ -18,179 +41,157 @@ function timeAgo(dateString) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
+/* =========================
+   LIVE STATS (profiles / offers / reviews)
+========================= */
+async function loadLiveStats() {
+  const usersEl = document.getElementById('stat-users');
+  const offersEl = document.getElementById('stat-offers');
+  const reviewsEl = document.getElementById('stat-reviews');
+  if (!usersEl && !offersEl && !reviewsEl) return;
+
+  if (usersEl) usersEl.textContent = '—';
+  if (offersEl) offersEl.textContent = '—';
+  if (reviewsEl) reviewsEl.textContent = '—';
+
+  try {
+    const [usersRes, offersRes, reviewsRes] = await Promise.all([
+      supabase.from('users_extended_data').select('id', { count: 'exact', head: true }),
+      supabase.from('private_offers').select('id', { count: 'exact', head: true }),
+      supabase.from('private_offer_reviews').select('id', { count: 'exact', head: true })
+    ]);
+
+    if (usersEl && typeof usersRes?.count === 'number') usersEl.textContent = compactNumber(usersRes.count);
+    if (offersEl && typeof offersRes?.count === 'number') offersEl.textContent = compactNumber(offersRes.count);
+    if (reviewsEl && typeof reviewsRes?.count === 'number') reviewsEl.textContent = compactNumber(reviewsRes.count);
+  } catch {
+    // leave placeholders
+  }
+}
+
+/* =========================
+   ACTIVITY TICKER
+========================= */
 const staticLines = [
-  "Paid out to creators",
-  "4.9/5 average user rating ⭐️⭐️⭐️⭐️⭐️",
-  "Brands could be searching for creators like you right now!",
-  "Sponsor Sorter – No bots. No spam. Just real connections.",
-  "100% escrow protection for every campaign",
-  "New! Invite friends—both get a free month!",
-  "Every offer is reviewed by FamBot for safety and trust",
-  "Our support team is available 24/7 for your success",
-  "Join the fastest-growing sponsorship community!",
-  "Stripe payments supported for all users.",
-  "Paypal Payments supported for all users.",
-  "Our support team is available 24/7 for your success",
-  "Review spotlight: 'The safest platform for collabs.'",
-  "Tom matched with 2 brands in his first week!",
-  "Now trending: Fitness offers in your area",
-  "Sponsor Sorter partners with Stripe for secure payments",
-  "Our average match time is under _ hours",
-  "Join creators earning on Sponsor Sorter",
-  "New! Invite friends—both get a free month!",
-  "Creator testimonial: 'Escrow made me feel safe!'"
+  "Open the guest dashboards to see the workflow (no login).",
+  "Clear stages, clear deliverables, clear payments.",
+  "Build reputation with reviews after completed deals.",
+  "Invite a friend — both get a free month.",
+  "No spreadsheets. No chaos. Just organized sponsorships."
 ];
 
 async function fetchActivityLines() {
   let lines = [];
 
   // Recent offers
-  let { data: offers } = await supabase
-    .from('private_offers')
-    .select('offer_title, sponsor_company, offer_amount, platforms, created_at')
-    .order('created_at', { ascending: false })
-    .limit(6);
+  try {
+    const { data: offers } = await supabase
+      .from('private_offers')
+      .select('offer_title, sponsor_company, offer_amount, platforms, created_at')
+      .order('created_at', { ascending: false })
+      .limit(6);
 
-  if (offers && offers.length) {
-    for (let offer of offers) {
-      const amount = offer.offer_amount ? `$${Number(offer.offer_amount).toLocaleString()}` : "";
-      const platforms = (offer.platforms && offer.platforms.length)
-        ? `on ${escapeHtml(offer.platforms.join(", "))}` : "";
-      const title = escapeHtml(offer.offer_title || "New Sponsorship Offer");
-      const company = escapeHtml(offer.sponsor_company || "A sponsor");
-      lines.push(
-        `🔥 ${company} posted "${title}" ${amount} ${platforms} (${timeAgo(offer.created_at)})`
-      );
+    if (offers && offers.length) {
+      for (let offer of offers) {
+        const amount = offer.offer_amount ? `$${Number(offer.offer_amount).toLocaleString()}` : "";
+        const platforms = (offer.platforms && offer.platforms.length)
+          ? `on ${escapeHtml(offer.platforms.join(", "))}` : "";
+        const title = escapeHtml(offer.offer_title || "New Sponsorship Offer");
+        const company = escapeHtml(offer.sponsor_company || "A sponsor");
+        lines.push(`🔥 ${company} posted "${title}" ${amount} ${platforms} (${timeAgo(offer.created_at)})`);
+      }
     }
-  }
+  } catch {}
 
-  // Recent reviews (use overall as fallback; clamp 1–5; skip invalid)
-  let { data: reviews } = await supabase
-    .from('private_offer_reviews')
-    .select('review_text, rating, overall, reviewer_role, reviewer_id, created_at')
-    .order('created_at', { ascending: false })
-    .limit(5);
+  // Recent reviews
+  try {
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select('review_text, rating, overall, reviewer_role, reviewer_id, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
 
-  if (reviews && reviews.length) {
-    const ids = Array.from(new Set(reviews.map(r => r.reviewer_id).filter(Boolean)));
-    let usernames = {};
-    if (ids.length) {
-      let { data: userData } = await supabase
-        .from('users_extended_data')
-        .select('user_id, username')
-        .in('user_id', ids);
-      if (userData) userData.forEach(u => { usernames[u.user_id] = u.username; });
+    if (reviews && reviews.length) {
+      const ids = Array.from(new Set(reviews.map(r => r.reviewer_id).filter(Boolean)));
+      let usernames = {};
+
+      if (ids.length) {
+        const { data: userData } = await supabase
+          .from('users_extended_data')
+          .select('user_id, username')
+          .in('user_id', ids);
+
+        if (userData) userData.forEach(u => { usernames[u.user_id] = u.username; });
+      }
+
+      for (let r of reviews) {
+        let raw = Number.isFinite(Number(r.rating)) && Number(r.rating) > 0 ? Number(r.rating) : Number(r.overall);
+        if (!Number.isFinite(raw) || raw <= 0) continue;
+
+        const rating = Math.max(1, Math.min(5, Math.round(raw)));
+        const name = usernames[r.reviewer_id] ? `@${escapeHtml(usernames[r.reviewer_id])}` : escapeHtml(r.reviewer_role || "User");
+        const reviewText = r.review_text
+          ? `"${escapeHtml(r.review_text.substring(0, 60))}${r.review_text.length > 60 ? "..." : ""}"`
+          : "";
+
+        const starHtml =
+          `<span style="color:#f6c62e;">${"★".repeat(rating)}</span>` +
+          `<span style="color:#9aa0a6;opacity:.35;">${"☆".repeat(5 - rating)}</span>`;
+
+        lines.push(`🌟 ${name} left a ${rating}/5 review: ${starHtml} ${reviewText} (${timeAgo(r.created_at)})`);
+      }
     }
+  } catch {}
 
-    for (let r of reviews) {
-      // prefer rating if valid; otherwise use overall
-      let raw = Number.isFinite(Number(r.rating)) && Number(r.rating) > 0
-        ? Number(r.rating)
-        : Number(r.overall);
-
-      if (!Number.isFinite(raw) || raw <= 0) continue; // skip null/NaN/0
-      const rating = Math.max(1, Math.min(5, Math.round(raw)));
-
-      const name = usernames[r.reviewer_id]
-        ? `@${escapeHtml(usernames[r.reviewer_id])}`
-        : escapeHtml(r.reviewer_role || "User");
-
-      const reviewText = r.review_text
-        ? `"${escapeHtml(r.review_text.substring(0, 60))}${r.review_text.length > 60 ? "..." : ""}"`
-        : "";
-
-      // Gold + gray star HTML (inline styles so no CSS needed)
-      const starHtml =
-        `<span style="color:#f6c62e;">${"★".repeat(rating)}</span>` +
-        `<span style="color:#9aa0a6;opacity:.35;">${"☆".repeat(5 - rating)}</span>`;
-
-      lines.push(
-        `🌟 ${name} left a ${rating}/5 review: ${starHtml} ${reviewText} (${timeAgo(r.created_at)})`
-      );
-    }
-  }
-
-  // Recent payouts
-  let { data: payouts } = await supabase
-    .from('offer_payouts')
-    .select('amount, user_id, created_at')
-    .order('created_at', { ascending: false })
-    .limit(3);
-
-  if (payouts && payouts.length) {
-    const ids = Array.from(new Set(payouts.map(p => p.user_id).filter(Boolean)));
-    let usernames = {};
-    if (ids.length) {
-      let { data: userData } = await supabase
-        .from('users_extended_data')
-        .select('user_id, username')
-        .in('user_id', ids);
-      if (userData) userData.forEach(u => { usernames[u.user_id] = u.username; });
-    }
-    for (let payout of payouts) {
-      const uname = usernames[payout.user_id];
-      const who = uname ? `@${escapeHtml(uname)}` : 'a creator';
-      lines.push(`💸 Paid out $${Number(payout.amount).toLocaleString()} to ${who} (${timeAgo(payout.created_at)})`);
-    }
-  }
-
-  // New users
-  let { data: users } = await supabase
-    .from('users_extended_data')
-    .select('username, location, created_at')
-    .order('created_at', { ascending: false })
-    .limit(3);
-
-  if (users && users.length) {
-    for (let user of users) {
-      if (user.username)
-        lines.push(`🎉 ${escapeHtml(user.username)}${user.location ? " from " + escapeHtml(user.location) : ""} just joined Sponsor Sorter!`);
-    }
-  }
-
-  // Shuffle with static lines appended
+  // append safe lines and shuffle
   lines = lines.concat(staticLines);
   for (let i = lines.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [lines[i], lines[j]] = [lines[j], lines[i]];
   }
+
   return lines;
 }
 
 let tickerLines = [];
 let tickerIdx = 0;
+
 async function startTicker() {
   tickerLines = await fetchActivityLines();
   if (!tickerLines.length) tickerLines = staticLines;
+
   const ticker = document.getElementById('activity-ticker');
   if (!ticker) return;
-  // Use innerHTML so colored stars render
+
   ticker.innerHTML = tickerLines[0];
+
   setInterval(() => {
     tickerIdx = (tickerIdx + 1) % tickerLines.length;
     ticker.innerHTML = tickerLines[tickerIdx];
   }, 3200);
 }
 
-/* ========== WHO USES CAROUSEL ========== */
+/* =========================
+   WHO USES CAROUSEL
+========================= */
 const slides = [
-  { title: "YouTubers", img: "youtuber.jpeg" },
-  { title: "Streamers", img: "streamer.jpeg" },
-  { title: "Influencers", img: "socialmediainfluencer.jpeg" },
-  { title: "Social Event Organizers", img: "socialevent.jpeg" },
-  { title: "Team Sports", img: "teamsports.jpeg" },
-  { title: "Content Creators", img: "youtuber1.jpeg" },
-  { title: "Startups", img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" },
-  { title: "Podcasters", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" },
-  { title: "Nonprofits", img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" }
+  { title: "YouTubers", img: "./youtuber.jpeg" },
+  { title: "Streamers", img: "./streamer.jpeg" },
+  { title: "Influencers", img: "./socialmediainfluencer.jpeg" },
+  { title: "Social Event Organizers", img: "./socialevent.jpeg" },
+  { title: "Team Sports", img: "./teamsports.jpeg" },
+  { title: "Content Creators", img: "./youtuber1.jpeg" }
 ];
+
 let currentSlide = 0;
 let autoAdvance;
+
 function showSlide(index) {
   const slide = slides[index];
   const title = document.getElementById("carousel-title");
   const img = document.getElementById("carousel-img");
-  if (!title || !img) return;
+  if (!title || !img || !slide) return;
+
   title.textContent = slide.title;
   img.style.opacity = "0";
   setTimeout(() => {
@@ -199,41 +200,68 @@ function showSlide(index) {
     img.style.opacity = "1";
   }, 260);
 }
-function goToPrev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); resetAutoAdvance(); }
-function goToNext() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); resetAutoAdvance(); }
-function resetAutoAdvance() { clearInterval(autoAdvance); autoAdvance = setInterval(goToNext, 3800); }
 
-/* ========== TRUSTED LOGOS ========== */
-async function loadSponsorLogos() {
-  const { data: users, error } = await supabase
-    .from('users_extended_data')
-    .select('profile_pic, username')
-    .limit(30);
-  const container = document.getElementById('sponsor-logos');
-  if (!container) return;
-  if (error || !users || users.length === 0) {
-    container.innerHTML = '<p>No sponsors to show yet.</p>';
-    return;
-  }
-  const shuffled = users.sort(() => Math.random() - 0.5);
-  const selection = shuffled.slice(0, 6);
-  let html = '';
-  for (const user of selection) {
-    const picUrl = user.profile_pic
-      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
-      : 'logos.png';
-    html += `
-      <figure>
-        <img src="${picUrl}" alt="${escapeHtml(user.username) || 'Sponsor'}">
-        <figcaption>@${escapeHtml(user.username) || 'Sponsor'}</figcaption>
-      </figure>
-    `;
-  }
-  container.innerHTML = html;
+function goToPrev() {
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  showSlide(currentSlide);
+  resetAutoAdvance();
 }
 
-/* ========== TESTIMONIALS CAROUSEL ========== */
-function renderStarsInline(rating) { // used for testimonials
+function goToNext() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+  resetAutoAdvance();
+}
+
+function resetAutoAdvance() {
+  clearInterval(autoAdvance);
+  autoAdvance = setInterval(goToNext, 3800);
+}
+
+/* =========================
+   TRUSTED LOGOS
+========================= */
+async function loadSponsorLogos() {
+  const container = document.getElementById('sponsor-logos');
+  if (!container) return;
+
+  try {
+    const { data: users, error } = await supabase
+      .from('users_extended_data')
+      .select('profile_pic, username')
+      .limit(30);
+
+    if (error || !users || users.length === 0) {
+      container.innerHTML = '<p>No creators to show yet.</p>';
+      return;
+    }
+
+    const shuffled = users.sort(() => Math.random() - 0.5);
+    const selection = shuffled.slice(0, 8);
+
+    let html = '';
+    for (const user of selection) {
+      const picUrl = user.profile_pic
+        ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+        : './logos.png';
+
+      html += `
+        <figure>
+          <img src="${picUrl}" alt="${escapeHtml(user.username) || 'User'}">
+          <figcaption>@${escapeHtml(user.username) || 'User'}</figcaption>
+        </figure>
+      `;
+    }
+    container.innerHTML = html;
+  } catch {
+    container.innerHTML = '<p>No creators to show yet.</p>';
+  }
+}
+
+/* =========================
+   TESTIMONIALS
+========================= */
+function renderStarsInline(rating) {
   const r = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
   const filled = "&#9733;".repeat(r);
   const empty  = "&#9733;".repeat(5 - r);
@@ -245,183 +273,471 @@ function renderStarsInline(rating) { // used for testimonials
 }
 
 async function loadTestimonials() {
-  const { data: reviews } = await supabase
-    .from('private_offer_reviews')
-    .select('review_text, rating, overall, reviewer_role, reviewer_id, created_at')
-    .order('created_at', { ascending: false })
-    .limit(8);
-  const { data: users } = await supabase
-    .from('users_extended_data')
-    .select('user_id, username, profile_pic');
+  try {
+    const { data: reviews } = await supabase
+      .from('private_offer_reviews')
+      .select('review_text, rating, overall, reviewer_role, reviewer_id, created_at')
+      .order('created_at', { ascending: false })
+      .limit(8);
 
-  const testimonials = [];
-  if (reviews && reviews.length) {
-    for (let review of reviews) {
-      let raw = Number.isFinite(Number(review.rating)) && Number(review.rating) > 0
-        ? Number(review.rating)
-        : Number(review.overall);
-      if (!Number.isFinite(raw) || raw <= 0) continue;
-      const rating = Math.max(1, Math.min(5, Math.round(raw)));
-      if (!review.review_text) continue;
+    const { data: users } = await supabase
+      .from('users_extended_data')
+      .select('user_id, username, profile_pic');
 
-      let user = users?.find(u => u.user_id === review.reviewer_id);
-      let stars = renderStarsInline(rating);
+    const testimonials = [];
+    if (reviews && reviews.length) {
+      for (let review of reviews) {
+        let raw = Number.isFinite(Number(review.rating)) && Number(review.rating) > 0
+          ? Number(review.rating)
+          : Number(review.overall);
+
+        if (!Number.isFinite(raw) || raw <= 0) continue;
+        if (!review.review_text) continue;
+
+        const rating = Math.max(1, Math.min(5, Math.round(raw)));
+        const user = users?.find(u => u.user_id === review.reviewer_id);
+
+        testimonials.push({
+          text: review.review_text,
+          stars: renderStarsInline(rating),
+          name: user ? user.username : (review.reviewer_role || 'User'),
+          pic: user?.profile_pic
+            ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+            : './logos.png'
+        });
+      }
+    }
+
+    if (!testimonials.length) {
       testimonials.push({
-        text: review.review_text,
-        stars,
-        name: user ? user.username : review.reviewer_role,
-        pic: user && user.profile_pic
-          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
-          : 'logos.png'
+        text: "We’re in early access — real reviews will appear here as soon as the first offers complete.",
+        stars: `<span style="opacity:.8;font-size:.95em;">No reviews yet</span>`,
+        name: "Sponsor Sorter (Early Access)",
+        pic: "./logos.png"
       });
     }
+
+    return testimonials;
+  } catch {
+    return [{
+      text: "We’re in early access — real reviews will appear here as soon as the first offers complete.",
+      stars: `<span style="opacity:.8;font-size:.95em;">No reviews yet</span>`,
+      name: "Sponsor Sorter (Early Access)",
+      pic: "./logos.png"
+    }];
   }
-  if (!testimonials.length) {
-    testimonials.push({
-      text: "Sponsor Sorter helped us find our first brand partnership. The escrow system and chat made everything feel safe and professional. I can’t recommend it enough!",
-      stars: renderStarsInline(5),
-      name: "Emily, Influencer",
-      pic: "logos.png"
-    });
-  }
-  return testimonials;
 }
 
 let currentTestimonial = 0;
 let testimonialsArr = [];
+
 function showTestimonial(idx) {
   const t = testimonialsArr[idx];
   const el = document.getElementById('testimonial-content');
   if (!t || !el) return;
+
   el.innerHTML = `
-    <div class="testimonial" style="text-align:left;max-width:420px;margin:0 auto;transition:all .3s;font-size:1.4em;">
+    <div class="testimonial" style="text-align:left;max-width:420px;margin:0 auto;transition:all .3s;font-size:1.25em;">
       <div style="display:flex;align-items:center;gap:15px;">
         <img src="${t.pic}" alt="${escapeHtml(t.name)}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
-        ${t.stars} 
+        ${t.stars}
       </div>
       <blockquote style="margin:12px 0 6px 0;min-height:42px;">${escapeHtml(t.text)}</blockquote>
       <cite style="font-size:0.96em;">— ${escapeHtml(t.name)}</cite>
     </div>`;
 }
+
 async function initTestimonialCarousel() {
   testimonialsArr = await loadTestimonials();
   showTestimonial(currentTestimonial);
+
   const prev = document.getElementById('testimonial-prev');
   const next = document.getElementById('testimonial-next');
+
   if (prev) prev.onclick = () => {
     currentTestimonial = (currentTestimonial - 1 + testimonialsArr.length) % testimonialsArr.length;
     showTestimonial(currentTestimonial);
   };
+
   if (next) next.onclick = () => {
     currentTestimonial = (currentTestimonial + 1) % testimonialsArr.length;
     showTestimonial(currentTestimonial);
   };
+
   setInterval(() => {
     currentTestimonial = (currentTestimonial + 1) % testimonialsArr.length;
     showTestimonial(currentTestimonial);
   }, 7800);
 }
 
-/* ========== CALCULATOR ========== */
-function clamp(n, min, max) {
-  return Math.max(min, Math.min(max, n));
+/* =========================
+   SMART CALCULATOR (Icon rail + chips + range + breakdown)
+========================= */
+const CALC = {
+  instagram: {
+    label: "Instagram",
+    baselineER: 0.03,
+    deliverables: [
+      { key: "instagram_post", label: "Post", reachRate: 0.22, cpm: [12, 18, 26] },
+      { key: "instagram_story", label: "Story", reachRate: 0.10, cpm: [8, 14, 20] },
+      { key: "instagram_reel", label: "Reel", reachRate: 0.28, cpm: [14, 22, 34] }
+    ],
+    viewsLabel: "Average reach per post",
+    viewsHint: "Use your typical reach (not followers) for best accuracy."
+  },
+  tiktok: {
+    label: "TikTok",
+    baselineER: 0.06,
+    deliverables: [
+      { key: "tiktok_video", label: "Video", reachRate: 0.45, cpm: [10, 18, 30] }
+    ],
+    viewsLabel: "Average views per video",
+    viewsHint: "TikTok is view-driven. If you know views, use that."
+  },
+  youtube: {
+    label: "YouTube",
+    baselineER: 0.04,
+    deliverables: [
+      { key: "youtube_integration", label: "Integration", reachRate: 0.18, cpm: [18, 28, 45] },
+      { key: "youtube_dedicated", label: "Dedicated", reachRate: 0.18, cpm: [24, 38, 60] },
+      { key: "youtube_short", label: "Short", reachRate: 0.28, cpm: [12, 18, 30] }
+    ],
+    viewsLabel: "Average views per video",
+    viewsHint: "Use your typical view count for long-form or shorts."
+  },
+  twitch: {
+    label: "Twitch",
+    baselineER: 0.05,
+    deliverables: [
+      { key: "twitch_sponsored_stream", label: "Sponsored stream", viewerHour: [0.8, 1.0, 1.3] },
+      { key: "twitch_overlay", label: "Overlay + mention", viewerHour: [0.35, 0.55, 0.75] },
+      { key: "twitch_chat_command", label: "Chat command", viewerHour: [0.18, 0.30, 0.45] }
+    ],
+    viewsLabel: "Average CCV (concurrent viewers)",
+    viewsHint: "Enter Avg CCV. We multiply CCV × hours × benchmark."
+  },
+  facebook: {
+    label: "Facebook",
+    baselineER: 0.02,
+    deliverables: [
+      { key: "facebook_post", label: "Post", reachRate: 0.18, cpm: [8, 14, 22] }
+    ],
+    viewsLabel: "Average reach per post",
+    viewsHint: "If you know reach, use it — otherwise we estimate from followers."
+  },
+  x: {
+    label: "X",
+    baselineER: 0.015,
+    deliverables: [
+      { key: "x_post", label: "Post", reachRate: 0.12, cpm: [6, 10, 18] },
+      { key: "x_thread", label: "Thread", reachRate: 0.16, cpm: [8, 14, 26] }
+    ],
+    viewsLabel: "Average impressions per post",
+    viewsHint: "If you have analytics impressions, use those."
+  },
+  snapchat: {
+    label: "Snapchat",
+    baselineER: 0.04,
+    deliverables: [
+      { key: "snap_story", label: "Story", reachRate: 0.20, cpm: [8, 14, 24] }
+    ],
+    viewsLabel: "Average views per story",
+    viewsHint: "Snap is view-driven. Put average views if you know it."
+  }
+};
+
+function setCalcBadge(text) {
+  const b = document.getElementById('calc-platform-badge');
+  if (b) b.textContent = text;
 }
 
-function money(n) {
-  if (!isFinite(n)) return '$0';
-  return '$' + Math.round(n).toLocaleString();
+function setViewsLabels(platformKey) {
+  const labelEl = document.getElementById('avgViewsLabel');
+  const hintEl = document.getElementById('avgViewsHint');
+  const p = CALC[platformKey];
+  if (!p) return;
+  if (labelEl) labelEl.textContent = p.viewsLabel || 'Average views / reach';
+  if (hintEl) hintEl.textContent = p.viewsHint || '';
 }
 
-function setupCalculatorUi() {
-  const platformEl = document.getElementById('calcPlatform');
-  const deliverableEl = document.getElementById('calcDeliverable');
-  const hoursWrap = document.getElementById('streamHoursWrap');
+function setStreamUi(platformKey) {
+  const wrap = document.getElementById('streamHoursWrap');
+  if (!wrap) return;
+  wrap.style.display = (platformKey === 'twitch') ? 'block' : 'none';
+}
 
-  if (!platformEl || !deliverableEl || !hoursWrap) return;
+function setHidden(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.value = value;
+}
 
-  function refresh() {
-    const platform = (platformEl.value || '').toLowerCase();
-    const deliverable = (deliverableEl.value || '').toLowerCase();
-    const isTwitch = platform === 'twitch' || deliverable.startsWith('twitch_');
-    hoursWrap.style.display = isTwitch ? 'block' : 'none';
+function getVal(id) {
+  return document.getElementById(id)?.value ?? '';
+}
+
+function buildDeliverableChips(platformKey) {
+  const row = document.getElementById('calcDeliverables');
+  if (!row) return;
+
+  const p = CALC[platformKey];
+  row.innerHTML = '';
+  if (!p) return;
+
+  const current = getVal('calcDeliverable') || p.deliverables[0]?.key;
+
+  p.deliverables.forEach((d, idx) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'calc-chip' + ((current === d.key || (!current && idx === 0)) ? ' is-active' : '');
+    btn.textContent = d.label;
+    btn.dataset.deliverable = d.key;
+
+    btn.addEventListener('click', () => {
+      setHidden('calcDeliverable', d.key);
+      // active state
+      row.querySelectorAll('.calc-chip').forEach(ch => ch.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      // auto recalc if output already exists
+      if (document.getElementById('earningsResult')?.innerHTML?.trim()) calculateEarningsSmart();
+    });
+
+    row.appendChild(btn);
+  });
+
+  // Ensure we always have a deliverable selected
+  const keys = p.deliverables.map(x => x.key);
+  if (!keys.includes(current) && p.deliverables[0]) {
+    setHidden('calcDeliverable', p.deliverables[0].key);
+    // mark first
+    const first = row.querySelector('.calc-chip');
+    if (first) first.classList.add('is-active');
+  }
+}
+
+function initCalcTabs() {
+  const tabs = Array.from(document.querySelectorAll('.calc-tab[data-platform]'));
+  if (!tabs.length) return;
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      const key = t.dataset.platform;
+      if (!CALC[key]) return;
+
+      tabs.forEach(x => {
+        x.classList.remove('is-active');
+        x.setAttribute('aria-selected', 'false');
+      });
+
+      t.classList.add('is-active');
+      t.setAttribute('aria-selected', 'true');
+
+      setHidden('calcPlatform', key);
+      setCalcBadge(CALC[key].label);
+      setViewsLabels(key);
+      setStreamUi(key);
+      buildDeliverableChips(key);
+
+      // reset output (keeps it feeling responsive/clean)
+      const out = document.getElementById('earningsResult');
+      if (out) out.innerHTML = '';
+    });
+  });
+
+  // init defaults
+  const key = getVal('calcPlatform') || 'instagram';
+  if (CALC[key]) {
+    setCalcBadge(CALC[key].label);
+    setViewsLabels(key);
+    setStreamUi(key);
+    buildDeliverableChips(key);
+  }
+}
+
+function modifierMultipliers() {
+  const usage = getVal('usageRights');
+  const exclus = getVal('exclusivity');
+  const whitelisting = !!document.getElementById('whitelisting')?.checked;
+  const rush = !!document.getElementById('rush')?.checked;
+
+  const usageMult = (usage === '30d') ? 1.20 : (usage === '6m') ? 1.45 : (usage === '12m') ? 1.75 : 1.00;
+  const exclusMult = (exclus === '7d') ? 1.15 : (exclus === '30d') ? 1.35 : 1.00;
+  const whiteMult = whitelisting ? 1.25 : 1.00;
+  const rushMult = rush ? 1.15 : 1.00;
+
+  return {
+    usageMult,
+    exclusMult,
+    whiteMult,
+    rushMult,
+    total: usageMult * exclusMult * whiteMult * rushMult,
+    labels: [
+      usage !== 'none' ? `Usage rights (${usage})` : null,
+      exclus !== 'none' ? `Exclusivity (${exclus})` : null,
+      whitelisting ? 'Whitelisting' : null,
+      rush ? 'Rush' : null
+    ].filter(Boolean)
+  };
+}
+
+function engagementMultiplier(platformKey, er) {
+  const base = CALC[platformKey]?.baselineER ?? 0.03;
+  const safeEr = clamp(er, 0.002, 0.20);
+
+  // If ER above baseline → modest lift; below → modest cut
+  // Keeps it sane (no crazy 3x multipliers).
+  const ratio = safeEr / base;
+  return clamp(0.85 + (ratio - 1) * 0.30, 0.75, 1.25);
+}
+
+function estimateReach(platformKey, deliverableKey, followers, avgViews) {
+  const p = CALC[platformKey];
+  if (!p) return 0;
+
+  const views = Number(avgViews) || 0;
+  if (views > 0) return views;
+
+  const f = Number(followers) || 0;
+  if (f <= 0) return 0;
+
+  const d = p.deliverables.find(x => x.key === deliverableKey);
+  const rr = d?.reachRate ?? 0.18;
+  return Math.max(0, f * rr);
+}
+
+function calcTwitch(platformKey, deliverableKey, ccv, hours, er, mods) {
+  const p = CALC[platformKey];
+  const d = p?.deliverables.find(x => x.key === deliverableKey);
+  if (!d || !d.viewerHour) return null;
+
+  const CCV = Math.max(0, Number(ccv) || 0);
+  const H = clamp(hours || 1, 0.25, 12);
+
+  if (CCV <= 0) return { error: 'For Twitch, enter your Avg CCV (concurrent viewers).' };
+
+  const [lowVH, midVH, highVH] = d.viewerHour;
+
+  const erMult = engagementMultiplier(platformKey, er);
+  const baseLow = CCV * H * lowVH;
+  const baseMid = CCV * H * midVH;
+  const baseHigh = CCV * H * highVH;
+
+  const low = baseLow * erMult * mods.total;
+  const mid = baseMid * erMult * mods.total;
+  const high = baseHigh * erMult * mods.total;
+
+  return {
+    reach: CCV,
+    reachLabel: `Avg CCV`,
+    base: { low: baseLow, mid: baseMid, high: baseHigh },
+    final: { low, mid, high },
+    model: 'viewer-hour'
+  };
+}
+
+function calcCpm(platformKey, deliverableKey, followers, avgViews, er, mods) {
+  const p = CALC[platformKey];
+  const d = p?.deliverables.find(x => x.key === deliverableKey);
+  if (!p || !d || !d.cpm) return null;
+
+  const reach = estimateReach(platformKey, deliverableKey, followers, avgViews);
+  if (reach <= 0) return { error: 'Enter followers/subscribers or average views/reach.' };
+
+  const [lowCpm, midCpm, highCpm] = d.cpm;
+
+  const erMult = engagementMultiplier(platformKey, er);
+
+  const baseLow = (reach / 1000) * lowCpm;
+  const baseMid = (reach / 1000) * midCpm;
+  const baseHigh = (reach / 1000) * highCpm;
+
+  const low = baseLow * erMult * mods.total;
+  const mid = baseMid * erMult * mods.total;
+  const high = baseHigh * erMult * mods.total;
+
+  // floors so tiny creators aren’t shown $7 ranges
+  const floor = 50;
+  return {
+    reach,
+    reachLabel: 'Estimated reach/views',
+    base: { low: Math.max(floor, baseLow), mid: Math.max(floor, baseMid), high: Math.max(floor, baseHigh) },
+    final: { low: Math.max(floor, low), mid: Math.max(floor, mid), high: Math.max(floor, high) },
+    model: 'cpm',
+    cpm: { low: lowCpm, mid: midCpm, high: highCpm }
+  };
+}
+
+function calculateEarningsSmart() {
+  const out = document.getElementById('earningsResult');
+  if (!out) return;
+
+  const platformKey = getVal('calcPlatform') || 'instagram';
+  const deliverableKey = getVal('calcDeliverable') || (CALC[platformKey]?.deliverables[0]?.key || '');
+  const followers = Number(getVal('followers') || 0);
+  const avgViews = Number(getVal('avgViews') || 0);
+  const hours = Number(getVal('streamHours') || 1);
+
+  const erInput = Number(getVal('engagement') || 0);
+  const er = erInput > 0 ? clamp(erInput / 100, 0.002, 0.20) : (CALC[platformKey]?.baselineER ?? 0.03);
+
+  const mods = modifierMultipliers();
+
+  let result = null;
+  if (platformKey === 'twitch') {
+    result = calcTwitch(platformKey, deliverableKey, avgViews, hours, er, mods);
+  } else {
+    result = calcCpm(platformKey, deliverableKey, followers, avgViews, er, mods);
   }
 
-  platformEl.addEventListener('change', refresh);
-  deliverableEl.addEventListener('change', refresh);
-  refresh();
-}
-
-function calculateEarnings() {
-  const resultEl = document.getElementById('earningsResult');
-  if (!resultEl) return;
-
-  const platform = (document.getElementById('calcPlatform')?.value || 'instagram').toLowerCase();
-  const deliverable = (document.getElementById('calcDeliverable')?.value || 'instagram_post').toLowerCase();
-
-  const followers = parseFloat(document.getElementById('followers')?.value || '0');
-  const engagement = parseFloat(document.getElementById('engagement')?.value || '0');
-  const avgViews = parseFloat(document.getElementById('avgViews')?.value || '0');
-
-  const streamHours = parseFloat(document.getElementById('streamHours')?.value || '1') || 1;
-
-  if (!isFinite(followers) || followers < 0) {
-    resultEl.innerHTML = `<span style="color:red;">Please enter a valid follower/subscriber count.</span>`;
+  if (!result || result.error) {
+    out.innerHTML = `<div style="color:#ffb3b3;font-weight:800;">${escapeHtml(result?.error || 'Missing inputs.')}</div>`;
     return;
   }
 
-  // -------- Twitch path (uses Avg CCV * hours * $/viewer-hour) --------
-  // Benchmark: ~$0.80–$1.20 per average concurrent viewer per hour. :contentReference[oaicite:1]{index=1}
-  if (platform === 'twitch' || deliverable.startsWith('twitch_')) {
-    if (!isFinite(avgViews) || avgViews <= 0) {
-      resultEl.innerHTML = `<span style="color:red;">For Twitch, enter your Avg CCV in the “Average views / reach” field.</span>`;
-      return;
-    }
+  const low = result.final.low;
+  const mid = result.final.mid;
+  const high = result.final.high;
 
-    const baseLow = 0.80;
-    const baseMid = 1.00;
-    const baseHigh = 1.20;
+  const modsText = mods.labels.length ? mods.labels.join(', ') : 'None';
+  const erPct = Math.round(er * 1000) / 10;
 
-    // Discount lighter deliverables vs a full sponsored stream
-    let deliverableMult = 1.0;
-    if (deliverable === 'twitch_overlay') deliverableMult = 0.45;
-    if (deliverable === 'twitch_chat_command') deliverableMult = 0.30;
+  const deliverableLabel =
+    (CALC[platformKey]?.deliverables.find(x => x.key === deliverableKey)?.label) || 'Deliverable';
 
-    const low = avgViews * streamHours * baseLow * deliverableMult;
-    const mid = avgViews * streamHours * baseMid * deliverableMult;
-    const high = avgViews * streamHours * baseHigh * deliverableMult;
+  const reachText = (result.model === 'viewer-hour')
+    ? `${Math.round(result.reach)} ${result.reachLabel} × ${clamp(hours || 1, 0.25, 12)}h`
+    : `${Math.round(result.reach).toLocaleString()} ${result.reachLabel}`;
 
-    resultEl.innerHTML = `
-      <div style="margin-top:10px;">
-        <div><strong>Estimated Twitch rate:</strong></div>
-        <div style="margin-top:6px;">
-          <div>Low: <strong>${money(low)}</strong></div>
-          <div>Typical: <strong>${money(mid)}</strong></div>
-          <div>High: <strong>${money(high)}</strong></div>
-        </div>
-        <div style="margin-top:10px; opacity:0.9; font-size:0.95em;">
-          • Based on Avg CCV × hours × viewer-hour benchmark<br/>
-          • Overlay / chat command deliverables are discounted vs a full sponsored stream
-        </div>
+  const baseLine = (result.model === 'viewer-hour')
+    ? `Benchmark: $/viewer-hour (varies by stream + niche)`
+    : `Benchmark: CPM $${result.cpm.low}–$${result.cpm.high} (mid $${result.cpm.mid})`;
+
+  out.innerHTML = `
+    <div class="calc-range">
+      <div class="big">${money(low)} – ${money(high)}</div>
+      <div class="mid">Typical: <b>${money(mid)}</b></div>
+    </div>
+
+    <div class="calc-break">
+      <div><b>${escapeHtml(CALC[platformKey]?.label || platformKey)}</b> • <b>${escapeHtml(deliverableLabel)}</b></div>
+      <div>Reach input: <b>${escapeHtml(reachText)}</b></div>
+      <div>Engagement used: <b>${erPct}%</b> (${erInput > 0 ? 'your input' : 'baseline'})</div>
+      <div>Add-ons: <b>${escapeHtml(modsText)}</b></div>
+      <div style="margin-top:10px;opacity:.9;">${escapeHtml(baseLine)}</div>
+      <div style="margin-top:8px;opacity:.78;font-size:.95em;">
+        Tip: Add your average views/reach for best accuracy. Brand category, creative complexity, and audience quality can shift rates up/down.
       </div>
-    `;
-    return;
-  }
-
-  // -------- Non-Twitch fallback (keep your existing simple approach if you want) --------
-  // If you haven't wired the deeper multi-platform model yet, this keeps it functional:
-  if (!followers || !engagement) {
-    resultEl.innerHTML = "<span style='color:red;'>Please enter Followers/Subscribers and Engagement Rate.</span>";
-    return;
-  }
-
-  const earnings = (followers * engagement * 0.01);
-  resultEl.innerHTML = "Estimated Earnings: <strong>$" + earnings.toFixed(2) + "</strong>";
+    </div>
+  `;
 }
 
-
-/* ========== PAGE INIT ========== */
+/* =========================
+   INIT
+========================= */
 window.addEventListener('DOMContentLoaded', () => {
-  // Activity Ticker
+  // Live stats counters
+  loadLiveStats();
+
+  // Activity ticker
   startTicker();
 
   // Carousel
@@ -432,15 +748,22 @@ window.addEventListener('DOMContentLoaded', () => {
   if (nextBtn) nextBtn.onclick = goToNext;
   autoAdvance = setInterval(goToNext, 3800);
 
-  // Trusted Logos
+  // Logos + testimonials
   loadSponsorLogos();
-
-  // Testimonials
   initTestimonialCarousel();
 
-// Calculator
-const calcBtn = document.getElementById('calc-earnings-btn');
-if (calcBtn) calcBtn.onclick = calculateEarnings;
-setupCalculatorUi();
+  // Smart calculator
+  initCalcTabs();
+  const calcBtn = document.getElementById('calc-earnings-btn');
+  if (calcBtn) calcBtn.onclick = calculateEarningsSmart;
 
+  // Optional: auto-recalc on change (feels very “launch”)
+  ['followers','avgViews','streamHours','engagement','usageRights','exclusivity','whitelisting','rush'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('change', () => {
+      // only recalc if output already shown
+      if (document.getElementById('earningsResult')?.innerHTML?.trim()) calculateEarningsSmart();
+    });
+  });
 });
