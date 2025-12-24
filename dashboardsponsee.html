@@ -14,6 +14,7 @@
   <script type="module" src="./js/onboarding.js"></script>
   <script type="module" src="./js/followersTotal.js"></script>
   <script type="module" src="./js/wallet.js"></script>
+  <script type="module" src="./js/messages.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
@@ -64,6 +65,9 @@
             <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
               <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
               <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+            </button>
+              <button id="messags-btn" class="messages-btn" title="Messages" style="background:none;box-shadow:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+              <img src="messages.svg" alt="Messages" style="width:36px;height:35px;vertical-align:middle;padding-bottom: 1px;">
             </button>
             <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
               <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
@@ -905,6 +909,44 @@
   flex-direction: column;
 }
 
+
+.icon-bar-bg {
+  width: 107px;
+}
+
+
+#settings-notif-bar .icon-bar-bg {
+  /* gap: 10px; */
+  gap: 0px;
+}
+
+.navbar nav li {
+  /* width: 15vw; */
+  width: 14vw;
+}
+
+
+#messags-btn {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+
+#notification-bell {
+  padding-left: 0px;
+}
+
+
+#settings-cog-btn {
+  padding-right: 20px;
+}
+
+
+#settings-notif-bar {
+  padding-right: 0px;
+}
+
+
 /* Make the activity list scroll when it gets tall */
 .activity-list {
   list-style: none;
@@ -1462,6 +1504,3 @@ section li {
 
 </body>
 </html>
-
-
-
