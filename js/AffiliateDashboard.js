@@ -6,13 +6,16 @@
 // - Read-only "Commission Rate" card (from affiliate_partners.commission_rate)
 // - If RLS blocks and user is admin, uses Edge Function to flip approved->paid
 // - Sends user a notification that $X was credited to their wallet
+// - Adds Affiliate Watermark section (TOP area) with preview + download + instructions
 // - No triggers. No schema changes.
 
 import { supabase } from './supabaseClient.js';
-// Only import notifyPayout for real notifications.
 import { notifyPayout } from './alerts.js';
 
 const DEFAULT_SIGNUP_PRICE = 10;
+
+// Affiliate watermark file (placed in project root)
+const WATERMARK_FILE = './Sponsor Sorter Watermark.gif';
 
 // ----- functions base (referral + mark-paid EF) -----
 const functionsBase =
@@ -27,28 +30,34 @@ function setTextScoped(rootId, id, val) {
   const el = root.querySelector(`#${CSS.escape(id)}`);
   if (el) el.textContent = val;
 }
+
 function toNum(v) {
   const n = typeof v === 'string' ? parseFloat(v) : Number(v || 0);
   return Number.isFinite(n) ? n : 0;
 }
+
 function fmtInt(v) {
   const n = Number(v || 0);
   return Number.isFinite(n) ? n.toLocaleString() : '0';
 }
+
 function fmtCurrency(v) {
   const n = Number(v || 0);
   return Number.isFinite(n)
     ? n.toLocaleString(undefined, { style: 'currency', currency: 'USD' })
     : '$0.00';
 }
+
 function fmtPct(v) {
   const n = Number(v || 0);
   return Number.isFinite(n) ? `${n.toFixed(2)}%` : '—';
 }
+
 function buildReferralUrl(code) {
   const base = window?.ENV_PUBLIC_SITE_BASE_URL || window?.location?.origin || 'https://sponsorsorter.com';
   return `${String(base).replace(/\/+$/, '')}/signup.html?ref=${encodeURIComponent(code || '')}`;
 }
+
 // skinny toast (no alerts.js dependency)
 function toast(message) {
   try {
@@ -66,6 +75,41 @@ function toast(message) {
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1800);
   } catch { /* ignore */ }
+}
+
+// Encode a relative URL safely (handles spaces etc.)
+function safeEncodeUrl(path) {
+  try {
+    // encodeURI keeps slashes but encodes spaces -> %20
+    return encodeURI(path);
+  } catch {
+    return path;
+  }
+}
+
+// Copy helper (clipboard + fallback)
+async function copyText(text) {
+  const str = String(text || '');
+  try {
+    await navigator.clipboard.writeText(str);
+    return true;
+  } catch {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = str;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      ta.style.top = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return !!ok;
+    } catch {
+      return false;
+    }
+  }
 }
 
 /* ------------- referral link (unchanged) ------------- */
@@ -117,9 +161,9 @@ async function getAffiliateTotalsFromDB(userId) {
     const earnedUSD = DEFAULT_SIGNUP_PRICE * (pct / 100);
 
     const st = String(r.status || '').toLowerCase();
-    if (st === 'pending')  pending_commission  += earnedUSD;
+    if (st === 'pending') pending_commission += earnedUSD;
     if (st === 'approved') approved_commission += earnedUSD;
-    if (st === 'paid')     paid_commission     += earnedUSD;
+    if (st === 'paid') paid_commission += earnedUSD;
   }
 
   return {
@@ -317,7 +361,6 @@ function ensureRateCard(rootId) {
     root.querySelector('#aff-total-conv') ||
     root;
 
-  // The cards likely live one level up from the text span; default to parent.
   const container = anchor?.parentElement?.parentElement || root;
 
   const card = document.createElement('div');
@@ -330,6 +373,121 @@ function ensureRateCard(rootId) {
     <div id="aff-rate" style="margin-top:6px;text-align:center;font-weight:700;color:#42e87c;">—</div>
   `;
   container.appendChild(card);
+}
+
+/* ------------- UI helper: Affiliate watermark (top section) ------------- */
+function ensureWatermarkCardTop(rootEl, anchorEl) {
+  if (!rootEl) return;
+  if (rootEl.querySelector('#aff-watermark-card')) return;
+
+  const encoded = safeEncodeUrl(WATERMARK_FILE);
+
+  const instructions = [
+    'Required: Add this watermark to all pieces of affiliate content (videos, shorts, reels, posts, thumbnails).',
+    'Place it in a visible corner (recommended: bottom-right) and keep it unobstructed.',
+    'Do not crop, hide, or cover it. Keep it on-screen for two cycles when possible.',
+    'This helps us verify attribution and ensures your commissions.'
+  ].join('\n');
+
+  const card = document.createElement('div');
+  card.id = 'aff-watermark-card';
+  card.style.cssText = `
+    margin:14px 10px 18px 10px;
+    padding:14px 14px;
+    border-radius:14px;
+    background:#151515;
+    border:1px solid rgba(255,255,255,.08);
+    max-width:860px;
+  `;
+
+  card.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:15px;color:#ddd;font-weight:900;">Affiliate Watermark</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a
+          id="aff-watermark-download"
+          href="${encoded}"
+          download="SponsorSorterWatermark.gif"
+          style="
+            display:inline-flex;align-items:center;justify-content:center;
+            padding:9px 12px;border-radius:10px;
+            background:#F6C62E;color:#111;font-weight:900;
+            text-decoration:none;cursor:pointer;
+          "
+        >Download Watermark</a>
+
+        <button
+          id="aff-watermark-copy"
+          type="button"
+          style="
+            display:inline-flex;align-items:center;justify-content:center;
+            padding:9px 12px;border-radius:10px;box-shadow:none;
+            background:#222;color:#fff;font-weight:800;
+            border:1px solid rgba(255,255,255,.12);
+            cursor:pointer;
+          "
+        >Copy instructions</button>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="
+        padding:10px;border-radius:12px;background:rgba(255,255,255,.04);
+        border:1px solid rgba(255,255,255,.08);
+      ">
+        <img
+          id="aff-watermark-preview"
+          src="${encoded}"
+          alt="Sponsor Sorter Watermark"
+          loading="lazy"
+          style="display:block;max-width:300px;width:300px;height:auto;border-radius:10px;"
+          onerror="this.style.display='none';"
+        />
+      </div>
+
+      <div style="min-width:280px;flex:1;">
+        <div style="font-size:13px;color:#bbb;line-height:1.5;white-space:pre-line;width:320px;margin:auto;">${instructions}</div>
+        <div style="margin-top:10px;font-size:12px;color:#888;line-height:1.35;">
+          Tip: In CapCut / Premiere / DaVinci, import the GIF, place it as an overlay layer, and pin it to a corner.
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Attempt to place right after the referral link/top area; fallback to top of root
+  let insertAfter = null;
+
+  if (anchorEl) {
+    // Walk up to find a reasonable container (card/section/div directly under root)
+    let el = anchorEl;
+    while (el && el !== rootEl) {
+      const cls = (typeof el.className === 'string') ? el.className : '';
+      const id = el.id || '';
+      if (el.tagName === 'SECTION') { insertAfter = el; break; }
+      if (el.parentElement === rootEl) { insertAfter = el; break; }
+      if (/(card|panel|box|container|section|wrap)/i.test(cls) && /(aff|affiliate|ref|link|top|header)/i.test(cls + ' ' + id)) {
+        insertAfter = el; break;
+      }
+      el = el.parentElement;
+    }
+  }
+
+  if (insertAfter && insertAfter.insertAdjacentElement) {
+    insertAfter.insertAdjacentElement('afterend', card);
+  } else if (rootEl.firstChild) {
+    rootEl.insertBefore(card, rootEl.firstChild);
+  } else {
+    rootEl.appendChild(card);
+  }
+
+  // wire copy button
+  const btn = card.querySelector('#aff-watermark-copy');
+  if (btn) {
+    btn.addEventListener('click', async () => {
+      const ok = await copyText(instructions);
+      toast(ok ? 'Instructions copied!' : 'Could not copy instructions.');
+    });
+  }
 }
 
 /* ------------- init ------------- */
@@ -425,6 +583,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
+    // --- Affiliate watermark (top section) ---
+    try {
+      // Place watermark card near the referral link/top area (preferred)
+      ensureWatermarkCardTop(affSection, affUrlInput || openBtn || payoutBtn);
+    } catch { /* ignore */ }
+
     // --- Totals + read-only rate ---
     const totals = await getAffiliateTotalsFromDB(userId);
 
@@ -440,7 +604,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTextScoped(DASH_ROOT, 'aff-approved', fmtCurrency(totals.approved_commission));
     setTextScoped(DASH_ROOT, 'aff-paid', fmtCurrency(totals.paid_commission));
 
-    // Ensure a read-only card exists, then set its value
+    // Ensure UI cards exist
     ensureRateCard(DASH_ROOT);
     setTextScoped(DASH_ROOT, 'aff-rate', fmtPct(totals.partnerRatePct));
 
