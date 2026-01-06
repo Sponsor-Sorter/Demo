@@ -8789,7 +8789,7 @@ display: none !important;
 }
 
 #pici {
-  padding-top: 50px;
+  margin-top: 50px;
 }
 #logofile {
   padding-top: 41px;
@@ -8877,4 +8877,5 @@ display: none !important;
 @media (prefers-reduced-motion: reduce){
   #sparkle-overlay, .site-hero::after { display:none; }
 }
+
 
