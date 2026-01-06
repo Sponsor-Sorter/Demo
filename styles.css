@@ -4365,7 +4365,7 @@ body, .admin-table, .admin-tab, .pagination-btn {
 
 .user-profile button {
         margin: 6px 2px 0 2px;
-        padding: 7px 16px;
+        padding: 7px 3px;
         font-size: 1.1em;
         border-radius: 7px;
         border: none;
@@ -7793,7 +7793,7 @@ form#registrationForm {
   .navbar .navii > div,
   .navbar1 .navii > div {
     display: flex !important;
-    flex-wrap: wrap !important;
+    max-width: 300px;
     gap: 8px;
     width: 100%;
   }
@@ -8776,6 +8776,30 @@ display: none !important;
   }
 }
 
+@media (min-width: 1000px){
+
+.profilefs {
+  display: grid;
+  grid-template-columns: 1fr 3fr auto;
+}
+
+.upllogo {
+  display: inline-block;
+  min-height: 440px !important;
+}
+
+#pici {
+  padding-top: 50px;
+}
+#logofile {
+  padding-top: 41px;
+  padding-left: 59px;
+}
+
+
+
+}
+
 .navbar nav li {
   height: 55px;
 }
@@ -8853,3 +8877,4 @@ display: none !important;
 @media (prefers-reduced-motion: reduce){
   #sparkle-overlay, .site-hero::after { display:none; }
 }
+
