@@ -96,7 +96,6 @@ body
         margin: 36px auto 0 auto !important;
         border-radius: 18px !important;
         padding: 28px 30px 26px 30px !important;
-        border: 2px solid #3ccfcf !important;
         box-shadow: 0 3px 24px #2221;
         display: flex;
         flex-direction: row;
@@ -1480,11 +1479,11 @@ input[type="radio"][id="Company"]:checked ~ .right-side #birthdate-container {
 /* Footer logo (behind text) */
 .footpic {
     position: absolute;
-    top: 50%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);  /* Center the logo */
     width: 100%; /* Logo will span the full width of the footer */
-    height: auto; /* Keep aspect ratio */
+    height: 100px; /* Keep aspect ratio */
     z-index: 0; /* Ensure logo stays behind the text */
     background-color: #000;
     z-index: 0;
@@ -8788,6 +8787,11 @@ display: none !important;
   min-height: 440px !important;
 }
 
+.sndstage {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
 #pici {
   margin-top: 50px;
 }
@@ -8795,6 +8799,8 @@ display: none !important;
   padding-top: 41px;
   padding-left: 59px;
 }
+
+
 
 
 
@@ -8877,5 +8883,4 @@ display: none !important;
 @media (prefers-reduced-motion: reduce){
   #sparkle-overlay, .site-hero::after { display:none; }
 }
-
 
