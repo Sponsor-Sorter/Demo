@@ -70,7 +70,7 @@ async function loadLiveStats() {
 }
 
 /* =========================
-   ACTIVITY TICKER
+   ACTIVITY FEED (Side-scrolling)
 ========================= */
 const staticLines = [
   "Open the guest dashboards to see the workflow (no login).",
@@ -143,7 +143,7 @@ async function fetchActivityLines() {
     }
   } catch {}
 
-  // append safe lines and shuffle
+  // Append safe lines and shuffle
   lines = lines.concat(staticLines);
   for (let i = lines.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -153,69 +153,72 @@ async function fetchActivityLines() {
   return lines;
 }
 
-let tickerLines = [];
-let tickerIdx = 0;
+let tickerRefreshTimer = null;
+let tickerResizeTimer = null;
 
-async function startTicker() {
-  tickerLines = await fetchActivityLines();
-  if (!tickerLines.length) tickerLines = staticLines;
-
+async function renderActivityFeed() {
   const ticker = document.getElementById('activity-ticker');
   if (!ticker) return;
 
-  ticker.innerHTML = tickerLines[0];
+  // Ensure we have a track element
+  let track = ticker.querySelector('.activity-track');
+  if (!track) {
+    ticker.innerHTML = `<div class="activity-track" aria-hidden="true"></div>`;
+    track = ticker.querySelector('.activity-track');
+  }
 
-  setInterval(() => {
-    tickerIdx = (tickerIdx + 1) % tickerLines.length;
-    ticker.innerHTML = tickerLines[tickerIdx];
-  }, 3200);
+  const lines = await fetchActivityLines();
+  const base = (lines && lines.length ? lines : staticLines).slice(0, 14);
+
+  const setHtml = base.map(line => `<div class="activity-item">${line}</div>`).join('');
+
+  // Reset first (single set) to measure
+  track.style.removeProperty('--ss-scroll-duration');
+  track.style.animation = '';
+  track.style.justifyContent = 'flex-start';
+  track.innerHTML = setHtml;
+
+  // Measure after paint
+  requestAnimationFrame(() => {
+    const needsScroll = track.scrollWidth > ticker.clientWidth;
+
+    if (!needsScroll) {
+      // If it fits, don’t scroll; just center it.
+      track.style.animation = 'none';
+      track.style.justifyContent = 'center';
+      return;
+    }
+
+    // Duplicate the set for seamless looping
+    track.innerHTML = setHtml + setHtml;
+    track.style.justifyContent = 'flex-start';
+
+    requestAnimationFrame(() => {
+      // One set width ~= half of track after duplication
+      const oneSetWidth = track.scrollWidth / 2;
+      const pxPerSecond = 50; // adjust speed here
+      const duration = Math.max(18, Math.round(oneSetWidth / pxPerSecond));
+      track.style.setProperty('--ss-scroll-duration', `${duration}s`);
+    });
+  });
 }
 
-/* =========================
-   WHO USES CAROUSEL
-========================= */
-const slides = [
-  { title: "YouTubers", img: "./youtuber.jpeg" },
-  { title: "Streamers", img: "./streamer.jpeg" },
-  { title: "Influencers", img: "./socialmediainfluencer.jpeg" },
-  { title: "Social Event Organizers", img: "./socialevent.jpeg" },
-  { title: "Team Sports", img: "./teamsports.jpeg" },
-  { title: "Content Creators", img: "./youtuber1.jpeg" }
-];
+async function startTicker() {
+  await renderActivityFeed();
 
-let currentSlide = 0;
-let autoAdvance;
+  // Refresh feed periodically to pick up new offers/reviews
+  if (tickerRefreshTimer) clearInterval(tickerRefreshTimer);
+  tickerRefreshTimer = setInterval(() => {
+    renderActivityFeed();
+  }, 65000);
 
-function showSlide(index) {
-  const slide = slides[index];
-  const title = document.getElementById("carousel-title");
-  const img = document.getElementById("carousel-img");
-  if (!title || !img || !slide) return;
-
-  title.textContent = slide.title;
-  img.style.opacity = "0";
-  setTimeout(() => {
-    img.src = slide.img;
-    img.alt = slide.title;
-    img.style.opacity = "1";
-  }, 260);
-}
-
-function goToPrev() {
-  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-  showSlide(currentSlide);
-  resetAutoAdvance();
-}
-
-function goToNext() {
-  currentSlide = (currentSlide + 1) % slides.length;
-  showSlide(currentSlide);
-  resetAutoAdvance();
-}
-
-function resetAutoAdvance() {
-  clearInterval(autoAdvance);
-  autoAdvance = setInterval(goToNext, 3800);
+  // Re-measure on resize (debounced)
+  window.addEventListener('resize', () => {
+    clearTimeout(tickerResizeTimer);
+    tickerResizeTimer = setTimeout(() => {
+      renderActivityFeed();
+    }, 220);
+  });
 }
 
 /* =========================
@@ -494,21 +497,17 @@ function buildDeliverableChips(platformKey) {
 
     btn.addEventListener('click', () => {
       setHidden('calcDeliverable', d.key);
-      // active state
       row.querySelectorAll('.calc-chip').forEach(ch => ch.classList.remove('is-active'));
       btn.classList.add('is-active');
-      // auto recalc if output already exists
       if (document.getElementById('earningsResult')?.innerHTML?.trim()) calculateEarningsSmart();
     });
 
     row.appendChild(btn);
   });
 
-  // Ensure we always have a deliverable selected
   const keys = p.deliverables.map(x => x.key);
   if (!keys.includes(current) && p.deliverables[0]) {
     setHidden('calcDeliverable', p.deliverables[0].key);
-    // mark first
     const first = row.querySelector('.calc-chip');
     if (first) first.classList.add('is-active');
   }
@@ -537,13 +536,11 @@ function initCalcTabs() {
       setStreamUi(key);
       buildDeliverableChips(key);
 
-      // reset output (keeps it feeling responsive/clean)
       const out = document.getElementById('earningsResult');
       if (out) out.innerHTML = '';
     });
   });
 
-  // init defaults
   const key = getVal('calcPlatform') || 'instagram';
   if (CALC[key]) {
     setCalcBadge(CALC[key].label);
@@ -582,9 +579,6 @@ function modifierMultipliers() {
 function engagementMultiplier(platformKey, er) {
   const base = CALC[platformKey]?.baselineER ?? 0.03;
   const safeEr = clamp(er, 0.002, 0.20);
-
-  // If ER above baseline → modest lift; below → modest cut
-  // Keeps it sane (no crazy 3x multipliers).
   const ratio = safeEr / base;
   return clamp(0.85 + (ratio - 1) * 0.30, 0.75, 1.25);
 }
@@ -654,7 +648,6 @@ function calcCpm(platformKey, deliverableKey, followers, avgViews, er, mods) {
   const mid = baseMid * erMult * mods.total;
   const high = baseHigh * erMult * mods.total;
 
-  // floors so tiny creators aren’t shown $7 ranges
   const floor = 50;
   return {
     reach,
@@ -737,16 +730,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // Live stats counters
   loadLiveStats();
 
-  // Activity ticker
+  // Activity feed (side-scrolling)
   startTicker();
-
-  // Carousel
-  showSlide(currentSlide);
-  const prevBtn = document.querySelector(".carousel-prev");
-  const nextBtn = document.querySelector(".carousel-next");
-  if (prevBtn) prevBtn.onclick = goToPrev;
-  if (nextBtn) nextBtn.onclick = goToNext;
-  autoAdvance = setInterval(goToNext, 3800);
 
   // Logos + testimonials
   loadSponsorLogos();
@@ -757,12 +742,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const calcBtn = document.getElementById('calc-earnings-btn');
   if (calcBtn) calcBtn.onclick = calculateEarningsSmart;
 
-  // Optional: auto-recalc on change (feels very “launch”)
+  // Optional: auto-recalc on change
   ['followers','avgViews','streamHours','engagement','usageRights','exclusivity','whitelisting','rush'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('change', () => {
-      // only recalc if output already shown
       if (document.getElementById('earningsResult')?.innerHTML?.trim()) calculateEarningsSmart();
     });
   });
