@@ -56,7 +56,7 @@
 
         <!-- HERO SECTION + TRUST BADGES -->
         <main>
-            <fieldset style="width:90%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;margin-top:-15px;margin-bottom:10px;background:linear-gradient(180deg,#00000081 60%,#676767 120%);border-radius:24px;padding-bottom:16px;border:none;">
+            <fieldset style="width:90%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;margin-top:-15px;margin-bottom:10px;background:linear-gradient(180deg,#00000081 60%,#676767 120%);border-radius:24px;padding-bottom:16px;border:none;box-shadow: none;">
                 <!-- ACTIVITY TICKER -->
 <div id="activity-ticker" class="ss-activity-feed">
   <div class="activity-track" aria-hidden="true"></div>
@@ -278,14 +278,14 @@
         <fieldset class="home-cont safety-strip">
             <div class="section-title">Safety First</div>
             <p class="safety-copy">
-                We take scams seriously. Every paid offer uses escrow, disputes can be reviewed by humans, and 2FA helps keep accounts secure.
+                We take scams seriously. Every offer uses escrow, disputes are reviewed by humans, and 2FA Via App or email helps keep accounts secure.
             </p>
             <p class="safety-copy">
-                Before you accept any sponsorship, read our
+                Before you accept or make any sponsorships, read our
                 <a href="./forum.html" class="safety-link">
                     Safety &amp; Scam Prevention Guide
                 </a>
-                in the Forum (pinned at the top).
+                in the Forum (Click below).
             </p>
             <a href="./forum.html"><img src="scamprevention.png" alt="scam prevention post" style="max-width: 620px;" href="./forum.html" ></a>
         </fieldset>
@@ -320,9 +320,9 @@
             <div class="section-title">Trusted by Real Creators & Brands</div>
             <div class="trusted-logos" id="sponsor-logos"></div>
         </fieldset>
-
+        <div>
         <!-- Testimonials (Dynamic) -->
-        <section class="testimonial-section">
+        <section class="testimonial-section" style="margin-top: 45px;">
             <div class="testimonial-carousel">
                 <button id="testimonial-prev" style="background:none;border:none;font-size:2em;color:#000000;box-shadow:none;cursor:pointer;">&#8592;</button>
                 <div id="testimonial-content" style="display:inline-block;min-width:320px;"></div>
@@ -366,6 +366,7 @@
                 <p>Questions? Our team is always here via live chat or email; no bots, just real help.</p>
             </div>
         </section>
+        </div>
 
 <section class="calculator2" id="rate-calculator">
   <div class="calc-shell">
@@ -833,6 +834,16 @@
 
 .hero-subtitle {
   margin-bottom: 0px;
+}
+
+
+.leftmain > div:nth-child(5) {
+  background: linear-gradient(180deg,#00000081 11%,#3c3c3c 120%);
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 25px;
+  padding-bottom: 40px;
 }
 
 
