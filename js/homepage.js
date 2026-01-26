@@ -228,38 +228,118 @@ async function loadSponsorLogos() {
   const container = document.getElementById('sponsor-logos');
   if (!container) return;
 
+  // Always include these (case-insensitive substring match)
+  const PIN_USERNAME_CONTAINS = ['Moikailive'];
+
+  // Exclude these (case-insensitive substring match) — BUT pinned users override this
+  const EXCLUDE_USERNAME_CONTAINS = ['test'];
+
+  const TARGET_COUNT = 7;
+
   try {
-    const { data: users, error } = await supabase
+    // 1) Fetch pinned users first
+    let pinnedQ = supabase
       .from('users_extended_data')
       .select('profile_pic, username')
-      .limit(30);
+      .not('username', 'is', null);
 
-    if (error || !users || users.length === 0) {
+    for (const s of PIN_USERNAME_CONTAINS) {
+      pinnedQ = pinnedQ.ilike('username', `%${s}%`);
+    }
+
+    const { data: pinnedRaw, error: pinnedErr } = await pinnedQ.limit(TARGET_COUNT);
+    if (pinnedErr) throw pinnedErr;
+
+    const pinned = (pinnedRaw || []).filter(u => String(u.username || '').trim());
+
+    // If we already have 8 pinned, just show them (optionally shuffle)
+    if (pinned.length >= TARGET_COUNT) {
+      const selection = pinned
+        .sort(() => Math.random() - 0.5)
+        .slice(0, TARGET_COUNT);
+
+      container.innerHTML = selection.map(user => {
+        const picUrl = user.profile_pic
+          ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
+          : './logos.png';
+
+        return `
+          <figure>
+            <img src="${picUrl}" alt="${escapeHtml(user.username) || 'User'}">
+            <figcaption>@${escapeHtml(user.username) || 'User'}</figcaption>
+          </figure>
+        `;
+      }).join('');
+
+      return;
+    }
+
+    // 2) Fetch a larger pool for the remaining slots (excluding pinned + excluded patterns)
+    let othersQ = supabase
+      .from('users_extended_data')
+      .select('profile_pic, username')
+      .not('username', 'is', null);
+
+    // Exclude anything matching pinned patterns (so we don't duplicate)
+    for (const s of PIN_USERNAME_CONTAINS) {
+      othersQ = othersQ.not('username', 'ilike', `%${s}%`);
+    }
+
+    // Exclude test patterns for the rest
+    for (const s of EXCLUDE_USERNAME_CONTAINS) {
+      othersQ = othersQ.not('username', 'ilike', `%${s}%`);
+    }
+
+    const { data: othersRaw, error: othersErr } = await othersQ.limit(200);
+    if (othersErr) throw othersErr;
+
+    const others = (othersRaw || []).filter(u => String(u.username || '').trim());
+
+    // 3) Merge (pinned first), ensure uniqueness by username (case-insensitive)
+    const seen = new Set();
+    const uniquePinned = [];
+    for (const u of pinned) {
+      const k = String(u.username).trim().toLowerCase();
+      if (!seen.has(k)) {
+        seen.add(k);
+        uniquePinned.push(u);
+      }
+    }
+
+    const shuffledOthers = others.sort(() => Math.random() - 0.5);
+    const finalList = [...uniquePinned];
+
+    for (const u of shuffledOthers) {
+      if (finalList.length >= TARGET_COUNT) break;
+      const k = String(u.username).trim().toLowerCase();
+      if (seen.has(k)) continue;
+      seen.add(k);
+      finalList.push(u);
+    }
+
+    if (finalList.length === 0) {
       container.innerHTML = '<p>No creators to show yet.</p>';
       return;
     }
 
-    const shuffled = users.sort(() => Math.random() - 0.5);
-    const selection = shuffled.slice(0, 8);
-
-    let html = '';
-    for (const user of selection) {
+    // 4) Render
+    container.innerHTML = finalList.map(user => {
       const picUrl = user.profile_pic
         ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
         : './logos.png';
 
-      html += `
+      return `
         <figure>
           <img src="${picUrl}" alt="${escapeHtml(user.username) || 'User'}">
           <figcaption>@${escapeHtml(user.username) || 'User'}</figcaption>
         </figure>
       `;
-    }
-    container.innerHTML = html;
+    }).join('');
   } catch {
     container.innerHTML = '<p>No creators to show yet.</p>';
   }
 }
+
 
 /* =========================
    TESTIMONIALS
