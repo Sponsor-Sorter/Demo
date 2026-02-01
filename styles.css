@@ -6479,6 +6479,7 @@ input:checked + .slider:before {
     padding: 0 !important;
     margin: 0 !important;
     word-break: break-word !important;
+    padding-right: 40px !important;
   }
   .cta-main {
     margin: 13px 0 6px 0 !important;
@@ -6649,7 +6650,7 @@ input:checked + .slider:before {
     padding: 0 !important;
   }
   .feature-card {
-    width: 88vw !important;
+    width: 70vw !important;
     max-width: 95vw !important;
     min-width: 0 !important;
     margin: 0 auto 7px auto !important;
@@ -6890,7 +6891,7 @@ input:checked + .slider:before {
 
 @media (max-width: 600px) {
   .navbar1 {
-    width: 95vw !important;
+    width: 100vw !important;
     margin: 0 auto !important;
     padding: 0 !important;
     border-radius: 10px !important;
@@ -7130,7 +7131,7 @@ input:checked + .slider:before {
 }
   .footpic {
     height: auto !important;
-    margin: 10px auto 5px auto !important; /* Adjusts top/bottom space: (top, right, bottom, left) */
+    margin: -10px auto 5px auto !important; /* Adjusts top/bottom space: (top, right, bottom, left) */
     display: block !important;
     border-radius: 7px !important;
     order: 0; /* Ensures image is before/above the newsletter and socials */
@@ -7345,7 +7346,16 @@ main { position: relative; z-index: auto; }  /* <-- remove any z-index you added
     width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
+    padding-right: 20px !important;
+    max-width: 90vw;
   }
+
+
+.who-uses > p:nth-child(2) {
+  max-width: 85vw;
+  margin: auto;
+}
+
 
   .signup-section,
 form#registrationForm {
@@ -8795,8 +8805,13 @@ display: none !important;
   height: 323px !important;
 }
 .groupab {
-display: grid;grid-template-columns: 1fr 2fr;gap: 8px;width: 93vw; margin: auto;padding-left: 44px;
+display: grid;grid-template-columns: 1fr 2fr;gap: 8px;width: 90vw; margin: auto;padding: 0;
 }
+
+fieldset.home-cont:nth-child(2) {
+  margin-right: 0px;
+}
+
 .upllogo {
   display: inline-block;
   min-height: 440px !important;
@@ -8850,6 +8865,8 @@ display: grid;grid-template-columns: 1fr 2fr;gap: 8px;width: 93vw; margin: auto;
   pointer-events: none;
   z-index: 0;
   contain: layout paint;              /* perf hint */
+  width: 95vw;
+  max-width: 100vw;
 }
 
 /* each sparkle */
