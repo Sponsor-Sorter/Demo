@@ -34,35 +34,58 @@
 
 <!-- Hero/Signup Section -->
 <section class="signup-section">
-    <fieldset class="hero-fieldset">
-        <legend>Welcome to Sponsor Sorter</legend>
-        <div class="intro-text">
-            <h1 style="font-size:2.3em; margin-bottom:12px;">
-                Supercharge Your Growth with Social Sponsorships
-            </h1>
-            <p>
-                Sponsor Sorter is your all-in-one platform for building powerful partnerships between creators, influencers, and brands. Whether you're a company looking to boost your brand awareness, or a creator ready to monetize your reach, Sponsor Sorter connects you directly with those who matter.
-            </p>
-            <p>
-                <strong>Why choose sponsorships?</strong><br>
-                Sponsored content on social media is proven to generate authentic engagement and trust—far more than traditional ads. Tap into the audiences of real people to:
-            </p>
-            <ul style="margin-left:20px; margin-top:10px; margin-bottom:10px; text-align:left;">
-                <li>✔️ <strong>Increase your sales and website traffic</strong> through targeted, personal recommendations.</li>
-                <li>✔️ <strong>Grow your social following</strong> by collaborating with influencers and creators who fit your brand.</li>
-                <li>✔️ <strong>Boost trust and brand loyalty</strong> via genuine word-of-mouth endorsements.</li>
-                <li>✔️ <strong>Accelerate your marketing ROI</strong> with measurable, scalable campaigns across every major platform.</li>
-            </ul>
-            <p>
-                Thousands of brands and creators trust Sponsor Sorter to launch new products, grow audiences, and create winning collaborations that fuel business success.
-            </p>
-            <p>
-                <strong>Ready to unlock the next level of growth?</strong><br>
-                Join now and discover sponsorships that make a difference!
-            </p>
-        </div>
-    </fieldset>
+  <fieldset class="hero-fieldset">
+    <legend>Welcome to Sponsor Sorter</legend>
+
+    <div class="intro-text">
+      <h1 style="font-size:2.35em; margin-bottom:12px;">
+        Turn Your Socials Into a Sponsor-Ready Dashboard
+      </h1>
+
+      <p>
+        Sponsor Sorter is the clean, professional way to manage sponsorships for <strong>creators</strong> and <strong>brands</strong>;
+        without messy DMs, blurry screenshots, or “wait… what are the deliverables?” moments.
+      </p>
+
+      <p>
+        <strong>Connect your accounts</strong> (YouTube, TikTok, Instagram, Twitch, etc.) and we build your
+        <strong>stats dashboard</strong> automatically. Your profile becomes a single place where sponsors can see your
+        <strong>platform-by-platform numbers</strong>, content style, audience, and sponsorship reviews in a format that’s easy to compare.
+      </p>
+
+      <p>
+        Then you get the most important growth tool:
+        <strong>one shareable link</strong> you can drop in your bio/about sections.
+        Sponsors click it and instantly view your dashboard, your connected platforms, and your key stats. No back-and-forth required.
+      </p>
+
+      <p style="margin-top:14px;">
+        <strong>What you unlock when you connect accounts:</strong>
+      </p>
+
+      <ul style="margin-left:20px; margin-top:10px; margin-bottom:10px; text-align:left;">
+        <li>✔️ <strong>A public sponsor dashboard</strong> that shows your stats for each connected platform (all in one place).</li><br>
+        <li>✔️ <strong>A single “link in bio”</strong> so brands can review your numbers and reach out properly.</li><br>
+        <li>✔️ <strong>Cleaner deals</strong> with clear deliverables, deadlines, and timelines. This way both sides know exactly what’s happening.</li><br>
+        <li>✔️ <strong>Payment protection</strong> (escrow-style flow) so you’re not chasing invoices or risking sketchy offers.</li><br>
+        <li>✔️ <strong>Professional proof</strong> with reviews, reputation, and a sponsorship track record over time.</li>
+      </ul>
+
+      <p>
+        <strong>For brands:</strong> discover creators faster, evaluate them with consistent stats across platforms, send structured offers,
+        and track progress without spreadsheets.
+        <br />
+        <strong>For creators:</strong> look more “sponsorable”, close deals quicker, and spend more time making content.
+      </p>
+
+      <p style="margin-top:14px;">
+        <strong>Ready to stop doing sponsorships the hard way?</strong><br />
+        Build your dashboard, connect your accounts, and share your link. Sponsors can finally see everything they need in one click.
+      </p>
+    </div>
+  </fieldset>
 </section>
+
 
 <form id="registrationForm" enctype="multipart/form-data" style="max-width: 90vw; margin: 0 auto;">
 
@@ -193,6 +216,7 @@
 
             <!-- SPONSOR OPTIONS -->
             <div id="sponsor-options" class="slide-off">
+                <section class="sndstage" >
                 <fieldset class="pptb">
                     <legend>Preferred Platforms (for your campaigns)</legend>
                     <div id="preferred-platforms">
@@ -309,6 +333,7 @@
                         </select>
                     </div>
                 </fieldset>
+                </section>
             </div>
 
             <!-- SPONSEE OPTIONS -->
@@ -328,8 +353,6 @@
                         <input type="text" class="social-handle" id="socialhandle-instagram" name="instagram_handle" placeholder="@YourInstagramHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="Instagram" id="instagram" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-instagram">0 Followers</span>
-                            <span class="interactions-count" id="interactions-instagram">0 Interactions</span>
                         </div>
                     </div>
                     <!-- TikTok -->
@@ -338,8 +361,6 @@
                         <input type="text" class="social-handle" id="socialhandle-tiktok" name="tiktok_handle" placeholder="@YourTikTokHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="TikTok" id="tiktok" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-tiktok">0 Followers</span>
-                            <span class="interactions-count" id="interactions-tiktok">0 Interactions</span>
                         </div>
                     </div>
                     <!-- YouTube -->
@@ -348,8 +369,6 @@
                         <input type="text" class="social-handle" id="socialhandle-youtube" name="youtube_handle" placeholder="@YourYouTubeHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="YouTube" id="youtube" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-youtube">0 Subscribers</span>
-                            <span class="interactions-count" id="interactions-youtube">0 Interactions</span>
                         </div>
                     </div>
                     <!-- Twitter -->
@@ -358,8 +377,6 @@
                         <input type="text" class="social-handle" id="socialhandle-twitter" name="twitter_handle" placeholder="@YourTwitterHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="Twitter" id="twitter" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-twitter">0 Followers</span>
-                            <span class="interactions-count" id="interactions-twitter">0 Interactions</span>
                         </div>
                     </div>
                     <!-- Facebook -->
@@ -368,8 +385,6 @@
                         <input type="text" class="social-handle" id="socialhandle-facebook" name="facebook_handle" placeholder="@YourFacebookHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="Facebook" id="facebook" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-facebook">0 Likes</span>
-                            <span class="interactions-count" id="interactions-facebook">0 Interactions</span>
                         </div>
                     </div>
                     <!-- Twitch -->
@@ -378,8 +393,6 @@
                         <input type="text" class="social-handle" id="socialhandle-twitch" name="twitch_handle" placeholder="@YourTwitchHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="Twitch" id="twitch" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-twitch">0 Followers</span>
-                            <span class="interactions-count" id="interactions-twitch">0 Interactions</span>
                         </div>
                     </div>
                     <!-- Snapchat -->
@@ -388,8 +401,6 @@
                         <input type="text" class="social-handle" id="socialhandle-snapchat" name="snapchat_handle" placeholder="@YourSnapchatHandle">
                         <input type="checkbox" class="platform-checkbox" name="platforms" value="Snapchat" id="snapchat" onclick="updateFollowerCount(this)">
                         <div class="counts">
-                            <span class="follower-count" id="follower-snapchat">0 Friends</span>
-                            <span class="interactions-count" id="interactions-snapchat">0 Interactions</span>
                         </div>
                     </div>
 
