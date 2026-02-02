@@ -6713,7 +6713,6 @@ input:checked + .slider:before {
   .trusted-logos img {
     width: 60px !important;
     height: 60px !important;
-    object-fit: fill !important;
     margin-bottom: 6px !important;
     border-radius: 100px !important;
   }
@@ -8933,4 +8932,5 @@ fieldset.home-cont:nth-child(2) {
 @media (prefers-reduced-motion: reduce){
   #sparkle-overlay, .site-hero::after { display:none; }
 }
+
 
