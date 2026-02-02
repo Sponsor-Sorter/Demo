@@ -7147,6 +7147,24 @@ input:checked + .slider:before {
     padding-bottom: 10px !important;
     background: none; /* Remove any old backgrounds */
   }
+
+
+/* Inline | http://127.0.0.1:5500/public/index.html */
+
+.calc-label {
+  font-weight: 600;
+}
+
+#activity-ticker {
+  margin-top: 11px !important;
+  margin-bottom: 11px !important;
+}
+
+#activity-ticker {
+  margin-top: 16px;
+  margin-bottom: 0px;
+}
+
   .main-nav ul {
     display: flex;
     flex-direction: row;
