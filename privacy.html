@@ -64,9 +64,9 @@
           <li><a href="./finder.html">Finder</a></li>
         </nav>
         <nav>
-          <!-- added id for role-aware routing -->
+          <!-- role-aware routing -->
           <li class="navr" id="dashboard-link"><a href="">Dashboard</a></li>
-          <li><a href="./login.html">Logout</a></li>
+          <li><a id="auth-link" href="./login.html" style="height: 24px !important;">Logout</a></li>
         </nav>
       </div>
     </div>
@@ -77,7 +77,7 @@
   <section class="pp-container">
     <div class="page-title"><h1>Privacy Policy</h1></div>
     <div class="meta">
-      <span class="pill">Last updated: 3 September 2025</span>
+      <span class="pill">Last updated: 11 February 2026</span>
       <span class="pill">Business ABN: 23&nbsp;801&nbsp;694&nbsp;480</span>
     </div>
 
@@ -101,56 +101,64 @@
 
     <h2 id="intro">1) Introduction</h2>
     <p class="pp-text">
-      Sponsor Sorter (“we”, “us”) provides tools that connect sponsors with creators and help both parties track offer performance.
+      Sponsor Sorter (“we”, “us”) provides tools that connect sponsors with creators and help both parties manage offers,
+      deliverables, timelines, and (where enabled) payments.
       This Privacy Policy explains what we collect, why we collect it, how we use and share it, and the choices you have.
-      By using our website, dashboards, or APIs (the “Service”), you agree to this Policy and our <a href="./terms.html">Terms of Service</a>.
+      By using our website, dashboards, or APIs (the “Service”), you agree to this Policy and our
+      <a href="./terms.html">Terms of Service</a>.
     </p>
 
     <h2 id="data-categories">2) Data We Collect</h2>
     <p class="pp-text">We collect the following categories of information (depending on how you use the Service):</p>
     <ul class="pp-list">
-      <li><strong>Account & Profile:</strong> name, display name, email, username, phone (optional), organization, role, profile image, preferences.</li>
-      <li><strong>OAuth & Social Metrics:</strong> limited identifiers and insights from connected platforms (see <a href="#oauth">Section 4</a>).</li>
-      <li><strong>Offer & Workflow:</strong> offers, deliverables, milestones, comments, attachments, reviews/ratings, dispute notes.</li>
-      <li><strong>Payments:</strong> payment intent/receipt metadata, subscription status and plan, refunds/chargebacks (processed by Stripe; we don’t store raw card numbers).</li>
-      <li><strong>Support & Communications:</strong> messages with us, support tickets, moderation reports.</li>
-      <li><strong>Device & Usage:</strong> IP address, device/browser type, pages/actions, timestamps, authentication logs.</li>
-      <li><strong>Cookies/SDKs:</strong> necessary cookies for login and security; analytics cookies described below.</li>
+      <li><strong>Account & Profile:</strong> name, display name, email, username, phone (optional), organization/company name, role, profile image, preferences.</li>
+      <li><strong>Connected Accounts (OAuth) & Social Metrics:</strong> limited identifiers and insights from connected platforms (see <a href="#oauth">Section 4</a>).</li>
+      <li><strong>Offer & Workflow:</strong> offers, deliverables, milestones, comments, attachments, reviews/ratings, dispute notes, and verification links you provide (e.g., “live URL”).</li>
+      <li><strong>Payments & Billing:</strong> subscription status/plan, payment intent/receipt metadata, refunds/chargebacks, payout records (processed by Stripe; we don’t store raw card numbers).</li>
+      <li><strong>Support & Communications:</strong> messages with us, support tickets, moderation reports, and privacy requests (e.g., export/deletion requests).</li>
+      <li><strong>Device & Usage:</strong> IP address, device/browser type, pages/actions, timestamps, authentication and security logs.</li>
+      <li><strong>Cookies/SDKs:</strong> necessary cookies for login and security; optional analytics cookies described below.</li>
     </ul>
 
     <h2 id="purposes">3) How We Use Data (and lawful bases)</h2>
     <ul class="pp-list">
-      <li><strong>Operate the Service & fulfill contracts</strong> (create accounts, connect platforms, run offers, process payments, provide support).</li>
+      <li><strong>Operate the Service & fulfill contracts</strong> (create accounts, run offers, connect platforms, enable deliverable verification, process payments, provide support).</li>
       <li><strong>Safety, fraud prevention & dispute handling</strong> (moderation, rate limiting, abuse detection, audits) – our legitimate interests and legal obligations.</li>
       <li><strong>Analytics & product improvement</strong> using aggregate/anonymous insights – our legitimate interests.</li>
-      <li><strong>Communications</strong> (transactional emails, important updates). Marketing emails are optional and can be opted out.</li>
-      <li><strong>Legal compliance</strong> (tax, financial reporting, regulatory requests).</li>
+      <li><strong>Communications</strong> (transactional emails, important updates, security notices). Marketing emails are optional and can be opted out.</li>
+      <li><strong>Legal compliance</strong> (tax, financial reporting, responding to lawful requests).</li>
     </ul>
 
     <h2 id="oauth">4) OAuth & Connected Platforms</h2>
     <div class="callout">
-      <strong>Summary:</strong> When you connect a social account, we only access the minimal scopes you approve to verify deliverables and show performance to the parties to an offer. You can disconnect at any time in <em>Connected Platforms</em>.
+      <strong>Summary:</strong> When you connect a social account, we only access the scopes you approve to help verify deliverables and show performance summaries to the parties to an offer. You can disconnect at any time in <em>Connected Platforms</em>.
     </div>
     <p class="pp-text"><strong>What we access & why (examples):</strong></p>
     <ul class="pp-list">
       <li><strong>YouTube (Google):</strong> channel identity and public/video metrics to attribute deliverables and summarize performance for offers you participate in.</li>
-      <li><strong>Instagram (via Facebook):</strong> business/creator account identity; media metadata/insights to verify posts and provide performance summaries.</li>
+      <li><strong>Instagram (via Meta):</strong> business/creator account identity; media metadata/insights to verify posts and provide performance summaries.</li>
       <li><strong>TikTok:</strong> basic profile, post metadata, engagement metrics to confirm deliverables and show results.</li>
       <li><strong>Twitch:</strong> channel identity and public metrics to verify activations and summarize outcomes.</li>
       <li><strong>Facebook Pages:</strong> Page identity and insights if you connect a Page for verification or reporting.</li>
     </ul>
-    <p class="pp-text"><strong>Token storage & security:</strong> OAuth tokens and minimal account metadata are stored securely (encrypted at rest) and transmitted over TLS. Access is restricted to systems that perform the features you enable.</p>
+    <p class="pp-text">
+      <strong>Token storage & security:</strong> Access tokens (and refresh tokens where applicable) are stored securely and protected by access controls.
+      Data is transmitted over TLS. Our infrastructure providers may encrypt stored data at rest.
+    </p>
     <p class="pp-text"><strong>Revocation:</strong> Disconnect in your account’s <em>Connected Platforms</em> settings or revoke directly in the platform’s security settings. Revocation stops future sync.</p>
-    <p class="pp-text"><strong>Google/YouTube Limited Use:</strong> Our use and transfer of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements. We use approved scopes only for features you enable, do not sell Google user data, and do not transfer it except as necessary to provide the Service.</p>
+    <p class="pp-text">
+      <strong>Google/YouTube Limited Use:</strong> Our use and transfer of information received from Google APIs will adhere to the Google API Services User Data Policy, including the Limited Use requirements.
+      We use approved scopes only for features you enable, do not sell Google user data, and do not transfer it except as necessary to provide the Service.
+    </p>
 
     <h2 id="sharing">5) Sharing & Subprocessors</h2>
     <p class="pp-text">We don’t sell personal information. We share it only as described:</p>
     <ul class="pp-list">
-      <li><strong>With parties to an offer</strong> (e.g., sponsor and creator) to operate deliverables, messaging, and performance summaries.</li>
+      <li><strong>With parties to an offer</strong> (e.g., sponsor and creator) to operate deliverables, messaging, reviews, and performance summaries related to that offer.</li>
       <li><strong>Service providers/Subprocessors</strong> that help us operate the Service:
         <ul class="pp-list">
           <li><strong>Supabase</strong> (hosting, database, authentication, storage).</li>
-          <li><strong>Stripe</strong> (payments, billing, receipts, subscription management).</li>
+          <li><strong>Stripe</strong> (payments, billing, receipts, subscription management, and payouts where enabled).</li>
           <li><strong>Resend</strong> (transactional email delivery).</li>
           <li><strong>Google Analytics</strong> (measurement only; no Ads/Remarketing features).</li>
         </ul>
@@ -169,28 +177,31 @@
     </ul>
 
     <h2 id="rights">7) Your Rights & Choices</h2>
-    <p class="pp-text">Depending on your location (e.g., EU/UK/EEA, California), you may have rights to access, correct, delete, restrict, or object to processing; request portability; and withdraw consent for optional features.</p>
+    <p class="pp-text">
+      Depending on your location (including Australia, EU/UK/EEA, and some U.S. states), you may have rights to access, correct, delete,
+      restrict, or object to certain processing; request portability; and withdraw consent for optional features.
+    </p>
     <ul class="pp-list">
-      <li><strong>Marketing opt-out:</strong> unsubscribe via any email footer or your settings.</li>
+      <li><strong>Marketing opt-out:</strong> unsubscribe via any email footer or your settings (if available).</li>
       <li><strong>Analytics opt-out:</strong> decline analytics cookies in the banner or update preferences later (see <a href="#cookies">Cookies</a>).</li>
       <li><strong>“Do Not Sell/Share” (CPRA):</strong> we do not sell or share your personal information for cross-context behavioral advertising.</li>
-      <li><strong>Appeals:</strong> if you believe an automated moderation action was incorrect, contact <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a>.</li>
+      <li><strong>Appeals:</strong> if you believe an automated moderation action was incorrect, contact <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.</li>
     </ul>
 
     <h2 id="deletion">8) Data Export & Deletion</h2>
     <p class="pp-text">
-      You can request a copy of your data or account deletion directly from your dashboard using the
-      <em>“Request My Data (GDPR/CCPA)”</em> and <em>“Request Account Deletion”</em> buttons. To stop future data syncing from any
-      connected platform, open <em>Connected Platforms</em> in settings and click <strong>Disconnect</strong>; this revokes access tokens
-      and halts future pulls. You may also email <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a> if you prefer.
-      After confirmed deletion, we purge account data within <strong>30 days</strong> except where retention is required by law,
-      security, or dispute resolution (see <a href="#retention">Data Retention</a>).
+      You can request a copy of your data or account deletion from within your dashboard (if those tools are available)
+      or by emailing <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.
+      To stop future data syncing from any connected platform, open <em>Connected Platforms</em> in settings and click <strong>Disconnect</strong>;
+      this revokes access tokens and halts future pulls.
+      After confirmed deletion, we purge account data within <strong>30 days</strong> except where retention is required by law, security,
+      or dispute resolution (see <a href="#retention">Data Retention</a>).
     </p>
 
     <h2 id="security">9) Security</h2>
     <ul class="pp-list">
-      <li>Encryption at rest for stored data and TLS in transit.</li>
-      <li>Least-privileged access, logging, and access reviews.</li>
+      <li>TLS in transit; access controls and least-privileged permissions.</li>
+      <li>Logging, monitoring, and abuse prevention controls.</li>
       <li>Backups and disaster recovery operated by our hosting provider(s).</li>
       <li>No storage of raw payment card numbers on our servers.</li>
     </ul>
@@ -203,13 +214,14 @@
     <h2 id="cookies">11) Cookies</h2>
     <p class="pp-text">
       We use (i) <strong>strictly necessary</strong> cookies for login, security, and preference storage; and (ii) <strong>analytics</strong> cookies for measurement only (no Ads/Remarketing).
-      You can accept or decline in the banner and update preferences later in your account or browser settings.
+      You can accept or decline in the banner and update preferences later in your account (if available) or browser settings.
     </p>
 
     <h2 id="automation">12) Automated Moderation</h2>
     <p class="pp-text">
-      We use automated moderation (e.g., “FamBot”) to detect spam, fraud, and harmful content. Automated decisions may restrict content or accounts; you can request human review via
-      <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a>.
+      We use automated moderation (e.g., “FamBot”) to detect spam, fraud, and harmful content.
+      Automated decisions may restrict content or accounts; you can request human review via
+      <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>.
     </p>
 
     <h2 id="children">13) Children</h2>
@@ -219,18 +231,19 @@
 
     <h2 id="changes">14) Changes</h2>
     <p class="pp-text">
-      We may update this Privacy Policy over time. Material changes will be notified via the Service or email. Continued use means you accept the updated Policy.
+      We may update this Privacy Policy over time. Material changes will be notified via the Service or email.
+      Continued use means you accept the updated Policy.
     </p>
 
     <h2 id="contact">15) Contact</h2>
     <p class="pp-text">
       Questions or requests about this Policy or your data rights?<br>
-      Email:  <a href="mailto:sponsorsorter@gmail.com">sponsorsorter@gmail.com</a><br>
+      Email: <a href="mailto:privacy@sponsorsorter.com">privacy@sponsorsorter.com</a> or <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a><br>
       Registered in Australia (Victoria). ABN: 23 801 694 480
     </p>
 
     <hr class="sep">
-    <p class="fineprint" style="text-align:center;">Sponsor Sorter &copy; 2025. All rights reserved.</p>
+    <p class="fineprint" style="text-align:center;">Sponsor Sorter &copy; 2026. All rights reserved.</p>
   </section>
 </main>
 
@@ -249,7 +262,7 @@
   </div>
   <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
   <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-    &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
+    &copy; 2026 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
     Data protected by Supabase | Powered by Stripe
   </div>
 </footer>
@@ -266,26 +279,45 @@
   </div>
 </div>
 
-<!-- Role-aware Dashboard link (Finder-style) -->
+<!-- Role-aware Dashboard link + Logout handling -->
 <script type="module">
-  import { supabase } from '/public/js/supabaseClient.js';
+  import { supabase } from './js/supabaseClient.js';
 
   document.addEventListener('DOMContentLoaded', async () => {
     const dashLi = document.getElementById('dashboard-link');
     const dashA = dashLi?.firstElementChild;
-    if (!dashA) return;
+
+    const authA = document.getElementById('auth-link');
 
     // Check auth
     const { data: { user }, error: authErr } = await supabase.auth.getUser();
+
     if (authErr || !user) {
-      // Not logged in → offer Login
-      dashA.href = './login.html';
-      dashA.textContent = 'Login';
+      // Not logged in
+      if (dashA) {
+        dashA.href = './login.html';
+        dashA.textContent = 'Login';
+      }
+      if (authA) {
+        authA.href = './login.html';
+        authA.textContent = 'Login';
+      }
       return;
     }
 
+    // Logged in
+    if (authA) {
+      authA.href = '#';
+      authA.textContent = 'Logout';
+      authA.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try { await supabase.auth.signOut(); } catch {}
+        window.location.href = './login.html';
+      });
+    }
+
     // Fetch role
-    const { data: profile, error: profErr } = await supabase
+    const { data: profile } = await supabase
       .from('users_extended_data')
       .select('userType')
       .eq('user_id', user.id)
@@ -293,14 +325,12 @@
 
     const userType = (profile?.userType || '').toLowerCase();
     const isSponsor = userType === 'sponsor';
-    dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
-    dashA.textContent = 'Dashboard';
 
-    // Optional: immediately send logged-in users to their dashboard
-    // window.location.replace(dashA.href);
+    if (dashA) {
+      dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
+      dashA.textContent = 'Dashboard';
+    }
   });
 </script>
 </body>
 </html>
-
-
