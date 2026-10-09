@@ -1,0 +1,1472 @@
+/* Shared */
+:root {
+  --brand-font: "Cinzel", serif;
+  --logo-size: 70px;
+}
+
+/* Normal pages that already have <span class="brand-title"> */
+header .brand-title {
+  font-family: var(--brand-font);
+  font-weight: 900;
+  font-optical-sizing: auto;
+  line-height: 1.05;
+  letter-spacing: 0.6px;
+  color: #fff;
+}
+
+/* Pages with just: <h5><header>Sponsor Sorter</header></h5> */
+.navii h5 > header {
+  display: inline-flex; /* put logo and text on one line */
+  align-items: center;
+  gap: 12px;
+  font-family: var(--brand-font);
+  font-weight: 900;
+  font-optical-sizing: auto;
+  line-height: 1.05;
+  letter-spacing: 0.6px;
+  color: #fff;
+}
+
+/* Auto-add the logo before the text */
+.navii h5 > header::before {
+  content: "";
+  width: var(--logo-size);
+  height: var(--logo-size);
+  background: url("./logos.png") center/cover no-repeat #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Small screens */
+@media (max-width: 520px) {
+  :root {
+    --logo-size: 52px;
+  }
+
+  .navii > h5:nth-child(1) > header:nth-child(1) {
+    /* font-size-adjust: revert; */
+    font-size: xx-large;
+    width: 95vw;
+  }
+
+  .navii > h5:nth-child(1) {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95vw !important;
+  }
+}
+
+body {
+  background: black;
+  color: white;
+  margin: 1px;
+  border-radius: 0%;
+  padding: 15px;
+  text-align: center;
+  display: 100%;
+}
+
+.StartNow.button {
+  background-color: #04aa6d; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 300px;
+  width: 50px;
+}
+
+fieldset label {
+  padding: 17px;
+}
+.upllogo {
+  height: 250px;
+  box-sizing: border-box;
+  max-width: 80vw !important;
+  margin: 36px auto 0 auto !important;
+  border-radius: 18px !important;
+  padding: 28px 30px 26px 30px !important;
+  box-shadow: 0 3px 24px #2221;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 15px !important;
+}
+
+li {
+  display: inline-block;
+  margin: auto;
+}
+.navbar1 {
+  font-size: large;
+}
+header {
+  padding: 10px;
+  padding-top: 0.2%;
+  font-size: xxx-large;
+  text-align: center;
+}
+
+header h5 {
+  font-family: "Cinzel", serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+section {
+  padding: 5px;
+  display: inline-block;
+}
+
+nav {
+  display: inline-flex;
+  text-align: center;
+  margin-bottom: 8px;
+  width: auto;
+  margin: auto;
+  height: fit-content;
+}
+
+/* header container */
+.navii header {
+  display: flex;
+  align-items: center; /* vertical-centers img + text */
+  gap: 12px; /* space between logo and text */
+  margin: auto;
+  width: 530px;
+  padding-bottom: 0;
+}
+
+/* logo image */
+.navii header img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #000;
+  object-fit: cover; /* fill the circle */
+  object-position: center !important; /* keep the middle of the image centered */
+  display: block; /* remove inline-img baseline gap */
+}
+
+.upllogo {
+  width: 93%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-upload-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.upload-section {
+  flex: 1;
+  margin-right: 10px; /* Space between the upload section and preview */
+}
+
+.preview-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-section label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.upload-section input[type="file"] {
+  margin-top: 8px;
+}
+
+.picc {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.navii {
+  width: 100%;
+  background-image: url(handslogo2.jpg);
+  background-position: -80px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+  padding: 5px;
+  border-radius: 10px;
+}
+.navimg {
+  background-color: #000;
+  width: auto;
+  border-radius: 25px;
+  height: 40px;
+  margin: auto;
+  background-size: 151.5px 35px;
+  background-position: center;
+  background-position-x: left;
+  align-items: 25%;
+  display: inline-flex;
+  padding: 1.5px;
+}
+
+nav-2 {
+  background-color: rgb(0, 0, 0);
+  display: inline-block;
+  text-align: center;
+}
+footer {
+  text-align: center;
+}
+
+.finder1 {
+  font-size: x-large;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+}
+
+.Findertext {
+  display: inline-block;
+  background-color: rgb(20, 20, 20);
+  padding: 5px;
+  color: rgb(226, 226, 226);
+  margin: auto;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.user-profiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 3 columns per row */
+  gap: 20px;
+  margin-top: 0px;
+}
+
+.finder1 input {
+  width: 300px;
+  height: 25px;
+}
+.finder1 button {
+  width: 100px;
+  height: 25px;
+}
+section li {
+  display: inline-block;
+  background-color: rgb(0, 0, 0);
+  padding: 1px;
+  color: rgb(226, 226, 226);
+  margin: auto;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.custom-select {
+  min-width: 350px;
+}
+
+.custom-select select {
+  appearance: none;
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: #fff;
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+}
+.dialog {
+  margin: auto;
+  padding: auto;
+  background-position: center;
+  background-image: url(navimg.png);
+  background-size: 550px 200px;
+  background-repeat: no-repeat;
+  border-radius: 25%;
+  background-position-y: -8px;
+}
+.search button {
+  width: 100px;
+}
+
+.StartNow {
+  height: 50px;
+  width: 200px;
+  font-size: large;
+  border-radius: 50px;
+}
+
+.checkbox {
+  width: 5px;
+  height: 5px;
+}
+
+div section {
+  margin-top: 5px;
+}
+
+section section div p {
+  margin: auto;
+  font-size: smaller;
+}
+
+section.dialog {
+  margin-bottom: 20px;
+  padding: 30px;
+}
+
+section li figure img {
+  width: 50px;
+  align-self: auto;
+}
+
+div input {
+  margin: 5px;
+}
+
+section section section li {
+  padding: 8px;
+  margin: auto;
+}
+section.Sponser {
+  margin: 5px;
+  display: block;
+  padding: 5px;
+}
+section.userpass {
+  background-color: gray;
+  border-radius: 50px;
+}
+a {
+  text-decoration: none;
+  color: white;
+  margin: 20px;
+  background-color: unset;
+}
+
+section section li {
+  margin: auto;
+  text-align: left;
+  text-decoration: solid;
+  font-size: large;
+}
+.signupchain2 {
+  display: inline-flex;
+  text-align: center;
+  align-items: center;
+}
+
+.opener {
+  padding-left: 80px;
+  padding-right: 80px;
+}
+.sponser {
+  display: inline-block;
+}
+
+.shtb input {
+  width: 5px;
+}
+.loginbox {
+  background-color: rgb(111, 110, 157);
+  color: black;
+  border-radius: 20px;
+  padding: 15px;
+  border-width: 10px;
+  border-color: rgb(87, 87, 87);
+  border-style: groove;
+}
+
+.uploadLogo {
+  background-color: gray;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.footerb {
+  width: 100%;
+  border-radius: 25px;
+  height: 30px;
+  margin: auto;
+  display: inline-flex;
+  background-image: url(navimg.png);
+  background-size: contain;
+  align-items: center;
+  display: flex;
+  padding: 5px;
+  background-size: 58px 30px;
+  background-position: center;
+  background-position-x: left;
+  background-repeat: repeat-x;
+  background-color: #000;
+}
+.footera {
+  width: 100%;
+  height: 80px;
+}
+
+.footercomplete {
+  width: 100%;
+  background-color: #000;
+  z-index: -1;
+  height: auto;
+  max-height: 100vw;
+}
+.footercomplete li {
+  width: 100%;
+  padding: 10px;
+}
+.navtop {
+  width: 100%;
+}
+
+.pibox input {
+  margin-top: 5px;
+}
+
+/* Initial setup for the sliding effect */
+#sponsor-options,
+#besponsored-options {
+  position: absolute;
+  width: 100%;
+  transition:
+    transform 0.5s ease-in-out,
+    opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+/* When sliding off, move to the left or right */
+#sponsor-options.slide-off {
+  transform: translateX(-100%); /* Move to the left */
+  opacity: 0; /* Fade out */
+}
+
+#besponsored-options.slide-off {
+  transform: translateX(100%); /* Move to the right */
+  opacity: 0; /* Fade out */
+}
+
+/* When sliding in, move to normal position */
+#sponsor-options.slide-on {
+  transform: translateX(0);
+  opacity: 1; /* Fade in */
+}
+
+#besponsored-options.slide-on {
+  transform: translateX(0);
+  opacity: 1; /* Fade in */
+}
+
+/* Optional: You can make the container have a position relative to allow absolute positioning of the options */
+fieldset {
+  position: relative;
+}
+
+form#registrationForm {
+  margin-bottom: 70px !important; /* Adjust if needed */
+  position: relative;
+  z-index: 10;
+}
+
+.signup-section {
+  width: 90vw;
+  padding-top: 20px;
+}
+
+.lookingfor {
+  height: 1100px;
+  padding-bottom: 20px;
+  margin-bottom: 80px;
+}
+
+.lookingfor button {
+  padding: 20px;
+  margin: 10px;
+}
+
+/* Styling for Preferred Platforms section */
+#preferred-platforms,
+#preferred-platforms-besponsored {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Space between checkboxes */
+}
+
+/* Style for each checkbox label */
+#preferred-platforms label,
+#preferred-platforms-besponsored label {
+  margin-bottom: 5px; /* Adds space between the checkboxes */
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the platform logos */
+.platform-logo {
+  width: 10px;
+  height: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+/* General Styles for the Platform Section */
+#preferred-platforms-besponsored {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+  align-items: center;
+}
+
+#preferred-platforms-besponsored label {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.platform-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.platform-logo {
+  width: 25px; /* Adjust logo size */
+  height: auto;
+  margin-right: 10px; /* Space between logo and input */
+}
+
+/* Social Handle Input */
+.social-handle {
+  /* Takes up the remaining space */
+  padding: 8px;
+  padding-right: 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Checkboxes */
+.platform-checkbox {
+  /* Align checkbox to the right */
+  margin-left: 30px;
+}
+
+/* Add some space between checkboxes */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  padding: auto;
+}
+
+/* Styles for displaying follower/subscriber count */
+.counts {
+  font-size: 12px;
+  color: #555;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Adjust checkbox size if needed */
+#preferred-platforms input[type="checkbox"],
+#preferred-platforms-besponsored input[type="checkbox"] {
+  margin-right: 5px; /* Space between checkbox and label text */
+  transform: scale(
+    1.2
+  ); /* Optional: slightly increase the size of the checkboxes */
+}
+
+/* Optional: Add some padding or margin around the preferred platforms section */
+#preferred-platforms,
+#preferred-platforms-besponsored {
+  margin-top: 20px;
+}
+
+/* Styling for Preferred Platforms section */
+#preferred-platforms,
+#preferred-platforms-besponsored {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px; /* Space between checkboxes */
+}
+
+/* Style for each checkbox label */
+#preferred-platforms label,
+#preferred-platforms-besponsored label {
+  margin-bottom: 15px; /* Adds space between the checkboxes */
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the platform logos */
+.platform-logo {
+  width: 20px; /* Set the size of the logo */
+  height: 20px; /* Set the height of the logo */
+  margin-right: 10px; /* Space between the logo and text */
+}
+
+/* Adjust checkbox size if needed */
+#preferred-platforms input[type="checkbox"],
+#preferred-platforms-besponsored input[type="checkbox"] {
+  margin-right: 10px; /* Space between checkbox and label text */
+  transform: scale(
+    1.2
+  ); /* Optional: slightly increase the size of the checkboxes */
+}
+
+/* Optional: Add some padding or margin around the preferred platforms section */
+#preferred-platforms,
+#preferred-platforms-besponsored {
+  margin-top: 20px;
+}
+
+.payfield {
+  max-width: 480px;
+  height: inherit !important;
+  margin: 40px auto 0 auto;
+  padding: 30px 26px 32px 26px;
+  border-radius: 18px;
+  border: 2px solid #52d8ff;
+  background: #212121;
+  box-shadow: 0 3px 18px #37326499;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.08em;
+  position: relative;
+}
+
+.payfield legend {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.payment-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.payfield h2 {
+  font-size: 1.25em;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 6px;
+  margin-top: 0;
+  text-align: center;
+}
+
+.payfield p {
+  color: #e7e7e7;
+  margin: 0 0 4px 0;
+  text-align: center;
+}
+
+.checkbox-row,
+.tos-agreement,
+.btn-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 6px 0;
+}
+
+.checkbox-row input[type="checkbox"],
+.tos-agreement input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #5eead4;
+  margin-right: 10px;
+}
+
+.checkbox-row label,
+.tos-agreement label {
+  color: #fff;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tos-agreement a {
+  color: #5eead4 !important;
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.payfield input[type="checkbox"] {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+}
+
+#submitBtn {
+  padding: 15px 34px;
+  font-size: 1.15em;
+  background: #635bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #8881;
+  margin-top: 10px;
+  display: inline-block;
+  width: 80%;
+  max-width: 250px;
+}
+
+@media (max-width: 600px) {
+  .payfield {
+    max-width: 97vw;
+    padding: 16px 2vw 16px 2vw;
+    border-radius: 12px;
+    font-size: 1em;
+  }
+  .payfield h2 {
+    font-size: 1em;
+  }
+  #submitBtn {
+    font-size: 1em;
+    width: 100%;
+    padding: 14px 0;
+    max-width: none;
+  }
+}
+
+.dialog1 {
+  margin: auto;
+  padding: auto;
+  background-position: center;
+  background-image: url(navimg.png);
+  background-size: 1000px 190px;
+  background-repeat: no-repeat;
+  border-radius: 25%;
+  background-position-y: -10px;
+}
+
+.why-choose {
+  margin: auto;
+  padding: auto;
+  background-position: center;
+  background-image: url(navimg.png);
+  background-size: 1000px 240px;
+  background-repeat: no-repeat;
+  border-radius: 25%;
+  background-position-y: -16px;
+}
+
+.case-studies {
+  margin: auto;
+  padding: auto;
+  background-position: center;
+  background-image: url(navimg.png);
+  background-size: 1000px 580px;
+  background-repeat: no-repeat;
+  border-radius: 25%;
+  background-position-y: -24px;
+  color: gold;
+}
+.intro {
+  margin: auto;
+  padding: auto;
+  background-position: center;
+  background-image: url(navimg.png);
+  background-size: 1000px 200px;
+  background-repeat: no-repeat;
+  border-radius: 25%;
+  background-position-y: -10px;
+}
+
+.images div img {
+  height: 250px;
+  width: 350px;
+  border-radius: 25px;
+  border-color: aqua;
+  border-style: ridge;
+  border-bottom-color: purple;
+  border-left-color: purple;
+  border-width: 5px;
+}
+
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: black; /* Set background color to black */
+  color: white; /* Ensure text is white for contrast */
+}
+
+/* Hero Section */
+
+.cta-button {
+  background-color: #5622be;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Case Studies Section */
+.case-studies {
+  margin-top: -10px;
+  padding: 20px 20px;
+
+  background-color: #333; /* Dark background for case studies section */
+}
+
+.case-studies p {
+  padding-right: 12px;
+}
+
+.case-study {
+  display: flex;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.842);
+  color: #000;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.case-study img {
+  width: 100px;
+  height: 150px;
+  margin-right: 20px;
+  padding-left: 10px;
+}
+
+.case-study button {
+  background-color: #5622be;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark background */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  margin: 15% auto;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+  color: #000;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-family: Arial, sans-serif;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Footer Section */
+.footercomplete {
+  background-color: #333; /* Dark footer background */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+/* Sponsorship Calculator */
+.calculator {
+  padding: 40px 20px;
+  background-color: #000000; /* Dark background for calculator section */
+}
+
+.calculator form {
+  margin-bottom: 20px;
+}
+
+.calculator input {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.calculator button {
+  background-color: #5622be;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#earningsResult {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.images div h3 {
+  font-style: italic;
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 20px;
+  color: aqua;
+  background-color: purple;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: x-large;
+}
+
+.account {
+  width: 15px;
+}
+
+.two {
+  display: inline-block;
+  width: 200px;
+  padding: 5px;
+}
+
+.three {
+  width: 300px;
+  display: inline-block;
+  background-color: gray;
+  height: 400px;
+  margin: auto;
+  align-content: flex-end;
+  border-radius: 25px;
+}
+
+#sidebar {
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  width: 250px;
+  background-color: #000000;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+#sidebar .overall-subscriber-count {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#sidebar h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#sidebar canvas {
+  max-width: 100%;
+  margin-bottom: 30px;
+}
+
+/* Base Button Styling */
+button {
+  margin-top: 5px;
+  background-color: #0e4597; /* Blue background color */
+  color: white; /* White text */
+  font-size: 16px; /* Larger text size */
+  font-weight: bold; /* Bold text */
+  padding: 8px 20px; /* Padding for top/bottom and left/right */
+  border-radius: 8px; /* Rounded corners */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Show pointer cursor on hover */
+  transition: all 0.3s ease-in-out; /* Smooth transition on hover/focus */
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); /* Soft shadow */
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+  background-color: #0268d6; /* Darker blue when hovered */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.479); /* Deeper shadow */
+}
+
+/* Focus Effect for Buttons */
+button:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 0 3px rgba(251, 253, 255, 0.6); /* Blue glow on focus */
+}
+
+/* Disabled Button Styling */
+button:disabled {
+  background-color: #e0e0e0; /* Light gray background */
+  color: #999999; /* Light gray text */
+  cursor: not-allowed; /* Disabled cursor */
+  box-shadow: none; /* Remove shadow */
+}
+
+/* Specific Styling for the Sign-Up Button */
+.signup-btn {
+  background-color: #28a745; /* Green background color for sign up */
+  border-radius: 50px; /* Make it more rounded */
+  font-size: 18px; /* Slightly larger text */
+}
+
+.signup-form button {
+  margin-top: auto; /* Pushes the button to the bottom */
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Hover Effect for Sign-Up Button */
+.signup-btn:hover {
+  background-color: #218838; /* Darker green for hover */
+  box-shadow: 0 8px 12px rgba(40, 167, 69, 0.4); /* Deeper green shadow */
+}
+
+/* Styling for the Toggle Checkbox */
+input[type="checkbox"] {
+  margin-right: 10px; /* Space between checkbox and label */
+  transform: scale(1.2); /* Make the checkbox slightly larger */
+}
+
+/* Label Styling for Better Readability */
+label {
+  font-size: 16px; /* Same size as buttons for consistency */
+  cursor: pointer; /* Pointer cursor */
+  transition: color 0.2s ease; /* Smooth color change on hover */
+}
+
+/* Targeting labels of checkboxes specifically */
+input[type="checkbox"]:hover + label {
+  color: #007bff; /* Change the color only when hovering over the checkbox */
+}
+
+/* For better control, apply hover effect only to specific labels */
+.platform-container label:hover {
+  color: #007bff; /* Change color to blue for labels inside platform containers */
+}
+
+/* Style for the Fieldset Elements */
+fieldset {
+  padding: 20px;
+  border: 2px solid #4747c1; /* Light blue border */
+
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+legend {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.pptb {
+  all: unset;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  width: 90%;
+  align-items: center;
+  text-align: center;
+  margin: 36px auto 0 auto !important;
+  display: flex;
+  background-color: none;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#preferred-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 16px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#preferred-platforms label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: 1.04em;
+  justify-content: center;
+}
+
+/* Making the labels and radio buttons smaller */
+.titlebox label {
+  font-size: 10px; /* Makes the label text smaller */
+  margin-left: 5px; /* Space between radio button and label */
+}
+
+.titlebox input[type="radio"] {
+  width: 15px; /* Makes the radio button smaller */
+  height: 15px; /* Makes the radio button smaller */
+}
+
+/* General Profile Section Styling */
+.user-profile {
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+}
+
+/* Personal info container (wraps both left and right sections) */
+.personal-info-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Space between the left and right side */
+}
+
+/* Title section (left side) */
+.titlebox {
+  width: 48%; /* Ensure it takes up 45% of the space */
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between title radio buttons */
+}
+
+/* Right side section for Birthdate, Company Name, and Location */
+.right-side {
+  width: 48%; /* Ensure it takes up 45% of the space */
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+/* Set the parent container to flex */
+.personal-info-container {
+  display: flex;
+  align-items: center; /* Vertically center the items */
+  justify-content: flex-start; /* Align to the left */
+}
+
+/* Make the title fieldset behave like a flex item */
+.titleb {
+  margin-right: 15px; /* Space between title fieldset and other fields */
+  padding: 0 10px; /* Padding to make the fieldset content look better */
+  border-color: white;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
+/* Set the radio button labels to display inline, keeping them on one line */
+.title1 label {
+  display: inline-block;
+  margin-right: px; /* Add some spacing between the radio buttons */
+}
+
+/* Make sure inputs inside the fieldset and other fields are aligned */
+input[type="radio"],
+input[type="text"],
+input[type="date"] {
+  margin: 0 5px;
+}
+
+.submit-sec {
+  padding: auto;
+  margin-bottom: 70px;
+  margin-top: -100px;
+}
+
+/* Optional: Styling for the right-side section */
+.right-side {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styling the input fields for consistency */
+input[type="text"],
+input[type="date"] {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+/* Optional: If you want to add some spacing to each section */
+#birthdate-container,
+#company-name-container,
+.location {
+  margin-bottom: 15px;
+
+  margin-left: -30px;
+}
+
+.pibox input {
+  padding: 5px;
+}
+
+/* Input fields styling */
+.right-side input,
+.titlebox input {
+  width: 60%; /* Make inputs take full width of their container */
+  margin-bottom: 10px;
+}
+
+/* Label styling for better spacing */
+.right-side label,
+.titlebox label {
+  margin-bottom: 5px;
+}
+
+/* Ensuring that the company name is hidden by default */
+#company-name-container {
+  display: none;
+}
+
+/* Dynamically showing the company name when selected */
+input[type="radio"][id="Company"]:checked
+  ~ .right-side
+  #company-name-container {
+  display: block;
+}
+
+/* Birthdate field should be shown by default */
+#birthdate-container {
+  display: block;
+}
+
+/* Hiding birthdate when "Company" is selected */
+input[type="radio"][id="Company"]:checked ~ .right-side #birthdate-container {
+  display: none;
+}
+
+.profile-header .profile-picture img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.titleb {
+  width: 45%;
+  align-self: left;
+}
+
+.profile-header .profile-info h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 40px;
+}
+
+.profile-info {
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+  padding-left: 20px;
+}
+
+.profile-header .profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  margin-left: 60px;
+}
+
+.subscription-status {
+  margin-bottom: 20px;
+}
+
+.subscription-status h4 {
+  color: #4caf50;
+}
+
+.linked-accounts ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.linked-accounts li {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.linked-accounts span {
+  font-weight: bold;
+}
+
+.active-listings {
+  margin-bottom: 20px;
+}
+
+.graph-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.graph-section .pie-chart,
+.graph-section .bar-chart {
+  width: 60%;
+}
+
+.graph-section canvas {
+  width: 100%;
+  height: 300px;
+}
+
+.company-profiles ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.company-profiles li {
+  margin-right: 15px;
+}
+
+.company-profiles figure {
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.company-profiles img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* Footer container */
+.footercomplete {
+  position: relative;
+  width: 100%;
+  height: 150px; /* Adjust as needed for your design */
+  text-align: center;
+  color: white;
+  background-color: #000;
+}
+
+/* Footer container */
+.footercomplete {
+  position: relative; /* Ensure positioning context for child elements */
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Footer logo (behind text) */
+.footpic {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the logo */
+  width: 100%; /* Logo will span the full width of the footer */
+  height: 100px; /* Keep aspect ratio */
+  z-index: 0; /* Ensure logo stays behind the text */
+  background-color: #000;
+  z-index: 0;
+}
+
+/* Footer text (on top of logo) */
+.footer-text {
+  position: relative;
+  margin-top: 105px;
+  z-index: 1; /* Ensure text is on top of the logo */
+  padding: 20px;
+  font-size: 18px; /* Default font size, adjust as needed */
+  z-index: 2;
+}
+
+/* Make footer text look good on small screens */
+.footer-text ul {
+  list-style: none;
+
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between links */
+}
+
+/* Make links look better */
+.footer-text a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive footer logo size and text adjustment */
+@media (max-width: 768px) {
+  .footercomplete {
+    height: 120px; /* Adjust height for smaller screens */
+  }
+
+  .footer-logo {
+    width: 60%; /* Resize logo */
+  }
+
+  .footer-text {
+    font-size: 14px; /* Smaller text on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .footercomplete {
+    height: 100px; /* Further adjust height for very small screens */
+  }
+
+  .footer-logo {
+    width: 50%; /* Further reduce logo width */
+  }
+
+  .footer-text {
+    font-size: 12px; /* Smaller text size on very small screens */
+  }
+}

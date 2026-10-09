@@ -1,0 +1,1145 @@
+/* ===== Final dashboard and desktop adjustments ===== */
+/* nav notification bell and settings cog */
+
+/* === NAV + BADGE FIX (≤600px) ========================================= */
+@media (max-width: 600px) {
+  /* hide the decorative banner image on phones */
+
+  /* the wrapper that contains both <nav> menus + actions */
+  .navbar .navii > div,
+  .navbar1 .navii > div {
+    display: flex !important;
+    max-width: 300px;
+    gap: 8px;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .navbar nav,
+    .navbar1 nav {
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+    }
+  }
+
+  /* each <nav> becomes its own full-width row */
+  .navbar .navii nav,
+  .navbar1 .navii nav {
+    order: 1;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0px;
+    width: 100%;
+    margin: 0;
+  }
+
+  /* STOP overlap: kill any floats/absolute/widths on nav items */
+  .navbar nav li,
+  .navbar1 nav li {
+    position: static !important;
+    float: none !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    /* two per row, but never exceed the row width */
+    flex: 1 1 calc(50% - 8px);
+    max-width: calc(50% - 10px);
+    min-width: 0;
+  }
+  .navbar nav li a,
+  .navbar1 nav li a {
+    flex: 1 1 auto;
+    width: 100% !important;
+    white-space: nowrap;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  /* put the bell + gear on their OWN row, right-aligned */
+  nav li#settings-notif-bar,
+  .navbar nav li#settings-notif-bar,
+  .navbar1 nav li#settings-notif-bar {
+    order: 3;
+    flex: 0 0 100% !important; /* full-width row */
+    max-width: 30% !important;
+    display: flex !important;
+    justify-content: flex-end;
+    gap: 0px !important;
+    padding: 0 !important;
+  }
+
+  /* keep the icons compact (don’t stretch) */
+  #settings-notif-bar button,
+  #settings-notif-bar a,
+  #settings-notif-bar .icon-btn {
+    flex: 0 0 auto !important;
+    width: 20px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    position: relative !important; /* anchor for the badge */
+  }
+
+  #settings-notif-bar button {
+    display: block;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
+
+  /* badge back on the bell */
+  /* use whichever class/id your red bubble uses */
+  #settings-notif-bar .notif-badge,
+  #settings-notif-bar .notification-count,
+  #settings-notif-bar .notify-count {
+    position: absolute !important;
+    top: -6px;
+    right: -6px;
+    transform: none !important;
+  }
+
+  #settings-notif-bar {
+    width: 50px !important;
+  }
+
+  .settings-dropdown li > span,
+  .settings-dropdown li > label.switch {
+    padding-left: 12px !important;
+  }
+  .settings-dropdown li,
+  .settings-dropdown .dropdown-item {
+    display: block;
+    width: 100% !important;
+    background: none !important;
+    min-width: 0;
+    min-height: 0;
+    height: 20px;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: auto !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    background: url("navimg.png") center center/cover no-repeat !important;
+  }
+}
+
+.navbar nav a:last-child {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.navimg > nav:nth-child(1) > li:nth-child(3) {
+  margin-right: 0px;
+  width: 14vw;
+}
+
+@media (max-width: 600px) {
+  .navbar nav,
+  .navbar1 nav {
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  .settings-dropdown .dropdown-item {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    background: url("navimg.png") center center/cover no-repeat !important;
+    border: none;
+    color: inherit;
+    font-size: 1.09em;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+  #settings-dropdown {
+    left: auto !important;
+    right: 40px !important;
+    top: 200px !important;
+  }
+
+  /*settings email switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    vertical-align: middle;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: -20px;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.2s;
+    border-radius: 24px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.2s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #36a2eb;
+  }
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+}
+
+.navbar {
+  width: 100%;
+}
+
+/* dashboard mobile fixs */
+
+/* === LISTING CARDS: make them fit on phones (≤600px) ================== */
+@media (max-width: 600px) {
+  /* the container row */
+  #listing-container,
+  .active-listings {
+    overflow-x: hidden !important;
+  }
+
+  /* the card wrapper that’s currently 670px wide */
+  .listing-stage {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important; /* <-- cancel any 650–670px min-widths */
+    flex: 1 1 100% !important; /* allow shrink & wrap */
+    box-sizing: border-box;
+  }
+
+  /* typical children that also force side-scroll */
+  .card-top,
+  .card-content,
+  .stage-content,
+  .offer-card,
+  .offer-meta,
+  .offer-actions,
+  .offer-buttons {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* action buttons: stack full-width */
+  .offer-buttons .btn,
+  .offer-buttons button,
+  .card-content .btn {
+    display: block;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  /* the row of platform/social icons: wrap so it never widens the card */
+  .platform-icons,
+  .social-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* any images inside the card */
+  .listing-stage img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* 3) Tables: keep page width at 100%, scroll inside if needed */
+  /* If you have a wrapper like .table-responsive/.admin-table-scroll,
+     this will work too. Otherwise we make the table itself the scroller. */
+  .dashboard table,
+  table {
+    display: block !important; /* contain inner width */
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important; /* horizontal scroll inside */
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+    table-layout: fixed; /* allow cell wrapping */
+  }
+  .dashboard table th,
+  .dashboard table td,
+  table th,
+  table td {
+    white-space: normal !important; /* wrap long content */
+    word-break: break-word !important;
+  }
+
+  /* 2) Sections: width must include their padding (no overflow) */
+  section.dashboard,
+  section.userprofile,
+  section.section,
+  section {
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 20px !important;
+    width: calc(100% - -10px) !important; /* 100% minus the padding */
+    max-width: 100% !important;
+    min-width: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+  /* 1) Banner image: make it a block and clamp to the viewport */
+  background-img.navimg,
+  .navimg {
+    width: 100vw !important; /* exactly the viewport width */
+    max-width: 100% !important;
+    height: auto !important; /* or set your fixed mobile height */
+    object-fit: cover;
+    padding-left: -10px !important;
+    margin-left: -15px !important;
+  }
+  /* Center the dropdown panel */
+  #settings-notif-bar .settings-dropdown {
+    position: static;
+    transform: translateX(-50%) !important;
+    width: min(92vw, 420px) !important;
+    margin-top: 290px;
+  }
+
+  /* Make each row fill the width + center its background */
+  #settings-notif-bar .settings-dropdown li > a,
+  #settings-notif-bar .settings-dropdown li > button,
+  #settings-notif-bar .settings-dropdown li > .dropdown-item {
+    display: flex;
+    align-items: right;
+    width: 100%;
+    background-position: center center !important;
+    background-size: 100% 100% !important;
+  }
+
+  /* Center the text label inside the row */
+  #settings-notif-bar .settings-dropdown li > * > span {
+    margin: 0 auto; /* centers the label */
+    text-align: center !important;
+    padding: 0 !important; /* kills stray left padding */
+  }
+
+  /* Keep the toggle on the far right (if present) */
+  #settings-notif-bar .settings-dropdown li .switch,
+  #settings-notif-bar .settings-dropdown li input[type="checkbox"],
+  #settings-notif-bar .settings-dropdown li .toggle {
+    margin-left: auto;
+  }
+
+  .profile-info .profile-info p {
+    padding-left: 0;
+    margin-left: 0px !important;
+    padding-right: 10px;
+  }
+
+  .profile-info > p:nth-child(6) {
+    margin-left: 0px;
+  }
+
+  .modal-content {
+    max-width: 90vw;
+    align-self: center;
+    top: 20vw;
+    left: 50vw;
+    background: #191a1d;
+    color: #fff;
+    border-radius: 22px;
+    box-shadow: 0 10px 48px 0 #000a;
+    max-width: 600px;
+    width: 94vw;
+    max-height: 500px;
+    padding: 32px 34px 26px 34px;
+    position: relative;
+    font-size: 1.12em;
+    min-width: 350px;
+    border: 1.5px solid #222;
+  }
+  #global-search-input {
+    width: fit-content;
+  }
+
+  .nav-search {
+    max-width: 60px;
+  }
+}
+
+/**@media (min-width: 1200px) {
+body{
+  font-size: 1.2em;
+}
+ #social_handles {
+  display: none !important;
+ }
+ fieldset {
+  width: 450px;
+ }
+
+ .dashboard {
+  margin-left: -100px;
+}
+
+  .section section div p {
+    font-size: 1.4em !important;
+  }
+}
+
+.card {
+   
+    background: #242424;
+  }
+
+
+**/
+
+@media (min-width: 1200px) {
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  .nav > li:nth-child(2) {
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  #auth-link {
+    height: 55px;
+  }
+
+  /* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+  nav {
+    /* height: fit-content; */
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  .navimg {
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  .navimg > nav:nth-child(1) > li:nth-child(3) {
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  .navimg > nav:nth-child(1) > li:nth-child(4) {
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  .icon-bar-bg {
+    height: 55px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  #settings-notif-bar {
+    height: 55px;
+  }
+
+  .wallet {
+    top: 270px;
+    left: 160px;
+  }
+
+  /* Center the whole reviews row */
+  .review-stars-block,
+  #sponsee-review-stars {
+    text-align: center;
+  }
+
+  .stars-row {
+    display: flex;
+    justify-content: center; /* ← centers the items */
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto; /* keep it centered as a block */
+    width: max-content; /* shrink to content so margin:auto works */
+    flex-wrap: wrap; /* wrap nicely on small screens */
+  }
+
+  /* Each metric + its stars */
+  .stars-row .star-item {
+    display: grid;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* The stars themselves stay inline & centered */
+  .stars-row .star-item .stars,
+  .stars-row .star-item .fa-star,
+  .stars-row .star-item .star {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Make the container a 4-column grid */
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px; /* equal spacing between cards */
+    align-items: stretch; /* equal heights */
+  }
+
+  /* Flatten the .card-row wrappers so all 4 cards sit in one row */
+  .dashboard-cards .card-row {
+    display: contents;
+  }
+
+  /* Let each card fill its grid column */
+  .dashboard-cards .card {
+    max-width: none;
+    min-width: 0;
+    width: 16vw;
+    margin: 0 0 0 0;
+  }
+
+  /* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+  .aff-sec {
+    width: 85vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  #view-all-reviews-btn {
+    /* padding: 9px 18px; */
+    padding: 10px 1px;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  #generate-recap-btn {
+    margin-right: 5px;
+  }
+
+  /* Element | http://127.0.0.1:5500/public/dashboardsponsee.html */
+
+  #generate-invoices-btn {
+    /* margin-left: 12px; */
+    margin-left: 5px;
+  }
+
+  /* styles.css | http://127.0.0.1:5500/public/styles.css */
+
+  .btn,
+  .modal-content .btn {
+    /* padding: 8px 22px; */
+    padding: 9px 1px;
+  }
+
+  /* --- Fix the global section rule just for this panel --- */
+  section.friends-panel {
+    display: block !important; /* override the inline-block */
+    width: 100%;
+  }
+
+  /* Stack on mobile by default */
+  #friends-and-groups .friends-columns {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* Two columns side-by-side on wide screens */
+  @media (min-width: 1000px) {
+    #friends-and-groups .friends-columns {
+      grid-template-columns: 1fr 1fr; /* left = Pending, right = Friends */
+    }
+  }
+
+  /* Make sure the inner column wrappers don’t impose widths */
+  #friends-and-groups .friends-columns > div {
+    min-width: 0;
+  }
+
+  /* Optional: tidy cards inside the columns */
+  #friends-and-groups .card-col > div {
+    margin-bottom: 12px;
+  }
+  #friends-accepted .card {
+    height: 150px;
+    width: 120px;
+  }
+
+  #friends-accepted .btns {
+    margin: auto;
+    height: 30px;
+  }
+
+  .groups-panel {
+    display: grid !important;
+    grid-template-columns: 1fr 2fr; /* left = list, right = members */
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Title and create form span both columns */
+  .groups-panel > h3,
+  #group-create-form,
+  #pending-group-invites,
+  #group-offer-tabs,
+  #group-offers-container,
+  .groups-panel .help-block {
+    grid-column: 1 / -1;
+  }
+
+  /* Left / Right columns */
+  #groups-list {
+    grid-column: 1;
+    margin: 0 !important; /* override inline margins */
+  }
+  #groups-members {
+    grid-column: 2;
+    margin: 0 !important;
+    min-height: 280px; /* keeps the area visible before selection */
+  }
+
+  /* Nice spacing for cards inside each column */
+  #groups-list.card-col > div,
+  #groups-members.card-col > div {
+    margin-bottom: 12px;
+  }
+
+  #gm-list {
+    gap: 56px !important;
+  }
+
+  #group-offers-container {
+    display: block;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(520px, 1fr));
+  }
+
+  .active-listings {
+    display: block !important; /* override your grid */
+    column-count: 2; /* two vertical stacks */
+    column-gap: 30px; /* space between columns */
+  }
+
+  /* Each card should stay intact within a column */
+  .active-listings > * {
+    break-inside: avoid; /* standard */
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    display: inline-block; /* ensures proper column boxing */
+    width: 100%;
+    margin: 0 0 18px; /* vertical spacing between cards */
+  }
+
+  /* If you have a footer row (pagination) under the list, make it span both columns */
+  #pagination-row {
+    column-span: all; /* Chrome/Edge support */
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .active-listings {
+    display: block !important; /* override your grid */
+    column-count: 1; /* two vertical stacks */
+    column-gap: 200px !important; /* space between columns */
+    margin-left: 90px !important;
+    margin-right: 20px !important;
+  }
+
+  #sponsee-public-offers-container,
+  #offers-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(520px, 1fr));
+  }
+  .offer-dets fieldset {
+    height: max-content;
+  }
+  .offer-dets {
+    display: flex !important;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .offer-dets .recent-deals,
+  .offer-dets .Archived-deals {
+    flex: 1 1 0; /* split evenly */
+    width: auto !important;
+    margin: 0 !important;
+    min-width: 0; /* prevent overflow */
+    display: block !important;
+  }
+
+  .oauth-platforms {
+    column-count: 2;
+    column-gap: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Each stats card stays intact within a column */
+  .oauth-platforms > div {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    display: inline-block; /* required for multi-column masonry */
+    width: 95% !important; /* override inline 550px max + 90% width */
+    max-width: none !important;
+    margin: 0 0 18px !important;
+  }
+
+  .graph-section {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(300px, 2fr));
+  }
+
+  #affiliate-dashboard-section {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* left = link, right = stats */
+    gap: 30px;
+    align-items: start;
+    margin-top: 10px;
+  }
+
+  /* Header spans both columns */
+  #affiliate-dashboard-section .panel-header {
+    grid-column: 1 / -1;
+  }
+
+  /* Left / Right cards */
+  #aff-link-card {
+    grid-column: 1;
+  }
+  #aff-stats-card {
+    grid-column: 2;
+    margin-top: 0 !important; /* override inline margin */
+  }
+
+  /* Make sure cards fill their grid cells */
+  #aff-link-card,
+  #aff-stats-card {
+    width: 95% !important;
+  }
+  .aff-sec {
+    margin-bottom: 100px;
+    bottom: 30px;
+    margin-top: 25px;
+  }
+  .footer-text {
+    margin-top: 125px;
+  }
+
+  .footercomplete {
+    position: relative;
+    z-index: 0;
+    padding-top: 5px;
+
+    max-width: 1500px;
+    margin: auto;
+    margin-top: 50px;
+  }
+
+  #friends-pending,
+  #friends-accepted {
+    max-height: clamp(160px, 30vh, 520px); /* responsive cap */
+    overflow-y: auto;
+    margin: 5px;
+    padding-right: 6px; /* space for scrollbar */
+    scrollbar-gutter: stable both-edges;
+    max-height: 400px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* left = link, right = stats */
+    gap: 8px;
+  }
+  #friends-pending div div .btns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 5px;
+    padding-left: 60px;
+    margin-top: -20px !important;
+  }
+
+  #friends-accepted div div .btns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 5px;
+    padding-left: 60px;
+    margin-top: -20px !important;
+    margin-right: auto;
+    margin-left: a;
+  }
+
+  .ig-top-media-row,
+  .ig-last-media-link {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr; /* left = link, right = stats */
+    gap: 30px;
+    align-items: start;
+    margin-top: 10px;
+  }
+  #friends-pending {
+    grid-template-columns: 1fr;
+    width: 312px;
+  }
+
+  /* Two-column layout: badges (left) + platforms (right) */
+  .grid2 {
+    display: grid !important;
+    grid-template-columns: minmax(320px, 1fr) minmax(420px, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "badges platforms"
+      "meta   platforms";
+    column-gap: 18px;
+    row-gap: 12px;
+    align-items: start !important;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .toppers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Left column: trust badges */
+  .grid2 .trust-badges {
+    grid-area: badges;
+  }
+
+  /* Right column: Supported Platforms (span both rows) */
+  .grid2 #approved-platforms {
+    grid-area: platforms;
+    align-self: start;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 600px;
+
+    /* override earlier centering so it sits in the right column */
+  }
+
+  .oauthimg {
+    all: unset;
+    width: 100%;
+    height: auto;
+  }
+
+  /* The small stats line below the badges */
+  .grid2 > div:not(.trust-badges):not(#approved-platforms) {
+    grid-area: meta;
+    text-align: left;
+  }
+
+  /* Kill the line break that was creating extra space */
+  .grid2 br {
+    display: none;
+  }
+
+  /* Responsive: stack on small screens */
+  @media (max-width: 920px) {
+    .grid2 {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "badges"
+        "platforms"
+        "meta";
+    }
+    .grid2 > div:not(.trust-badges):not(#approved-platforms) {
+      text-align: center;
+    }
+    .grid2 #approved-platforms {
+      justify-self: center;
+    }
+  }
+
+  #friends-accepted {
+    display: grid !important;
+    gap: 10px;
+    min-height: 400px;
+  }
+
+  .card-column .card {
+    width: 140px;
+  }
+
+  /* ===== Friends — accepted grid (5 per row) ===== */
+  #friends-accepted {
+    display: grid !important;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+    margin-left: 45px;
+    align-items: start;
+  }
+
+  /* make the tiny cards fill their grid cell */
+  #friends-accepted > .card {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+  #friends-accepted > .card .card-body {
+    padding: 14px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  /* Optional: keep all cards the same height for a neat grid */
+  #friends-accepted > .card .card-body {
+    min-height: 150px;
+  }
+
+  /* ===== (Optional) cap to exactly 2 rows; scroll for more ===== */
+  /* Remove this block if you want unlimited rows */
+  @media (min-width: 1200px) {
+    #friends-accepted {
+      --card-h: 150px; /* match min-height above */
+      grid-auto-rows: var(--card-h);
+      max-height: calc(2 * var(--card-h) + 12px); /* two rows + one gap */
+      overflow-y: auto; /* scroll to see more than 10 */
+      padding-right: 4px;
+      padding-top: 10px;
+    }
+  }
+
+  .navii {
+    width: 100%;
+    background-image: url(handslogo2.jpg);
+    background-position: 238px;
+    background-position-y: center;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-position-y: -571px;
+    padding: 5px;
+    border-radius: 40px;
+  }
+
+  /* Keep Pending (left) | Friends (right) columns tidy */
+  .friends-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  #groups-list > div:nth-child(1) {
+    margin: 0px 0px;
+  }
+}
+@media (min-width: 1400px) {
+  .active-listings {
+    display: block !important; /* override your grid */
+    column-count: 2; /* two vertical stacks */
+    column-gap: 200px !important; /* space between columns */
+    margin-left: 90px !important;
+    margin-right: 20px !important;
+  }
+}
+
+.navii > div:nth-child(3) {
+  height: 63px;
+}
+
+.navimg > nav:nth-child(1) > li:nth-child(1) {
+  height: 55px;
+}
+
+.navimg > nav:nth-child(1) > li:nth-child(2) {
+  height: 55px;
+}
+
+@media (max-width: 1190px) {
+  .activity-feed-fieldset {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1000px) {
+  .profilefs {
+    display: grid;
+    grid-template-columns: 1fr 3fr auto;
+  }
+  #carousel-img {
+    width: 509px !important;
+    height: 323px !important;
+  }
+  .groupab {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px;
+    width: 90vw;
+    margin: auto;
+    padding: 0;
+  }
+
+  fieldset.home-cont:nth-child(2) {
+    margin-right: 0px;
+  }
+
+  .upllogo {
+    display: inline-block;
+    min-height: 440px !important;
+  }
+
+  .sndstage {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  #pici {
+    margin-top: 50px;
+  }
+  #logofile {
+    padding-top: 41px;
+    padding-left: 59px;
+  }
+}
+
+.navbar nav li {
+  height: 55px;
+}
+
+.navimg > nav:nth-child(2) > li:nth-child(2) {
+  height: 55px;
+}
+
+/* your banner container */
+.site-hero {
+  position: relative;
+  /* keep your current background image */
+  /* background: url("./header-bg.png") center/cover no-repeat; */
+  overflow: hidden;
+}
+
+/* ensure content sits above the overlay */
+.site-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* the sparkle layer */
+#sparkle-overlay {
+  position: absolute;
+  inset: 0;
+  height: 160px;
+  pointer-events: none;
+  z-index: 0;
+  contain: layout paint; /* perf hint */
+  width: 95vw;
+  max-width: 100vw;
+}
+
+/* each sparkle */
+#sparkle-overlay .sparkle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  /* soft glowing dot */
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0)
+  );
+  filter: drop-shadow(
+    0 0 3px rgba(246, 198, 46, 0.9)
+  ); /* Sponsor Sorter gold glow */
+  opacity: 0.15;
+  animation: twinkle var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+  will-change: opacity, transform;
+}
+
+/* occasional slightly bigger stars */
+#sparkle-overlay .sparkle.big {
+  width: 3px;
+  height: 3px;
+  filter: drop-shadow(0 0 5px rgba(246, 198, 46, 0.95));
+}
+
+/* subtle slow drift + brightness pulse */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateY(-2px) scale(1.7);
+  }
+}
+
+/* optional: a super-subtle moving haze to sell the effect */
+.site-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      120px 120px at 10% 20%,
+      rgba(255, 255, 255, 0.04),
+      transparent 70%
+    ),
+    radial-gradient(
+      120px 120px at 80% 70%,
+      rgba(246, 198, 46, 0.03),
+      transparent 70%
+    );
+  mix-blend-mode: screen;
+  animation: haze 18s linear infinite;
+}
+@keyframes haze {
+  0% {
+    background-position:
+      0% 0%,
+      100% 100%;
+  }
+  100% {
+    background-position:
+      100% 0%,
+      0% 100%;
+  }
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  #sparkle-overlay,
+  .site-hero::after {
+    display: none;
+  }
+}

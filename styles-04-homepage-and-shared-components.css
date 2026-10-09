@@ -1,0 +1,604 @@
+/* ===== Homepage, modals, and shared components ===== */
+/* HOMEPAGE CORE STYLES (existing, keep as is) */
+.cta-button {
+  animation: cta-pulse 2.5s infinite;
+  transition:
+    transform 0.18s cubic-bezier(0.4, 2, 0.6, 1),
+    box-shadow 0.18s;
+  box-shadow: 0 2px 20px #5b5dc01a;
+}
+.cta-button:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 4px 32px #6f75fa4a;
+}
+@keyframes cta-pulse {
+  0%,
+  100% {
+    box-shadow: 0 2px 20px #7b8cff3a;
+  }
+  50% {
+    box-shadow: 0 6px 36px #7b8cff77;
+  }
+}
+.fade-in-hero {
+  opacity: 0;
+  transform: translateY(32px);
+  animation: heroFadeIn 1.1s cubic-bezier(0.37, 1.27, 0.62, 1) 0.3s forwards;
+}
+@keyframes heroFadeIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.pagination-controls button {
+  background-color: #6845e9;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  box-shadow: none;
+
+  cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+/* Align toggle switches to the right edge of dropdown */
+.settings-dropdown ul {
+  padding: 0 0 0 0;
+  min-width: 150px;
+}
+.settings-dropdown li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 8px 0;
+}
+
+.settings-dropdown li .switch {
+  margin-left: 10px; /* Force the switch (slider) to right */
+}
+
+/* Make text not too close to left edge */
+.settings-dropdown li > span,
+.settings-dropdown li > label.switch {
+  padding-left: 12px;
+}
+
+/* For normal buttons (not switch lines), make full width and align left */
+.settings-dropdown .dropdown-item {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.09em;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+#settings-dropdown {
+  left: auto !important;
+  right: 40px !important;
+  top: 200px !important;
+}
+
+/*settings email switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  vertical-align: middle;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.2s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #36a2eb;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+/* invoice modal */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 22, 35, 0.62);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.22s;
+}
+.modal-content {
+  top: 20vw;
+  left: 35vw;
+  background: #191a1d;
+  color: #fff;
+  border-radius: 22px;
+  box-shadow: 0 10px 48px 0 #000a;
+  max-width: 600px;
+  width: 94vw;
+  max-height: 500px;
+  padding: 32px 34px 26px 34px;
+  position: relative;
+  font-size: 1.12em;
+  min-width: 350px;
+  border: 1.5px solid #222;
+}
+.modal-content h3 {
+  margin: 0 0 24px 0;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: #fff;
+  text-align: left;
+  letter-spacing: 0.02em;
+  overflow: visible;
+}
+#invoice-offer-list {
+  margin-bottom: 22px;
+}
+
+#friends-pending div div .btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin: 5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+}
+
+#friends-accepted div div .btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin: 5px;
+  padding-left: 60px;
+  margin-top: -20px !important;
+  margin-right: auto;
+  margin-left: a;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 8px 0;
+  background: #17181b;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 1em;
+}
+.invoice-table th,
+.invoice-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #25272c;
+  text-align: left;
+}
+.invoice-table th {
+  background: #202126;
+  color: #68bbff;
+  font-weight: 600;
+}
+.invoice-table tr:last-child td {
+  border-bottom: none;
+}
+.invoice-table td {
+  color: #f5f5f7;
+}
+.invoice-table .amount {
+  color: #41d461;
+  font-weight: 600;
+}
+.invoice-table .btn {
+  margin: 0;
+}
+.invoice-table .status-paid {
+  color: #41d461;
+  font-weight: 500;
+}
+.invoice-table .status-rejected {
+  color: #ff4040;
+  font-weight: 500;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+.btn,
+.modal-content .btn {
+  background: #421caa;
+  color: white;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
+  box-shadow: 0 1px 8px 0 #191a1d38;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+}
+
+#invoice-offer-list {
+  /* Add a fixed height for scroll, fits nicely in your modal! */
+  max-height: 400px; /* Adjust as needed for modal size */
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 22px;
+  background: #17181b;
+  border-radius: 12px;
+  padding: 0;
+}
+
+/* Make the table header sticky inside the scrollable list */
+.invoice-table thead tr,
+.invoice-table th {
+  position: sticky !important;
+  top: 0;
+  background: #202126 !important;
+  z-index: 2;
+}
+
+/* Prevent modal-content itself from scrolling (only inner list scrolls) */
+.modal-content {
+  overflow: visible !important;
+}
+
+/* Actions pinned to bottom, optional if more than one button */
+.modal-actions {
+  background: #191a1d;
+  position: static;
+  bottom: 0;
+  z-index: 10;
+  padding-bottom: 0;
+}
+
+.highlight-card {
+  box-shadow: 0 0 22px 0 #214ed3cc !important;
+  border-color: #478dff !important;
+  transition:
+    background 0.18s,
+    box-shadow 0.28s,
+    border 0.2s;
+}
+
+/* global search */
+
+/* Remove/override any `.stars { color: ... }` you had */
+.search-item.kind-profile .stars {
+  letter-spacing: 1px;
+  line-height: 18px;
+  min-height: 18px; /* keep rows even */
+}
+
+/* Per-star colors */
+.search-item.kind-profile .stars .star.full {
+  color: #ffd600;
+} /* gold */
+.search-item.kind-profile .stars .star.empty {
+  color: #888a8f;
+} /* gray */
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  opacity: 0.9;
+  border-radius: 10px;
+}
+.nav-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  max-width: 220px;
+  background: url("./navimg.png") center / 100% 110% no-repeat;
+}
+
+/* ===== Affiliate Totals Card ===== */
+:root {
+  --aff-bg-soft: #2a2c2f;
+  --aff-border: #3c4147; /* subtle border */
+  --aff-text: #f3f5f7; /* primary text */
+  --aff-muted: #aeb6bf; /* secondary text */
+  --aff-accent: #77e48f; /* numbers/accent */
+  --aff-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --aff-radius: 18px;
+}
+
+/* Card container */
+#aff-stats-card.card {
+  background: linear-gradient(180deg, var(--aff-bg), var(--aff-bg-soft));
+  border: 1px solid var(--aff-border);
+  border-radius: var(--aff-radius);
+  box-shadow: var(--aff-shadow);
+  overflow: hidden;
+}
+.cardsaff {
+  flex: 1;
+  background: #1d1d1d;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Header */
+#aff-stats-card .card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--aff-border);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+#aff-stats-card .card-header h3 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--aff-text);
+}
+
+/* Grid of stats */
+#aff-stats-card .card-body {
+  padding: 18px 20px 22px;
+}
+#aff-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Stat tile */
+#aff-stats .stat {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--aff-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+#aff-stats-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Stat tile */
+#aff-stats-dashboard .stat {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--aff-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Label + value */
+#aff-stats .label {
+  color: var(--aff-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.25px;
+  margin-bottom: 8px;
+}
+#aff-stats .value {
+  color: var(--aff-accent);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+/* Make currency lines stack nicely (e.g., "USD 0.00") */
+#aff-stats .value small {
+  font-weight: 600;
+  opacity: 0.9;
+  margin-right: 6px;
+}
+
+/* Section heading above the card if you use one */
+#affiliate-dashboard-section .panel-header h2 {
+  color: var(--aff-text);
+  margin: 0 0 6px 0;
+}
+#affiliate-dashboard-section .panel-header .muted {
+  color: var(--aff-muted);
+}
+
+/* Referral link card polish (optional) */
+#aff-link-card.card {
+  background: linear-gradient(180deg, var(--aff-bg), var(--aff-bg-soft));
+  border: 1px solid var(--aff-border);
+  border-radius: var(--aff-radius);
+  box-shadow: var(--aff-shadow);
+  overflow: hidden;
+}
+#aff-link-card .card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--aff-border);
+  background: rgba(255, 255, 255, 0.02);
+}
+#aff-link-card .card-body {
+  padding: 18px 20px 22px;
+}
+#aff-link-card input[readonly] {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--aff-border);
+  color: var(--aff-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+}
+#aff-link-card button {
+  border: 1px solid var(--aff-border);
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--aff-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  #aff-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  #aff-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-affiliates-section {
+  width: 90% !important;
+  max-width: 900px;
+}
+
+#global-search-input {
+  width: 90%;
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: none;
+  background: var(--panel-2, #2b2b2b);
+  color: var(--txt, #fff);
+  outline: none;
+}
+
+#global-search-input:focus {
+  box-shadow: 0 0 0 1px #3b82f6;
+  border-color: #3b82f6;
+}
+
+.search-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--panel, #1f1f1f);
+  border: 1px solid var(--border, #444);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+  max-height: 60vh;
+  overflow: auto;
+  width: 300px;
+}
+
+.search-section-title {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted, #aaa);
+  padding: 10px 12px 4px;
+  text-transform: uppercase;
+}
+
+.search-item {
+  display: flex;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.search-item:hover,
+.search-item[aria-selected="true"] {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.search-item .icon {
+  width: 50px;
+  height: 50px;
+  opacity: 0.9;
+  border-radius: 10px;
+}
+
+.search-item .title {
+  font-weight: 600;
+  color: var(--txt, #fff);
+}
+#global-search-input {
+  background: url("./search.png") no-repeat 5px center / 30px 30px;
+  padding-left: 30px; /* make room for the icon */
+}
+
+.search-item .subtitle {
+  font-size: 12px;
+  color: var(--muted, #bdbdbd);
+  margin-top: 2px;
+}
+
+.search-item .pill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid var(--border, #444);
+  border-radius: 999px;
+  color: var(--muted, #bdbdbd);
+}
+
+.search-item .meta {
+  display: flex;
+  flex-direction: column; /* stack icon above pill */
+  align-items: center;
+  gap: 6px;
+}
