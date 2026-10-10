@@ -398,18 +398,6 @@ export async function tryConsumeBackupCode(userId, code) {
 // ---- Edge Function call: sendNotificationEmail -----------------------------
 
 async function sendTwoFAEmail(toEmail, code, context = 'login') {
-  const subject =
-    context === 'setup'
-      ? 'Two-Factor Authentication enabled on your Sponsor Sorter account'
-      : 'Your Sponsor Sorter login code';
-
-  const message =
-    `Hi,\n\n` +
-    `Your Sponsor Sorter verification code is: ${code}\n\n` +
-    `This code will expire in 10 minutes.\n` +
-    `If you did not request this, please secure your account immediately.\n\n` +
-    `— Sponsor Sorter`;
-
   const origin = window.location.origin || '';
   const isLocalDev =
     origin.includes('127.0.0.1:5500') ||
@@ -439,9 +427,8 @@ async function sendTwoFAEmail(toEmail, code, context = 'login') {
       },
       body: JSON.stringify({
         to: toEmail,
-        subject,
-        message,
-        type: '2fa'
+        code,
+        context,
       })
     });
 

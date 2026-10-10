@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadOtherAccounts() {
     otherProfilesContainer.innerHTML = '';
     const { data: allUsers, error } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, location, profile_pic, contenttype, social_handles, userType')
       .eq('userType', targetType);
 
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // -------- Main Search Query --------
     let query = supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, location, profile_pic, contenttype, social_handles')
       .eq('userType', targetType);
 

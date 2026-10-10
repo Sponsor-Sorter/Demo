@@ -218,7 +218,8 @@ async function updateNavBar() {
 updateNavBar();
 
 function injectBadge(username, email) {
-  injectUserBadge(email, '#profile-badge-slot', 'sponsor_email');
+  const slot = document.getElementById('profile-badge-slot');
+  if (slot) slot.textContent = email ? 'Verified account' : '';
 }
 
 function renderStars(rating) {
@@ -273,7 +274,7 @@ function extractPlatformBadges(social_handles) {
 
 async function loadProfileAndStats(username) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .ilike('username', username)
     .single();
@@ -319,7 +320,7 @@ async function loadProfileAndStats(username) {
   document.getElementById("social_handles").innerHTML = extractPlatformBadges(data.social_handles);
 
   // Badge: after getting email, call badge injector
-  injectBadge(username, data.email);
+  injectBadge(username, data.email_verified);
 
   // --- Dynamically insert the Report Profile button ---
   const fieldset = document.querySelector('.userprofile fieldset');
@@ -425,7 +426,7 @@ async function loadProfileRecentActivity(username) {
     let sponseePicUrl = 'logos.png';
     if (offer.sponsee_username) {
       const { data: sponseeData } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic')
         .eq('username', offer.sponsee_username)
         .single();
@@ -477,7 +478,7 @@ async function loadProfileArchivedDeals(username) {
     let sponseePicUrl = 'logos.png';
     if (offer.sponsee_username) {
       const { data: sponseeData } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic')
         .eq('username', offer.sponsee_username)
         .single();

@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function hydrateProfile() {
   if (!sessionUser) return;
   const { data } = await supabase
-    .from('users_extended_data')
-    .select('user_id, username, profile_pic, is_admin')
+      .from('public_user_directory')
+      .select('user_id, username, profile_pic')
     .eq('user_id', sessionUser.id)
     .maybeSingle();
   if (data) {
@@ -106,7 +106,7 @@ async function fetchThreads() {
   let profiles = {};
   if (authorIds.length) {
     const { data: profileData } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, profile_pic')
       .in('user_id', authorIds);
     profileData?.forEach(p => { profiles[p.user_id] = p; });
@@ -376,7 +376,7 @@ async function openFullThreadModal(threadId) {
   let profiles = {};
   if (authorIds.length) {
     const { data: profileData } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, profile_pic')
       .in('user_id', authorIds);
     profileData?.forEach(p => { profiles[p.user_id] = p; });
@@ -479,7 +479,7 @@ async function renderComments(postId) {
   let profiles = {};
   if (authorIds.length) {
     const { data: profileData } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, profile_pic')
       .in('user_id', authorIds);
     profileData?.forEach(p => { profiles[p.user_id] = p; });

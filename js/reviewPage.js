@@ -102,13 +102,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ---------- Load sponsor profile ----------
   const { data: sponsorData } = await supabase
-    .from("users_extended_data")
+    .from("public_user_directory")
     .select("*")
-    .eq("email", offer.sponsor_email)
+    .eq("user_id", offer.sponsor_id)
     .single();
   if (sponsorData) {
     document.getElementById("sponsor-username").innerText = sponsorData.username || 'N/A';
-    document.getElementById("sponsor-email").innerText = sponsorData.email || 'N/A';
+    document.getElementById("sponsor-email").innerText = offer.sponsor_email || 'N/A';
     document.getElementById("sponsor-company").innerText = sponsorData.company_name || 'N/A';
     document.getElementById("sponsor-location").innerText = sponsorData.location || 'N/A';
     document.getElementById("sponsor-about").innerText = sponsorData.about_yourself || 'N/A';
@@ -120,13 +120,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ---------- Load sponsee profile ----------
   const { data: sponseeData } = await supabase
-    .from("users_extended_data")
+    .from("public_user_directory")
     .select("*")
-    .eq("email", offer.sponsee_email)
+    .eq("user_id", offer.sponsee_id)
     .single();
   if (sponseeData) {
     document.getElementById("sponsee-username").innerText = sponseeData.username || 'N/A';
-    document.getElementById("sponsee-email").innerText = sponseeData.email || 'N/A';
+    document.getElementById("sponsee-email").innerText = offer.sponsee_email || 'N/A';
     document.getElementById("sponsee-location").innerText = sponseeData.location || 'N/A';
     document.getElementById("sponsee-about").innerText = sponseeData.about_yourself || 'N/A';
     if (sponseeData.profile_pic) {
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function fetchReviewerUsername(user_id) {
     if (!user_id) return userEmail;
     const { data } = await supabase
-      .from("users_extended_data")
+      .from("public_user_directory")
       .select("username")
       .eq("user_id", user_id)
       .single();

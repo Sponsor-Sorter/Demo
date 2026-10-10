@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function getSponsorId(username) {
     try {
       const { data } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('user_id')
         .eq('username', username)
         .single();
@@ -399,7 +399,7 @@ async function computeGroupShare(offer) {
     let sponsor_id = '';
     try {
       const { data: sponsor } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic, user_id, username')
         .eq('username', offer.sponsor_username)
         .single();

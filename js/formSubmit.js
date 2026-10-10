@@ -14,7 +14,6 @@ const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functio
 
 // Stripe checkout Edge Function + keys
 const STRIPE_BACKEND = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout';
-const STRIPE_PK = 'pk_live_51RSqPjGpIACU7TxK4XxMXjNPKpkEvhmfya1DgnxtZEcMeCe8wgzrhT9v6BxqbWXhl7s30nl23DRR9CclIQuvwAQX00zkJcVmOV';
 const STRIPE_SUBSCRIPTION_PRICE_ID = 'price_1SbWeEGpIACU7TxK1H3mXQfR';
 
 // Utility: loud error logging
@@ -22,18 +21,6 @@ function logError(label, err) {
   console.error(`[Signup][${label}]`, err);
   const msg = err?.message || err || 'Unknown error';
   alert(`[Signup][${label}] ${msg}`);
-}
-
-// Utility: ensure Stripe.js present if not already loaded by script tag
-async function loadStripeJS() {
-  if (window.Stripe) return;
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://js.stripe.com/v3/';
-    script.onload = resolve;
-    script.onerror = () => reject(new Error('Failed to load Stripe.js'));
-    document.head.appendChild(script);
-  });
 }
 
 // Utility: build a deterministic-ish temporary ID for logo path before user exists
@@ -236,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({
             mode: 'subscription',
             subscriptionPriceId: STRIPE_SUBSCRIPTION_PRICE_ID,
+            signupEmail: registration.email,
             offerId: registration.email + '-' + Date.now(),
             offerType: 'signup',
             frontendBaseUrl
@@ -258,12 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
         throw err;
       }
 
-      // ===== Redirect to Stripe checkout =====
+      // ===== Redirect to Stripe-hosted checkout =====
       try {
-        await loadStripeJS();
-        const stripe = window.Stripe(STRIPE_PK);
-        const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
-        if (error) throw error;
+        const checkoutUrl = sessionData.checkoutUrl || sessionData.sessionUrl || sessionData.url;
+        if (!checkoutUrl || new URL(checkoutUrl).origin !== 'https://checkout.stripe.com') {
+          throw new Error('Stripe did not return a valid hosted Checkout URL.');
+        }
+        window.location.assign(checkoutUrl);
+        return;
       } catch (err) {
         logError('StripeRedirect', err);
         if (pendingLogoToDelete && pendingLogoPath) {

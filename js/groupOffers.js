@@ -4,7 +4,7 @@
 // - Group image: from storage bucket "group-logos/groups/<group_id>/<file>?cb=<ISO>"
 //   Fallback: "grouplogo.png"
 // - Accept flow only marks invite accepted AFTER membership insert OK; shows real errors
-// - Post-commit notifications + best-effort email via alerts.js (no in-DB triggers)
+// - Post-commit in-app notifications (email delivery is limited to verified 2FA)
 
 import { supabase } from './supabaseClient.js';
 import * as Alerts from './alerts.js';
@@ -20,7 +20,6 @@ const notifyOfferUpdate = Alerts?.notifyOfferUpdate || (async (payload) => {
       related_offer_id: offer_id || null,
       is_read: false
     }]);
-    await bestEffortEmail(to_user_id, title || 'Update', message || '');
   } catch (_) {}
 });
 const insertNotification = Alerts?.insertNotification || (async ({ notification_uuid, email, type, title, message, related_offer_id }) => {
@@ -36,29 +35,6 @@ const insertNotification = Alerts?.insertNotification || (async ({ notification_
     }]);
   } catch (_) {}
 });
-const getNotificationInfo = Alerts?.getNotificationInfo || (async (user_id) => {
-  try {
-    const { data, error } = await supabase
-      .from('users_extended_data')
-      .select('user_id, email')
-      .eq('user_id', user_id)
-      .maybeSingle();
-    if (error) return {};
-    return { notification_uuid: user_id, email: data?.email || null };
-  } catch (_) { return {}; }
-});
-
-async function bestEffortEmail(to_user_id, subject, text) {
-  try {
-    const info = await getNotificationInfo(to_user_id);
-    const to = info?.email;
-    if (!to) return;
-    try {
-      await supabase.functions.invoke('sendNotificationEmail', { body: { to, subject, text } });
-    } catch (_) {}
-  } catch (_) {}
-}
-
 // ---------- UI helpers ----------
 const toast = (msg) => { try { console.log(msg); } catch {} };
 const ALLOWED_STATUS = new Set(['pending', 'active', 'completed', 'cancelled']);
@@ -253,7 +229,7 @@ async function getMyUser() {
 }
 async function usernamesByIds(ids) {
   if (!ids?.length) return {};
-  const { data, error } = await supabase.from('users_extended_data').select('user_id, username').in('user_id', ids);
+  const { data, error } = await supabase.from('public_user_directory').select('user_id, username').in('user_id', ids);
   if (error) return {};
   const map = {};
   (data || []).forEach(r => { map[r.user_id] = r.username; });

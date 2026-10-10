@@ -212,6 +212,260 @@
   width: 100%;
 }
 
+.navbar .navii h5 > header {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  body:has(#registrationForm) .signup-section {
+    width: calc(100% - 32px) !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+  #registrationForm,
+  body:has(#registrationForm) .hero-fieldset,
+  body:has(#registrationForm) .intro-text,
+  #registrationForm fieldset,
+  #registrationForm input,
+  #registrationForm select,
+  #registrationForm textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box;
+  }
+  #registrationForm input[type="checkbox"],
+  #registrationForm input[type="radio"] {
+    width: auto !important;
+  }
+}
+
+/* Center page content consistently and keep children inside the viewport. */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body > section,
+body > main,
+body > header,
+body > footer,
+section.dashboard,
+section.userprofile,
+main {
+  box-sizing: border-box;
+  width: min(100% - 32px, 1600px);
+  max-width: 1600px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body > header.navbar1,
+body > footer.footercomplete {
+  width: 100%;
+  max-width: none;
+}
+
+.dashboard,
+.userprofile,
+.listings-sec,
+.deals-history-row,
+.graph-section {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard {
+  width: min(100% - 32px, 1600px) !important;
+  margin: 0 auto !important;
+}
+
+.userprofile {
+  width: min(100% - 32px, 1600px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.listings-sec {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.listings-sec #offer-tabs {
+  max-width: 100%;
+}
+
+.listings-sec #listing-container,
+.listings-sec .active-listings {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: start;
+  justify-items: stretch;
+  gap: 18px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto !important;
+  padding: 12px 0;
+  box-sizing: border-box;
+  column-count: initial;
+  column-gap: initial;
+  overflow: visible !important;
+}
+
+.listings-sec .listing-stage,
+.listings-sec .offer-card {
+  display: block;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.listings-sec .card-content,
+.listings-sec .card-top,
+.listings-sec .stage-content,
+.listings-sec .offer-details-row,
+.listings-sec .offer-left,
+.listings-sec .offer-right,
+.listings-sec .card-bottom {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.listings-sec .card-content {
+  width: 100%;
+}
+
+.listings-sec .card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.listings-sec .logo-container {
+  flex: 0 0 100px;
+  min-width: 0;
+  margin-right: 0;
+  overflow-wrap: anywhere;
+}
+
+.listings-sec .stage-content {
+  flex: 1 1 0;
+  margin-top: 0 !important;
+}
+
+.listings-sec .offer-details-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+}
+
+.listings-sec .offer-left,
+.listings-sec .offer-right {
+  overflow-wrap: anywhere;
+}
+
+.listings-sec .offer-right {
+  text-align: right;
+}
+
+.listings-sec .card-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.listings-sec .card-bottom > button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.listings-sec .card-bottom .details-section,
+.listings-sec .card-bottom .images-section,
+.listings-sec .card-bottom .comments-section,
+.listings-sec .card-bottom .data-summary-section {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+#group-offers-container,
+#sponsee-public-offers-container,
+#offers-container {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+  .listings-sec #listing-container,
+  .listings-sec .active-listings {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px 0;
+  }
+
+  .dashboard,
+  .userprofile {
+    width: calc(100% - 20px) !important;
+  }
+
+  .listings-sec .card-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .listings-sec .logo-container {
+    flex-basis: auto;
+    align-self: center;
+  }
+
+  .listings-sec .offer-details-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .listings-sec .offer-right {
+    text-align: left;
+  }
+
+  .listings-sec .card-bottom > button {
+    flex: 1 1 140px;
+  }
+
+  .listings-sec #pagination-row {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  body > section,
+  body > main,
+  body > header,
+  body > footer,
+  section.dashboard,
+  section.userprofile,
+  main {
+    width: calc(100% - 20px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .listings-sec #listing-container,
+  .listings-sec .active-listings {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
 /* dashboard mobile fixs */
 
 /* === LISTING CARDS: make them fit on phones (≤600px) ================== */
@@ -300,8 +554,8 @@
     padding-left: 0px !important;
     padding-right: 0px !important;
     padding-top: 20px !important;
-    width: calc(100% - -10px) !important; /* 100% minus the padding */
-    max-width: 100% !important;
+    width: calc(100% - 20px) !important;
+    max-width: 1600px !important;
     min-width: 0 !important;
     left: auto !important;
     right: auto !important;
@@ -310,12 +564,13 @@
   /* 1) Banner image: make it a block and clamp to the viewport */
   background-img.navimg,
   .navimg {
-    width: 100vw !important; /* exactly the viewport width */
+    width: 100% !important;
     max-width: 100% !important;
     height: auto !important; /* or set your fixed mobile height */
     object-fit: cover;
-    padding-left: -10px !important;
-    margin-left: -15px !important;
+    padding-left: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   /* Center the dropdown panel */
   #settings-notif-bar .settings-dropdown {
@@ -641,7 +896,7 @@ body{
   #group-offers-container {
     display: block;
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(520px, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .active-listings {
@@ -670,15 +925,15 @@ body{
   .active-listings {
     display: block !important; /* override your grid */
     column-count: 1; /* two vertical stacks */
-    column-gap: 200px !important; /* space between columns */
-    margin-left: 90px !important;
-    margin-right: 20px !important;
+    column-gap: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   #sponsee-public-offers-container,
   #offers-container {
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(520px, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
   .offer-dets fieldset {
     height: max-content;
@@ -963,9 +1218,484 @@ body{
   .active-listings {
     display: block !important; /* override your grid */
     column-count: 2; /* two vertical stacks */
-    column-gap: 200px !important; /* space between columns */
-    margin-left: 90px !important;
-    margin-right: 20px !important;
+    column-gap: 24px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* Admin workspace: centered panels with tables contained in their own scroll area. */
+body:has(.admin-tabs) {
+  margin: 0 !important;
+  overflow-x: hidden;
+}
+
+body:has(.admin-tabs) .navbar1,
+body:has(.admin-tabs) .footercomplete {
+  width: 100%;
+}
+
+body:has(.admin-tabs) .admin-tabs,
+body:has(.admin-tabs) .main-container {
+  width: min(100% - 40px, 1600px);
+  max-width: 1600px;
+  min-width: 0;
+  margin: 24px auto;
+  box-sizing: border-box;
+}
+
+body:has(.admin-tabs) .admin-tabs {
+  position: sticky;
+  top: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid #2c3240;
+  border-radius: 12px;
+  background: #181c27;
+  z-index: 888;
+}
+
+body:has(.admin-tabs) .admin-tab {
+  flex: 0 0 auto;
+  min-width: max-content;
+  border-radius: 8px;
+}
+
+body:has(.admin-tabs) .admin-section {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 24px auto;
+  padding: clamp(18px, 2vw, 32px);
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid #343434;
+}
+
+body:has(.admin-tabs) .admin-section h2,
+body:has(.admin-tabs) .admin-section h3 {
+  text-align: center;
+}
+
+body:has(.admin-tabs) .table-responsive {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 12px auto 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+body:has(.admin-tabs) .table-responsive > div {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body:has(.admin-tabs) .admin-table-scroll {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+body:has(.admin-tabs) .admin-table {
+  width: max-content;
+  min-width: min(100%, 720px);
+  max-width: none;
+  margin: 0;
+  table-layout: auto;
+}
+
+body:has(.admin-tabs) .admin-table th,
+body:has(.admin-tabs) .admin-table td {
+  max-width: 420px;
+  white-space: nowrap;
+}
+
+body:has(.admin-tabs) .admin-flex-row {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+body:has(.admin-tabs) .admin-flex-left,
+body:has(.admin-tabs) .admin-flex-right {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body:has(.admin-tabs) #admin-log-section .table-responsive {
+  width: 100%;
+}
+
+/* Keep log and privacy tables readable inside their cards at laptop widths. */
+body:has(.admin-tabs) #admin-privacy-table .admin-table-scroll,
+body:has(.admin-tabs) #admin-fambot-table .admin-table-scroll,
+body:has(.admin-tabs) #admin-ip-table .admin-table-scroll {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body:has(.admin-tabs) #admin-privacy-table .admin-table,
+body:has(.admin-tabs) #admin-fambot-table .admin-table,
+body:has(.admin-tabs) #admin-ip-table .admin-table {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+body:has(.admin-tabs) #admin-privacy-table .admin-table th,
+body:has(.admin-tabs) #admin-privacy-table .admin-table td,
+body:has(.admin-tabs) #admin-fambot-table .admin-table th,
+body:has(.admin-tabs) #admin-fambot-table .admin-table td,
+body:has(.admin-tabs) #admin-ip-table .admin-table th,
+body:has(.admin-tabs) #admin-ip-table .admin-table td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: top;
+}
+
+body:has(.admin-tabs) #admin-privacy-table .admin-table td button {
+  max-width: 100%;
+  margin: 3px;
+  white-space: normal;
+}
+
+/* Homepage content stays centered and can shrink with the viewport. */
+body:has(.hero) .leftmain {
+  width: min(calc(100% - 32px), 1600px) !important;
+  max-width: 1600px;
+  min-width: 0;
+  margin: 0 auto !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain > main,
+body:has(.hero) .leftmain > div,
+body:has(.hero) .leftmain > section,
+body:has(.hero) .leftmain fieldset {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .navbar1,
+body:has(.hero) .navbar {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .navbar1 .navii,
+body:has(.hero) .navbar .navii {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 1600px;
+  height: auto;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 18px 16px;
+  box-sizing: border-box;
+  background-position: center bottom;
+}
+
+body:has(.hero) .navii > h1,
+body:has(.hero) .navii h5 {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 0 8px !important;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+body:has(.hero) .navii h5 > header {
+  width: auto;
+  max-width: 100%;
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+body:has(.hero) .navii > div:not(#sparkle-overlay) {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100% !important;
+  min-width: 0;
+  height: auto !important;
+  flex-wrap: nowrap;
+  margin-top: 0 !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .navii > div:not(#sparkle-overlay) nav {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+body:has(.hero) .navii .brand-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  font-family: var(--brand-font, "Cinzel", serif);
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+body:has(.hero) .navii .brand-title::before {
+  content: "";
+  flex: 0 0 auto;
+  width: clamp(44px, 6vw, 70px);
+  aspect-ratio: 1;
+  background: url("./logos.png") center / cover no-repeat #000;
+  border-radius: 50%;
+}
+
+body:has(.hero) .home-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+}
+
+body:has(.hero) .home-nav-links nav {
+  flex: 0 1 auto;
+  min-width: 0;
+  width: min(100%, 720px) !important;
+  margin: 0 auto !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
+body:has(.hero) .home-nav-links ul {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body:has(.hero) .home-nav-links li {
+  flex: 1 1 0;
+  max-width: 260px;
+  min-width: 0;
+  margin: 0;
+}
+
+body:has(.hero) .home-nav-links a {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+body:has(.hero) .navii nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .navii nav li {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+body:has(.hero) .navii nav li a {
+  display: block;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+  padding-inline: clamp(4px, 1vw, 16px) !important;
+  font-size: clamp(0.875rem, 2.7vw, 1.1rem);
+}
+
+body:has(.hero) .leftmain .hero {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain .hero-grid {
+  width: min(100%, 1100px);
+  margin-inline: auto;
+  padding: 0 clamp(12px, 2vw, 24px);
+  gap: clamp(16px, 3vw, 32px);
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain .hero-copy,
+body:has(.hero) .leftmain .hero-image {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain fieldset > section,
+body:has(.hero) .leftmain .testimonial-section,
+body:has(.hero) .leftmain .features-grid,
+body:has(.hero) .leftmain .hero-grid,
+body:has(.hero) .leftmain .trusted-logos,
+body:has(.hero) #activity-ticker {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  margin-inline: 0 !important;
+}
+
+body:has(.hero) .leftmain fieldset > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain fieldset > a {
+  margin-inline: 0 !important;
+}
+
+body:has(.hero) .cta-main {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .calc-shell,
+body:has(.hero) .calc-main,
+body:has(.hero) .calc-grid,
+body:has(.hero) .calc-block {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .calc-shell input,
+body:has(.hero) .calc-shell select {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  body:has(.hero) .hero-copy,
+  body:has(.hero) .hero-image {
+    width: 100% !important;
+  }
+}
+
+body:has(.hero) .referral-banner {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+body:has(.hero) .referral-banner span {
+  margin-left: 0 !important;
+}
+
+body:has(.hero) .leftmain .cta {
+  width: min(100%, 760px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .leftmain img,
+body:has(.hero) .leftmain canvas {
+  max-width: 100%;
+}
+
+body:has(.hero) .leftmain .hero-grid,
+body:has(.hero) .leftmain .features-grid,
+body:has(.hero) .leftmain .who-uses-row,
+body:has(.hero) .leftmain .grid2 {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body:has(.hero) .dashboard-preview-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+body:has(.hero) .dashboard-preview-links .cta-button {
+  margin: 12px 0 !important;
+}
+
+body:has(.hero) .testimonial-carousel {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  body:has(.admin-tabs) .admin-tabs,
+  body:has(.admin-tabs) .main-container {
+    width: calc(100% - 20px);
+  }
+
+  body:has(.admin-tabs) .admin-section {
+    padding: 16px 12px;
+  }
+
+  body:has(.admin-tabs) .admin-flex-row {
+    flex-direction: column;
+  }
+
+  body:has(.hero) .leftmain {
+    width: calc(100% - 20px);
   }
 }
 

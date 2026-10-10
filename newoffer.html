@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const { data: sponseeData, error: sponseeError } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .ilike('username', username)
     .single();

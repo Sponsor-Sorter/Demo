@@ -216,6 +216,7 @@ async function updateNavBar() {
 updateNavBar();
 
 function injectBadge(username, email) {
+  if (!email) return;
   injectUserBadge(email, '#profile-badge-slot', 'sponsor_email');
 }
 
@@ -271,7 +272,7 @@ function extractPlatformBadges(social_handles) {
 
 async function loadProfileAndStats(username) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .ilike('username', username)
     .single();
@@ -298,7 +299,7 @@ async function loadProfileAndStats(username) {
   document.getElementById("social_handles").innerHTML = extractPlatformBadges(data.social_handles);
 
   // Badge: after getting email, call badge injector
-  injectBadge(username, data.email);
+  injectBadge(username, data.email_verified);
 
   // --- Dynamically insert the Report Profile button ---
   const fieldset = document.querySelector('.userprofile fieldset');

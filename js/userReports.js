@@ -141,7 +141,7 @@ async function openReportModal(reportType, targetId) {
   if (!commentError && commentData) {
     // Lookup reported user's username
     const { data: userData, error: userError } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username')
       .eq('user_id', commentData.user_id)
       .single();
@@ -170,7 +170,7 @@ async function openReportModal(reportType, targetId) {
       if (target.length !== 36) {
         // Target is a username: get their user_id
         const { data: row } = await supabase
-          .from('users_extended_data')
+          .from('public_user_directory')
           .select('user_id, username')
           .ilike('username', target)
           .single();
@@ -183,7 +183,7 @@ async function openReportModal(reportType, targetId) {
       } else {
         // Target is user_id: fetch username
         const { data: row } = await supabase
-          .from('users_extended_data')
+          .from('public_user_directory')
           .select('username')
           .eq('user_id', target)
           .single();

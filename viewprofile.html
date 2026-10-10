@@ -661,7 +661,8 @@ async function setupNotificationBell() {
 
 /* ---------- Badge helper ---------- */
 function injectBadge(username, email) {
-  injectUserBadge(email, '#profile-badge-slot', 'sponsee_email');
+  const slot = document.getElementById('profile-badge-slot');
+  if (slot) slot.textContent = email ? 'Verified account' : '';
 }
 
 /* ---------- Stars renderer ---------- */
@@ -1204,7 +1205,7 @@ async function loadProfileLiveStats(username) {
 /* ---------- Profile & Stats ---------- */
 async function loadProfileAndStats(username) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .ilike('username', username)
     .single();
@@ -1248,7 +1249,7 @@ async function loadProfileAndStats(username) {
 
   document.getElementById("social_handles").innerHTML = extractPlatformBadges(data.social_handles);
 
-  injectBadge(username, data.email);
+  injectBadge(username, data.email_verified);
 
   PROFILE_CTX.fallbackTotalFollowers = Number(data.total_followers || 0);
   const connectedFlags = [
@@ -1440,7 +1441,7 @@ async function loadProfileRecentActivity(username) {
       let sponsorPicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
       if (offer.sponsor_username) {
         const { data: sponsorData } = await supabase
-          .from('users_extended_data')
+          .from('public_user_directory')
           .select('profile_pic')
           .eq('username', offer.sponsor_username)
           .single();
@@ -1497,7 +1498,7 @@ async function loadProfileArchivedDeals(username) {
       let sponsorPicUrl = 'https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/logos.png';
       if (offer.sponsor_username) {
         const { data: sponsorData } = await supabase
-          .from('users_extended_data')
+          .from('public_user_directory')
           .select('profile_pic')
           .eq('username', offer.sponsor_username)
           .single();

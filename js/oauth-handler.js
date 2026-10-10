@@ -3,7 +3,6 @@
 
 import { supabase } from './supabaseClient.js';
 
-const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
 const EDGE_FN = {
   youtube:   'youtube-oauth',
   twitch:    'twitch-oauth',
@@ -72,32 +71,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   const qs = new URLSearchParams(location.search);
   const code  = qs.get('code');
   const error = qs.get('error') || qs.get('error_description') || qs.get('error_reason');
-  let state   = qs.get('state') || '';
+  const state = qs.get('state') || '';
 
   // ---------- Provider detection ----------
   let provider = 'youtube';
   let csrfFromState = '';
 
-  // state formats:
-  // - "tiktok:<csrf>" / "twitch:<csrf>" / "youtube:<csrf>" (CSRF protected)
-  // - "instagram" / "facebook" (simple)
-  if (state.includes(':')) {
-    const [maybe, csrf] = state.split(':', 2);
-    if (['twitch', 'youtube', 'tiktok'].includes(maybe)) {
-      provider = maybe;
-      csrfFromState = csrf || '';
-    }
-  } else if (state && ['instagram', 'youtube', 'twitch', 'facebook', 'tiktok'].includes(state)) {
-    provider = state;
-  } else {
-    const via = (qs.get('provider') || '').toLowerCase();
-    if (['twitch', 'youtube', 'instagram', 'facebook', 'tiktok'].includes(via)) provider = via;
+  const stateParts = state.split(':');
+  if (stateParts.length === 2 && EDGE_FN[stateParts[0]]) {
+    provider = stateParts[0];
+    csrfFromState = stateParts[1];
   }
+
+  // Remove authorization codes and provider errors from the address bar/history.
+  history.replaceState({}, document.title, location.pathname);
 
   applyPlatformUI(provider);
   const pretty = (PLATFORM_UI[provider]?.name) || provider;
 
-  if (error) return fail(`OAuth error: ${error}`);
+  if (!csrfFromState || !/^[a-f0-9]{64}$/i.test(csrfFromState)) {
+    return fail('OAuth state is missing or invalid. Please start the connection again.');
+  }
+  const expectedState = localStorage.getItem(`oauth_state_${provider}`);
+  localStorage.removeItem(`oauth_state_${provider}`);
+  if (!expectedState || expectedState !== state) {
+    return fail('OAuth state check failed. Please start the connection again.');
+  }
+  if (error) return fail(`OAuth error: ${escapeHtml(error)}`);
   if (!code)  return setStatus('<span style="color:red;">No OAuth code found. Try again.</span>');
 
   setStatus(`<span style="color:#4886f4;">Connecting to ${pretty}…</span>`);
@@ -105,11 +105,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ---------- OAuth exchange ----------
   try {
-    // CSRF for Twitch/new YouTube/TikTok
-    const expected = localStorage.getItem('oauth_csrf');
-    if (csrfFromState && expected && expected !== csrfFromState) throw new Error('State mismatch');
-    if (expected) localStorage.removeItem('oauth_csrf');
-
     const { data: { session } } = await supabase.auth.getSession();
     const jwt = session?.access_token;
     if (!jwt) throw new Error('Missing session');
@@ -125,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // ⭐ Meta special case: show “Link your page” modal instead of dead-end + redirect
       if ((provider === 'instagram' || provider === 'facebook') && looksLikeMetaLinkPrereqIssue(provider, payload, errMsg)) {
-        setStatus(`<span style="color:#ffcc66;">${pretty} needs one more step…</span>`);
+        setStatus(`<span style="color:#ffcc66;">${escapeHtml(pretty)} needs one more step…</span>`);
         showMetaLinkHelpModal({
           provider,
           pretty,
@@ -136,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Optional: inform opener (does NOT close)
         if (window.opener) {
           try {
-            window.opener.postMessage({ oauthNeedsMetaSetup: true, provider, error: errMsg }, '*');
+            window.opener.postMessage({ oauthNeedsMetaSetup: true, provider, error: errMsg }, location.origin);
           } catch {}
         }
         return; // IMPORTANT: do not call fail() (which redirects/closes)
@@ -145,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return fail(`Failed to connect ${pretty}: ${errMsg}`);
     }
 
-    setStatus(`<span style="color:green;">${pretty} connected! Closing…</span>`);
+    setStatus(`<span style="color:green;">${escapeHtml(pretty)} connected! Closing…</span>`);
     return success(provider);
 
   } catch (e) {
@@ -157,14 +152,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     let resp = null;
     let payload = {};
     try {
-      resp = await fetch(`${SUPABASE_URL}/functions/v1/${fn}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-        body: JSON.stringify(body),
-        credentials: 'omit',
+      resp = await supabase.functions.invoke(fn, {
+        body,
+        headers: { Authorization: `Bearer ${jwt}` },
       });
-      payload = await resp.json().catch(() => ({}));
-      return { ok: resp.ok, status: resp.status, payload };
+      payload = resp.data || { error: resp.error?.message };
+      return { ok: !resp.error, status: resp.error?.context?.status || 200, payload };
     } catch (err) {
       return { ok: false, status: 0, payload: { error: err?.message || String(err) } };
     }
@@ -247,7 +240,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     u.searchParams.set('redirect_uri', redirectUri);
     u.searchParams.set('response_type', 'code');
     u.searchParams.set('scope', scopes);
-    u.searchParams.set('state', providerKey);
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    const csrf = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    const state = `${providerKey}:${csrf}`;
+    localStorage.setItem(`oauth_state_${providerKey}`, state);
+    u.searchParams.set('state', state);
     // Helpful if user previously authorized without all scopes:
     u.searchParams.set('auth_type', 'rerequest');
     return u.toString();
@@ -438,7 +436,7 @@ function success(provider) {
     { youtubeConnected: true };
 
   if (window.opener) {
-    try { window.opener.postMessage(flag, '*'); } catch {}
+    try { window.opener.postMessage(flag, location.origin); } catch {}
     setTimeout(() => window.close(), AUTO_CLOSE_MS);
   } else {
     const suffix =
@@ -452,11 +450,20 @@ function success(provider) {
 
 function fail(msg) {
   const statusDiv = document.getElementById('oauth-status');
-  if (statusDiv) statusDiv.innerHTML = `<span style="color:red;">${msg}</span>`;
+  if (statusDiv) statusDiv.innerHTML = `<span style="color:red;">${escapeHtmlGlobal(msg)}</span>`;
   if (window.opener) {
-    try { window.opener.postMessage({ oauthError: msg }, '*'); } catch {}
+    try { window.opener.postMessage({ oauthError: msg }, location.origin); } catch {}
     setTimeout(() => window.close(), AUTO_CLOSE_MS + 600);
   } else {
     location.href = `./dashboardsponsee.html?error=${encodeURIComponent(msg)}`;
   }
+}
+
+function escapeHtmlGlobal(s) {
+  return String(s ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }

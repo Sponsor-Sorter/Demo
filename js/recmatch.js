@@ -72,7 +72,7 @@ async function renderOfferCard(offer, match, alreadyApplied = false) {
   if (offer.sponsor_username) {
     try {
       const { data: sponsorProfile } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic')
         .eq('username', offer.sponsor_username)
         .maybeSingle();
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     (offers || []).forEach(offer => { details[offer.id] = offer; });
   } else {
     const { data: sponsees } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, contenttype, location, profile_pic, social_handles')
       .in('user_id', Array.from(idsToFetch));
     (sponsees || []).forEach(profile => { details[profile.user_id] = profile; });

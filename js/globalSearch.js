@@ -237,21 +237,21 @@ const runSearch = debounce(async (q) => {
       // PROFILES (select userType to route correctly)
       (async () => {
         const { data, error } = await supabase
-          .from('users_extended_data')
-          .select('id, username, email, company_name, userType, created_at')
-          .or(`username.ilike.${like},email.ilike.${like},company_name.ilike.${like}`)
+          .from('public_user_directory')
+          .select('id, username, company_name, userType, created_at')
+          .or(`username.ilike.${like},company_name.ilike.${like}`)
           .limit(8);
         if (error || !data) return [];
         return data.map(row => ({
           kind: 'profile',
           id: row.id,
           username: row.username,
-          email: row.email,
+          email: '',
           userType: row.userType, // used by linkFor
-          title: row.username || row.email,
+          title: row.username,
           subtitle: [row.company_name].filter(Boolean).join(' • '),
           updated_at: row.created_at,
-          _rankText: `${row.username||''} ${row.email||''} ${row.company_name||''}`
+          _rankText: `${row.username||''} ${row.company_name||''}`
         }));
       })(),
 

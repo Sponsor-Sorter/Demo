@@ -20,7 +20,7 @@ async function getUserIdByUsername(username) {
   const uname = username?.startsWith('@') ? username.slice(1) : username;
   if (!uname) throw new Error('username required');
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('user_id, username')
     .ilike('username', uname)
     .limit(1)
@@ -32,7 +32,7 @@ async function getUserIdByUsername(username) {
 
 async function usernameForUserId(uid) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('username')
     .eq('user_id', uid)
     .limit(1)
@@ -44,7 +44,7 @@ async function usernameForUserId(uid) {
 // basic user row for cards (username + profile_pic)
 async function getUserBasics(uid) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('username, profile_pic')
     .eq('user_id', uid)
     .limit(1)
@@ -59,8 +59,8 @@ async function getPlanTypeForUser(uid) {
     if (!uid) return 'free';
 
     const { data, error } = await supabase
-      .from('users_extended_data')
-      .select('planType')
+      .from('public_user_directory')
+      .select('"planType"')
       .eq('user_id', uid)
       .maybeSingle();
 
@@ -240,24 +240,23 @@ function resolveGroupImageURL(g) {
 
 // ---- Notifications (group invites) ----
 // Safe, dynamic use of alerts.js if present; otherwise fallback to direct inserts.
-// Never blocks UI; emails are "best effort" via Edge Function after DB commit.
+// Never blocks UI; group invites use in-app notifications only.
 
 async function _dynAlerts() {
   try { return await import('./alerts.js'); } catch { return null; }
 }
 
 async function _getNotifyRow(user_id) {
-  // notification_uuid + email + alert_email toggle
+  // notification_uuid + email for the in-app notification row
   const { data, error } = await supabase
     .from('users_extended_data')
-    .select('notification_uuid, email, alert_email')
+    .select('notification_uuid, email')
     .eq('user_id', user_id)
     .maybeSingle();
-  if (error) return { notification_uuid: null, email: null, alert_email: true };
+  if (error) return { notification_uuid: null, email: null };
   return {
     notification_uuid: data?.notification_uuid || null,
-    email: data?.email || null,
-    alert_email: data?.alert_email !== false // default true
+    email: data?.email || null
   };
 }
 
@@ -282,13 +281,6 @@ async function _insertNotif({ notification_uuid, email, type, title, message, re
   } catch (_) {}
 }
 
-async function _bestEffortEmail(to, subject, text) {
-  if (!to) return;
-  try {
-    await supabase.functions.invoke('sendNotificationEmail', { body: { to, subject, text } });
-  } catch (_) {}
-}
-
 /** Notify a user they were invited to a group */
 async function notifyGroupInvite({ invitee_id, groupId, inviter_id }) {
   try {
@@ -297,17 +289,13 @@ async function notifyGroupInvite({ invitee_id, groupId, inviter_id }) {
       usernameForUserId(inviter_id)
     ]);
 
-    const { notification_uuid, email, alert_email } = await _getNotifyRow(invitee_id);
+    const { notification_uuid, email } = await _getNotifyRow(invitee_id);
     if (!notification_uuid || !email) return;
 
     const title = `Group invite: ${g?.name || 'a group'}`;
     const message = `@${inviterName || 'someone'} invited you to join “${g?.name || 'Group'}”. Open Groups to accept.`;
 
     await _insertNotif({ notification_uuid, email, type: 'group_invite', title, message });
-
-    if (alert_email) {
-      await _bestEffortEmail(email, title, message);
-    }
   } catch (e) {
     console.warn('notifyGroupInvite failed:', e?.message || e);
   }
@@ -321,7 +309,7 @@ async function notifyInviteStatus({ inviter_id, invitee_id, groupId, status }) {
       usernameForUserId(invitee_id)
     ]);
 
-    const { notification_uuid, email, alert_email } = await _getNotifyRow(inviter_id);
+    const { notification_uuid, email } = await _getNotifyRow(inviter_id);
     if (!notification_uuid || !email) return;
 
     const isAccepted = String(status).toLowerCase() === 'accepted';
@@ -329,7 +317,6 @@ async function notifyInviteStatus({ inviter_id, invitee_id, groupId, status }) {
     const message = `@${inviteeName || 'user'} ${isAccepted ? 'accepted' : 'declined'} your invite to “${g?.name || 'Group'}”.`;
 
     await _insertNotif({ notification_uuid, email, type: 'group_invite_status', title, message });
-    if (alert_email) await _bestEffortEmail(email, title, message);
   } catch (_) {}
 }
 
@@ -871,7 +858,7 @@ async function searchUsersForInvite(fragment, excludeSet, limit = 8) {
   const q = (fragment || '').trim();
   if (!q) return [];
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('user_id, username, profile_pic')
     .ilike('username', `%${q}%`)
     .order('username', { ascending: true })
@@ -1497,7 +1484,7 @@ function openInviteModal({ groupId, excludeSet, onDone }) {
     const q = (fragment || '').trim();
     if (!q) return [];
     const { data, error } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, profile_pic')
       .ilike('username', `%${q}%`)
       .order('username', { ascending: true })

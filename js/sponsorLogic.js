@@ -163,7 +163,7 @@ async function loadRecentDeals() {
   let profilePicMap = {};
   if (sponseeUsernames.length > 0) {
     const { data: sponseeProfiles } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, profile_pic')
       .in('username', sponseeUsernames);
     profilePicMap = {};
@@ -260,7 +260,7 @@ async function loadArchivedDeals() {
   let profilePicMap = {};
   if (sponseeUsernames.length > 0) {
     const { data: sponseeProfiles } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, profile_pic')
       .in('username', sponseeUsernames);
     profilePicMap = {};

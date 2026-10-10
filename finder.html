@@ -390,7 +390,7 @@ async function renderRecentOffers() {
     let sponsorLogo = 'logos.png';
     try {
       const { data: sponsor } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic')
         .eq('user_id', offer.sponsor_id)
         .maybeSingle();
@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function viewProfileByUserType(username) {
     const { data: targetUser, error } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('userType')
       .ilike('username', username)
       .single();
@@ -643,7 +643,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadOtherAccounts() {
     otherProfilesContainer.innerHTML = '';
     const { data: allUsers, error } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, location, profile_pic, contenttype, social_handles, userType, planType')
       .eq('userType', targetType);
 
@@ -706,7 +706,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const platform = document.getElementById('search-platform').value.trim();
 
     let query = supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, location, profile_pic, contenttype, social_handles, planType')
       .eq('userType', targetType);
 
@@ -1000,7 +1000,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (firstSix.length) {
           const ids = firstSix.map(m => m.user_id);
           const { data: profiles } = await supabase
-            .from('users_extended_data')
+            .from('public_user_directory')
             .select('user_id, username, userType, profile_pic, social_handles, contenttype')
             .in('user_id', ids);
 
@@ -1112,7 +1112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let sponsor_company = offer.sponsor_company || '';
     try {
       const { data: sponsor } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('profile_pic, company_name')
         .eq('username', offer.sponsor_username)
         .single();

@@ -204,7 +204,7 @@ function renderPlatformBadges(platforms, urlPairs = []) {
 async function renderSingleOffer(offer) {
   const listingContainer = document.getElementById('listing-container');
   const { data: sponsee } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('profile_pic, id, username, user_id')
     .eq('username', offer.sponsee_username)
     .single();

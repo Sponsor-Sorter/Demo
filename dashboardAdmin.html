@@ -14,8 +14,8 @@
       background: #000000;
       color: #f6f6f6;
       font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 30px;
-      padding: 0px;
+      margin: 0;
+      padding: 0;
       overflow-x: hidden;
     }
   </style>
@@ -110,7 +110,6 @@
         <button id="ban-selected-users">Ban Selected</button>
         <button id="unban-selected-users">Unban Selected</button>
       </div>
-      <div id="admin-users-table"></div>
       <div class="table-responsive"><div id="admin-users-table"></div></div>
       <div style="font-size:0.97em;color:#ffb347;">Tip: Use "Impersonate" to troubleshoot as any user. <b>Don't forget to stop impersonation to return to your admin account.</b></div>
     </section>
@@ -203,11 +202,10 @@
         <div id="admin-privacy-table"></div>
       </div>
     </section>
-  </div>
   <div id="admin-modal-root"></div>
 
   <!-- NEW: Moderation Section -->
-    <section style="width: auto;" class="admin-section" id="admin-moderation-section">
+    <section class="admin-section" id="admin-moderation-section">
       <h2>🛡️ Moderation Logs</h2>
 
       <div class="moderation-tabs" style="margin-bottom:16px;">
@@ -217,18 +215,15 @@
 
       <div id="fambot-logs">
         <h3>FamBot Moderation Logs</h3>
-        <div id="admin-fambot-table"></div>
+        <div class="table-responsive"><div id="admin-fambot-table"></div></div>
       </div>
 
       <div id="ip-logs" style="margin-top:40px;">
         <h3>New User Moderation Logs</h3>
-        <div id="admin-ip-table"></div>
+        <div class="table-responsive"><div id="admin-ip-table"></div></div>
       </div>
     </section>
 
-  </div>
-
-  <div id="admin-modal-root"></div>
   <div id="admin-reject-modal-root"></div>
 
 <!-- AFFILIATES -->
@@ -236,6 +231,8 @@
   <h2>🤝 Affiliate & Partner Management</h2>
   <div id="admin-affiliate-section"></div>
 </section>
+
+</div>
 
 
   <footer class="footercomplete">

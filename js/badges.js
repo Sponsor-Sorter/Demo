@@ -9,6 +9,7 @@ import { supabase } from './supabaseClient.js'
  * 4) Social OAuth badges on a new line beneath
  */
 export async function injectUserBadge(userEmail, selector, emailField = 'sponsor_email') {
+  if (!userEmail) return
   let reviewCompletedCount = 0
   let isAffiliate = false
   let supporterHTML = ''

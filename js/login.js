@@ -251,11 +251,9 @@ async function sendTwofaEmail(email, code) {
         Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({
-        type: 'twofa_login_code',
         to: email,
-        subject: 'Your Sponsor Sorter login code',
-        message: `Your Sponsor Sorter login code is ${code}. It expires in ${TWOFA_CODE_LIFETIME_MINUTES} minutes.`,
         code,
+        context: 'login',
       }),
     });
 

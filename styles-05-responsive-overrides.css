@@ -1110,17 +1110,12 @@
 
 /* --- Mobile Styles for Signup Page --- */
 @media (max-width: 600px) {
-  body,
-  html {
+  body:has(form#registrationForm) {
     font-size: 16px !important;
     color: #fff !important;
     margin: 0;
     padding: 0;
-    width: 100vw;
     min-height: 100vh;
-    overflow-x: hidden;
-    padding-right: 20px !important;
-    max-width: 90vw;
   }
 
   .who-uses > p:nth-child(2) {
@@ -1131,9 +1126,8 @@
   .signup-section,
   form#registrationForm {
     width: 100% !important; /* Full width */
-    max-width: 80vw !important; /* Never exceed viewport width */
-    margin-left: -8px !important; /* Center horizontally */
-    margin-right: 100px !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding-left: 0vw !important; /* Small left/right gap */
@@ -1141,12 +1135,7 @@
     box-sizing: border-box !important; /* Always include padding in width */
   }
 
-  fieldset,
-  .hero-fieldset,
-  .upllogo,
-  .pibox,
-  .lookingfor,
-  .payfield {
+  body:has(#registrationForm) fieldset {
     border-radius: 18px !important;
     border: 2px solid;
     background: #292929 !important;

@@ -791,22 +791,27 @@ async function revokePlatforms(platform, tokenHints = {}) {
   const oauthCloseBtn = document.getElementById('close-youtube-oauth-modal');
 
   function getGoogleRedirectUri() {
-    const base = window.location.origin;
-    const path = window.location.pathname;
-
-    // GitHub Pages demo
-    if (path.includes('/Demo/')) {
-      return `${base}/Demo/oauth2callback.html`;
-    }
-
-    // Local dev served from VS Code Live Server / static server
-    if (base.includes('127.0.0.1:5500') || base.includes('localhost:5500')) {
-      return `${base}/public/oauth2callback.html`;
-    }
-
-    // Production sponsorsorter.com
-    return `${base}/oauth2callback.html`;
+    return getOAuthCallbackUri();
   }
+
+  function createOAuthState(provider) {
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    const csrf = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    const state = `${provider}:${csrf}`;
+    localStorage.setItem(`oauth_state_${provider}`, state);
+    return state;
+  }
+
+  function getOAuthCallbackUri() {
+    const base = window.location.origin;
+    return `${base}${window.location.pathname.includes('/Demo/') ? '/Demo' : ''}/oauth2callback.html`;
+  }
+
+  function isOAuthPopupMessage(event) {
+    return event.origin === location.origin && event.source === oauthPopupWindow;
+  }
+  let oauthPopupWindow = null;
 
   if (connectYouTubeBtn && oauthModal && oauthCloseBtn) {
     connectYouTubeBtn.onclick = async () => {
@@ -814,16 +819,18 @@ async function revokePlatforms(platform, tokenHints = {}) {
       oauthModal.style.display = 'block';
 
       const redirectUri = getGoogleRedirectUri();
+      const state = createOAuthState('youtube');
       const params = new URLSearchParams({
         client_id: '198536620935-fq5dch116tc0dc11v81bbt720m5f0216.apps.googleusercontent.com',
         redirect_uri: redirectUri,
         response_type: 'code',
         scope: 'https://www.googleapis.com/auth/youtube.readonly openid email profile',
         access_type: 'offline',
-        prompt: 'consent'
+        prompt: 'consent',
+        state
       });
 
-      window.open(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`, '_blank');
+      oauthPopupWindow = window.open(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`, 'oauth_youtube');
       oauthMsg.innerHTML = 'A new tab has opened. Please finish connecting your YouTube account there.<br>After approving, return here!';
     };
 
@@ -839,7 +846,7 @@ async function revokePlatforms(platform, tokenHints = {}) {
 
   // --- Listen for OAuth popup success (YouTube) ---
   window.addEventListener('message', async (event) => {
-    if (event.data && event.data.youtubeConnected === true) {
+    if (isOAuthPopupMessage(event) && event.data && event.data.youtubeConnected === true) {
       showYouTubeSuccessNotification();
       currentUser = await getActiveUser(true);
       updateYouTubeStatusUI?.(true);
@@ -902,18 +909,7 @@ async function getCurrentUser() {
 
   // --- Twitch OAuth helpers (same callback page) ---
   function getTwitchRedirectUri() {
-    const base = window.location.origin;
-    const path = window.location.pathname;
-
-    if (path.includes('/Demo/')) {
-      return `${base}/Demo/oauth2callback.html`;
-    }
-    // Local dev: Twitch app is registered for /oauth2callback.html (no /public)
-    if (base.includes('127.0.0.1:5500') || base.includes('localhost:5500')) {
-      return `${base}/oauth2callback.html`;
-    }
-    // Production
-    return `${base}/oauth2callback.html`;
+    return getOAuthCallbackUri();
   }
 
   function launchTwitchOAuth() {
@@ -922,10 +918,7 @@ async function getCurrentUser() {
     const scopes = ['user:read:email'];
 
     // CSRF
-    const buf = new Uint8Array(16);
-    crypto.getRandomValues(buf);
-    const csrf = Array.from(buf).map(x => x.toString(16).padStart(2, '0')).join('');
-    localStorage.setItem('oauth_csrf', csrf);
+    const state = createOAuthState('twitch');
 
     const u = new URL('https://id.twitch.tv/oauth2/authorize');
     u.searchParams.set('client_id', TWITCH_CLIENT_ID);
@@ -934,14 +927,14 @@ async function getCurrentUser() {
     u.searchParams.set('scope', scopes.join(' '));
     u.searchParams.set('force_verify', 'true');
     // provider prefix so oauth-handler knows which Edge Function to call
-    u.searchParams.set('state', `twitch:${csrf}`);
+    u.searchParams.set('state', state);
 
-    window.open(u.toString(), '_blank', 'noopener');
+    oauthPopupWindow = window.open(u.toString(), 'oauth_twitch');
   }
 
   // --- Listen for Twitch OAuth popup success ---
   window.addEventListener('message', async (event) => {
-    if (event.data && event.data.twitchConnected === true) {
+    if (isOAuthPopupMessage(event) && event.data && event.data.twitchConnected === true) {
       showTwitchSuccessNotification();
       await refreshOauthAccountsUI?.();
     }
@@ -968,7 +961,8 @@ async function getCurrentUser() {
   // Build the Meta login URL for Instagram Graph (Business/Creator)
   function buildInstagramAuthUrl() {
     const APP_ID = '1051907877053568'; // safe to expose, required in the URL
-    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+    const redirectUri = getOAuthCallbackUri();
+    const state = createOAuthState('instagram');
     const scope = [
       'instagram_basic',
       'pages_show_list',
@@ -977,7 +971,9 @@ async function getCurrentUser() {
       'business_management'
     ].join(',');
     // We use state=instagram so oauth-handler knows which provider to finish
-    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=instagram`;
+    const url = new URL('https://www.facebook.com/v19.0/dialog/oauth');
+    url.search = new URLSearchParams({ client_id: APP_ID, redirect_uri: redirectUri, scope, response_type: 'code', state });
+    return url.toString();
   }
 
   // Success toast when returning from oauth2callback.html
@@ -1023,14 +1019,17 @@ async function getCurrentUser() {
 
   function buildFacebookAuthUrl() {
     const APP_ID = '1051907877053568'; // your Meta App ID (same app as Instagram)
-    const redirectUri = encodeURIComponent(`${location.origin}/oauth2callback.html`);
+    const redirectUri = getOAuthCallbackUri();
+    const state = createOAuthState('facebook');
     const scope = [
       'public_profile',
       'pages_show_list',
       'pages_read_engagement'
     ].join(',');
     // We use state=facebook so oauth2callback.html knows to call facebook-oauth
-    return `https://www.facebook.com/v19.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=facebook`;
+    const url = new URL('https://www.facebook.com/v19.0/dialog/oauth');
+    url.search = new URLSearchParams({ client_id: APP_ID, redirect_uri: redirectUri, response_type: 'code', scope, state });
+    return url.toString();
   }
 
   function showFacebookSuccessNotification() {
@@ -1074,14 +1073,7 @@ async function getCurrentUser() {
   // =========================
 
   function getTikTokRedirectUri() {
-    const base = window.location.origin;
-    const path = window.location.pathname;
-    // Demo folder
-    if (path.includes('/Demo/')) return `${base}/Demo/oauth2callback.html`;
-    // Local dev (same as Twitch)
-    if (base.includes('127.0.0.1:5500') || base.includes('localhost:5500')) return `${base}/oauth2callback.html`;
-    // Production
-    return `${base}/oauth2callback.html`;
+    return getOAuthCallbackUri();
   }
 
   function launchTikTokOAuth() {
@@ -1091,22 +1083,19 @@ async function getCurrentUser() {
     const SCOPES = ['user.info.profile','user.info.stats','video.list'].join(',');
 
     // CSRF
-    const buf = new Uint8Array(16);
-    crypto.getRandomValues(buf);
-    const csrf = Array.from(buf).map(x => x.toString(16).padStart(2, '0')).join('');
-    localStorage.setItem('oauth_csrf', csrf);
+    const state = createOAuthState('tiktok');
 
     const u = new URL('https://www.tiktok.com/v2/auth/authorize/');
     u.searchParams.set('client_key', TIKTOK_CLIENT_KEY);
     u.searchParams.set('response_type', 'code');
     u.searchParams.set('scope', SCOPES);
     u.searchParams.set('redirect_uri', REDIRECT);
-    u.searchParams.set('state', `tiktok:${csrf}`); // so oauth-handler routes to tiktok-oauth
+    u.searchParams.set('state', state); // so oauth-handler routes to tiktok-oauth
 
     const w = 500, h = 650;
     const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
     const x = window.top.outerWidth  / 2 + window.top.screenX - (w / 2);
-    window.open(u.toString(), 'oauth_tiktok', `width=${w},height=${h},left=${x},top=${y}`);
+    oauthPopupWindow = window.open(u.toString(), 'oauth_tiktok', `width=${w},height=${h},left=${x},top=${y}`);
   }
 
   function showTikTokSuccessNotification() {
@@ -1565,7 +1554,7 @@ else if (plat === "facebook") {
 
   // --- Listen for TikTok OAuth popup success (postMessage from oauth2callback.html)
   window.addEventListener('message', async (event) => {
-    if (event.data && event.data.tiktokConnected === true) {
+    if (isOAuthPopupMessage(event) && event.data && event.data.tiktokConnected === true) {
       showTikTokSuccessNotification();
       await refreshOauthAccountsUI?.();
     }

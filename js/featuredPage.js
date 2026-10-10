@@ -259,11 +259,10 @@ async function fetchActiveSlots() {
 }
 
 async function fetchUserPublic(userId) {
-  // NOTE: include email for badges.js and social_handles for links
   let user = null;
   const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('user_id, email, username, company_name, location, about_yourself, userType, platforms, social_handles, profile_pic, created_at')
+    .from('public_user_directory')
+    .select('user_id, username, company_name, location, about_yourself, userType, platforms, social_handles, profile_pic, created_at')
     .eq('user_id', userId)
     .limit(1)
     .maybeSingle();
@@ -286,7 +285,7 @@ async function fetchUserPublic(userId) {
 // Pull the full row once (defensive) to detect a variety of flag names without schema coupling
 async function fetchUserPublicFlags(userId) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .eq('user_id', userId)
     .limit(1)

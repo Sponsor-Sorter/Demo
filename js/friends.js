@@ -30,8 +30,8 @@ function prettyUserType(t) {
 // Minimal user details for cards (include type + email so we can build badges)
 async function getUserSummary(userId) {
   const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('username, profile_pic, "userType", email')
+    .from('public_user_directory')
+    .select('username, profile_pic, "userType"')
     .eq('user_id', userId)
     .limit(1)
     .maybeSingle();
@@ -96,7 +96,7 @@ export async function sendFriendRequest({ toUsername = null, toUserId = null }) 
     if (!targetId && toUsername) {
       const uname = toUsername.startsWith('@') ? toUsername.slice(1) : toUsername;
       const { data, error } = await supabase
-        .from('users_extended_data')
+        .from('public_user_directory')
         .select('user_id')
         .ilike('username', uname)
         .limit(1).maybeSingle();
@@ -256,7 +256,7 @@ async function searchUsersByUsernameFragment(fragment, myId, limit = 8) {
   const q = (fragment || '').trim();
   if (!q) return [];
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('user_id, username, profile_pic')
     .ilike('username', `%${q}%`)
     .neq('user_id', myId)
@@ -269,7 +269,7 @@ async function searchUsersByUsernameFragment(fragment, myId, limit = 8) {
 // Fetch richer details (no fragile column list)
 async function getUserDetailRow(userId) {
   const { data, error } = await supabase
-    .from('users_extended_data')
+    .from('public_user_directory')
     .select('*')
     .eq('user_id', userId)
     .limit(1)

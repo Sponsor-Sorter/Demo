@@ -335,7 +335,7 @@ function renderAdminUsersTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr>
       <th><input type="checkbox" id="select-all-users"></th>
@@ -506,7 +506,7 @@ function renderAdminOffersTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr>
       <th><input type="checkbox" id="select-all-offers"></th>
@@ -668,7 +668,7 @@ function renderAdminReviewsTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr>
       <th>Offer Title</th><th>Reviewer</th><th>Role</th><th>Overall</th><th>Review</th><th>Reply</th><th>Created</th><th>Actions</th>
@@ -803,7 +803,7 @@ function renderAdminNotifyTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr><th>Title</th><th>Message</th><th>Email</th><th>Created</th><th>Action</th></tr></thead><tbody>`;
 
@@ -906,7 +906,7 @@ function renderAdminLogTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr><th>When</th><th>Action</th><th>Admin</th><th>Target</th><th>Type</th><th>Details</th></tr></thead><tbody>`;
 
@@ -1583,7 +1583,7 @@ function renderFamBotTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr><th>ID</th><th>Performed By</th><th>Target Email</th><th>Action</th><th>Message</th><th>Created</th></tr>
   </thead><tbody>`;
@@ -1664,7 +1664,7 @@ const pageData = data.slice(startIdx, endIdx);
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr><th>IP Address</th><th>Attempt Count</th><th>Blocked</th><th>Created</th></tr>
   </thead><tbody>`;
@@ -1873,7 +1873,7 @@ function renderReportedTable(type) {
     </div>
   `;
 
-  let tableHTML = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let tableHTML = `<div class="admin-table-scroll">`;
 
   if (type === 'users') {
     tableHTML += `<table class="admin-table"><thead>
@@ -2066,7 +2066,7 @@ function renderPrivacyTable() {
     </div>
   `;
 
-  let html = `<div class="admin-table-scroll" style="overflow-x:auto; max-width:100vw;">`;
+  let html = `<div class="admin-table-scroll">`;
   html += `<table class="admin-table"><thead>
     <tr>
       <th>ID</th>

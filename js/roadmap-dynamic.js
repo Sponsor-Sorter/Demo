@@ -1,5 +1,12 @@
 import { supabase } from './supabaseClient.js';
 
+let canEdit = false;
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[char]));
+}
+
 const SECTIONS = [
   { id: "phases", label: "Project Phases & Key Milestones" },
   { id: "completed", label: "✅ Core Features — Completed" },
@@ -35,6 +42,15 @@ const addFieldLabels = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    const { data, error } = await supabase.rpc('is_current_user_admin');
+    canEdit = !error && data === true;
+  }
+  const subtitle = document.querySelector('.subtitle');
+  if (subtitle) subtitle.textContent = canEdit
+    ? 'Add, edit, move, and complete roadmap items. Changes save immediately.'
+    : 'Follow the latest project milestones and planned improvements.';
   renderTabs();
   await renderSections();
   setupTabSwitching();
@@ -73,7 +89,7 @@ async function renderSections() {
     .select('*')
     .order('order', { ascending: true });
   if (error) {
-    roadmapSections.innerHTML = `<div style="color:red;">Error loading roadmap: ${error.message}</div>`;
+    roadmapSections.textContent = 'Unable to load the roadmap. Please try again later.';
     return;
   }
   SECTIONS.forEach((sec, i) => {
@@ -83,7 +99,7 @@ async function renderSections() {
 
     // --- Add Feature Form
     let html = `<h2>${sec.label}</h2>
-      <form class="add-feature-form" data-section="${sec.id}">`;
+      <form class="add-feature-form" data-section="${sec.id}" ${canEdit ? '' : 'hidden'}>`;
     addFields[sec.id].forEach(field => {
       html += `<input name="${field}" type="text" placeholder="${addFieldLabels[field] || field}"${field === "title" ? " required" : ""}/>`;
     });
@@ -101,8 +117,10 @@ async function renderSections() {
     renderSectionRows(sec.id, data.filter(x => x.section === sec.id));
 
     // Add form event
-    sectionDiv.querySelector("form.add-feature-form").addEventListener("submit", async e => {
+    if (!canEdit) sectionDiv.querySelector('form.add-feature-form').remove();
+    sectionDiv.querySelector("form.add-feature-form")?.addEventListener("submit", async e => {
       e.preventDefault();
+      if (!canEdit) return;
       const form = e.target;
       const section = sec.id;
       const obj = { section, order: Date.now(), checked: false };
@@ -138,7 +156,7 @@ function statusBadge(status) {
   if (s.includes("danger") || s.includes("high")) return '<span class="status danger">High</span>';
   if (s.includes("optional")) return '<span class="status optional">Optional</span>';
   if (s.includes("pending") || s.includes("planned")) return '<span class="status pending">Planned</span>';
-  return `<span class="status">${status}</span>`;
+  return `<span class="status">${escapeHtml(status)}</span>`;
 }
 
 function renderSectionRows(section, items) {
@@ -152,17 +170,17 @@ function renderSectionRows(section, items) {
     // PHASES, COMPLETED, PLANNED: [checkbox] [title] [priority] [status] [notes] [buttons]
     if (section === "phases" || section === "completed" || section === "planned") {
       cols.push(`<td><input type="checkbox" ${item.checked ? "checked" : ""} data-id="${item.id}" /></td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="title">${item.title || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="priority">${item.priority || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="status">${item.status || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="notes">${item.notes || ""}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="title">${escapeHtml(item.title)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="priority">${escapeHtml(item.priority)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="status">${escapeHtml(item.status)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="notes">${escapeHtml(item.notes)}</td>`);
     }
     // ADVANCED, COMPLIANCE, GROWTH: [title] [priority] [status] [notes] [buttons/complete]
     else {
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="title">${item.title || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="priority">${item.priority || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="status">${item.status || ""}</td>`);
-      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="notes">${item.notes || ""}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="title">${escapeHtml(item.title)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="priority">${escapeHtml(item.priority)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="status">${escapeHtml(item.status)}</td>`);
+      cols.push(`<td contenteditable="true" data-id="${item.id}" data-field="notes">${escapeHtml(item.notes)}</td>`);
     }
     // Status badge column
     cols.push(`<td>${statusBadge(item.status)}</td>`);
@@ -178,6 +196,13 @@ function renderSectionRows(section, items) {
     cols.push(`<td>${btns}</td>`);
     tr.innerHTML = cols.join("");
     tbody.appendChild(tr);
+
+    if (!canEdit) {
+      tr.querySelectorAll('[contenteditable]').forEach(cell => cell.removeAttribute('contenteditable'));
+      tr.querySelectorAll('input').forEach(input => { input.disabled = true; });
+      tr.querySelectorAll('button').forEach(button => button.remove());
+      return;
+    }
 
     // --- Interactions
 

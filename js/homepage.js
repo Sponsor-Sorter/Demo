@@ -56,7 +56,7 @@ async function loadLiveStats() {
 
   try {
     const [usersRes, offersRes, reviewsRes] = await Promise.all([
-      supabase.from('users_extended_data').select('id', { count: 'exact', head: true }),
+      supabase.from('public_user_directory').select('id', { count: 'exact', head: true }),
       supabase.from('private_offers').select('id', { count: 'exact', head: true }),
       supabase.from('private_offer_reviews').select('id', { count: 'exact', head: true })
     ]);
@@ -117,7 +117,7 @@ async function fetchActivityLines() {
 
       if (ids.length) {
         const { data: userData } = await supabase
-          .from('users_extended_data')
+          .from('public_user_directory')
           .select('user_id, username')
           .in('user_id', ids);
 
@@ -239,7 +239,7 @@ async function loadSponsorLogos() {
   try {
     // 1) Fetch pinned users first
     let pinnedQ = supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('profile_pic, username')
       .not('username', 'is', null);
 
@@ -276,7 +276,7 @@ async function loadSponsorLogos() {
 
     // 2) Fetch a larger pool for the remaining slots (excluding pinned + excluded patterns)
     let othersQ = supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('profile_pic, username')
       .not('username', 'is', null);
 
@@ -364,7 +364,7 @@ async function loadTestimonials() {
       .limit(8);
 
     const { data: users } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('user_id, username, profile_pic');
 
     const testimonials = [];

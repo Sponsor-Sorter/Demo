@@ -288,7 +288,7 @@ async function loadRecentActivity() {
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
     const { data: sponsors } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, profile_pic')
       .in('username', sponsorUsernames);
     if (sponsors && Array.isArray(sponsors)) {
@@ -390,7 +390,7 @@ async function loadArchivedDeals() {
   let sponsorPics = {};
   if (sponsorUsernames.length > 0) {
     const { data: sponsors } = await supabase
-      .from('users_extended_data')
+      .from('public_user_directory')
       .select('username, profile_pic')
       .in('username', sponsorUsernames);
     if (sponsors && Array.isArray(sponsors)) {
