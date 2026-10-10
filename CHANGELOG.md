@@ -60,3 +60,10 @@
 - Signup validates each panel before advancing, checks matching passwords, exposes the current step accessibly and reveals earlier invalid fields on final native validation. Removed a duplicate location element ID.
 - Browser checks: public entry pages at actual 320/768/1440 widths, signup also 375; no overflow, equal-width links. Login password toggle and reset dialog focus/Escape passed. Signup missing-fields/password mismatch/sponsor-required-fields checks passed with fictional inputs; no signup, reset email or payment submitted.
 - Follow-up: legacy Help page has pre-existing small-screen content/account-nav overflow; broader legacy navbar consolidation remains. Actual account login/2FA delivery and financial flows were not exercised in this UI release.
+
+## 2026-10-10 — Original grid artwork animation
+
+- Restored handslogo2.jpg at its original 2222×888 pixel scale and original -80px horizontal/bottom crop, removing the heavy tint and invented large grid paths. Public/admin brand banners are 200px high (public phone banner 150px).
+- Increased decoration from 3 to 51 independently timed light trails. Coordinates are traced from visible horizontal lines in the original raster; reference coordinates saved in tools/header-grid-routes.json. Image and animation share native coordinates and crop, so trails remain aligned at every viewport.
+- Reduced-motion preference displays only the original artwork. Decorative layers remain clipped, noninteractive and hidden from assistive technology.
+- Twelve real browser layout checks passed: homepage/login/signup/admin at 320/768/1440 pixels, no overflow. JS syntax and whitespace checks passed. Shared module/cache URLs advanced to grid2 across 37 pages.

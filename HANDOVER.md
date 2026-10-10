@@ -94,3 +94,7 @@ New files: login.css, signup-layout.css, connection-header.css, js/connectionHea
 Login HTML retains all login/2FA/TOTP/backup IDs. js/login.js changes are presentation-only: skip absent carousels, reset dialog focus trap/Escape/return. No Supabase API, policies or auth architecture changed. Removed unused old-password recovery input and login ad loader. Signup now validates visible steps and matching passwords; final native validation opens earlier invalid panels. Tested fictional inputs only, no registration/reset email/payment sent. Admin helper tests: 3 passed. Syntax/whitespace checks passed.
 
 Admin preview: http://127.0.0.1:8125/dashboardAdmin.html uses fictional data and rejects mutations; live admin requires authentication. Parent screenshot admin-dashboard-preview.jpg. User asked to retain the blue grid everywhere and animate lights travelling along connections; implemented as decorative SVG routes layered over the existing image.
+
+## Original grid artwork refinement
+
+Shared header now uses the untouched handslogo2.jpg at native 2222×888 scale, positioned -80px/bottom as the old navbar artwork was. Its SVG uses exactly the same pixel coordinates/crop and contains 51 small timed light trails traced from image lines; no replacement grid is drawn. Route reference: tools/header-grid-routes.json. Modern banner heights 200px desktop, 150px public phone. Reduced motion hides trails entirely. Checked four main pages at 320/768/1440 with no overflow; no backend or account actions.
