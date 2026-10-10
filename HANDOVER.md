@@ -86,3 +86,11 @@ Root index.html now uses standalone homepage.css and no JavaScript/backend queri
 Validation: real browser widths 320/375/540/768/800/1024/1440/1920; no horizontal overflow, header remains one row. FAQ click/Enter and workflow anchor passed, every local HTML/asset link exists, no console errors. No paid transactions or backend changes in this release.
 
 Rollback homepage only: git restore --source=backup/homepage-before-redesign-20261010 -- index.html, commit and publish. Saved branch points to 20c0bf5. Do not reset the whole repo: keep admin and security fixes. The old js/homepage.js and shared styles remain available for rollback. Screenshot: ../.. /homepage-redesign-desktop.jpg (parent task directory).
+
+## Login and shared header release — 2026-10-10
+
+New files: login.css, signup-layout.css, connection-header.css, js/connectionHeader.js. Login imports homepage.css for shared public typography/buttons. Header module is included by 37 root pages and adds decorative SVG paths plus its stylesheet; no user data or auth calls. Reduced motion disables light-trail animation. Modern home/login/signup and admin headers use full-width navigation; legacy authenticated bars retain their existing structures and still need consolidation. Help has pre-existing phone overflow.
+
+Login HTML retains all login/2FA/TOTP/backup IDs. js/login.js changes are presentation-only: skip absent carousels, reset dialog focus trap/Escape/return. No Supabase API, policies or auth architecture changed. Removed unused old-password recovery input and login ad loader. Signup now validates visible steps and matching passwords; final native validation opens earlier invalid panels. Tested fictional inputs only, no registration/reset email/payment sent. Admin helper tests: 3 passed. Syntax/whitespace checks passed.
+
+Admin preview: http://127.0.0.1:8125/dashboardAdmin.html uses fictional data and rejects mutations; live admin requires authentication. Parent screenshot admin-dashboard-preview.jpg. User asked to retain the blue grid everywhere and animate lights travelling along connections; implemented as decorative SVG routes layered over the existing image.

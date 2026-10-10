@@ -1,71 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Login to your Sponsor Sorter... your profile, linked accounts, and sponsorship opportunities.">
-  <title>Login - Sponsor Sorter</title>
-
-  <link rel="stylesheet" href="./styles.css?v=20261010" />
-  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
-
-  <!-- Google AdSense: global loader (only include once per page) -->
-  <script async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2952658528120109"
-          crossorigin="anonymous"></script>
-
-  <!-- Use relative path so it works locally and on GitHub Pages -->
-  <script type="module" src="./js/login.js"></script>
-</head>
-
-<body>
-
-  <!-- NAVBAR -->
-  <header class="navbar1">
-    <section class="navbar">
-      <div class="navii">
-        <h5>
-          <header>Sponsor Sorter</header>
-        </h5>
-        <div>
-          <background-img class="navimg" src="./navimg.png" alt=""></background-img>
-          <nav>
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./finder.html">Finder</a></li>
-          </nav>
-          <nav>
-            <li class="navr"><a href="./signup.html">Signup</a></li>
-            <li><a href="./login.html">Login</a></li>
-          </nav>
-        </div>
-      </div>
-    </section>
-  </header>
-
-  <!-- Login Section -->
-  <section class="loginbox-section">
-    <div class="login-wrapper">
-      <!-- Sponsor List on Left -->
-      <div class="sponsor-list-left">
-        <ul id="sponsor-list-left"></ul>
-      </div>
-
-      <!-- Login Form -->
-      <div class="loginbox">
-        <div class="logo">
-          <img src="./Logo1.jpg" alt="Sponsor Sorter Logo" height="100" width="300" />
-        </div>
-        <h2>Login to Your Account</h2>
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | Sponsor Sorter</title>
+    <meta
+      name="description"
+      content="Sign in to Sponsor Sorter to manage your profile, partnerships and sponsorship campaigns."
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./login.css?v=20261010-login1" />
+    <script type="module" src="./js/login.js?v=20261010-login1"></script>
+    <script
+      type="module"
+      src="./js/connectionHeader.js?v=20261010-grid1"
+    ></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="header">
+      <a class="brand" href="./index.html"
+        ><img src="./logos.png" width="46" height="46" alt="" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="./index.html">Home</a><a href="./finder.html">Finder</a
+        ><a href="./signup.html">Signup</a
+        ><a href="./login.html" aria-current="page">Login</a>
+      </nav>
+    </header>
+    <main id="main" class="login-layout wrap">
+      <section class="login-intro" aria-labelledby="login-title">
+        <p class="eyebrow">Your next partnership is waiting</p>
+        <h1 id="login-title">Welcome back.<br />Let’s keep things moving.</h1>
+        <p>
+          Sign in to manage your profile, catch up on offers and follow your
+          sponsorship campaigns.
+        </p>
+        <ul class="checks">
+          <li>Your creator or sponsor workspace</li>
+          <li>Offers, comments and campaign updates</li>
+          <li>Your connected platforms and profile tools</li>
+        </ul>
+        <a class="text-link" href="./help.html"
+          >Need help getting into your account? ↗</a
+        >
+      </section>
+      <section class="loginbox" aria-labelledby="signin-title">
+        <h2 id="signin-title">Sign in to your account</h2>
+        <p>Use the email address you registered with.</p>
         <!-- STEP 1: Email + password -->
         <form id="loginForm" class="login-form">
           <div class="form-group">
             <label for="username">Your Email:</label>
             <input
-              type="text"
+              type="email"
               id="username"
               name="username"
+              autocomplete="username"
               placeholder="Enter Your Email"
               required
             />
@@ -79,6 +72,7 @@
                 type="password"
                 id="password"
                 name="password"
+                autocomplete="current-password"
                 placeholder="********"
                 minlength="8"
                 required
@@ -96,7 +90,12 @@
           </div>
 
           <!-- Error box shown when login fails -->
-          <div id="login-error-box" class="login-error-box" style="display:none;">
+          <div
+            id="login-error-box"
+            class="login-error-box"
+            role="alert"
+            style="display: none"
+          >
             Incorrect details.
             <button
               type="button"
@@ -113,11 +112,12 @@
         </form>
 
         <!-- STEP 2a: Email 2FA (shown only when needed, for email method) -->
-        <div id="twofa-step" class="twofa-step" style="display:none;">
+        <div id="twofa-step" class="twofa-step" style="display: none">
           <h3>Two-Factor Verification</h3>
           <p>
             We’ve sent a 6-digit code to
-            <span id="twofa-email-label"></span>. Enter it below to finish signing in.
+            <span id="twofa-email-label"></span>. Enter it below to finish
+            signing in.
           </p>
 
           <div class="form-group">
@@ -149,24 +149,33 @@
 
           <div class="form-group twofa-actions">
             <button type="button" id="twofa-submit-btn">Verify code</button>
-            <button type="button" id="twofa-resend-btn" class="secondary-button">
+            <button
+              type="button"
+              id="twofa-resend-btn"
+              class="secondary-button"
+            >
               Resend code
             </button>
-            <button type="button" id="twofa-cancel-btn" class="reset-password-link">
+            <button
+              type="button"
+              id="twofa-cancel-btn"
+              class="reset-password-link"
+            >
               Back to login
             </button>
           </div>
 
-          <p id="twofa-status" class="twofa-status"></p>
+          <p id="twofa-status" class="twofa-status" role="status"></p>
         </div>
 
         <!-- STEP 2b: Authenticator App (TOTP) 2FA (shown only when method = 'totp') -->
-        <div id="twofa-totp-step" class="twofa-step" style="display:none;">
+        <div id="twofa-totp-step" class="twofa-step" style="display: none">
           <h3>Two-Factor Verification</h3>
           <p>
-            Open your authenticator app (Google Authenticator, Authy, 1Password, etc.)
-            and enter the 6-digit code to finish signing in.
-            If you no longer have access to your app, you can use one of your backup codes instead.
+            Open your authenticator app (Google Authenticator, Authy, 1Password,
+            etc.) and enter the 6-digit code to finish signing in. If you no
+            longer have access to your app, you can use one of your backup codes
+            instead.
           </p>
 
           <!-- Authenticator app code -->
@@ -186,7 +195,11 @@
           </div>
 
           <!-- Backup code (hidden by default) -->
-          <div class="form-group" id="twofa-backup-code-group" style="display:none;">
+          <div
+            class="form-group"
+            id="twofa-backup-code-group"
+            style="display: none"
+          >
             <label for="twofa-backup-code-input">Backup code</label>
             <input
               type="text"
@@ -196,8 +209,16 @@
               placeholder="ABCD-EFGH"
               autocomplete="off"
             />
-            <small style="display:block;font-size:0.85rem;color:#ccc;margin-top:4px;">
-              Enter one of the backup codes you saved when setting up 2FA (for example,
+            <small
+              style="
+                display: block;
+                font-size: 0.85rem;
+                color: #ccc;
+                margin-top: 4px;
+              "
+            >
+              Enter one of the backup codes you saved when setting up 2FA (for
+              example,
               <code>ABCD-EFGH</code>). Each code can only be used once.
             </small>
           </div>
@@ -215,363 +236,105 @@
           </div>
 
           <div class="form-group twofa-actions">
-            <button type="button" id="twofa-totp-submit-btn">Verify code</button>
-            <button type="button" id="twofa-totp-cancel-btn" class="reset-password-link">
+            <button type="button" id="twofa-totp-submit-btn">
+              Verify code
+            </button>
+            <button
+              type="button"
+              id="twofa-totp-cancel-btn"
+              class="reset-password-link"
+            >
               Back to login
             </button>
-            <button type="button" id="twofa-use-backup-btn" class="reset-password-link">
+            <button
+              type="button"
+              id="twofa-use-backup-btn"
+              class="reset-password-link"
+            >
               Use backup code instead
             </button>
             <button
               type="button"
               id="twofa-use-totp-btn"
               class="reset-password-link"
-              style="display:none;"
+              style="display: none"
             >
               Use authenticator app instead
             </button>
           </div>
 
-          <p id="twofa-totp-status" class="twofa-status"></p>
+          <p id="twofa-totp-status" class="twofa-status" role="status"></p>
         </div>
 
-        <!-- Inline signup + reset password links -->
         <p class="login-extra-line">
-          Don't have an account?
-          <a href="./signup.html">Sign up here</a>
-
-          <button
+          New to Sponsor Sorter? <a href="./signup.html">Create an account</a
+          ><button
             type="button"
             id="reset-password-open"
             class="reset-password-link"
           >
-            Reset password
+            Forgot your password?
           </button>
         </p>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <div class="footer-top">
+        <a class="brand" href="./index.html"
+          ><img src="./logos.png" width="34" height="34" alt="" /><span
+            >Sponsor Sorter</span
+          ></a
+        >
+        <nav aria-label="Footer navigation">
+          <a href="./help.html">Help</a><a href="./contact.html">Contact</a
+          ><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a>
+        </nav>
       </div>
+      <div class="footer-bottom">
+        <span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span
+        ><span>Connecting creators and brands.</span>
+      </div>
+    </footer>
+    <!-- Reset Password Modal -->
+    <div
+      id="reset-password-modal"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reset-title"
+      style="display: none"
+    >
+      <div class="modal-content">
+        <button
+          type="button"
+          id="reset-password-close"
+          class="modal-close"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h3 id="reset-title">Reset your password</h3>
+        <p>Enter your account email and we’ll send you a reset link.</p>
 
-      <!-- Sponsor List on Right -->
-      <div class="sponsor-list-right">
-        <ul id="sponsor-list-right"></ul>
+        <form id="reset-password-form">
+          <div class="form-group">
+            <label for="reset-email">Email address</label>
+            <input
+              type="email"
+              id="reset-email"
+              name="reset-email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <button type="submit">Send Reset Link</button>
+          </div>
+
+          <p id="reset-password-status" class="reset-status"></p>
+        </form>
       </div>
     </div>
-  </section>
-
-   
-  <!-- FOOTER -->
-  <footer class="footercomplete">
-    <div class="footer-text">
-      <ul>
-        <li><a href="./help.html">Help</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-        <li><a href="./privacy.html">Privacy Policy</a></li>
-        <li><a href="./terms.html">Terms of Service</a></li>
-        <li><a href="./reviews.html">Reviews</a></li>
-        <li><a href="./blog.html">Blog</a></li>
-        <li><a href="./forum.html">Forum</a></li>
-        <li><a href="./stats.html">Stats</a></li>
-      </ul>
-    </div>
-    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480
-      <br />
-      Data protected by
-      <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a>
-      | Powered by
-      <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-    </div>
-  </footer>
-
-  <!-- Page-specific styles for login, password toggle, reset modal & 2FA -->
-  <style>
-    .password-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-input-wrapper input[type="password"],
-    .password-input-wrapper input[type="text"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding-right: 2.5rem; /* room for the eye icon */
-    }
-
-    .password-toggle {
-      position: absolute;
-      right: 0.75rem;
-      cursor: pointer;
-      user-select: none;
-      font-size: 1.1rem;
-      opacity: 0.8;
-    }
-
-    .password-toggle:hover {
-      opacity: 1;
-    }
-
-    /* Login error box */
-    .login-error-box {
-      margin-top: 8px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      background-color: #3b1f1f;
-      border: 1px solid #ff4d4d;
-      color: #ffe5e5;
-      font-size: 0.9rem;
-    }
-
-    .reset-password-link {
-      background: none !important;
-      border: none;
-      color: #cfcfcf;
-      text-decoration: underline;
-      cursor: pointer;
-      padding: 0;
-      margin-left: 4px;
-      box-shadow: none;
-      font-size: 0.9rem;
-    }
-
-    /* Inline text line for signup + reset */
-    .login-extra-line {
-      margin-top: 12px;
-      font-size: 0.95rem;
-      color: #eee;
-    }
-
-    .login-extra-line a {
-      color: #f0f0f0;
-      text-decoration: underline;
-    }
-
-    /* 2FA step */
-    .twofa-step {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: rgba(0, 0, 0, 0.35);
-      border: 1px solid #444;
-    }
-
-    .twofa-step h3 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
-    }
-
-    .twofa-step p {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 0.95rem;
-      color: #ddd;
-    }
-
-    .twofa-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-top: 8px;
-    }
-
-    .secondary-button {
-      background-color: #333;
-      border: 1px solid #666;
-    }
-
-    .twofa-status {
-      margin-top: 8px;
-      font-size: 0.9rem;
-    }
-
-    .twofa-status.error {
-      color: #ff8080;
-    }
-
-    .twofa-status.success {
-      color: #80ff80;
-    }
-
-    /* Remember device row */
-    .twofa-remember {
-      margin-top: 6px;
-      margin-bottom: 2px;
-    }
-
-    .twofa-remember-label {
-      font-size: 0.9rem;
-      color: #ddd;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .twofa-remember-label input[type="checkbox"] {
-      transform: scale(1.1);
-    }
-
-    /* Modal overlay */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 999;
-    }
-
-    .modal-content {
-      background: #111;
-      border-radius: 8px;
-      padding: 20px;
-      max-width: 420px;
-      width: 90%;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-      border: 1px solid #444;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 1.4rem;
-      cursor: pointer;
-      box-shadow: none;
-    }
-
-    .modal-close:hover {
-      color: #fff;
-    }
-
-    .reset-status {
-      margin-top: 8px;
-      font-size: 0.9rem;
-    }
-
-    .reset-status.error {
-      color: #ff8080;
-    }
-
-    .reset-status.success {
-      color: #80ff80;
-    }
-
-    /* Optional banner animation (if you later add class="banner-animated" somewhere) */
-    .banner-animated {
-      position: relative;
-      background-image: url('./sponsor-sorter-banner.png');
-      background-size: cover;
-      background-position: center;
-      padding: 20px 40px;
-      overflow: hidden;
-    }
-
-    .banner-animated::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        90deg,
-        rgba(120, 220, 255, 0.25) 0px,
-        rgba(120, 220, 255, 0.25) 2px,
-        rgba(120, 220, 255, 0) 2px,
-        rgba(120, 220, 255, 0) 70px
-      );
-      opacity: 0.5;
-      mix-blend-mode: screen;
-      pointer-events: none;
-      animation: banner-lines-move 12s linear infinite;
-    }
-
-    .banner-animated::after {
-      content: "";
-      position: absolute;
-      inset: -20%;
-      background: radial-gradient(
-        circle at 0% 50%,
-        rgba(250, 255, 230, 0.25),
-        transparent 60%
-      );
-      mix-blend-mode: screen;
-      pointer-events: none;
-      animation: banner-sweep 5s linear infinite;
-    }
-
-    @keyframes banner-lines-move {
-      from {
-        background-position: 0 0;
-      }
-      to {
-        background-position: 600px 0;
-      }
-    }
-
-    @keyframes banner-sweep {
-      from {
-        transform: translateX(-50%) skewX(-12deg);
-      }
-      to {
-        transform: translateX(30%) skewX(-12deg);
-      }
-    }
-  </style>
-
-  <!-- Reset Password Modal -->
-  <div id="reset-password-modal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <button
-        type="button"
-        id="reset-password-close"
-        class="modal-close"
-        aria-label="Close"
-        style="color: red;"
-      >
-        &times;
-      </button>
-      <h3>Reset your password</h3>
-      <p>Enter your account email and we’ll send you a reset link.</p>
-
-      <form id="reset-password-form">
-        <div class="form-group">
-          <label for="reset-email">Email address</label>
-          <input
-            type="email"
-            id="reset-email"
-            name="reset-email"
-            placeholder="you@example.com"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="reset-last-password">
-            Your most recent password you remember
-            <span style="font-weight:normal;font-size:0.9em;">(optional)</span>
-          </label>
-          <input
-            type="password"
-            id="reset-last-password"
-            name="reset-last-password"
-          />
-        </div>
-
-        <div class="form-group">
-          <button type="submit">Send Reset Link</button>
-        </div>
-
-        <p id="reset-password-status" class="reset-status"></p>
-      </form>
-    </div>
-  </div>
-
-</body>
-
+  </body>
 </html>

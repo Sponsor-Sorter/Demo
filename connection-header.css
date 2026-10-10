@@ -1,0 +1,162 @@
+/* Shared brand banner. Existing page navigation and account controls are retained. */
+.connection-header,
+.connection-header * {
+  box-sizing: border-box;
+}
+.connection-header {
+  position: relative;
+  isolation: isolate;
+  background-color: #0b1018;
+  background-image:
+    linear-gradient(90deg, #08090ae8, #0b1623bf), url("./handslogo2.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.connection-header > .connection-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0.65;
+}
+.connection-grid .grid-route {
+  fill: none;
+  stroke: #2599cd;
+  stroke-width: 1;
+  opacity: 0.35;
+}
+.connection-grid .grid-signal {
+  fill: none;
+  stroke: #92eaff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 8 760;
+  animation: connection-travel 12s linear infinite;
+}
+.connection-grid .signal-two {
+  animation-delay: -4s;
+  animation-duration: 16s;
+}
+.connection-grid .signal-three {
+  animation-delay: -9s;
+  animation-duration: 19s;
+}
+@keyframes connection-travel {
+  from {
+    stroke-dashoffset: 768;
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 0.35;
+  }
+}
+.admin-page .admin-site-header.connection-header {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 0;
+}
+.admin-page .admin-site-header.connection-header > .admin-brand {
+  min-height: 128px;
+  padding: 24px 16px;
+  justify-content: center;
+}
+.admin-page .admin-site-header.connection-header > nav {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  padding-inline: max(16px, calc((100% - 1200px) / 2));
+  background: #101318e8;
+  border-top: 1px solid #34383e;
+}
+.admin-page .admin-site-header.connection-header > nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 12px 6px;
+  text-align: center;
+  font-size: .8rem;
+  border-radius: 0;
+}
+/* Public page banner and full-width navigation. */
+.header.connection-header {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-bottom: 1px solid #34383e;
+}
+.header.connection-header > .brand {
+  margin: 0;
+  min-height: 128px;
+  justify-content: center;
+  padding: 24px 16px;
+  font-size: clamp(1.35rem, 3vw, 2.1rem);
+}
+.header.connection-header > nav {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 0 max(16px, calc((100% - 1200px) / 2));
+  background: #101318e8;
+  border-top: 1px solid #34383e;
+}
+.header.connection-header > nav a {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  min-width: 0;
+  border-radius: 0;
+  padding: 12px 6px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #cbd4e2;
+  border-bottom: 3px solid transparent;
+}
+.header.connection-header > nav a:hover {
+  background: #202938;
+  color: #fff;
+}
+.header.connection-header > nav a[aria-current="page"] {
+  background: #202938;
+  border-bottom-color: #51d4f0;
+  color: #fff;
+}
+@media (max-width: 540px) {
+  .header.connection-header > .brand {
+    min-height: 104px;
+  }
+  .header.connection-header > nav a {
+    min-height: 48px;
+    font-size: 0.8rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .connection-grid .grid-signal {
+    animation: none;
+    stroke-dasharray: none;
+    opacity: 0.2;
+  }
+}

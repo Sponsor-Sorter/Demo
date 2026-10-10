@@ -50,3 +50,13 @@
 - Corrected stale US$9.99 one-month wording to the actual US$10/month Pro subscription in static and dynamic confirmation copy; Free messaging remains payment-free.
 - Shortened signup introduction to accurate creator/sponsor roles and costs; removed unsupported escrow/automatic-stat promises. Fixed logo-input label, sponsor spelling, footer logo/year.
 - Browser exercised Sponsor Pro and Creator Free step selection and confirmation copy without submitting registration or accepting terms. Inline script syntax check passed. This is a copy/accessibility correction, not a checkout or signup backend validation.
+
+## 2026-10-10 — Login, shared grid header and signup validation
+
+- Rebuilt login with the public dark theme, responsive form layout, correct brand logo, full-width navigation and preserved login/email-2FA/TOTP/backup-code controls.
+- Removed login advertising and decorative profile carousels; no longer queries profiles when no carousel exists. Password recovery no longer asks for an old password it never used; added dialog semantics, focus return, Escape and keyboard focus containment.
+- Added shared connection-header.css/js/connectionHeader.js to 37 root pages with existing branded headers. Original blue grid artwork remains; three decorative light trails travel along orthogonal connection paths. Reduced-motion CSS disables animation. Existing authenticated controls remain intact.
+- Home, login and signup now have equal-width, single-row navigation spanning the full banner. Admin uses the same full-width banner treatment with its existing five account links.
+- Signup validates each panel before advancing, checks matching passwords, exposes the current step accessibly and reveals earlier invalid fields on final native validation. Removed a duplicate location element ID.
+- Browser checks: public entry pages at actual 320/768/1440 widths, signup also 375; no overflow, equal-width links. Login password toggle and reset dialog focus/Escape passed. Signup missing-fields/password mismatch/sponsor-required-fields checks passed with fictional inputs; no signup, reset email or payment submitted.
+- Follow-up: legacy Help page has pre-existing small-screen content/account-nav overflow; broader legacy navbar consolidation remains. Actual account login/2FA delivery and financial flows were not exercised in this UI release.

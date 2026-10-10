@@ -6,32 +6,14 @@
     <meta name="description" content="Sign up to Sponsor Sorter and connect with brands for sponsorship opportunities. Join now to unlock a range of opportunities for influencers, streamers, and creators!">
     <title>Sign Up - Sponsor Sorter</title>
     <link rel="stylesheet" href="./styles.css?v=20261010">
+    <link rel="stylesheet" href="./signup-layout.css?v=20261010-signup1">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <script type="module" src="./js/main.js"></script>
+<script type="module" src="./js/connectionHeader.js?v=20261010-grid1"></script>
 </head>
 <body>
 
-<header class="navbar1">
-    <section class="navbar">
-        <div class="navii">
-            <h5><header>Sponsor Sorter</header></h5>
-            <div>
-                <background-img class="navimg" src="./navimg.png" alt=""></background-img>
-                <nav>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="finder.html">Finder</a></li>
-                </nav>
-                <nav>
-                    <li class="navr"><a href="signup.html">Signup</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </nav>
-            </div>
-        </div>
-    </section>
-    <br>
-</header>
-<br>
-
+<header class="header"><a class="brand" href="./index.html"><img src="./logos.png" width="46" height="46" alt=""><span>Sponsor Sorter</span></a><nav aria-label="Main navigation"><a href="./index.html">Home</a><a href="./finder.html">Finder</a><a href="./signup.html" aria-current="page">Signup</a><a href="./login.html">Login</a></nav></header>
 <!-- Hero/Signup Section -->
 <section class="signup-section">
   <fieldset class="hero-fieldset">
@@ -267,7 +249,7 @@
 
                     <div class="form-row">
                         <label for="location">Preferred Location:</label>
-                        <select name="location" id="location">
+                        <select name="location" id="preferred-location">
                             <option value="">Select Location</option>
                             <option value="USA">USA</option>
                             <option value="Canada">Canada</option>
@@ -677,6 +659,8 @@ function showStep(step) {
         const s = parseInt(ind.dataset.step, 10);
         ind.classList.toggle('step-active', s === step);
         ind.classList.toggle('step-complete', s < step);
+        if (s === step) ind.setAttribute('aria-current', 'step');
+        else ind.removeAttribute('aria-current');
     });
 
     // On step 3, adjust copy depending on Free vs Pro for sponsees
@@ -718,6 +702,27 @@ function showStep(step) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Validate the current panel before hiding it, so errors remain visible/focusable.
+function advanceSignupStep(currentStep) {
+    const panel = document.querySelector(`.signup-step[data-step="${currentStep}"]`);
+    if (!panel) return;
+    const password = document.getElementById('password');
+    const confirmation = document.getElementById('confirm-password');
+    if (currentStep === 1 && confirmation) {
+        confirmation.setCustomValidity(
+            confirmation.value && confirmation.value !== password?.value
+                ? 'Passwords must match.' : ''
+        );
+    }
+    for (const control of panel.querySelectorAll('input, select, textarea')) {
+        if (!control.disabled && !control.checkValidity()) {
+            control.reportValidity();
+            return;
+        }
+    }
+    showStep(currentStep + 1);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     // Default to sponsor on load
     toggleSponsorType('sponsor');
@@ -731,10 +736,21 @@ window.addEventListener('DOMContentLoaded', () => {
     const back2 = document.getElementById('back-step-2');
     const back3 = document.getElementById('back-step-3');
 
-    if (next1) next1.addEventListener('click', () => showStep(2));
+    if (next1) next1.addEventListener('click', () => advanceSignupStep(1));
     if (back2) back2.addEventListener('click', () => showStep(1));
-    if (next2) next2.addEventListener('click', () => showStep(3));
+    if (next2) next2.addEventListener('click', () => advanceSignupStep(2));
     if (back3) back3.addEventListener('click', () => showStep(2));
+
+    for (const id of ['password', 'confirm-password']) {
+        document.getElementById(id)?.addEventListener('input', () => {
+            document.getElementById('confirm-password')?.setCustomValidity('');
+        });
+    }
+    // Native final-form validation can find an edited field in an earlier panel.
+    document.getElementById('registrationForm')?.addEventListener('invalid', (event) => {
+        const panel = event.target.closest('.signup-step');
+        if (panel && panel.style.display === 'none') showStep(Number(panel.dataset.step));
+    }, true);
 });
 </script>
 

@@ -9,6 +9,7 @@ const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
 // Sponsor logo carousels
 // =======================
 async function loadSponsorCarousels() {
+  if (!document.getElementById('sponsor-list-left') && !document.getElementById('sponsor-list-right')) return;
   // Get up to 12 public user profiles, shuffled
   const { data: users, error } = await supabase
     .from('public_user_homepage_view')
@@ -428,6 +429,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------- Reset modal open/close --------
+  let resetReturnFocus = null;
   function openResetModal() {
     if (!resetModal) return;
 
@@ -441,12 +443,25 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     if (resetLastPasswordInput) resetLastPasswordInput.value = '';
 
+    resetReturnFocus = document.activeElement;
     resetModal.style.display = 'flex';
+    resetEmailInput?.focus();
   }
 
   function closeResetModal() {
     if (resetModal) resetModal.style.display = 'none';
+    resetReturnFocus?.focus();
   }
+
+  resetModal?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); closeResetModal(); }
+    if (event.key !== 'Tab') return;
+    const controls = [...resetModal.querySelectorAll('button, input, a[href]')].filter(el => !el.disabled && el.getClientRects().length);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  });
 
   if (resetTrigger) {
     resetTrigger.addEventListener('click', openResetModal);

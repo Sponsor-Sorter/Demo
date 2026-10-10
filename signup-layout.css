@@ -1,0 +1,50 @@
+/* Public header only: preserves the existing signup form styles. */
+.header .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  font:
+    900 1.8rem/1.2 "Cinzel",
+    Georgia,
+    serif;
+}
+.header .brand img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+.header nav {
+  position: static;
+  height: auto;
+  transform: none;
+  margin: 0;
+  max-width: none;
+  text-align: center;
+}
+.header nav a {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
+}
+.signup-section .hero-fieldset {
+  max-width: 1000px;
+  margin: 40px auto 28px;
+}
+.signup-section .intro-text {
+  max-width: 800px;
+  margin-inline: auto;
+  text-align: left;
+}
+.signup-section .intro-text h1 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  text-align: center;
+  margin-bottom: 22px;
+}
+.signup-section .intro-text p {
+  line-height: 1.65;
+  margin-block: 14px;
+}
+.signup-step-indicator {
+  flex-wrap: wrap;
+}
