@@ -56,7 +56,7 @@ serve(async (req) => {
     const customerId = typeof session.customer === "string" ? session.customer : "";
     const sessionEmail = String(session.metadata?.signup_email || "").trim().toLowerCase();
     if (session.mode !== "subscription" || session.status !== "complete"
-      || session.payment_status === "unpaid" || session.metadata?.offerType !== "signup"
+      || !["paid", "no_payment_required"].includes(session.payment_status) || session.metadata?.offerType !== "signup"
       || !subscriptionId || !/^cus_[A-Za-z0-9]+$/.test(customerId)
       || !sessionEmail || sessionEmail !== profile.email.trim().toLowerCase()) {
       return reply(403, { error: "Checkout does not match a completed Pro signup" }, origin);

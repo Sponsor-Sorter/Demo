@@ -75,6 +75,9 @@ serve(async (req) => {
   const CORS = corsHeaders(origin);
 
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    return Response.json({ error: "Origin not allowed" }, { status: 403, headers: CORS });
+  }
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
@@ -119,6 +122,15 @@ serve(async (req) => {
         status: 401,
         headers: { ...CORS, "Content-Type": "application/json" },
       });
+    }
+    if (!isSignup && !isGameBounty) {
+      const authResponse = await fetch(`${Deno.env.get("SUPABASE_URL")}/auth/v1/user`, {
+        headers: { Authorization: authHeader!, apikey: Deno.env.get("SUPABASE_ANON_KEY")! },
+      });
+      const user = authResponse.ok ? await authResponse.json() : null;
+      if (!user?.id || user.is_anonymous === true) {
+        return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS });
+      }
     }
 
     // Base URL for web pages
@@ -220,6 +232,9 @@ serve(async (req) => {
       }
       finalSuccessUrl = ensureSuccessParams(buildUrl(BASE_URL!, "payment-success-signup.html"));
       finalCancelUrl = buildUrl(BASE_URL!, "signup.html?payment=cancelled");
+      // Override caller-supplied destinations on the actual Stripe request.
+      sessionParams.success_url = finalSuccessUrl;
+      sessionParams.cancel_url = finalCancelUrl;
       sessionParams.customer_email = normalizedSignupEmail;
       sessionParams.metadata = {
         ...(sessionParams.metadata || {}),
@@ -250,6 +265,12 @@ serve(async (req) => {
     // -------------------------
     // One-time payments
     // -------------------------
+    // CORS alone cannot prevent a caller from supplying a phishing return URL.
+    for (const destination of [finalSuccessUrl, finalCancelUrl]) {
+      let allowed = false;
+      try { allowed = ALLOWED_ORIGINS.has(new URL(destination).origin); } catch { /* reject malformed URLs */ }
+      if (!allowed) return Response.json({ error: "Return URL is not allowed" }, { status: 400, headers: CORS });
+    }
     // ✅ compute cents from multiple possible inputs
     let cents: number;
 
@@ -261,7 +282,7 @@ serve(async (req) => {
       cents = Math.round(Number(amount) * 100);
     }
 
-    if (!Number.isFinite(cents) || cents < 1) {
+    if (!Number.isSafeInteger(cents) || cents < 1 || cents > 99999999) {
       return new Response(JSON.stringify({ error: "Invalid amount." }), {
         status: 400,
         headers: { ...CORS, "Content-Type": "application/json" },
@@ -334,8 +355,8 @@ serve(async (req) => {
       headers: { ...CORS, "Content-Type": "application/json" },
     });
 
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), {
+  } catch {
+    return new Response(JSON.stringify({ error: "Checkout could not be created. Please try again." }), {
       status: 500,
       headers: {
         ...corsHeaders(req.headers.get("origin")),

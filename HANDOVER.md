@@ -7,6 +7,15 @@
 
 ## State
 
+### Payment verification update — 2026-10-10
+
+- Deployed `stripe-checkout` v45 and `complete-paid-signup` v2. Signup now overwrites the actual Stripe success/cancel parameters with approved destinations. Previously caller URLs could survive validation. Other checkout flows reject unapproved return origins; private checkout validates the bearer token against Supabase Auth instead of checking only header presence; anonymous Auth users are denied. Added amount bounds and generic error responses. Completion explicitly accepts only paid/no-payment-required Stripe states.
+- `npm test`: 22 passing tests (3 admin helpers, 19 payment handler checks). Payment tests execute real TypeScript handlers with isolated Stripe/Auth/database doubles. These are NOT completed sandbox transactions.
+- `node tools/payment-live-smoke.cjs`: four production rejection checks passed: unapproved origin 403, invalid signup email 400, forged private token 401, malformed completion 400. No charges, Checkout sessions, accounts, emails or payouts created.
+- Stripe connector exposes two accounts with `livemode:false`, including Sponsor Sorter sandbox. Sandbox webhook list is empty. Production Supabase function inventory still contains no subscription webhook. Live webhook configuration has not been inspected; do not infer live account state from the sandbox.
+- Remaining financial release gates: completed isolated sandbox signup/payment, subscription webhook signature/idempotency/lifecycle tests, transactionally locked/idempotent payout accounting, actual payout-provider reconciliation, authenticated admin and participant integration tests. One-time offer amount/ownership still needs authoritative database validation; a valid user token alone does not establish offer ownership. Existing payout wallet/record writes remain separate and must not be treated as production verified.
+- Run tests on Node 22.14+ (uses built-in experimental TypeScript stripping). Live smoke requires network and reads the public anon key from the client file without logging it.
+
 Frontend published to origin/main and verified live at https://sponsorsorter.com (a463ffb). Related Supabase restrictions and four Edge Functions are already deployed. See the release verification section below for the final publication result.
 
 ## Work completed

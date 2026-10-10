@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-10 — Payment request hardening and regression tests
+
+- Fixed signup Checkout return URL override; restricted other return origins.
+- Validate private-payment bearer tokens with Supabase Auth; reject anonymous identities.
+- Bound checkout amounts, hide upstream error details, reject unknown payment states.
+- Deployed checkout v45 and paid-signup completion v2; four negative production smoke checks passed.
+- Added repeatable `npm test` suite: 22 passing tests. Completed sandbox payments, subscription webhooks and atomic payouts remain outstanding (see HANDOVER.md).
+
 ## 2026-10-10 — First frontend release
 
 - Restricted profile-table access and privileged profile-field writes; added a safe public profile directory.
