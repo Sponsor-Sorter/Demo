@@ -72,3 +72,41 @@ test("public stats text and image attributes cannot inject HTML", () => {
   assert.equal(presentation.ratingStars(-1), "");
   assert.equal(presentation.ratingStars(10000000), "★★★★★");
 });
+
+test("checkout return has one fulfillment handler and safe spotlight output", async () => {
+  const html = fs.readFileSync(
+    path.join(__dirname, "../payment-success.html"),
+    "utf8",
+  );
+  const modules = [
+    ...html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g),
+  ];
+  assert.equal(modules.length, 1);
+  const listeners = [];
+  const status = { innerHTML: "", textContent: "" };
+  const context = vm.createContext({
+    document: {
+      getElementById: () => status,
+      addEventListener: (name, fn) => listeners.push(fn),
+    },
+    window: {
+      location: { href: "https://sponsorsorter.com/payment-success.html" },
+    },
+    URL,
+    escapeHtml: presentation.escapeHtml,
+    console,
+  });
+  vm.runInContext(modules[0][1].replace(/^import .*;$/gm, ""), context);
+  assert.equal(listeners.length, 1);
+  await listeners[0]();
+  assert.match(status.innerHTML, /No valid payment/);
+  vm.runInContext(
+    "renderPremiumResult({slotIndex: '<img src=x onerror=alert(1)>'})",
+    context,
+  );
+  assert.doesNotMatch(
+    status.innerHTML,
+    /<img|purchase confirmed|spotlight is scheduled/,
+  );
+  assert.match(status.innerHTML, /verification needed/);
+});

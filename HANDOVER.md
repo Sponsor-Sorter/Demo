@@ -1,5 +1,13 @@
 # Sponsor Sorter handover
 
+## 2026-10-11 — Wallet validation and duplicate checkout handler
+
+- Applied reject_invalid_wallet_reservations to Supabase: wallet spending rejects nonfinite/negative balances and nonfinite/nonpositive active reservation rows. Existing ownership check, profile row lock and restricted grants retained. No invalid balances or active reservations found by aggregate queries.
+- New tools/wallet-invalid-reservations.test.sql passed rollback integration assertions for normal spending, reserved funds, five invalid payout values, four invalid wallet values, NOT NULL rejection and direct wallet tampering. Explicitly excludes Moikailive. No fixture changes committed; no Stripe funds moved.
+- Removed duplicate active payment-success.html handler (both could create the same private offer). Remaining module now imports its own escape helper; spotlight slot output is numeric-only and failed assignment does not claim purchase confirmation. Fixed legacy public/ footer links.
+- npm test: 29 passing including single-handler/malicious-slot regression. Browser missing-session return state checked. Full paid offer fulfillment still needs authenticated server-side Stripe verification plus idempotency; this fix alone does not provide it. Premium assignment also needs that verification.
+- Supabase advisor findings remain: 3 privileged views, 23 mutable search paths, 11 anonymous and 15 authenticated privileged RPC warnings, OTP/leaked-password/Postgres-version warnings. No blanket permissions changes made.
+
 ## 2026-10-11 — Secondary page consistency and safety pass
 
 See [PAGE_SAFETY_AUDIT.md](./PAGE_SAFETY_AUDIT.md) for changed pages, browser coverage, 28 passing tests and unresolved payment/database security findings. No production data/schema mutations.

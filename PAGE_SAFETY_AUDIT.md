@@ -22,3 +22,6 @@
 
 ## Tools
 Shell/Git/Node/Prettier, unified-computer-use browser controls, Supabase security advisor (read-only). No new plugins installed and no schema changes in this batch.
+
+## Follow-up 2026-10-11
+Wallet NaN/negative reservation follow-up is now fixed and rollback tested; see HANDOVER.md. Duplicate private-offer return handler removed. Server-verified paid fulfillment, webhooks and remaining database advisor findings are still open.

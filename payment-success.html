@@ -24,7 +24,7 @@
           <li><a href="finder.html">Finder</a></li>
         </nav>
         <nav>
-            <li class="navr" id="auth-link"><a href="/public/dashboardsponsor.html">Dashboard</a></li>
+            <li class="navr" id="auth-link"><a href="./dashboardsponsor.html">Dashboard</a></li>
           <li><a href="login.html">Logout</a></li>
         </nav>
       </div>
@@ -40,81 +40,22 @@
 <footer class="footercomplete">
         <div class="footer-text">
             <ul>
-                <li><a href="/public/help.html">Help</a></li>
-                <li><a href="/public/contact.html">Contact</a></li>
-                <li><a href="/public/privacy.html">Privacy Policy</a></li>
-                <li><a href="/public/terms.html">Terms of Service</a></li>
-                <li><a href="/public/reviews.html">Reviews</a></li>
+                <li><a href="./help.html">Help</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Service</a></li>
+                <li><a href="./reviews.html">Reviews</a></li>
 
             </ul>
         </div>
         <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
         <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
     </footer>
+
+
 <script type="module">
+// A single return handler prevents duplicate offer creation.
 import { escapeHtml } from "./js/safePresentation.js";
-import { supabase } from './js/supabaseClient.js';
-import { notifyNewOffer } from './js/alerts.js';
-
-async function createOfferFromSession() {
-  const statusDiv = document.getElementById('insert-status');
-
-  // Check for Stripe success
-  const url = new URL(window.location.href);
-  const session_id = url.searchParams.get('session_id');
-  const payment_status = url.searchParams.get('payment_status');
-  if (!session_id || payment_status !== 'success') {
-    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
-    return;
-  }
-
-  // Load offerData from sessionStorage
-let offerData = localStorage.getItem('pendingOfferData');
-  if (!offerData) {
-    statusDiv.innerHTML = `<span style="color:red;">No offer data found. Please resubmit your offer.</span>`;
-    return;
-  }
-  offerData = JSON.parse(offerData);
-
-  // Insert offer record
-  const { data: insertedOffers, error: insertError } = await supabase
-    .from('private_offers')
-    .insert([offerData])
-    .select();
-  if (insertError || !insertedOffers || insertedOffers.length === 0) {
-    statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${escapeHtml(insertError?.message || 'Unknown error.')}</span>`;
-    return;
-  }
-  const newOfferId = insertedOffers[0].id;
-
-  // Add an initial comment
-  await supabase.from('private_offer_comments').insert([{
-    offer_id: newOfferId,
-    user_id: offerData.sponsor_id,
-    comment_text: `Offer submitted by ${offerData.sponsor_username}`
-  }]);
-
-  // Notify sponsee
-  try {
-    await notifyNewOffer({
-      offer_id: newOfferId,
-      to_user_id: offerData.sponsee_id,
-      from_username: offerData.sponsor_username,
-      offer_title: offerData.offer_title
-    });
-  } catch (err) { /* non-critical */ }
-
-  // Success!
-  statusDiv.innerHTML = `<span style="color:green;">Offer created successfully! Redirecting...</span>`;
-  localStorage.removeItem('pendingOfferData');
-  setTimeout(() => window.location.href = './dashboardsponsor.html', 2200);
-}
-
-document.addEventListener('DOMContentLoaded', createOfferFromSession);
-</script>
-
-<script type="module">
-/* payment-success handler (REPLACE the whole previous block with this) */
 import { supabase } from './js/supabaseClient.js';
 import { notifyNewOffer } from './js/alerts.js';
 
@@ -207,11 +148,12 @@ async function assignFeaturedStar({ months = 1, label = 'Featured Star' } = {}) 
 }
 
 function renderPremiumResult({ slotIndex, product = 'featured_star' } = {}) {
+  slotIndex = Number.isSafeInteger(Number(slotIndex)) && Number(slotIndex) > 0 ? Number(slotIndex) : null;
   const nice = product === 'featured_star' ? 'Featured Star' : 'Premium';
   const link = slotIndex ? `./featured.html?slot=${slotIndex}` : './featured.html';
   statusDiv.innerHTML = `
-    <div style="color:#0a8a0a;margin:8px 0 10px 0;"><b>${nice} purchase confirmed!</b></div>
-    <div style="color:#444;">Your spotlight is scheduled${slotIndex ? ` (slot #${slotIndex})` : ''}.</div>
+    <div style="color:#0a8a0a;margin:8px 0 10px 0;"><b>${nice}: ${slotIndex ? "spotlight assigned" : "verification needed"}</b></div>
+    <div style="color:#444;">${slotIndex ? `Your spotlight is assigned to slot #${slotIndex}.` : "We could not confirm your spotlight assignment. Contact support with your checkout receipt before trying again."}</div>
     <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
       <a href="${link}" style="background:#ffd062;color:#222;padding:9px 14px;border-radius:10px;font-weight:800;text-decoration:none;">View your spotlight</a>
       <a href="./index.html" style="background:#333;color:#fff;padding:9px 14px;border-radius:10px;text-decoration:none;">Back to Home</a>
@@ -277,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const slotIndex = await assignFeaturedStar({ months: 1, label: 'Featured Star' });
       renderPremiumResult({ slotIndex, product });
     } catch (e) {
-      console.warn('assign-featured-star failed; showing success without slot number', e);
+      console.warn('Spotlight assignment could not be confirmed');
       renderPremiumResult({ slotIndex: null, product });
     }
   } catch (err) {
