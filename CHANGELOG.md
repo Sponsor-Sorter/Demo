@@ -119,3 +119,6 @@ See [PAGE_SAFETY_AUDIT.md](./PAGE_SAFETY_AUDIT.md) for changed pages, browser co
 - Added canonical/sharing metadata for homepage and Help, plus a public-page sitemap/robots entry. No outreach, paid marketing or ranking guarantees.
 - Browser checks: Help and both populated guest roles at 320/375/768/1440, no overflow; preview role switching and sponsor offer-details button passed. Help search case-insensitive match/no-results/clear and disclosure controls passed. Larger public branding checked at 320/375/768/1440/1920; one-row navigation and no overflow. Admin enlarged header checked at phone/desktop widths.
 - Finder remains login-gated in the available browser; its scoped layout requires signed-in confirmation. Financial actions and real login/2FA/subscription lifecycle remain outside this visual validation. See HANDOVER.md for outstanding production issues.
+
+### 2026-10-11 Navigation account controls
+Bell, messages and settings stay beside tabs on the right; removed the legacy separate-row rule, compacted dashboard controls, preserved guest visibility, refreshed stylesheet cache URLs. Browser checks at 320/375/768/1440, zero overflow; navigation geometry checked after CSS transitions settle.

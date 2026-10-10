@@ -196,3 +196,69 @@
     font-size: 0.82rem;
   }
 }
+
+/* Four tabs plus compact account controls, all in one row. */
+.public-content-page .header.connection-header > nav:has(#settings-notif-bar) {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  align-items: stretch;
+}
+.public-content-page .header > nav > #settings-notif-bar {
+  grid-column: 5;
+  grid-row: 1;
+  margin: 0;
+  padding: 0 8px !important;
+  align-self: stretch;
+  justify-content: flex-end;
+}
+.public-content-page .header #settings-notif-bar .icon-bar-bg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+.public-content-page .header #settings-notif-bar button {
+  width: 32px !important;
+  min-width: 32px;
+  height: 48px !important;
+  margin: 0;
+}
+.public-content-page .header #settings-notif-bar button img {
+  width: 24px !important;
+}
+header #settings-notif-bar[style*="display:none"],
+header #settings-notif-bar[style*="display: none"] {
+  display: none !important;
+}
+@media (max-width: 600px) {
+  .public-content-page .header > nav > #settings-notif-bar {
+    padding-inline: 4px !important;
+  }
+  .public-content-page .header #settings-notif-bar .icon-bar-bg {
+    gap: 4px;
+  }
+  .public-content-page .header #settings-notif-bar button {
+    width: 28px !important;
+    min-width: 28px;
+  }
+}
+
+.public-content-page .header.connection-header > nav > li > a {
+  height: 100% !important;
+  min-height: 52px;
+}
+.public-content-page .header #settings-notif-bar .icon-bar-bg > button {
+  margin: 0 !important;
+}
+
+.public-content-page .header.connection-header > nav a {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+.public-content-page .header #settings-notif-bar .icon-bar-bg > button {
+  padding: 0 !important;
+}

@@ -59,13 +59,13 @@
     text-align: center;
   }
 
-  /* put the bell + gear on their OWN row, right-aligned */
+  /* Keep account controls at the right end of the same navigation row. */
   nav li#settings-notif-bar,
   .navbar nav li#settings-notif-bar,
   .navbar1 nav li#settings-notif-bar {
     order: 3;
-    flex: 0 0 100% !important; /* full-width row */
-    max-width: 30% !important;
+    flex: 0 0 auto !important;
+    max-width: none !important;
     display: flex !important;
     justify-content: flex-end;
     gap: 0px !important;
