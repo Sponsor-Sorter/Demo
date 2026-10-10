@@ -1,4 +1,10 @@
 /* Finder and member dashboards. Keep the original dark, cyan and purple identity. */
+.workspace-refresh .dashboard #listing-container {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 20px !important;
+  column-count: 1 !important;
+}
 .workspace-refresh form > .workspace-guidance {
   grid-column: 1 / -1;
   order: 10;
