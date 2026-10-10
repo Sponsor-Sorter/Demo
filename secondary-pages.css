@@ -1,0 +1,114 @@
+/* Secondary content pages share the homepage's dark panels and grid banner. */
+.secondary-page {
+  font-family: Arial, sans-serif;
+  line-height: 1.55;
+}
+.secondary-page > :is(main, section, .dashboard, .reviews-container) {
+  display: block;
+  width: min(1200px, calc(100% - 40px)) !important;
+  max-width: 1200px !important;
+  min-width: 0 !important;
+  margin: 32px auto !important;
+  padding: clamp(16px, 3vw, 32px) !important;
+  border: 1px solid #40526e;
+  border-radius: 20px;
+  background: #121a27;
+}
+.secondary-page
+  :is(main, section, fieldset, article, form, .blog-card, .forum-thread) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.secondary-page :is(main, body > section) img {
+  max-width: 100%;
+}
+.secondary-page :is(fieldset, .card-like, .blog-card, .forum-thread) {
+  max-width: 100% !important;
+  border-color: #40526e;
+  border-radius: 14px;
+}
+.secondary-page :is(.blog-controls, .forum-controls, .forum-tabs) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.secondary-page :is(input, select, textarea) {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.secondary-page textarea {
+  resize: vertical;
+}
+.secondary-page .newsletter {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: 0;
+  margin-inline: 0;
+}
+.secondary-page .newsletter :is(input, button) {
+  width: 100%;
+  margin-inline: 0;
+}
+.secondary-page :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid #53d5ef;
+  outline-offset: 3px;
+}
+.secondary-page .table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #40526e;
+  border-radius: 12px;
+}
+.secondary-page .table-scroll table {
+  margin: 0;
+}
+.secondary-page .footercomplete {
+  width: min(1200px, calc(100% - 40px));
+  margin: 32px auto;
+}
+.secondary-page .footercomplete ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 24px;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 700px) {
+  .secondary-page > :is(main, section, .dashboard, .reviews-container) {
+    width: calc(100% - 24px) !important;
+    margin: 20px auto !important;
+  }
+  .secondary-page
+    :is(
+      .blog-list,
+      .featured-list,
+      .grid,
+      .supporter-tiers,
+      .supporter-badges
+    ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    flex-wrap: wrap;
+  }
+  .secondary-page
+    :is(.userprofile, .sponsee-info, .review-wrapper, .profile-display) {
+    width: 100% !important;
+    margin-inline: 0 !important;
+    flex-wrap: wrap;
+  }
+  .secondary-page :is(fieldset, .profile-header, .profile-info, .help-block) {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: 0 !important;
+  }
+  .secondary-page .profile-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .secondary-page .profile-info {
+    padding-inline: 0 !important;
+  }
+}

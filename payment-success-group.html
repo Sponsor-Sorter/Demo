@@ -8,8 +8,11 @@
   <link rel="stylesheet" href="styles.css?v=20261010" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
+<link rel="stylesheet" href="./public-pages.css?v=20261010-public1">
+<link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
+<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 </head>
-<body>
+<body class="secondary-page public-content-page">
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -31,7 +34,7 @@
 
 <main style="min-height:40vh;">
   <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
-    <h2 style="color:green;">🎉 Payment successful!</h2>
+    <h2 style="color:green;">Checking your checkout</h2>
     <div id="insert-status">Submitting your group offer to the selected group...</div>
   </div>
 </main>
@@ -51,6 +54,7 @@
 </footer>
 
 <script type="module">
+import { escapeHtml } from "./js/safePresentation.js";
 import { supabase } from './js/supabaseClient.js';
 import { notifyOfferUpdate } from './js/alerts.js';
 
@@ -101,7 +105,7 @@ async function createGroupOfferFromSession() {
     .select('id, group_id, offer_title');
 
   if (insertError || !insertedOffers || insertedOffers.length === 0) {
-    statusDiv.innerHTML = `<span style="color:red;">Group offer creation failed: ${insertError?.message || 'Unknown error.'}</span>`;
+    statusDiv.innerHTML = `<span style="color:red;">Group offer creation failed: ${escapeHtml(insertError?.message || 'Unknown error.')}</span>`;
     return;
   }
 

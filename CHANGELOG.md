@@ -1,5 +1,9 @@
 # Change log
 
+## 2026-10-11 — Secondary page consistency and safety pass
+
+See [PAGE_SAFETY_AUDIT.md](./PAGE_SAFETY_AUDIT.md) for changed pages, browser coverage, 28 passing tests and unresolved payment/database security findings. No production data/schema mutations.
+
 ## 2026-10-10 — Rebuilt public previews
 
 - Replaced duplicated sponsor/creator preview markup with one accessible, responsive workspace and role picker. Retained the shared animated grid header and dark/cyan/purple identity.

@@ -44,3 +44,31 @@ test("preview is independent of accounts and outbound analytics", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(new Set(ids).size, ids.length, "preview IDs must be unique");
 });
+
+const presentation = vm.runInNewContext(
+  fs
+    .readFileSync(path.join(__dirname, "../js/safePresentation.js"), "utf8")
+    .replaceAll("export function", "function") +
+    "; ({escapeHtml, safeImageUrl, ratingStars})",
+  { URL },
+);
+test("public stats text and image attributes cannot inject HTML", () => {
+  assert.equal(
+    presentation.escapeHtml('<img src=x onerror="alert(1)">'),
+    "&lt;img src=x onerror=&quot;alert(1)&quot;&gt;",
+  );
+  for (const url of [
+    "javascript:alert(1)",
+    "data:image/svg+xml,test",
+    "http://example.com/a.png",
+    "https://user:pass@example.com/a.png",
+  ])
+    assert.equal(presentation.safeImageUrl(url), "logos.png");
+  assert.equal(
+    presentation.safeImageUrl("https://example.com/a.png"),
+    "https://example.com/a.png",
+  );
+  assert.equal(presentation.ratingStars(Infinity), "");
+  assert.equal(presentation.ratingStars(-1), "");
+  assert.equal(presentation.ratingStars(10000000), "★★★★★");
+});

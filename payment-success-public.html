@@ -8,8 +8,11 @@
   <link rel="stylesheet" href="styles.css?v=20261010" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
+<link rel="stylesheet" href="./public-pages.css?v=20261010-public1">
+<link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
+<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 </head>
-<body>
+<body class="secondary-page public-content-page">
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -30,7 +33,7 @@
 </header>
 <main style="min-height:40vh;">
   <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
-    <h2 style="color:green;">🎉 Payment successful!</h2>
+    <h2 style="color:green;">Checking your checkout</h2>
     <div id="insert-status">Creating your public offer...</div>
   </div>
 </main>
@@ -48,6 +51,7 @@
   <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
 </footer>
 <script type="module">
+import { escapeHtml } from "./js/safePresentation.js";
 import { supabase } from './js/supabaseClient.js';
 import { notifyOfferUpdate } from './js/alerts.js'; // This uses your universal notification logic!
 
@@ -77,7 +81,7 @@ async function createPublicOfferFromSession() {
     .select();
 
   if (insertError || !insertedOffers || insertedOffers.length === 0) {
-    statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${insertError?.message || 'Unknown error.'}</span>`;
+    statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${escapeHtml(insertError?.message || 'Unknown error.')}</span>`;
     return;
   }
 

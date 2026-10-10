@@ -8,8 +8,11 @@
   <link rel="stylesheet" href="./styles.css?v=20261010" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
+<link rel="stylesheet" href="./public-pages.css?v=20261010-public1">
+<link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
+<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 </head>
-<body>
+<body class="secondary-page public-content-page">
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -48,6 +51,7 @@
   <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2025 Sponsor Sorter. All rights reserved.</div>
 </footer>
 <script type="module">
+import { escapeHtml } from "./js/safePresentation.js";
 import { supabase } from './js/supabaseClient.js';
 
 // Helper for orphan logo cleanup
@@ -121,12 +125,12 @@ async function finalizeSignupAfterPayment() {
       }
     }));
     if (signUpError) {
-      statusDiv.innerHTML = `<span style="color:red;">Sign-up error: ${signUpError.message}</span>`;
+      statusDiv.innerHTML = `<span style="color:red;">Sign-up error: ${escapeHtml(signUpError.message)}</span>`;
       await cleanupPendingLogo();
       return;
     }
   } catch (err) {
-    statusDiv.innerHTML = `<span style="color:red;">Sign-up failed: ${err.message}</span>`;
+    statusDiv.innerHTML = `<span style="color:red;">Sign-up failed: ${escapeHtml(err.message)}</span>`;
     await cleanupPendingLogo();
     return;
   }
