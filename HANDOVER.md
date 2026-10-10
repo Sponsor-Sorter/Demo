@@ -98,3 +98,11 @@ Admin preview: http://127.0.0.1:8125/dashboardAdmin.html uses fictional data and
 ## Original grid artwork refinement
 
 Shared header now uses the untouched handslogo2.jpg at native 2222×888 scale, positioned -80px/bottom as the old navbar artwork was. Its SVG uses exactly the same pixel coordinates/crop and contains 51 small timed light trails traced from image lines; no replacement grid is drawn. Route reference: tools/header-grid-routes.json. Modern banner heights 200px desktop, 150px public phone. Reduced motion hides trails entirely. Checked four main pages at 320/768/1440 with no overflow; no backend or account actions.
+
+## Public/workspace polish checkpoint
+
+New standalone Help: help.html/help.css/js/helpCentre.js, 14 searchable topics, no backend queries. Root home/help canonical and Open Graph metadata, sitemap.xml and robots.txt added as discoverability groundwork. No external promotion performed.
+
+Dashboard/Finder/guest now load workspace-layout.css and js/workspaceLayout.js with workspace-page body class. Module moves existing direct legacy nav children into one nav; preserves IDs/listeners/account controls. CSS scopes common widths, card details, history-table scrolling, ratings wrapping, privacy-control sizing and mobile profiles. Populated guest sponsor and sponsee checked at 320/375/768/1440 with zero document overflow; details expansion and role switching passed. Real authenticated dashboard actions remain untested. Finder's auth redirected to login in available browser, so signed-in Finder validation is still required. New Help search/disclosures, metadata/static target checks and script syntax passed.
+
+Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88px; glossy CSS hover/focus/selected effects return original visual direction. Original grid/native artwork and light trails retained. Revenue readiness still blocked by previously listed successful paid-signup, subscription lifecycle and atomic-payout validations. Do not market the whole system as production verified based on layout checks.

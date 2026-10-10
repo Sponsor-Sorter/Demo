@@ -1,472 +1,252 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Find answers, read guides, and access our Resource Center for creators and brands.">
-    <title>Help & Resource Center - Sponsor Sorter</title>
-    <link rel="stylesheet" href="styles.css?v=20261010">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="./js/settings.js"></script>
-    <script type="module" src="./js/alerts.js"></script>
-<script type="module" src="./js/connectionHeader.js?v=20261010-grid2"></script>
-</head>
-<body>
-    <!-- Navbar and Header -->
-   <header class="navbar1">
-  <section class="navbar">
-    <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
-      <div>
-        <background-img class="navimg" src="navimg.png" alt="">
-        <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
-        </nav>
-        <nav class="nav">
-          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Logout</a></li>
-          <li id="notification-bell-li" style="display:inline;">
-            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-            </button>
-          </li>
-          <li id="settings-cog-li" style="display:inline;position:relative;">
-            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-            </button>
-            <div id="settings-dropdown" class="settings-dropdown">
-              <div class="dropdown-arrow"></div>
-              <ul>
-                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button>
-              </ul>
-            </div>
-          </li>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Help Centre | Sponsor Sorter</title>
+    <meta
+      name="description"
+      content="Learn how Sponsor Sorter profiles, sponsorship offers, campaigns and account plans work. Find help with login, connected platforms and reporting concerns."
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./help.css?v=20261010-help1" />
+    <script
+      type="module"
+      src="./js/connectionHeader.js?v=20261010-grid3"
+    ></script>
+    <script type="module" src="./js/helpCentre.js"></script>
+    <link rel="canonical" href="https://sponsorsorter.com/help.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Help Centre | Sponsor Sorter" />
+    <meta property="og:url" content="https://sponsorsorter.com/help.html" />
+    <meta
+      property="og:image"
+      content="https://sponsorsorter.com/handslogo2.jpg"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="wrap header">
+      <a class="brand" href="./index.html" aria-label="Sponsor Sorter home"
+        ><img src="./logos.png" width="46" height="46" alt="" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="./index.html">Home</a><a href="./finder.html">Finder</a
+        ><a href="./signup.html">Signup</a><a href="./login.html">Login</a>
+      </nav>
+    </header>
+    <main id="main" class="wrap help-main">
+      <section class="help-intro">
+        <p class="eyebrow">Sponsor Sorter help centre</p>
+        <h1>A clearer path to<br />your next partnership.</h1>
+        <p>
+          Find practical answers about your account, sponsorship offers and
+          campaign workflow.
+        </p>
+        <label for="help-search">Search help topics</label
+        ><input
+          id="help-search"
+          type="search"
+          placeholder="Try: password, offer, platform or payment"
+          autocomplete="off"
+        />
+        <p id="help-search-status" role="status" aria-live="polite"></p>
+      </section>
+      <nav class="help-topics" aria-label="Help topics">
+        <a href="#getting-started">Getting started</a
+        ><a href="#campaigns">Offers & campaigns</a
+        ><a href="#accounts">Accounts & platforms</a
+        ><a href="#payments">Plans & payments</a>
+      </nav>
+      <section class="help-category" id="getting-started">
+        <h2>Getting started</h2>
+        <details>
+          <summary>Which account should I choose?</summary>
+          <p>
+            Choose sponsor if you are a brand or person offering content
+            partnerships. Choose sponsee if you are a creator producing the
+            sponsored content. Creators can select Free or Pro; sponsors use
+            Pro. <a href="./signup.html">Create your account</a> or
+            <a href="./index.html#pricing">compare plans</a>.
+          </p>
+        </details>
+        <details>
+          <summary>Can I try a dashboard first?</summary>
+          <p>
+            Yes. Explore the
+            <a href="./guest.html?role=sponsor">sponsor preview</a> or
+            <a href="./guest.html?role=sponsee">creator preview</a>. These use
+            fictional data and do not create real sponsorships.
+          </p>
+        </details>
+        <details>
+          <summary>What should I include in my profile?</summary>
+          <p>
+            Use a recognisable image, a clear introduction, your location and
+            the platforms where you publish. Creators should explain their
+            content and audience; brands should explain their business and the
+            partnerships they want.
+          </p>
+        </details>
+      </section>
+      <section class="help-category" id="campaigns">
+        <h2>Offers & campaigns</h2>
+        <details>
+          <summary>How do I find a partner?</summary>
+          <p>
+            Use the <a href="./finder.html">Finder</a> to search profiles,
+            browse public offers or discover groups. Check a potential partner’s
+            content and profile before discussing a campaign. Creating a profile
+            does not guarantee a sponsorship.
+          </p>
+        </details>
+        <details>
+          <summary>What should a sponsorship offer include?</summary>
+          <p>
+            Set out the content deliverables, publishing platforms, amount,
+            deadline and payment schedule. Discuss usage rights, approvals and
+            any exclusivity before accepting. Use the offer’s comments to keep
+            the discussion with the campaign.
+          </p>
+        </details>
+        <details>
+          <summary>How do I follow campaign progress?</summary>
+          <p>
+            Your dashboard groups offers by status. Open an offer to review its
+            details, comments and content updates. The workflow moves from the
+            offer being sent and accepted through content creation, publication
+            and completion.
+          </p>
+        </details>
+        <details>
+          <summary>
+            What if something changes or there is a disagreement?
+          </summary>
+          <p>
+            Discuss the change with your partner through the offer’s comments.
+            Keep a record of the agreed requirements and any updates. Use the
+            available reporting tools for concerning content or
+            <a href="./contact.html">contact support</a>. Read the
+            <a href="./terms.html">Terms of Service</a> for the applicable
+            rules.
+          </p>
+        </details>
+      </section>
+      <section class="help-category" id="accounts">
+        <h2>Accounts & platforms</h2>
+        <details>
+          <summary>I cannot log in. What can I do?</summary>
+          <p>
+            Check that you are using the email address you registered with. Use
+            <a href="./login.html">Forgot your password?</a> on the login page
+            to request a reset link. Never send your password or verification
+            codes to another user.
+          </p>
+        </details>
+        <details>
+          <summary>How do social account connections work?</summary>
+          <p>
+            Available platforms provide different connection methods and profile
+            information. Use the connection controls in your account and review
+            the permissions requested by the platform. Some platforms use a
+            manually entered handle. A displayed handle alone is not proof of
+            account ownership.
+          </p>
+        </details>
+        <details>
+          <summary>My platform connection is not working.</summary>
+          <p>
+            Confirm that you are signed into the intended social account and
+            that you meet that platform’s account requirements. Retry from your
+            account’s connection controls. If it still fails,
+            <a href="./contact.html">contact support</a> with the platform name
+            and error message. Do not include passwords, access tokens or
+            verification codes.
+          </p>
+        </details>
+        <details>
+          <summary>How do I ask about my personal data?</summary>
+          <p>
+            Read our <a href="./privacy.html">privacy policy</a> and
+            <a href="./contact.html">contact us</a> with your request. Do not
+            post private account information in public profiles, comments or the
+            community forum.
+          </p>
+        </details>
+      </section>
+      <section class="help-category" id="payments">
+        <h2>Plans & payments</h2>
+        <details>
+          <summary>How much does Sponsor Sorter cost?</summary>
+          <p>
+            The creator Free plan costs US$0/month. Pro costs US$10/month for
+            creator or sponsor accounts. Sponsorship offers carry a 10% platform
+            fee paid up front by the sponsor. Review the selected plan and final
+            charges at checkout.
+            <a href="./index.html#pricing">View pricing</a>.
+          </p>
+        </details>
+        <details>
+          <summary>Where do I complete payment?</summary>
+          <p>
+            Paid signup opens Stripe’s hosted checkout. Review the subscription
+            details and amount there before paying. If checkout fails or you
+            cannot access your account afterwards,
+            <a href="./contact.html">contact support</a> with the account email
+            and payment reference. Do not share card details.
+          </p>
+        </details>
+        <details>
+          <summary>
+            Does the platform guarantee earnings or a successful campaign?
+          </summary>
+          <p>
+            No. Partners decide which offers to make and accept. Review the
+            requirements, amount and timing before committing to a campaign, and
+            read the <a href="./terms.html">terms</a> for payment and account
+            conditions.
+          </p>
+        </details>
+      </section>
+      <p id="help-empty" class="panel" hidden>
+        No matching topics. Try a shorter phrase or
+        <a href="./contact.html">contact us</a>.
+      </p>
+      <section class="panel help-contact">
+        <div>
+          <p class="eyebrow">Still need a hand?</p>
+          <h2>Tell us where you’re stuck.</h2>
+          <p>
+            Include the page, what you expected to happen and the error you saw.
+          </p>
+        </div>
+        <a class="button primary" href="./contact.html">Contact support</a>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="./index.html"
+            ><img src="./logos.png" width="34" height="34" alt="" /><span
+              >Sponsor Sorter</span
+            ></a
+          >
+          <p>
+            Connecting creators and brands.<br />Keeping sponsorships organised.
+          </p>
+        </div>
+        <nav aria-label="Footer navigation">
+          <a href="./help.html">Help</a><a href="./contact.html">Contact</a
+          ><a href="./forum.html">Community</a
+          ><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a>
         </nav>
       </div>
-    </div>
-  </section>
-</header>
-
-    <!-- Resource Center / Blog Section -->
-    <section>
-        <fieldset class="resource-center" style="margin-bottom: 28px;">
-            <legend>📚 Blog & Resource Center</legend>
-            <div class="resource-intro">
-                <h2>Grow with Sponsor Sorter's Resource Center</h2>
-                <p>
-                    Discover expert articles, guides, and tips for both sponsors and creators. Our Resource Center is your hub for <b>best practices</b>, <b>case studies</b>, and platform updates.
-                    <br>
-                    <a href="blog.html" style="color:#36a2eb;font-weight:600;">Visit the full Blog & Resource Center &rarr;</a>
-                </p>
-            </div>
-            <div class="resource-grid">
-                <div class="resource-article">
-                    <h4>🚀 Getting Your First Brand Deal</h4>
-                    <p>Step-by-step guide for creators new to sponsorships, including media kits and outreach templates.</p>
-                    <a href="blog.html#getting-first-deal" class="resource-link">Read More</a>
-                </div>
-                <div class="resource-article">
-                    <h4>🤝 What Makes a Great Offer?</h4>
-                    <p>Insights for sponsors: crafting irresistible offers that attract quality creators.</p>
-                    <a href="blog.html#great-offers" class="resource-link">Read More</a>
-                </div>
-                <div class="resource-article">
-                    <h4>💡 Creator Success Stories</h4>
-                    <p>Real-life case studies of creators and brands growing together on Sponsor Sorter.</p>
-                    <a href="blog.html#success-stories" class="resource-link">Read More</a>
-                </div>
-                <div class="resource-article">
-                    <h4>📈 Sponsorship Analytics 101</h4>
-                    <p>How to track, measure, and optimize your sponsorship campaigns using our platform tools.</p>
-                    <a href="blog.html#analytics-101" class="resource-link">Read More</a>
-                </div>
-            </div>
-        </fieldset>
-    </section>
-
-    <!-- CEO Intro & Company Story -->
-    <div class="about-ceo" style="background: linear-gradient( 180deg, #000000 0%, #232323 88%, #535353 126% ); width: 60vw; margin: auto;">
-        <h1>About Sponsor Sorter</h1>
-        <p>
-            Founded by visionary entrepreneur <strong>Johnathan Buschman</strong> in 2025, Sponsor Sorter was born out of a simple idea:
-            to empower creators and brands to connect more seamlessly and transparently. </p>
-        <p>
-            Johnathan, a former creator himself, understood the pain points of negotiating deals, chasing payments, and building trust with sponsors.
-            Sponsor Sorter solves that with verified profiles, real-time analytics, and automation tools that let creators focus on what they do best; creating.
-        </p>
-        <p>
-            Today, Sponsor Sorter stands as a beacon for digital talent and brand partnerships, trusted by industry leaders and emerging influencers alike.
-        </p>
-    </div>
-
-     <!-- Platform Statistics (Live) -->
-    <fieldset class="platform-stats-section" style="margin: 36px auto 38px auto;max-width:860px;">
-        <legend>📊 Platform Statistics <span style="font-size:0.9em;font-weight:normal;color:#aaf;">(Live)</span></legend>
-        <div class="stats-card-row">
-            <div class="stat-card">
-                <canvas id="chart-users" height="52"></canvas>
-                <div class="stat-label">Total Users</div>
-                <div class="stat-value" id="stat-users">Loading…</div>
-            </div>
-            <div class="stat-card">
-                <canvas id="chart-active" height="52"></canvas>
-                <div class="stat-label">Active Sponsorships</div>
-                <div class="stat-value" id="stat-active">Loading…</div>
-            </div>
-            <div class="stat-card">
-                <canvas id="chart-brands" height="52"></canvas>
-                <div class="stat-label">Brands on Platform</div>
-                <div class="stat-value" id="stat-brands">Loading…</div>
-            </div>
-            <div class="stat-card">
-                <canvas id="chart-dealvalue" height="52"></canvas>
-                <div class="stat-label">Average Deal Value</div>
-                <div class="stat-value" id="stat-dealvalue">Loading…</div>
-            </div>
-        </div>
-    </fieldset>
-
-    <section>
-        <fieldset class="faqshelp">
-            <legend>📘 FAQs & Help Center</legend>
-            <div class="help-intro">
-                <h2>Welcome to Sponsor Sorter's Help Center</h2>
-                <p>Need assistance? Show help blocks from the settings menu to display. Browse our frequently asked questions or contact our support team. We're here to help you get the most out of your sponsorship journey!</p>
-            </div>
-            <div class="help-grid">
- 
-
-                <!-- Account Setup -->
-                <div class="help-block">
-                    <h3>📝 How do I create an account?</h3>
-                    <p>Click on the <strong>Sign Up</strong> button in the top right corner, select whether you're a Sponsor or Sponsee, and fill in your details. Verify your email to activate your account.</p>
-                </div>
-                <!-- Account Issues -->
-                <div class="help-block">
-                    <h3>🔒 I’m having trouble logging in</h3>
-                    <p>Double-check your email and password. If you’ve forgotten your credentials, use the <strong>Forgot Password</strong> link on the login page to reset.</p>
-                </div>
-                <!-- Sponsorship Process -->
-                <div class="help-block">
-                    <h3>📬 How do sponsorships work?</h3>
-                    <p>Sponsors send proposals through the platform. Once a sponsee accepts the offer, deliverables are agreed upon and tracked through our integrated workflow system.</p>
-                </div>
-                 <!-- Earnings -->
-                <div class="help-block">
-                    <h3>💰 When do I get paid?</h3>
-                    <p>Payments are released after deliverables are marked as complete and the sponsor has confirmed satisfactory results. Some deals also offer 50% upfront payments.</p>
-                </div>
-                <!-- Searchability -->
-                <div class="help-block">
-                    <h3>🔍 Is my profile searchable?</h3>
-                    <p>Yes, if your profile meets our minimum verification and activity standards. A green check mark will appear on your dashboard when you're eligible.</p>
-                </div>
-                <div class="help-block">
-                    <h3>📝 Creating Your Account</h3>
-                    <p>Sign up as either a sponsor (brand/company) or sponsee (creator/influencer) using your email and a secure password. You'll need to verify your email to activate your account and unlock all features.</p>
-                </div>
-                <!-- Profile and Discovery -->
-                <div class="help-block">
-                    <h3>🔍 How do I get discovered?</h3>
-                    <p>Complete your profile, link your social platforms, and stay active. Verified and active profiles are featured more prominently in search results.</p>
-                </div>
-                <!-- Making or Receiving Offers -->
-                <div class="help-block">
-                    <h3>🤝 How do offers work?</h3>
-                    <p>Sponsors can create public or private offers. Creators apply (public) or receive direct invitations (private). Both sides negotiate and track offers within their dashboard.</p>
-                </div>
-                <!-- Payments and Earnings -->
-                <div class="help-block">
-                    <h3>💰 How does payment work?</h3>
-                    <p>Once deliverables are marked complete by the creator and confirmed by the sponsor, payments are processed via your selected payout method. Some offers support split or upfront payments.</p>
-                </div>
-                <!-- Verification & Safety -->
-                <div class="help-block">
-                    <h3>✅ Profile Verification & Safety</h3>
-                    <p>Verified users enjoy increased visibility and trust. Always use Sponsor Sorter's messaging and contract features to stay safe from scams or fake deals.</p>
-                </div>
-                <!-- Platform Support -->
-                <div class="help-block">
-                    <h3>🔗 Connecting Social Platforms</h3>
-                    <p>Link your Instagram, TikTok, YouTube, and other platforms from the settings on your dashboard to display your audience reach and unlock more sponsorship opportunities.</p>
-                </div>
-                <!-- Moderation / Reporting -->
-                <div class="help-block">
-                    <h3>🚩 Reporting & Moderation</h3>
-                    <p>If you encounter abusive behavior or scams, use the report buttons on profiles, offers, or messages. Our team (and FamBot) reviews all reports promptly.</p>
-                </div>
-                <!-- Privacy -->
-                <div class="help-block">
-                    <h3>🔒 Privacy & Data Requests</h3>
-                    <p>You can request a data export or permanent account deletion from your dashboard at any time. We are fully GDPR/CCPA compliant.</p>
-                </div>
-                <!-- Contact -->
-                <div class="help-block">
-                    <h3>📧 Need more help?</h3>
-                    <p>Contact our support team at <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a> or visit our <a href="contact.html">Contact Page</a>.</p>
-                </div>
-                <!-- 2FA -->
-                <div class="help-block">
-                    <h3>🔒 Whats 2FA?</h3>
-                    <p>2FA (Two-Factor authentication) is a security measure designed to keep your account safe. Set it up in the settings dropdown.</p>
-                </div>
-                <!-- Refund Help Block -->
-                <div class="help-block">
-                    <h3>💸 How Do Refunds Work?</h3>
-                    <p>
-                        If you cancel a sponsorship offer before it is accepted by the creator, the amount you paid will be refunded directly to your Sponsor Sorter <strong>wallet</strong>.
-                        <br><br>
-                        Cancelled funds are <span style="color:#17974a;"><strong>instantly</strong></span> credited to your wallet. You can view your wallet balance at the top of your sponsor dashboard.
-                        <br><br>
-                        <strong>How to Refund:</strong>
-                        <ol>
-                            <br>Go to your <a href="dashboardsponsor.html">Sponsor Dashboard</a></br>
-                            <br>Find your active offers and click <b>Cancel Offer</b> on the offer you wish to cancel.</br>
-                            <br>After confirmation, the offer will be marked cancelled and the offer amount refunded to your wallet.</br>
-                        </ol>
-                        <span style="color:#ffae34;">Note: Offers can only be refunded/cancelled before they are accepted by a creator.</span>
-                    </p>
-                </div>
-
-                <!-- Wallet Explanation Block -->
-                <div class="help-block">
-                    <h3>👛 Understanding Your Sponsor Sorter Wallet</h3>
-                    <p>
-                        Your <strong>wallet</strong> is a secure virtual balance within Sponsor Sorter. It holds:
-                        <ul>
-                            <br>Refunds from cancelled offers</br>
-                            <br>Deposited or transferred funds</br>
-                        </ul>
-                        <strong>How to Use Your Wallet:</strong>
-                        <ul>
-                            <br><b>Request a Withdrawal:</b> Click the wallet withdraw icon (<span style="color:#17974a;">&#128179;</span>) on your dashboard to transfer funds to your PayPal or bank account.</br>
-                            <br><b>Pay for New Offers:</b> Funds in your wallet can be used for new sponsorship offers on the platform.</br>
-                        </ul>
-                        <span style="color:#17974a;">Available wallet balance is always shown in green.</span>
-                        <br>
-                        <span style="color:#ffae34;">If you have a pending withdrawal, the wallet balance will show in orange until your request is processed.</span>
-                        <br><br>
-                        For more details, contact <a href="mailto:support@sponsorsorter.com">support@sponsorsorter.com</a>
-                    </p>
-                </div>
-
-            </div>
-        </fieldset>
-    </section>
-
-<!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./forum.html">Forum</a></li>
-                <li><a href="./stats.html">Stats</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
+      <div class="footer-bottom">
+        <span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span
+        ><span>Built for the partnership.</span>
+      </div>
     </footer>
-
-    <style>
-    /* Resource Center Styles */
-    .resource-intro h2 { margin-bottom:7px;color:#36a2eb;font-size:1.3em; }
-    .resource-intro p { margin:0 0 20px 0; }
-    .resource-grid { display:flex;flex-wrap:wrap;gap:24px;margin:0 0 12px 0; }
-    .resource-article {
-        flex:1 1 240px; background:#3a3a3a;border-radius:11px;padding:18px 16px;box-shadow:0 1px 6px #0001;
-        display:flex;flex-direction:column;justify-content:space-between;
-    }
-    .resource-article h4 { margin:0 0 7px 0;font-size:1.08em;color:#f6c62e; }
-    .resource-article p { margin:0 0 11px 0;font-size:0.97em;color:#ddd; }
-    .resource-link { color:#36a2eb;text-decoration:none;font-weight:500; }
-    .resource-link:hover { text-decoration:underline; }
-    @media (max-width: 900px) {
-        .resource-grid { flex-direction:column;gap:18px; }
-        .resource-article { min-width:unset; }
-    }
-    </style>
-
-      <!-- CHARTS & LIVE STATS SCRIPT -->
-    <script type="module">
-import { supabase } from './js/supabaseClient.js';
-
-async function loadPlatformStatsAndCharts() {
-    // Elements
-    const usersEl = document.getElementById('stat-users');
-    const activeEl = document.getElementById('stat-active');
-    const brandsEl = document.getElementById('stat-brands');
-    const avgDealEl = document.getElementById('stat-dealvalue');
-    // Cards
-    [usersEl, activeEl, brandsEl, avgDealEl].forEach(el => { el.textContent = 'Loading…'; });
-
-    // --- COUNTS (current)
-    // Users
-    let { count: usersCount } = await supabase
-        .from('users_extended_data').select('user_id', { count: 'exact', head: true });
-    usersEl.textContent = usersCount ? usersCount.toLocaleString() : 'N/A';
-    // Brands
-    let { count: brandsCount } = await supabase
-        .from('users_extended_data').select('user_id', { count: 'exact', head: true })
-        .eq('userType', 'sponsor');
-    brandsEl.textContent = brandsCount ? brandsCount.toLocaleString() : 'N/A';
-    // Active Sponsorships
-    let { count: activeCount } = await supabase
-        .from('private_offers').select('id', { count: 'exact', head: true })
-        .in('status', ['accepted', 'in_progress', 'live']);
-    activeEl.textContent = activeCount ? activeCount.toLocaleString() : 'N/A';
-    // Average Deal Value (completed offers)
-    let { data: completed } = await supabase
-        .from('private_offers').select('offer_amount').eq('status', 'pending');
-    if (!completed || completed.length === 0) {
-        avgDealEl.textContent = 'N/A';
-    } else {
-        let sum = completed.reduce((acc, row) => acc + (Number(row.offer_amount) || 0), 0);
-        let avg = Math.round(sum / completed.length);
-        avgDealEl.textContent = `$${avg.toLocaleString()}`;
-    }
-
-    // --- HISTORICAL DATA for CHARTS ---
-    // Signups by day
-    let { data: signupsByDay } = await supabase.rpc('signup_stats_by_day');
-    // Offers by day (active+completed)
-    let { data: offersByDay } = await supabase.rpc('offer_stats_by_day');
-    // Sponsors by day
-    let { data: brandsByDay } = await supabase
-        .from('users_extended_data')
-        .select('created_at')
-        .eq('userType', 'sponsor');
-    // Average deal value by day
-    let { data: dealsByDay } = await supabase
-        .from('private_offers')
-        .select('created_at,offer_amount')
-        .eq('status', 'completed');
-
-    // --- CHARTS: Prepare Data ---
-    // USERS OVER TIME
-    let signupLabels = [], signupData = [];
-    if (signupsByDay && Array.isArray(signupsByDay)) {
-        signupsByDay.forEach(row => {
-            signupLabels.push(row.day); // e.g. "2024-06-16"
-            signupData.push(row.count);
-        });
-    }
-    // ACTIVE OVER TIME
-    let offerLabels = [], offerData = [];
-    if (offersByDay && Array.isArray(offersByDay)) {
-        offersByDay.forEach(row => {
-            offerLabels.push(row.day);
-            offerData.push(row.count);
-        });
-    }
-    // BRANDS OVER TIME (cumulative)
-    let brandsLabels = [], brandsCumulative = [];
-    if (brandsByDay && brandsByDay.length > 0) {
-        // Sort by date
-        brandsByDay.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
-        let dateMap = {};
-        brandsByDay.forEach(row=>{
-            let day = row.created_at.substr(0,10);
-            dateMap[day]=(dateMap[day]||0)+1;
-        });
-        let running = 0;
-        Object.keys(dateMap).sort().forEach(day=>{
-            running += dateMap[day];
-            brandsLabels.push(day);
-            brandsCumulative.push(running);
-        });
-    }
-    // AVG DEAL VALUE OVER TIME
-    let dealValueLabels = [], dealValueData = [];
-    if (dealsByDay && dealsByDay.length > 0) {
-        // Group by day
-        let dayMap = {};
-        dealsByDay.forEach(row=>{
-            let day = row.created_at.substr(0,10);
-            if (!dayMap[day]) dayMap[day]=[];
-            dayMap[day].push(Number(row.offer_amount)||0);
-        });
-        Object.keys(dayMap).sort().forEach(day=>{
-            dealValueLabels.push(day);
-            let arr = dayMap[day];
-            dealValueData.push(arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0);
-        });
-    }
-
-    // --- RENDER CHARTS ---
-    // Destroy if exists
-    if(window.usersChart) window.usersChart.destroy();
-    if(window.activeChart) window.activeChart.destroy();
-    if(window.brandsChart) window.brandsChart.destroy();
-    if(window.dealValueChart) window.dealValueChart.destroy();
-
-    // Users Chart
-    if(document.getElementById('chart-users')){
-        window.usersChart = new Chart(document.getElementById('chart-users').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: signupLabels,
-                datasets: [{ label: 'Signups', data: signupData, borderColor:'#4cf', fill:false, tension:0.3 }]
-            },
-            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
-        });
-    }
-    // Active Sponsorships Chart
-    if(document.getElementById('chart-active')){
-        window.activeChart = new Chart(document.getElementById('chart-active').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: offerLabels,
-                datasets: [{ label: 'Active Offers', data: offerData, borderColor:'#f6c62e', fill:false, tension:0.3 }]
-            },
-            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
-        });
-    }
-    // Brands Chart
-    if(document.getElementById('chart-brands')){
-        window.brandsChart = new Chart(document.getElementById('chart-brands').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: brandsLabels,
-                datasets: [{ label: 'Brands', data: brandsCumulative, borderColor:'#9e6aff', fill:false, tension:0.3 }]
-            },
-            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
-        });
-    }
-    // Average Deal Value Chart
-    if(document.getElementById('chart-dealvalue')){
-        window.dealValueChart = new Chart(document.getElementById('chart-dealvalue').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: dealValueLabels,
-                datasets: [{ label: 'Avg Deal Value', data: dealValueData, borderColor:'#5fbf8f', fill:false, tension:0.3 }]
-            },
-            options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} }
-        });
-    }
-}
-
-document.addEventListener('DOMContentLoaded', loadPlatformStatsAndCharts);
-    </script>
-
-</body>
+  </body>
 </html>
-
-
-
-

@@ -76,6 +76,14 @@
   min-height: 200px;
   padding: 24px 16px;
   justify-content: center;
+  gap: clamp(10px, 1.8vw, 26px);
+}
+.admin-page .admin-site-header.connection-header > .admin-brand span {
+  font-size: clamp(1.45rem, 5.4vw, 4.5rem);
+}
+.admin-page .admin-site-header.connection-header > .admin-brand img {
+  width: clamp(42px, 6.5vw, 88px);
+  height: clamp(42px, 6.5vw, 88px);
 }
 .admin-page .admin-site-header.connection-header > nav {
   width: 100%;
@@ -115,7 +123,12 @@
     0 0 22px #000;
   justify-content: center;
   padding: 24px 16px;
-  font-size: clamp(1.35rem, 3vw, 2.1rem);
+  font-size: clamp(1.45rem, 5.4vw, 4.5rem);
+  gap: clamp(10px, 1.8vw, 26px);
+}
+.header.connection-header > .brand img {
+  width: clamp(42px, 6.5vw, 88px);
+  height: clamp(42px, 6.5vw, 88px);
 }
 .header.connection-header > nav {
   width: 100%;
@@ -151,6 +164,63 @@
   background: #202938;
   border-bottom-color: #51d4f0;
   color: #fff;
+}
+/* Original glossy tab artwork, rendered with scalable gradients. */
+.header.connection-header > nav a,
+.admin-page .admin-site-header.connection-header > nav a {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(#19191d, #09090b 55%, #111116);
+  border-inline: 1px solid #252830;
+  border-radius: 10px 10px 0 0;
+}
+.header.connection-header > nav a::before,
+.header.connection-header > nav a::after,
+.admin-page .admin-site-header.connection-header > nav a::before,
+.admin-page .admin-site-header.connection-header > nav a::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  height: 3px;
+  pointer-events: none;
+  background: radial-gradient(ellipse, #fff 0%, #c9eaffaa 25%, transparent 72%);
+  opacity: 0;
+}
+.header.connection-header > nav a::before,
+.admin-page .admin-site-header.connection-header > nav a::before {
+  top: 0;
+}
+.header.connection-header > nav a::after,
+.admin-page .admin-site-header.connection-header > nav a::after {
+  bottom: 0;
+}
+.header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"]),
+.admin-page
+  .admin-site-header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"]) {
+  background: linear-gradient(#292932, #0b0c12 55%, #1b2130);
+  color: #fff;
+  border-bottom-color: #51d4f0;
+}
+.header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"])::before,
+.header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"])::after,
+.admin-page
+  .admin-site-header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"])::before,
+.admin-page
+  .admin-site-header.connection-header
+  > nav
+  a:is(:hover, :focus-visible, [aria-current="page"])::after {
+  opacity: 1;
 }
 @media (max-width: 540px) {
   .header.connection-header > .brand {

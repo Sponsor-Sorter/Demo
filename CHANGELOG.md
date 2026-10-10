@@ -67,3 +67,12 @@
 - Increased decoration from 3 to 51 independently timed light trails. Coordinates are traced from visible horizontal lines in the original raster; reference coordinates saved in tools/header-grid-routes.json. Image and animation share native coordinates and crop, so trails remain aligned at every viewport.
 - Reduced-motion preference displays only the original artwork. Decorative layers remain clipped, noninteractive and hidden from assistive technology.
 - Twelve real browser layout checks passed: homepage/login/signup/admin at 320/768/1440 pixels, no overflow. JS syntax and whitespace checks passed. Shared module/cache URLs advanced to grid2 across 37 pages.
+
+## 2026-10-10 — Public polish and dashboard workspace layout
+
+- Enlarged public/admin header branding (up to 72px text and 88px icon) with phone sizing; restored original-style glossy hover/keyboard/selected tab highlights using scalable gradients.
+- Added scoped workspace-layout.css/js/workspaceLayout.js for sponsor/sponsee dashboards, Finder and guest previews. Consolidates legacy nav rows without replacing account-control nodes; constrains dashboard frames, offer cards, privacy controls and history tables; wraps ratings and switches profile/card details to a phone layout. Demo banner is now a restrained, clearly labelled preview notice.
+- Rebuilt Help as a searchable 14-topic centre covering accounts, offers, campaigns, connections and costs. Removed unsupported marketing claims, irrelevant charts and their backend queries. Added clear no-results recovery, accessible native disclosures, support links and consistent header/footer.
+- Added canonical/sharing metadata for homepage and Help, plus a public-page sitemap/robots entry. No outreach, paid marketing or ranking guarantees.
+- Browser checks: Help and both populated guest roles at 320/375/768/1440, no overflow; preview role switching and sponsor offer-details button passed. Help search case-insensitive match/no-results/clear and disclosure controls passed. Larger public branding checked at 320/375/768/1440/1920; one-row navigation and no overflow. Admin enlarged header checked at phone/desktop widths.
+- Finder remains login-gated in the available browser; its scoped layout requires signed-in confirmation. Financial actions and real login/2FA/subscription lifecycle remain outside this visual validation. See HANDOVER.md for outstanding production issues.

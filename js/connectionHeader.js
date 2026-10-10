@@ -2,7 +2,7 @@
 const stylesheet = document.createElement("link");
 stylesheet.rel = "stylesheet";
 stylesheet.href = new URL(
-  "../connection-header.css?v=20261010-grid2",
+  "../connection-header.css?v=20261010-grid3",
   import.meta.url,
 ).href;
 document.head.append(stylesheet);
