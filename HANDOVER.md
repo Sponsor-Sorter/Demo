@@ -7,6 +7,14 @@
 
 ## State
 
+### Public preview rebuild and dashboard totals — 2026-10-10
+
+- `guest.html`, `guest.css`, `js/guest.js` replace the two legacy dashboards with one self-contained interactive product tour. URLs `?role=sponsor` and `?role=sponsee` still work; no role shows a picker. No Supabase client, remote geolocation, analytics requests or Chart.js dependency. Demo changes stay in memory and reset on reload/reset; sample campaign values are not earnings claims.
+- Functional demo: create offer → review applicant → accept → advance stages → history; creator apply/withdraw, comments, details/images, role switching, filters, dialogs, account prompts. Native dialog provides keyboard focus containment/Escape close. All user-entered titles/briefs/comments are escaped or text nodes.
+- Shared `js/campaignSummary.js` makes member completed value numeric/finite and excludes pending, accepted, rejected/cancelled campaigns. Sponsor completed count now matches its label; acceptance-rate wording explains its numerator. These values are agreed campaign amounts, not verified receipts.
+- 27 tests pass (`npm test`, including `tools/workspace.test.cjs`). 20 actual-viewport cases at 320/375/768/1440 passed: picker, both preview roles, both member dashboards. All page widths matched requested viewport widths; zero page overflow. Member status tabs fit, expected fixture completed value $350.00. Full local demo workflow and literal HTML-like comment rendering checked. No real account changes/payments/OAuth submissions.
+- Browser preview via existing `tools/workspace-review-server.cjs` on 8126; guest page itself needs only static serving. Moikailive remains untouched. Earlier backend/security/payment follow-ups remain open; this release is not proof of full production readiness.
+
 ### Finder / member workspace redesign — 2026-10-10
 
 - New readable presentation modules: `workspace-experience.css`, `js/workspaceExperience.js`; loaded only by Finder and the sponsor/creator dashboards. Existing IDs and handler nodes retained. Navigation, metrics, active offers and public offers now precede long profile sections. Guidance is expandable; tables scroll locally.

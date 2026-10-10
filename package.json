@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "node --test tools/admin.test.cjs tools/payments.test.cjs",
+    "test": "node --test tools/admin.test.cjs tools/payments.test.cjs tools/workspace.test.cjs",
     "start": "node server.js"
   },
   "keywords": [],

@@ -1,5 +1,6 @@
 // public/js/sponsorLogic.js
 import { supabase } from './supabaseClient.js';
+import { summarizeCampaigns } from './campaignSummary.js';
 
 // ----- REMOVE OFFER (with comments) -----
 export async function handleRemoveOffer(offerId) {
@@ -106,15 +107,12 @@ async function updateSummaryStats() {
     document.getElementById('success-ratio').textContent = '0:0';
     return;
   }
-  document.getElementById('sponsored-deals').textContent = offers.length ?? 0;
+  const summary = summarizeCampaigns(offers);
+  document.getElementById('sponsored-deals').textContent = summary.total;
 
-  const ongoing = offers.filter(o =>
-    ['accepted', 'pending', 'in_progress', 'live'].includes(o.status)
-  );
-  document.getElementById('ongoing-campaigns').textContent = ongoing.length ?? 0;
+  document.getElementById('ongoing-campaigns').textContent = summary.completed;
 
-  const validSpendOffers = offers.filter(o => !['rejected', 'Offer Cancelled'].includes(o.status));
-  const totalSpend = validSpendOffers.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
+  const totalSpend = summary.completedValue;
   document.getElementById('total-spend').textContent = `$${totalSpend.toFixed(2)}`;
 
   const successfulOffers = offers.filter(o =>

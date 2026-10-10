@@ -1,943 +1,291 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Guest Preview - Sponsor Sorter">
-  <title>Guest Preview — Sponsor Sorter</title>
-  <link rel="stylesheet" href="styles.css?v=20261010" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
-<link rel="stylesheet" href="./workspace-layout.css?v=20261010-workspace1">
-<script type="module" src="./js/workspaceLayout.js?v=20261010-workspace1"></script>
-</head>
-<style>
-    .stars span {
-  font-size: 1.7em !important;
-  vertical-align: -2px;
-}
-
-.jiji {
-    color: #ffc400;
-}
-
-</style>
-<body class="workspace-page">
-
-<div id="guest-banner" style="width:100%;background:#fed400;color:#232324;font-weight:700;padding:13px 0;text-align:center;font-size:1.14em;letter-spacing:.04em;display:flex;justify-content:center;align-items:center;gap:24px;">
-  👀 You’re in Guest Preview Mode – Try Sponsor or Sponsee Dashboard!
-  <span id="current-role-label" style="margin:0 10px;"></span>
-  <button id="switch-role-btn" style="background:#3100d2;color:#fff;font-weight:700;border:none;padding:8px 22px;border-radius:7px;font-size:1em;cursor:pointer;box-shadow:0 2px 10px #bbb;display:none;">
-    Switch to <span id="switch-role-txt"></span>
-  </button>
-</div>
-
-<div id="guest-role-select" style="display:none;text-align:center;margin:38px auto 0 auto;">
-  <h1>Preview Sponsor Sorter as a:</h1>
-  <button class="btn" id="try-sponsor-btn" style="font-size:1.13em;padding:14px 32px;margin:22px 30px 0 0;background:#3100d2;color:white;border:none;border-radius:12px;cursor:pointer;">Sponsor</button>
-  <button class="btn" id="try-sponsee-btn" style="font-size:1.13em;padding:14px 32px;margin:22px 0 0 30px;background:#db0e7c;color:white;border:none;border-radius:12px;cursor:pointer;">Sponsee</button>
-</div>
-
-<div id="guest-sponsor-dashboard" style="display:none;">
-<header class="navbar1">
-  <section class="navbar">
-    <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
-      <div>
-        <background-img class="navimg" src="navimg.png" alt="">
-        <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
-        </nav>
-        <nav class="nav">
-          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Logout</a></li>
-         <li id="settings-notif-bar" style="display:inline;">
-  <div class="icon-bar-bg">
-    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-    </button>
-    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-    </button>
-    <div id="settings-dropdown" class="settings-dropdown">
-      <div class="dropdown-arrow"></div>
-      <ul>
-        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-        <li>
-          <span style="font-size:1em;">Guided Onboarding</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-onboarding-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-help-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
-          <label class="switch">
-            <input type="checkbox" id="email-alert-toggle">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li><button type="button" class="dropdown-item" id="show-referral-link-btn">
-          Show Referral Link
-        </button></li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 50px !important;padding-top: 10px !important;">
-            Subscription & Free Month Rewards
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interactive Preview | Sponsor Sorter</title>
+    <meta
+      name="description"
+      content="Explore the Sponsor Sorter sponsor and creator workspaces with an interactive sample campaign. No account or payment required."
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./homepage.css?v=20261010-home2" />
+    <link rel="stylesheet" href="./guest.css?v=20261010-preview2" />
+    <script
+      type="module"
+      src="./js/connectionHeader.js?v=20261010-grid3"
+    ></script>
+    <script type="module" src="./js/guest.js?v=20261010-preview2"></script>
+  </head>
+  <body class="preview-page">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="header">
+      <a class="brand" href="./index.html"
+        ><img src="./logos.png" width="46" height="46" alt="" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="./index.html">Home</a><a href="./finder.html">Finder</a
+        ><a href="./signup.html">Signup</a><a href="./login.html">Login</a>
+      </nav>
+    </header>
+    <main id="main" class="preview-wrap">
+      <section class="preview-hero" aria-labelledby="preview-title">
+        <p class="eyebrow">INTERACTIVE PRODUCT PREVIEW</p>
+        <h1 id="preview-title">See your next partnership take shape.</h1>
+        <p>
+          Explore both sides of a sponsorship, from the first offer to completed
+          content. Everything here is fictional. No payments, account changes or
+          real applications are made.
+        </p>
+        <div
+          class="preview-role-switch"
+          role="group"
+          aria-label="Choose a preview workspace"
+        >
+          <button type="button" data-role="sponsor" aria-pressed="false">
+            Sponsor workspace
           </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</li>
+          <button type="button" data-role="sponsee" aria-pressed="false">
+            Creator workspace
+          </button>
+        </div>
+        <p class="preview-note">
+          Try creating an offer, opening campaign details, or moving a sample
+          campaign to its next stage. Demo changes reset when you reload.
+        </p>
+      </section>
+      <section
+        id="preview-picker"
+        class="preview-picker"
+        aria-label="Choose your role"
+      >
+        <article class="preview-panel">
+          <span class="preview-pill">FOR BRANDS</span>
+          <h2>Find and manage creator partnerships</h2>
+          <p>
+            Build a brief, review applicants, track deliverables and understand
+            your campaign performance.
+          </p>
+          <button data-role="sponsor">Explore as a sponsor →</button>
+        </article>
+        <article class="preview-panel">
+          <span class="preview-pill">FOR CREATORS</span>
+          <h2>Turn your audience into opportunities</h2>
+          <p>
+            Review offers, manage your workflow, connect platforms and track
+            completed partnerships.
+          </p>
+          <button data-role="sponsee">Explore as a creator →</button>
+        </article>
+      </section>
+      <section id="preview-workspace" hidden aria-labelledby="workspace-title">
+        <div class="preview-toolbar">
+          <div>
+            <p class="eyebrow">SAMPLE DATA ONLY</p>
+            <h2 id="workspace-title"></h2>
+          </div>
+          <div class="preview-actions">
+            <button id="preview-account">Profile & settings</button
+            ><button id="preview-reset">Reset demo</button
+            ><a class="preview-primary" href="./signup.html"
+              >Create your account</a
+            >
+          </div>
+        </div>
+        <nav class="preview-section-nav" aria-label="Preview sections">
+          <a href="#preview-overview">Overview</a
+          ><a href="#preview-campaigns">Campaigns</a
+          ><a href="#preview-opportunities">Opportunities</a
+          ><a href="#preview-profile">Profile</a
+          ><a href="#preview-history">History & insights</a>
         </nav>
-      </div>
-    </div>
-  </section>
-</header>
-<section class="dashboard">
-<section class="userprofile">
-    <h2>Welcome, <span id="sponsorName">[Sponsor Name]</span></h2>
-    <div style="margin-top: 115px;" class="wallet" >Wallet: <span id="wallet">[Wallet]</span>
-      <span class="info-icon" data-tooltip="For refunded Money" style="color: white;" >🛈</span>
-    </div>
-    <fieldset>
-      <div class="profile-header">
-        <div class="profile-picture">
-          <img id="profile-pic" onerror="this.src='logos.png';" alt="Profile Picture" class="profile-img">
-          <p>Account Type: <span id="account-type">Sponsor</span></p>
-          <div id="overall-rating" style="margin-top: 10px;">
-            <strong>Overall Rating:</strong> <span id="average-stars">☆☆☆☆☆</span>
-            <div id="profile-badge-slot" style="margin-top: 8px;"></div>
-        </div>
-        </div>
-        <div class="profile-info">
-          <p>Email: <span id="sponsor-email">[Email]</span></p>
-          <p>Company: <span id="company">[Company]</span></p>
-          <p>Location: <span id="sponsor-location">[Location]</span></p>
-        </div>
-      </div>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Your Sponsor Profile</strong><br>
-          This section displays your public sponsor information (company, location, badges, etc.). Creators will see this info when you make offers, so keep it up-to-date for best results.
-        </em>
-      </div>
-      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
-      <div id="sponsee-review-stars" class="review-stars-block">
-        <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
-          <div class="stars-row" style="display: flex; gap: 32px;">
-          <div class="star-item">
-            <span class="star-label">Communication</span>
-            <span id="communication-stars" class="stars"></span>
+        <section
+          id="preview-overview"
+          class="preview-metrics"
+          aria-label="Sample account overview"
+        ></section>
+        <section
+          id="preview-campaigns"
+          class="preview-panel"
+          aria-labelledby="campaign-title"
+        >
+          <div class="preview-section-heading">
+            <div>
+              <p class="eyebrow">YOUR COLLABORATIONS</p>
+              <h2 id="campaign-title">Active campaigns</h2>
+            </div>
+            <button id="preview-wallet">Sample wallet: $214.50</button>
           </div>
-          <div class="star-item">
-            <span class="star-label">Punctuality</span>
-            <span id="punctuality-stars" class="stars"></span>
+          <div
+            class="preview-filters"
+            role="group"
+            aria-label="Filter sample campaigns"
+          >
+            <button data-filter="all" aria-pressed="true">All</button
+            ><button data-filter="pending" aria-pressed="false">Pending</button
+            ><button data-filter="accepted" aria-pressed="false">
+              Accepted</button
+            ><button data-filter="in_progress" aria-pressed="false">
+              In progress</button
+            ><button data-filter="live" aria-pressed="false">Live</button
+            ><button data-filter="completed" aria-pressed="false">
+              Completed
+            </button>
           </div>
-          <div class="star-item">
-            <span class="star-label">Work Output</span>
-            <span id="work-output-stars" class="stars"></span>
+          <div id="preview-offers"></div>
+        </section>
+        <section
+          id="preview-opportunities"
+          class="preview-panel"
+          aria-labelledby="opportunity-title"
+        >
+          <div class="preview-section-heading">
+            <div>
+              <p class="eyebrow">NEW CONNECTIONS</p>
+              <h2 id="opportunity-title">Public opportunities</h2>
+            </div>
+            <button id="preview-create-toggle">Create a sample offer</button>
           </div>
+          <form id="preview-create-form" hidden>
+            <label
+              >Offer title<input
+                name="title"
+                required
+                maxlength="100"
+                placeholder="e.g. A short video introducing our new product"
+            /></label>
+            <label
+              >Amount ($)<input
+                name="amount"
+                type="number"
+                min="1"
+                max="100000"
+                step="0.01"
+                required
+                value="200"
+            /></label>
+            <label
+              >Platform<select name="platform">
+                <option>YouTube</option>
+                <option>Instagram</option>
+                <option>TikTok</option>
+                <option>Twitch</option>
+              </select></label
+            >
+            <label
+              >Deadline<input name="deadline" type="date" required
+            /></label>
+            <label class="preview-wide"
+              >Campaign brief<textarea
+                name="description"
+                required
+                maxlength="2000"
+                rows="3"
+                placeholder="Describe the content you would like the creator to make."
+              ></textarea>
+            </label>
+            <button type="submit" class="preview-primary">
+              Create demo offer</button
+            ><button type="button" id="preview-create-cancel">Cancel</button>
+          </form>
+          <div id="preview-public-offers"></div>
+        </section>
+        <div class="preview-two-column">
+          <section
+            id="preview-profile"
+            class="preview-panel"
+            aria-labelledby="profile-title"
+          >
+            <h2 id="profile-title">Your sample profile</h2>
+            <div id="preview-profile-content"></div>
+            <div class="preview-actions">
+              <button data-account-action="Connect platforms">
+                Connect platforms</button
+              ><button data-account-action="Edit profile">Edit profile</button>
+            </div>
+          </section>
+          <section class="preview-panel" aria-labelledby="activity-title">
+            <h2 id="activity-title">Recent activity</h2>
+            <ul id="preview-activity" class="preview-activity"></ul>
+            <p class="preview-note">
+              Friends, creator groups, referrals, reviews and account tools are
+              available in the member workspace.
+            </p>
+            <a href="./signup.html">Build your own workspace →</a>
+          </section>
         </div>
-      </div>
-    </fieldset>
-  <fieldset>
-    <div class="dashboard-cards">
-        <div class="card-row">
-        <div class="card"><h3>Total Active Offers</h3><p id="sponsored-deals">0</p></div>
-        <div class="card"><h3>Ongoing Campaigns</h3><p id="ongoing-campaigns">0</p></div>
-      </div>
-      <div class="card-row">
-        <div class="card"><h3>Total Spend</h3><p id="total-spend">$0</p></div>
-        <div class="card"><h3>Lifetime Success Ratio</h3><p id="success-ratio">0:0</p></div>
-      </div>
-    </div>
-    <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>What do these numbers mean?</strong><br>
-          <ul style="margin-left:16px;">
-            <em><strong>Total Active Offers</strong>: All offers you have created that are currently in progress, accepted, or live.</em><br>
-            <em><strong>Ongoing Campaigns</strong>: Offers currently in the "in progress" or "live" stage.</em><br>
-            <em><strong>Total Spend</strong>: The total amount spent on completed sponsorships.</em><br>
-            <em><strong>Lifetime Success Ratio</strong>: The number and percentage of successful offers vs. total offers made.</em>
-          </ul>
-        </em>
-      </div>
-  </fieldset>
-
-<fieldset id="guest-offer-create-fieldset" style="margin-bottom:20px;">
-  <legend>Create Your own Sponsorship Offer</legend>
-  <form id="guest-offer-create-form" style="display:flex;flex-wrap:wrap;gap:22px 38px;">
-    <div>
-      <label>Offer Title:<br>
-        <input type="text" id="mock-offer-title" required placeholder="e.g. Unbox on YouTube">
-      </label>
-    </div>
-    <div>
-      <label>Offer Amount:<br>
-        <input type="number" id="mock-offer-amount" min="1" required placeholder="e.g. 100">
-      </label>
-    </div>
-<div>
-  <label>Deadline:<br>
-    <input type="date" id="mock-offer-deadline" required>
-  </label>
-</div>
-<div>
-  <label>Date & Time:<br>
-    <input type="text" id="mock-offer-date" readonly style="background:#222;color:#aaa;">
-  </label>
-    </div>
-    <div>
-      <label>Description:<br>
-        <input type="text" id="mock-offer-desc" required placeholder="e.g. Review our product!">
-      </label>
-    </div>
-    <div>
-      <label>Platforms:<br>
-        <select id="mock-offer-platform" required>
-          <option value="">Select Platform</option>
-          <option value="youtube">YouTube</option>
-          <option value="instagram">Instagram</option>
-          <option value="tiktok">TikTok</option>
-          <option value="facebook">Facebook</option>
-        </select>
-      </label>
-    </div>
-    <div style="align-self:flex-end;">
-      <button type="submit" style="background:#3100d2;color:#fff;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">Create Mock Offer</button>
-    </div>
-  </form>
-</fieldset>
-
-<fieldset class="listings-sec">
-    <legend>🎯 Active Listings for Sponsorship</legend>
-    <div id="offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
-    <div class="active-listings" id="listing-container"></div>
-   <div id="pagination-row" style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;width:100%;max-width:720px;margin-left:auto;margin-right:auto;">
-  <div id="pagination-controls" class="pagination-controls"></div>
-  <span id="sponsor-offer-total-label" style="font-weight:500;color:#ccc;"></span>
-</div>
-    <div class="help-block" style="margin-bottom:8px;">
-      <em>
-        <strong>Active Listings:</strong>
-        This is where you manage and monitor your current sponsorship offers. Use the tabs to filter by offer status/stage, and click into any listing for detailed info or to take action.
-      </em>
-    </div>
-  </fieldset>
-<fieldset>
-    <legend>Open Public Offers</legend>
-    Filter by Status:<select id="sponsor-offer-status-filter">
-  <option value="">All</option>
-  <option value="open">Open</option>
-  <option value="closed">Closed</option>
-</select>
- <div id="offers-container"></div>
- <div class="pagination-controls">
-<button id="sponsor-offer-prev-page">Previous</button>
-<span id="sponsor-offer-pagination-label">Page 1 / 1</span>
-<button id="sponsor-offer-next-page">Next</button>
-<span id="public-offer-total-label" style="margin-left: 15px; font-weight: 500; color: #ccc;"></span>
- </div>
-
-    <div class="help-block" style="margin-bottom:8px; margin-top:12px;">
-  <em>
-    <strong>Your Public Offers:</strong><br>
-    Manage your active public offers, track applicants, and update or remove offers as needed.<br>
-    <strong>Use the buttons to:</strong>
-    <ul style="margin:5px 0 0 16px;padding:0;list-style:disc;">
-      <strong>View Applicants</strong> — Review and accept or remove applicants.<br>
-      <strong>View Details</strong> — See full offer description, requirements, and terms.<br>
-      <strong>View Images</strong> — Preview all images attached to the offer.<br>
-      <strong>Remove Offer</strong> — Permanently delete this public offer.
-    </ul>
-  </em>
-</div>
-  </fieldset>
-  <div class="deals-history-row">
-  <fieldset class="recent-deals">
-    <h2>Recent Sponsorship Deals</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Sponsee</th>
-          <th>Status</th>
-          <th>Amount</th>
-          <th>Offer Date</th>
-          <th>Deadline</th>
-          <th>live</th>
-        </tr>
-      </thead>
-      <tbody id="deals-table-body"></tbody>
-    </table>
-    <div class="help-block" style="margin-bottom:8px;">
-      <em>
-        <strong>Recent Deals:</strong>
-        This table summarizes your latest sponsorship activity, showing sponsee names, deal amounts, status, offer dates, and more. Use it to quickly review your most recent campaigns.
-      </em>
-    </div>
-  </fieldset>
-  <fieldset class="Archived-deals">
-    <legend><h2>Sponsorship History</h2></legend>
-    <table>
-        <thead>
-            <tr>
-              <th>Sponsee</th>
-              <th>Amount</th>
-              <th>Offer Date</th>
-              <th>Live</th>
-              <th>Deadline</th>
-              <th>Sponsor → Sponsee</th>
-              <th>Sponsee → Sponsor</th>
-            </tr>
-          </thead>
-      <tbody id="archived-table-body"></tbody>
-    </table>
-<a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
-     <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
-  Generate Invoices
-</button>
-<div class="help-block" style="margin-bottom:8px;">
-      <em>
-        <strong>Sponsorship History:</strong>
-        View all your past (archived) sponsorships here. Ratings for both you and your sponsees are displayed, and you can view and reply to reviews for completed campaigns.
-      </em>
-    </div>
-  </fieldset>
-  </div>
-  <fieldset>
-    <div class="help-block" style="margin-bottom:8px;">
-      <em>
-        <strong>Analytics:</strong>
-        These charts visualize your campaign and spending performance as a sponsor, and show the platforms where your sponsored creators are most active.
-      </em>
-    </div>
-    <div class="graph-section">
-      <div class="bar-chart"><h4>Campaign Performance</h4><canvas id="campaign-bar-chart" width="350" height="230" ></canvas></div>
-      <div class="line-chart"><h4>Spending Over Time</h4><canvas id="spending-line-chart" width="350" height="230" ></canvas></div>
-      <div class="pie-chart"><h4>Platform Distribution</h4><canvas id="platform-pie-chart" width="350" height="230"></canvas></div>
-    </div>
-  </fieldset>
-</section>
-<section>
-  <fieldset>
-    <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
-    <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
-    <div id="privacy-request-status"></div>
-    <div class="help-block" style="margin-top:8px;">
-      <em>
-        <strong>Your Privacy Controls:</strong><br>
-        Download all your personal data or permanently delete your Sponsor Sorter account. All privacy requests are handled securely in accordance with GDPR and CCPA.
-      </em>
-    </div>
-  </fieldset>
-</section>
-     <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./forum.html">Forum</a></li>
-                <li><a href="./stats.html">Stats</a></li>
-
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN/ACN: 00 000 000 000 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
+        <section
+          id="preview-history"
+          class="preview-panel"
+          aria-labelledby="history-title"
+        >
+          <h2 id="history-title">History & campaign insights</h2>
+          <p class="preview-note">
+            Illustrative sample totals, not platform results or guaranteed
+            earnings.
+          </p>
+          <div id="preview-insights" class="preview-insights"></div>
+          <div
+            class="preview-table-scroll"
+            tabindex="0"
+            role="region"
+            aria-label="Sample campaign history; scroll horizontally for more columns"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>Campaign</th>
+                  <th>Partner</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Review</th>
+                </tr>
+              </thead>
+              <tbody id="preview-history-rows"></tbody>
+            </table>
+          </div>
+          <div class="preview-actions">
+            <button data-account-action="Generate invoices">
+              Generate invoices</button
+            ><button data-account-action="Generate campaign recap">
+              Generate recap</button
+            ><button data-account-action="View and respond to reviews">
+              View reviews
+            </button>
+          </div>
+        </section>
+      </section>
+      <p id="preview-status" role="status" aria-live="polite"></p>
+      <section class="preview-cta preview-panel">
+        <h2>Ready to make it your own?</h2>
+        <p>
+          Create a sponsor or creator account to build your profile and start
+          real partnerships.
+        </p>
+        <a class="preview-primary" href="./signup.html">Get started</a
+        ><a href="./help.html">Learn how it works</a>
+      </section>
+    </main>
+    <footer class="footer">
+      <a class="brand" href="./index.html"
+        ><img src="./logos.png" width="32" height="32" alt="" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Footer navigation">
+        <a href="./help.html">Help</a><a href="./contact.html">Contact</a
+        ><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a>
+      </nav>
+      <p>© 2026 Sponsor Sorter · ABN 23 801 694 480</p>
     </footer>
-</div>
-<!-- All modals (referral, subscription, invoices) are included below to match guest.js logic -->
-<div id="profile-logo-modal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="close-profile-logo-modal">&times;</span>
-    <h3>Change Profile Logo</h3>
-    <form id="profile-logo-form">
-      <label for="profile-logo-input" id="drop-zone" style="display:block;border:2px dashed #36a2eb;padding:24px;text-align:center;cursor:pointer;border-radius:13px;">
-        <span id="drop-zone-text">Click or Drag & Drop image here</span>
-        <input type="file" id="profile-logo-input" accept="image/*" style="display:none;">
-      </label>
-      <button type="submit" style="margin-top:12px;">Upload</button>
-    </form>
-    <div id="profile-logo-modal-msg" style="margin-top:10px;"></div>
-  </div>
-</div>
-<div id="profile-desc-modal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="close-profile-desc-modal">&times;</span>
-    <h3>Edit Profile Description</h3>
-    <textarea id="profile-desc-textarea" rows="5" style="width:98%;"></textarea>
-    <button id="save-profile-desc-btn" style="margin-top:10px;">Save</button>
-    <div id="profile-desc-modal-msg" style="margin-top:10px;"></div>
-  </div>
-</div>
-<div id="social-modal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close-modal" id="close-social-modal">&times;</span>
-    <h3>Relink Social Media Handles</h3>
-    <form id="social-form" autocomplete="off">
-      <label for="platform-select">Platform:</label>
-      <select id="platform-select" style="margin:0 0 12px 10px;">
-        <option value="">Choose platform</option>
-        <option value="instagram">Instagram</option>
-        <option value="tiktok">TikTok</option>
-        <option value="youtube">YouTube</option>
-        <option value="twitter">Twitter</option>
-        <option value="facebook">Facebook</option>
-        <option value="twitch">Twitch</option>
-        <option value="snapchat">Snapchat</option>
-      </select>
-      <input type="text" id="platform-handle-input" placeholder="@handle" style="margin-bottom:8px;width:180px;">
-      <button type="button" id="add-platform-btn">Add/Update</button>
-      <div id="current-social-list" style="margin:12px 0 8px 0;"></div>
-      <button type="submit" style="margin-top:12px;">Save All</button>
-    </form>
-    <div id="social-modal-msg" style="margin-top:10px;"></div>
-  </div>
-</div>
-<div id="referral-link-modal" style="display:none;position:fixed;z-index:3000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.18);align-items:center;justify-content:center;">
-  <div style="margin:auto;background:white;max-width:390px;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 4px 28px 0 #dedede;position:relative;">
-    <button id="close-ref-link-modal" style="position:absolute;top:16px;right:16px;background:none;box-shadow:none;border:none;font-size:1.7em;color:rgb(255, 0, 0);cursor:pointer;">×</button>
-    <h3 style="color: black !important;margin:0 0 18px 0;font-size:1.19em;">Your Referral Link</h3>
-    <input id="my-ref-link" style="width:90%;font-size:1em;margin-bottom:14px;" readonly value="Loading...">
-    <button id="copy-ref-link-btn" style="margin-left:0;width:90%;font-size:1.03em;background:#36a2eb;color:white;border:none;padding:7px 0;border-radius:8px;cursor:pointer;">Copy to Clipboard</button>
-    <div id="ref-link-copied-msg" style="color:green;font-size:0.97em;margin-top:10px;display:none;">Copied!</div>
-    <div style="margin-top:14px;font-size:0.97em;color:#556;">
-      Share this link—anyone who signs up with it will earn you a free month!
-      <div id="referral-medal-info" style="margin-top:10px;text-align:center;"></div>
-    </div>
-  </div>
-</div>
-<div id="subscription-modal"
-  style="display:none;position:fixed;z-index:3010;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.19);align-items:center;justify-content:center;">
-  <div style="margin:auto;background:#232324;color:#fff;max-width:460px;width:94vw;padding:38px 30px 32px 30px;border-radius:22px;box-shadow:0 10px 48px 0 #000a;position:relative;display:flex;flex-direction:column;gap:0.45em;">
-    <button id="close-subscription-modal" style="position:absolute;top:18px;right:18px;background:none;box-shadow:none;border:none;font-size:2em;color:#e53e3e;cursor:pointer;line-height:1;">&times;</button>
-    <h3 style="color:#fff;margin:0 0 16px 0;font-size:1.22em;font-weight:600;text-align:center;letter-spacing:.01em;">
-      Subscription &amp; Free Month Rewards
-    </h3>
-    <div id="subscription-details"
-      style="background: #19191a;border-radius:14px;min-height:54px;margin-top:7px;padding:18px 14px 14px 14px;color:#ddd;font-size:1.07em;">
-      <div style="text-align:center;color:#bbb;font-size:1em;">
-        Loading...
+    <dialog id="preview-dialog" aria-labelledby="preview-dialog-title">
+      <div class="preview-dialog-heading">
+        <h2 id="preview-dialog-title"></h2>
+        <button id="preview-dialog-close" aria-label="Close dialog">×</button>
       </div>
-    </div>
-  </div>
-</div>
-<div id="invoice-modal" class="modal" style="display:none;">
-  <div class="modal-content" >
-    <h3>Completed Offers – Generate Invoices</h3>
-    <div id="invoice-offer-list">Loading...</div>
-    <div class="modal-actions">
-      <button id="close-invoice-modal" class="btn btn-cancel">Close</button>
-    </div>
-  </div>
-</div>
-</div>
-
-<div id="guest-sponsee-dashboard" style="display:none;">
-<header class="navbar1">
-  <section class="navbar">
-    <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
-      <div>
-        <background-img class="navimg" src="navimg.png" alt="">
-        <nav>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="finder.html">Finder</a></li>
-        </nav>
-        <nav class="nav">
-          <li class="navr" id="auth-link"><a href="signup.html">Signup</a></li>
-          <li><a href="login.html">Logout</a></li>
-        <li id="settings-notif-bar" style="display:inline;">
-  <div class="icon-bar-bg">
-    <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-      <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-    </button>
-    <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-      <img src="cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-    </button>
-    <div id="settings-dropdown" class="settings-dropdown">
-      <div class="dropdown-arrow"></div>
-      <ul>
-        <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-        <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-        <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-        <li>
-          <span style="font-size:1em;">Guided Onboarding</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-onboarding-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Help Blocks</span>
-          <label class="switch">
-            <input type="checkbox" id="toggle-help-slider">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <span style="font-size:1em;padding-left: 70px;">Email Alerts</span>
-          <label class="switch">
-            <input type="checkbox" id="email-alert-toggle">
-            <span class="slider round"></span>
-          </label>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="oauth-link-btn">
-            Link Accounts
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-referral-link-btn">
-            Show Referral Link
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item" id="show-subscription-modal-btn" style="height: 45px !important;">
-            Subscription & Free Month Rewards
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</li>
-        </nav>
-      </div>
-    </div>
-  </section>
-</header>
-<section class="dashboard">
-  <section class="userprofile">
-    <h2>Welcome, <span id="user-name">[Username]</span></h2>
-    <fieldset>
-      <legend>Profile Details</legend>
-      <div class="profile-header">
-        <div class="profile-picture">
-          <img id="profile-pic" src="logos.png" alt="Profile Picture" class="profile-img">
-          <p>Account Type: <span id="user-account-type">Sponsee</span></p>
-          <div id="overall-rating" style="margin-top: 10px;">
-            <strong>Overall Rating:</strong> <span id="sponsee-average-stars">★★★★☆</span>
-            <div id="profile-badge-slot" style="margin-top: 8px;"></div>
-          </div>
-        </div>
-        <div class="profile-info">
-          <p>Email: <span id="user-email">[Email]</span></p>
-          <p>Username: <span id="user-username">[Username]</span></p>
-          <p>Location: <span id="user-location">[Location]</span></p>
-          <p>Title: <span id="user-gender">[Title]</span></p>
-          <p>Content Type: <span id="contenttype">[Content Type]</span> </p>
-          <P>Linked Platforms: <span id="social_handles">[Linked Platforms]</span> </P>
-        </div>
-      </div>
-      <div class="help-block">
-        <em>
-          <strong>What is this section?</strong><br>
-          This area shows your public profile as sponsors see it: your username, email, location, profile picture, badges, content type, social accounts, and bio.  
-          Make sure to keep your info and linked platforms up to date for more sponsorship opportunities.
-        </em>
-      </div>
-      <p>Description: <span id="about-yourself">[about yourself]</span> </p>
-      <div id="sponsee-review-stars" class="review-stars-block">
-        <h3 style="margin-bottom: 12px;">Your Sponsor Reviews</h3>
-        <div class="stars-row" style="display: flex; gap: 32px;">
-          <div class="star-item">
-            <span class="star-label">Communication</span>
-            <span id="sponsee-communication-stars" class="stars"></span>
-          </div>
-          <div class="star-item">
-            <span class="star-label">Punctuality</span>
-            <span id="sponsee-punctuality-stars" class="stars"></span>
-          </div>
-          <div class="star-item">
-            <span class="star-label">Work Output</span>
-            <span id="sponsee-work-output-stars" class="stars"></span>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-    <fieldset>
-      <div class="dashboard-cards">
-        <div class="card-row">
-          <div class="card">
-            <h3>Active Sponsorships</h3>
-            <p id="active-sponsorships">0</p>
-          </div>
-          <div class="card">
-            <h3>Completed Deals</h3>
-            <p id="completed-deals">0</p>
-          </div>
-        </div>
-        <div class="card-row">
-          <div class="card">
-            <h3>Total Followers</h3>
-            <p id="total-followers">0</p>
-          </div>
-          <div class="card">
-            <h3>Total Earnings</h3>
-            <p id="total-earnings">$0</p>
-          </div>
-        </div>
-      </div>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>What do these numbers mean?</strong><br>
-          <ul style="margin-left:16px;">
-            <em><strong>Active Sponsorships</strong>: The number of sponsorship offers you're currently involved with (in progress or not yet completed).</em><br>
-            <em><strong>Completed Deals</strong>: All sponsorships you’ve finished with sponsors.</em><br>
-            <em><strong>Total Followers</strong>: The sum of followers from your connected social platforms (sync or update your platforms for accuracy).<strong>(Coming Soon)</strong></em><br>
-            <em><strong>Total Earnings</strong>: The total amount you've earned through completed sponsorships on Sponsor Sorter.</em>
-          </ul>
-        </em>
-      </div>
-    </fieldset>
-   <fieldset class="Active-offers">
-  <legend>🎯 Active Listings for Sponsorship</legend>
-  <div id="sponsee-offer-tabs" class="tabs" style="margin-bottom: 10px;"></div>
-  <div class="active-listings" id="sponsee-listing-container"></div>
- <div id="pagination-row" class="pagination-controls" >
-  <button id="prev-page">Prev</button>
-  <span id="pagination-label"></span>
-  <button id="next-page">Next</button>
-  <span id="sponsee-offer-total-label" style="margin-left:20px;font-weight:500;color:#ccc;"></span>
-</div>
-  <div class="help-block" style="margin-bottom:8px;">
-    <em>
-      <strong>Active Listings:</strong>  
-      Here you can view and manage all your ongoing sponsorship offers. Use the tabs to filter by deal stage. Click into any listing for details or to interact with sponsors.
-    </em>
-  </div>
-</fieldset>
-    <fieldset>
-  <legend>Public Offers You've Applied For</legend>
-  <div style="margin-bottom:14px;">
-    <label for="public-offer-status-filter">Filter by Status:</label>
-    <select id="public-offer-status-filter">
-      <option value="">All</option>
-      <option value="pending">Pending</option>
-      <option value="accepted">Accepted</option>
-      <option value="rejected">Rejected</option>
-      <option value="withdrawn">Withdrawn</option>
-    </select>
-  </div>
-  <div id="sponsee-public-offers-container"></div>
-<div class="pagination-controls">
-  <button id="public-offer-prev-page">Previous</button>
-  <span id="public-offer-pagination-label">Page 1</span>
-  <button id="public-offer-next-page">Next</button>
-    <span id="public-offer-total-label" style="margin-left: 15px; font-weight: 500; color: #ccc;"></span>
-</div>
-   <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Active Public Applications:</strong>  
-          Here you can view your public offer Applications. See your applications status, message and date. View offer details, images and more.  
-        </em>
-      </div>
-</fieldset>
-    <fieldset class="recent-deals">
-      <h2>Recent Sponsorship Deals</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sponsee</th>
-            <th>Status</th>
-            <th>Amount</th>
-            <th>Offer Date</th>
-            <th>Deadline</th>
-            <th>Created By</th>
-            <th>live</th>
-          </tr>
-        </thead>
-        <tbody id="activity-table-body"></tbody>
-      </table>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Recent Deals:</strong>  
-          This table shows your latest sponsorships, their status, amounts, dates, and sponsor details. Use it to track your most recent activity.
-        </em>
-      </div>
-    </fieldset>
-    <fieldset class="Archived-deals">
-      <legend><h2>Sponsorship History</h2></legend>
-      <table>
-        <thead>
-          <tr>
-            <th>Sponsee</th>
-            <th>Amount</th>
-            <th>Offer Date</th>
-            <th>Live</th>
-            <th>Deadline</th>
-            <th>Sponsor → Sponsee</th>
-            <th>Sponsee → Sponsor</th>
-          </tr>
-        </thead>
-        <tbody id="archived-table-body"></tbody>
-      </table>
-      <a href="reviewThread.html" id="view-all-reviews-btn" style="margin-top:14px;display:inline-block;padding:9px 18px;border-radius:7px;background:#3100d2;color:#fff;font-weight:600;text-decoration:none;">View & Respond to All Reviews</a>
-      <button id="generate-invoices-btn" class="btn btn-secondary" style="margin-left: 12px;">
-  Generate Invoices
-</button>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Sponsorship History:</strong>  
-          All past/archived sponsorships are listed here, including your and your sponsor’s ratings for each deal. Click “View & Respond to All Reviews” to see feedback and reply.
-        </em>
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend>Linked Accounts</legend>
-      <div class="linked-accounts" id="linked-accounts"></div>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-  <strong>Linked Accounts:</strong>
-  This section displays your verified social media accounts, securely linked using OAuth. Connecting your accounts via Sponsor Sorter’s OAuth flow does more than just show your handles like above; it allows us to display your live stats and verify your authenticity as a creator. This builds trust with potential sponsors and can significantly increase your chances of receiving offers.<br><br>
-  OAuth linking also enables Sponsor Sorter to track campaign performance and verify completed sponsorships by directly accessing platform stats (with your permission). If an account is missing or showing outdated info, please check your handles or reconnect via the OAuth button.
-</em>
-      </div>
-     <div class="youtube-stats-card" id="youtube-stats-block" style="padding:24px 22px;background:#5e5e5e;border-radius:16px;box-shadow:0 2px 8px #c70000;max-width: 550px;margin: 0 auto 16px auto;color: #fff;">
-  <div style="display:flex;align-items:center;gap:20px;margin-bottom:15px;">
-    <img id="yt-profile-pic" src="youtubelogo.png" style="width:68px;height:68px;border-radius:50%;background:#222;">
-    <div>
-      <h2 style="margin:0 0 4px 0;font-size:1.35em;">
-        <img src="youtubelogo.png" alt="YouTube" style="height:26px;vertical-align:-4px;margin-right:6px;">
-        <span id="yt-channel-title">Loading...</span>
-      </h2>
-      <span id="yt-channel-desc" style="font-size:0.97em;color:#ffd;">Channel Description...</span>
-    </div>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:28px 44px;margin-bottom:10px;">
-    <div><b>Subscribers:</b> <span id="yt-subs">-</span></div>
-    <div><b>Total Views:</b> <span id="yt-views">-</span></div>
-    <div><b>Videos:</b> <span id="yt-videos">-</span></div>
-    <div><b>Created:</b> <span id="yt-created">-</span></div>
-  </div>
-  <div id="yt-banner-row" style="margin:18px 0 10px 0;display:none;">
-    <img id="yt-banner" src="" style="width:100%;max-height:90px;object-fit:cover;border-radius:11px;">
-  </div>
-  <div id="yt-last-video-row" style="margin-top:14px;display:none;">
-    <b>Latest Video:</b>
-    <a id="yt-last-video-link" href="#" target="_blank" style="color:#fff;text-decoration:underline;">
-      <span id="yt-last-video-title">Title</span>
-    </a>
-    <span id="yt-last-video-published" style="margin-left:14px;font-size:0.97em;color:#fcfcaa;">Date</span>
-    <div style="display:flex;align-items:center;gap:15px;margin-top:6px;">
-      <img id="yt-last-video-thumb" src="" style="width:98px;height:55px;border-radius:7px;background:#222;">
-      <div>
-        <span style="font-size:0.97em;">Views: <span id="yt-last-video-views">-</span></span>
-      </div>
-    </div>
-  </div>
-</div>
-    </fieldset>
-    <fieldset>
-      <div class="help-block" style="margin-bottom:8px;">
-        <em>
-          <strong>Analytics:</strong><br>
-          The charts below visualize your sponsorship activity and offer breakdowns.
-          <ul style="margin-left:16px;">
-            <em><strong>Offer Amount by Campaign</strong>: See how much each of your campaigns is worth.</em><br>
-            <em><strong>Earnings Over Time</strong>: Track your income from sponsorships, month by month.</em><br>
-            <em><strong>Platform Distribution</strong>: View which platforms your offers are on.</em><br>
-          </ul>
-        </em>
-      </div>
-      <div class="graph-section" style="display: flex; flex-wrap: wrap; gap: 28px;">
-        <div>
-          <h4>Offer Amount by Campaign</h4>
-          <canvas id="campaign-bar-chart" width="350" height="230"></canvas>
-        </div>
-        <div>
-          <h4>Earnings Over Time</h4>
-          <canvas id="earnings-line-chart" width="350" height="230"></canvas>
-        </div>
-        <div>
-          <h4>Platform Distribution</h4>
-          <canvas id="platform-pie-chart" width="350" height="230"></canvas>
-        </div>
-      </div>
-    </fieldset>
-    <div id="profile-logo-modal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span class="close-modal" id="close-profile-logo-modal">&times;</span>
-        <h3>Change Profile Logo</h3>
-        <form id="profile-logo-form">
-          <input type="file" id="profile-logo-input" accept="image/*" required />
-          <button type="submit">Upload</button>
-        </form>
-        <div id="profile-logo-modal-msg" style="margin-top:10px;"></div>
-      </div>
-    </div>
-    <div id="profile-desc-modal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span class="close-modal" id="close-profile-desc-modal">&times;</span>
-        <h3>Edit Profile Description</h3>
-        <textarea id="profile-desc-textarea" rows="5" style="width:98%;"></textarea>
-        <button id="save-profile-desc-btn" style="margin-top:10px;">Save</button>
-        <div id="profile-desc-modal-msg" style="margin-top:10px;"></div>
-      </div>
-    </div>
-    <div id="social-modal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span class="close-modal" id="close-social-modal">&times;</span>
-        <h3>Relink Social Media Handles</h3>
-        <form id="social-form">
-          <div id="social-fields"></div>
-          <button type="submit" style="margin-top:10px;">Save</button>
-        </form>
-        <div id="social-modal-msg" style="margin-top:10px;"></div>
-      </div>
-    </div>
-  </section>
-  <section>
-    <fieldset>
-      <button id="privacy-export-btn">Request My Data (GDPR/CCPA)</button>
-      <button id="privacy-delete-btn" style="background-color:red;">Request Account Deletion</button>
-      <div id="privacy-request-status"></div>
-      <div class="help-block" style="margin-top:8px;">
-        <em>
-          <strong>Your Privacy Controls:</strong><br>
-          Request a copy of your data or ask for account deletion here. All requests are handled in compliance with GDPR and CCPA.
-        </em>
-      </div>
-    </fieldset>
-  </section>
-</section>
-    <!-- FOOTER -->
-    <footer class="footercomplete">
-        <div class="footer-text">
-            <ul>
-                <li><a href="./help.html">Help</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./privacy.html">Privacy Policy</a></li>
-                <li><a href="./terms.html">Terms of Service</a></li>
-                <li><a href="./reviews.html">Reviews</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-            </ul>
-        </div>
-        <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-        
-        <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-            &copy; 2025 Sponsor Sorter. All rights reserved. | ABN/ACN: 00 000 000 000 <br>
-            Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
-        </div>
-    </footer>
-<div id="referral-link-modal" style="display:none;position:fixed;z-index:3000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.18);align-items:center;justify-content:center;">
-  <div style="margin:auto;background:white;max-width:390px;padding:32px 28px 22px 28px;border-radius:14px;box-shadow:0 4px 28px 0 #dedede;position:relative;">
-    <button id="close-ref-link-modal" style="position:absolute;top:16px;right:16px;background:none;box-shadow:none;border:none;font-size:1.7em;color:rgb(255, 0, 0);cursor:pointer;">×</button>
-    <h3 style="color: black !important;margin:0 0 18px 0;font-size:1.19em;">Your Referral Link</h3>
-    <input id="my-ref-link" style="width:90%;font-size:1em;margin-bottom:14px;" readonly value="Loading...">
-    <button id="copy-ref-link-btn" style="margin-left:0;width:90%;font-size:1.03em;background:#36a2eb;color:white;border:none;padding:7px 0;border-radius:8px;cursor:pointer;">Copy to Clipboard</button>
-    <div id="ref-link-copied-msg" style="color:green;font-size:0.97em;margin-top:10px;display:none;">Copied!</div>
-    <div style="margin-top:14px;font-size:0.97em;color:#556;">
-      Share this link—anyone who signs up with it will earn you a free month!
-      <div id="referral-medal-info" style="margin-top:10px;text-align:center;"></div>
-    </div>
-  </div>
-</div>
-<div id="subscription-modal"
-  style="display:none;position:fixed;z-index:3010;left:0;top:0;width:100vw;height:100vh;background:rgba(30,38,80,0.19);align-items:center;justify-content:center;">
-  <div style="margin:auto;background:#232324;color:#fff;max-width:460px;width:94vw;padding:38px 30px 32px 30px;border-radius:22px;box-shadow:0 10px 48px 0 #000a;position:relative;display:flex;flex-direction:column;gap:0.45em;">
-    <button id="close-subscription-modal" style="position:absolute;top:18px;right:18px;background:none;box-shadow:none;border:none;font-size:2em;color:#e53e3e;cursor:pointer;line-height:1;">&times;</button>
-    <h3 style="color:#fff;margin:0 0 16px 0;font-size:1.22em;font-weight:600;text-align:center;letter-spacing:.01em;">
-      Subscription &amp; Free Month Rewards
-    </h3>
-    <div id="subscription-details"
-      style="background: #19191a;border-radius:14px;min-height:54px;margin-top:7px;padding:18px 14px 14px 14px;color:#ddd;font-size:1.07em;">
-      <div style="text-align:center;color:#bbb;font-size:1em;">
-        Loading...
-      </div>
-    </div>
-  </div>
-</div>
-<div id="oauth-link-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(16,18,32,0.86);align-items:center;justify-content:center;">
-  <div style="background:#353535;max-width:410px;padding:30px 26px 28px 26px;border-radius:16px;box-shadow:0 4px 30px #2222;position:relative;">
-    <button id="close-oauth-link-modal" style="position:absolute;right:2px;top:2px;font-size:1.4em;background:none;box-shadow: none;border:none;color:#df0202;cursor:pointer;">&times;</button>
-    <h2 style="margin-top:0;margin-bottom:10px;">Linked Accounts</h2>
-    <div id="oauth-accounts-list" style="margin-bottom:16px;"></div>
-    <div style="font-size:0.97em;color:#e8e8e8;">
-      <b>Tip:</b> Connect your accounts to enable platform-specific analytics and advanced features!
-    </div>
-  </div>
-</div>
-<div id="youtube-oauth-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(16,18,32,0.86);align-items:center;justify-content:center;">
-  <div style="background:#fff;max-width:400px;padding:32px 26px 24px 26px;border-radius:16px;box-shadow:0 4px 30px #2222;position:relative;">
-    <button id="close-youtube-oauth-modal" style="position:absolute;right:18px;top:12px;font-size:1.4em;background:none;border:none;color:#888;cursor:pointer;">&times;</button>
-    <h2 style="margin-top:0;margin-bottom:10px;">Connect YouTube</h2>
-    <div style="margin-bottom:20px;">
-      Link your YouTube account to track engagement stats automatically on your offers.<br>
-      <img src="youtubelogo.png" alt="YouTube" style="height:32px;margin-top:7px;border-radius:8px;background:#000;">
-    </div>
-    <div id="youtube-oauth-modal-msg" style="color:#4886f4;font-size:1.07em;">&nbsp;</div>
-    <button id="connect-youtube-btn"
-      style="margin-top:20px;background:#e74c3c;color:#fff;border:none;padding:12px 22px;font-size:1.15em;border-radius:9px;cursor:pointer;">
-      Connect YouTube
-    </button>
-    <div style="margin-top:12px;font-size:0.96em;color:#444;">
-      <b>What happens?</b> <br>
-      - We’ll never post or manage videos on your behalf.<br>
-      - Read-only stats are collected.<br>
-      - You can disconnect anytime in settings.
-    </div>
-  </div>
-</div>
-<div id="invoice-modal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <h3>Your Completed Offers – Generate Invoices</h3>
-    <div id="invoice-offer-list">Loading...</div>
-    <div class="modal-actions">
-      <button id="close-invoice-modal" class="btn btn-cancel">Close</button>
-    </div>
-  </div>
-</div>
-</div>
-
-<div id="guest-signup-modal" style="display:none;position:fixed;z-index:5000;left:0;top:0;width:100vw;height:100vh;background:rgba(10, 16, 64, 0.45);align-items:center;justify-content:center;backdrop-filter:blur(4px);">
-  <div style="background:rgb(66, 66, 66);max-width:430px;width:94vw;padding:38px 24px 32px 24px;border-radius:24px;box-shadow:0 8px 40px #2e00807a;display:flex;flex-direction:column;align-items:center;gap:0.6em;">
-    <div style="font-size:2.7em;line-height:1;margin-bottom:6px;color:#3100d277;">🚀</div>
-    <h2 style="margin:0 0 8px 0;text-align:center;font-size:1.35em;color:#18123b;">Create Your Account</h2>
-    <div id="guest-modal-msg" style="font-size:1.08em;text-align:center;color:#dddddd;margin-bottom:18px;">
-      See your real offers, apply for deals, and unlock every feature.
-    </div>
-    <button class="btn" onclick="window.location.href='signup.html'" style="background:#3100d2;color:#fff;font-size:1.13em;font-weight:600;padding:14px 0;border-radius:9px;border:none;cursor:pointer;width:90%;box-shadow:0 2px 10px #b3b3ff;">Sign Up </button>
-    <button class="btn" onclick="document.getElementById('guest-signup-modal').style.display='none'" style="margin-top:13px;background:#fff;color:#3100d2;border:2px solid #3100d2;font-size:1.04em;padding:11px 0;border-radius:8px;cursor:pointer;width:90%;">Not ready? Keep Browsing</button>
-  </div>
-</div>
-
-<style>
-    .highlight-card {
-  animation: popHighlight 1.4s ease;
-  box-shadow: 0 0 0 4px #7e23f5, 0 4px 22px #0800fec8;
-  z-index: 2;
-  position: relative;
-}
-@keyframes popHighlight {
-  0% { box-shadow: 0 0 0 0px #7474ff; }
-  20% { box-shadow: 0 0 0 10px #2e05fec4; }
-  100% { box-shadow: 0 0 0 0px #1f08f4; }
-}
-</style>
-
-<script src="./js/guest.js"></script>
-</body>
+      <div id="preview-dialog-content"></div>
+    </dialog>
+  </body>
 </html>

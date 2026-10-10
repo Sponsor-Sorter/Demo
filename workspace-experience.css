@@ -1,4 +1,14 @@
 /* Finder and member dashboards. Keep the original dark, cyan and purple identity. */
+.workspace-refresh .dashboard #listing-container > .listing-stage {
+  border: 1px solid #40526e !important;
+  border-radius: 12px !important;
+  background: #121a27 !important;
+}
+.workspace-refresh .dashboard #offer-tabs .tab-btn.active {
+  color: #fff !important;
+  background: #263d64 !important;
+  border-color: #77dfff;
+}
 .workspace-refresh .dashboard #listing-container {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;

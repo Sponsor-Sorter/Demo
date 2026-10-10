@@ -24,7 +24,7 @@
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
 <link rel="stylesheet" href="./workspace-layout.css?v=20261010-workspace1">
 <script type="module" src="./js/workspaceLayout.js?v=20261010-workspace1"></script>
-<link rel="stylesheet" href="./workspace-experience.css?v=20261010-redesign1">
+<link rel="stylesheet" href="./workspace-experience.css?v=20261010-redesign2">
 <script type="module" src="./js/workspaceExperience.js?v=20261010-redesign1"></script>
 </head>
 
@@ -211,18 +211,18 @@
           <div class="card"><h3>Completed Campaigns</h3><p id="ongoing-campaigns">0</p></div>
         </div>
         <div class="card-row">
-          <div class="card"><h3>Total Spend</h3><p id="total-spend">$0</p></div>
-          <div class="card"><h3>Lifetime Success Ratio</h3><p id="success-ratio">0:0</p></div>
+          <div class="card"><h3>Completed Campaign Value</h3><p id="total-spend">$0</p></div>
+          <div class="card"><h3>Offer Acceptance Rate</h3><p id="success-ratio">0:0</p></div>
         </div>
       </div>
       <div class="help-block" style="margin-bottom:8px;">
         <em>
           <strong>What do these numbers mean?</strong><br>
           <ul style="margin-left:16px;">
-            <em><strong>Total Active Offers</strong>: All offers you have created that are currently in progress, accepted, or live.</em><br>
-            <em><strong>Ongoing Campaigns</strong>: Offers currently in the "in progress" or "live" stage.</em><br>
-            <em><strong>Total Spend</strong>: The total amount spent on completed sponsorships.</em><br>
-            <em><strong>Lifetime Success Ratio</strong>: The number and percentage of successful offers vs. total offers made.</em>
+            <em><strong>Total Offers</strong>: All private sponsorship offers you have created, across every status.</em><br>
+            <em><strong>Completed Campaigns</strong>: Offers marked completed or review completed.</em><br>
+            <em><strong>Completed Campaign Value</strong>: The agreed value of completed sponsorships. This is not a record of payments or wallet funds.</em><br>
+            <em><strong>Offer Acceptance Rate</strong>: The number and percentage of accepted offers, including later campaign stages, compared with all offers made.</em>
           </ul>
         </em>
       </div>
@@ -445,8 +445,8 @@
 
 <!-- Global Scripts (relative paths only) -->
 <script type="module" src="./js/alerts.js"></script>
-<script type="module">import './js/sponsorOffers.js';</script>
-<script type="module">import './js/sponsorLogic.js';</script>
+<script type="module">import './js/sponsorOffers.js?v=20261010-summary1';</script>
+<script type="module">import './js/sponsorLogic.js?v=20261010-summary1';</script>
 <script type="module" src="./js/userReports.js"></script>
 <script type="module" src="./js/privacy.js"></script>
 <script type="module" src="./js/settings.js"></script>

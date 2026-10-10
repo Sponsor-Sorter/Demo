@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-10 — Rebuilt public previews
+
+- Replaced duplicated sponsor/creator preview markup with one accessible, responsive workspace and role picker. Retained the shared animated grid header and dark/cyan/purple identity.
+- Added working local sample creation, applicant acceptance, application/withdrawal, campaign stages, filters, comments, images, profile/account prompts, history/insights and reset. Upcoming sample deadlines replace stale dates; sample assets replace missing images.
+- Removed preview IP geolocation and outbound analytics; the demo no longer needs accounts, backend calls or Chart.js to load. User-entered content is escaped or inserted as text.
+- Corrected both member dashboards' completed campaign values (pending offers excluded), sponsor completed count and acceptance-rate wording. Clarified that campaign value is not a payment receipt or wallet balance; refined campaign card borders and selected status contrast.
+- Passed 27 automated checks and 20 actual-viewport layout cases at 320/375/768/1440 across the role picker, both previews and both member dashboards. Exercised the full sample offer workflow, comments with HTML-like text, application/withdrawal, dialogs and reset. Production financial/OAuth completion is outside these checks; no real records changed.
+
 ## 2026-10-10 — Finder and member workspace redesign
 
 - Added role-specific workspace introductions, quick links and keyboard-accessible dashboard section navigation.

@@ -1,5 +1,6 @@
 // ./js/sponseeLogic.js
 import { supabase } from './supabaseClient.js';
+import { summarizeCampaigns } from './campaignSummary.js';
 
 /* =========================
    Helpers
@@ -234,8 +235,7 @@ async function updateSummaryStats() {
   const completed = offers.filter(o => ['completed', 'review_completed'].includes(o.status));
   if (compEl) compEl.textContent = completed.length ?? 0;
 
-  const validIncome = offers.filter(o => !['rejected', 'Offer Cancelled'].includes(o.status));
-  const totalEarnings = validIncome.reduce((sum, o) => sum + (o.offer_amount || 0), 0);
+  const totalEarnings = summarizeCampaigns(offers).completedValue;
   if (earnEl) earnEl.textContent = `$${totalEarnings.toFixed(2)}`;
 
   const successfulOffers = offers.filter(o =>
