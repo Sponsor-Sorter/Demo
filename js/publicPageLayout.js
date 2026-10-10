@@ -9,10 +9,10 @@ for (const header of document.querySelectorAll(
   for (const extra of navs.slice(1)) nav.append(...extra.childNodes);
   const brand = document.createElement("a");
   brand.className = "brand";
-  brand.href = "./index.html";
+  brand.href = new URL("../index.html", import.meta.url).href;
   brand.setAttribute("aria-label", "Sponsor Sorter home");
   const logo = document.createElement("img");
-  logo.src = "./logos.png";
+  logo.src = new URL("../logos.png", import.meta.url).href;
   logo.alt = "";
   logo.width = logo.height = 88;
   const title = document.createElement("span");

@@ -1,5 +1,6 @@
 // ./js/privacy.js
 import { supabase } from './supabaseClient.js';
+import { publicProfileUrl } from './publicProfileSharing.js';
 
 /* =========================
    Existing: Export / Delete
@@ -83,7 +84,8 @@ const elMsg    = $('public-dash-status');
 
 // If the UI isn't present, skip the rest.
 if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
-  const PUBLIC_BASE = `${location.origin}/u/index.html?u=`;
+  let savedSlug = "";
+  let savedEnabled = false;
 
   const setMsg = (text, ok = true) => {
     elMsg.textContent = text || '';
@@ -103,7 +105,7 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
 
   const randomSuffix = () => Math.random().toString(36).slice(2, 6);
 
-  const buildUrl = (slug) => `${PUBLIC_BASE}${slug || ''}`;
+  const buildUrl = (slug) => publicProfileUrl(slug, location.origin);
 
   const updatePreviewLink = (slug) => {
     const url = buildUrl(slug || '');
@@ -137,6 +139,9 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
 
     const enabled = !!data.public_dashboard_enabled;
     const slug    = data.public_dashboard_slug || '';
+    savedSlug = slug;
+    savedEnabled = enabled;
+    elCopy.disabled = !enabled || !slug;
     elToggle.checked = enabled;
     showRow(enabled);
     elSlug.value = slug || '';
@@ -200,6 +205,9 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
       return;
     }
 
+    savedEnabled = newEnabled;
+    if (newEnabled) savedSlug = slug;
+    elCopy.disabled = !savedEnabled || !savedSlug;
     showRow(newEnabled);
     updatePreviewLink(slug);
     setMsg(newEnabled
@@ -227,6 +235,9 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
         .eq('user_id', session.user.id);
 
       if (!error) {
+        savedSlug = slug;
+        elSlug.value = slug;
+        elCopy.disabled = !savedEnabled;
         updatePreviewLink(slug);
         setMsg('Link saved.');
         return;
@@ -242,8 +253,8 @@ if (elToggle && elRow && elSlug && elSave && elLink && elCopy && elMsg) {
   }
 
   function copyLink() {
-    const slug = sanitizeSlug(elSlug.value);
-    if (!slug) return setMsg('Enable and save your link first.', false);
+    const slug = savedSlug;
+    if (!savedEnabled || !slug) return setMsg('Enable and save your link first.', false);
     const url = buildUrl(slug);
     // Try Clipboard API; fallback to prompt
     if (navigator.clipboard?.writeText) {

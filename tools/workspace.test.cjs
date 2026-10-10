@@ -110,3 +110,181 @@ test("checkout return has one fulfillment handler and safe spotlight output", as
   );
   assert.match(status.innerHTML, /verification needed/);
 });
+
+test("public community stats never query private tables and handle errors", async () => {
+  const source = fs.readFileSync(
+    path.join(__dirname, "../js/stats.js"),
+    "utf8",
+  );
+  assert.doesNotMatch(
+    source,
+    /\.from\(["'](?:private_offers|private_offer_reviews|payouts|users_extended_data|referral_rewards)["']\)/,
+  );
+  const html = fs.readFileSync(path.join(__dirname, "../stats.html"), "utf8");
+  for (const fail of [false, true]) {
+    const nodes = new Map();
+    let run;
+    const context = {
+      document: {
+        addEventListener: (_, fn) => {
+          run = fn;
+        },
+        getElementById: (id) => {
+          assert.ok(html.includes(`id="${id}"`), `Missing ${id}`);
+          if (!nodes.has(id)) nodes.set(id, { textContent: "", innerHTML: "" });
+          return nodes.get(id);
+        },
+      },
+      escapeHtml: presentation.escapeHtml,
+      ratingStars: presentation.ratingStars,
+      supabase: {
+        from(table) {
+          assert.ok(
+            [
+              "public_offers",
+              "public_user_profiles",
+              "public_profile_reviews",
+            ].includes(table),
+          );
+          const q = new Proxy(
+            {},
+            {
+              get: (_, key) =>
+                key === "then"
+                  ? (resolve) =>
+                      resolve({
+                        error: fail ? {} : null,
+                        count: 2,
+                        data: [
+                          {
+                            username: "<img src=x>",
+                            review_text: "<script>bad</script>",
+                            rating: 5,
+                            avg_rating: 5,
+                            review_count: 2,
+                          },
+                        ],
+                      })
+                  : () => q,
+            },
+          );
+          return q;
+        },
+      },
+    };
+    vm.runInNewContext(source.replace(/^import .*;\r?\n/gm, ""), context);
+    await run();
+    assert.equal(
+      nodes.get("system-status").textContent,
+      fail ? "Public data unavailable" : "Public data loaded",
+    );
+    if (fail) assert.equal(nodes.get("live-offer-count").textContent, "—");
+    for (const node of nodes.values())
+      assert.doesNotMatch(node.innerHTML, /<img|<script>/);
+  }
+});
+
+test("public profile links reject malformed slugs and sharing handles clipboard failures", async () => {
+  const source = fs.readFileSync(
+    path.join(__dirname, "../js/publicProfileSharing.js"),
+    "utf8",
+  );
+  const handlers = {};
+  const nodes = Object.fromEntries(
+    [
+      "public-share-url",
+      "public-copy-link",
+      "public-share-link",
+      "public-share-status",
+    ].map((id) => [
+      id,
+      {
+        addEventListener: (event, callback) => {
+          handlers[id] = callback;
+        },
+        focus() {
+          this.focused = true;
+        },
+        select() {
+          this.selected = true;
+        },
+      },
+    ]),
+  );
+  let copied;
+  const context = vm.createContext({
+    URL,
+    URLSearchParams,
+    location: { origin: "https://sponsorsorter.com" },
+    document: { getElementById: (id) => nodes[id] },
+    navigator: {
+      clipboard: {
+        writeText: async (value) => {
+          copied = value;
+        },
+      },
+    },
+  });
+  vm.runInContext(
+    source.replaceAll("export function", "function") +
+      ";this.sharing={publicProfileUrl,profileSlug,wireProfileSharing}",
+    context,
+  );
+  const api = context.sharing;
+  assert.equal(
+    api.publicProfileUrl("fitstyle", "https://sponsorsorter.com"),
+    "https://sponsorsorter.com/u/index.html?u=fitstyle",
+  );
+  for (const bad of ["", "ab", "<img>", "a/b", "a%20b", "a".repeat(41)])
+    assert.equal(api.publicProfileUrl(bad, "https://sponsorsorter.com"), "");
+  assert.equal(api.profileSlug("?u=fitstyle", "/u/index.html"), "fitstyle");
+  assert.equal(api.profileSlug("?u=%E0%A4%A", "/u/index.html"), "");
+  assert.equal(api.profileSlug("", "/u/%E0%A4%A"), "");
+  assert.equal(api.profileSlug("", "/u/fitstyle"), "fitstyle");
+  api.wireProfileSharing({ slug: "fitstyle", username: "Test" });
+  assert.equal(nodes["public-share-link"].hidden, true);
+  await handlers["public-copy-link"]();
+  assert.equal(copied, "https://sponsorsorter.com/u/index.html?u=fitstyle");
+  context.navigator.clipboard.writeText = async () => {
+    throw new Error("Denied");
+  };
+  await handlers["public-copy-link"]();
+  assert.equal(nodes["public-share-url"].selected, true);
+  assert.match(nodes["public-share-status"].textContent, /Select and copy/);
+  context.navigator.share = async () => {
+    const e = new Error();
+    e.name = "AbortError";
+    throw e;
+  };
+  api.wireProfileSharing({ slug: "fitstyle", username: "Test" });
+  assert.equal(nodes["public-share-link"].hidden, false);
+  await handlers["public-share-link"]();
+});
+
+test("public deal rows escape user-supplied text", () => {
+  const source = fs.readFileSync(
+    path.join(__dirname, "../js/publicDashboard.js"),
+    "utf8",
+  );
+  const rows = [];
+  const table = { innerHTML: "", appendChild() {} };
+  const context = {
+    document: {
+      getElementById: () => table,
+      createDocumentFragment: () => ({ appendChild: (row) => rows.push(row) }),
+      createElement: () => ({ innerHTML: "" }),
+    },
+    escapeHtml: presentation.escapeHtml,
+  };
+  const start = source.indexOf("function renderRecentDeals(");
+  const end = source.indexOf("function renderReviews(");
+  vm.runInNewContext(
+    "const $=id=>document.getElementById(id);" +
+      source.slice(start, end) +
+      ";renderRecentDeals([{sponsee_username:'<img src=x>',status:'<script>',deadline:'<svg>',live_date:'<iframe>'}]); renderHistory([{sponsee_username:'<img>',deadline:'<svg>',sponsor_to_sponsee:'<script>',sponsee_to_sponsor:'<iframe>'}]);",
+    context,
+  );
+  assert.equal(rows.length, 2);
+  for (const row of rows)
+    assert.doesNotMatch(row.innerHTML, /<img|<script|<svg|<iframe/);
+});

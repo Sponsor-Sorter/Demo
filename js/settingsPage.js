@@ -1010,6 +1010,7 @@ async function populatePublicDashboardInline(user) {
     currentSlug = data.public_dashboard_slug || '';
 
     toggleEl.checked = currentEnabled;
+    copyBtn.disabled = !currentEnabled || !currentSlug;
 
     // Decide what to show in the URL box.
     if (currentSlug) {
@@ -1105,6 +1106,7 @@ async function populatePublicDashboardInline(user) {
       }
 
       currentEnabled = wantEnabled;
+      copyBtn.disabled = !wantEnabled || !slugToUse;
       if (wantEnabled) {
         currentSlug = slugToUse;
         urlEl.textContent = `${PUBLIC_DASH_BASE}${currentSlug}`;
@@ -1139,7 +1141,7 @@ async function populatePublicDashboardInline(user) {
   // Copy button
   copyBtn.addEventListener('click', () => {
     const slug = currentSlug;
-    if (!slug) {
+    if (!currentEnabled || !slug) {
       if (window.showToast) {
         window.showToast(
           'Enable your public dashboard first to generate a link.',

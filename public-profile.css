@@ -1,0 +1,259 @@
+/* Public member profile: shared brand, readable cards, no dashboard controls. */
+.public-profile-page {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+.public-profile-page .header > nav {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100% !important;
+  min-width: 0;
+  padding: 0 12px;
+}
+.public-profile-page .header > nav > li {
+  width: 100% !important;
+  min-width: 0;
+}
+.public-profile-page .header > nav > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 12px 4px !important;
+}
+.public-profile-page .dashboard {
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.public-profile-page .wrap {
+  width: min(1120px, calc(100% - 40px));
+  max-width: none;
+  margin: 36px auto 64px;
+  padding: 0;
+}
+.public-profile-page .userprofile {
+  display: block;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.public-profile-intro {
+  text-align: center;
+  margin: 0 auto 28px;
+  max-width: 720px;
+}
+.public-profile-intro .eyebrow {
+  color: #5ee0ff;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+}
+.public-profile-intro h2 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  margin: 8px 0;
+}
+.public-profile-page .profile-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 0 24px !important;
+  padding: clamp(18px, 3vw, 32px) !important;
+  border-radius: 20px;
+  text-align: left;
+}
+.public-profile-page h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
+}
+.public-profile-page .profile-header {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+}
+.public-profile-page .profile-picture {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+.public-profile-page .profile-picture img,
+.public-profile-page .profile-picture .initial {
+  margin: 0 auto;
+  display: block;
+}
+.public-profile-page .profile-info {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.public-profile-page .profile-info > div[style*="grid"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+.public-profile-page .handles {
+  justify-content: flex-start;
+  gap: 10px;
+}
+.public-profile-page .handles .handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 8px;
+  min-height: 44px;
+  min-width: 44px;
+}
+.public-profile-page .cta-row a {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 14px;
+  min-width: 0;
+}
+.public-profile-page .kpi-row {
+  max-width: none !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  margin: 28px 0 !important;
+}
+.public-profile-page .kpi-row .card {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #2b3350;
+  background: #171923;
+  border-radius: 12px;
+  text-align: center;
+}
+.public-profile-page .kpi-row h3 {
+  font-size: 0.9rem;
+  margin: 0;
+}
+.public-profile-page .kpi-row p {
+  font-size: 1.8rem;
+  margin: 6px 0 0;
+}
+.public-profile-page .recent-deals,
+.public-profile-page .Archived-deals {
+  width: 100%;
+  min-width: 0;
+  max-width: 100% !important;
+  margin: 20px 0 !important;
+  padding: 12px;
+  overflow-x: auto;
+}
+.public-profile-page table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.public-profile-page th,
+.public-profile-page td {
+  text-align: left;
+  padding: 12px;
+  white-space: normal;
+  border-bottom: 1px solid #2b3350;
+}
+.public-profile-page .platform-stats-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+.public-profile-page .platform-card,
+.public-profile-page .platform-latest-inner > * {
+  min-width: 0;
+}
+.public-profile-page .platform-latest-inner img {
+  max-width: 100%;
+}
+.public-profile-page .platform-meta-sub,
+.public-profile-page .review {
+  overflow-wrap: anywhere;
+}
+.profile-sharing label {
+  display: block;
+  font-size: 0.9rem;
+  color: #bbc6db;
+}
+.share-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.share-controls input {
+  flex: 1 1 260px;
+  min-width: 0;
+  width: auto;
+  margin: 0;
+  padding: 12px;
+  background: #101622;
+  color: #eef2f8;
+  border: 1px solid #3e4c68;
+  border-radius: 10px;
+}
+.share-controls button {
+  margin: 0;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  min-height: 44px;
+  border-radius: 10px;
+}
+.share-controls button[hidden] {
+  display: none;
+}
+.share-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.public-profile-page :focus-visible {
+  outline: 2px solid #5ee0ff;
+  outline-offset: 3px;
+}
+.public-profile-page .err {
+  padding: 32px 20px;
+  border: 1px solid #2b3350;
+  border-radius: 18px;
+}
+@media (max-width: 600px) {
+  .public-profile-page .wrap {
+    width: calc(100% - 24px);
+    margin-top: 24px;
+  }
+  .public-profile-page .profile-header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .public-profile-page .profile-picture {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .public-profile-page .cta-row {
+    display: flex;
+    gap: 10px;
+  }
+  .public-profile-page .cta-row a {
+    flex: 1;
+  }
+  .public-profile-page .profile-info > div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+  .public-profile-page th,
+  .public-profile-page td {
+    padding: 10px 8px;
+  }
+  .public-profile-page .recent-deals table {
+    min-width: 500px;
+  }
+  .public-profile-page .Archived-deals table {
+    min-width: 640px;
+  }
+  .share-controls input {
+    flex-basis: 100%;
+  }
+}

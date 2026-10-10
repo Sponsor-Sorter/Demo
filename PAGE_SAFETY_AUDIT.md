@@ -25,3 +25,6 @@ Shell/Git/Node/Prettier, unified-computer-use browser controls, Supabase securit
 
 ## Follow-up 2026-10-11
 Wallet NaN/negative reservation follow-up is now fixed and rollback tested; see HANDOVER.md. Duplicate private-offer return handler removed. Server-verified paid fulfillment, webhooks and remaining database advisor findings are still open.
+
+## 2026-10-11 privacy and public profile follow-up
+Raw private offer/review SELECT-true policies removed; rollback role checks passed. Public profile /u/index.html aligned and sharing tested; 320/375/768/1440 no page overflow. Public Stats uses public projections only. Remaining write authorization, server payment fulfillment, privileged RPC grants, live social stats authorization and crawler-rendered personalized sharing cards remain open; see HANDOVER.md.

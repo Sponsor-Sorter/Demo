@@ -1,5 +1,18 @@
 # Change log
 
+## 2026-10-11 — Private offer reads and public profile sharing
+
+- Applied Supabase migration restrict_private_offer_reads (tracked SQL 20261010200217): removed six SELECT-true development/homepage policies and revoked anon SELECT on private_offers/private_offer_reviews. Existing participant/admin read policies and deliberately projected public views remain.
+- tools/private-offer-reads.test.sql passed against live DB inside BEGIN/ROLLBACK: anonymous raw grants absent; unrelated member denied; sponsor, creator and admin can read fixture offer/review; all three public projections queryable. Temporary fixtures explicitly exclude Moikailive; no lasting account/financial changes.
+- Stats now reads only public_offers/public_user_profiles/public_profile_reviews. Removed private earnings, referral and campaign leaderboards rather than widening access. Public counts use exact HEAD requests; failure states never show fabricated zero totals or operational health.
+- Rebuilt /u/index.html with shared animated original grid/header, aligned responsive cards, contained tables, visitor Copy link/native Share, manual clipboard fallback and bare ?u= sharing URLs. Copy tested in real browser. Account controls copy saved enabled links, not unsaved slug input; disabled profiles cannot copy through settings. Shared header assets now resolve correctly from nested /u/.
+- Public deal/history text escaped, social/media URLs constrained, malformed slug decoding guarded, existing metadata updated rather than duplicated; profile action directs to recipient-specific offer form. Existing social statistics and public review/deal features retained.
+- npm test: 32 passing. Browser real public test profile fitstyle at 320/375/768/1440: centred and no document overflow; Stats at 320 also passes. No Moikailive fixture edits or real Stripe payments.
+- Remaining critical work: private offer INSERT is still overly permissive; review author UPDATE/INSERT and comment parent ownership need server-enforced validation. Payment return pages still require verified Stripe sessions, server-owned drafts, webhook fulfillment and atomic idempotency. These are not fixed by restricting reads.
+- Public profile follow-ups: public summary RPC's active/completed counts overlap under legacy flags; public recent/history RPCs match legacy usernames and need stable identity matching, bounded limits and counterparty disclosure review. get-profile-live-stats must be audited for opt-in authorization and payload projection. Static GitHub Pages metadata cannot provide reliable personalized social cards; requires server/edge HTML rendering or generated profile pages. Current client metadata is not a guaranteed crawler preview.
+- Found a legacy service credential embedded in the private_offers UPDATE notification trigger definition. Do not copy/log its value. Rotate/migrate to managed secrets after identifying dependent services; no credential rotation performed here. Existing Supabase advisor warnings remain; three sanitized public views intentionally preserved. Legacy unused js/homepage.js still queries private tables and must be retired/reworked before reuse.
+
+
 ## 2026-10-11 — Wallet validation and duplicate checkout handler
 
 - Applied reject_invalid_wallet_reservations to Supabase: wallet spending rejects nonfinite/negative balances and nonfinite/nonpositive active reservation rows. Existing ownership check, profile row lock and restricted grants retained. No invalid balances or active reservations found by aggregate queries.
