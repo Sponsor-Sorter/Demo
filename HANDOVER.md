@@ -62,3 +62,18 @@ Deno is installed at `C:\Users\jrbwi\AppData\Local\Microsoft\WinGet\Packages\Den
 
 
 - Final release a463ffb GitHub Pages deployment succeeded. Live browser checks: 390px viewport / 387px document width and 1440px viewport / 1425px document width; all four homepage navigation links share the same row at both widths. Screenshot saved in the parent workspace as live-frontend.jpg.
+
+## Admin workspace rebuild (2026-10-10)
+
+- Files: dashboardAdmin.html, admin.css, js/adminWorkspace.js (navigation/presentation), js/adminLogic.js (authenticated loaders/actions), js/AffiliateAdmin.js (lazy initializer). All are formatted with pinned Prettier 3.6.2.
+- Admin CSS is standalone to prevent the old global main/nav/mobile rules from leaking into it. Original dark palette, Cinzel branding, grid header and blue/purple accents retained.
+- New overview counts are exact HEAD queries; operational tables remain capped by existing API limits (generally 1,000; payouts latest 100). Analytics is explicitly a sample of up to 1,000 records, not a claim about daily logins.
+- Report resolution now updates status=resolved instead of deleting evidence. Read-only live schema inspection confirmed all four report status columns are unconstrained text. No schema changes were made for this rebuild.
+- Grouped navigation, status queues, recent audit activity, section search, refresh, direct section hashes, lazy loading, persistent filters, empty/error states and accessible table regions/dialogs added.
+- Account updates check returned rows/errors and prevent self-ban/self-revocation. Broadcast notifications request confirmation and report sent/failed/skipped counts. CSV exports use the filtered loaded results and neutralize formula prefixes.
+- Privacy deletion is disabled because the legacy browser implementation skipped tables/keys and ignored failures. Available-record export corrects offer UUID filters, handles query errors and removes credential-like fields; it is NOT a complete GDPR export.
+- Existing payout approval/rejection and partner payment workflows were preserved but NOT financially exercised. The legacy sponsor payout approval still performs wallet/record writes separately: replace with a locked, idempotent server transaction before relying on it for live money. Broader admin mutations need authenticated integration tests and audit-log atomicity.
+- Reproducible local layout preview: node tools/admin-review-server.cjs, then http://127.0.0.1:8125/dashboardAdmin.html. Uses fictional records, replaces Supabase imports at the local server only, rejects every mutation. Query role=member tests access denial; fail=payouts tests partial read errors. This server is not part of production auth.
+- Browser results: 60 layout checks (12 destinations at five widths) passed; no console errors. Role filter, reset/banned filters, empty result, section search, safe modal HTML and non-admin denial checked. Signed-in real admin validation remains pending.
+- Live read-only SQL checks under an authenticated admin role passed for overview and queue tables; schema checks confirmed the fields used by the new loaders. No backend data was changed.
+- Helper regression tests passed: node --test tools/admin.test.cjs (3 tests: text/URL safety, CSV formula protection and self-access safeguards).

@@ -1,254 +1,536 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Admin Dashboard | Sponsor Sorter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles.css?v=20261010" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <!-- Chart.js for analytics -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script type="module" src="./js/adminLogic.js"></script>
-  <style>
-    body {
-      background: #000000;
-      color: #f6f6f6;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-  </style>
-</head>
-<body>
-  <header class="navbar1">
-    <section class="navbar">
-      <div class="navii">
-        <h1 style="margin-bottom: 55px;box-shadow: blue;">Sponsor Sorter <span  style="color:#F6C62E; ">Admin Panel</span></h1>
-        <nav>
-          <li><a href="dashboardsponsor.html">Sponsor Dashboard</a></li>
-          <li><a href="dashboardsponsee.html">Sponsee Dashboard</a></li>
-          <li><a href="roadmap.html" id="road-map">🗺️</a></li>
-          <li><a href="dashboardAdmin.html" style="color:#F6C62E; ">Admin</a></li>
-          <li><a href="login.html" id="logout-link">Logout</a></li>
-        </nav>
-      </div>
-    </section>
-  </header>
-
-  <!-- Admin Section Tab Bar -->
-   <nav class="admin-tabs">
-    <button class="admin-tab" data-target="#admin-stats-section">📊 Stats</button>
-    <button class="admin-tab" data-target="#admin-users-section">👤 Users</button>
-    <button class="admin-tab" data-target="#admin-offers-section">💼 Offers</button>
-    <button class="admin-tab" data-target="#admin-reviews-section">⭐ Reviews</button>
-    <button class="admin-tab" data-target="#admin-reported-section">🚩 Reported</button>
-    <button class="admin-tab" data-target="#admin-notify-section">🔔 Notify</button>
-    <button class="admin-tab" data-target="#admin-log-section">📜 Log</button>
-    <button class="admin-tab" data-target="#admin-payouts-section">💸 Payouts</button>
-    <button class="admin-tab" data-target="#admin-privacy-section">🔒 Privacy</button>
-    <button class="admin-tab" data-target="#admin-advanced-analytics-section">📈 Analytics</button>
-    <button class="admin-tab" data-target="#admin-moderation-section">🛡️ Moderation</button>
-    <button class="admin-tab" data-target="#admin-affiliates-section">🤝 Affiliates</button>
-
-  </nav>
-
-  <!-- Place after header or wherever you like in admin dashboard -->
-  <div id="stop-impersonate-row" style="display:none; text-align:center; margin:18px 0 0 0;">
-    <button id="stop-impersonate-btn" style="background:#F6C62E;color:#111;padding:0.7em 2em;font-weight:700;border-radius:8px;border:none;cursor:pointer;font-size:1.09em;">
-      ⛔️ Stop Impersonating
-    </button>
-  </div>
-
-  <div class="main-container">
-
-    <!-- ADVANCED ANALYTICS CARDS (Funnels, Leaderboards, DAU, Engagement, etc) -->
-    <section class="admin-section" id="admin-advanced-analytics-section"></section>
-
-    <!-- Analytics Charts (Chart.js line charts) -->
-    <section class="admin-section" id="admin-analytics-section">
-      <h2>📈 Analytics</h2>
-      <div style="display: flex; flex-wrap: wrap; gap:2rem; justify-content:center;">
-        <div>
-          <canvas id="chart-users" width="340" height="120"></canvas>
-          <div style="text-align:center;">Signups (last 30d)</div>
-        </div>
-        <div>
-          <canvas id="chart-offers" width="340" height="120"></canvas>
-          <div style="text-align:center;">Offers (last 30d)</div>
-        </div>
-        <div>
-          <canvas id="chart-reviews" width="340" height="120"></canvas>
-          <div style="text-align:center;">Reviews (last 30d)</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="admin-section" id="admin-stats-section">
-      <h2>📊 Site Statistics</h2>
-      <div class="admin-stats" id="admin-stats-cards"></div>
-    </section>
-
-    <!-- USER MANAGEMENT -->
-    <section class="admin-section" id="admin-users-section">
-      <h2>👤 User Management</h2>
-      <div style="display:flex; flex-wrap:wrap; gap:1rem 1.5rem; align-items:center; margin-bottom:8px;">
-        <input id="admin-user-search" placeholder="Search users..." style="width:180px;">
-        <select id="userType-filter">
-          <option value="">All Roles</option>
-          <option value="sponsor">Sponsor</option>
-          <option value="sponsee">Sponsee</option>
-        </select>
-        <select id="admin-status-filter">
-          <option value="">All Users</option>
-          <option value="admins">Admins</option>
-          <option value="notadmins">Not Admins</option>
-        </select>
-        <button onclick="window.showBannedUsers()">Show Banned Only</button>
-        <button onclick="window.loadAdminUsers('')">Show All</button>
-        <button id="export-users-csv">Export Users CSV</button>
-        <button id="ban-selected-users">Ban Selected</button>
-        <button id="unban-selected-users">Unban Selected</button>
-      </div>
-      <div class="table-responsive"><div id="admin-users-table"></div></div>
-      <div style="font-size:0.97em;color:#ffb347;">Tip: Use "Impersonate" to troubleshoot as any user. <b>Don't forget to stop impersonation to return to your admin account.</b></div>
-    </section>
-
-    <!-- OFFER MANAGEMENT -->
-    <section class="admin-section" id="admin-offers-section">
-      <h2>💼 Offer Management</h2>
-      <div style="display:flex; flex-wrap:wrap; gap:1rem 1.5rem; align-items:center; margin-bottom:8px;">
-        <label for="offer-status-filter">Status:</label>
-        <select id="offer-status-filter">
-          <option value="">All</option>
-          <option value="pending">Pending</option>
-          <option value="accepted">Accepted</option>
-          <option value="in_progress">In Progress</option>
-          <option value="live">Live</option>
-          <option value="completed">Completed</option>
-          <option value="rejected">Rejected</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="review_completed">Review Completed</option>
-        </select>
-        <input id="admin-offer-search" placeholder="Search offers..." style="width:170px;">
-        <label>Date:</label>
-        <input type="date" id="admin-offer-date-start" style="width:135px;">
-        <span style="color:#F6C62E;font-size:1.2em;">–</span>
-        <input type="date" id="admin-offer-date-end" style="width:135px;">
-        <button id="export-offers-csv">Export Offers CSV</button>
-        <button id="delete-selected-offers">Delete Selected</button>
-      </div>
-      <div class="table-responsive"><div id="admin-offers-table"></div></div>
-    </section>
-
-    <!-- REVIEWS -->
-    <section class="admin-section" id="admin-reviews-section">
-      <h2>⭐ Review Moderation</h2>
-      <button id="export-reviews-csv" style="margin-bottom:8px;">Export Reviews CSV</button>
-      <div class="table-responsive"><div id="admin-reviews-table"></div></div>
-    </section>
-
-    <!-- PAYOUTS -->
-    <section class="admin-section" id="admin-payouts-section">
-      <h2>💸 Payouts / Transactions</h2>
-      <button id="export-payout-csv" style="margin-bottom:8px;">Export Payouts CSV</button>
-      <div class="table-responsive"><div id="admin-payout-table"></div></div>
-    </section>
-
-    <!-- REPORTED SECTION-->
-    <section class="admin-section" id="admin-reported-section">
-      <h2>🚩 Reported Items</h2>
-      <div id="admin-reported-tabs" class="reported-tabs">
-        <button class="reported-tab" data-type="users">Users</button>
-        <button class="reported-tab" data-type="offers">Offers</button>
-        <button class="reported-tab" data-type="reviews">Reviews</button>
-        <button class="reported-tab" data-type="comments">Reported Comments</button>
-      </div>
-      <div id="reported-content"></div>
-    </section>
-
-    <!-- LOGS & NOTIFICATIONS (side-by-side) -->
-    <section class="admin-section admin-flex-row" id="admin-log-section" style="margin-top:3rem;">
-      <div class="admin-flex-left">
-        <h2 style="margin-top:0;">🔔 Send Notification</h2>
-        <form id="admin-notify-form" autocomplete="off">
-          <input type="text" id="notify-title" placeholder="Notification Title" required style="margin-bottom:0.4rem;width:98%;" /><br />
-          <textarea id="notify-message" placeholder="Message (will be sent to all users or target email)" rows="3" required style="margin-bottom:0.4rem;width:98%;"></textarea><br />
-          <input id="notify-email" placeholder="Target email (optional, blank = all users)" style="margin-bottom:0.4rem;width:98%;"><br>
-          <button type="submit" style="background:#F6C62E; color:#222;width:98%;">Send Notification</button>
-          <div id="admin-notify-table"></div>
-
-        </form>
-        
-        <div id="admin-notify-status" style="margin-top:10px;"></div>
-      </div>
-      <div class="admin-flex-right">
-        <h2 style="margin-top:0;">📜 Admin Activity Log</h2>
-        <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1rem; align-items:center; margin-bottom:8px;">
-          <input id="log-action-filter" placeholder="Action filter" style="width:120px;">
-          <input id="log-admin-filter" placeholder="Admin user id" style="width:120px;">
-          <input id="log-type-filter" placeholder="Target type" style="width:120px;">
-          <input type="date" id="log-date-start">
-          <span style="color:#F6C62E;font-size:1.2em;">–</span>
-          <input type="date" id="log-date-end">
-          <button id="export-log-csv">Export Log CSV</button>
-        </div>
-        <div class="table-responsive"><div id="admin-log-table"></div></div>
-      </div>
-    </section>
-    <section class="admin-section" id="admin-privacy-section">
-      <h2>🔒 User Privacy Requests (GDPR/CCPA)</h2>
-      <div class="table-responsive">
-        <div id="admin-privacy-table"></div>
-      </div>
-    </section>
-  <div id="admin-modal-root"></div>
-
-  <!-- NEW: Moderation Section -->
-    <section class="admin-section" id="admin-moderation-section">
-      <h2>🛡️ Moderation Logs</h2>
-
-      <div class="moderation-tabs" style="margin-bottom:16px;">
-        <button onclick="document.getElementById('fambot-logs').scrollIntoView()">FamBot Logs</button>
-        <button onclick="document.getElementById('ip-logs').scrollIntoView()">IP Moderation Logs</button>
-      </div>
-
-      <div id="fambot-logs">
-        <h3>FamBot Moderation Logs</h3>
-        <div class="table-responsive"><div id="admin-fambot-table"></div></div>
-      </div>
-
-      <div id="ip-logs" style="margin-top:40px;">
-        <h3>New User Moderation Logs</h3>
-        <div class="table-responsive"><div id="admin-ip-table"></div></div>
-      </div>
-    </section>
-
-  <div id="admin-reject-modal-root"></div>
-
-<!-- AFFILIATES -->
-<section class="admin-section" id="admin-affiliates-section">
-  <h2>🤝 Affiliate & Partner Management</h2>
-  <div id="admin-affiliate-section"></div>
-</section>
-
-</div>
-
-
-  <footer class="footercomplete">
-    <div class="footer-text">
-      <ul>
-        <li><a href="./help.html">Help</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-        <li><a href="./privacy.html">Privacy Policy</a></li>
-        <li><a href="./terms.html">Terms of Service</a></li>
-        <li><a href="./reviews.html">Reviews</a></li>
-      </ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin | Sponsor Sorter</title>
+    <link rel="stylesheet" href="admin.css?v=20261011" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"
+    ></script>
+    <script type="module" src="./js/adminLogic.js?v=20261011"></script>
+  </head>
+  <body class="admin-page">
+    <a class="admin-skip-link" href="#admin-main">Skip to admin content</a>
+    <header class="admin-site-header">
+      <a class="admin-brand" href="index.html"
+        ><img src="logos.png" alt="" width="48" height="48" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Website">
+        <a href="index.html">Home</a><a href="finder.html">Finder</a
+        ><a href="dashboardsponsor.html">Sponsor dashboard</a
+        ><a href="dashboardsponsee.html">Sponsee dashboard</a
+        ><a href="login.html" id="logout-link">Log out</a>
+      </nav>
+    </header>
+    <div id="admin-access-status" class="admin-access-status" role="status">
+      Checking administrator access…
     </div>
-    <img src="Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-    <div style="margin-top:18px;font-size:0.98em;color:#bbb;">&copy; 2024 Sponsor Sorter. All rights reserved.</div>
-  </footer>
-  <script type="module" src="./js/AffiliateAdmin.js"></script>
+    <div id="admin-workspace" class="admin-workspace" hidden>
+      <aside class="admin-sidebar" aria-label="Administration">
+        <div class="admin-sidebar-heading">
+          <span class="admin-eyebrow">SPONSOR SORTER</span
+          ><strong>Admin workspace</strong>
+        </div>
+        <label class="admin-nav-search"
+          ><span class="admin-sr-only">Find an admin section</span
+          ><input
+            type="search"
+            id="admin-section-search"
+            placeholder="Find a section…"
+            autocomplete="off"
+        /></label>
+        <nav aria-label="Admin sections">
+          <div class="admin-nav-group">
+            <p class="admin-nav-label">WORKSPACE</p>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="overview"
+            >
+              <span aria-hidden="true">◈</span><span>Overview</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="users"
+            >
+              <span aria-hidden="true">◎</span><span>Users</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="offers"
+            >
+              <span aria-hidden="true">▤</span><span>Sponsorships</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="reviews"
+            >
+              <span aria-hidden="true">☆</span><span>Reviews</span>
+            </button>
+          </div>
+          <div class="admin-nav-group">
+            <p class="admin-nav-label">TRUST & SAFETY</p>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="reported"
+            >
+              <span aria-hidden="true">⚑</span><span>Reports</span
+              ><span
+                class="admin-nav-count"
+                data-admin-count="reported"
+                hidden
+              ></span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="moderation"
+            >
+              <span aria-hidden="true">◇</span><span>Moderation</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="privacy"
+            >
+              <span aria-hidden="true">▣</span><span>Privacy requests</span
+              ><span
+                class="admin-nav-count"
+                data-admin-count="privacy"
+                hidden
+              ></span>
+            </button>
+          </div>
+          <div class="admin-nav-group">
+            <p class="admin-nav-label">OPERATIONS</p>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="payouts"
+            >
+              <span aria-hidden="true">↗</span><span>Payouts</span
+              ><span
+                class="admin-nav-count"
+                data-admin-count="payouts"
+                hidden
+              ></span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="affiliates"
+            >
+              <span aria-hidden="true">⋈</span><span>Affiliates</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="notify"
+            >
+              <span aria-hidden="true">○</span><span>Notifications</span>
+            </button>
+            <button type="button" class="admin-nav-item" data-admin-view="log">
+              <span aria-hidden="true">≡</span><span>Activity log</span>
+            </button>
+            <button
+              type="button"
+              class="admin-nav-item"
+              data-admin-view="analytics"
+            >
+              <span aria-hidden="true">▥</span><span>Analytics</span>
+            </button>
+          </div>
+        </nav>
+        <p id="admin-section-no-results" hidden>No matching sections.</p>
+        <a class="admin-roadmap-link" href="roadmap.html"
+          >Development roadmap ↗</a
+        >
+      </aside>
+      <main id="admin-main" class="admin-main" tabindex="-1">
+        <div class="admin-page-heading">
+          <div>
+            <p class="admin-eyebrow">
+              ADMINISTRATION / <span id="admin-breadcrumb">OVERVIEW</span>
+            </p>
+            <h1 id="admin-view-title">Overview</h1>
+            <p id="admin-view-description">
+              A clear view of your platform and the work that needs attention.
+            </p>
+          </div>
+          <div class="admin-page-actions">
+            <span id="admin-identity"></span
+            ><button type="button" id="admin-refresh">↻ Refresh section</button>
+          </div>
+        </div>
+        <div class="admin-status-row">
+          <p id="admin-load-status" role="status" aria-live="polite">Ready</p>
+          <span id="admin-last-updated"></span>
+        </div>
+        <div id="stop-impersonate-row" hidden>
+          <span>A troubleshooting view is active.</span
+          ><button type="button" id="stop-impersonate-btn">
+            Stop impersonating
+          </button>
+        </div>
+        <div id="unread-reports-banner" hidden></div>
+        <div id="admin-section-content">
+          <!-- ADVANCED ANALYTICS CARDS (Funnels, Leaderboards, DAU, Engagement, etc) -->
+          <section
+            class="admin-section"
+            id="admin-advanced-analytics-section"
+            data-admin-panel="analytics"
+            hidden
+          ></section>
 
-</body>
+          <!-- Analytics Charts (Chart.js line charts) -->
+          <section
+            class="admin-section"
+            id="admin-analytics-section"
+            data-admin-panel="analytics"
+            hidden
+          >
+            <h2>Activity over time</h2>
+            <div class="admin-chart-grid">
+              <div class="admin-chart-card">
+                <canvas id="chart-users" width="340" height="120"></canvas>
+                <div>Signups (last 30d)</div>
+              </div>
+              <div class="admin-chart-card">
+                <canvas id="chart-offers" width="340" height="120"></canvas>
+                <div>Offers (last 30d)</div>
+              </div>
+              <div class="admin-chart-card">
+                <canvas id="chart-reviews" width="340" height="120"></canvas>
+                <div>Reviews (last 30d)</div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="admin-section"
+            id="admin-stats-section"
+            data-admin-panel="overview"
+            hidden
+          >
+            <h2>Platform overview</h2>
+            <p class="admin-section-copy">
+              Your current platform totals and the work awaiting review.
+            </p>
+            <div
+              class="admin-stats"
+              id="admin-stats-cards"
+              aria-live="polite"
+            ></div>
+            <h3>Needs your attention</h3>
+            <div class="admin-queue-grid" id="admin-attention-queue"></div>
+            <div class="admin-overview-grid">
+              <div class="admin-overview-card">
+                <h3>Recent admin activity</h3>
+                <div id="admin-recent-activity"></div>
+                <button type="button" data-admin-view="log">
+                  Open activity log →
+                </button>
+              </div>
+              <div class="admin-overview-card">
+                <h3>Quick actions</h3>
+                <p>Jump straight to the tools you use most.</p>
+                <div class="admin-quick-actions">
+                  <button type="button" data-admin-view="users">
+                    Manage accounts</button
+                  ><button type="button" data-admin-view="notify">
+                    Send a notification</button
+                  ><button type="button" data-admin-view="offers">
+                    Review sponsorships</button
+                  ><a href="roadmap.html">Open development roadmap ↗</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- USER MANAGEMENT -->
+          <section
+            class="admin-section"
+            id="admin-users-section"
+            data-admin-panel="users"
+            hidden
+          >
+            <h2>User management</h2>
+            <p class="admin-section-copy">
+              Up to 1,000 matching accounts. Use the filters to narrow results;
+              CSV exports include the loaded results.
+            </p>
+            <div class="admin-toolbar">
+              <input
+                id="admin-user-search"
+                type="search"
+                aria-label="Search usernames"
+                placeholder="Search usernames…"
+              />
+              <select id="userType-filter" aria-label="Account role">
+                <option value="">All Roles</option>
+                <option value="sponsor">Sponsor</option>
+                <option value="besponsored">Sponsee</option>
+              </select>
+              <select
+                id="admin-status-filter"
+                aria-label="Administrator access"
+              >
+                <option value="">All Users</option>
+                <option value="admins">Admins</option>
+                <option value="notadmins">Not Admins</option>
+              </select>
+              <button id="admin-banned-filter" aria-pressed="false">
+                Banned users
+              </button>
+              <button id="admin-clear-user-filters">Reset filters</button>
+              <button id="export-users-csv">Export results CSV</button>
+              <button id="ban-selected-users">Ban Selected</button>
+              <button id="unban-selected-users">Unban Selected</button>
+            </div>
+            <div class="table-responsive">
+              <div id="admin-users-table"></div>
+            </div>
+            <div>
+              Use Details to review an account. Impersonation is a
+              troubleshooting view; it does not change your authenticated
+              identity.
+            </div>
+          </section>
+
+          <!-- OFFER MANAGEMENT -->
+          <section
+            class="admin-section"
+            id="admin-offers-section"
+            data-admin-panel="offers"
+            hidden
+          >
+            <h2>Sponsorship management</h2>
+            <p class="admin-section-copy">
+              Up to 1,000 matching offers. Search by title and combine status
+              and date filters.
+            </p>
+            <div class="admin-toolbar">
+              <label for="offer-status-filter">Status:</label>
+              <select id="offer-status-filter">
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="in_progress">In Progress</option>
+                <option value="live">Live</option>
+                <option value="completed">Completed</option>
+                <option value="rejected">Rejected</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="review_completed">Review Completed</option>
+              </select>
+              <input
+                id="admin-offer-search"
+                type="search"
+                aria-label="Search offer titles"
+                placeholder="Search offer titles…"
+              />
+              <label>Date:</label>
+              <input type="date" id="admin-offer-date-start" />
+              <span>–</span>
+              <input type="date" id="admin-offer-date-end" />
+              <button id="export-offers-csv">Export results CSV</button>
+              <button id="delete-selected-offers">Delete Selected</button>
+            </div>
+            <div class="table-responsive">
+              <div id="admin-offers-table"></div>
+            </div>
+          </section>
+
+          <!-- REVIEWS -->
+          <section
+            class="admin-section"
+            id="admin-reviews-section"
+            data-admin-panel="reviews"
+            hidden
+          >
+            <h2>⭐ Review Moderation</h2>
+            <button id="export-reviews-csv">Export results CSV</button>
+            <div class="table-responsive">
+              <div id="admin-reviews-table"></div>
+            </div>
+          </section>
+
+          <!-- PAYOUTS -->
+          <section
+            class="admin-section"
+            id="admin-payouts-section"
+            data-admin-panel="payouts"
+            hidden
+          >
+            <h2>💸 Payouts / Transactions</h2>
+            <button id="export-payout-csv">Export Payouts CSV</button>
+            <div class="table-responsive">
+              <div id="admin-payout-table"></div>
+            </div>
+          </section>
+
+          <!-- REPORTED SECTION-->
+          <section
+            class="admin-section"
+            id="admin-reported-section"
+            data-admin-panel="reported"
+            hidden
+          >
+            <h2>🚩 Reported Items</h2>
+            <div class="admin-toolbar">
+              <label for="admin-report-status">Report status</label
+              ><select id="admin-report-status">
+                <option value="pending">Pending</option>
+                <option value="">All statuses</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+            <div id="admin-reported-tabs" class="reported-tabs">
+              <button class="reported-tab" data-type="users">Users</button>
+              <button class="reported-tab" data-type="offers">Offers</button>
+              <button class="reported-tab" data-type="reviews">Reviews</button>
+              <button class="reported-tab" data-type="comments">
+                Reported Comments
+              </button>
+            </div>
+            <div class="table-responsive">
+              <div id="reported-content"></div>
+            </div>
+          </section>
+
+          <section
+            class="admin-section"
+            id="admin-notify-section"
+            data-admin-panel="notify"
+            hidden
+          >
+            <h2>🔔 Send Notification</h2>
+            <form id="admin-notify-form" autocomplete="off">
+              <input
+                type="text"
+                id="notify-title"
+                placeholder="Notification Title"
+                required
+              /><br />
+              <textarea
+                id="notify-message"
+                placeholder="Your in-app notification message"
+                rows="3"
+                required
+              ></textarea
+              ><br />
+              <input
+                type="email"
+                id="notify-email"
+                placeholder="Recipient email · leave blank for all accounts"
+              /><br />
+              <button type="submit">Send Notification</button>
+            </form>
+
+            <h3>Notification history</h3>
+            <div class="table-responsive">
+              <div id="admin-notify-table"></div>
+            </div>
+            <div role="status" id="admin-notify-status"></div>
+          </section>
+          <section
+            class="admin-section"
+            id="admin-log-section"
+            data-admin-panel="log"
+            hidden
+          >
+            <h2>📜 Admin Activity Log</h2>
+            <div class="admin-toolbar">
+              <input id="log-action-filter" placeholder="Action filter" />
+              <input id="log-admin-filter" placeholder="Admin user id" />
+              <input id="log-type-filter" placeholder="Target type" />
+              <input type="date" id="log-date-start" />
+              <span>–</span>
+              <input type="date" id="log-date-end" />
+              <button id="export-log-csv">Export results CSV</button>
+            </div>
+            <div class="table-responsive"><div id="admin-log-table"></div></div>
+          </section>
+          <section
+            class="admin-section"
+            id="admin-privacy-section"
+            data-admin-panel="privacy"
+            hidden
+          >
+            <h2>🔒 User Privacy Requests (GDPR/CCPA)</h2>
+            <div class="table-responsive">
+              <div id="admin-privacy-table"></div>
+            </div>
+          </section>
+          <div id="admin-modal-root"></div>
+
+          <!-- NEW: Moderation Section -->
+          <section
+            class="admin-section"
+            id="admin-moderation-section"
+            data-admin-panel="moderation"
+            hidden
+          >
+            <h2>🛡️ Moderation Logs</h2>
+
+            <div class="moderation-tabs">
+              <button
+                onclick="document.getElementById('fambot-logs').scrollIntoView()"
+              >
+                FamBot Logs
+              </button>
+              <button
+                onclick="document.getElementById('ip-logs').scrollIntoView()"
+              >
+                IP Moderation Logs
+              </button>
+            </div>
+
+            <div id="fambot-logs">
+              <h3>FamBot Moderation Logs</h3>
+              <div class="table-responsive">
+                <div id="admin-fambot-table"></div>
+              </div>
+            </div>
+
+            <div id="ip-logs">
+              <h3>New User Moderation Logs</h3>
+              <div class="table-responsive">
+                <div id="admin-ip-table"></div>
+              </div>
+            </div>
+          </section>
+
+          <div id="admin-reject-modal-root"></div>
+
+          <!-- AFFILIATES -->
+          <section
+            class="admin-section"
+            id="admin-affiliates-section"
+            data-admin-panel="affiliates"
+            hidden
+          >
+            <h2>🤝 Affiliate & Partner Management</h2>
+            <div id="admin-affiliate-section"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <footer class="admin-footer">
+      <span>© 2026 Sponsor Sorter</span>
+      <nav aria-label="Footer">
+        <a href="help.html">Help</a><a href="privacy.html">Privacy</a
+        ><a href="terms.html">Terms</a>
+      </nav>
+    </footer>
+  </body>
 </html>
