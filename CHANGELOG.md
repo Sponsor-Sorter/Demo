@@ -11,7 +11,7 @@
 - Verified the deployed endpoint rejects anonymous and malformed-JWT requests with HTTP 401.
 - Supabase Security Advisor scan found five RLS-disabled, anon-writable tables and additional SECURITY DEFINER/search-path/Auth configuration findings; details and a policy-first remediation plan are recorded in `HANDOVER.md`.
 
-**Release status:** Supabase database changes and four Edge Function versions are live. Frontend release is prepared for publication to main. See [HANDOVER.md](HANDOVER.md) for verification and outstanding release gates.
+**Release status:** Supabase database changes and four Edge Function versions are live. Frontend published to main and verified live at https://sponsorsorter.com (release a463ffb). See [HANDOVER.md](HANDOVER.md) for verification and outstanding release gates.
 
 - Enabled RLS and explicit access policies on five exposed application tables; verified anonymous mutation restrictions and private-row isolation.
 - Fixed homepage navigation to one row and mobile overflow on home/login/signup; scoped leaking signup CSS and hardened roadmap editing/text rendering.

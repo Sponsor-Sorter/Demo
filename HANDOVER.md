@@ -7,7 +7,7 @@
 
 ## State
 
-Frontend release prepared for publication to origin/main and https://sponsorsorter.com. Related Supabase restrictions and four Edge Functions are already deployed. See the release verification section below for the final publication result.
+Frontend published to origin/main and verified live at https://sponsorsorter.com (a463ffb). Related Supabase restrictions and four Edge Functions are already deployed. See the release verification section below for the final publication result.
 
 ## Work completed
 
@@ -60,3 +60,5 @@ Deno is installed at `C:\Users\jrbwi\AppData\Local\Microsoft\WinGet\Packages\Den
 - Browser initially reused the old cached stylesheet; root HTML stylesheet links now include a release version to refresh existing visitors.
 - Public pages checked at mobile and desktop sizes. Authenticated dashboards, successful paid checkout, subscription webhooks and remaining security advisor findings are still outstanding; this is a frontend release, not certification that every feature is production-ready.
 
+
+- Final release a463ffb GitHub Pages deployment succeeded. Live browser checks: 390px viewport / 387px document width and 1440px viewport / 1425px document width; all four homepage navigation links share the same row at both widths. Screenshot saved in the parent workspace as live-frontend.jpg.
