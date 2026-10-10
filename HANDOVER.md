@@ -53,3 +53,10 @@ Deno is installed at `C:\Users\jrbwi\AppData\Local\Microsoft\WinGet\Packages\Den
 
 - Changed JavaScript files passed node --check; CRLF-aware git diff --check passed. No secret Stripe keys or private-key blocks were found in the source scan.
 - Local secure_exposed_application_tables migration is ordered after its is_current_user_admin dependency (20261010121000); it was already applied remotely by the connector under its migration name. Reconcile remote migration history before running CLI db push; do not blindly reapply policies.
+
+## Release verification
+
+- Release 84caaa4 pushed to origin/main; GitHub Pages published the updated homepage and modular styles at https://sponsorsorter.com.
+- Browser initially reused the old cached stylesheet; root HTML stylesheet links now include a release version to refresh existing visitors.
+- Public pages checked at mobile and desktop sizes. Authenticated dashboards, successful paid checkout, subscription webhooks and remaining security advisor findings are still outstanding; this is a frontend release, not certification that every feature is production-ready.
+

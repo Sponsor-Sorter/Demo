@@ -15,3 +15,5 @@
 
 - Enabled RLS and explicit access policies on five exposed application tables; verified anonymous mutation restrictions and private-row isolation.
 - Fixed homepage navigation to one row and mobile overflow on home/login/signup; scoped leaking signup CSS and hardened roadmap editing/text rendering.
+
+- Versioned root-page stylesheet links so existing visitors load the new modular CSS after deployment.
