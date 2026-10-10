@@ -44,3 +44,9 @@
 - Standardised card/preview/CTA corner radii, neutral divider colours and accent frame tokens.
 - Platform-fee card now retains the same frame on desktop, tablet and mobile; creator/sponsor preview links align at the bottoms of their cards.
 - Browser checks at 320/375/768/1024/1440/1920 confirmed consistent 1px frames/16px radii, no horizontal overflow and single-row main navigation.
+
+## 2026-10-10 — Signup information correction
+
+- Corrected stale US$9.99 one-month wording to the actual US$10/month Pro subscription in static and dynamic confirmation copy; Free messaging remains payment-free.
+- Shortened signup introduction to accurate creator/sponsor roles and costs; removed unsupported escrow/automatic-stat promises. Fixed logo-input label, sponsor spelling, footer logo/year.
+- Browser exercised Sponsor Pro and Creator Free step selection and confirmation copy without submitting registration or accepting terms. Inline script syntax check passed. This is a copy/accessibility correction, not a checkout or signup backend validation.

@@ -38,50 +38,12 @@
     <legend>Welcome to Sponsor Sorter</legend>
 
     <div class="intro-text">
-      <h1 style="font-size:2.35em; margin-bottom:12px;">
-        Turn Your Socials Into a Sponsor-Ready Dashboard
-      </h1>
-
-      <p>
-        Sponsor Sorter is the clean, professional way to manage sponsorships for <strong>creators</strong> and <strong>brands</strong>;
-        without messy DMs, blurry screenshots, or “wait… what are the deliverables?” moments.
-      </p>
-
-      <p>
-        <strong>Connect your accounts</strong> (YouTube, TikTok, Instagram, Twitch, etc.) and we build your
-        <strong>stats dashboard</strong> automatically. Your profile becomes a single place where sponsors can see your
-        <strong>platform-by-platform numbers</strong>, content style, audience, and sponsorship reviews in a format that’s easy to compare.
-      </p>
-
-      <p>
-        Then you get the most important growth tool:
-        <strong>one shareable link</strong> you can drop in your bio/about sections.
-        Sponsors click it and instantly view your dashboard, your connected platforms, and your key stats. No back-and-forth required.
-      </p>
-
-      <p style="margin-top:14px;">
-        <strong>What you unlock when you connect accounts:</strong>
-      </p>
-
-      <ul style="margin-left:20px; margin-top:10px; margin-bottom:10px; text-align:left;">
-        <li>✔️ <strong>A public sponsor dashboard</strong> that shows your stats for each connected platform (all in one place).</li><br>
-        <li>✔️ <strong>A single “link in bio”</strong> so brands can review your numbers and reach out properly.</li><br>
-        <li>✔️ <strong>Cleaner deals</strong> with clear deliverables, deadlines, and timelines. This way both sides know exactly what’s happening.</li><br>
-        <li>✔️ <strong>Payment protection</strong> (escrow-style flow) so you’re not chasing invoices or risking sketchy offers.</li><br>
-        <li>✔️ <strong>Professional proof</strong> with reviews, reputation, and a sponsorship track record over time.</li>
-      </ul>
-
-      <p>
-        <strong>For brands:</strong> discover creators faster, evaluate them with consistent stats across platforms, send structured offers,
-        and track progress without spreadsheets.
-        <br />
-        <strong>For creators:</strong> look more “sponsorable”, close deals quicker, and spend more time making content.
-      </p>
-
-      <p style="margin-top:14px;">
-        <strong>Ready to stop doing sponsorships the hard way?</strong><br />
-        Build your dashboard, connect your accounts, and share your link. Sponsors can finally see everything they need in one click.
-      </p>
+      <h1>Start your next partnership.</h1>
+      <p>Create your Sponsor Sorter profile, choose your role and plan, then start exploring potential partners.</p>
+      <p><strong>Creators (sponsees)</strong> can start on Free or choose Pro. <strong>Brands (sponsors)</strong> use Pro to manage sponsorship offers and campaigns.</p>
+      <p>Keep profiles, deliverables, deadlines and campaign discussions together. Available social connections vary by platform.</p>
+      <p><strong>Pro: US$10/month.</strong> Sponsorship offers carry a 10% platform fee paid up front by the sponsor. Review your selected plan and the final amount before confirming.</p>
+      <p>Already have an account? <a href="./login.html">Log in</a>. Want to explore first? <a href="./guest.html?role=sponsee">Preview a creator dashboard</a> or <a href="./guest.html?role=sponsor">sponsor dashboard</a>.</p>
     </div>
   </fieldset>
 </section>
@@ -106,7 +68,7 @@
          <section class="profilefs">
         <fieldset class="upllogo">
             <legend>Upload Your Logo</legend>
-            <label for="logo">Upload a Logo:</label>
+            <label for="logofile">Upload a Logo:</label>
             <input type="file" id="logofile" name="logofile" accept="image/png, image/jpeg" onchange="previewLogo()">
             <img id="pici" class="picc" style="border-radius: 100px;" height="180px" width="180px" src="./logos.png" alt="Uploaded Logo" />
         </fieldset>
@@ -405,7 +367,7 @@
                     </div>
 
                     <fieldset class="searchpref">
-                        <legend>Sponser Preferences</legend>
+                        <legend>Sponsor Preferences</legend>
                         <div class="form-row">
                             <label for="target-audience">Target Audience:</label>
                             <select name="target-audience" id="target-audience-sponsee" required>
@@ -513,7 +475,7 @@
                     </ul>
                 </div>
                 <div class="plan-column plan-column-pro" style="flex:1;min-width:230px;padding:10px 12px;border-radius:10px;border:1px solid #ddd;background:#464646;">
-                    <h4 style="margin-top:0;margin-bottom:6px;">Pro Plan $10 USD A month</h4>
+                    <h4 style="margin-top:0;margin-bottom:6px;">Pro Plan US$10/month</h4>
                     <ul style="margin-left:auto;margin-bottom:4px;padding:0;">
                         <li>Unlimited active sponsorship offers</li>
                         <li>Connect all supported platforms</li>
@@ -543,7 +505,7 @@
         <fieldset class="payfield">
             <legend>Secure Payment</legend>
             <div class="payment-content">
-                <h2 id="pay-heading"><strong>Cost: $9.99 USD (one month’s access)</strong></h2>
+                <h2 id="pay-heading"><strong>Pro: US$10/month</strong></h2>
                 <p id="pay-copy">
                     We use <img src="./stripe.png" alt="Stripe" style="height:1.3em;vertical-align:middle;"> Stripe for secure, instant payments.<br>
                     After completing your profile, you’ll be redirected to a secure Stripe checkout page.
@@ -552,7 +514,7 @@
                     <div class="checkbox-row">
                         <input type="checkbox" id="confirm-payment" name="confirm-payment" required>
                         <label for="confirm-payment" id="confirm-payment-label">
-                            I understand and agree to pay $9.99 USD for Sponsor Sorter access.
+                            I understand Pro costs US$10/month and will review the subscription details at Stripe checkout.
                         </label>
                     </div>
                     <div class="tos-agreement">
@@ -593,9 +555,9 @@
         <li><a href="./stats.html">Stats</a></li>
       </ul>
     </div>
-    <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
+    <img src="./logos.png" class="footpic" alt="Sponsor Sorter Logo" />
     <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-      &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480
+      &copy; 2026 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480
       <br />
       Data protected by
       <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a>
@@ -740,12 +702,12 @@ function showStep(step) {
                 confirmCheckbox.required = false;
             }
         } else {
-            if (heading) heading.innerHTML = '<strong>Cost: $9.99 USD (one month’s access)</strong>';
+            if (heading) heading.innerHTML = '<strong>Pro: US$10/month</strong>';
             if (copy) {
                 copy.innerHTML = 'We use <img src="./stripe.png" alt="Stripe" style="height:1.3em;vertical-align:middle;"> Stripe for secure, instant payments.<br>After completing your profile, you’ll be redirected to a secure Stripe checkout page.';
             }
             if (confirmLabel) {
-                confirmLabel.textContent = 'I understand and agree to pay $9.99 USD for Sponsor Sorter access.';
+                confirmLabel.textContent = 'I understand Pro costs US$10/month and will review the subscription details at Stripe checkout.';
             }
             if (confirmCheckbox) {
                 confirmCheckbox.required = true;
