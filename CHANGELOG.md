@@ -38,3 +38,9 @@
 - Removed homepage private-table queries, activity ticker, unverifiable marketing guarantees, competitor comparisons, newsletter capture and rate calculator. Existing legacy homepage.js is preserved but no longer loaded here.
 - Checked actual browser widths 320, 375, 540, 768, 800, 1024, 1440 and 1920: no overflow, all four header links in one row. FAQ mouse/keyboard, section navigation, asset/link targets and console checks passed.
 - Rollback: restore ONLY index.html from backup/homepage-before-redesign-20261010 (20c0bf5), then publish. This preserves the admin/security work. homepage.css can remain unused.
+
+## 2026-10-10 — Homepage frame consistency
+
+- Standardised card/preview/CTA corner radii, neutral divider colours and accent frame tokens.
+- Platform-fee card now retains the same frame on desktop, tablet and mobile; creator/sponsor preview links align at the bottoms of their cards.
+- Browser checks at 320/375/768/1024/1440/1920 confirmed consistent 1px frames/16px radii, no horizontal overflow and single-row main navigation.

@@ -6,6 +6,8 @@
   --bg: #08090a;
   --surface: #151719;
   --border: #34383e;
+  --frame-accent: #495f80;
+  --frame-radius: 16px;
   --muted: #b1b8c3;
   --accent: #51d4f0;
 }
@@ -202,8 +204,8 @@ p {
 }
 .preview {
   min-width: 0;
-  border: 1px solid #49576d;
-  border-radius: 18px;
+  border: 1px solid var(--frame-accent);
+  border-radius: var(--frame-radius);
   background: linear-gradient(140deg, #1e202b, #101418);
   box-shadow:
     0 24px 80px #0008,
@@ -399,7 +401,7 @@ p {
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--frame-radius);
   padding: 30px;
   min-width: 0;
 }
@@ -407,6 +409,13 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+}
+.audience-grid .panel {
+  display: flex;
+  flex-direction: column;
+}
+.audience-grid .text-link {
+  margin-top: auto;
 }
 .label {
   font-size: 0.75rem;
@@ -446,7 +455,7 @@ p {
 }
 .workflow {
   background: linear-gradient(#11141b, #0d1015);
-  border-block: 1px solid #262c37;
+  border-block: 1px solid var(--border);
 }
 .steps {
   list-style: none;
@@ -513,7 +522,7 @@ p {
   flex-direction: column;
 }
 .featured {
-  border-color: #6680c7;
+  border-color: var(--frame-accent);
   background: linear-gradient(150deg, #222139, #151c26);
 }
 .price-card h3 {
@@ -540,7 +549,10 @@ p {
   margin-top: auto;
 }
 .fee {
-  padding: 30px 10px 30px 20px;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--frame-radius);
 }
 .fee-number {
   font-size: 3rem;
@@ -603,8 +615,8 @@ p {
   justify-content: space-between;
   gap: 35px;
   padding: 45px;
-  border: 1px solid #455a79;
-  border-radius: 18px;
+  border: 1px solid var(--frame-accent);
+  border-radius: var(--frame-radius);
   background:
     linear-gradient(110deg, #21192bdb, #0b2734ed),
     url("./handslogo2.jpg") center/cover;
@@ -656,7 +668,7 @@ p {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  border-top: 1px solid #252a31;
+  border-top: 1px solid var(--border);
   margin-top: 32px;
   padding-top: 20px;
   color: #a2aab7;
@@ -682,9 +694,7 @@ p {
   }
   .fee {
     grid-column: 1/-1;
-    padding: 28px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    padding: 30px;
   }
   .closing {
     padding: 30px;
