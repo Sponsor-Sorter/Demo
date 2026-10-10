@@ -7,6 +7,15 @@
 
 ## State
 
+### Finder / member workspace redesign — 2026-10-10
+
+- New readable presentation modules: `workspace-experience.css`, `js/workspaceExperience.js`; loaded only by Finder and the sponsor/creator dashboards. Existing IDs and handler nodes retained. Navigation, metrics, active offers and public offers now precede long profile sections. Guidance is expandable; tables scroll locally.
+- Added labelled filters, clear filters/search, range validation, result announcements and pressed search toggles. Fixed sponsorLogic legacy client import and offer pagination/missing-value presentation.
+- Browser: 20 fictional layout checks at 320/375/768/1440, zero page overflow. Both role dashboards retain all status tabs; creator details expansion, sponsor Pending filtering, Finder modes/reset and keyboard section navigation checked. Existing 24 automated tests pass. These do not prove live payment/OAuth completion.
+- Reproduce: `node tools/workspace-review-server.cjs` then `http://127.0.0.1:8126/finder.html`; append `?role=creator` for creator Finder. Dashboard pathname selects fixture role. Synthetic records only; query mutations refuse writes. This mock does not reproduce every external API, realtime behavior or permission rule.
+- Moikailive and associated records were not modified. No backend schema/function changes in this release. Outstanding payment, webhook, RLS and live flow work below remains applicable.
+- Tools used: shell/Git/Prettier and unified-computer-use browser controls; Supabase skill consulted for shared-client wiring. No additional plugins installed.
+
 ### Public information page consistency — 2026-10-10
 
 - Added scoped, formatted `public-pages.css` and `js/publicPageLayout.js` to contact, privacy, terms, legacy tos and reset-password pages. Reuses original artwork/animated grid and shared glossy tabs. Existing navigation nodes/IDs/listeners are moved intact; header becomes one row of four links.

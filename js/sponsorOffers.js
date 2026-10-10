@@ -72,7 +72,7 @@ function renderPaginationControls(totalOffers) {
   const totalPages = Math.max(1, Math.ceil(totalOffers / offersPerPage));
   controls.innerHTML = `
     <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>
-    <span>Page ${totalOffers === 0 ? 0 : currentPage} of ${totalPages}</span>
+    <span>Page ${currentPage} of ${totalPages}</span>
     <button id="next-page" ${currentPage === totalPages || totalOffers === 0 ? 'disabled' : ''}>Next</button>
   `;
 
@@ -294,14 +294,14 @@ async function renderSingleOffer(offer) {
             <div class="offer-left">
               <p><strong>Offer Title:</strong> ${offer.offer_title}</p>
               <p><strong>Date Sent:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
-              <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
+              <p><strong>Deadline:</strong> ${offer.deadline && Number.isFinite(Date.parse(offer.deadline)) ? new Date(offer.deadline).toLocaleDateString() : 'Not specified'}</p>
               ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
               ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
             </div>
             <div class="offer-right">
               <p><strong>Amount:</strong> $${offer.offer_amount}</p>
-              <p><strong>Payment Schedule:</strong> ${offer.payment_schedule}</p>
-              <p><strong>Duration:</strong> ${offer.sponsorship_duration}</p>
+              <p><strong>Payment Schedule:</strong> ${offer.payment_schedule || 'Not specified'}</p>
+              <p><strong>Duration:</strong> ${offer.sponsorship_duration || 'Not specified'}</p>
               <p><strong>Status:</strong> <span style="color: ${
                 offer.status === 'pending' ? 'orange' :
                 offer.status === 'accepted' ? 'green' :

@@ -615,7 +615,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
                   'inherit'
                 }">${offer.status}</span></p>
                 <p><strong>Date:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
-                <p><strong>Deadline:</strong> ${new Date(offer.deadline).toLocaleDateString()}</p>
+                <p><strong>Deadline:</strong> ${offer.deadline && Number.isFinite(Date.parse(offer.deadline)) ? new Date(offer.deadline).toLocaleDateString() : 'Not specified'}</p>
                 ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
                 ${offer.stage >= 4 && firstLiveDate ? `<p><strong>First Live Date:</strong> ${new Date(firstLiveDate).toLocaleDateString()}</p>` : ''}
               </div>
@@ -624,8 +624,8 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
   // This string is built before card.innerHTML below — see code right above card creation.
   return amountHtml;
 })()}
-<p><strong>Payment Schedule:</strong> ${offer.payment_schedule}</p>
-<p><strong>Duration:</strong> ${offer.sponsorship_duration}</p>
+<p><strong>Payment Schedule:</strong> ${offer.payment_schedule || 'Not specified'}</p>
+<p><strong>Duration:</strong> ${offer.sponsorship_duration || 'Not specified'}</p>
 
               </div>
             </div>

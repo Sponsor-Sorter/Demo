@@ -1,5 +1,15 @@
 # Change log
 
+## 2026-10-10 — Finder and member workspace redesign
+
+- Added role-specific workspace introductions, quick links and keyboard-accessible dashboard section navigation.
+- Moved overview, active campaigns and public offers ahead of profiles/community; retained every existing HTML ID and business control.
+- Added labelled Finder filters, clear-and-search actions, amount range validation, pressed states and live result announcements.
+- Rebuilt responsive metric grids, panels, offer actions, status tabs and locally scrolling history tables. Kept dark/cyan/purple branding and animated header.
+- Corrected sponsorLogic's legacy Supabase client import, empty pagination and missing duration/payment/deadline display text.
+- Verified 20 browser layout cases (three Finder modes and both dashboards at 320/375/768/1440), with zero page overflow; status tabs also fit. Exercised filter reset, offer filtering, section navigation and offer detail expansion using fictional read-only fixtures. All 24 existing automated checks pass.
+- No database changes, payments, account creation or real-user mutations. Authenticated production transactions still need separate end-to-end verification.
+
 ## 2026-10-10 — Public page consistency
 
 - Unified headers/navigation and centered responsive panels on contact, privacy, terms, tos and password recovery.
