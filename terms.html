@@ -109,8 +109,10 @@
     }
   </style>
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
+<link rel="stylesheet" href="./public-pages.css?v=20261010-public1" />
+<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 </head>
-<body>
+<body class="public-content-page">
 <header class="navbar1">
   <section class="navbar"> 
     <div class="navii">
@@ -123,7 +125,7 @@
         </nav>
         <nav>
           <li class="navr" id="dashboard-link"><a href="">Dashboard</a></li>
-          <li><a href="./login.html">Logout</a></li>
+          <li><a id="auth-link" href="./login.html">Logout</a></li>
         </nav>
       </div>
     </div>
@@ -285,24 +287,43 @@
 </footer>
 <!-- Role-aware Dashboard link (Finder-style) -->
 <script type="module">
-  import { supabase } from '/public/js/supabaseClient.js';
+  import { supabase } from './js/supabaseClient.js';
 
   document.addEventListener('DOMContentLoaded', async () => {
     const dashLi = document.getElementById('dashboard-link');
     const dashA = dashLi?.firstElementChild;
-    if (!dashA) return;
+
+    const authA = document.getElementById('auth-link');
 
     // Check auth
     const { data: { user }, error: authErr } = await supabase.auth.getUser();
+
     if (authErr || !user) {
-      // Not logged in → offer Login
-      dashA.href = './login.html';
-      dashA.textContent = 'Login';
+      // Not logged in
+      if (dashA) {
+        dashA.href = './signup.html';
+        dashA.textContent = 'Signup';
+      }
+      if (authA) {
+        authA.href = './login.html';
+        authA.textContent = 'Login';
+      }
       return;
     }
 
+    // Logged in
+    if (authA) {
+      authA.href = '#';
+      authA.textContent = 'Logout';
+      authA.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try { await supabase.auth.signOut(); } catch {}
+        window.location.href = './login.html';
+      });
+    }
+
     // Fetch role
-    const { data: profile, error: profErr } = await supabase
+    const { data: profile } = await supabase
       .from('users_extended_data')
       .select('userType')
       .eq('user_id', user.id)
@@ -310,11 +331,11 @@
 
     const userType = (profile?.userType || '').toLowerCase();
     const isSponsor = userType === 'sponsor';
-    dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
-    dashA.textContent = 'Dashboard';
 
-    // Optional: immediately send logged-in users to their dashboard
-    // window.location.replace(dashA.href);
+    if (dashA) {
+      dashA.href = isSponsor ? './dashboardsponsor.html' : './dashboardsponsee.html';
+      dashA.textContent = 'Dashboard';
+    }
   });
 </script>
 </body>

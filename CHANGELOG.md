@@ -1,5 +1,11 @@
 # Change log
 
+## 2026-10-10 — Public page consistency
+
+- Unified headers/navigation and centered responsive panels on contact, privacy, terms, tos and password recovery.
+- Added contact input labels; fixed duplicate signed-out Login links and legacy terms client import.
+- Passed 20 browser layout checks across four widths; no forms submitted or user data changed.
+
 ## 2026-10-10 — Atomic payout records and wallet reservations
 
 - Moved admin payout decisions, wallet deduction, audit and in-app notice into a locked database transaction; repeat processing is idempotent.

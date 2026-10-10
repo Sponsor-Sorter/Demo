@@ -7,6 +7,16 @@
 
 ## State
 
+### Public information page consistency — 2026-10-10
+
+- Added scoped, formatted `public-pages.css` and `js/publicPageLayout.js` to contact, privacy, terms, legacy tos and reset-password pages. Reuses original artwork/animated grid and shared glossy tabs. Existing navigation nodes/IDs/listeners are moved intact; header becomes one row of four links.
+- Standardized centered containers, panel borders, readable legal contents links, contact card stacking, recovery form width and wrapping footer. Added persistent labels to contact inputs. Fixed duplicate Login links on signed-out legal pages; terms now imports the current shared Supabase client and uses the existing privacy-page role/logout logic.
+- Browser checks: all five pages at 320/375/768/1440 (20 cases), zero horizontal page overflow and one navigation row. Screenshots visually checked on desktop contact and phone privacy. No contact submission, password reset, login or account mutation performed; signed-in role/logout handlers not exercised against real accounts. No database changes in this UI batch. Remaining pages and the existing payout function audit are still pending.
+
+### Protected real account — user instruction
+
+`Moikailive` is the one genuine signup, confirmed in Supabase as a sponsee (`besponsored`). Exclude this account and all related records from fixture selection, test mutations, cleanup and payouts. Other records are described by the owner as test data; that does not imply Stripe is in test mode or authorize real-money transfers. Use dedicated test fixtures and rollback transactions. Do not store the real account's contact details in test artifacts.
+
 ### Payout accounting update — 2026-10-10
 
 - Added/deployed `decide_admin_payout(uuid,text,text)`, SECURITY INVOKER, explicit admin check and authenticated-only execution. Locks payout and profile, permits pending transitions only, returns replay result without duplicate debit/audit/notification, rejects role mismatches/nonfinite amounts/insufficient funds. Wallet withdrawals for BOTH account roles debit the wallet; campaign-associated creator payouts retain their existing distinct accounting path. Audit and available in-app notification are part of the same transaction.

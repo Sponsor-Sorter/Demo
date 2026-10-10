@@ -1,0 +1,198 @@
+/* Public information and recovery pages. Shared banner artwork lives in connection-header.css. */
+.public-content-page {
+  margin: 0;
+  background: #000;
+  color: #eef2f8;
+}
+.public-content-page *,
+.public-content-page *::before,
+.public-content-page *::after {
+  box-sizing: border-box;
+}
+.public-content-page > .header {
+  width: 100% !important;
+  max-width: none;
+  height: auto;
+}
+.public-content-page .header .brand {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-family: Cinzel, Georgia, serif;
+  font-weight: 700;
+}
+.public-content-page .header > nav {
+  margin: 0;
+  max-width: none;
+  height: auto;
+}
+.public-content-page .header > nav > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  background: none;
+}
+.public-content-page .header > nav a {
+  height: auto !important;
+  white-space: nowrap;
+}
+.public-content-page :is(.contact-page, .pp-container, .tos-container) {
+  display: block !important;
+  width: min(980px, calc(100% - 40px)) !important;
+  max-width: none;
+  margin: 32px auto !important;
+  min-width: 0;
+}
+.public-content-page .contact-page {
+  padding: 0 !important;
+}
+.public-content-page > main.wrap {
+  width: 100% !important;
+  max-width: none;
+}
+.public-content-page :is(.pp-container, .tos-container) {
+  padding: clamp(20px, 4vw, 40px);
+  background: linear-gradient(160deg, #151922, #0c0f15);
+  border: 1px solid #303a4b;
+  box-shadow: none;
+  text-align: left;
+}
+.public-content-page :is(.pp-container, .tos-container) :is(h1, h2) {
+  text-align: left;
+}
+.public-content-page .toc {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 10px;
+}
+.public-content-page .toc a {
+  display: block;
+  margin: 0;
+  height: 100%;
+  padding: 12px;
+  overflow-wrap: anywhere;
+}
+.public-content-page :is(.pp-text, .pp-list, .contact-info) {
+  overflow-wrap: anywhere;
+}
+.public-content-page .contact-page fieldset {
+  width: 100% !important;
+  min-width: 0;
+  max-width: none;
+  margin-inline: 0 !important;
+  padding: 20px !important;
+  border: 1px solid #303a4b;
+  border-radius: 16px;
+}
+.public-content-page
+  :is(.about-ceo, .contact-info, .contact-form, .social-followers) {
+  border-color: #303a4b;
+  border-radius: 16px;
+  background: #10151d;
+}
+.public-content-page .contact-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.public-content-page .contact-form :is(input, textarea, button) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  font: inherit;
+}
+.public-content-page .contact-form label {
+  text-align: left;
+  font-weight: 600;
+}
+.public-content-page .contact-form button {
+  background: #1253a8;
+  min-height: 44px;
+}
+.public-content-page .contact-info a {
+  color: #7ddcf2;
+}
+.public-content-page :is(input, textarea, a, button):focus-visible {
+  outline: 2px solid #51d4f0;
+  outline-offset: 3px;
+}
+.public-content-page .loginbox-section {
+  display: block !important;
+  width: min(520px, calc(100% - 32px)) !important;
+  margin: 32px auto !important;
+  padding: 0 !important;
+}
+.public-content-page :is(.login-wrapper, .loginbox) {
+  width: 100% !important;
+  max-width: none;
+  min-width: 0;
+  margin-inline: 0 !important;
+}
+.public-content-page .loginbox {
+  padding: 24px;
+  background: #10151d;
+  border: 1px solid #303a4b;
+  border-radius: 16px;
+}
+.public-content-page .loginbox :is(input, .password-input-wrapper) {
+  width: 100%;
+  min-width: 0;
+}
+.public-content-page .loginbox .logo img {
+  max-width: 100%;
+  height: auto;
+}
+.public-content-page .footercomplete {
+  width: 100%;
+  margin-top: 40px;
+  padding: 24px 16px;
+  border-top: 1px solid #303a4b;
+}
+.public-content-page .footer-text ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.public-content-page .footer-text li {
+  width: auto;
+  margin: 0;
+}
+.public-content-page .footpic {
+  display: block;
+  width: min(220px, 100%);
+  height: auto;
+  margin: 24px auto;
+}
+@media (max-width: 600px) {
+  .public-content-page :is(.contact-page, .pp-container, .tos-container) {
+    width: calc(100% - 32px) !important;
+    margin: 24px auto !important;
+  }
+  .public-content-page .contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .public-content-page .contact-page fieldset {
+    padding: 14px !important;
+  }
+  .public-content-page .social-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .public-content-page .social-box {
+    padding: 10px 4px;
+    overflow-wrap: anywhere;
+  }
+  .public-content-page .header > nav {
+    padding-inline: 8px;
+  }
+  .public-content-page .header > nav a {
+    padding-inline: 3px;
+    font-size: 0.82rem;
+  }
+}

@@ -22,8 +22,10 @@
     .hidden-hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
   </style>
 <script type="module" src="./js/connectionHeader.js?v=20261010-grid3"></script>
+<link rel="stylesheet" href="./public-pages.css?v=20261010-public1" />
+<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 </head>
-<body>
+<body class="public-content-page">
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -85,8 +87,11 @@
           <!-- Honeypot (basic) -->
           <input type="text" id="website" name="website" class="hidden-hp" autocomplete="off" tabindex="-1" aria-hidden="true" />
 
+          <label for="name">Your name</label>
           <input type="text" id="name" name="name" placeholder="Your Name" required />
+          <label for="email">Email address</label>
           <input type="email" id="email" name="email" placeholder="Your Email" required />
+          <label for="message">How can we help?</label>
           <textarea id="message" name="message" placeholder="Your Message" rows="6" required></textarea>
 
           <button id="submitBtn" type="submit">Send</button>
