@@ -30,3 +30,11 @@
 - Live administrator data and real mutation workflows still require a signed-in administrator check; no payments, bulk notifications or destructive actions were performed.
 - Live read-only SQL checks under an authenticated admin role passed for overview and queue tables; schema checks confirmed the fields used by the new loaders. No backend data was changed.
 - Helper regression tests passed: node --test tools/admin.test.cjs (3 tests: text/URL safety, CSV formula protection and self-access safeguards).
+
+## 2026-10-10 — Homepage rebuild
+
+- Rebuilt the homepage around a clear product introduction, creator/sponsor paths, demonstration dashboard links, four-step campaign workflow, pricing, FAQs and help/legal links.
+- Retained the dark theme, existing logo, cyan/purple/blue accents and grid artwork. Added independent, formatted homepage.css; removed the homepage's large inline stylesheet and dependency on global styles.
+- Removed homepage private-table queries, activity ticker, unverifiable marketing guarantees, competitor comparisons, newsletter capture and rate calculator. Existing legacy homepage.js is preserved but no longer loaded here.
+- Checked actual browser widths 320, 375, 540, 768, 800, 1024, 1440 and 1920: no overflow, all four header links in one row. FAQ mouse/keyboard, section navigation, asset/link targets and console checks passed.
+- Rollback: restore ONLY index.html from backup/homepage-before-redesign-20261010 (20c0bf5), then publish. This preserves the admin/security work. homepage.css can remain unused.

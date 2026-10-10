@@ -1,1672 +1,445 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sponsor Sorter connects creators and brands for sponsorship success. Find the perfect partnership and grow your influence!">
-    <title>Sponsor Sorter – Creators Meet Brands</title>
-
-    <link rel="stylesheet" href="./styles.css?v=20261010">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
-
-    <!-- Google Fonts: Cinzel 900 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&display=swap" rel="stylesheet">
-
-</head>
-<body>
-      <header class="navbar1">
-    <section class="navbar"> 
-     <div class="navii">
-        <h5><span class="brand-title">Sponsor Sorter</span></h5>
-        <div id="sparkle-overlay" aria-hidden="true"></div>
-        <div class="home-nav-links">
-          <nav aria-label="Main navigation">
-            <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="finder.html">Finder</a></li>
-              <li><a href="signup.html">Signup</a></li>
-              <li><a href="login.html">Login</a></li>
-            </ul>
-          </nav>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sponsor Sorter | Find partners. Manage sponsorships.</title>
+    <meta
+      name="description"
+      content="Connect creators and brands. Discover partners, agree on sponsorship offers, and manage content, deadlines and campaign progress in one place."
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./homepage.css?v=20261010-home1" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="wrap header">
+      <a class="brand" href="./index.html" aria-label="Sponsor Sorter home"
+        ><img src="./logos.png" width="46" height="46" alt="" /><span
+          >Sponsor Sorter</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="./index.html" aria-current="page">Home</a
+        ><a href="./finder.html">Finder</a><a href="./signup.html">Signup</a
+        ><a href="./login.html">Login</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Creators & brands. Better together.</p>
+          <h1 id="hero-title">
+            Great content.<br />The right partner.<br /><span
+              >One place to connect.</span
+            >
+          </h1>
+          <p class="lead">
+            Sponsor Sorter is a sponsorship platform where creators and brands
+            find each other, agree on offers, and keep campaigns organised—from
+            the first conversation to completed content.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="./signup.html">Get started</a
+            ><a class="button secondary" href="./finder.html"
+              >Explore the Finder ↗</a
+            >
+          </div>
+          <p class="note">Free creator plan available · Pro US$10/month</p>
+          <a class="text-link" href="#how-it-works">See how it works ↓</a>
         </div>
-      </div>
-
-    </section>
- </header>
-
-    <div class="leftmain">
-        <!-- REFERRAL BANNER -->
-        <section>
-            <div class="referral-banner" style="width:100%;box-sizing:border-box;border-radius:15px;background: linear-gradient(0deg,#0d0d0d 10%,#4b4b4b 100%);padding:11px 16px;text-align:center;font-size:1.08em;color:#efefef;letter-spacing:0.01em;margin:0 auto;">
-                <b>Invite a friend to both get a free month of Pro!</b>
-                <span style="margin-left:12px;font-size:0.98em;">
-                    Referral rewards are automatic with every new pro sign-up. <br>
-                    <a href="./signup.html" style="text-decoration:underline;color:#00c936;">Claim yours</a> in your dashboard.
-                </span>
+        <div
+          class="preview"
+          aria-label="Illustration of a sponsorship workspace with example details"
+        >
+          <div class="preview-bar">
+            <span class="mark" aria-hidden="true">S</span>Your campaign
+            workspace<span class="badge">Example</span>
+          </div>
+          <div class="preview-body">
+            <div class="preview-heading">
+              <div>
+                <p class="eyebrow">Creator × Brand</p>
+                <h2>A partnership,<br />with a clear plan.</h2>
+              </div>
+              <span class="status">In progress</span>
             </div>
-        </section>
-
-        <!-- HERO SECTION + TRUST BADGES -->
-        <main>
-            <fieldset style="width:90%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;margin-top:-15px;margin-bottom:10px;background:linear-gradient(180deg,#00000081 60%,#676767 120%);border-radius:24px;padding-bottom:16px;border:none;box-shadow: none;">
-                <!-- ACTIVITY TICKER -->
-<div id="activity-ticker" class="ss-activity-feed">
-  <div class="activity-track" aria-hidden="true"></div>
-</div>
-
-                <section class="hero fade-in-hero" style="margin-top:-15px;">
-                    <!-- 2-column hero: left = text, right = phone app image -->
-                    <div class="hero-grid">
-                        <!-- LEFT: main copy + CTAs -->
-                        <div class="hero-copy">
-  <h1 style="font-size:2.2em;letter-spacing:0.03em;">
-    Turn creator–brand conversations into clear sponsorships
-  </h1>
-
-  <p style="font-size:1.18em;">
-    <strong>One clear place to manage offers, deliverables, deadlines, and payments.</strong>
-    <br>
-    Build a profile, find the right partners, agree on deliverables, and track each campaign from offer to completion.
-    Keep conversations and campaign details together, so both sides know what happens next.
-  </p>
-
-  <p style="margin-top:10px;font-size:1.3em;opacity:0.92;">
-    <img src="probadge.png" alt="pro badge" style="width: 45px; height: auto;">
-    <strong>Pro is $10/month</strong> for full access. <span style="white-space:nowrap;">Offers incur a <strong>10% platform fee up front</strong>.</span>
-  </p>
-
-  <div class="cta-main">
-    <a href="./signup.html" class="cta-button">Create your free profile</a>
-    <a href="./supporters.html" class="cta-button">Become an Early Supporter</a>
-  </div>
-  <br>
-</div>
-
-
-
-                        <!-- RIGHT: phone image + captions -->
-                        <div class="hero-image">
-                            <h2 class="hero-subtitle">Sponsorship in the palm of your hand</h2>
-
-                            <img
-                                src="./images/SSPhoneApp.png"
-                                alt="Sponsor Sorter Phone App"
-                                class="hero-phone-img"
-                            >
-
-                            <div class="hero-badge">COMING SOON</div>
-                        </div>
-                    </div>
-                </section>
-                    <!-- Who Uses Section (full-width under the hero columns) -->
-                     <div class="dashboard-preview-links">
-                        <button class="cta-button"
-                                onclick="window.location.href='./guest.html?role=sponsor'"
-                                style="font-size:1.15em;padding:14px 34px;margin:14px 18px 0 0;background:#3100d2;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #c2c2ff;">
-                                View Sponsor Dashboard
-                        </button>
-
-                        <button class="cta-button"
-                                onclick="window.location.href='./guest.html?role=sponsee'"
-                                style="font-size:1.15em;padding:14px 34px;margin:14px 0 0 18px;background:#930edb;color:white;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 6px #ffc2e5;">
-                                View Sponsee Dashboard
-                        </button>
-                     </div>
-
-                     <section class="who-uses">
-                        <div class="section-title" style="margin-top:36px;color:#ffffff;">
-                            Who Uses Sponsor Sorter?
-                        </div>
-                        <p style="text-align:center;font-size: 1.05em;">
-                            <strong>Creators and brands use Sponsor Sorter to make sponsorships easier to manage.</strong><br>
-                            Compare profiles, send and review offers, and keep campaign messages, deadlines, and deliverables together.<br>
-                            After a campaign is complete, both sides can leave a review to help future partners make informed decisions.
-                        </p>
-
-                        <!-- NEW: 3 images in one row (no carousel) -->
-                        <div class="who-uses-row" style="margin-bottom:28px;">
-                          <figure class="who-uses-card">
-                            <img src="./company.jpeg" alt="YouTubers">
-                            <figcaption>Companies</figcaption>
-                          </figure>
-
-                          <figure class="who-uses-card">
-                            <img src="./streamer.jpeg" alt="Streamers">
-                            <figcaption>Content Creators</figcaption>
-                          </figure>
-
-                          <figure class="who-uses-card">
-                            <img src="./socialmediainfluencer.jpeg" alt="Influencers">
-                            <figcaption>Influencers</figcaption>
-                          </figure>
-                        </div>
-                    </section>
-
-                    <div class="grid2">
-                        <!-- Trust Badges -->
-                         <fieldset style="box-shadow: none;">
-                        <div class="trust-badges"
-                            style="display:flex;gap:22px;justify-content:center;align-items:center;margin:22px 0 6px 0;flex-wrap:wrap;">
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="./stripe.png" alt="Stripe" style="height:32px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Stripe Secure Payments</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="./resend.png" alt="Resend" style="height:32px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Transactional Email by Resend</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="./openai.png" alt="OpenAI" style="height:32px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">AI-powered Moderation by OpenAI</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Payments"
-                                    style="height:28px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Secure payments via Stripe</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="./supabase.png" alt="Supabase" style="height:32px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Powered by Supabase</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2089/2089795.png" alt="Community safety"
-                                    style="height:28px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Community Safety Tools</span>
-                            </div>
-                            <div style="background:#fff;border-radius:11px;box-shadow:0 1px 6px #2b2e6a11;display:flex;align-items:center;padding:9px 19px;gap:9px;">
-                                <img src="https://cdn-icons-png.flaticon.com/512/3600/3600960.png" alt="Referral"
-                                    style="height:28px;width:auto;vertical-align:middle;">
-                                <span style="color:#242a46;font-size:1.01em;">Free Month Referral Rewards</span>
-                            </div>
-
-                            <div style="text-align:center;font-size:1.05em;color:#e9e9e9;margin-top:6px;width:90%;box-shadow:none;">
-                                <b>Clear campaign terms &nbsp;|&nbsp; Creator–brand partnerships &nbsp;|&nbsp; Reviews after completion</b>
-                            </div>
-                            
-                        </div>
-                        </fieldset>
-
-                        <br>
-
-                        <fieldset class="approved-plats" id="approved-platforms">
-  <img src="OAuthDiagram2.jpeg" alt="" class="oauthimg" style="width: 100% !important;height: auto !important;">
-  <h3>OAuth2.0 Supported Platforms</h3>
-
-  <div class="plat-grid">
-    <!-- Twitch -->
-    <a
-      class="plat-toggle"
-      href="https://dev.twitch.tv/docs/authentication/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Twitch OAuth documentation (opens in a new tab)"
-      title="Twitch OAuth documentation"
-    >
-      <div class="ui">
-        <img src="./twitchlogo.png" alt="Twitch" />
-      </div>
-    </a>
-
-    <!-- YouTube -->
-    <a
-      class="plat-toggle"
-      href="https://developers.google.com/youtube/v3/guides/authentication"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="YouTube OAuth documentation (opens in a new tab)"
-      title="YouTube OAuth documentation"
-    >
-      <div class="ui">
-        <img src="./youtubelogo.png" alt="YouTube" />
-      </div>
-    </a>
-
-    <!-- Facebook -->
-    <a
-      class="plat-toggle"
-      href="https://developers.facebook.com/docs/facebook-login/security/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Facebook Login security and OAuth documentation (opens in a new tab)"
-      title="Facebook Login security + OAuth"
-    >
-      <div class="ui">
-        <img src="./facebooklogo.png" alt="Facebook" />
-      </div>
-    </a>
-
-    <!-- TikTok -->
-    <a
-      class="plat-toggle"
-      href="https://developers.tiktok.com/doc/login-kit-overview"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="TikTok Login Kit OAuth documentation (opens in a new tab)"
-      title="TikTok Login Kit (OAuth)"
-    >
-      <div class="ui">
-        <img src="./tiktoklogo.png" alt="TikTok" />
-      </div>
-    </a>
-
-    <!-- Instagram -->
-    <a
-      class="plat-toggle"
-      href="https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/business-login/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Instagram OAuth documentation via Meta (opens in a new tab)"
-      title="Instagram Business Login (OAuth) via Meta"
-    >
-      <div class="ui">
-        <img src="./instagramlogo.png" alt="Instagram" />
-      </div>
-    </a>
-  </div>
-</fieldset>
-
-                    </div>
-                </section>
-            </fieldset>
-        </main>
- <section class="groupab">
-            <!-- SAFETY FIRST / SCAM PREVENTION -->
-        <fieldset class="home-cont safety-strip">
-            <div class="section-title">Safety First</div>
-            <p class="safety-copy">
-                We take account and campaign safety seriously. Use clear offer terms, keep campaign communication on-platform, and enable two-factor authentication where available.
-            </p>
-            <p class="safety-copy">
-                Before you accept or make any sponsorships, read our
-                <a href="./forum.html" class="safety-link">
-                    Safety and scam prevention guide
-                </a>
-                in the Forum (Click below).
-            </p>
-            <a href="./forum.html"><img src="scamprevention.png" alt="Read the Sponsor Sorter safety guide" class="scamprev" style="max-width: 620px;"></a>
-        </fieldset>
-
-        <!-- How It Works -->
-        <fieldset class="home-cont">
-            <div class="section-title">How Sponsor Sorter Works</div>
-            
-            <section class="how-it-works">
-                <div class="step-card">
-                    <h3>1. Join & Set Up Profile</h3>
-                    <p>Join as a creator or sponsor and build a profile that shows what you do and what you are looking for.</p>
-                </div>
-                <div class="step-card">
-                    <h3>2. Discover or List Offers</h3>
-                    <p>Creators discover opportunities while brands publish offers and connect with interested talent.</p>
-                </div>
-                <div class="step-card">
-                    <h3>3. Secure Collaboration</h3>
-                    <p>Keep messages, deliverables, deadlines, and payment milestones organized in one campaign workflow.</p>
-                </div>
-                <div class="step-card">
-                    <h3>4. Review</h3>
-                    <p>Leave a review after a completed campaign to help the community make informed decisions.</p>
-                </div>
-            </section>
-        </fieldset>
-        </section>
-
-        <!-- TRUSTED LOGOS -->
-        <fieldset class="home-cont">
-            <div class="section-title">New Creators & Brands to Sponsor Sorter</div>
-            <div class="trusted-logos" id="sponsor-logos"></div>
-        </fieldset>
-        <div>
-        <!-- Testimonials (Dynamic) -->
-        <section class="testimonial-section" style="margin-top: 45px;">
-            <div class="testimonial-carousel">
-                <button id="testimonial-prev" style="background:none;border:none;font-size:2em;color:#000000;box-shadow:none;cursor:pointer;">&#8592;</button>
-                <div id="testimonial-content" style="display:inline-block;min-width:320px;"></div>
-                <button id="testimonial-next" style="background:none;border:none;font-size:2em;color:#000000;box-shadow:none;cursor:pointer;">&#8594;</button>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta" style="text-align:center;">
-            <h3>Ready to grow your brand or creator career?</h3>
-            <p>
-                <a href="./signup.html" class="cta-button" style="padding:16px 44px;border-radius:16px;font-size:1.2em;font-weight:bold;">Join Sponsor Sorter</a>
-            </p>
-        </section>
-
-        <!-- FEATURES -->
-        <div class="section-title">Why Creators & Brands Love Sponsor Sorter</div>
-        <section class="features-grid">
-            <div class="feature-card">
-                <h4>🎯 Discover Partners</h4>
-                <p>Use profile details and platform filters to find potential creator and brand partners.</p>
-            </div>
-            <div class="feature-card">
-                <h4>🔒 Structured Payments</h4>
-                <p>See payment amounts, schedules, and campaign milestones alongside the rest of your offer details.</p>
-            </div>
-            <div class="feature-card">
-                <h4>🚀 Effortless Onboarding</h4>
-                <p>Set up your profile, choose a plan, and start exploring sponsorship opportunities. Pro is $10/month.</p>
-            </div>
-            <div class="feature-card">
-                <h4>📊 Campaign Progress</h4>
-                <p>Review campaign progress and performance from your dashboard.</p>
-            </div>
-            <div class="feature-card">
-                <h4>🤝 Messaging & Offer Details</h4>
-                <p>Keep campaign conversations, agreed deliverables, and deadlines together in the offer workflow.</p>
-            </div>
-            <div class="feature-card">
-                <h4>💬 Support</h4>
-                <p>Questions? Contact the team for help with your account or a campaign.</p>
-            </div>
-        </section>
-        </div>
-<div style="background: linear-gradient(180deg,#00000081 31%,#3c3c3c 120%);
-  width: 90vw;
-  margin: auto;
-  border-radius: 22px;">
-<section class="calculator2" id="rate-calculator">
-  <div class="calc-shell">
-    <!-- LEFT: platform icon rail -->
-    <div class="calc-rail" role="tablist" aria-label="Choose platform">
-      <button class="calc-tab is-active" type="button" data-platform="instagram" aria-selected="true" title="Instagram">
-        <img src="./instagramlogo.png" alt="Instagram">
-        <span>IG</span>
-      </button>
-
-      <button class="calc-tab" type="button" data-platform="tiktok" aria-selected="false" title="TikTok">
-        <img src="./tiktoklogo.png" alt="TikTok">
-        <span>TikTok</span>
-      </button>
-
-      <button class="calc-tab" type="button" data-platform="youtube" aria-selected="false" title="YouTube">
-        <img src="./youtubelogo.png" alt="YouTube">
-        <span>YT</span>
-      </button>
-
-      <button class="calc-tab" type="button" data-platform="twitch" aria-selected="false" title="Twitch">
-        <img src="./twitchlogo.png" alt="Twitch">
-        <span>Twitch</span>
-      </button>
-
-      <button class="calc-tab" type="button" data-platform="facebook" aria-selected="false" title="Facebook">
-        <img src="./facebooklogo.png" alt="Facebook">
-        <span>FB</span>
-      </button>
-
-      <button class="calc-tab" type="button" data-platform="x" aria-selected="false" title="X">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="X">
-        <span>X</span>
-      </button>
-
-    </div>
-
-    <!-- RIGHT: calculator content -->
-    <div class="calc-main">
-      <div class="calc-head">
-        <div>
-          <h2 style="margin:0;">Rate Estimator</h2>
-          <div class="calc-sub">Transparent estimates based on your inputs. It’s a guide, niche & audience quality still matter.</div>
-        </div>
-
-        <div class="calc-badge" id="calc-platform-badge">Instagram</div>
-      </div>
-
-      <!-- Hidden fields used by JS -->
-      <input type="hidden" id="calcPlatform" value="instagram">
-      <input type="hidden" id="calcDeliverable" value="instagram_post">
-
-      <!-- Deliverables chips -->
-      <div class="calc-block">
-        <div class="calc-label">Deliverable</div>
-        <div class="chip-row" id="calcDeliverables"></div>
-      </div>
-
-      <!-- Inputs -->
-      <div class="calc-grid">
-        <div class="calc-block">
-          <label class="calc-label" for="followers">Followers / Subscribers</label>
-          <input type="number" id="followers" placeholder="e.g. 12,000" min="0">
-        </div>
-
-        <div class="calc-block">
-          <label class="calc-label" for="avgViews" id="avgViewsLabel">Average views / reach</label>
-          <input type="number" id="avgViews" placeholder="e.g. 3,500" min="0">
-          <div class="calc-hint" id="avgViewsHint">Tip: If you know your typical reach/views, this makes the estimate way more accurate.</div>
-        </div>
-
-        <div class="calc-block" id="streamHoursWrap" style="display:none;">
-          <label class="calc-label" for="streamHours">Stream length (hours)</label>
-          <input type="number" id="streamHours" placeholder="e.g. 2" min="0" step="0.25">
-        </div>
-
-        <div class="calc-block">
-          <label class="calc-label" for="engagement">Engagement rate % (optional)</label>
-          <input type="number" id="engagement" placeholder="e.g. 5" min="0" max="100" step="0.1">
-          <div class="calc-hint">Leave blank if you’re unsure. We’ll assume a baseline for the platform.</div>
-        </div>
-      </div>
-
-      <!-- Modifiers -->
-      <div class="calc-advanced">
-        <div class="calc-adv-title">Add-ons (optional)</div>
-
-        <div class="calc-grid" style="margin-top:10px;">
-          <div class="calc-block">
-            <label class="calc-label" for="usageRights">Usage rights</label>
-            <select id="usageRights">
-              <option value="none">None</option>
-              <option value="30d">30 days paid usage</option>
-              <option value="6m">6 months paid usage</option>
-              <option value="12m">12 months paid usage</option>
-            </select>
-          </div>
-
-          <div class="calc-block">
-            <label style="color: white;" class="calc-label" for="exclusivity">Category exclusivity</label>
-            <select id="exclusivity">
-              <option value="none">None</option>
-              <option value="7d">7 days</option>
-              <option value="30d">30 days</option>
-            </select>
-          </div>
-
-          <div class="calc-block">
-            <label class="calc-label" style="display:flex;align-items:center;gap:10px;">
-              <input type="checkbox" id="whitelisting" style="transform:scale(1.1);">
-              Whitelisting / Ads run from your handle
-            </label>
-          </div>
-
-          <div class="calc-block">
-            <label class="calc-label" style="display:flex;align-items:center;gap:10px;">
-              <input type="checkbox" id="rush" style="transform:scale(1.1);">
-              Rush delivery
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="calc-actions">
-        <button type="button" id="calc-earnings-btn" class="calc-btn">Estimate rate</button>
-        <div class="calc-note">We show a range + the assumptions used. You can screenshot this for brands.</div>
-      </div>
-
-      <div id="earningsResult" class="calc-output"></div>
-    </div>
-  </div>
-</section>
-</div>
-<!-- Fee Breakdown / Comparison (place after #rate-calculator, before Live stats) -->
-<fieldset class="home-cont fee-compare">
-  <div class="section-title">Sponsor Sorter Fees (Compared)</div>
-
-  <p class="fee-subcopy" style="text-align:center;">
-    Sponsor Sorter is built to be predictable: <b>Free tier</b> to start, <b>$10/month Pro</b> for full access,
-    and a <b>10% platform fee</b> on offers (paid up-front by the sponsor).
-    <br>
-    Below is a quick breakdown vs typical alternatives (fees vary by provider, plan, and region). We aim to keep costs as low as possible.
-  </p>
-
-  <div class="fee-grid">
-    <!-- FREE TIER -->
-    <div class="fee-card">
-      <div class="fee-card-head">
-        <div class="fee-pill fee-pill-muted">Sponsor Sorter</div>
-        <img src="freebadge.png" alt="free badge" height="40px" width="auto">
-        <div class="fee-big">
-          <span class="fee-big-num">$0</span>
-          <span class="fee-big-sub">Free tier</span>
-        </div>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Public Profile with live stats from one account</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Browse / apply to 10 public offers /month</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Offer and payment tracking</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Account and campaign help</span>
-        <span class="fee-value">Contact support</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Upgrade anytime</span>
-        <span class="fee-value">1 click</span>
-      </div>
-
-      <details class="fee-details">
-        <summary>Best for</summary>
-        <div class="fee-example">
-          <div class="fee-example-note" style="margin-top:0;">
-            New creators getting set up, building a profile, and testing the platform before going Pro. 
-          </div>
-        </div>
-      </details>
-    </div>
-
-    <!-- PRO (PRIMARY) -->
-    <div class="fee-card fee-card-primary">
-      <div class="fee-card-head">
-        <div class="fee-pill">Sponsor Sorter Pro</div>
-        <img src="probadge.png" alt="pro badge" height="40px" width="auto">
-        <div class="fee-big">
-          <span class="fee-big-num">$10</span>
-          <span class="fee-big-sub">/ month</span>
-        </div>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Platform fee</span>
-        <span class="fee-value"><b>10%</b> (sponsor pays up-front)</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Offer and payment tracking</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Messaging / deliverables</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Negotiate amount</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Unlimited public offer applications</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Link all accounts to display stats</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Early Access to Sponsor Sorter App</span>
-        <span class="fee-value">Included</span>
-      </div>
-
-      <details class="fee-details">
-        <summary>Example: $500 sponsorship</summary>
-        <div class="fee-example">
-          <div class="fee-example-row">
-            <span>Offer total</span><b>$500</b>
-          </div>
-          <div class="fee-example-row">
-            <span>Platform fee (10%)</span><b>$50</b>
-          </div>
-          <div class="fee-example-row">
-            <span>Sponsor pays</span><b>$550</b>
-          </div>
-          <div class="fee-example-row">
-            <span>Offer amount</span><b>$500</b>
-          </div>
-          <div class="fee-example-note">
-            Note: payment processor fees (e.g. card processing) may also apply depending on payout method.
-          </div>
-        </div>
-      </details>
-    </div>
-
-    <!-- TYPICAL ALTERNATIVES -->
-    <div class="fee-card">
-      <div class="fee-card-head">
-        <div class="fee-pill fee-pill-muted">Typical Alternatives</div>
-        <div class="fee-big">
-          <span class="fee-big-num">10–30%</span>
-          <span class="fee-big-sub">+ extras</span>
-        </div>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Marketplace / platform cut</span>
-        <span class="fee-value">Often <b>10–20%</b> per deal</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Agency / management</span>
-        <span class="fee-value">Often <b>20–30%</b> of earnings</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Subscription / tiers</span>
-        <span class="fee-value">Sometimes required for visibility</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Payment handling</span>
-        <span class="fee-value">May add processing / payout fees</span>
-      </div>
-
-      <div class="fee-line">
-        <span class="fee-label">Hidden friction</span>
-        <span class="fee-value">Lead fees, listing fees, boosts, etc.</span>
-      </div>
-
-      <details class="fee-details">
-        <summary>What this means</summary>
-        <div class="fee-example">
-          <div class="fee-example-note" style="margin-top:0;">
-            Many options work if not a combination of markets available but pricing often becomes a mix of % cuts + optional boosts + tier gates.
-            Sponsor Sorter keeps it simple: Free to start, $10/month Pro, and a clear platform fee on offers.
-          </div>
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <div class="fee-checks">
-    <div class="fee-check">✅ Free to start</div>
-    <div class="fee-check">✅ Clear monthly price</div>
-    <div class="fee-check">✅ Simple platform fee</div>
-    <div class="fee-check">✅ Clear offer details</div>
-  </div>
-</fieldset>
-
-
-<style>
-  /* ===== Fee Breakdown / Comparison ===== */
-.fee-compare{
-  width: min(980px, 92vw);
-  margin: 26px auto 18px;
-  border-radius: 22px;
-  border: none;
-  background: rgba(0,0,0,0.18);
-  backdrop-filter: blur(10px);
-  padding: 18px 16px 16px;
-  width: 90vw;
-  background: linear-gradient(180deg,#00000081 11%,#3c3c3c 120%);
-}
-
-.fee-compare:hover {
-box-shadow: none;
-border: none;
-
-}
-
-
-
-
-.fee-subcopy{
-  color: rgba(255,255,255,0.82);
-  line-height: 1.5;
-  margin-top: 6px;
-  margin-bottom: 14px;
-}
-
-.fee-grid{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 1100px){
-  .fee-grid{
-    grid-template-columns: 1fr;
-  }
-}
-
-
-.fee-card{
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgb(17, 17, 17);
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-}
-
-.fee-card-primary{
-background: linear-gradient(180deg, rgba(49,0,210,0.18), rgba(37, 0, 68, 0.54));  border-color: rgba(123,140,255,0.28);
-}
-
-.fee-card-head{
-  display:flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.fee-pill{
-  display:inline-flex;
-  align-items:center;
-  padding: 7px 11px;
-  border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: .02em;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  white-space: nowrap;
-}
-
-.fee-pill-muted{
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.88);
-}
-
-.fee-big{
-  text-align: right;
-  line-height: 1.05;
-}
-
-.fee-big-num{
-  font-size: 1.65em;
-  font-weight: 1000;
-  letter-spacing: .02em;
-}
-
-.fee-big-sub{
-  display:block;
-  margin-top: 4px;
-  font-size: .95em;
-  color: rgba(255,255,255,0.78);
-  font-weight: 800;
-}
-
-.fee-line{
-  display:flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-  padding: 8px 0;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-.fee-line:first-of-type{
-  border-top: none;
-}
-
-.fee-label{
-  color: rgba(255,255,255,0.78);
-  font-weight: 800;
-}
-
-.fee-value{
-  color: rgba(255,255,255,0.94);
-  font-weight: 900;
-  text-align: right;
-}
-
-.fee-details{
-  margin-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.10);
-  padding-top: 10px;
-}
-
-.fee-details summary{
-  cursor: pointer;
-  font-weight: 900;
-  color: rgba(255,255,255,0.92);
-  list-style: none;
-}
-
-.fee-details summary::-webkit-details-marker{
-  display:none;
-}
-
-.fee-example{
-  margin-top: 10px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
-  padding: 12px;
-}
-
-.fee-example-row{
-  display:flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 6px 0;
-  color: rgba(255,255,255,0.90);
-  font-weight: 800;
-}
-
-.fee-example-note{
-  margin-top: 10px;
-  color: rgba(255,255,255,0.74);
-  font-size: .95em;
-  line-height: 1.45;
-}
-
-.fee-checks{
-  display:flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 14px;
-}
-
-.fee-check{
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(0,0,0,0.22);
-  color: rgba(255,255,255,0.92);
-  font-weight: 900;
-}
-
-@media (max-width: 900px){
-  .fee-grid{
-    grid-template-columns: 1fr;
-  }
-
-  
-}
-
-@media (max-width: 820px) {
-  .step-card, .feature-card, .case-study {
-    width: 70vw;
-  }
-
-.calc-shell {
-  width: 95vw;
-}
-
-.calc-label {
-  font-weight: 500 !important;
-}
-
-}
-
-
-</style>
-
-
-
-              <!-- Live stats -->
-              <div class="stat-strip" aria-label="Live platform stats">
-                <div class="stat-card">
-                  <div class="stat-k" id="stat-users">—</div>
-                  <div class="stat-l">profiles created</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-k" id="stat-offers">—</div>
-                  <div class="stat-l">offers posted</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-k" id="stat-reviews">—</div>
-                  <div class="stat-l">reviews written</div>
-                </div>
+            <div class="partners">
+              <div>
+                <span class="avatar purple" aria-hidden="true">C</span
+                ><span>Creator<small>Content & community</small></span>
+              </div>
+              <span aria-hidden="true">+</span>
+              <div>
+                <span class="avatar blue" aria-hidden="true">B</span
+                ><span>Brand<small>Products & purpose</small></span>
               </div>
             </div>
-
-
-                <section>
-            <!-- Newsletter -->
-            <form class="newsletter" style="margin:22px 0 12px 0;text-align:center;">
-                <label for="newsletter-email" style="font-size:1em;">Stay up to date:</label>
-                <input type="email" id="newsletter-email" placeholder="Your email" style="padding:7px 12px;border-radius:8px;margin-left:7px;">
-                <button type="submit" style="padding:7px 19px;border-radius:8px;background:#7b8cff;color:#fff;border:none;font-weight:bold;">Subscribe</button>
-            </form>
-            <div class="footer-social" style="text-align:center;margin:7px 0;">
-                <a href="https://twitter.com/SponsorSorter" target="_blank" style="margin:0 7px;"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" style="height:24px;width:24px;"></a>
-                <a href="https://instagram.com/sponsor_sorter" target="_blank" style="margin:0 7px;"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="height:24px;width:24px;"></a>
-                <a href="https://www.facebook.com/profile.php?id=61584060590134" target="_blank" style="margin:0 7px;"><img src="./facebooklogo.png" alt="FaceBook" style="height:24px;width:24px;"></a>
-                <a href="https://youtube.com/" target="_blank" style="margin:0 7px;"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" style="height:24px;width:24px;"></a>
+            <div class="preview-details">
+              <div>
+                <small>Deliverable</small><strong>One sponsored video</strong>
+              </div>
+              <div><small>Deadline</small><strong>Agreed together</strong></div>
             </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="footercomplete">
-            <div class="footer-text">
-                <ul>
-                    <li><a href="./help.html">Help</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
-                    <li><a href="./privacy.html">Privacy Policy</a></li>
-                    <li><a href="./terms.html">Terms of Service</a></li>
-                    <li><a href="./reviews.html">Reviews</a></li>
-                    <li><a href="./blog.html">Blog</a></li>
-                    <li><a href="./forum.html">Forum</a></li>
-                    <li><a href="./stats.html">Stats</a></li>
-                </ul>
+            <ol class="progress" aria-label="Example campaign stages">
+              <li class="done">Offer agreed</li>
+              <li class="active">Create content</li>
+              <li>Confirm live</li>
+              <li>Review</li>
+            </ol>
+            <div class="message">
+              <span aria-hidden="true">●</span>
+              <p>
+                <strong>Keep the details together.</strong><br />Offers,
+                comments, content and progress.
+              </p>
             </div>
-            <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-            
-            <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-                &copy; 2025 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-                Data protected by <a href="https://supabase.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Supabase</a> | Powered by <a href="https://stripe.com/" target="_blank" style="color:#bbb;text-decoration:underline;">Stripe</a>
+          </div>
+          <p class="preview-bottom">
+            A clearer workflow for both sides of the partnership.
+          </p>
+        </div>
+      </section>
+      <div class="platforms wrap">
+        <p>Built around the places you create</p>
+        <ul aria-label="Social platforms">
+          <li>YouTube</li>
+          <li>Twitch</li>
+          <li>Instagram</li>
+          <li>TikTok</li>
+          <li>Facebook</li>
+          <li>X</li>
+        </ul>
+        <small
+          >Available connections and profile options vary by platform.</small
+        >
+      </div>
+      <section class="section wrap" aria-labelledby="audience-title">
+        <div class="heading">
+          <p class="eyebrow">Two sides. One shared workspace.</p>
+          <h2 id="audience-title">Find a partnership that fits.</h2>
+          <p>
+            Whether you make the content or fund the campaign, start with a
+            profile and a clear idea of what you want to achieve.
+          </p>
+        </div>
+        <div class="audience-grid">
+          <article class="panel">
+            <p class="label">For creators · Sponsees</p>
+            <h3>Turn your content into opportunity.</h3>
+            <p>
+              Show brands what you create, where you publish, and what makes
+              your audience yours.
+            </p>
+            <ul class="checks">
+              <li>Build a profile with your content and social handles.</li>
+              <li>Discover brands and sponsorship opportunities.</li>
+              <li>Manage offers, deadlines and campaign updates.</li>
+            </ul>
+            <a class="text-link" href="./guest.html?role=sponsee"
+              >Preview the creator dashboard ↗</a
+            >
+          </article>
+          <article class="panel">
+            <p class="label">For brands · Sponsors</p>
+            <h3>Find creators. Keep campaigns moving.</h3>
+            <p>
+              Explore potential partners and put the scope of your sponsorship
+              into a structured offer.
+            </p>
+            <ul class="checks">
+              <li>Browse creator profiles in the Finder.</li>
+              <li>Set the content, amount, timing and platforms.</li>
+              <li>Follow progress and keep offer discussions together.</li>
+            </ul>
+            <a class="text-link" href="./guest.html?role=sponsor"
+              >Preview the sponsor dashboard ↗</a
+            >
+          </article>
+        </div>
+        <p class="section-note">
+          Dashboard previews use demonstration data so you can explore before
+          signing up.
+        </p>
+      </section>
+      <section
+        class="section workflow"
+        id="how-it-works"
+        aria-labelledby="workflow-title"
+      >
+        <div class="wrap">
+          <div class="heading">
+            <p class="eyebrow">From discovery to delivery</p>
+            <h2 id="workflow-title">How Sponsor Sorter works.</h2>
+            <p>
+              A simple path through the details that make a sponsorship work.
+            </p>
+          </div>
+          <ol class="steps">
+            <li>
+              <span>01</span>
+              <h3>Create your profile</h3>
+              <p>
+                Choose creator or sponsor, introduce yourself, and add the
+                information a potential partner needs.
+              </p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Find your partner</h3>
+              <p>
+                Use the Finder to explore profiles and decide who fits your
+                content, audience or campaign.
+              </p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Agree on the offer</h3>
+              <p>
+                The sponsor sets out deliverables, dates and payment details.
+                The creator reviews the offer before accepting.
+              </p>
+            </li>
+            <li>
+              <span>04</span>
+              <h3>Create, track & review</h3>
+              <p>
+                Keep updates with the offer, follow the campaign stages, confirm
+                published content and leave a review.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="section wrap" aria-labelledby="features-title">
+        <div class="feature-layout">
+          <div>
+            <p class="eyebrow">Less chasing. More clarity.</p>
+            <h2 id="features-title">The details belong<br />with the deal.</h2>
+            <p class="feature-intro">
+              A sponsorship involves more than finding a name. Keep the scope,
+              conversation and delivery visible as the campaign moves forward.
+            </p>
+            <a class="text-link" href="./guest.html?role=sponsor"
+              >Take a look inside ↗</a
+            >
+          </div>
+          <div class="features">
+            <article class="panel">
+              <p class="label">01 / Discover</p>
+              <h3>Profiles with context</h3>
+              <p>
+                Learn about a partner’s content, platforms and experience before
+                starting a conversation.
+              </p>
+            </article>
+            <article class="panel">
+              <p class="label">02 / Agree</p>
+              <h3>Structured offers</h3>
+              <p>
+                Give content requirements, deadlines and payment arrangements a
+                clear place in the workflow.
+              </p>
+            </article>
+            <article class="panel">
+              <p class="label">03 / Deliver</p>
+              <h3>Campaign progress</h3>
+              <p>
+                See the offer’s stage and keep comments and content updates
+                alongside it.
+              </p>
+            </article>
+            <article class="panel">
+              <p class="label">04 / Learn</p>
+              <h3>Partner reviews</h3>
+              <p>
+                Share feedback after a sponsorship and build a record of your
+                work together.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section
+        class="section wrap pricing"
+        id="pricing"
+        aria-labelledby="pricing-title"
+      >
+        <div class="heading">
+          <p class="eyebrow">Know the costs before you start</p>
+          <h2 id="pricing-title">Straightforward plans.</h2>
+          <p>
+            Start as a creator on Free, or choose Pro for a creator or sponsor
+            account.
+          </p>
+        </div>
+        <div class="pricing-grid">
+          <article class="panel price-card">
+            <p class="label">Creator Free</p>
+            <h3>Get your profile started.</h3>
+            <p class="price">US$0<small> / month</small></p>
+            <p>
+              For creators exploring the platform and setting up their presence.
+            </p>
+            <ul class="checks">
+              <li>Creator profile</li>
+              <li>Explore potential partners</li>
+              <li>A place to showcase your content</li>
+            </ul>
+            <a class="button secondary" href="./signup.html"
+              >Start as a creator</a
+            >
+          </article>
+          <article class="panel price-card featured">
+            <p class="label">Pro · Creators & sponsors</p>
+            <h3>Build your partnerships.</h3>
+            <p class="price">US$10<small> / month</small></p>
+            <p>
+              For creators and brands ready to manage sponsorships on Sponsor
+              Sorter.
+            </p>
+            <ul class="checks">
+              <li>Creator or sponsor account</li>
+              <li>Offer and campaign management</li>
+              <li>Platform connections and profile tools</li>
+            </ul>
+            <a class="button primary" href="./signup.html"
+              >Choose your account</a
+            >
+          </article>
+          <aside class="fee">
+            <p class="label">On sponsorship offers</p>
+            <p class="fee-number">10%</p>
+            <h3>Platform fee</h3>
+            <p>
+              Paid up front by the sponsor, in addition to the sponsorship
+              amount.
+            </p>
+            <div class="fee-example">
+              <span>Example sponsorship<strong>US$500</strong></span
+              ><span>Platform fee<strong>US$50</strong></span
+              ><span>Combined amount<strong>US$550</strong></span>
             </div>
-        </footer>
-    </div> <!-- end .leftmain -->
-
- 
-    <script type="module" src="./js/supabaseClient.js"></script>
-    <script type="module" src="./js/featured.js"></script>
-    <script type="module" src="./js/homepage.js"></script>  
-    
-    <script>
-      // Set which platforms are approved (true = approved check is ON)
-      const APPROVALS = {
-        facebook: true,
-        tiktok:   true,
-        twitch:   true,
-        youtube:  true,
-        instagram:true
-      };
-
-      // Public page should be read-only; set to false if you want to click-tick them while testing.
-      const READ_ONLY = true;
-
-      (function initPlatformApprovals(){
-        const root = document.getElementById('approved-platforms');
-        if (!root) return;
-
-        const boxes = root.querySelectorAll('input[type="checkbox"][data-key]');
-        boxes.forEach(cb => {
-          const key = cb.dataset.key;
-          cb.checked = !!APPROVALS[key];
-          if (READ_ONLY) cb.setAttribute('disabled', 'disabled');
-          else cb.removeAttribute('disabled');
-        });
-      })();
-    </script>
-
-   <style>
-.navii {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.navbar {
-  width: 100%;
-}
-
-.navii > div:nth-child(3) {
-  width: 100%;
-}
-
-/* Right-hand ad sidebar (hidden by default) */
-.ad-sidebar {
-  display: none;
-}
-
-   .stat-strip { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0 6px; }
-    .stat-card {
-      padding: 14px 14px 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.18);
-      backdrop-filter: blur(10px);
-      text-align: center;
-    }
-    .stat-k { font-size: 1.35em; font-weight: 900; letter-spacing: .02em; }
-    .stat-l { font-size: .95em; color: rgba(255,255,255,0.78); margin-top: 4px; }
-
-
-/* SAFETY STRIP */
-.safety-strip {
-  border-radius: 18px;
-}
-.safety-strip .section-title {
-  margin-bottom: 6px;
-}
-.safety-copy {
-  text-align: center;
-  color: #e5e5e5;
-  margin: 4px 0;
-}
-.safety-link {
-  color: #7bffb6;
-  text-decoration: underline;
-}
-
-#exclusivity option, #usageRights option {
-    color: black;
-}
-
-/* ===== NEW: Who Uses row (3 images same line) ===== */
-.who-uses-row{
-  display:flex;
-  gap:18px;
-  justify-content:center;
-  align-items:stretch;
-  margin: 18px auto 28px;
-  padding: 0 14px;
-  max-width: 1120px;
-  flex-wrap: nowrap;         /* keep on one line */
-}
-
-.who-uses-card{
-  margin:0;
-  flex: 1 1 0;
-  max-width: 360px;
-  min-width: 220px;
-  border-radius: 26px;
-  padding: 12px;
-  background: rgba(0,0,0,0.18);
-  border: 1px solid rgba(255,255,255,0.14);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px #222b;
-}
-
-.who-uses-card img{
-  width:100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 20px;
-  display:block;
-}
-
-.who-uses-card figcaption{
-  margin-top: 10px;
-  text-align:center;
-  font-weight: 900;
-  color:#ffffff;
-  letter-spacing: .02em;
-  font-size: 1.08em;
-}
-
-/* Small screens: keep one-line + allow sideways scroll (still "one line") */
-@media (max-width: 900px){
-  .who-uses-row{
-    overflow-x:auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-    justify-content:flex-start;
-  }
-  .who-uses-card{
-    flex: 0 0 78vw;
-    max-width: 520px;
-  }
-  .who-uses-card img{
-    height: 220px;
-  }
-  .scamprev {
-    width: 95vw !important;
-  }
-
-.calc-rail {
-  display: grid !important; 
-  grid-template-columns: 1fr 1fr 1fr !important;
-}
-
-}
-
-
-/* Approved Platforms toggles */
-#approved-platforms {
-  color:#fff; 
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: none;
-}
-.plat-grid {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:10px;
-}
-.plat-toggle {
-  position:relative;
-  display:inline-block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.plat-toggle input {
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
-}
-.plat-toggle .ui {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:#ffffff;
-  color:#242a46;
-  border-radius:12px;
-  padding:8px 12px;
-  box-shadow:0 1px 6px #2b2e6a11;
-  transition:box-shadow .2s, transform .08s;
-}
-.plat-toggle .ui:hover {
-  transform:translateY(-1px);
-  box-shadow:0 4px 14px #0000001a;
-}
-.plat-toggle img {
-  height:24px;
-  width:auto;
-  display:block;
-}
-.plat-toggle .check {
-  width:18px;
-  height:18px;
-  margin-left:4px;
-  flex:0 0 auto;
-  opacity:0;
-  transform:scale(.8);
-  transition:opacity .12s ease, transform .12s ease;
-}
-/* Checked state */
-.plat-toggle input:checked + .ui {
-  outline:2px solid #18c36b;
-  outline-offset:2px;
-  background:#f6fff9;
-}
-.plat-toggle input:checked + .ui .check {
-  opacity:1;
-  transform:scale(1);
-}
-
-/* HERO LAYOUT */
-.hero-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.hero-copy {
-  flex: 1 1 360px;
-  max-width: 560px;
-}
-
-/* Make the two main CTAs play nice together */
-.hero-copy .cta-main {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.hero-copy .cta-main .cta-button {
-  position: static;      /* override any absolute centering from global styles */
-  margin-top: 20px;
-}
-
-.hero-image {
-  flex: 1 1 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-}
-
-.hero-phone-img {
-  height: 480px;
-  width: 480px;
-  max-width: 100%;
-  border-radius: 15px;
-  object-fit: cover;
-  object-position: left center; /* crop to one phone */
-}
-
-.hero-subtitle {
-  font-size: 1.25em;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.hero-badge {
-  margin-top: 4px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #ffcc33;
-  color: #000;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
-
-.hero-subtitle {
-  margin-bottom: 0px;
-}
-
-
-.leftmain > div:nth-child(5) {
-  background: linear-gradient(180deg,#00000081 11%,#3c3c3c 120%);
-  width: 97vw;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 25px;
-  padding-bottom: 40px;
-}
-
-
-.hero-badge {
-  margin-top: -32px;
-}
-
-@media (min-width: 1200px) {
-  
-
-@media (min-width: 1200px) {
-  .navii {
-    height: 223px;
-  }
-}
-
-.navii h5 > header {
-  font-size: 60px;
-}
-
-.grid2 {
-  padding-left: 88px;
-}
-
-
-.hero {
-  width: 1344px;
-}
-
-
-.grid2 > fieldset:nth-child(1) {
-  margin-top: 57px;
-}
-
-
-.navii > div:nth-child(3) {
-  /* margin-top: 42px; */
-  margin-top: 70px;
-}
-
-.navii > h5:nth-child(1) {
-  margin-top: 64.95px;
-}
-
-.navii > h5:nth-child(1) > header:nth-child(1) {
-  width: 648px;
-}
-
-
-#sparkle-overlay {
- 
-  height: 196px;
-}
-
-
-}
-
-
-/* ===== Sleek Rate Calculator ===== */
-.calculator2 { width: min(980px, 92vw); margin: 24px auto; }
-.calc-shell {
-  display: grid;
-  grid-template-columns: 86px 1fr;
-  gap: 14px;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.61);
-  backdrop-filter: blur(10px);
-  padding: 14px;
-}
-
-.calc-rail {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-}
-
-.calc-tab {
-  display: grid;
-  place-items: center;
-  gap: 6px;
-  padding: 10px 6px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  cursor: pointer;
-  color: #fff;
-  font-weight: 800;
-  transition: transform .08s ease, background .18s ease, border-color .18s ease;
-}
-.calc-tab img { width: 22px; height: 22px; object-fit: contain;border-radius: 6px; }
-.calc-tab span { font-size: .85em; opacity: .95; }
-.calc-tab:hover { transform: translateY(-1px); }
-.calc-tab.is-active {
-  background: rgba(246,198,46,0.18);
-  border-color: rgba(246,198,46,0.55);
-}
-
-.calc-main { padding: 6px 6px 10px; }
-.calc-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
-.calc-sub { margin-top:6px; color: rgba(255,255,255,0.78); line-height: 1.45; max-width: 700px; }
-.calc-badge {
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: .02em;
-  background: rgba(49,0,210,0.30);
-  border: 1px solid rgba(49,0,210,0.40);
-  color: #fff;
-  white-space: nowrap;
-}
-
-.calc-block { margin-top: 14px; }
-.calc-label { display:block; margin-bottom:6px; font-weight: 900; letter-spacing: .01em; }
-.calc-hint { margin-top: 6px; font-size: .92em; color: rgba(255,255,255,0.72); }
-
-.calc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.calc-main input, .calc-main select {
-  width: 90%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-  outline: none;
-}
-.calc-main input::placeholder { color: rgba(255,255,255,0.55); }
-
-.chip-row { display:flex; flex-wrap:wrap; gap: 10px; }
-.calc-chip {
-  padding: 9px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 800;
-  transition: transform .08s ease, background .18s ease, border-color .18s ease;
-}
-.calc-chip:hover { transform: translateY(-1px); }
-.calc-chip.is-active {
-  background: rgba(0,150,255,0.18);
-  border-color: rgba(0,150,255,0.55);
-}
-
-.calc-advanced {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.10);
-}
-.calc-adv-title { font-weight: 900; color: rgba(255,255,255,0.92); }
-
-.calc-actions { display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap:wrap; margin-top: 16px; }
-.calc-btn {
-  padding: 12px 16px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-weight: 900;
-  background: #3100d2;
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,.28);
-}
-.calc-note { color: rgba(255,255,255,0.74); font-size: .95em; }
-
-.calc-output {
-  margin-top: 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(0,0,0,0.22);
-  padding: 14px;
-}
-
-.calc-range {
-  display:flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.calc-range .big {
-  font-size: 1.6em;
-  font-weight: 1000;
-  letter-spacing: .02em;
-}
-.calc-range .mid { color: rgba(255,255,255,0.78); font-weight: 800; }
-
-.calc-break {
-  margin-top: 10px;
-  color: rgba(255,255,255,0.82);
-  line-height: 1.55;
-}
-.calc-break b { color:#fff; }
-
-@media (max-width: 860px) {
-  .calc-shell { grid-template-columns: 1fr; }
-  .calc-rail { flex-direction: row; justify-content: center; flex-wrap: wrap; }
-  .calc-grid { grid-template-columns: 1fr; }
-}
-
-
-/* Slightly smaller screens: shrink phone a bit */
-@media (max-width: 1180px) {
-  .hero-phone-img {
-    width: 250px;
-    height: 480px;
-    border-radius: 45px;
-    object-fit: cover;
-    object-position: left center;
-  }
-}
-
-/* Mobile: stack columns and center buttons */
-@media (max-width: 900px) {
-  .hero-grid {
-    flex-direction: column;
-    padding: 0 16px;
-  }
-  .hero-copy {
-    text-align: center;
-  }
-  .hero-copy .cta-main {
-    justify-content: center;
-  }
-  
-.who-uses {
-  width: 90vw;
-}
-
-}
-
-/* =========================
-   Side-scrolling Activity Feed (Homepage)
-========================= */
-#activity-ticker.ss-activity-feed{
-  width: min(980px, 92vw);
-  margin: 18px auto 0;
-  height: 56px;
-  background: linear-gradient(#000000, #212121) padding-box, linear-gradient(220deg, #5ee0ff, #32135f 65%) border-box;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.14);
-  backdrop-filter: blur(10px);
-  border-top-width: 2px;
-  border-bottom-width: 2px;
-
-
-}
-
-/* Soft fade edges */
-#activity-ticker.ss-activity-feed::before,
-#activity-ticker.ss-activity-feed::after{
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 54px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-#activity-ticker.ss-activity-feed::before{
-  left: 0;
-  background: linear-gradient(90deg, rgba(0,0,0,0.70), rgba(0,0,0,0));
-}
-
-#activity-ticker.ss-activity-feed::after{
-  right: 0;
-  background: linear-gradient(270deg, rgba(0,0,0,0.70), rgba(0,0,0,0));
-}
-
-#activity-ticker .activity-track{
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 0 14px;
-
-  white-space: nowrap;
-  will-change: transform;
-
-  animation: ssTickerScroll var(--ss-scroll-duration, 38s) linear infinite;
-}
-
-#activity-ticker:hover .activity-track{
-  animation-play-state: paused;
-}
-
-.activity-item{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 9px 12px;
-  border-radius: 999px;
-
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(0,0,0,0.22);
-
-  font-size: 0.95em;
-  font-weight: 800;
-  color: #fff;
-
-  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-}
-
-.activity-item span{
-  white-space: nowrap;
-}
-
-@keyframes ssTickerScroll{
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce){
-  #activity-ticker .activity-track{
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-#activity-ticker {
-  margin-top: -19px !important;
-  margin-bottom: 15px !important;
-}
-@media (max-width: 900px){
-  #activity-ticker {
-  margin-top: 11px !important;
-  margin-bottom: 11px !important;
-}
-
-.leftmain > main:nth-child(2) > fieldset:nth-child(1) {
-  margin-left: 0px;
-}
-
-@media (max-width: 600px) {
-  fieldset, .hero-fieldset, .upllogo, .pibox, .lookingfor, .payfield {
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-  }
-}
-
-}
-/* =========================
-   Who Uses: 3 images one line
-   Small screens: keep one-line + allow sideways scroll
-========================= */
-@media (max-width: 900px){
-  .who-uses-row{
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 12px 10px;
-    margin: 14px auto 22px;
-    justify-content: flex-start;
-    gap: 14px;
-  }
-
-  /* optional: prettier scroll behavior */
-  .who-uses-row::-webkit-scrollbar{
-    height: 8px;
-  }
-  .who-uses-row::-webkit-scrollbar-thumb{
-    background: rgba(255,255,255,0.18);
-    border-radius: 999px;
-  }
-  .who-uses-row::-webkit-scrollbar-track{
-    background: rgba(255,255,255,0.06);
-    border-radius: 999px;
-  }
-
-  .who-uses-card{
-    flex: 0 0 80vw;          /* each card is ~80% of viewport width */
-    max-width: 520px;
-    min-width: 260px;
-    border-radius: 22px;
-    padding: 12px;
-  }
-
-  .who-uses-card img{
-    height: 220px;
-    border-radius: 18px;
-  }
-
-  .who-uses-card figcaption{
-    font-size: 1.05em;
-  }
-}
-
-/* Extra small phones */
-@media (max-width: 480px){
-  .who-uses-card{
-    flex-basis: 86vw;
-    min-width: 240px;
-    padding: 10px;
-    border-radius: 20px;
-  }
-
-  .who-uses-card img{
-    height: 200px;
-  }
-
-  .who-uses-row{
-    gap: 12px;
-    padding: 0 10px 10px;
-  }
-}
-
-   </style>
-
-</body>
+            <small
+              >Illustrative platform-fee calculation. Check the final amount and
+              any applicable charges at checkout.</small
+            >
+          </aside>
+        </div>
+        <p class="section-note">
+          Plan limits and account options are shown during signup. Payments are
+          processed through Stripe. See our
+          <a href="./terms.html">Terms of Service</a> before purchasing.
+        </p>
+      </section>
+      <section class="section wrap faq" aria-labelledby="faq-title">
+        <div>
+          <p class="eyebrow">A few things to know</p>
+          <h2 id="faq-title">Your first questions,<br />answered.</h2>
+          <p class="feature-intro">
+            Need a hand with something else?<br /><a
+              class="text-link"
+              href="./help.html"
+              >Visit the help centre ↗</a
+            >
+          </p>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>What is a sponsor or a sponsee?</summary>
+            <p>
+              A sponsor is the brand or person offering a paid content
+              partnership. A sponsee is the creator receiving the offer and
+              producing the agreed content. You’ll see these names in the
+              dashboards.
+            </p>
+          </details>
+          <details>
+            <summary>Do I need a large following to join?</summary>
+            <p>
+              You can create a profile without a minimum audience size. Each
+              sponsor decides whether your content, audience and proposed
+              partnership suit their campaign. Joining does not guarantee
+              sponsorship or earnings.
+            </p>
+          </details>
+          <details>
+            <summary>Can I look around before signing up?</summary>
+            <p>
+              Yes. Open a
+              <a href="./guest.html?role=sponsee">creator preview</a> or
+              <a href="./guest.html?role=sponsor">sponsor preview</a> to explore
+              a dashboard with demonstration data. You’ll need your own account
+              to manage real sponsorships.
+            </p>
+          </details>
+          <details>
+            <summary>Who decides the content and sponsorship amount?</summary>
+            <p>
+              The sponsor sets out the proposed amount, deliverables, platforms
+              and deadline in an offer. The creator should review all the
+              details before accepting. Keep requirements clear and use the
+              offer’s comments to discuss questions.
+            </p>
+          </details>
+          <details>
+            <summary>Is Sponsor Sorter a mobile app?</summary>
+            <p>
+              Sponsor Sorter is a website you can use in your browser on
+              desktop, tablet or phone. A dedicated mobile app is planned; it is
+              not required to use the website.
+            </p>
+          </details>
+          <details>
+            <summary>Where can I get help or raise a concern?</summary>
+            <p>
+              Use the <a href="./help.html">help centre</a> for guidance or
+              <a href="./contact.html">contact us</a>. Review our
+              <a href="./terms.html">terms</a> and
+              <a href="./privacy.html">privacy policy</a> for account, payment
+              and data information.
+            </p>
+          </details>
+        </div>
+      </section>
+      <section class="closing wrap" aria-labelledby="start-title">
+        <div>
+          <p class="eyebrow">Your next partnership starts here</p>
+          <h2 id="start-title">
+            Find your people.<br />Make something worth sharing.
+          </h2>
+        </div>
+        <div>
+          <a class="button primary" href="./signup.html"
+            >Get started with Sponsor Sorter</a
+          ><a class="text-link" href="./login.html"
+            >Already a member? Log in ↗</a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="./index.html"
+            ><img src="./logos.png" width="34" height="34" alt="" /><span
+              >Sponsor Sorter</span
+            ></a
+          >
+          <p>
+            Connecting creators and brands.<br />Keeping sponsorships organised.
+          </p>
+        </div>
+        <nav aria-label="Footer navigation">
+          <a href="./help.html">Help</a><a href="./contact.html">Contact</a
+          ><a href="./forum.html">Community</a
+          ><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span
+        ><span>Built for the partnership.</span>
+      </div>
+    </footer>
+  </body>
 </html>

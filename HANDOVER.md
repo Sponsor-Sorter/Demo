@@ -78,3 +78,11 @@ Deno is installed at `C:\Users\jrbwi\AppData\Local\Microsoft\WinGet\Packages\Den
 - Live read-only SQL checks under an authenticated admin role passed for overview and queue tables; schema checks confirmed the fields used by the new loaders. No backend data was changed.
 - Helper regression tests passed: node --test tools/admin.test.cjs (3 tests: text/URL safety, CSV formula protection and self-access safeguards).
 - Admin UI release e93574b deployed successfully through GitHub Pages. Public admin HTML and standalone CSS verified live; live browser request correctly redirected the signed-out session to login.html. Desktop/mobile preview screenshots are saved in the parent workspace as admin-redesign-desktop.jpg and admin-redesign-mobile.jpg (fictional data).
+
+## Homepage rebuild — 2026-10-10
+
+Root index.html now uses standalone homepage.css and no JavaScript/backend queries. Content explains the product, both account roles, campaign steps, costs and FAQs. Guest links explicitly use demo data. Pricing reflects existing signup: creator Free, creator/sponsor Pro US$10/month; existing published platform-fee policy retained at 10% sponsor-paid up front. Payment completion/webhook gaps listed above remain unresolved and are not implied to be validated by this release.
+
+Validation: real browser widths 320/375/540/768/800/1024/1440/1920; no horizontal overflow, header remains one row. FAQ click/Enter and workflow anchor passed, every local HTML/asset link exists, no console errors. No paid transactions or backend changes in this release.
+
+Rollback homepage only: git restore --source=backup/homepage-before-redesign-20261010 -- index.html, commit and publish. Saved branch points to 20c0bf5. Do not reset the whole repo: keep admin and security fixes. The old js/homepage.js and shared styles remain available for rollback. Screenshot: ../.. /homepage-redesign-desktop.jpg (parent task directory).
