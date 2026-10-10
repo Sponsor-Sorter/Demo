@@ -288,3 +288,53 @@ test("public deal rows escape user-supplied text", () => {
   for (const row of rows)
     assert.doesNotMatch(row.innerHTML, /<img|<script|<svg|<iframe/);
 });
+
+
+function snapshotFixture(row, writeFails = false) {
+  const writes = [];
+  const query = { select() { return this; }, eq() { return this; },
+    maybeSingle: async () => ({data: row, error: null}),
+    upsert(payload) { writes.push(payload); return { select() { return {
+      maybeSingle: async () => ({data: payload, error: writeFails ? new Error('denied') : null})
+    }; } }; }
+  };
+  const context = { URL, TextEncoder, console, supabase: {
+    from: () => query, auth: {getSession: async () => ({data:{session:{user:{id:'fixture'}}}})}
+  }};
+  const source = fs.readFileSync(path.join(__dirname, '../js/statsnap.js'), 'utf8')
+    .replace(/^import .*;\r?\n/gm, '').replace(/export /g, '');
+  vm.runInNewContext(source, context);
+  return {context, writes};
+}
+
+test('cached content metrics survive a denied bookkeeping write and retain freshness', async () => {
+  const row = {last_stats:{metrics:{views:123, likes:9, comments:4}},
+    last_success_at:'2026-10-01T00:00:00Z'};
+  const {context} = snapshotFixture(row, true);
+  const result = await context.statsnapFallback({originalUrl:'https://youtu.be/example'});
+  assert.equal(result.metrics.views, 123);
+  assert.equal(result.metrics.likes, 9);
+  assert.equal(result.metrics.lastSuccessAt, row.last_success_at);
+});
+
+test('successful unchanged metrics update the successful check timestamp', async () => {
+  const fixture = snapshotFixture(null);
+  const args = {originalUrl:'https://youtu.be/example', liveMetrics:{views:123}};
+  const first = await fixture.context.statsnapSaveAfterSuccess(args);
+  const {context, writes} = snapshotFixture({...first, last_success_at:'2020-01-01T00:00:00Z'});
+  await context.statsnapSaveAfterSuccess(args);
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].last_success_at, writes[0].last_checked_at);
+  assert.notEqual(writes[0].last_success_at, '2020-01-01T00:00:00Z');
+});
+
+test('completed campaign performance remains available on both dashboards after review', () => {
+  for (const file of ['sponsorOffers', 'sponseeOffers']) {
+    const source = fs.readFileSync(path.join(__dirname, '../js/' + file + '.js'), 'utf8');
+    assert.match(source, /Number\(offer.stage\) >= 4/);
+    assert.match(source, /Content Performance/);
+    assert.match(source, /Refresh attempted:/);
+    assert.doesNotMatch(source, /reviewedOfferIds.includes\(offer.id\)\) return false/);
+    assert.doesNotMatch(source, /if \(!sponseeReview\)/);
+  }
+});

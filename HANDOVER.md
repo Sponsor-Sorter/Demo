@@ -177,3 +177,12 @@ New standalone Help: help.html/help.css/js/helpCentre.js, 14 searchable topics, 
 Dashboard/Finder/guest now load workspace-layout.css and js/workspaceLayout.js with workspace-page body class. Module moves existing direct legacy nav children into one nav; preserves IDs/listeners/account controls. CSS scopes common widths, card details, history-table scrolling, ratings wrapping, privacy-control sizing and mobile profiles. Populated guest sponsor and sponsee checked at 320/375/768/1440 with zero document overflow; details expansion and role switching passed. Real authenticated dashboard actions remain untested. Finder's auth redirected to login in available browser, so signed-in Finder validation is still required. New Help search/disclosures, metadata/static target checks and script syntax passed.
 
 Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88px; glossy CSS hover/focus/selected effects return original visual direction. Original grid/native artwork and light trails retained. Revenue readiness still blocked by previously listed successful paid-signup, subscription lifecycle and atomic-payout validations. Do not market the whole system as production verified based on layout checks.
+
+
+## 2026-10-11 — Completed campaign performance retention
+
+- Both dashboards retain Content Performance access after completion/reviews; creators can find archived completed offers through Completed. Sponsors no longer lose reviewed campaigns.
+- Reopening performance requests current platform metrics. Cached blocks show their last successful check; refresh attempts are explicitly labelled. Platform authorization, expired/deleted content and API availability still limit freshness. No unattended polling was introduced.
+- Fixed nested cached metrics reading and successful-check timestamps when metrics stay unchanged. Failed cache bookkeeping no longer hides readable saved results.
+- Validation: 35 unit tests pass; JavaScript syntax checks pass; sponsor preview Completed filter and Content Performance empty-content state checked in browser. Real linked-platform updates remain to be verified with authenticated test campaigns.
+- Outstanding original workflow request: private video drafts/review UI and database policies have NOT been implemented. Audit identified unsafe client-owned offer transitions, non-atomic funding/refunds and creator wallet credit blocked by existing profile protection; do not claim end-to-end workflow/payout readiness. Preserve real account Moikailive.

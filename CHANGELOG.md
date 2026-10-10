@@ -143,3 +143,12 @@ See [PAGE_SAFETY_AUDIT.md](./PAGE_SAFETY_AUDIT.md) for changed pages, browser co
 
 ### 2026-10-11 Navigation account controls
 Bell, messages and settings stay beside tabs on the right; removed the legacy separate-row rule, compacted dashboard controls, preserved guest visibility, refreshed stylesheet cache URLs. Browser checks at 320/375/768/1440, zero overflow; navigation geometry checked after CSS transitions settle.
+
+
+## 2026-10-11 — Completed campaign performance retention
+
+- Both dashboards retain Content Performance access after completion/reviews; creators can find archived completed offers through Completed. Sponsors no longer lose reviewed campaigns.
+- Reopening performance requests current platform metrics. Cached blocks show their last successful check; refresh attempts are explicitly labelled. Platform authorization, expired/deleted content and API availability still limit freshness. No unattended polling was introduced.
+- Fixed nested cached metrics reading and successful-check timestamps when metrics stay unchanged. Failed cache bookkeeping no longer hides readable saved results.
+- Validation: 35 unit tests pass; JavaScript syntax checks pass; sponsor preview Completed filter and Content Performance empty-content state checked in browser. Real linked-platform updates remain to be verified with authenticated test campaigns.
+- Outstanding original workflow request: private video drafts/review UI and database policies have NOT been implemented. Audit identified unsafe client-owned offer transitions, non-atomic funding/refunds and creator wallet credit blocked by existing profile protection; do not claim end-to-end workflow/payout readiness. Preserve real account Moikailive.

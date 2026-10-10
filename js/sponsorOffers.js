@@ -6,7 +6,7 @@ import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
-import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js';
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-performance1';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
@@ -99,15 +99,12 @@ function renderOffersByFilter(filter) {
     if (filter === 'all') return true;
     if (filter === 'stage-3') return offer.stage === 3;
     if (filter === 'stage-4') return offer.stage === 4;
-    if (filter === 'stage-5') return offer.stage === 5;
+    if (filter === 'stage-5') return Number(offer.stage) === 5 || ['completed', 'review_completed', 'review-completed'].includes(offer.status);
     if (filter === 'rejected') return ['rejected', 'Offer Cancelled'].includes(offer.status);
     return offer.status === filter;
   });
 
-  filteredOffers = filteredOffers.filter(offer => {
-    if (offer.stage === 5 && reviewedOfferIds.includes(offer.id)) return false;
-    return true;
-  });
+  // Completed campaigns remain available after reviews for performance reporting.
 
   const start = (currentPage - 1) * offersPerPage;
   const end = start + offersPerPage;
@@ -317,7 +314,7 @@ async function renderSingleOffer(offer) {
         <button class="offer-Comments">Comments</button>
         <button class="offer-img">Offer Images</button>
         <button class="expand-btn">View Details</button>
-        ${offer.stage === 4 ? '<button class="data-summary-btn">Data Summary</button>' : ''}
+        ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button>' : ''}
         ${actionButton}
         ${offer.stage === 4 && !(offer.sponsor_live_confirmed || offer.sponsor_live_confirm) ? '<button class="confirm-live-btn">Confirm Live Content</button>' : ''}
         <div class="details-section" style="display: none;">
@@ -453,6 +450,10 @@ function epochToDateString(n) {
 
 // NEW: generic snapshot block (used on live fetch failures)
 function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subtitle = '') {
+  const savedAt = new Date(metrics.lastSuccessAt || '');
+  subtitle += Number.isFinite(savedAt.getTime())
+    ? ' Last successful check: ' + savedAt.toLocaleString() + '.'
+    : ' Last successful check unavailable.';
   const logos = {
     youtube: 'youtubelogo.png',
     tiktok: 'tiktoklogo.png',
@@ -538,7 +539,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     .from('private_offers')
     .select('*')
     .eq('sponsor_email', sponsor_email)
-    .in('status', ['pending', 'accepted', 'in_progress', 'live', 'completed', 'Offer Cancelled', 'rejected', 'review_completed']);
+    .in('status', ['pending', 'accepted', 'in_progress', 'live', 'completed', 'Offer Cancelled', 'rejected', 'review_completed', 'review-completed']);
 
   if (error || !offers) {
     document.getElementById('listing-container').innerHTML = `<p style="color:red;">Error loading offers: ${error?.message}</p>`;
@@ -1194,6 +1195,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Done — remove the loader so it doesn't show after load
       const prog = dataSummarySection.querySelector('#ds-progress');
       if (prog) prog.remove();
+      const checked = document.createElement('p');
+      checked.textContent = 'Refresh attempted: ' + new Date().toLocaleString() + '. Cached results are labelled; platform access and deleted content can limit updates. Close and reopen Content Performance to refresh.';
+      dataSummarySection.appendChild(checked);
       return;
     }
 

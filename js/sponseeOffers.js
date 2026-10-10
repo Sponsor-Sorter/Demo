@@ -38,7 +38,7 @@ async function getCurrentSponseeActiveOfferCount() {
 
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
-import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js';
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-performance1';
 
 let allSponseeOffers = [];
 let currentPage = 1;
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function renderSponseeOffersByFilter() {
     listingContainer.innerHTML = '';
     // FILTER OUT ARCHIVED OFFERS GLOBALLY!
-    let nonArchivedOffers = allSponseeOffers.filter(offer => !offer.archived);
+    let nonArchivedOffers = allSponseeOffers.filter(offer => !offer.archived || currentFilter === 'stage-5');
     let filteredOffers = [];
     if (currentFilter === 'all') filteredOffers = nonArchivedOffers;
     else if (currentFilter === 'pending') filteredOffers = nonArchivedOffers.filter(offer => offer.status === 'pending');
@@ -287,19 +287,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = '<p>No offers found for this filter/page.</p>';
     } else {
       for (const offer of paginatedOffers) {
-        if (offer.status === 'review_completed' && offer.stage === 5) {
-          const { data: sponseeReview } = await supabase
-            .from('private_offer_reviews')
-            .select('id')
-            .eq('offer_id', offer.id)
-            .eq('reviewer_id', sponsee_id)
-            .maybeSingle();
-          if (!sponseeReview) {
-            await renderSingleOfferCard(offer, false);
-          }
-        } else {
-          await renderSingleOfferCard(offer, false);
-        }
+        await renderSingleOfferCard(offer, false);
       }
     }
   }
@@ -635,7 +623,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
           <button class="offer-Comments">Comments</button>
           <button class="offer-img">Offer Images</button>
           <button class="expand-btn">View Details</button>
-          ${offer.stage === 4 ? '<button class="data-summary-btn">Data Summary</button>' : ''}
+          ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button>' : ''}
           <div class="details-section" style="display:none;">
             <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
             <div class="job-deliverable-row">
@@ -1325,6 +1313,9 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
       // Done — remove the loader
       const prog = dataSummarySection.querySelector('#ds-progress');
       if (prog) prog.remove();
+      const checked = document.createElement('p');
+      checked.textContent = 'Refresh attempted: ' + new Date().toLocaleString() + '. Cached results are labelled; platform access and deleted content can limit updates. Close and reopen Content Performance to refresh.';
+      dataSummarySection.appendChild(checked);
       return;
     }
 
@@ -1779,6 +1770,8 @@ function epochToDateString(n) {
 
 // Render a generic "snapshot" (cached) block for any platform
 function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subtitle = '') {
+  const savedAt = new Date(metrics.lastSuccessAt || '');
+  subtitle += Number.isFinite(savedAt.getTime()) ? ' Last successful check: ' + savedAt.toLocaleString() + '.' : ' Last successful check unavailable.';
   const logos = {
     youtube: 'youtubelogo.png',
     tiktok: 'tiktoklogo.png',

@@ -165,7 +165,7 @@ export async function statsnapSaveAfterSuccess({ originalUrl, platformHint, offe
         offer_id: existing.offer_id ?? offerId,
         last_stats: existing.last_stats,
         metrics_hash: existing.metrics_hash,
-        last_success_at: existing.last_success_at,
+        last_success_at: now,
         last_checked_at: now,
         last_error: null,
         updated_by
@@ -195,10 +195,12 @@ export async function statsnapFallback({ originalUrl, platformHint }){
 
     // Derive a light metrics object for convenience (map common fields)
     const raw = row.last_stats || {};
+    const values = raw.metrics || raw;
     const metrics = {
-      views: Number(raw?.viewCount ?? raw?.views ?? raw?.statistics?.viewCount ?? 0) || 0,
-      likes: Number(raw?.likeCount ?? raw?.likes ?? raw?.statistics?.likeCount ?? 0) || 0,
-      comments: Number(raw?.commentCount ?? raw?.comments ?? raw?.statistics?.commentCount ?? 0) || 0
+      views: Number(values?.viewCount ?? values?.views ?? values?.statistics?.viewCount ?? 0) || 0,
+      likes: Number(values?.likeCount ?? values?.likes ?? values?.statistics?.likeCount ?? 0) || 0,
+      comments: Number(values?.commentCount ?? values?.comments ?? values?.statistics?.commentCount ?? 0) || 0,
+      lastSuccessAt: row.last_success_at
     };
 
     // touch checked + record that we served snapshot (optional)
@@ -212,7 +214,7 @@ export async function statsnapFallback({ originalUrl, platformHint }){
       last_checked_at: checkedAt,
       last_error: row.last_error || 'served from snapshot (live fetch failed upstream)',
       updated_by: row.updated_by ?? null
-    });
+    }).catch(() => {});
 
     return { metrics, raw, snapshotRow: row, platform, normalized_url };
   } catch (e) {
