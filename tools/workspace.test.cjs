@@ -338,3 +338,43 @@ test('completed campaign performance remains available on both dashboards after 
     assert.doesNotMatch(source, /if \(!sponseeReview\)/);
   }
 });
+
+
+function draftValidation() {
+  const context={URL,Date,Map,Number};
+  let source=fs.readFileSync(path.join(__dirname,'../js/offerSubmissions.js'),'utf8');
+  source=source.slice(source.indexOf('const BUCKET'),source.indexOf('export function safeCommentElement')).replace('export ','');
+  vm.runInNewContext(source,context);
+  const workflow=fs.readFileSync(path.join(__dirname,'../js/offerWorkflow.js'),'utf8').replace('export ','');
+  vm.runInNewContext(workflow,context);return context;
+}
+
+test('draft videos reject empty, oversized and executable attachments',()=>{
+  const c=draftValidation();
+  assert.equal(c.validateDraftFile({type:'video/mp4',size:50*1024*1024}),'mp4');
+  for(const file of [{type:'text/html',size:10},{type:'video/mp4',size:0},{type:'video/mp4',size:50*1024*1024+1}])
+    assert.throws(()=>c.validateDraftFile(file));
+});
+
+test('publishing requires every agreed platform and rejects spoofed hosts and future dates',()=>{
+  const c=draftValidation(),today='2026-10-11';
+  const good={url:'https://www.youtube.com/watch?v=fixture',date:'2026-10-10'};
+  assert.equal(c.validatePublishedContent([good],['youtube'],today).urls.length,1);
+  assert.equal(c.validatePublishedContent([{url:'https://www.snapchat.com/spotlight/fixture',date:good.date}],['snapchat'],today).urls.length,1);
+  assert.throws(()=>c.validatePublishedContent([good],['youtube','tiktok'],today));
+  for(const url of ['https://youtube.com.evil.invalid/video','javascript:alert(1)','http://youtube.com/watch?v=fixture','https://user:password@youtube.com/watch?v=fixture'])
+    assert.throws(()=>c.validatePublishedContent([{...good,url}],['youtube'],today));
+  for(const date of ['2026-10-12','2026-02-31','invalid'])
+    assert.throws(()=>c.validatePublishedContent([{...good,date}],['youtube'],today));
+});
+
+test('offer payment and refund UI cannot mark success before a verified settlement',()=>{
+ const creator=fs.readFileSync(path.join(__dirname,'../js/sponseeOffers.js'),'utf8');
+ const sponsor=fs.readFileSync(path.join(__dirname,'../js/sponsorOffers.js'),'utf8');
+ assert.doesNotMatch(creator,/update\(\{ wallet: newWallet \}\)/);
+ assert.doesNotMatch(creator,/update\(\{ stage: 5 \}\)/);
+ assert.doesNotMatch(sponsor,/rpc\('increment_wallet_balance'/);
+ assert.doesNotMatch(sponsor,/live_date: new Date\(\)/);
+ assert.match(creator,/Payment release requires verified funding/);
+ assert.match(sponsor,/Automatic refunds are temporarily unavailable/);
+});

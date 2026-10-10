@@ -152,3 +152,15 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Fixed nested cached metrics reading and successful-check timestamps when metrics stay unchanged. Failed cache bookkeeping no longer hides readable saved results.
 - Validation: 35 unit tests pass; JavaScript syntax checks pass; sponsor preview Completed filter and Content Performance empty-content state checked in browser. Real linked-platform updates remain to be verified with authenticated test campaigns.
 - Outstanding original workflow request: private video drafts/review UI and database policies have NOT been implemented. Audit identified unsafe client-owned offer transitions, non-atomic funding/refunds and creator wallet credit blocked by existing profile protection; do not claim end-to-end workflow/payout readiness. Preserve real account Moikailive.
+
+
+## 2026-10-11 — Private video drafts and workflow safeguards
+
+- Added private 50 MB MP4/WebM/MOV draft uploads in offer Comments, version history, one-hour renewable playback access, sponsor approval/change requests and feedback. Latest submitted draft approval is enforced by the database before publishing.
+- Added participant-only draft metadata/Storage policies that remain restrictive despite legacy blanket Storage grants. Registered assets cannot be overwritten/deleted by clients. Draft/review RPCs lock the parent offer and are idempotent.
+- Offer comments now render text safely, derive sender identity on the server and check parent-offer participation.
+- Publishing validates links/dates for all agreed platforms, including Snapchat. Sponsor confirmation preserves publication dates; confirmed links cannot be replaced by clients. Agreed parties/price/platforms/payout fields are protected. Client stage progression and confirmation roles are now checked in Postgres; browser requests cannot mark payment complete.
+- Replaced destructive rejected-offer removal with archiving. Refund and wallet-release UI now refuses false success; verified funding/atomic settlement/webhook implementation remains outstanding and automatic private-offer refunds/credits are unavailable.
+- Closed blanket authenticated access to private invoices/proofs. One ownerless/unscoped legacy invoice object is quarantined from client access, retained for ownership reconciliation; not owned by Moikailive. No real account or money was changed.
+- Four migrations applied: 20261010204209_private_offer_draft_review, 20261010205323_support_snapchat_content_links, 20261010205903_restrict_legacy_private_storage, 20261010210228_enforce_private_offer_actors.
+- Validation: isolated PGlite tests use synthetic data and validate actual migrations against deliberately broad legacy policies. Live rollback-only permission/replay tests pass. Browser preview verifies creator upload controls, sponsor-only decision controls, required change feedback and safe failure states. Actual upload/playback is awaiting a usable authenticated test browser session; do not claim it tested. See tools/OFFER_WORKFLOW_ROLLOUT.md for recovery/limitations.

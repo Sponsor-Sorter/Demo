@@ -8,26 +8,10 @@ export async function handleRemoveOffer(offerId) {
     alert("Invalid offer ID.");
     return;
   }
-  const confirmed = window.confirm("Are you sure you want to permanently delete this offer and all related comments?");
-  if (!confirmed) return;
-  try {
-    const { error: commentDeleteError } = await supabase
-      .from('private_offer_comments')
-      .delete()
-      .eq('offer_id', offerId);
-    if (commentDeleteError) throw new Error(`Failed to delete comments: ${commentDeleteError.message}`);
-    const { error: offerDeleteError } = await supabase
-      .from('private_offers')
-      .delete()
-      .eq('id', offerId);
-    if (offerDeleteError) throw new Error(`Failed to delete offer: ${offerDeleteError.message}`);
-    alert("Offer and related comments deleted successfully.");
-    return true;
-  } catch (err) {
-    console.error(err);
-    alert(`Error removing offer: ${err.message}`);
-    return false;
-  }
+  if (!window.confirm('Archive this offer? Its messages and approval history will be preserved.')) return false;
+  const {error} = await supabase.from('private_offers').update({archived:true}).eq('id',offerId);
+  if (error) { alert('Could not archive offer: ' + error.message); return false; }
+  return true;
 }
 
 // ----- RENDER GOLD STARS -----

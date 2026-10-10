@@ -10,12 +10,13 @@ const users = [
  {id:uid,user_id:uid,username:'Layout preview · sample data',email:'admin@example.com',is_admin:true,userType:'sponsor',wallet:100,banned:false,created_at:date},
  {id:'00000000-0000-4000-8000-000000000002',user_id:'00000000-0000-4000-8000-000000000002',username:'Sample creator',email:'creator@example.com',about_yourself:'<img src=x onerror=alert(1)>',userType:'besponsored',wallet:0,banned:false,created_at:date}
 ];
-const offer = {id:uid,sponsor_id:uid,sponsee_id:users[1].user_id,offer_title:'Sample sponsorship',offer_amount:350,sponsor_username:'Example brand',sponsor_email:'admin@example.com',sponsee_username:'Sample creator',sponsee_email:'creator@example.com',status:'pending',stage:1,deadline:'2026-12-20',payment_schedule:'On completion',duration:'One campaign',sponsor_company:'Example brand',platforms:['youtube','instagram'],created_at:date};
+const offer = {id:uid,sponsor_id:uid,sponsee_id:users[1].user_id,offer_title:'Sample sponsorship',offer_amount:350,sponsor_username:'Example brand',sponsor_email:'admin@example.com',sponsee_username:'Sample creator',sponsee_email:'creator@example.com',status:'accepted',stage:2,deadline:'2026-12-20',payment_schedule:'On completion',duration:'One campaign',sponsor_company:'Example brand',platforms:['youtube','instagram'],created_at:date};
 users[0].is_admin = new URLSearchParams(location.search).get('role') !== 'member';
 const selectedUser = location.pathname.includes('dashboardsponsee') || new URLSearchParams(location.search).get('role') === 'creator' ? users[1] : users[0];
 users.forEach(u=>Object.assign(u,{profile_pic:'./Logo1.jpg',location:'Global',company_name:'Example brand',social_handles:{},about_yourself:'Fictional profile for layout review.',subscription_status:'free'}));
 const records = { public_user_directory:users,
  users_extended_data:users, private_offers:[offer,{...offer,id:users[1].user_id,status:'completed',stage:5}],
+ offer_submissions:[{id:uid,offer_id:uid,object_path:uid+'/'+users[1].user_id+'/draft.mp4',original_name:'Sample video draft.mp4',version:1,notes:'Preview-only draft for sponsor review.',status:'pending',feedback:'',created_at:date}],
  private_offer_reviews:[{id:uid,offer_id:uid,reviewer_id:uid,rating:5,review_text:'Sample review',created_at:date}],
  reported_users:[{id:uid,user_id:uid,reported_user_id:uid,reporter_id:uid,reason:'Sample report for layout review',details:'No real account is involved.',status:'pending',created_at:date}],
  reported_comments:[],reported_offers:[],reported_reviews:[],
@@ -36,7 +37,7 @@ class Query {
  insert(){this.mutation=true;return this;} update(){this.mutation=true;return this;} delete(){this.mutation=true;return this;}
  then(resolve,reject){return Promise.resolve(new URLSearchParams(location.search).get('fail')===this.table ? {data:null,error:{message:'Simulated preview failure'}} : this.mutation ? {data:null,error:{message:'Read-only layout preview: no changes allowed'}} : {data:this.head?null:this.one?this.rows[0]||null:this.rows,error:null,count:this.rows.length}).then(resolve,reject);}
 }
-export const supabase={from:table=>new Query(table),auth:{getUser:async()=>({data:{user:new URLSearchParams(location.search).get('role')==='anonymous'?null:{id:selectedUser.user_id,email:selectedUser.email}},error:null}),getSession:async()=>({data:{session:{user:{id:selectedUser.user_id,email:selectedUser.email},access_token:'preview-only'}}}),onAuthStateChange:()=>({data:{subscription:{unsubscribe(){}}}}),signOut:async()=>({error:null})},rpc:async name=>({data:name.endsWith('_by_day')?[{day:'2026-10-09',count:2},{day:'2026-10-10',count:4}]:[],error:null}),channel:()=>({on(){return this;},subscribe(){return this;}}),removeChannel:()=>{},storage:{from:()=>({getPublicUrl:()=>({data:{publicUrl:'http://127.0.0.1:8126/Logo1.jpg'}})})},functionsUrl:'http://127.0.0.1:8125/disabled'};
+export const supabase={from:table=>new Query(table),auth:{getUser:async()=>({data:{user:new URLSearchParams(location.search).get('role')==='anonymous'?null:{id:selectedUser.user_id,email:selectedUser.email}},error:null}),getSession:async()=>({data:{session:{user:{id:selectedUser.user_id,email:selectedUser.email},access_token:'preview-only'}}}),onAuthStateChange:()=>({data:{subscription:{unsubscribe(){}}}}),signOut:async()=>({error:null})},rpc:async name=>['submit_offer_video','review_offer_video'].includes(name)?{data:null,error:{message:'Read-only layout preview: draft changes are disabled'}}:({data:name.endsWith('_by_day')?[{day:'2026-10-09',count:2},{day:'2026-10-10',count:4}]:[],error:null}),channel:()=>({on(){return this;},subscribe(){return this;}}),removeChannel:()=>{},storage:{from:()=>({getPublicUrl:()=>({data:{publicUrl:'http://127.0.0.1:8126/Logo1.jpg'}})})},functionsUrl:'http://127.0.0.1:8125/disabled'};
 `;
 http
   .createServer((req, res) => {
@@ -93,8 +94,8 @@ http
       );
     else res.end(fs.readFileSync(file));
   })
-  .listen(8126, "127.0.0.1", () =>
+  .listen(Number(process.env.PORT) || 8126, "127.0.0.1", () =>
     process.stdout.write(
-      "Read-only workspace review: http://127.0.0.1:8126/finder.html\n",
+      "Read-only workspace review (port from PORT or 8126)\n",
     ),
   );

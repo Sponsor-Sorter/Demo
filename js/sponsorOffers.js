@@ -1,6 +1,7 @@
+import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts1';
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
-import { handleRemoveOffer } from './sponsorLogic.js?v=20261010-summary1';
+import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts1';
 import { notifyComment, notifyOfferUpdate } from './alerts.js';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
@@ -236,9 +237,9 @@ async function renderSingleOffer(offer) {
 
   let actionButton = '';
   if (offer.stage === 1 && offer.status !== 'Offer Cancelled' && offer.status !== 'rejected') {
-    actionButton = '<button class="cancel-offer-btn">Cancel Offer</button>';
+    actionButton = '<button class="cancel-offer-btn">Cancellation help</button>';
   } else if (['rejected', 'Offer Cancelled'].includes(offer.status)) {
-    actionButton = '<button class="delete-offer-btn">Remove Offer</button>';
+    actionButton = '<button class="delete-offer-btn">Archive Offer</button>';
   }
 
   const pairs = pairUrlsAndDates(offer);
@@ -337,7 +338,7 @@ async function renderSingleOffer(offer) {
         </div>
         <div class="comments-section" style="display: none;">
           <div class="existing-comments"></div>
-          <textarea placeholder="Write a comment..." class="comment-input"></textarea><br>
+          <textarea placeholder="Write a comment..." class="comment-input" maxlength="10000"></textarea><br>
           <button class="submit-comment">Submit Comment</button>
         </div>
         <div class="data-summary-section" style="display:none;"></div>
@@ -1206,6 +1207,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       hideAllSections();
       if (!isVisible) {
         commentsSection.style.display = 'block';
+        await mountOfferSubmissions(commentsSection, allSponsorOffers.find(o => String(o.id) === String(offerId)), 'sponsor');
         const existingComments = commentsSection.querySelector('.existing-comments');
         existingComments.innerHTML = '<p>Loading comments...</p>';
         const { data: comments, error } = await supabase
@@ -1220,17 +1222,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           existingComments.innerHTML = '';
           for (const comment of comments) {
-            const reportCommentBtn = `
-              <button
-                class="report-btn"
-                style="background:none;border:none;cursor:pointer;color:#e03232;font-size:1em;margin-left:8px;"
-                title="Report Comment"
-                onclick="window.openReportModal('comment', '${comment.id}')"
-              >🚩</button>
-            `;
-            const displayName = comment.sender || 'Sponsor';
-            const commentEl = document.createElement('p');
-            commentEl.innerHTML = `<strong>${displayName}:</strong> ${comment.comment_text} <em>(${new Date(comment.created_at).toLocaleString()})</em> ${reportCommentBtn}`;
+            const commentEl = safeCommentElement(comment);
             existingComments.appendChild(commentEl);
           }
         }
@@ -1263,7 +1255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .from('private_offer_comments')
         .insert([{
           offer_id: offerId,
-          user_id: sponsor_id,
+          user_id: session.user.id,
           sponsor_id: sponsor_id,
           sponsor_email: sponsor_email,
           sponsee_id: sponseeId,
@@ -1287,44 +1279,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (e.target.classList.contains('cancel-offer-btn')) {
-      if (window.confirm("Are you sure you want to cancel this offer?")) {
+      if (window.confirm("View cancellation and refund support information?")) {
         const offerId = offerCard.dataset.offerId;
-        const { data: offer, error: offerErr } = await supabase
-          .from('private_offers')
-          .select('offer_amount')
-          .eq('id', offerId)
-          .single();
-        if (offerErr || !offer) {
-          alert('Could not fetch offer amount for wallet refund.');
-          return;
-        }
-        const { error: cancelErr } = await supabase
-          .from('private_offers')
-          .update({ status: 'Offer Cancelled' })
-          .eq('id', offerId);
-        if (cancelErr) {
-          alert(`Failed to cancel offer: ${cancelErr.message}`);
-          return;
-        }
-        const { error: walletErr } = await supabase.rpc('increment_wallet_balance', {
-          user_id_param: sponsor_id,
-          amount_param: offer.offer_amount
-        });
-        if (walletErr) {
-          alert('Failed to credit refund to wallet. Please contact support.');
-          return;
-        }
-        const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
-        await notifyOfferUpdate({
-          to_user_id: sponseeUserId,
-          offer_id: offerId,
-          type: 'offer_cancelled',
-          title: "Offer Cancelled",
-          message: `${currentSponsorUsername} has cancelled the sponsorship offer.`
-        });
-        alert("Offer cancelled. Amount has been refunded to your wallet.");
-        updateSponsorWallet();
-        renderOffersByFilter(currentFilter);
+        alert('Automatic refunds are temporarily unavailable while funding verification is being upgraded. Contact support with offer ' + offerId + '. Your offer and wallet have not been changed.');
+        return;
       }
     }
 
@@ -1340,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           message: `${currentSponsorUsername} has deleted the sponsorship offer.`
         });
         offerCard.remove();
-        allSponsorOffers = allSponsorOffers.filter(offer => offer.id !== parseInt(offerId));
+        allSponsorOffers = allSponsorOffers.filter(offer => String(offer.id) !== String(offerId));
       }
     }
 
@@ -1352,8 +1310,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .update({
           sponsor_live_confirmed: true,
           stage: 4, // Keep at stage 4 so the sponsee can accept payout and move it to 5
-          status: 'completed',
-          live_date: new Date().toISOString().slice(0, 10)
+          status: 'completed'
         })
         .eq('id', offerId);
 

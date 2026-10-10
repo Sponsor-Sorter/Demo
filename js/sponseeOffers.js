@@ -1,10 +1,11 @@
+import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts1';
+import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts1';
 // public/js/sponseeOffers.js
 import { supabase } from './supabaseClient.js';
 import {
   notifyComment,
   notifyOfferStatus,
-  notifyOfferUpdate,
-  notifyPayout
+  notifyOfferUpdate
 } from './alerts.js';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
@@ -494,7 +495,7 @@ async function computeGroupShare(offer) {
       </div>
     ` : `
       <div class="stage-4-actions">
-        <button class="receive-payment">Accept Payment</button>
+        <button class="receive-payment">Payment release status</button>
       </div>
     `;
   } else {
@@ -644,7 +645,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
           </div>
           <div class="comments-section" style="display:none;">
             <div class="existing-comments"></div>
-            <textarea placeholder="Write a comment..." class="comment-input"></textarea><br>
+            <textarea placeholder="Write a comment..." class="comment-input" maxlength="10000"></textarea><br>
             <button class="submit-comment">Submit Comment</button>
           </div>
           <div class="data-summary-section" style="display:none;"></div>
@@ -744,6 +745,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
       hideAllSections();
       if (!isVisible) {
         commentsSection.style.display = 'block';
+        await mountOfferSubmissions(commentsSection, allSponseeOffers.find(o => String(o.id) === String(offerId)), 'creator');
         await reloadOfferComments();
       }
       return;
@@ -1379,22 +1381,14 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         .select('*')
         .eq('offer_id', offerId)
         .order('created_at', { ascending: true });
-      if (error || !comments || comments.length === 0) {
+      if (error) {
+        existingComments.innerHTML = '<p>Comments could not be loaded. Please retry.</p>';
+      } else if (!comments || comments.length === 0) {
         existingComments.innerHTML = '<p>No comments yet.</p>';
       } else {
         existingComments.innerHTML = '';
         for (const comment of comments) {
-          const displayName = comment.sender || 'Anonymous';
-          const reportCommentBtn = `
-            <button
-              class="report-btn"
-              style="background:none;border:none;cursor:pointer;color:#e03232;font-size:1em;margin-left:8px;"
-              title="Report Comment"
-              onclick="window.openReportModal('comment', '${comment.id}')"
-            >🚩</button>
-          `;
-          const commentEl = document.createElement('p');
-          commentEl.innerHTML = `<strong>${displayName}:</strong> ${comment.comment_text} <em>(${new Date(comment.created_at).toLocaleString()})</em> ${reportCommentBtn}`;
+          const commentEl = safeCommentElement(comment);
           existingComments.appendChild(commentEl);
         }
       }
@@ -1463,7 +1457,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         alert("Please select a date before proceeding.");
         return;
       }
-      if (!window.confirm(`You are agreeing, on ${selectedDate}. The content promised will be live. (Posted online)?`)) return;
+      if (!window.confirm(`Set ${selectedDate} as your content creation date? Submit any draft for approval before publishing. This does not mark the content live.`)) return;
       const { error } = await supabase
         .from('private_offers')
         .update({ stage: 3, creation_date: selectedDate })
@@ -1485,26 +1479,14 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     // >>> LIVE NOW with per-URL dates <<<
     if (e.target.classList.contains('live-now-btn')) {
       const rows = Array.from(offerCard.querySelectorAll('.per-url-row'));
-      const urls = [];
-      const dates = [];
-
-      for (const row of rows) {
-        const url = row.querySelector('.per-url-input')?.value.trim();
-        const date = row.querySelector('.per-url-date')?.value;
-        if (url) {
-          if (!date) {
-            alert("Each provided URL must have a live date.");
-            return;
-          }
-          urls.push(url);
-          dates.push(date);
-        }
-      }
-
-      if (urls.length === 0) {
-        alert("Please enter at least one live URL and its date before proceeding.");
-        return;
-      }
+      const currentOffer = allSponseeOffers.find(o => String(o.id) === String(offerId));
+      let urls, dates;
+      try {
+        ({ urls, dates } = validatePublishedContent(rows.map(row => ({
+          url: row.querySelector('.per-url-input')?.value.trim(),
+          date: row.querySelector('.per-url-date')?.value,
+        })), currentOffer?.platforms));
+      } catch (error) { alert(error.message); return; }
 
       const confirmMsg = `Going live with the following:\n\n${urls.map((u, i) => `- ${u}\n  date: ${dates[i]}`).join('\n')}\n\nProceed?`;
       if (!window.confirm(confirmMsg)) return;
@@ -1545,96 +1527,11 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
 if (e.target.classList.contains('receive-payment')) {
   const isLockedGroup = offerCard?.dataset?.groupOffer === 'true';
   if (isLockedGroup) {
-    try {
-      notifyPayout?.({
-        type: 'info',
-        title: 'Group payout',
-        message: 'Group offer payouts are processed after the deadline by an admin.'
-      });
-    } catch (_) {
-      alert('Group offer payouts are processed after the deadline by an admin.');
-    }
+    alert('Group payment release requires verified funding and admin review after the deadline. Contact support with offer ' + offerId + '.');
     return; // stop here — no modal, no payout
   }
 
-  let modal = document.createElement('div');
-  modal.innerHTML = ` 
-
-    <div class="modal-backdrop" style="position:fixed;inset:0;background:#0009;z-index:9001;"></div>
-    <div class="modal-content" style="width:70%;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:#fff;padding:25px;border-radius:10px;z-index:9002;min-width:320px;max-width:95vw;">
-      <h3 style="margin-top:0;color:black;">Confirm Payout</h3>
-      <p style="color:black;">Do you want to move this payment into your wallet balance?</p>
-      <div style="margin-top:18px;display:flex;gap:10px;">
-        <button id="confirm-payout" style="background:#28a745;color:#fff;">Confirm</button>
-        <button id="cancel-payout" style="background:#ddd;">Cancel</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  modal.querySelector('#cancel-payout').onclick = () => modal.remove();
-
-  modal.querySelector('#confirm-payout').onclick = async () => {
-    const offerAmount = parseFloat(offerCard.dataset.payoutAmount || "0");
-
-
-    // 1. Mark offer stage = 5
-    const { error: updateError } = await supabase
-      .from('private_offers')
-      .update({ stage: 5 })
-      .eq('id', offerId);
-    if (updateError) {
-      alert(`Failed to mark payment received: ${updateError.message}`);
-      return;
-    }
-
-    // 2. Credit amount into sponsee wallet
-    const { data: walletRow, error: walletFetchErr } = await supabase
-      .from('users_extended_data')
-      .select('wallet')
-      .eq('user_id', sponsee_id)
-      .maybeSingle();
-
-    if (walletFetchErr) {
-      alert(`Failed to fetch wallet: ${walletFetchErr.message}`);
-      return;
-    }
-
-    const currentWallet = Number(walletRow?.wallet) || 0;
-    const newWallet = currentWallet + offerAmount;
-
-    const { error: walletUpdateErr } = await supabase
-      .from('users_extended_data')
-      .update({ wallet: newWallet })
-      .eq('user_id', sponsee_id);
-
-    if (walletUpdateErr) {
-      alert(`Failed to update wallet: ${walletUpdateErr.message}`);
-      return;
-    }
-
-    // 3. Send notifications
-    await notifyOfferUpdate({
-      to_user_id: sponsorId,
-      offer_id: offerId,
-      type: 'payment_received',
-      title: 'Payment Marked as Received',
-      message: `${sponsee_username} marked payment as received.`
-    });
-
-    await notifyPayout({
-      to_user_id: sponsee_id,
-      payout_amount: `$${offerAmount.toFixed(2)}`,
-      payout_currency: 'USD',
-      payout_status: 'credited',
-      offer_id: offerId
-    });
-
-    modal.remove();
-    await loadSponseeOffers();
-    await updateSponseeWallet(); // refresh wallet display
-  };
+  alert('Payment release requires verified funding and support review. Contact support with offer ' + offerId + '. No payment has been marked as received and your wallet has not been changed.');
   return;
 }
 
