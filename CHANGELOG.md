@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-10 — Atomic payout records and wallet reservations
+
+- Moved admin payout decisions, wallet deduction, audit and in-app notice into a locked database transaction; repeat processing is idempotent.
+- Fixed wallet reservations using the correct account ID and all reserved states; verified ordinary users cannot edit protected balances.
+- Renamed bookkeeping action Record External Payment; actual provider sending remains gated on inspection and sandbox verification.
+- 24 Node tests passed; two database integration suites passed with all fixture changes rolled back.
+
 ## 2026-10-10 — Payment request hardening and regression tests
 
 - Fixed signup Checkout return URL override; restricted other return origins.

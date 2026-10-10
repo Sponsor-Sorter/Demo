@@ -54,3 +54,26 @@ test('administrators cannot ban themselves or revoke their own access', async ()
   assert.match(alerts[0], /cannot ban your own/);
   assert.match(alerts[1], /cannot revoke your own/);
 });
+
+test('payout approval uses one atomic RPC and stops on replay', async () => {
+  const { context, alerts } = fixture();
+  const calls = [];
+  context.confirm = () => true;
+  context.supabase = { rpc: async (name, args) => {
+    calls.push({ name, args }); return { data: { already_processed: true }, error: null };
+  } };
+  vm.runInContext('loadPayoutLogs = () => {}', context);
+  await vm.runInContext('window.markPayoutPaid("fixture")', context);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].name, 'decide_admin_payout');
+  assert.equal(calls[0].args.p_decision, 'paid');
+  assert.match(alerts[0], /already processed/);
+});
+
+test('payout RPC failure does not claim payment or continue writes', async () => {
+  const { context, alerts } = fixture();
+  context.confirm = () => true;
+  context.supabase = { rpc: async () => ({ data: null, error: { message: 'Insufficient wallet balance' } }) };
+  await vm.runInContext('window.markPayoutPaid("fixture")', context);
+  assert.match(alerts[0], /was not recorded/);
+});

@@ -7,6 +7,16 @@
 
 ## State
 
+### Payout accounting update — 2026-10-10
+
+- Added/deployed `decide_admin_payout(uuid,text,text)`, SECURITY INVOKER, explicit admin check and authenticated-only execution. Locks payout and profile, permits pending transitions only, returns replay result without duplicate debit/audit/notification, rejects role mismatches/nonfinite amounts/insufficient funds. Wallet withdrawals for BOTH account roles debit the wallet; campaign-associated creator payouts retain their existing distinct accounting path. Audit and available in-app notification are part of the same transaction.
+- Admin approval/rejection now call this RPC. Approval is labelled **Record External Payment** and explicitly does not send funds. This avoids presenting a bookkeeping update as a provider payment. New JS cache version payout2.
+- Fixed `use_wallet_funds` reservations to match payouts by Auth user ID, not profile row ID, and include pending/requested/approved/processing states. Rejects NaN/infinite amounts. Changed profile guard to SECURITY INVOKER so it distinguishes trusted database execution roles from ordinary user edits: verified ordinary direct wallet edits remain denied while the authorized spending RPC works.
+- Production-database rollback integration assertions passed in `tools/payout-transaction.test.sql` and `tools/wallet-reservations.test.sql`. No test wallet, payout, audit or notification changes committed; no provider transfer attempted. These simulate authenticated database claims, not browser login or concurrent connections. Node suite: 24 tests passed.
+- Actual Stripe payment sending is STILL pending. Existing `pay_stripe_payout` source retrieval failed through MCP and both old/new CLI download methods (Docker unavailable / bundle decoding / incorrect response content type). Supabase browser opened to the existing function settings, redirects to sign-in. User asked to sign in; credentials must not be pasted into chat. Once signed in inspect Code, preserve/review existing behavior and build/test idempotent provider execution + reconciliation before enabling a Send action.
+- Security advisors rerun: pre-existing public views/privileged RPCs, mutable search paths and Auth/Postgres settings still need review. No new SECURITY DEFINER payout RPC introduced. See Supabase database linter remediation: https://supabase.com/docs/guides/database/database-linter
+- Migration files were generated with installed CLI and applied via execute_sql; committed source is reproducible but remote migration-history reconciliation remains necessary (do not blindly replay all old migrations).
+
 ### Payment verification update — 2026-10-10
 
 - Deployed `stripe-checkout` v45 and `complete-paid-signup` v2. Signup now overwrites the actual Stripe success/cancel parameters with approved destinations. Previously caller URLs could survive validation. Other checkout flows reject unapproved return origins; private checkout validates the bearer token against Supabase Auth instead of checking only header presence; anonymous Auth users are denied. Added amount bounds and generic error responses. Completion explicitly accepts only paid/no-payment-required Stripe states.
