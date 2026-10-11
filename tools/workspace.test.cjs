@@ -411,7 +411,7 @@ test('resumable network failures fall back without overriding server denials',as
 test('header routes turn along orthogonal grid lines in every direction',()=>{
  const source=fs.readFileSync(path.join(__dirname,'../js/connectionGridRoutes.js'),'utf8');const routes=JSON.parse(source.slice(source.indexOf('['),source.lastIndexOf(']')+1));assert.ok(routes.length>=100);const directions=new Set();
  for(const route of routes){const start=/^M(\d+) (\d+)/.exec(route);assert.ok(start);let x=+start[1],y=+start[2],turns=0,previous='';for(const match of route.matchAll(/([HV])(\d+)/g)){const axis=match[1],value=+match[2];if(axis==='H'){directions.add(value>x?'right':'left');x=value;}else{directions.add(value>y?'down':'up');y=value;}if(previous&&axis!==previous)turns++;previous=axis;}assert.ok(turns>=3);assert.ok(x>=180&&x<=1380&&y>=615&&y<=880);}
- assert.equal(directions.size,4);const header=fs.readFileSync(path.join(__dirname,'../js/connectionHeader.js'),'utf8');assert.match(header,/animationiteration/);assert.match(header,/document.hidden/);
+ assert.equal(directions.size,4);const header=fs.readFileSync(path.join(__dirname,'../js/connectionHeader.js'),'utf8');assert.match(header,/requestAnimationFrame/);assert.match(header,/length: 84/);assert.match(header,/pulse.age >= 1/);assert.match(header,/document.hidden/);
 });
 
  test('onboarding stays in the viewport and preserves help preferences',()=>{

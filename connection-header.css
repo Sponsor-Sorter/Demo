@@ -34,21 +34,15 @@
 .connection-header .navii {
   background-image: none;
 }
-.connection-grid .grid-signal {
-  fill: none;
-  stroke: #92eaff;
-  stroke-width: 1.6;
+.connection-grid .grid-light {
+  fill: #a6efff;
   filter: drop-shadow(0 0 2px #55d7ff);
-  stroke-linecap: round;
-  stroke-dasharray: 4 764;
-  animation: connection-travel 12s linear infinite;
 }
-@keyframes connection-travel {
-  0% { stroke-dashoffset: 768; opacity: 0; }
-  12% { opacity: 0.95; }
-  82% { opacity: 0.95; }
-  100% { stroke-dashoffset: 0; opacity: 0; }
+.connection-grid .grid-connection-pulse {
+  fill: #fff;
+  filter: drop-shadow(0 0 4px #b6f4ff) drop-shadow(0 0 8px #55d7ff);
 }
+.connection-grid[hidden] { display: none; }
 .admin-page .admin-site-header.connection-header {
   width: 100%;
   max-width: none;
@@ -218,8 +212,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .connection-grid .grid-signal {
-    animation: none;
+  .connection-grid {
     display: none;
   }
 }
