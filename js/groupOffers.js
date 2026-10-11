@@ -616,12 +616,16 @@ async function finalizeGroupOfferAndCreatePayouts(offer, ctx) {
 
     if (!completed.length) {
       // No completed members — just mark the group offer completed
-      await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
+      const { error: closeError } = await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
+      if (closeError) throw closeError;
       await ctx.onRefresh?.();
       return;
     }
 
-    const each = total > 0 ? (total / completed.length) : 0;
+    if (!Number.isFinite(total) || total <= 0 || completed.some(r => !r.private_offer_id)) {
+      throw new Error('Cannot settle: invalid amount or missing participant agreement.');
+    }
+    const each = total / completed.length;
 
     // Avoid duplicate payouts — check existing in offer_payouts or fallback to payouts
     const poIds = completed.map(r => r.private_offer_id).filter(Boolean);
@@ -635,8 +639,10 @@ async function finalizeGroupOfferAndCreatePayouts(offer, ctx) {
       // Fallback to payouts table
       const chk2 = await _trySelect('payouts', 'offer_id', { in: { key: 'offer_id', vals: poIds }});
       if (chk2.ok) existingIds = (chk2.data || []).map(x => x.offer_id);
-      // else ignore — treat as none existing
+      else throw chk2.error || new Error('Cannot verify existing payouts.');
     }
+
+    if (!chk.ok && !chk.missing) throw chk.error || new Error('Cannot verify existing payouts.');
 
     const toPay = completed
       .filter(r => r.private_offer_id && !existingIds.includes(r.private_offer_id))
@@ -660,12 +666,16 @@ async function finalizeGroupOfferAndCreatePayouts(offer, ctx) {
           status: 'pending',
           payout_user_role: 'sponsee'
         }));
-        await _tryInsert('payouts', rowsPayouts);
+        const fallback = await _tryInsert('payouts', rowsPayouts);
+        if (!fallback.ok) throw fallback.error || new Error('Payout queue unavailable.');
+      } else if (!i1.ok) {
+        throw i1.error || new Error('Payout queue unavailable.');
       }
     }
 
-    // Close the group offer
-    await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
+    // Close only after the payout queue writes have succeeded.
+    const { error: closeError } = await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
+    if (closeError) throw closeError;
 
     // Notify completed members + sponsor (best effort)
     try {
@@ -1080,14 +1090,7 @@ async function renderForGroup(groupId) {
         await reconcileResponsesAgainstPrivateOffers(o.id);
       }
 
-      // (Optional) NEW: auto-finalize overdue group offers (idempotent)
-      if (isAdmin) {
-        for (const o of offers) {
-          if (_deadlinePassed(o) && (o.status !== 'completed')) {
-            await finalizeGroupOfferAndCreatePayouts(o, { onRefresh: refresh });
-          }
-        }
-      }
+      // Loading a group must never initiate financial actions.
 
       const counters = {
         pending:   offers.filter(o => o.status === 'pending').length,

@@ -255,3 +255,9 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Report dialog validates report type, safely assigns target values and removes unauthenticated notification submission.
 - Backend applied transactionally through Supabase SQL editor after migration connector errors; RPC and four triggers verified. Migration source retained; SQL-editor execution is not a CLI migration-history entry.
 - Local group/report database checks and 70 worktree tests passed. No real account data or money changed. Further group/payment audit remains outstanding.
+
+## 2026-10-11 — Invitation transitions and group payout error handling
+
+- Invitation identity is immutable; only the recipient can accept/decline and the sender revoke a pending invite. Acceptance requires existing membership established by the atomic join operation. Server sets response timestamps.
+- Loading group offers no longer automatically finalizes overdue offers or queues payouts. Lookup/queue/close failures stop completion and success notifications; invalid amounts and missing private agreements fail explicitly.
+- Database guard tested in isolated PGlite and applied transactionally via Supabase dashboard. Existing 70 tests and dedicated group settlement error checks pass. Manual settlement remains non-atomic across queue and group status; provider-backed settlement is still outstanding.
