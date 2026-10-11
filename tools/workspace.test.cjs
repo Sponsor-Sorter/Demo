@@ -503,3 +503,11 @@ test('Finder filters and orders the public query before pagination',()=>{
  assert.deepEqual(calls.at(-1),['range',12,23]);
  assert(calls.find(c=>c[0]==='in' && c[1]==='user_id'));
 });
+test('Finder layout preserves controls and separates filters from results',()=>{
+ const layout=fs.readFileSync(path.join(__dirname,'../js/finderLayout.js'),'utf8');
+ assert.match(layout,/filters\.append\(summary, description, form, suggestions\)/);
+ assert.match(layout,/resultPanel\.append\(heading, results, document\.getElementById\('searchPagination'\)\)/);
+ assert.match(layout,/form\.requestSubmit\(\)/);
+ assert.match(layout,/min-width: 760px/);
+ assert.match(finderSource,/results\.before\(status\)/);
+});

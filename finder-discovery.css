@@ -163,3 +163,308 @@
 .workspace-refresh #searchForm {
   row-gap: 18px !important;
 }
+
+/* Finder page composition */
+.finder-redesign.workspace-refresh .workspace-intro {
+  margin-bottom: 22px !important;
+  padding: 24px 28px !important;
+}
+.finder-redesign.workspace-refresh .workspace-intro h1 {
+  font-size: clamp(1.8rem, 3vw, 2.65rem);
+  margin: 8px 0 12px;
+}
+.finder-redesign.workspace-refresh > fieldset.finder {
+  padding: 24px !important;
+  border: 1px solid #30465b !important;
+  background: #0d131c !important;
+  box-shadow: none !important;
+}
+.finder-redesign .finder-account-context {
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #91a9bd;
+  margin: 0 0 16px;
+}
+.finder-redesign.workspace-refresh .search-toggle-row {
+  gap: 8px !important;
+  padding: 0 0 18px;
+  margin-bottom: 18px !important;
+  align-items: center !important;
+}
+.finder-redesign.workspace-refresh .search-toggle-row > button {
+  flex: 0 1 auto;
+  min-height: 42px;
+  padding: 10px 18px;
+  box-shadow: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #aabed0;
+}
+.finder-redesign.workspace-refresh .search-toggle-row > .active-toggle {
+  background: #15344e;
+  border-color: #3593b7;
+  color: #e4f8ff;
+}
+.finder-redesign.workspace-refresh #create-public-offer-btn {
+  margin-left: auto !important;
+  background: #155cac;
+  color: white;
+}
+.finder-redesign .search-section > .workspace-help {
+  margin: 0 0 18px !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+.finder-workbench {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.finder-filter-panel {
+  background: #141d28;
+  border: 1px solid #2b3d50;
+  border-radius: 12px;
+  padding: 18px;
+  min-width: 0;
+}
+.finder-filter-panel > summary {
+  color: #eef7ff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.finder-filter-panel > p {
+  color: #9bb1c5;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 12px 0 18px;
+  text-align: left;
+}
+.finder-redesign.workspace-refresh #searchForm {
+  grid-template-columns: minmax(0, 1fr) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  gap: 14px !important;
+  margin: 0 !important;
+}
+.finder-redesign #searchForm .workspace-filter {
+  font-size: 0.82rem;
+  gap: 7px;
+}
+.finder-redesign #searchForm input,
+.finder-redesign #searchForm select {
+  font-size: 0.88rem !important;
+  min-height: 42px !important;
+  padding: 10px !important;
+  background: #0d141e !important;
+  border: 1px solid #3a5065 !important;
+  border-radius: 7px !important;
+}
+.finder-redesign #searchForm button {
+  margin: 0 !important;
+  font-size: 0.85rem;
+  padding: 10px !important;
+  box-shadow: none;
+}
+.finder-redesign #searchForm .workspace-help {
+  grid-column: 1 / -1;
+  margin: 0 !important;
+  padding: 5px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  font-size: 0.8rem;
+}
+.finder-topic-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #30465b;
+}
+.finder-topic-suggestions button {
+  padding: 6px 9px;
+  margin: 0;
+  background: #1b2a3a;
+  color: #a9cee8;
+  border: 1px solid #344f65;
+  border-radius: 20px;
+  box-shadow: none;
+  font-size: 0.76rem;
+}
+.finder-result-panel {
+  min-width: 0;
+}
+.finder-redesign .finder-result-panel > h3 {
+  text-align: left;
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+}
+.finder-redesign .finder-discovery-options {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #30465b;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 0 16px;
+  gap: 14px;
+}
+.finder-redesign .finder-discovery-options .workspace-filter {
+  flex: 0 1 190px;
+}
+.finder-redesign .finder-discovery-options > p {
+  flex-basis: 100%;
+  font-size: 0.78rem;
+}
+.finder-redesign .finder-shortlist-filter {
+  flex: 1 1 150px;
+  font-size: 0.86rem;
+}
+.finder-redesign .finder-result-status {
+  margin: 0;
+  padding: 16px 0;
+  font-size: 0.88rem;
+}
+.finder-redesign.workspace-refresh .finder-discovery-card {
+  padding: 20px !important;
+  border: 1px solid #30465b !important;
+  background: #141e2a !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease;
+  gap: 14px;
+}
+.finder-redesign.workspace-refresh .finder-discovery-card:hover {
+  border-color: #50afce !important;
+}
+.finder-redesign .finder-discovery-card > .profile-pic {
+  width: 56px !important;
+  height: 56px !important;
+  flex-basis: 56px;
+}
+.finder-redesign .finder-discovery-card h4 {
+  font-size: 1.08rem;
+  margin-bottom: 8px;
+}
+.finder-redesign .finder-discovery-card p {
+  font-size: 0.82rem;
+}
+.finder-redesign .finder-card-actions {
+  padding-top: 14px;
+  border-top: 1px solid #30465b;
+}
+.finder-redesign .finder-card-actions > * {
+  flex: 1 1 100px;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: none;
+}
+.finder-redesign .finder-card-actions button {
+  background: transparent;
+  border: 1px solid #45617b;
+  color: #c2d9eb;
+}
+.finder-redesign .finder-card-actions button[aria-pressed="true"] {
+  background: #163f42;
+  border-color: #3d9b90;
+  color: #a7fff0;
+}
+.finder-redesign .finder-supporting {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  width: min(1440px, calc(100% - 48px));
+  margin: 24px auto 40px;
+  box-sizing: border-box;
+}
+.finder-redesign.workspace-refresh .finder-supporting > fieldset {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0;
+  border: 1px solid #30465b !important;
+  background: #0d131c !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+}
+.finder-redesign .finder-supporting .recentoffers {
+  grid-column: 1 / -1;
+}
+.finder-redesign .finder-supporting legend h3 {
+  font-size: 1.12rem;
+}
+.finder-redesign #recommendedMatches,
+.finder-redesign #otherAccountsProfiles,
+.finder-redesign #recent-offers-list {
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 12px !important;
+  box-sizing: border-box;
+}
+.finder-redesign #otherAccountsProfiles {
+  flex-wrap: wrap !important;
+}
+.finder-redesign #otherAccountsProfiles .user-profile {
+  flex: 1 1 200px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+@media (min-width: 760px) {
+  .finder-filter-panel {
+    position: sticky;
+    top: 20px;
+  }
+}
+@media (max-width: 1100px) {
+  .finder-redesign.workspace-refresh #searchResults {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 759px) {
+  .finder-workbench {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .finder-redesign .finder-supporting {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 28px);
+    gap: 18px;
+  }
+  .finder-redesign.workspace-refresh > fieldset.finder {
+    padding: 16px !important;
+  }
+  .finder-redesign.workspace-refresh #searchForm {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .finder-redesign.workspace-refresh .search-toggle-row > button {
+    flex: 1 1 130px;
+  }
+  .finder-redesign .finder-discovery-options .workspace-filter {
+    flex: 1 1 150px;
+  }
+}
+@media (max-width: 420px) {
+  .finder-redesign.workspace-refresh #searchForm {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+.finder-redesign .finder-discovery-options .workspace-filter {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+.finder-redesign .finder-discovery-options select {
+  min-height: 42px;
+}
+.finder-redesign .finder-supporting .workspace-help {
+  margin: 14px 0 0 !important;
+  padding: 8px 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}

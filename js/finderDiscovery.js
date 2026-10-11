@@ -85,7 +85,7 @@ export function mountFinderDiscovery({
   const status = document.createElement("p");
   status.className = "finder-result-status";
   status.setAttribute("role", "status");
-  form.after(status);
+  results.before(status);
   const options = document.createElement("div");
   options.className = "finder-discovery-options";
   options.innerHTML =
