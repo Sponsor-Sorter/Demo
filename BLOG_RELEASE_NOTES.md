@@ -22,3 +22,8 @@
 - Original database rows are backed up locally in ignored `.validation/blog-backup/original.json`; never publish draft backups.
 - Pricing ranges are editorial planning examples, not measured market benchmarks. Sources are linked within the relevant guides.
 - Other uncommitted payment/package/preference/report work is outside this release.
+
+## Publication
+- Frontend and 20 published articles released. Live anonymous transaction check confirms draft rows are invisible; the temporary check is rolled back.
+- Blog index and all 20 guide URLs included in the sitemap.
+- Supabase security advisor reports no blog-specific notice; existing project-wide notices remain outside this release.
