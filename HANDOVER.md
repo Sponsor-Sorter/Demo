@@ -285,3 +285,6 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 - Open campaign selects its exact ID (including duplicate titles), clears conflicting filters and focuses its details control. Existing Clear filters restores the full list. Campaign toolbar edits also leave the exact-ID selection. Separate campaign-today.css preserves existing theme and responsive containment.
 - 57 automated tests pass. Fictional read-only browser preview verified both roles, sponsor exact selection and clear reset, creator exact selection, and client/scroll width1265px equal. No payments, offer transitions or real-user mutations exercised.
 - CREATOR_HUB_ROADMAP.md contains researched product direction, sources, phased scope and acceptance criteria. Payment production-readiness gaps remain as recorded above.
+
+### Daily priorities cache correction
+- Live deployment contained the new module but HTML still imported the old campaign1 cache key: the earlier replacement updated only the first occurrence in each document. Corrected both explicit offer-module entrypoints to today1 and added a regression test. Prior live verification was incomplete; this correction addresses stale browser module caching.

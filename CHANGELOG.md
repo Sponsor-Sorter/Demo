@@ -237,3 +237,5 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Added compact role-specific campaign priorities, deadline summaries and exact campaign navigation to both dashboards.
 - Preserved existing status tabs, campaign actions and filter reset.
 - Added researched creator hub development roadmap.
+
+- Fixed dashboard module cache invalidation so returning visitors receive the daily priorities update.
