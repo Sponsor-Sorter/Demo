@@ -506,7 +506,7 @@ test('Finder filters and orders the public query before pagination',()=>{
 test('Finder layout preserves controls and separates filters from results',()=>{
  const layout=fs.readFileSync(path.join(__dirname,'../js/finderLayout.js'),'utf8');
  assert.match(layout,/filters\.append\(summary, description, form, suggestions\)/);
- assert.match(layout,/resultPanel\.append\(heading, results, document\.getElementById\('searchPagination'\)\)/);
+ assert.match(layout,/resultPanel\.append\(\s*heading,\s*results,\s*document\.getElementById\(["']searchPagination["']\),?\s*\)/);
  assert.match(layout,/form\.requestSubmit\(\)/);
  assert.match(layout,/min-width: 760px/);
  assert.match(finderSource,/results\.before\(status\)/);
