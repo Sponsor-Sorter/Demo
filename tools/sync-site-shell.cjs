@@ -19,6 +19,6 @@ for (const file of pages) {
     const header = '<header class="header"><a class="brand" href="' + base + 'index.html"><img src="' + base + 'logos.png" width="88" height="88" alt=""><span>Sponsor Sorter</span></a><nav aria-label="Main navigation"><a href="' + base + 'index.html">Home</a><a href="' + base + 'finder.html">Finder</a><a href="' + base + 'signup.html">Signup</a><a href="' + base + 'login.html">Login</a></nav></header>';
     html = html.replace(/(<body\b[^>]*>)/i, '$1\n' + header);
   }
-  if (!html.includes('connectionHeader.js')) html = html.replace(/<\/head>/i, '<script type="module" src="' + base + 'js/connectionHeader.js?v=20261012-connections1"></script>\n</head>');
+  if (!html.includes('connectionHeader.js')) html = html.replace(/<\/head>/i, '<script type="module" src="' + base + 'js/connectionHeader.js?v=20261012-connections2"></script>\n</head>');
   fs.writeFileSync(target, html);
 }

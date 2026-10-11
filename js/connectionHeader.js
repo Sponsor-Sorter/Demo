@@ -23,7 +23,7 @@ const pick = items => items[Math.floor(Math.random() * items.length)];
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 const stylesheet = document.createElement('link');
 stylesheet.rel = 'stylesheet';
-stylesheet.href = new URL('../connection-header.css?v=20261012-connections1', import.meta.url).href;
+stylesheet.href = new URL('../connection-header.css?v=20261012-connections2', import.meta.url).href;
 document.head.append(stylesheet);
 
 for (const header of document.querySelectorAll('header.navbar1, header.header, header.admin-site-header')) {
@@ -60,10 +60,19 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
   }
   function spawn(light) {
     const elsewhere = visibleNodes.filter(n => Math.hypot(n.x - light.x, n.y - light.y) > 90);
-    light.node = pick(elsewhere.length ? elsewhere : visibleNodes);
+    const candidates = elsewhere.length ? elsewhere : visibleNodes;
+    const active = lights.filter(other => other !== light && !other.waiting && Number.isFinite(other.x));
+    // Prefer open areas instead of letting respawns cluster around busy junctions.
+    let best = pick(candidates), clearance = -1;
+    for (let attempt = 0; attempt < 48; attempt++) {
+      const candidate = pick(candidates);
+      const distance = active.reduce((nearest, other) => Math.min(nearest, Math.hypot(candidate.x - other.x, candidate.y - other.y)), Infinity);
+      if (distance > clearance) { best = candidate; clearance = distance; }
+    }
+    light.node = best;
     light.previous = null;
     light.x = light.node.x; light.y = light.node.y;
-    light.speed = 24 + Math.random() * 38;
+    light.speed = 4 + Math.random() * 5;
     light.waiting = false;
     light.grace = 0.8 + Math.random();
     turn(light);
@@ -130,8 +139,8 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
     for (let i = pulses.length - 1; i >= 0; i--) {
       const pulse = pulses[i];
       pulse.age += dt;
-      pulse.element.setAttribute('r', String(2 + Math.sin(Math.PI * pulse.age) * 5));
-      pulse.element.style.opacity = String(Math.max(0, 1 - pulse.age * pulse.age));
+      pulse.element.setAttribute('r', String(1.6 + Math.sin(Math.PI * pulse.age) * 1.1));
+      pulse.element.style.opacity = String(Math.max(0, 0.75 * (1 - pulse.age * pulse.age)));
       if (pulse.age >= 1) {
         pulse.element.remove();
         pulse.pair.forEach(spawn);

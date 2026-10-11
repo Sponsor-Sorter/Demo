@@ -40,7 +40,7 @@
 }
 .connection-grid .grid-connection-pulse {
   fill: #fff;
-  filter: drop-shadow(0 0 4px #b6f4ff) drop-shadow(0 0 8px #55d7ff);
+  filter: drop-shadow(0 0 2px #b6f4ff);
 }
 .connection-grid[hidden] { display: none; }
 .admin-page .admin-site-header.connection-header {
