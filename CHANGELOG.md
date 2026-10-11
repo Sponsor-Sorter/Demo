@@ -227,3 +227,8 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Replaced legacy other-account markup with safe compact profile cards and responsive normal-flow grids. Supporting panels now span the common page container; cards retain full text/actions without fixed-width clipping. Recommendation cards and recent opportunity cards use the same restrained framing. Recent opportunities batch public sponsor logos and no longer query per-offer private application counts.
 - Recommendations build an offscreen fragment and race the entire load against a 12-second timeout, including stalled auth/profile reads. Timeout/error/empty states expose retry; stale or late jobs cannot replace newer results. Existing matching Edge Function and application business rules retained.
 - 53 automated tests pass including stalled-session timeout/retry and hostile-profile card rendering; inline module syntax and whitespace checked. Local browser verified account cards and recommendation retry. No backend/schema or account mutations.
+
+## 2026-10-11 — Partner recommendations
+- Replaced Finder matching dependency with explainable preference-based partner selection for both account roles.
+- Added factual recommendation reasons, missing-information notices and matching preference navigation.
+- Retained public opportunity browsing and existing profile/offer actions.

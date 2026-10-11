@@ -531,3 +531,24 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  assert.equal(card.children[0].children[1].children[0].textContent,'<img onerror=alert(1)>');
  assert.equal(card.children.at(-1).children[1].href,'newoffer.html?username=%3Cimg%20onerror%3Dalert(1)%3E');
 });
+
+ test('partner matching ranks evidence, excludes incompatible requirements and ignores paid plans',async()=>{
+ const {rankPartners,terms}=await import('../js/partnerMatching.js');
+ const viewer={user_id:'s',userType:'sponsor',contenttype:'Gaming',platforms:['YouTube'],location:'UK',partnership_type:'ongoing',minfollowers:'1k'};
+ const good={user_id:'a',username:'A',userType:'besponsored',contenttype:'games',platforms:['youtube'],location:'United Kingdom',partnership_type:'ongoing'};
+ const weak={...good,user_id:'b',username:'B',contenttype:'Music',partnership_type:null,location:null,planType:'pro'};
+ const wrong={...good,user_id:'c',platforms:['twitch']};
+ const matches=rankPartners(viewer,[weak,wrong,good],{followers:{a:1500,b:2000,c:2000}});
+ assert.deepEqual(matches.map(m=>m.profile.user_id),['a','b']);
+ assert.ok(matches[0].reasons.some(r=>r.includes('Shared content interests')));
+ assert.equal(rankPartners(viewer,[good],{followers:{a:50}}).length,0);
+ assert.ok(rankPartners(viewer,[good])[0].missing.includes('Follower requirement needs checking'));
+ assert.deepEqual(terms('["Gaming","gaming"]'),['games']);
+ assert.equal(rankPartners({user_id:'s',userType:'sponsor'},[{user_id:'x',userType:'besponsored'}]).length,0);
+ });
+ test('creators receive sponsor partners, not themselves or other creators',async()=>{
+ const {rankPartners}=await import('../js/partnerMatching.js');
+ const me={user_id:'c',userType:'besponsored',contenttype:'Music'};
+ const sponsor={user_id:'s',userType:'sponsor',contenttype:'Music'};
+ assert.deepEqual(rankPartners(me,[me,sponsor,{...me,user_id:'other'}]).map(m=>m.profile.user_id),['s']);
+ });
