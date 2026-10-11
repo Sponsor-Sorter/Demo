@@ -24,6 +24,10 @@
 - Other uncommitted payment/package/preference/report work is outside this release.
 
 ## Publication
-- Frontend and 20 published articles released. Live anonymous transaction check confirms draft rows are invisible; the temporary check is rolled back.
+- Frontend and 20 published articles released. Live verification identified missing anonymous permission to the admin helper; the follow-up migration separates public and authenticated policies.
 - Blog index and all 20 guide URLs included in the sitemap.
 - Supabase security advisor reports no blog-specific notice; existing project-wide notices remain outside this release.
+
+- Follow-up migration: `20261011122121_blog_public_reader_policy.sql`; regression test revokes anonymous helper execution to mirror production grants.
+- Final live database check passed: anonymous reader sees 20 published articles and zero temporary drafts; transaction rolled back. Live browser search and images verified.
+- Follow-up policy applied through the signed-in SQL editor because the migration connector returned an expired request state. Reconcile this migration in CLI history before a future migration push.
