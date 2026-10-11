@@ -1,3 +1,4 @@
+import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
@@ -604,22 +605,22 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         ${reportBtnHtml}
         <div class="card-top">
           <div class="logo-container">
-            <img src="${sponsorPicUrl}" onerror="this.src='./logos.png'" alt="Sponsor Profile Pic" class="stage-logo profile-link" data-username="${offer.sponsor_username}">
-            <p><strong>From:</strong> ${offer.sponsor_username}</p>
-            <p><strong>At:</strong> ${offer.sponsor_company}</p>
+            <img src="${offerText(sponsorPicUrl)}" onerror="this.src='./logos.png'" alt="Sponsor Profile Pic" class="stage-logo profile-link" data-username="${offerText(offer.sponsor_username)}">
+            <p><strong>From:</strong> ${offerText(offer.sponsor_username)}</p>
+            <p><strong>At:</strong> ${offerText(offer.sponsor_company)}</p>
           </div>
           <div class="stage-content">
             ${stageHeader}
             <div class="offer-details-row">
               <div class="offer-left">
-                <p><strong>Offer Title:</strong> ${offer.offer_title}</p>
+                <p><strong>Offer Title:</strong> ${offerText(offer.offer_title)}</p>
                 <p><strong>Status:</strong> <span style="color: ${
                   offer.status === 'pending' ? 'orange' :
                   offer.status === 'accepted' ? 'green' :
                   offer.status === 'live' ? 'blue' :
                   ['rejected', 'Offer Cancelled'].includes(offer.status) ? 'red' :
                   'inherit'
-                }">${offer.status}</span></p>
+                }">${offerText(offer.status)}</span></p>
                 <p><strong>Date:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
                 <p><strong>Deadline:</strong> ${offer.deadline && Number.isFinite(Date.parse(offer.deadline)) ? new Date(offer.deadline).toLocaleDateString() : 'Not specified'}</p>
                 ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
@@ -630,8 +631,8 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
   // This string is built before card.innerHTML below — see code right above card creation.
   return amountHtml;
 })()}
-<p><strong>Payment Schedule:</strong> ${offer.payment_schedule || 'Not specified'}</p>
-<p><strong>Duration:</strong> ${offer.sponsorship_duration || 'Not specified'}</p>
+<p><strong>Payment Schedule:</strong> ${offerText(offer.payment_schedule)}</p>
+<p><strong>Duration:</strong> ${offerText(offer.sponsorship_duration)}</p>
 
               </div>
             </div>
@@ -643,12 +644,12 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
           <button class="expand-btn">View Details</button>
           ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button><button class="campaign-report-btn">Performance history</button>' : ''}
           <div class="details-section" style="display:none;">
-            <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
+            <p><fieldset><legend><strong>Description:</strong></legend>${offerText(offer.offer_description)}</fieldset></p>
             <div class="job-deliverable-row">
-              <span><strong>Job Type:</strong> ${offer.job_type}</span>
-              <span><strong>Deliverable Type:</strong> ${offer.deliverable_type}</span>
+              <span><strong>Job Type:</strong> ${offerText(offer.job_type)}</span>
+              <span><strong>Deliverable Type:</strong> ${offerText(offer.deliverable_type)}</span>
             </div>
-            <p><fieldset><legend><strong>Instructions:</strong></legend>${offer.instructions}</fieldset></p>
+            <p><fieldset><legend><strong>Instructions:</strong></legend>${offerText(offer.instructions)}</fieldset></p>
           </div>
           <div class="images-section" style="display:none;gap:20px;padding:10px;">
             <div class="image-viewer" style="flex:1;text-align:center;">

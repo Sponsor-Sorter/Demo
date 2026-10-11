@@ -14,3 +14,14 @@ test('normalization cannot turn an unsafe or lookalike URL into a trusted platfo
  for(const url of ['https://youtube.com.evil.invalid/watch?v=abc','https://notyoutube.com/watch?v=abc','https://evil-tiktok.com/video/1','http://youtube.com/watch?v=abc','https://name:password@youtube.com/watch?v=abc']) assert.equal(platforms.detectPlatform(platforms.normalizeUrl(url)),'unknown');
  assert.equal(platforms.normalizeUrl('https://youtu.be/abc?utm_source=test'),'https://www.youtube.com/watch?v=abc');
 });
+
+test('offer presentation renders stored markup and quotes as inert text',()=>{
+ const source=fs.readFileSync(require('node:path').join(__dirname,'../js/offerPresentation.js'),'utf8').replace('export ','');
+ const escape=vm.runInNewContext(source+';offerText');
+ assert.equal(escape('<img src=x onerror=alert(1)>'), '&lt;img src=x onerror=alert(1)&gt;');
+ assert.equal(escape('" onclick="attack()'),'&quot; onclick=&quot;attack()');
+ for(const role of ['sponsor','sponsee']) {
+  const page=fs.readFileSync(require('node:path').join(__dirname,'../js/'+role+'Offers.js'),'utf8');
+  for(const field of ['offer_description','instructions','offer_title']) assert.ok(page.includes('${offerText(offer.'+field+')}'));
+ }
+});

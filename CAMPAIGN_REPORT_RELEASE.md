@@ -28,3 +28,6 @@
 
 ## Continue
 Read PRODUCTION_BUILD_STATUS.md and SUPABASE_TABLE_AUDIT.md, then inspect git status; several workstreams remain uncommitted. Reconcile migrations applied through Supabase SQL UI before CLI migration deployment. Use Supabase and Stripe skills; browser tests use computer-use. No real payments or transfers occurred.
+
+### Follow-up: stored markup protection
+Both offer dashboards now escape sponsorship text and profile labels before HTML rendering. This prevents markup in titles/descriptions/instructions from executing. The focused regression covers hostile markup and attribute quotes; this is not a claim that every legacy template has been audited.

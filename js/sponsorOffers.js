@@ -1,3 +1,4 @@
+import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
@@ -293,15 +294,15 @@ async function renderSingleOffer(offer, version) {
       ${reportBtnHtml}
       <div class="card-top">
         <div class="logo-container">
-          <img src="${sponseePicUrl}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
-          <p><strong>To:</strong> ${sponsee?.username || offer.sponsee_username}</p>
+          <img src="${offerText(sponseePicUrl)}" onerror="this.src='./logos.png'" alt="Sponsee Profile Pic" class="stage-logo">
+          <p><strong>To:</strong> ${offerText(sponsee?.username || offer.sponsee_username)}</p>
           <div><strong>Platforms:</strong> ${platformBadgeHtml}</div>
         </div>
         <div class="stage-content">
           ${stageHeader}
           <div class="offer-details-row">
             <div class="offer-left">
-              <p><strong>Offer Title:</strong> ${offer.offer_title}</p>
+              <p><strong>Offer Title:</strong> ${offerText(offer.offer_title)}</p>
               <p><strong>Date Sent:</strong> ${new Date(offer.created_at).toLocaleDateString()}</p>
               <p><strong>Deadline:</strong> ${offer.deadline && Number.isFinite(Date.parse(offer.deadline)) ? new Date(offer.deadline).toLocaleDateString() : 'Not specified'}</p>
               ${offer.stage >= 3 && offer.creation_date ? `<p><strong>Creation Date:</strong> ${new Date(offer.creation_date).toLocaleDateString()}</p>` : ''}
@@ -309,15 +310,15 @@ async function renderSingleOffer(offer, version) {
             </div>
             <div class="offer-right">
               <p><strong>Amount:</strong> $${offer.offer_amount}</p>
-              <p><strong>Payment Schedule:</strong> ${offer.payment_schedule || 'Not specified'}</p>
-              <p><strong>Duration:</strong> ${offer.sponsorship_duration || 'Not specified'}</p>
+              <p><strong>Payment Schedule:</strong> ${offerText(offer.payment_schedule)}</p>
+              <p><strong>Duration:</strong> ${offerText(offer.sponsorship_duration)}</p>
               <p><strong>Status:</strong> <span style="color: ${
                 offer.status === 'pending' ? 'orange' :
                 offer.status === 'accepted' ? 'green' :
                 offer.status === 'live' ? 'blue' :
                 offer.status === 'review_completed' ? 'purple' :
                 ['Offer Cancelled', 'rejected'].includes(offer.status) ? 'red' :
-                'inherit'}">${offer.status}</span></p>
+                'inherit'}">${offerText(offer.status)}</span></p>
             </div>
           </div>
         </div>
@@ -330,12 +331,12 @@ async function renderSingleOffer(offer, version) {
         ${actionButton}
         ${offer.stage === 4 && !(offer.sponsor_live_confirmed || offer.sponsor_live_confirm) ? '<button class="confirm-live-btn">Confirm Live Content</button>' : ''}
         <div class="details-section" style="display: none;">
-          <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
+          <p><fieldset><legend><strong>Description:</strong></legend>${offerText(offer.offer_description)}</fieldset></p>
           <div class="job-deliverable-row">
-            <span><strong>Job Type:</strong> ${offer.job_type}</span>
-            <span><strong>Deliverable Type:</strong> ${offer.deliverable_type}</span>
+            <span><strong>Job Type:</strong> ${offerText(offer.job_type)}</span>
+            <span><strong>Deliverable Type:</strong> ${offerText(offer.deliverable_type)}</span>
           </div>
-          <p><fieldset><legend><strong>Instructions:</strong></legend>${offer.instructions}</fieldset></p>
+          <p><fieldset><legend><strong>Instructions:</strong></legend>${offerText(offer.instructions)}</fieldset></p>
         </div>
         <div class="images-section" style="display: none; gap: 20px; padding: 10px">
           <div class="image-viewer" style="flex: 1; text-align: center;">
