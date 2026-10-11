@@ -54,12 +54,15 @@
 <script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script>
 <link rel="stylesheet" href="./public-pages.css?v=20261011-nav2" />
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
+<link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+<link rel="stylesheet" href="./legal-pages.css?v=20261011-legal1">
+<script type="module" src="./js/legalPages.js?v=20261011-legal1"></script>
 </head>
-<body class="public-content-page">
+<body class="public-content-page" id="site-top">
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
-      <h5><header>Sponsor Sorter</header></h5>
+      <h5 class="site-brand-wrap"><a class="site-brand" href="./index.html"><img src="./logos.png" width="88" height="88" alt=""><span>Sponsor Sorter</span></a></h5>
       <div>
         <background-img class="navimg" src="./navimg.png" alt="">
         <nav>
@@ -250,24 +253,17 @@
   </section>
 </main>
 
-<footer class="footercomplete">
-  <div class="footer-text">
-    <ul>
-      <li><a href="./help.html">Help</a></li>
-      <li><a href="./contact.html">Contact</a></li>
-      <li><a href="./privacy.html" class="active">Privacy Policy</a></li>
-      <li><a href="./terms.html">Terms of Service</a></li>
-      <li><a href="./reviews.html">Reviews</a></li>
-      <li><a href="./blog.html">Blog</a></li>
-      <li><a href="./forum.html">Forum</a></li>
-      <li><a href="./stats.html">Stats</a></li>
-    </ul>
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer-top">
+    <div class="site-footer-intro">
+      <a class="site-brand" href="./index.html"><img src="./logos.png" width="34" height="34" alt=""><span>Sponsor Sorter</span></a>
+      <p>Connecting creators and brands.<br>Keeping sponsorships organised.</p>
+    </div>
+    <nav aria-label="Explore Sponsor Sorter"><h2>Explore</h2><a href="./index.html#how-it-works">How it works</a><a href="./index.html#pricing">Plans &amp; pricing</a><a href="./index.html">Home</a><a href="./finder.html">Find partnerships</a><a href="./guest.html?role=sponsee">Creator preview</a><a href="./guest.html?role=sponsor">Sponsor preview</a><a href="./signup.html">Create an account</a><a href="./login.html">Log in</a></nav>
+    <nav aria-label="Resources"><h2>Resources</h2><a href="./help.html">Help centre</a><a href="./contact.html">Contact us</a><a href="./forum.html">Community</a><a href="./blog.html">Blog</a><a href="./reviews.html">Partner reviews</a><a href="./stats.html">Platform statistics</a><a href="./supporters.html">Supporters</a></nav>
+    <nav aria-label="Policies"><h2>Policies</h2><a href="./privacy.html">Privacy policy</a><a href="./terms.html">Terms of service</a><a href="./privacy.html#deletion">Data export &amp; deletion</a><a href="./privacy.html#cookies">Cookies &amp; storage</a><a href="./terms.html#payments">Payments &amp; fees</a></nav>
   </div>
-  <img src="./Logo1.jpg" class="footpic" alt="Sponsor Sorter Logo" />
-  <div style="margin-top:18px;font-size:0.98em;color:#bbb;">
-    &copy; 2026 Sponsor Sorter. All rights reserved. | ABN: 23 801 694 480 <br>
-    Data protected by Supabase | Powered by Stripe
-  </div>
+  <div class="site-footer-bottom"><span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span><span>Built for the partnership.</span><a href="#site-top">Back to top ↑</a></div>
 </footer>
 
 <!-- Cookie banner (uses your existing implementation if present) -->

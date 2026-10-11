@@ -15,8 +15,9 @@
       type="module"
       src="./js/connectionHeader.js?v=20261011-grid4"
     ></script>
-  </head>
-  <body>
+  <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+</head>
+  <body id="site-top">
     <a class="skip" href="#main">Skip to content</a>
     <header class="header">
       <a class="brand" href="./index.html"
@@ -278,23 +279,18 @@
         </p>
       </section>
     </main>
-    <footer class="wrap footer">
-      <div class="footer-top">
-        <a class="brand" href="./index.html"
-          ><img src="./logos.png" width="34" height="34" alt="" /><span
-            >Sponsor Sorter</span
-          ></a
-        >
-        <nav aria-label="Footer navigation">
-          <a href="./help.html">Help</a><a href="./contact.html">Contact</a
-          ><a href="./privacy.html">Privacy</a><a href="./terms.html">Terms</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span
-        ><span>Connecting creators and brands.</span>
-      </div>
-    </footer>
+    <footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer-top">
+    <div class="site-footer-intro">
+      <a class="site-brand" href="./index.html"><img src="./logos.png" width="34" height="34" alt=""><span>Sponsor Sorter</span></a>
+      <p>Connecting creators and brands.<br>Keeping sponsorships organised.</p>
+    </div>
+    <nav aria-label="Explore Sponsor Sorter"><h2>Explore</h2><a href="./index.html#how-it-works">How it works</a><a href="./index.html#pricing">Plans &amp; pricing</a><a href="./index.html">Home</a><a href="./finder.html">Find partnerships</a><a href="./guest.html?role=sponsee">Creator preview</a><a href="./guest.html?role=sponsor">Sponsor preview</a><a href="./signup.html">Create an account</a><a href="./login.html">Log in</a></nav>
+    <nav aria-label="Resources"><h2>Resources</h2><a href="./help.html">Help centre</a><a href="./contact.html">Contact us</a><a href="./forum.html">Community</a><a href="./blog.html">Blog</a><a href="./reviews.html">Partner reviews</a><a href="./stats.html">Platform statistics</a><a href="./supporters.html">Supporters</a></nav>
+    <nav aria-label="Policies"><h2>Policies</h2><a href="./privacy.html">Privacy policy</a><a href="./terms.html">Terms of service</a><a href="./privacy.html#deletion">Data export &amp; deletion</a><a href="./privacy.html#cookies">Cookies &amp; storage</a><a href="./terms.html#payments">Payments &amp; fees</a></nav>
+  </div>
+  <div class="site-footer-bottom"><span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span><span>Built for the partnership.</span><a href="#site-top">Back to top ↑</a></div>
+</footer>
     <!-- Reset Password Modal -->
     <div
       id="reset-password-modal"

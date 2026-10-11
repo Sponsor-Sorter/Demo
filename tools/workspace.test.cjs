@@ -455,3 +455,18 @@ test('signup role panels hide inactive controls and remove fixed-height layout',
  assert.doesNotMatch(html,/upload\.wikimedia\.org/);
  assert.match(html,/src="\.\/instagramlogo\.png"/);
 });
+
+test('every deployed page has the canonical footer and shared brand assets',()=>{
+ const root=path.join(__dirname,'..');
+ const template=fs.readFileSync(path.join(__dirname,'site-footer.html'),'utf8').trim();
+ for(const file of [...fs.readdirSync(root).filter(f=>f.endsWith('.html')),'u/index.html']) {
+  const html=fs.readFileSync(path.join(root,file),'utf8');if(!/<body\b/i.test(html))continue;
+  const base=file.includes('/')?'../':'./';
+  assert.ok(html.includes(template.replaceAll('{{base}}',base)),file);
+  assert.equal((html.match(/<footer\b/g)||[]).length,1,file);
+  assert.ok(html.includes('site-shell.css'),file);assert.ok(html.includes('connectionHeader.js'),file);
+  assert.ok(html.includes('id="site-top"'),file);
+ }
+ for(const [,href] of template.matchAll(/href="{{base}}([^"#?]+)(?:[#?][^"]*)?"/g))assert.ok(fs.existsSync(path.join(root,href)),href);
+ for(const [page,id] of [['privacy.html','deletion'],['privacy.html','cookies'],['terms.html','payments']])assert.ok(fs.readFileSync(path.join(root,page),'utf8').includes('id="'+id+'"'));
+});

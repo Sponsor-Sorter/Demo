@@ -1,0 +1,75 @@
+/* Shared site chrome. Keep page content and signed-in controls intact. */
+.site-footer,
+.site-footer * { box-sizing: border-box; }
+.site-footer {
+  clear: both;
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin: 48px 0 0;
+  padding: 38px max(20px, calc((100% - 1200px) / 2)) 22px;
+  border-top: 1px solid #34383e;
+  background: #090c12;
+  color: #c5ccd7;
+  font: 400 14px/1.6 "Segoe UI", Arial, sans-serif;
+  text-align: left;
+}
+.site-footer .site-footer-top { display: grid; grid-template-columns: 1.5fr repeat(3, minmax(0, 1fr)); gap: 32px; }
+.site-footer .site-brand,
+.connection-header .site-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  font: 900 1rem/1.2 Cinzel, Georgia, serif;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+.site-footer .site-brand img { width: 34px; height: 34px; object-fit: contain; margin: 0; }
+.site-footer p { margin: 16px 0 0; padding: 0; color: #aeb9ca; background: none; line-height: 1.6; font-size: 14px; }
+.site-footer nav {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: auto;
+  max-width: none;
+  height: auto;
+  min-width: 0;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  transform: none;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  text-align: left;
+}
+.site-footer h2 { border: 0; text-decoration: none; margin: 0 0 6px; padding: 0; color: #fff; background: none; font: 700 15px/1.4 "Segoe UI", Arial, sans-serif; }
+.site-footer a:not(.site-brand) { display: inline-block; width: auto; height: auto; min-height: 0; margin: 0; padding: 2px 0; color: #c5ccd7; background: none; border: 0; box-shadow: none; font: inherit; text-decoration: none; overflow-wrap: anywhere; }
+.site-footer a:hover,
+.site-footer a:focus-visible { color: #77dfff; text-decoration: underline; }
+.site-footer a:focus-visible { outline: 2px solid #77dfff; outline-offset: 4px; }
+.site-footer .site-footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; border-top: 1px solid #34383e; margin-top: 32px; padding-top: 20px; font-size: 12px; color: #a2aab7; }
+.connection-header .site-brand-wrap { display: flex; justify-content: center; align-items: center; min-height: 200px; margin: 0; padding: 24px 16px; }
+.connection-header .site-brand-wrap .site-brand { font-size: clamp(1.45rem, 5.4vw, 4.5rem); gap: clamp(10px, 1.8vw, 26px); text-shadow: 0 2px 8px #000; }
+.connection-header .site-brand-wrap img { width: clamp(42px, 6.5vw, 88px); height: clamp(42px, 6.5vw, 88px); object-fit: contain; margin: 0; }
+@media (max-width: 900px) { .site-footer .site-footer-top { grid-template-columns: repeat(3, minmax(0, 1fr)); } .site-footer-intro { grid-column: 1 / -1; } }
+@media (max-width: 540px) { .site-footer .site-footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } .site-footer { padding-inline: 20px; } .connection-header .site-brand-wrap { min-height: 150px; } }
+@media print { .site-footer, .connection-header { display: none !important; } }
+
+/* Match the homepage wordmark even on pages with standalone styles. */
+header.connection-header > :is(.brand, .admin-brand) {
+  display: flex;
+  align-items: center;
+  font-family: Cinzel, Georgia, serif;
+  line-height: 1.2;
+  color: #fff;
+  text-decoration: none;
+}
