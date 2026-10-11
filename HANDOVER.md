@@ -217,3 +217,10 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 - Small clip actual playback passed. Sponsor review still needs switching to Johnny in the connected browser. Both records are clearly marked QA TEST ONLY; preserve evidence, do not publish/pay on them.
 
 - Large clip private playback also passed: duration 5 seconds, currentTime 5, readyState 4, no media error. Screenshot saved outside the repo as large-video-playback-proof.png.
+
+## 2026-10-11 — Header routes, live draft review and onboarding
+
+- Header e6e54a0 deployed successfully: 44 animated signals choose traced orthogonal grid routes with turns in all directions, fade/reappear and change routes each cycle; hidden-tab pause and reduced-motion support retained.
+- Live Johnny sponsor test: latest synthetic video draft approved; empty change request correctly rejected. Sponsor private video played to its 5-second end without a media error. Creator small (1.1 MB) and large (7.9 MB) upload/playback previously passed. No funds moved or campaign completion recorded. Native resumable transport remains unproven; large upload succeeded with SDK fallback.
+- Onboarding: fixed off-screen 300px offset; responsive centred keyboard-focusable tour with Escape/Tab support; corrected role detection (sponsee must not match sponsor substring), current notification selector, clearer role-specific profile/brief/draft guidance, completion saved without forced Finder redirect, and help preferences preserved. Restart no longer clears persisted completion before starting.
+- npm test: 43 passing. Browser fixture tour contained at 1280x720 and 375x812; Next advances. Broader signup/first-login onboarding redesign remains a follow-up; this release repairs the existing guided tour.

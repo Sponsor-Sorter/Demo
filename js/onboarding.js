@@ -6,18 +6,18 @@ const onboardingFlows = {
   '/dashboardsponsee.html': [
     {
       selector: '.profile-header',
-      message: 'Here you can view your sponsee profile, overall stats, and ratings. Make sure your profile is up-to-date!',
+      message: 'Start with your creator profile: add a clear photo, a useful description, your content categories and platform handles. Sponsors use these details to decide whether you fit their campaign.',
     },
     {
       selector: '.active-listings',
-      message: 'All your sponsorship offers and application cards appear here. Filter by stage using these tabs.',
+      message: 'Manage offers here. Review the brief, platforms, payment terms and deadline before accepting. Use the offer comments to upload a private video draft for sponsor approval before publishing.',
     },
     {
       selector: '#offer-tabs',
       message: 'Use these tabs to view your offers by status: active, in progress, live, completed, or archived.',
     },
     {
-      selector: '.notification-bell-btn',
+      selector: '#notification-bell',
       message: 'Track your recent activity, comments, and notifications right here.',
       optional: true,
     },
@@ -29,7 +29,7 @@ const onboardingFlows = {
     {
       selector: '#oauth-link-modal > div',
       message:
-        'Next step: connect your social media via OAuth to confirm your accounts. The “Linked Accounts” window is now open — link your platforms to unlock live stats and better matching!',
+        'Next step: connect your social media via OAuth to confirm your accounts. The “Linked Accounts” window is now open — connect supported platforms to enable available statistics. You can finish this later in Settings; some platforms require additional permissions.',
       sponseeOnly: true,
       openOauthModal: true,
       noOverlay: true,
@@ -41,7 +41,7 @@ const onboardingFlows = {
   '/dashboardsponsor.html': [
     {
       selector: '.profile-header',
-      message: 'This is your sponsor profile. Keep your company info and logo updated for best results.',
+      message: 'Start with your brand profile: add your logo, website and a clear description. Then use Finder to discover creators or publish a public opportunity with a clear brief, budget and deadline.',
     },
     {
       selector: '#offer-tabs',
@@ -49,7 +49,7 @@ const onboardingFlows = {
     },
     {
       selector: '.listing-container, .active-listings',
-      message: 'View all your current and past offers, applicant status, and view details here. New offers will appear in this area.',
+      message: 'Open an offer to review its brief and progress. In Comments, play private video drafts, approve the latest version or request specific changes. Confirm publication only after checking the agreed content links.',
     },
     {
       selector: '.notification-bell-btn',
@@ -78,7 +78,7 @@ const onboardingFlows = {
     },
     {
       selector: '#offerSearchForm',
-      message: 'Use these filters to find brands offers.',
+      message: 'Use these filters to find brand opportunities that match your content and audience.',
     },
     // --- SPONSOR ONLY ---
     {
@@ -178,15 +178,6 @@ async function setOnboardingComplete(val = true) {
   }
 }
 
-async function setHideHelpBlocks(val = true) {
-  const userId = await getCurrentUserId();
-  if (userId) {
-    await supabase
-      .from('user_settings')
-      .upsert([{ user_id: userId, hide_help_blocks: val }], { onConflict: 'user_id' });
-  }
-}
-
 // --- PRELOAD ACCOUNT TYPE (robust) ---
 async function preloadSponsorStatus() {
   const { data: { user } } = await supabase.auth.getUser();
@@ -201,7 +192,7 @@ async function preloadSponsorStatus() {
   const utRaw = (data?.userType || '').toString().toLowerCase().trim();
 
   // Robust mapping (your DB sometimes uses UI labels)
-  userIsSponsor = utRaw.includes('sponsor');
+  userIsSponsor = utRaw === 'sponsor' || utRaw === 'brand' || utRaw === 'business';
   userIsSponsee =
     utRaw.includes('sponsee') ||
     utRaw.includes('creator') ||
@@ -335,6 +326,7 @@ function positionBubbleNearTarget(bubble, el) {
   if (top < 10) top = 10;
   if (top + bh > window.innerHeight - 10) top = window.innerHeight - bh - 10;
 
+  bubble.style.transform = 'none';
   bubble.style.top = `${Math.round(top)}px`;
   bubble.style.left = `${Math.round(left)}px`;
 }
@@ -407,7 +399,7 @@ function showStep(step, totalSteps) {
       overlay.style.height = '100vh';
       overlay.style.background = 'rgba(10,16,25,0.28)';
       overlay.style.zIndex = 99998;
-      overlay.onclick = e => { if (e.target === overlay) hideOnboardingOverlay(); };
+      overlay.onclick = e => { if (e.target === overlay) skipOnboarding(); };
       document.body.appendChild(overlay);
     }
 
@@ -416,6 +408,17 @@ function showStep(step, totalSteps) {
     // Bubble
     const bubble = document.createElement('div');
     bubble.className = 'onboarding-bubble';
+    bubble.setAttribute('role', 'dialog');
+    bubble.setAttribute('aria-label', 'Getting started with Sponsor Sorter');
+    bubble.tabIndex = -1;
+    bubble.addEventListener('keydown', event => {
+      if (event.key === 'Escape') skipOnboarding();
+      if (event.key === 'Tab') {
+        const buttons = [...bubble.querySelectorAll('button')];
+        if (event.shiftKey && document.activeElement === buttons[0]) { event.preventDefault(); buttons.at(-1).focus(); }
+        else if (!event.shiftKey && document.activeElement === buttons.at(-1)) { event.preventDefault(); buttons[0].focus(); }
+      }
+    });
 
     const isLast = (currentStepIdx + 1 === totalSteps);
     const isSponseeDash = pathEndsWith('dashboardsponsee.html');
@@ -432,7 +435,7 @@ function showStep(step, totalSteps) {
       <div style="padding:18px 22px;background:#181b2c;color:#fff;border-radius:13px;box-shadow:0 4px 24px #2229;max-width:350px;">
         <div style="font-size:1.07em;margin-bottom:8px;">${step.message}</div>
         <div style="margin-top:12px;text-align:right;">
-          <button class="onboarding-btn-skip" style="margin-right:8px;background:#d32f2f;color:#fff;padding:7px 16px;border:none;border-radius:6px;cursor:pointer;">Stop/Hide</button>
+          <button class="onboarding-btn-skip" style="margin-right:8px;background:#d32f2f;color:#fff;padding:7px 16px;border:none;border-radius:6px;cursor:pointer;">Skip tour</button>
           <button class="onboarding-btn-next" style="background:${nextBtnColor};color:#fff;padding:7px 18px;border:none;border-radius:6px;cursor:pointer;font-weight:600;">
             ${nextBtnLabel}
           </button>
@@ -444,11 +447,14 @@ function showStep(step, totalSteps) {
     bubble.style.position = 'fixed';
     bubble.style.zIndex = 99999;
     bubble.style.transition = 'opacity 0.2s';
-    bubble.style.top = `${window.innerHeight / 2 - 100}px`;
-    bubble.style.left = `${window.innerWidth / 2 - 175}px`;
+    bubble.style.top = '50%';
+    bubble.style.left = '50%';
+    bubble.style.transform = 'translate(-50%, -50%)';
 
     if (overlay) overlay.appendChild(bubble);
     else document.body.appendChild(bubble);
+
+    bubble.focus({ preventScroll: true });
 
     // Don’t auto-scroll when the modal is open
     if (el && !step.openOauthModal) {
@@ -468,19 +474,21 @@ function showStep(step, totalSteps) {
       bubble.querySelector('.onboarding-btn-next').onclick = async () => {
         onboardingActive = false;
         await setOnboardingComplete(true);
-        await setHideHelpBlocks(true);
+
         hideOnboardingOverlay(); // removes bubble/highlights only
       };
     } else if (isLast && (isSponseeDash || isSponsorDash)) {
       // Your original behaviour for dashboard finish
-      bubble.querySelector('.onboarding-btn-next').onclick = () => {
-        window.location.href = './finder.html';
+      bubble.querySelector('.onboarding-btn-next').onclick = async () => {
+        onboardingActive = false;
+        await setOnboardingComplete(true);
+        hideOnboardingOverlay();
       };
     } else if (isLast && isFinder) {
       bubble.querySelector('.onboarding-btn-next').onclick = async () => {
         onboardingActive = false;
         await setOnboardingComplete(true);
-        await setHideHelpBlocks(true);
+
         hideOnboardingOverlay();
       };
     } else {
@@ -524,7 +532,6 @@ async function startOnboarding(force = false) {
 }
 
 window.restartOnboarding = () => {
-  setOnboardingComplete(false);
   startOnboarding(true);
 };
 
@@ -545,7 +552,19 @@ style.innerHTML = `
   pointer-events: auto;
   animation: fadeIn 0.22s;
   z-index: 99999 !important;
-  margin-top: 300px;
+  box-sizing: border-box;
+  width: min(394px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  margin: 0;
+}
+.onboarding-bubble > div {
+  box-sizing: border-box;
+  max-width: none !important;
+}
+.onboarding-bubble button:focus-visible {
+  outline: 3px solid #57dafa;
+  outline-offset: 3px;
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 `;

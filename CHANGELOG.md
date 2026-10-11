@@ -175,3 +175,10 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Header lights now follow 117 paths traced from the original grid artwork, turning up/down/left/right.
 - 44 staggered lights fade out, select a different route and reappear. Reduced-motion support retained; animations pause in background tabs.
 - Original artwork, header sizing and navigation preserved. 42 automated tests pass.
+
+## 2026-10-11 — Header routes, live draft review and onboarding
+
+- Header e6e54a0 deployed successfully: 44 animated signals choose traced orthogonal grid routes with turns in all directions, fade/reappear and change routes each cycle; hidden-tab pause and reduced-motion support retained.
+- Live Johnny sponsor test: latest synthetic video draft approved; empty change request correctly rejected. Sponsor private video played to its 5-second end without a media error. Creator small (1.1 MB) and large (7.9 MB) upload/playback previously passed. No funds moved or campaign completion recorded. Native resumable transport remains unproven; large upload succeeded with SDK fallback.
+- Onboarding: fixed off-screen 300px offset; responsive centred keyboard-focusable tour with Escape/Tab support; corrected role detection (sponsee must not match sponsor substring), current notification selector, clearer role-specific profile/brief/draft guidance, completion saved without forced Finder redirect, and help preferences preserved. Restart no longer clears persisted completion before starting.
+- npm test: 43 passing. Browser fixture tour contained at 1280x720 and 375x812; Next advances. Broader signup/first-login onboarding redesign remains a follow-up; this release repairs the existing guided tour.
