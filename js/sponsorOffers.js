@@ -1,3 +1,4 @@
+import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-campaign1';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
@@ -15,6 +16,8 @@ let sponsor_email = '';
 let sponsor_id = '';
 let reviewedOfferIds = [];
 let currentFilter = 'all';
+let campaignOptions = {};
+let offerRenderVersion = 0;
 let currentPage = 1;
 const offersPerPage = 5;
 
@@ -91,7 +94,8 @@ function renderPaginationControls(totalOffers) {
   });
 }
 
-function renderOffersByFilter(filter) {
+async function renderOffersByFilter(filter) {
+  const version = ++offerRenderVersion;
   currentFilter = filter;
   const listingContainer = document.getElementById('listing-container');
   listingContainer.innerHTML = '';
@@ -107,6 +111,8 @@ function renderOffersByFilter(filter) {
 
   // Completed campaigns remain available after reviews for performance reporting.
 
+  filteredOffers = selectCampaigns(filteredOffers, campaignOptions);
+  currentPage = Math.min(currentPage, Math.max(1, Math.ceil(filteredOffers.length / offersPerPage)));
   const start = (currentPage - 1) * offersPerPage;
   const end = start + offersPerPage;
   const paginatedOffers = filteredOffers.slice(start, end);
@@ -122,7 +128,10 @@ function renderOffersByFilter(filter) {
     return;
   }
 
-  paginatedOffers.forEach(renderSingleOffer);
+  for (const offer of paginatedOffers) {
+    await renderSingleOffer(offer, version);
+    if (version !== offerRenderVersion) return;
+  }
   renderPaginationControls(filteredOffers.length);
   const totalLabel = document.getElementById("sponsor-offer-total-label");
   if (totalLabel) {
@@ -199,7 +208,7 @@ function renderPlatformBadges(platforms, urlPairs = []) {
 
 
 // --- Main offer rendering ---
-async function renderSingleOffer(offer) {
+async function renderSingleOffer(offer, version) {
   const listingContainer = document.getElementById('listing-container');
   const { data: sponsee } = await supabase
     .from('public_user_directory')
@@ -346,6 +355,7 @@ async function renderSingleOffer(offer) {
     </div>
   `;
 
+  if (version !== offerRenderVersion) return;
   listingContainer.appendChild(listing);
 }
 
@@ -510,6 +520,7 @@ function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subti
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  campaignOptions = mountCampaignTools(document.getElementById('listing-container'), () => { currentPage = 1; renderOffersByFilter(currentFilter); });
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session || !session.user) {
     alert("You must be logged in to view this page.");

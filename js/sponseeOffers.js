@@ -1,3 +1,4 @@
+import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-campaign1';
 import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts3';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponseeOffers.js
@@ -181,6 +182,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 2. DOM nodes
   const listingContainer = document.getElementById('listing-container');
   const offerTabs = document.getElementById('offer-tabs');
+  let offerRenderVersion = 0;
+  const campaignOptions = mountCampaignTools(listingContainer, () => { currentPage = 1; renderSponseeOffersByFilter(); });
   const paginationLabel = document.getElementById('pagination-label');
   const prevPageBtn = document.getElementById('prev-page');
   const nextPageBtn = document.getElementById('next-page');
@@ -201,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // --- Events for TABS
   offerTabs.addEventListener('click', (e) => {
     if (!e.target.classList.contains('tab-btn')) return;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    offerTabs.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     e.target.classList.add('active');
     currentPage = 1;
     currentFilter = e.target.dataset.filter;
@@ -238,13 +241,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     currentPage = 1;
     currentFilter = "all";
     // Set All tab active
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector('.tab-btn[data-filter="all"]')?.classList.add('active');
+    offerTabs.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    offerTabs.querySelector('.tab-btn[data-filter="all"]')?.classList.add('active');
     renderSponseeOffersByFilter();
   }
 
   // 5. Main render (by filter + page)
   async function renderSponseeOffersByFilter() {
+    const version = ++offerRenderVersion;
     listingContainer.innerHTML = '';
     // FILTER OUT ARCHIVED OFFERS GLOBALLY!
     let nonArchivedOffers = allSponseeOffers.filter(offer => !offer.archived || currentFilter === 'stage-5');
@@ -272,6 +276,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ![1,2,3,4,5].includes(offer.stage)
     );
 
+    filteredOffers = selectCampaigns(filteredOffers, campaignOptions);
     const totalOffers = filteredOffers.length;
     window._totalPages = Math.max(1, Math.ceil(totalOffers / offersPerPage));
     if (currentPage > window._totalPages) currentPage = window._totalPages;
@@ -288,7 +293,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       listingContainer.innerHTML = '<p>No offers found for this filter/page.</p>';
     } else {
       for (const offer of paginatedOffers) {
-        await renderSingleOfferCard(offer, false);
+        await renderSingleOfferCard(offer, false, version);
+        if (version !== offerRenderVersion) return;
       }
     }
   }
@@ -383,7 +389,7 @@ async function computeGroupShare(offer) {
 }
 
 
-  async function renderSingleOfferCard(offer, forceShowReview = false) {
+  async function renderSingleOfferCard(offer, forceShowReview = false, version) {
     let sponsorPicUrl = 'logos.png';
     let sponsor_id = '';
     try {
@@ -653,6 +659,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         </div>
       </div>
     `;
+    if (version !== offerRenderVersion) return;
     listingContainer.appendChild(card);
   }
 

@@ -203,3 +203,9 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - npm test: 46 passing. Browser checks: homepage grouped footer, privacy 15 sections with Cookies filter, terms 16 sections with Payments filter; dashboard brand and search/bell/settings nodes retained, Back to top works, dashboard 752px viewport has no document overflow. Print action wired but print dialog not opened.
 
 - Footer also includes How it works and Plans & pricing. Final policy/footer preview at 1280px has no document overflow; requested 375px override did not apply to that new tab, so mobile policy/footer verification is not claimed.
+
+## 2026-10-11 — Campaign search and prioritisation
+
+- Sponsor and creator private campaign dashboards now search titles/account names, sort newest/oldest/deadline/value, and filter overdue or due within seven days before pagination. Controls work on authorised loaded data without additional API requests. Closed/archived campaigns are excluded from urgency filters; date-only deadlines include the entire due day.
+- Sequential sponsor rendering preserves sort order; both renderers reject stale asynchronous cards after filter changes. Creator status-tab changes are scoped to the offer section. Accessible result announcements and wrapping toolbar retain the existing theme.
+- Validation: 48 automated tests pass; module syntax and whitespace checks pass. Local browser fixture verified both dashboards search to zero, clear to two, sorting selection and overdue filtering; sponsor desktop width 1280/client1265/scroll1265. No live account or financial mutations.

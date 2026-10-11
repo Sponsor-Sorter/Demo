@@ -470,3 +470,18 @@ test('every deployed page has the canonical footer and shared brand assets',()=>
  for(const [,href] of template.matchAll(/href="{{base}}([^"#?]+)(?:[#?][^"]*)?"/g))assert.ok(fs.existsSync(path.join(root,href)),href);
  for(const [page,id] of [['privacy.html','deletion'],['privacy.html','cookies'],['terms.html','payments']])assert.ok(fs.readFileSync(path.join(root,page),'utf8').includes('id="'+id+'"'));
 });
+const campaignToolsSource = fs.readFileSync(path.join(__dirname, '../js/campaignTools.js'), 'utf8');
+const selectCampaigns = vm.runInNewContext(campaignToolsSource.replaceAll('export function', 'function') + '; selectCampaigns');
+test('campaign search and sorting use all records without mutating the source', () => {
+  const offers = [{id:1, offer_title:'Video brief', sponsee_username:'FitStyle', created_at:'2026-10-01', offer_amount:20}, {id:2,offer_title:'Stream',created_at:'2026-10-03',offer_amount:50},{id:3}];
+  assert.deepEqual(Array.from(selectCampaigns(offers,{query:'FITSTYLE'}), o=>o.id), [1]);
+  assert.deepEqual(Array.from(selectCampaigns(offers,{sort:'newest'}), o=>o.id), [2,1,3]);
+  assert.deepEqual(Array.from(selectCampaigns(offers,{sort:'amount'}), o=>o.id), [2,1,3]);
+  assert.deepEqual(offers.map(o=>o.id), [1,2,3]);
+});
+test('deadline filters exclude closed campaigns and keep today available', () => {
+  const now = new Date('2026-10-11T12:00:00').getTime();
+  const offers = [{id:1,deadline:'2026-10-11',stage:2},{id:2,deadline:'2026-10-10',stage:2},{id:3,deadline:'2026-10-10',status:'completed'},{id:4,deadline:'2026-10-12',archived:true},{id:5,deadline:'invalid'}];
+  assert.deepEqual(Array.from(selectCampaigns(offers,{deadline:'overdue'},now),o=>o.id),[2]);
+  assert.deepEqual(Array.from(selectCampaigns(offers,{deadline:'soon'},now),o=>o.id),[1]);
+});

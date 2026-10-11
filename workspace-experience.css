@@ -434,3 +434,6 @@
 .workspace-start li p { margin: 8px 0; line-height: 1.6; overflow-wrap: anywhere; }
 .workspace-start button { margin: 12px 0 0; }
 @media (max-width: 640px) { .workspace-start ol { grid-template-columns: minmax(0, 1fr); } }
+
+/* Campaign search and prioritisation */
+.campaign-tools{display:flex;flex-wrap:wrap;align-items:end;gap:12px;width:100%;box-sizing:border-box;margin:18px 0;padding:16px;border:1px solid #345267;border-radius:12px;background:#111820;text-align:left}.campaign-tools label{display:grid;gap:7px;min-width:0;flex:1 1 170px;color:#c7d9e6;font-size:.9rem}.campaign-tools label:first-child{flex:2 1 230px}.campaign-tools input,.campaign-tools select{box-sizing:border-box;width:100%;min-width:0;padding:11px;border:1px solid #526775;border-radius:7px;background:#090e14;color:#fff;font:inherit}.campaign-tools button{margin:0;padding:11px 16px;white-space:normal}.campaign-tools :focus-visible{outline:2px solid #42dafa;outline-offset:3px}
