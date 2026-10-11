@@ -511,3 +511,23 @@ test('Finder layout preserves controls and separates filters from results',()=>{
  assert.match(layout,/min-width: 760px/);
  assert.match(finderSource,/results\.before\(status\)/);
 });
+test('recommendations timeout settles loading and exposes retry even if session stalls', async()=>{
+ const source=fs.readFileSync(path.join(__dirname,'../js/recmatch.js'),'utf8').replace(/^import .*;\r?\n/gm,'');
+ const node=()=>({children:[],attributes:{},append(...children){this.children.push(...children)},setAttribute(key,value){this.attributes[key]=value},addEventListener(){},replaceChildren(...children){this.children=children}});
+ const container=node();let timeout;
+ const context={document:{getElementById:id=>id==='recommendedMatches'?container:null,createElement:node,createDocumentFragment:node,addEventListener(){}},supabase:{auth:{getSession:()=>new Promise(()=>{})}},AbortController,setTimeout:callback=>{timeout=callback;return 1},clearTimeout(){}};
+ const load=vm.runInNewContext(source+';loadRecommendations',context);
+ const pending=load();assert.equal(container.attributes['aria-busy'],'true');timeout();await pending;
+ assert.equal(container.attributes['aria-busy'],'false');
+ assert.equal(container.children[0].children[1].textContent,'Retry recommendations');
+ assert.match(container.children[0].children[0].textContent,/taking too long/);
+});
+test('supporting profile cards render hostile names as text and keep safe recipient URLs',()=>{
+ const source=fs.readFileSync(path.join(__dirname,'../js/finderSupporting.js'),'utf8').replaceAll('export function','function');
+ const node=tag=>({tag,children:[],append(...children){this.children.push(...children)},addEventListener(){}});
+ const render=vm.runInNewContext(source+';supportingProfileCard',{document:{createElement:node},URL,location:{href:'https://sponsorsorter.com/finder.html'}});
+ const card=render({username:'<img onerror=alert(1)>',social_handles:{youtube:'test'}},{isSponsor:true,imageUrl:'javascript:alert(1)'});
+ assert.equal(card.children[0].children[0].src,'./logos.png');
+ assert.equal(card.children[0].children[1].children[0].textContent,'<img onerror=alert(1)>');
+ assert.equal(card.children.at(-1).children[1].href,'newoffer.html?username=%3Cimg%20onerror%3Dalert(1)%3E');
+});

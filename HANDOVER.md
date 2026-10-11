@@ -263,3 +263,9 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 
 - Replaced the tall full-width search stack with a desktop filter sidebar and a primary results column. Mobile starts with collapsible filters above results. Compact category navigation, restrained card borders/actions, consistent supporting sections and collapsed explanatory text reduce visual noise. Added content-type shortcuts using the existing search handler; all IDs and account/offer handlers retained.
 - 51 automated tests pass. Browser fixture checked quick-filter empty results, clear filters, opportunity tab and desktop containment (1280 width,1265 client/scroll). Browser viewport override again did not apply; responsive styles implemented but narrow browser verification remains pending.
+
+## 2026-10-11 — Finder supporting panels
+
+- Replaced legacy other-account markup with safe compact profile cards and responsive normal-flow grids. Supporting panels now span the common page container; cards retain full text/actions without fixed-width clipping. Recommendation cards and recent opportunity cards use the same restrained framing. Recent opportunities batch public sponsor logos and no longer query per-offer private application counts.
+- Recommendations build an offscreen fragment and race the entire load against a 12-second timeout, including stalled auth/profile reads. Timeout/error/empty states expose retry; stale or late jobs cannot replace newer results. Existing matching Edge Function and application business rules retained.
+- 53 automated tests pass including stalled-session timeout/retry and hostile-profile card rendering; inline module syntax and whitespace checked. Local browser verified account cards and recommendation retry. No backend/schema or account mutations.

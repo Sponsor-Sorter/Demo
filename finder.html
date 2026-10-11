@@ -128,7 +128,7 @@
 <link rel="stylesheet" href="./workspace-layout.css?v=20261011-nav2">
 <script type="module" src="./js/workspaceLayout.js?v=20261010-workspace1"></script>
 <link rel="stylesheet" href="./workspace-experience.css?v=20261011-campaign1">
-<link rel="stylesheet" href="./finder-discovery.css?v=20261011-layout2">
+<link rel="stylesheet" href="./finder-discovery.css?v=20261011-support3">
 <script type="module" src="./js/workspaceExperience.js?v=20261011-onboard1"></script>
 <script type="module" src="./js/finderLayout.js?v=20261011-layout2"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
@@ -335,14 +335,14 @@
   <div class="help-block" style="margin-bottom:10px;">
     <em>
       <strong>Recommended for You:</strong><br>
-      Based on your profile and activity, here are the top matches our system found for you.
+      Suggestions use your saved profile information. Match scores are a starting point: review each profile or opportunity before deciding.
       Click <b>View Profile</b> to see more, or <b>Connect</b> to start a conversation or application.
     </em>
   </div>
 </fieldset>
 
 <fieldset class="otheraccounts">
-  <legend><h3>Other Accounts:</h3></legend>
+  <legend><h3>More profiles to explore</h3></legend>
   <div class="accounts-scroll-viewport" style="max-width:100%;overflow-x:auto;padding-bottom:2px;">
     <div class="user-profiles" id="otherAccountsProfiles" style="display:flex;flex-wrap:nowrap;gap:18px;"></div>
   </div>
@@ -392,39 +392,26 @@ async function renderRecentOffers() {
     return;
   }
 
-  const cards = await Promise.all(offers.map(async offer => {
-    let sponsorLogo = 'logos.png';
-    try {
-      const { data: sponsor } = await supabase
-        .from('public_user_directory')
-        .select('profile_pic')
-        .eq('user_id', offer.sponsor_id)
-        .maybeSingle();
-      if (sponsor && sponsor.profile_pic) {
-        const r = supabase.storage.from('logos').getPublicUrl(sponsor.profile_pic);
-        sponsorLogo = r?.data?.publicUrl || sponsorLogo;
+  // Load public sponsor logos once for the whole grid.
+  const sponsorIds = [...new Set(offers.map(offer => offer.sponsor_id).filter(Boolean))];
+  const logoBySponsor = {};
+  if (sponsorIds.length) {
+    const { data: sponsors } = await supabase.from('public_user_directory')
+      .select('user_id, profile_pic').in('user_id', sponsorIds);
+    for (const sponsor of sponsors || []) {
+      if (sponsor.profile_pic) {
+        logoBySponsor[sponsor.user_id] = /^https?:\/\//i.test(sponsor.profile_pic)
+          ? sponsor.profile_pic : supabase.storage.from('logos').getPublicUrl(sponsor.profile_pic).data.publicUrl;
       }
-    } catch {}
-
-    let applicantCount = 0, successfulCount = 0;
-    try {
-      const { data: applications } = await supabase
-        .from('public_offer_applications')
-        .select('status')
-        .eq('offer_id', offer.id);
-
-      if (applications?.length) {
-        applicantCount = applications.length;
-        successfulCount = applications.filter(a => a.status === 'accepted').length;
-      }
-    } catch {}
-
+    }
+  }
+  const cards = offers.map(offer => {
+    const sponsorLogo = logoBySponsor[offer.sponsor_id] || 'logos.png';
     const dateStr = offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-';
     const deadlineStr = offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-';
-    const maxApplicants = offer.max_applicants || '∞';
 
     return `
-      <div style="background:#222;padding:18px 16px 16px 16px;border-radius:14px;min-width:260px;max-width:330px;flex:0 0 270px;display:flex;flex-direction:column;align-items:stretch;box-shadow:0 3px 18px #1117;">
+      <article class="finder-recent-offer">
         <div style="font-weight:700;font-size:1.13em;line-height:1.25;text-align:center;margin-bottom:10px;letter-spacing:0.01em;color:#fff;">
           ${escapeFinderText(offer.offer_title)}
         </div>
@@ -437,12 +424,12 @@ async function renderRecentOffers() {
             <span><b>Amount:</b> $${escapeFinderText(offer.offer_amount)}</span>
             <span><b>Posted:</b> ${dateStr}</span>
             <span><b>Deadline:</b> ${deadlineStr}</span>
-            <span><b>Applicants:</b> <b>${applicantCount}</b>/${escapeFinderText(maxApplicants)} <span style="color:#9bf59b;">(${successfulCount} accepted)</span></span>
           </div>
         </div>
-      </div>
+        <a class="finder-recent-link" href="publicOffers.html">Browse open opportunities</a>
+      </article>
     `;
-  }));
+  });
 
   container.innerHTML = cards.join('');
 }
@@ -478,6 +465,7 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { notifySponsorOnApplication } from './js/publicOffers.js';
+import { supportingProfileCard } from './js/finderSupporting.js?v=20261011-support3';
 import { mountFinderDiscovery, escapeFinderText } from './js/finderDiscovery.js?v=20261011-layout2';
 
 window.currentUser = null;
@@ -649,44 +637,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       shuffled.map(u => u.user_id).filter(Boolean)
     );
 
-    shuffled.forEach(user => {
-      const div = document.createElement('div');
-      div.classList.add('user-profile');
-      const imgSrc = user.profile_pic
-        ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
-        : 'logos.png';
-      const platformsHTML = extractPlatformBadges(user.social_handles);
-
-      const totalFollowers = followerMap[user.user_id] || 0;
-      const followersHtml = totalFollowers
-        ? `<span class="followers-pill" title="Approx combined followers across linked platforms">👥 ${formatFollowers(totalFollowers)} followers</span>`
-        : '';
-
-      div.innerHTML = `
-        <figure>
-          <img src="${escapeFinderText(imgSrc)}" alt="${escapeFinderText(user.username)}" class="profile-pic" onerror="this.src='logos.png'">
-          <div class="platforms-row">${platformsHTML}</div>
-        </figure>
-        <div class="user-profile-content">
-          <figcaption>
-            <div class="user-header-row">
-              <strong>${escapeFinderText(user.username)}</strong>
-              ${renderPlanBadge(user.planType)}
-            </div>
-            ${escapeFinderText(user.contenttype)}<br>
-            ${escapeFinderText(user.location)}
-            <div class="user-badge-row">
-              ${followersHtml}
-            </div>
-          </figcaption>
-          <button class="view-profile">View Profile</button>
-        </div>
-      `;
-      otherProfilesContainer.appendChild(div);
-      div.querySelector('.view-profile').addEventListener('click', () => {
-        viewProfileByUserType(user.username);
-      });
-    });
+    for (const account of shuffled) {
+      otherProfilesContainer.append(supportingProfileCard(account, {
+        isSponsor,
+        imageUrl: safePublicUrl('logos', account.profile_pic),
+        followers: followerMap[account.user_id]
+      }));
+    }
   }
   loadOtherAccounts();
 
@@ -1237,7 +1194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 <script type="module" src="./js/alerts.js"></script>
 <script type="module" src="./js/settings.js"></script>
-<script type="module" src="./js/recmatch.js?v=20261011-discovery1"></script>
+<script type="module" src="./js/recmatch.js?v=20261011-support3"></script>
 
 </body>
 </html>

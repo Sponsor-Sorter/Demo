@@ -468,3 +468,205 @@
   border: 0 !important;
   background: transparent !important;
 }
+
+/* Supporting discovery panels use normal-flow grids, never clipped strips. */
+.finder-redesign .finder-supporting {
+  grid-template-columns: minmax(0, 1fr);
+}
+.finder-redesign .finder-supporting > fieldset {
+  padding: 24px !important;
+}
+.finder-redesign .finder-supporting legend {
+  text-align: left;
+  margin-left: 0;
+  padding: 0 10px;
+}
+.finder-redesign .finder-supporting legend h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.finder-redesign .accounts-scroll-viewport,
+.finder-redesign .matches-scroll-viewport {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.finder-redesign #otherAccountsProfiles,
+.finder-redesign #recommendedMatches,
+.finder-redesign #recent-offers-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  align-items: stretch;
+  gap: 16px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+.finder-support-card,
+.finder-redesign #recommendedMatches > .user-profile,
+.finder-redesign .finder-recent-offer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 18px !important;
+  border: 1px solid #30465b !important;
+  border-radius: 12px !important;
+  background: #141e2a !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  text-align: left;
+}
+.finder-support-card-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+.finder-support-card-header > img {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.finder-support-card-header > div {
+  min-width: 0;
+}
+.finder-support-card h4 {
+  margin: 0 0 7px;
+  color: #f0f7ff;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+.finder-support-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.finder-support-muted {
+  color: #a0b4c6;
+}
+.finder-support-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid #30465b;
+  padding-top: 14px;
+  margin-top: auto;
+}
+.finder-support-actions a,
+.finder-recent-link {
+  flex: 1 1 100px;
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+  border-radius: 7px;
+  background: #193c59;
+  color: #d7efff;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.finder-support-actions a:last-child:not(:first-child) {
+  background: #155cac;
+  color: #fff;
+}
+.finder-redesign #recommendedMatches figure {
+  display: flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.finder-redesign #recommendedMatches .profile-pic {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  object-fit: cover;
+}
+.finder-redesign #recommendedMatches .user-profile-content {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
+  min-width: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left;
+  overflow-wrap: anywhere;
+  font-size: 0.88rem;
+}
+.finder-redesign #recommendedMatches button {
+  margin: 0 !important;
+  padding: 10px !important;
+  width: 100%;
+  min-width: 0;
+  font-size: 0.85rem;
+  box-shadow: none;
+  white-space: normal;
+}
+.finder-redesign #recommendedMatches .recmatch-score-row {
+  color: #8cd9ef;
+}
+.finder-redesign #recommendedMatches .recmatch-explanation {
+  color: #a9bdcf;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.finder-support-empty,
+.finder-redesign #recommendedMatches .loading-recmatch {
+  grid-column: 1 / -1;
+  padding: 22px;
+  background: #141e2a;
+  border: 1px dashed #3c5972;
+  border-radius: 10px;
+  color: #b3c9dc;
+  text-align: left;
+  font-size: 0.9rem;
+}
+.finder-support-empty p {
+  margin: 0 0 14px;
+}
+.finder-redesign .finder-recent-offer > div,
+.finder-redesign .finder-recent-offer > div > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.finder-recent-link {
+  margin-top: auto;
+}
+.finder-support-actions a:focus-visible,
+.finder-recent-link:focus-visible {
+  outline: 2px solid #42dafa;
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .finder-redesign .finder-supporting > fieldset {
+    padding: 16px !important;
+  }
+  .finder-redesign #otherAccountsProfiles,
+  .finder-redesign #recommendedMatches,
+  .finder-redesign #recent-offers-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.finder-redesign .finder-support-empty button {
+  width: auto !important;
+  background: #193c59;
+  color: #d7efff;
+  border: 1px solid #41637e;
+  border-radius: 7px;
+}
