@@ -164,3 +164,9 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Closed blanket authenticated access to private invoices/proofs. One ownerless/unscoped legacy invoice object is quarantined from client access, retained for ownership reconciliation; not owned by Moikailive. No real account or money was changed.
 - Four migrations applied: 20261010204209_private_offer_draft_review, 20261010205323_support_snapchat_content_links, 20261010205903_restrict_legacy_private_storage, 20261010210228_enforce_private_offer_actors.
 - Validation: isolated PGlite tests use synthetic data and validate actual migrations against deliberately broad legacy policies. Live rollback-only permission/replay tests pass. Browser preview verifies creator upload controls, sponsor-only decision controls, required change feedback and safe failure states. Actual upload/playback is awaiting a usable authenticated test browser session; do not claim it tested. See tools/OFFER_WORKFLOW_ROLLOUT.md for recovery/limitations.
+
+## 2026-10-11 — draft upload handling
+- Small private draft videos now use standard Storage uploads; larger clips retain resumable chunks.
+- Upload failures show actionable, sanitized status messages.
+- Added transport and error handling regression tests (40 tests passing).
+- Restored login email delivery by verifying the sending domain DNS; owner confirmed recovery.

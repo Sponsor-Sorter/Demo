@@ -198,3 +198,22 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 - Closed blanket authenticated access to private invoices/proofs. One ownerless/unscoped legacy invoice object is quarantined from client access, retained for ownership reconciliation; not owned by Moikailive. No real account or money was changed.
 - Four migrations applied: 20261010204209_private_offer_draft_review, 20261010205323_support_snapchat_content_links, 20261010205903_restrict_legacy_private_storage, 20261010210228_enforce_private_offer_actors.
 - Validation: isolated PGlite tests use synthetic data and validate actual migrations against deliberately broad legacy policies. Live rollback-only permission/replay tests pass. Browser preview verifies creator upload controls, sponsor-only decision controls, required change feedback and safe failure states. Actual upload/playback is awaiting a usable authenticated test browser session; do not claim it tested. See tools/OFFER_WORKFLOW_ROLLOUT.md for recovery/limitations.
+
+## 2026-10-11 — login delivery recovered and draft upload verification
+- Email verification failed because Resend rejected the unverified sponsorsorter.com sender (HTTP 403). Added the domain and four DNS records in Squarespace; Resend verified all records. Owner confirmed email/login recovery. No authentication bypass.
+- Live fitstyle upload test found a generic upload interruption. Release cd4dd51 uses standard private Storage SDK uploads for files up to 6 MiB, keeps TUS for larger files, and reports safe HTTP-specific errors without exposing response bodies or credentials.
+- Automated suite: 40 passing. Real upload/playback and sponsor review validation is in progress; do not claim those passed yet.
+- Test sample: public-domain MDN flower MP4 (1,128,375 bytes); synthetic FFmpeg test pattern (7,934,570 bytes) prepared for chunked upload. Files are ignored under .validation/media; no personal content.
+
+### Live draft checks
+- fitstyle session confirmed in connected browser. Existing accepted Johnny → fitstyle test offer: Story and Feed Combo Deal, 6822398c-cf44-40f5-8848-d98022687517.
+- Submitted public-domain sample as version 1, pending. Loaded participant-only signed URL and played to 5.055 seconds with readyState 4 and no media error. Test notes explicitly prohibit publication/payment. No offer stages, wallet balances or payment records changed.
+- Direct resumable upload returned a transport failure without an HTTP response. Release 8b2a8f6 falls back to non-overwriting SDK upload only for that case; HTTP authorization/size denials never trigger fallback. 41 tests pass.
+- Browser cannot yet prove native TUS chunks succeed; test the 7.9 MB sample after deployment, then sponsor review with Johnny account.
+
+### Live upload follow-up
+- Release 8b2a8f6 deployed successfully (GitHub Pages run 38097862384).
+- The synthetic 7,934,570-byte MP4 uploaded successfully as version 2 (pending) using the connection fallback. Native resumable transport remains unverified in this browser; do not describe this as a successful chunk-resume test.
+- Small clip actual playback passed. Sponsor review still needs switching to Johnny in the connected browser. Both records are clearly marked QA TEST ONLY; preserve evidence, do not publish/pay on them.
+
+- Large clip private playback also passed: duration 5 seconds, currentTime 5, readyState 4, no media error. Screenshot saved outside the repo as large-video-playback-proof.png.
