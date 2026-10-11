@@ -8,6 +8,9 @@ function closeReportModal() {
 }
 
 async function openReportModal(reportType, targetId) {
+  if (!['offer', 'comment', 'profile', 'review'].includes(reportType)) return;
+  targetId = String(targetId ?? '').trim();
+  if (!targetId || targetId.length > 200) return;
   closeReportModal();
 
   let session, reporter_id, reporter_email, reporter_username;
@@ -56,13 +59,15 @@ async function openReportModal(reportType, targetId) {
         <label for="report-details" style="font-weight:500;">Details (optional):</label>
         <textarea id="report-details" rows="3" placeholder="Add any extra information..." style="width:98%;margin-bottom:1em;border-radius:7px;"></textarea>
         <input type="hidden" id="report-type" value="${reportType}">
-        <input type="hidden" id="report-target-id" value="${targetId}">
+        <input type="hidden" id="report-target-id" value="">
         <button type="submit" style="background:#e03232;color:#fff;font-weight:600;padding:0.5em 1.5em;border:none;border-radius:9px;cursor:pointer;width:100%;">Submit Report</button>
         <div id="report-feedback" style="margin-top:10px;"></div>
       </form>
     </div>
   `;
 
+  modal.querySelector('#report-target-id').value = targetId;
+  modal.querySelector('#report-details').maxLength = 4000;
   document.body.appendChild(modal);
 
   setTimeout(() => {
@@ -220,25 +225,8 @@ async function openReportModal(reportType, targetId) {
       const { error } = await supabase.from(table).insert([insertObj]);
       if (error) throw error;
 
-      // --- OPTIONAL: Notify admin (Edge Function) ---
-      try {
-        // Make sure your Edge Function endpoint is correct and open to POSTs
-        await fetch("https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/notifyAdminNewReport", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-            // No authorization required for Edge Function if public
-          },
-          body: JSON.stringify({
-            table,
-            ...insertObj
-          })
-        });
-      } catch (notifyErr) {
-        // Fail silently, report still submits
-        console.warn("Admin notification failed", notifyErr);
-      }
-
+      // Admin workspace reads the persisted report; do not send untrusted report
+      // payloads to an unauthenticated notification endpoint.
       feedback.innerHTML = `<span style="color:#4caf50;">Report submitted! Thank you.</span>`;
       setTimeout(closeReportModal, 1200);
     } catch (err) {

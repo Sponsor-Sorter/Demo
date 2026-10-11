@@ -742,47 +742,7 @@ export async function listMyPendingInvites() {
 
 export async function acceptInvite({ inviteId }) {
   try {
-    const me = await getMyUserId();
-
-    // Fetch & validate invite first
-    const { data: inv, error: invErr } = await supabase
-      .from('friend_group_invites')
-      .select('group_id, invitee_id, status')
-      .eq('id', inviteId)
-      .maybeSingle();
-
-    if (invErr) throw invErr;
-    if (!inv || inv.status !== 'pending' || inv.invitee_id !== me) {
-      throw new Error('Invite not valid.');
-    }
-
-    // Only Pro accounts can JOIN groups
-    const myPlan = await getPlanTypeForUser(me);
-    if (String(myPlan || '').toLowerCase() !== 'pro') {
-      toast('Creator groups are a Pro feature. Upgrade to Pro to join groups.');
-      return false;
-    }
-
-    // idempotent insert
-    const { data: existing } = await supabase
-      .from('friend_group_members')
-      .select('user_id')
-      .eq('group_id', inv.group_id)
-      .eq('user_id', me)
-      .maybeSingle();
-
-    if (!existing?.user_id) {
-      const { error: insErr } = await supabase
-        .from('friend_group_members')
-        .insert([{ group_id: inv.group_id, user_id: me, role: 'member' }], { returning: 'minimal' });
-      if (insErr) throw insErr;
-    }
-
-    const { error } = await supabase
-      .from('friend_group_invites')
-      .update({ status: 'accepted', responded_at: new Date().toISOString() })
-      .eq('id', inviteId);
-
+    const { error } = await supabase.rpc('accept_group_invitation', { invitation_id: inviteId });
     if (error) throw error;
     toast('Invite accepted.');
     return true;

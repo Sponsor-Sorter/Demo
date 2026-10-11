@@ -315,25 +315,8 @@ function refreshGroupsListUI(groupIdOptional) {
 
 // Accept/decline invite with defensive error handling
 async function acceptInvite(inv, myUser) {
-  // Use INSERT (cleaner RLS) and allow duplicate (already member) via code 23505
-  const { error: memberErr } = await supabase
-    .from('friend_group_members')
-    .insert([{
-      group_id: inv.group_id,
-      user_id: myUser.id,
-      role: 'member'
-    }]);
-
-  if (memberErr && memberErr.code !== '23505') {
-    console.warn('Join failed:', memberErr);
-    throw new Error(memberErr?.message || 'Permission denied (RLS) joining group.');
-  }
-
-  // Invite -> accepted
-  await supabase
-    .from('friend_group_invites')
-    .update({ status: 'accepted', responded_at: new Date().toISOString() })
-    .eq('id', inv.id);
+  const { error } = await supabase.rpc('accept_group_invitation', { invitation_id: inv.id });
+  if (error) throw error;
 
   // Notify inviter
   const meName = await usernameOf(myUser.id);

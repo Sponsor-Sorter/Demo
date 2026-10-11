@@ -247,3 +247,11 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 ## 2026-10-11 — Shareable media kit
 - Public profiles now provide a concise media kit preview and focused print/PDF action.
 - Keeps public identity, introduction, platforms, review summary and profile link together without exposing private account information.
+
+## 2026-10-11 — Group invitation and report security
+
+- Group invitations now use an atomic, retry-safe server operation in both frontend paths. Pending-invite inserts are restricted to the recipient and member role.
+- Database normalizes reporter identity, timestamps and pending status for all four moderation report types; rejects empty/oversized reasons and oversized details.
+- Report dialog validates report type, safely assigns target values and removes unauthenticated notification submission.
+- Backend applied transactionally through Supabase SQL editor after migration connector errors; RPC and four triggers verified. Migration source retained; SQL-editor execution is not a CLI migration-history entry.
+- Local group/report database checks and 70 worktree tests passed. No real account data or money changed. Further group/payment audit remains outstanding.
