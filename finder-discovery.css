@@ -376,7 +376,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
-  width: min(1440px, calc(100% - 48px));
+  width: min(1280px, calc(100% - 40px));
   margin: 24px auto 40px;
   box-sizing: border-box;
 }
@@ -432,7 +432,7 @@
   }
   .finder-redesign .finder-supporting {
     grid-template-columns: minmax(0, 1fr);
-    width: calc(100% - 28px);
+    width: calc(100% - 40px);
     gap: 18px;
   }
   .finder-redesign.workspace-refresh > fieldset.finder {
