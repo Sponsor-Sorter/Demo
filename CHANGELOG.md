@@ -243,3 +243,7 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 ## 2026-10-11 — Calendar export
 - Download upcoming agreed campaign deadlines as a calendar file from either dashboard.
 - Clear snapshot explanation; excludes closed campaigns and private contact/payment details.
+
+## 2026-10-11 — Shareable media kit
+- Public profiles now provide a concise media kit preview and focused print/PDF action.
+- Keeps public identity, introduction, platforms, review summary and profile link together without exposing private account information.

@@ -257,3 +257,20 @@
     flex-basis: 100%;
   }
 }
+
+/* Media kit preview and focused print output. */
+.media-kit-document { padding:clamp(18px,3vw,30px); margin-top:20px; border:1px solid #34536c; border-radius:12px; background:#101c28; overflow-wrap:anywhere; }
+.media-kit-document h2,.media-kit-document h3 { margin:16px 0 8px; }
+.media-kit-document p { margin:8px 0; }
+.media-kit-document a { color:#68d9f5; overflow-wrap:anywhere; }
+#media-kit-print { display:none; }
+@media print {
+ body.public-profile-page.media-kit-printing > *:not(#media-kit-print) { display:none !important; }
+ body.public-profile-page.media-kit-printing { background:white !important; color:#111 !important; margin:0; }
+ #media-kit-print { display:block !important; margin:0; padding:12mm; border:0; border-radius:0; background:white !important; color:#111 !important; font:11pt/1.5 Arial,sans-serif; }
+ #media-kit-print * { background:transparent !important; color:#111 !important; text-shadow:none !important; box-shadow:none !important; }
+ #media-kit-print h2 { font-size:24pt; margin:0 0 12pt; }
+ #media-kit-print h3 { font-size:13pt; margin:16pt 0 6pt; break-after:avoid; }
+ #media-kit-print p { orphans:3; widows:3; }
+ #media-kit-print a { color:#164e74 !important; text-decoration:underline; }
+}

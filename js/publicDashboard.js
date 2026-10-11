@@ -1,3 +1,4 @@
+import { mountMediaKit } from "./creatorMediaKit.js?v=20261011-kit1";
 // js/publicDashboard.js
 // (icons for Linked Platforms; no money; grey empty stars; CTAs under avatar)
 import { supabase } from "./supabaseClient.js";
@@ -834,6 +835,7 @@ async function load() {
 
   renderProfile(profile);
   wireProfileSharing(profile);
+  mountMediaKit(profile);
 
   // fire live stats (YouTube / TikTok / Twitch / Instagram / Facebook)
   loadLiveStats(profile).catch((e) => console.error(e));

@@ -592,3 +592,17 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  for(const line of result.content.split('\r\n')) assert.ok(Buffer.byteLength(line,'utf8')<=75);
  assert.ok(result.content.includes('\\,'));assert.ok(result.content.includes('\\;'));
  });
+
+ test('media kit projects only safe public fields and validates review information',async()=>{
+ const {mediaKitData}=await import('../js/creatorMediaKit.js');
+ const result=mediaKitData({username:'<img src=x>',slug:'fitstyle',user_type:'besponsored',social_handles:'{"youtube":"creator","evil":"x"}',platforms:['youtube','twitch'],avg_rating:4.5,review_count:3,email:'private@example.com',wallet:999,access_token:'secret'},'https://sponsorsorter.com');
+ assert.deepEqual(result.platforms,['youtube','twitch']);assert.equal(result.name,'<img src=x>');assert.equal(result.rating,4.5);assert.equal(result.reviews,3);assert.equal(result.url,'https://sponsorsorter.com/u/index.html?u=fitstyle');
+ assert.ok(!JSON.stringify(result).includes('private@example.com'));assert.ok(!JSON.stringify(result).includes('secret'));assert.ok(!JSON.stringify(result).includes('999'));
+ const invalid=mediaKitData({slug:'bad<script>',avg_rating:100,review_count:-1},'https://sponsorsorter.com');assert.equal(invalid.rating,null);assert.equal(invalid.reviews,0);assert.equal(invalid.url,'');
+ });
+
+ test('media kit missing ratings stay unknown and print hiding requires explicit print mode',async()=>{
+ const {mediaKitData}=await import('../js/creatorMediaKit.js');assert.equal(mediaKitData({avg_rating:null,review_count:2},'https://sponsorsorter.com').rating,null);
+ const css=fs.readFileSync(path.join(__dirname,'../public-profile.css'),'utf8');assert.ok(css.includes('body.public-profile-page.media-kit-printing > *:not(#media-kit-print)'));
+ const html=fs.readFileSync(path.join(__dirname,'../u/index.html'),'utf8');assert.ok(html.includes('publicDashboard.js?v=20261011-kit1'));
+ });
