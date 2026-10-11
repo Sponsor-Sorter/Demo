@@ -552,3 +552,21 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  const sponsor={user_id:'s',userType:'sponsor',contenttype:'Music'};
  assert.deepEqual(rankPartners(me,[me,sponsor,{...me,user_id:'other'}]).map(m=>m.profile.user_id),['s']);
  });
+
+ test('daily priorities exclude finished records, rank overdue and respect actor roles',async()=>{
+ const {attentionItems}=await import('../js/campaignToday.js');
+ const now=Date.parse('2026-10-11T12:00:00Z');
+ const offers=[{id:'old',stage:2,status:'accepted',deadline:'2026-10-01'},{id:'soon',stage:3,status:'in_progress',deadline:'2026-10-13'},{id:'pending',stage:1,status:'pending'},{id:'done',stage:5,status:'completed',deadline:'2020-01-01'},{id:'archived',stage:2,archived:true},{id:'cancel',stage:2,status:'Offer Cancelled'}];
+ const creator=attentionItems(offers,'sponsee',now);
+ assert.deepEqual(creator.map(i=>i.offer.id),['old','pending','soon']);
+ assert.equal(creator[0].overdue,true);assert.equal(creator[2].soon,true);
+ assert.match(creator[1].action,/Review the sponsorship request/);
+ assert.match(attentionItems([offers[2]],'sponsor',now)[0].action,/Awaiting creator/);
+ assert.equal(offers.length,6);
+ });
+ test('campaign priority navigation selects the exact ID even with duplicate titles',async()=>{
+ const {selectCampaigns}=await import('../js/campaignTools.js');
+ const offers=[{id:'a',offer_title:'Same'},{id:'b',offer_title:'Same'}];
+ assert.deepEqual(selectCampaigns(offers,{id:'b'}).map(o=>o.id),['b']);
+ assert.equal(selectCampaigns(offers,{id:null}).length,2);
+ });

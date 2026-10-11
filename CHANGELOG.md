@@ -232,3 +232,8 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Replaced Finder matching dependency with explainable preference-based partner selection for both account roles.
 - Added factual recommendation reasons, missing-information notices and matching preference navigation.
 - Retained public opportunity browsing and existing profile/offer actions.
+
+## 2026-10-11 — Dashboard next steps
+- Added compact role-specific campaign priorities, deadline summaries and exact campaign navigation to both dashboards.
+- Preserved existing status tabs, campaign actions and filter reset.
+- Added researched creator hub development roadmap.

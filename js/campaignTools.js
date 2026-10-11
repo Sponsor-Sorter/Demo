@@ -6,6 +6,7 @@ export function selectCampaigns(offers, options = {}, now = Date.now()) {
     .trim()
     .toLowerCase();
   const result = offers.filter((offer) => {
+    if (options.id && String(offer.id) !== String(options.id)) return false;
     const searchable = [
       offer.offer_title,
       offer.sponsor_username,
@@ -55,17 +56,19 @@ export function mountCampaignTools(host, onChange) {
     '<label>Search campaigns<input type="search" placeholder="Title or account name" maxlength="160"></label><label>Sort by<select data-control="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="deadline">Deadline first</option><option value="amount">Highest amount</option></select></label><label>Deadline<select data-control="deadline"><option value="all">All deadlines</option><option value="soon">Due in 7 days</option><option value="overdue">Overdue</option></select></label><button type="button">Clear filters</button>';
   const search = toolbar.querySelector("input");
   search.addEventListener("input", () => {
+    state.id = null;
     state.query = search.value;
     onChange();
   });
   toolbar.querySelectorAll("select").forEach((control) =>
     control.addEventListener("change", () => {
+      state.id = null;
       state[control.dataset.control] = control.value;
       onChange();
     }),
   );
   toolbar.querySelector("button").addEventListener("click", () => {
-    Object.assign(state, { query: "", sort: "newest", deadline: "all" });
+    Object.assign(state, { id: null, query: "", sort: "newest", deadline: "all" });
     search.value = "";
     toolbar.querySelector('[data-control="sort"]').value = "newest";
     toolbar.querySelector('[data-control="deadline"]').value = "all";

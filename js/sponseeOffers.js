@@ -1,4 +1,5 @@
-import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-campaign1';
+import { renderCampaignToday } from "./campaignToday.js?v=20261011-today1";
+import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts3';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponseeOffers.js
@@ -238,6 +239,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     allSponseeOffers = (offers || []);
+    renderCampaignToday(document.querySelector('.campaign-tools'), allSponseeOffers, 'sponsee', async id => {
+      Object.assign(campaignOptions,{id,query:'',deadline:'all',sort:'newest'});
+    const toolbar=document.querySelector('.campaign-tools');
+    toolbar.querySelector('input').value='';toolbar.querySelector('[data-control="deadline"]').value='all';toolbar.querySelector('[data-control="sort"]').value='newest';currentPage=1;currentFilter='all';
+      offerTabs.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));
+      await renderSponseeOffersByFilter();
+      const card=listingContainer.querySelector('.listing-stage');
+      card?.scrollIntoView({block:'center',behavior:'smooth'});card?.querySelector('.expand-btn')?.focus({preventScroll:true});
+    });
     currentPage = 1;
     currentFilter = "all";
     // Set All tab active

@@ -1,4 +1,5 @@
-import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-campaign1';
+import { renderCampaignToday } from "./campaignToday.js?v=20261011-today1";
+import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
@@ -559,6 +560,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   allSponsorOffers = offers;
+  renderCampaignToday(document.querySelector('.campaign-tools'), offers, 'sponsor', async id => {
+    Object.assign(campaignOptions,{id,query:'',deadline:'all',sort:'newest'});
+    const toolbar=document.querySelector('.campaign-tools');
+    toolbar.querySelector('input').value='';toolbar.querySelector('[data-control="deadline"]').value='all';toolbar.querySelector('[data-control="sort"]').value='newest'; currentPage=1;
+    document.querySelectorAll('#offer-tabs .tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter==='all'));
+    await renderOffersByFilter('all');
+    const card=document.querySelector('#listing-container .listing-stage');
+    card?.scrollIntoView({block:'center',behavior:'smooth'}); card?.querySelector('.expand-btn')?.focus({preventScroll:true});
+  });
   const stage5OfferIds = offers.filter(o => o.stage === 5).map(o => o.id);
   reviewedOfferIds = await fetchReviewedOfferIds(stage5OfferIds, sponsor_id);
 

@@ -1,0 +1,79 @@
+/* Shared, compact daily priorities for creator and sponsor dashboards. */
+.campaign-today {
+  margin: 0 0 24px;
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid #304d65;
+  border-radius: 16px;
+  background: #0d1620;
+  text-align: left;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+.campaign-today h2 {
+  margin: 0 0 8px;
+  color: #eef7ff;
+  font-size: 1.3rem;
+}
+.campaign-today .today-summary {
+  color: #a9bdce;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 8px 0 16px;
+}
+.today-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 14px;
+  min-width: 0;
+}
+.campaign-today .today-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #2b4155;
+  border-radius: 10px;
+  background: #14212e;
+  overflow-wrap: anywhere;
+}
+.campaign-today .today-item h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #eef7ff;
+}
+.campaign-today .today-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.campaign-today .today-status {
+  color: #74d5f3;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.campaign-today .today-status.is-overdue {
+  color: #ffb1a8;
+}
+.campaign-today .today-date {
+  color: #a9bdce;
+}
+.campaign-today .today-item button {
+  margin: auto 0 0;
+  padding: 10px 14px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #2e74a4;
+  border-radius: 7px;
+  background: #155488;
+  box-shadow: none;
+  color: white;
+  font-size: 0.88rem;
+  white-space: normal;
+}
+.campaign-today button:focus-visible,
+.campaign-today a:focus-visible {
+  outline: 2px solid #55dcff;
+  outline-offset: 3px;
+}

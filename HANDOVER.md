@@ -278,3 +278,10 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 - 55 automated tests pass, including ranking, role isolation, follower constraints, missing data, no-evidence exclusions and stalled-session retry. Live browser verification recorded in release report.
 
 - Live release verified for Johnny: six public creator recommendations, gaming overlap ranked first; actual client/scroll width737px equal, no horizontal overflow. Follow-up isolates reason list styles from legacy navigation styles. No account writes performed, including Moikailive.
+
+## 2026-10-11 — Daily campaign priorities
+
+- Both private campaign dashboards now show Your next steps: open campaign count, overdue count, upcoming deadlines and up to four role-specific next actions. Pure js/campaignToday.js uses only already-authorised loaded records; no new API reads, schema or account writes. Completed, cancelled, rejected and archived records excluded. Date-only deadlines end on the browser-local day.
+- Open campaign selects its exact ID (including duplicate titles), clears conflicting filters and focuses its details control. Existing Clear filters restores the full list. Campaign toolbar edits also leave the exact-ID selection. Separate campaign-today.css preserves existing theme and responsive containment.
+- 57 automated tests pass. Fictional read-only browser preview verified both roles, sponsor exact selection and clear reset, creator exact selection, and client/scroll width1265px equal. No payments, offer transitions or real-user mutations exercised.
+- CREATOR_HUB_ROADMAP.md contains researched product direction, sources, phased scope and acceptance criteria. Payment production-readiness gaps remain as recorded above.
