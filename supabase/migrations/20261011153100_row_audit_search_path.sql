@@ -1,0 +1,1 @@
+create or replace function public.audit_changes() returns trigger language plpgsql set search_path='' as $$ begin insert into public.user_audit_log(user_id,action,target_id,target_type,details,created_at) values(NULL,TG_OP,NEW.id::text,TG_TABLE_NAME,row_to_json(NEW),now()); return NEW; end; $$;
