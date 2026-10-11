@@ -1,0 +1,58 @@
+#partner-preferences {
+  margin: 24px auto;
+  padding: clamp(16px,3vw,28px);
+  border: 1px solid #34516a;
+  border-radius: 18px;
+  background: #0d141d;
+  max-width: 1100px;
+  box-sizing: border-box;
+}
+.partner-preference-form {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 16px;
+  text-align: left;
+}
+.partner-preference-form > h2,
+.partner-preference-form > p,
+.partner-preference-form > fieldset {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.partner-preference-form > label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.partner-preference-form input:not([type=checkbox]) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #090e15;
+  color: #f3f7fc;
+  border: 1px solid #45647e;
+  border-radius: 8px;
+}
+.partner-preference-form fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  border: 1px solid #34516a;
+  border-radius: 10px;
+}
+.partner-preference-form fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: capitalize;
+}
+.partner-preference-form button {
+  white-space: normal;
+  min-width: 0;
+}
+@media (max-width:600px) {
+  .partner-preference-form {
+    grid-template-columns: 1fr;
+  }
+}

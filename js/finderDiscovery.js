@@ -1,4 +1,8 @@
-// Discovery uses the public directory only. Shortlists stay on this device.
+import {
+  loadPartnerFeedback,
+  setPartnerFeedback,
+} from "./partnerPreferences.js?v=20261011-prefs1";
+// Discovery uses the public directory only. Saved partners are private and synced to the account.
 export function cleanFinderFilters(values = {}) {
   const text = (key) =>
     String(values[key] || "")
@@ -42,12 +46,14 @@ export function buildFinderQuery(
       { count: "exact" },
     )
     .eq("userType", type);
-  for (const [key, column] of [
-    ["name", "username"],
-    ["contenttype", "contenttype"],
-    ["location", "location"],
-  ]) {
-    if (filters[key])
+  for (
+    const [key, column] of [
+      ["name", "username"],
+      ["contenttype", "contenttype"],
+      ["location", "location"],
+    ]
+  ) {
+    if (filters[key]) {
       query = query.ilike(
         column,
         "%" +
@@ -59,18 +65,20 @@ export function buildFinderQuery(
             ) +
           "%",
       );
+    }
   }
-  if (filters.platform)
+  if (filters.platform) {
     query = query
       .filter("social_handles->>" + filters.platform, "not.is", null)
       .filter("social_handles->>" + filters.platform, "neq", "");
+  }
   if (shortlist) query = query.in("user_id", shortlist);
   return query
     .order("username", { ascending: filters.sort !== "za", nullsFirst: false })
     .order("user_id", { ascending: true })
     .range((page - 1) * 12, page * 12 - 1);
 }
-export function mountFinderDiscovery({
+export async function mountFinderDiscovery({
   client,
   accountId,
   isSponsor,
@@ -89,24 +97,22 @@ export function mountFinderDiscovery({
   const options = document.createElement("div");
   options.className = "finder-discovery-options";
   options.innerHTML =
-    '<label class="workspace-filter" for="finder-sort"><span>Order profiles</span><select id="finder-sort"><option value="az">Name A–Z</option><option value="za">Name Z–A</option></select></label><label class="finder-shortlist-filter"><input type="checkbox" id="finder-shortlist-only"> My shortlist <span id="finder-shortlist-count"></span></label><p>Save profiles to compare later. Your shortlist is kept in this browser for this account.</p>';
+    '<label class="workspace-filter" for="finder-sort"><span>Order profiles</span><select id="finder-sort"><option value="az">Name A–Z</option><option value="za">Name Z–A</option></select></label><label class="finder-shortlist-filter"><input type="checkbox" id="finder-shortlist-only"> My shortlist <span id="finder-shortlist-count"></span></label><p>Save profiles to compare later. Saved partners sync privately across your devices.</p>';
   status.before(options);
   const sort = options.querySelector("select"),
     shortlistOnly = options.querySelector("input"),
     countLabel = options.querySelector("span#finder-shortlist-count");
-  const key = "ss:finder-shortlist:" + accountId;
   let saved = new Set();
   try {
-    const stored = JSON.parse(localStorage.getItem(key) || "[]");
-    if (Array.isArray(stored))
-      saved = new Set(
-        stored
-          .filter(
-            (id) => typeof id === "string" && /^[a-zA-Z0-9-]{1,64}$/.test(id),
-          )
-          .slice(0, 50),
-      );
-  } catch {}
+    saved = new Set(
+      (await loadPartnerFeedback(accountId)).filter((f) => f.status === "saved")
+        .map((f) => f.partner_id),
+    );
+  } catch (error) {
+    status.textContent = error.message;
+    options.querySelector("p").textContent =
+      "Saved partners are unavailable. Reload to retry.";
+  }
   const updateCount = () => {
     countLabel.textContent = "(" + saved.size + ")";
   };
@@ -151,10 +157,9 @@ export function mountFinderDiscovery({
     heading.textContent = user.username || "Unnamed account";
     const plan = document.createElement("span");
     plan.className = "finder-plan";
-    plan.textContent =
-      String(user.planType || "free").toLowerCase() === "pro"
-        ? "Pro plan"
-        : "Free plan";
+    plan.textContent = String(user.planType || "free").toLowerCase() === "pro"
+      ? "Pro plan"
+      : "Free plan";
     const meta = document.createElement("p");
     meta.textContent = [
       user.contenttype || "Content type not provided",
@@ -188,11 +193,10 @@ export function mountFinderDiscovery({
     const audience = document.createElement("p");
     const total = Number(followers);
     audience.className = "finder-audience";
-    audience.textContent =
-      Number.isFinite(total) && total > 0
-        ? Math.round(total).toLocaleString() +
-          " combined followers · may overlap across platforms"
-        : "Audience data unavailable";
+    audience.textContent = Number.isFinite(total) && total > 0
+      ? Math.round(total).toLocaleString() +
+        " combined followers · may overlap across platforms"
+      : "Audience data unavailable";
     const reasons = document.createElement("p");
     reasons.className = "finder-match-reasons";
     reasons.textContent = finderMatchReasons(activeFilters).join(" · ");
@@ -201,8 +205,7 @@ export function mountFinderDiscovery({
     const view = document.createElement("a");
     view.className = "finder-profile-link";
     view.textContent = "View profile";
-    view.href =
-      (isSponsor ? "viewprofile.html" : "viewprofiles.html") +
+    view.href = (isSponsor ? "viewprofile.html" : "viewprofiles.html") +
       "?username=" +
       encodeURIComponent(user.username || "");
     actions.append(view);
@@ -210,8 +213,8 @@ export function mountFinderDiscovery({
       const offer = document.createElement("a");
       offer.className = "finder-offer-link";
       offer.textContent = "Make an offer";
-      offer.href =
-        "newoffer.html?username=" + encodeURIComponent(user.username || "");
+      offer.href = "newoffer.html?username=" +
+        encodeURIComponent(user.username || "");
       actions.append(offer);
     }
     const save = document.createElement("button");
@@ -223,20 +226,22 @@ export function mountFinderDiscovery({
       save.setAttribute("aria-pressed", String(saved.has(user.user_id)));
     };
     updateSave();
-    save.addEventListener("click", () => {
+    save.addEventListener("click", async () => {
       if (!saved.has(user.user_id) && saved.size >= 50) {
         status.textContent =
           "Your shortlist holds up to 50 profiles. Remove one before adding another.";
         return;
       }
-      saved.has(user.user_id)
-        ? saved.delete(user.user_id)
-        : saved.add(user.user_id);
+      save.disabled = true;
       try {
-        localStorage.setItem(key, JSON.stringify([...saved]));
-      } catch {
-        status.textContent =
-          "Browser storage is unavailable. Shortlist changes last for this page visit only.";
+        const value = saved.has(user.user_id) ? null : "saved";
+        await setPartnerFeedback(accountId, user.user_id, value);
+        value ? saved.add(user.user_id) : saved.delete(user.user_id);
+      } catch (error) {
+        status.textContent = error.message;
+        return;
+      } finally {
+        save.disabled = false;
       }
       updateCount();
       updateSave();
@@ -258,16 +263,15 @@ export function mountFinderDiscovery({
     previous.disabled = true;
     next.disabled = true;
     try {
-      const response =
-        shortlistOnly.checked && !saved.size
-          ? { data: [], count: 0, error: null }
-          : await buildFinderQuery(
-              client,
-              isSponsor ? "besponsored" : "sponsor",
-              active,
-              page,
-              shortlistOnly.checked ? [...saved] : null,
-            );
+      const response = shortlistOnly.checked && !saved.size
+        ? { data: [], count: 0, error: null }
+        : await buildFinderQuery(
+          client,
+          isSponsor ? "besponsored" : "sponsor",
+          active,
+          page,
+          shortlistOnly.checked ? [...saved] : null,
+        );
       if (request !== version) return;
       if (response.error) throw response.error;
       const rows = response.data || [],
@@ -277,8 +281,9 @@ export function mountFinderDiscovery({
       );
       if (request !== version) return;
       results.replaceChildren();
-      for (const user of rows)
+      for (const user of rows) {
         results.append(renderCard(user, followers[user.user_id], active));
+      }
       if (!rows.length) {
         const empty = document.createElement("div");
         empty.className = "finder-empty";
@@ -288,16 +293,15 @@ export function mountFinderDiscovery({
         results.append(empty);
       }
       const pages = total === null ? null : Math.max(1, Math.ceil(total / 12));
-      status.textContent =
-        total === null
-          ? rows.length + " profiles on this page"
-          : total +
-            " matching " +
-            (isSponsor ? "creator" : "sponsor") +
-            (total === 1 ? "" : "s") +
-            (shortlistOnly.checked ? " in your shortlist" : "");
-      pageLabel.textContent =
-        "Page " + page + (pages === null ? "" : " of " + pages);
+      status.textContent = total === null
+        ? rows.length + " profiles on this page"
+        : total +
+          " matching " +
+          (isSponsor ? "creator" : "sponsor") +
+          (total === 1 ? "" : "s") +
+          (shortlistOnly.checked ? " in your shortlist" : "");
+      pageLabel.textContent = "Page " + page +
+        (pages === null ? "" : " of " + pages);
       previous.disabled = page === 1;
       next.disabled = total === null ? rows.length < 12 : page * 12 >= total;
     } catch {
@@ -334,6 +338,12 @@ export function mountFinderDiscovery({
   });
   next.addEventListener("click", () => {
     page++;
+    load();
+  });
+  window.addEventListener("partner-feedback-changed", (event) => {
+    const { partnerId, status: choice } = event.detail;
+    choice === "saved" ? saved.add(partnerId) : saved.delete(partnerId);
+    updateCount();
     load();
   });
   load();

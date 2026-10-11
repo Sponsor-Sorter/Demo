@@ -172,7 +172,7 @@ test("public community stats never query private tables and handle errors", asyn
         },
       },
     };
-    vm.runInNewContext(source.replace(/^import .*;\r?\n/gm, ""), context);
+    vm.runInNewContext(source.replace(/^import[\s\S]*?;\r?\n/gm, ""), context);
     await run();
     assert.equal(
       nodes.get("system-status").textContent,
@@ -486,7 +486,7 @@ test('deadline filters exclude closed campaigns and keep today available', () =>
   assert.deepEqual(Array.from(selectCampaigns(offers,{deadline:'soon'},now),o=>o.id),[1]);
 });
 const finderSource = fs.readFileSync(path.join(__dirname,'../js/finderDiscovery.js'),'utf8');
-const finderTools = vm.runInNewContext(finderSource.replaceAll('export function','function') + '; ({cleanFinderFilters,finderMatchReasons,buildFinderQuery,escapeFinderText})');
+const finderTools = vm.runInNewContext(finderSource.replace(/^import[\s\S]*?;\r?\n/gm,'').replaceAll('export ','') + '; ({cleanFinderFilters,finderMatchReasons,buildFinderQuery,escapeFinderText})');
 test('Finder normalises filters and gives factual match reasons',()=>{
  const filters=finderTools.cleanFinderFilters({name:'  FitStyle ',platform:'bad->query',sort:'injected',location:'UK'});
  assert.equal(filters.name,'FitStyle'); assert.equal(filters.platform,'');assert.equal(filters.sort,'az');
@@ -512,7 +512,7 @@ test('Finder layout preserves controls and separates filters from results',()=>{
  assert.match(finderSource,/results\.before\(status\)/);
 });
 test('recommendations timeout settles loading and exposes retry even if session stalls', async()=>{
- const source=fs.readFileSync(path.join(__dirname,'../js/recmatch.js'),'utf8').replace(/^import .*;\r?\n/gm,'');
+ const source=fs.readFileSync(path.join(__dirname,'../js/recmatch.js'),'utf8').replace(/^import[\s\S]*?;\r?\n/gm,'');
  const node=()=>({children:[],attributes:{},append(...children){this.children.push(...children)},setAttribute(key,value){this.attributes[key]=value},addEventListener(){},replaceChildren(...children){this.children=children}});
  const container=node();let timeout;
  const context={document:{getElementById:id=>id==='recommendedMatches'?container:null,createElement:node,createDocumentFragment:node,addEventListener(){}},supabase:{auth:{getSession:()=>new Promise(()=>{})}},AbortController,setTimeout:callback=>{timeout=callback;return 1},clearTimeout(){}};
