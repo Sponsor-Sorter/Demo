@@ -48,3 +48,11 @@
 .signup-step-indicator {
   flex-wrap: wrap;
 }
+
+/* Review choices before account creation or checkout. */
+.signup-review { display: grid; grid-template-columns: minmax(90px, .3fr) minmax(0, 1fr); gap: 12px 18px; text-align: left; padding: 20px; border: 1px solid #40526e; border-radius: 12px; background: #121a27; }
+.signup-review dt { font-weight: 700; color: #77dfff; }
+.signup-review dd { margin: 0; overflow-wrap: anywhere; }
+.signup-next-note { line-height: 1.6; text-align: left; color: #c8d5e5; }
+#btn-sponsor[aria-pressed="true"], #btn-besponsored[aria-pressed="true"] { outline: 2px solid #77dfff; outline-offset: 3px; }
+@media (max-width: 480px) { .signup-review { grid-template-columns: minmax(0, 1fr); gap: 6px; } .signup-review dd { margin-bottom: 12px; } }

@@ -6,7 +6,7 @@
     <meta name="description" content="Sign up to Sponsor Sorter and connect with brands for sponsorship opportunities. Join now to unlock a range of opportunities for influencers, streamers, and creators!">
     <title>Sign Up - Sponsor Sorter</title>
     <link rel="stylesheet" href="./styles.css?v=20261010">
-    <link rel="stylesheet" href="./signup-layout.css?v=20261010-signup1">
+    <link rel="stylesheet" href="./signup-layout.css?v=20261011-onboard1">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <script type="module" src="./js/main.js"></script>
 <script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script>
@@ -41,7 +41,7 @@
     <div class="signup-step-indicator" style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">
         <div class="step-indicator step-active" data-step="1">1. Profile</div>
         <div class="step-indicator" data-step="2">2. Role & Plan</div>
-        <div class="step-indicator" data-step="3">3. Confirm & Pay</div>
+        <div class="step-indicator" data-step="3">3. Review & Create</div>
     </div>
 
     <!-- STEP 1: Logo + personal info -->
@@ -59,17 +59,17 @@
             <legend>Personal Information</legend>
 
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="text" id="username" name="username" autocomplete="username" placeholder="Username" required>
 
             <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required>
             <br>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="********" required>
+            <input type="password" id="password" name="password" autocomplete="new-password" placeholder="********" required>
 
             <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm_password" placeholder="********" required>
+            <input type="password" id="confirm-password" name="confirm_password" autocomplete="new-password" placeholder="********" required>
 
             <!-- Birthdate or Company Name -->
             <div class="personal-info-container">
@@ -478,14 +478,16 @@
 
         <div class="step-nav" style="margin-top:16px;display:flex;justify-content:space-between;">
             <button type="button" id="back-step-2">← Back</button>
-            <button type="button" id="next-step-2">Next: Confirm & Pay →</button>
+            <button type="button" id="next-step-2">Next: Review account →</button>
         </div>
     </div>
 
     <!-- STEP 3: Payment / Confirm -->
     <div class="signup-step" data-step="3" style="display:none;">
         <fieldset class="payfield">
-            <legend>Secure Payment</legend>
+            <legend>Review your account</legend>
+            <dl id="signup-review" class="signup-review" aria-label="Account summary"></dl>
+            <p class="signup-next-note">After signup, follow the account verification instructions. Then complete your profile, connect supported platforms and explore Finder. Never share your password or verification code with another user.</p>
             <div class="payment-content">
                 <h2 id="pay-heading"><strong>Pro: US$10/month</strong></h2>
                 <p id="pay-copy">
@@ -606,6 +608,8 @@ function toggleSponsorType(type) {
     const userTypeHidden = document.getElementById('userType');
 
     if (userTypeHidden) userTypeHidden.value = type;
+    document.getElementById('btn-sponsor')?.setAttribute('aria-pressed', String(type === 'sponsor'));
+    document.getElementById('btn-besponsored')?.setAttribute('aria-pressed', String(type === 'besponsored'));
 
     if (type === "sponsor") {
         if (sponsorOptions) {
@@ -673,6 +677,25 @@ function showStep(step) {
         const confirmCheckbox = document.getElementById('confirm-payment');
 
         const isFreeSponsee = (userType === 'besponsored' && planType === 'free');
+        const review = document.getElementById('signup-review');
+        if (review) {
+            review.replaceChildren();
+            for (const [label, value] of [
+                ['Username', document.getElementById('username')?.value || 'Not entered'],
+                ['Email', document.getElementById('email')?.value || 'Not entered'],
+                ['Account', userType === 'sponsor' ? 'Sponsor / brand' : 'Creator / sponsee'],
+                ['Plan', isFreeSponsee ? 'Free — US$0/month' : 'Pro — US$10/month'],
+                ['Next', isFreeSponsee ? 'Create your account; no checkout required' : 'Continue to Stripe to review subscription details']
+            ]) {
+                const term = document.createElement('dt');
+                const detail = document.createElement('dd');
+                term.textContent = label;
+                detail.textContent = value;
+                review.append(term, detail);
+            }
+        }
+        const submitLabel = document.querySelector('#submitBtn .btn-text');
+        if (submitLabel) submitLabel.textContent = isFreeSponsee ? 'Create free account' : 'Continue to Stripe';
 
         if (isFreeSponsee) {
             if (heading) heading.innerHTML = '<strong>Cost: Free plan selected</strong>';

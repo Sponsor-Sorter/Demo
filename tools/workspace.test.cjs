@@ -424,3 +424,24 @@ test('header routes turn along orthogonal grid lines in every direction',()=>{
  assert.doesNotMatch(source,/window\.location\.href = '\.\/finder\.html'/);
  assert.doesNotMatch(source,/userIsSponsor = utRaw\.includes/);
  });
+
+test('signup review reflects role and plan without interpreting profile text as HTML',()=>{
+ const html=fs.readFileSync(path.join(__dirname,'../signup.html'),'utf8');
+ const script=html.slice(html.indexOf('function showStep(step)'),html.indexOf('// Validate the current panel'));
+ const elements={};
+ function element(){return {value:'',style:{},children:[],classList:{toggle(){}},setAttribute(){},removeAttribute(){},replaceChildren(){this.children=[]},append(...children){this.children.push(...children)}};}
+ for(const id of ['userType','planType','username','email','signup-review','pay-heading','pay-copy','confirm-payment-label','confirm-payment']) elements[id]=element();
+ const submit=element();
+ const ctx={document:{getElementById:id=>elements[id],querySelectorAll:()=>[],querySelector:()=>submit,createElement:element},window:{scrollTo(){}}};
+ vm.createContext(ctx);vm.runInContext(script,ctx);
+ elements.username.value='<img src=x onerror=alert(1)>';elements.email.value='qa@example.com';
+ elements.userType.value='sponsor';elements.planType.value='pro';ctx.showStep(3);
+ assert.equal(submit.textContent,'Continue to Stripe');assert.equal(elements['confirm-payment'].required,true);
+ assert.equal(elements['signup-review'].children[1].textContent,elements.username.value);
+ assert.equal(elements['signup-review'].children[7].textContent,'Pro — US$10/month');
+ elements.userType.value='besponsored';elements.planType.value='free';ctx.showStep(3);
+ assert.equal(submit.textContent,'Create free account');assert.equal(elements['confirm-payment'].required,false);
+ assert.equal(elements['signup-review'].children[7].textContent,'Free — US$0/month');
+ elements.userType.value='sponsor';elements.planType.value='pro';ctx.showStep(3);
+ assert.equal(elements['signup-review'].children.length,10);assert.equal(submit.textContent,'Continue to Stripe');
+});
