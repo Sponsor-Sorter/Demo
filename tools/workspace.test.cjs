@@ -445,3 +445,13 @@ test('signup review reflects role and plan without interpreting profile text as 
  elements.userType.value='sponsor';elements.planType.value='pro';ctx.showStep(3);
  assert.equal(elements['signup-review'].children.length,10);assert.equal(submit.textContent,'Continue to Stripe');
 });
+
+test('signup role panels hide inactive controls and remove fixed-height layout',()=>{
+ const css=fs.readFileSync(path.join(__dirname,'../signup-layout.css'),'utf8');
+ assert.match(css,/#besponsored-options\.slide-off\s*\{\s*display: none;/);
+ assert.match(css,/height: auto !important/);
+ assert.match(css,/grid-template-columns: 24px minmax\(0, 1fr\) 20px/);
+ const html=fs.readFileSync(path.join(__dirname,'../signup.html'),'utf8');
+ assert.doesNotMatch(html,/upload\.wikimedia\.org/);
+ assert.match(html,/src="\.\/instagramlogo\.png"/);
+});

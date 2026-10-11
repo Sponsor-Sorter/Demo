@@ -56,3 +56,130 @@
 .signup-next-note { line-height: 1.6; text-align: left; color: #c8d5e5; }
 #btn-sponsor[aria-pressed="true"], #btn-besponsored[aria-pressed="true"] { outline: 2px solid #77dfff; outline-offset: 3px; }
 @media (max-width: 480px) { .signup-review { grid-template-columns: minmax(0, 1fr); gap: 6px; } .signup-review dd { margin-bottom: 12px; } }
+
+/* Keep role panels in normal flow; inactive fields occupy no space. */
+#registrationForm #sponsor-options,
+#registrationForm #besponsored-options {
+  position: static;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  transition: none;
+}
+#registrationForm #sponsor-options.slide-off,
+#registrationForm #besponsored-options.slide-off {
+  display: none;
+}
+#registrationForm .lookingfor {
+  height: auto !important;
+  min-height: 0;
+}
+#registrationForm .sndstage {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+#registrationForm #preferred-platforms,
+#registrationForm #preferred-platforms-besponsored {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+}
+#registrationForm #preferred-platforms > br,
+#registrationForm #preferred-platforms-besponsored > br {
+  display: none;
+}
+@media (max-width: 600px) {
+  #registrationForm .lookingfor {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #registrationForm .lookingfor fieldset {
+    box-sizing: border-box;
+    width: 100% !important;
+    min-width: 0;
+    margin-inline: 0 !important;
+    padding-inline: 12px;
+  }
+  #registrationForm .lookingfor legend {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  #registrationForm .sndstage {
+    padding-top: 0 !important;
+  }
+  #registrationForm #preferred-platforms,
+  #registrationForm #preferred-platforms-besponsored {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  #registrationForm #preferred-platforms label,
+  #registrationForm #preferred-platforms-besponsored label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100% !important;
+    min-width: 0;
+    padding: 8px 0;
+    margin: 0;
+    font-size: 14px !important;
+  }
+  #registrationForm .platform-logo {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    object-fit: contain;
+  }
+  #registrationForm #preferred-platforms-besponsored {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #registrationForm #preferred-platforms-besponsored .platform-container {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 20px;
+    gap: 8px;
+    width: 100% !important;
+    max-width: 100%;
+    margin: 0;
+    padding: 8px 0;
+    box-sizing: border-box;
+  }
+  #registrationForm #preferred-platforms-besponsored .platform-logo {
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0;
+  }
+  #registrationForm #preferred-platforms-besponsored .platform-checkbox {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 0;
+    margin: 0;
+  }
+  #registrationForm .lookingfor .form-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+  #registrationForm .lookingfor .form-row > * {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+  }
+  #registrationForm .lookingfor select {
+    margin-inline: 0 !important;
+  }
+  #registrationForm .step-nav {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
