@@ -15,6 +15,7 @@
   <script type="module" src="./js/connectionHeader.js?v=20261012-connections2"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
   <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
+<script type="module" src="./js/adminSettlements.js?v=20261012-settlements1"></script>
 </head>
   <body class="admin-page" id="site-top" data-page="dashboardAdmin">
 <a class="page-skip-link" href="#admin-main">Skip to content</a>
@@ -376,6 +377,7 @@
             hidden
           >
             <h2>💸 Payouts / Transactions</h2>
+<section aria-label="Verified sponsorship settlements"><h3>Verified sponsorship settlements</h3><p>Payments matched to server-held orders. A transfer reaches a creator’s Stripe balance; it is not a confirmed bank payout. Live transfers are not enabled here.</p><div id="verified-settlements" aria-live="polite">Loading verified payments…</div></section>
             <button id="export-payout-csv">Export Payouts CSV</button>
             <div class="table-responsive">
               <div id="admin-payout-table"></div>
