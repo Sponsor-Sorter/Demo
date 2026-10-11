@@ -85,6 +85,7 @@ async function buildRecommendations(signal) {
     const heading = document.createElement("strong");
     heading.textContent = "Why this partner fits";
     const reasons = document.createElement("ul");
+    reasons.className = "partner-match-reasons";
     for (const reason of match.reasons) {
       const item = document.createElement("li");
       item.textContent = reason;
