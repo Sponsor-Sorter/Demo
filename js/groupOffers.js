@@ -422,59 +422,8 @@ function subscribeGroup(groupId, onChange) {
 
 // ---------- Accept/Reject offer ----------
 async function acceptOfferForMember({ offer, groupId, me, usernames }) {
-  const payload = {
-    group_id: groupId,
-    offer_id: offer.id,
-    member_user_id: me.id,
-    status: 'accepted',
-    accepted_at: new Date().toISOString(),
-    rejected_at: null
-  };
-  const { data: respRows, error: respErr } = await supabase
-    .from('group_offer_responses')
-    .upsert([payload], { onConflict: 'offer_id,member_user_id', ignoreDuplicates: false })
-    .select()
-    .limit(1);
-  if (respErr) throw respErr;
-  const response = respRows?.[0];
-
-  if (!response?.private_offer_id) {
-    const sponsee_username = usernames[me.id] || (await usernameOf(me.id)) || '';
-    const sponsee_email = me.email || null;
-
-    const privatePayload = {
-      sponsor_id: offer.sponsor_id || null,
-      sponsor_username: offer.sponsor_username || null,
-      sponsor_email: offer.sponsor_email || null,
-      sponsor_company: offer.sponsor_company || null,
-      sponsee_username, sponsee_email,
-      offer_title: offer.offer_title || null,
-      offer_description: offer.offer_description || null,
-      offer_amount: offer.offer_amount || null,
-      offer_images: normalizeImages(offer.offer_images),
-      platforms: Array.isArray(offer.platforms) ? offer.platforms : null,
-      job_type: offer.job_type || null,
-      deliverable_type: offer.deliverable_type || null,
-      payment_schedule: offer.payment_schedule || null,
-      sponsorship_duration: offer.sponsorship_duration || null,
-      deadline: offer.deadline || null,
-      instructions: offer.instructions || null,
-      optional_file: offer.optional_file || null,
-      creation_date: new Date().toISOString().slice(0,10),
-      status: 'accepted',
-      active: true,
-      group_offer: true,
-      stage: 3
-    };
-    const { data: poRows, error: poErr } = await supabase
-      .from('private_offers')
-      .insert([privatePayload])
-      .select('id')
-      .limit(1);
-    if (!poErr && poRows && poRows[0]) {
-      await supabase.from('group_offer_responses').update({ private_offer_id: poRows[0].id }).eq('id', response.id);
-    }
-  }
+  const { error } = await supabase.rpc('respond_group_offer', { p_offer_id: offer.id, p_response: 'accepted' });
+  if (error) throw error;
 
   try {
     if (offer?.sponsor_id) {
@@ -490,16 +439,7 @@ async function acceptOfferForMember({ offer, groupId, me, usernames }) {
   } catch (nerr) { console.warn('notifyOfferUpdate (accept) failed:', nerr?.message || nerr); }
 }
 async function rejectOfferForMember({ offer, groupId, me }) {
-  const { error } = await supabase
-    .from('group_offer_responses')
-    .upsert([{
-      group_id: groupId,
-      offer_id: offer.id,
-      member_user_id: me.id,
-      status: 'rejected',
-      rejected_at: new Date().toISOString(),
-      accepted_at: null
-    }], { onConflict: 'offer_id,member_user_id', ignoreDuplicates: false });
+  const { error } = await supabase.rpc('respond_group_offer', { p_offer_id: offer.id, p_response: 'rejected' });
   if (error) throw error;
 
   try {
@@ -536,33 +476,8 @@ async function _loadPrivateOffersByIds(ids) {
 }
 /** If a member's private offer is live, ensure response shows 'completed'. */
 async function reconcileResponsesAgainstPrivateOffers(offerId) {
-  try {
-    const resps = await _loadResponsesForOfferId(offerId);
-    const acceptedWithPO = resps.filter(r => (r.status || '').toLowerCase() === 'accepted' && r.private_offer_id);
-    if (!acceptedWithPO.length) return;
-
-    const mapById = new Map(acceptedWithPO.map(r => [r.private_offer_id, r]));
-    const poList = await _loadPrivateOffersByIds(acceptedWithPO.map(r => r.private_offer_id));
-    if (!poList.length) return;
-
-    const now = new Date().toISOString();
-    const toComplete = poList.filter(po =>
-      (po?.sponsor_live_confirmed === true) ||
-      (String(po?.status || '').toLowerCase() === 'live') ||
-      (typeof po?.stage === 'number' && po.stage >= 4) ||
-      (!!po?.live_url)
-    );
-
-    for (const po of toComplete) {
-      const row = mapById.get(po.id);
-      if (!row) continue;
-      await supabase
-        .from('group_offer_responses')
-        .update({ status: 'completed', completed_at: now, live_url: po.live_url || row.live_url || null })
-        .eq('id', row.id)
-        .neq('status', 'completed');
-    }
-  } catch (_) {}
+  const { error } = await supabase.rpc('refresh_group_offer_completion', { p_offer_id: offerId });
+  if (error) console.warn('Group completion refresh failed:', error.message);
 }
 function _deadlinePassed(offer) {
   if (!offer?.deadline) return false;
@@ -606,105 +521,8 @@ async function _trySelect(table, cols, filter) {
 
 /** Finalize after deadline: create payouts for completed members and close offer. */
 async function finalizeGroupOfferAndCreatePayouts(offer, ctx) {
-  try {
-    if ((offer.status || '').toLowerCase() === 'completed') return;
-
-    // Pull fresh responses for this offer
-    const resps = await _loadResponsesForOfferId(offer.id);
-    const completed = resps.filter(r => (r.status || '').toLowerCase() === 'completed' && r.member_user_id);
-    const total = Number(offer?.offer_amount || 0);
-
-    if (!completed.length) {
-      // No completed members — just mark the group offer completed
-      const { error: closeError } = await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
-      if (closeError) throw closeError;
-      await ctx.onRefresh?.();
-      return;
-    }
-
-    if (!Number.isFinite(total) || total <= 0 || completed.some(r => !r.private_offer_id)) {
-      throw new Error('Cannot settle: invalid amount or missing participant agreement.');
-    }
-    const each = total / completed.length;
-
-    // Avoid duplicate payouts — check existing in offer_payouts or fallback to payouts
-    const poIds = completed.map(r => r.private_offer_id).filter(Boolean);
-    let existingIds = [];
-
-    // First try offer_payouts
-    let chk = await _trySelect('offer_payouts', 'offer_id', { in: { key: 'offer_id', vals: poIds }});
-    if (chk.ok) {
-      existingIds = (chk.data || []).map(x => x.offer_id);
-    } else if (chk.missing) {
-      // Fallback to payouts table
-      const chk2 = await _trySelect('payouts', 'offer_id', { in: { key: 'offer_id', vals: poIds }});
-      if (chk2.ok) existingIds = (chk2.data || []).map(x => x.offer_id);
-      else throw chk2.error || new Error('Cannot verify existing payouts.');
-    }
-
-    if (!chk.ok && !chk.missing) throw chk.error || new Error('Cannot verify existing payouts.');
-
-    const toPay = completed
-      .filter(r => r.private_offer_id && !existingIds.includes(r.private_offer_id))
-      .map(r => ({ private_offer_id: r.private_offer_id, user_id: r.member_user_id }));
-
-    if (toPay.length) {
-      // Try preferred table (offer_payouts)
-      const rowsOfferPayouts = toPay.map(x => ({
-        offer_id: x.private_offer_id,
-        user_id: x.user_id,
-        amount: each,
-        status: 'pending'
-      }));
-      const i1 = await _tryInsert('offer_payouts', rowsOfferPayouts);
-      if (!i1.ok && i1.missing) {
-        // Fallback to payouts
-        const rowsPayouts = toPay.map(x => ({
-          offer_id: x.private_offer_id,
-          sponsee_id: x.user_id,
-          payout_amount: each,
-          status: 'pending',
-          payout_user_role: 'sponsee'
-        }));
-        const fallback = await _tryInsert('payouts', rowsPayouts);
-        if (!fallback.ok) throw fallback.error || new Error('Payout queue unavailable.');
-      } else if (!i1.ok) {
-        throw i1.error || new Error('Payout queue unavailable.');
-      }
-    }
-
-    // Close only after the payout queue writes have succeeded.
-    const { error: closeError } = await supabase.from('group_offers').update({ status: 'completed' }).eq('id', offer.id);
-    if (closeError) throw closeError;
-
-    // Notify completed members + sponsor (best effort)
-    try {
-      for (const r of completed) {
-        await supabase.from('user_notifications').insert([{
-          notification_uuid: r.member_user_id,
-          type: 'info',
-          title: 'Group Offer Finalized',
-          message: `Finalized: you have a pending payout of $${each.toFixed(2)}.`,
-          related_offer_id: offer.id,
-          is_read: false
-        }]);
-      }
-      if (offer?.sponsor_id) {
-        await supabase.from('user_notifications').insert([{
-          notification_uuid: offer.sponsor_id,
-          type: 'info',
-          title: 'Group Offer Finalized',
-          message: `Payouts queued for ${completed.length} member(s).`,
-          related_offer_id: offer.id,
-          is_read: false
-        }]);
-      }
-    } catch (_) {}
-
-    await ctx.onRefresh?.();
-  } catch (e) {
-    alert('Finalize failed: ' + (e?.message || e));
-  }
+  // A listing fee is not campaign funding. Never create payouts from browser estimates.
+  alert('This group campaign requires verified budget funding before settlement. Contact support to reconcile its payment; no payout has been created.');
 }
 
 // ---------- Renderers ----------
