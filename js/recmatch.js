@@ -12,24 +12,24 @@ function extractPlatformBadges(socialHandles) {
     try { handlesObj = JSON.parse(handlesObj); } catch { return ''; }
   }
   const platformLogos = {
-    instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+    instagram: 'instagramlogo.png',
     tiktok: 'tiktoklogo.png',
     youtube: 'youtubelogo.png',
     twitter: 'twitterlogo.png',
-    facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+    facebook: 'facebooklogo.png',
     twitch: 'twitchlogo.png',
     snapchat: 'snaplogo.png',
   };
   const platformsArray = Object.keys(handlesObj).filter(platform => {
     const handle = handlesObj[platform];
-    return handle && handle.trim() !== '';
+    return handle && String(handle).trim() !== '';
   });
   if (platformsArray.length === 0) return '';
   return platformsArray.map(p => {
     const logoSrc = platformLogos[p.toLowerCase()];
     return logoSrc
-      ? `<img src="${logoSrc}" alt="${p}" title="${p}" class="platform-logo-icon" style="height:21px;vertical-align:middle;">`
-      : `<span class="platform-badge">${p}</span>`;
+      ? `<img src="${logoSrc}" alt="${escapeHTML(p)}" title="${escapeHTML(p)}" class="platform-logo-icon" style="height:21px;vertical-align:middle;">`
+      : `<span class="platform-badge">${escapeHTML(p)}</span>`;
   }).join(' ');
 }
 
@@ -44,17 +44,17 @@ function renderSponseeCard(profile, match) {
 
   div.innerHTML = `
     <figure>
-      <img src="${imgSrc}" alt="${profile.username}" class="profile-pic">
+      <img src="${escapeHTML(imgSrc)}" alt="${escapeHTML(profile.username)}" class="profile-pic">
       <div class="platforms-row">${platformsHTML}</div>
     </figure>
     <div class="user-profile-content">
       <figcaption><strong>${escapeHTML(profile.username)}</strong><br>
       ${escapeHTML(profile.contenttype) || ''}<br>
       ${escapeHTML(profile.location) || ''}</figcaption>
-      <div class="recmatch-score-row"><b>Match Score:</b> ${match.match_score}/100</div>
+      <div class="recmatch-score-row"><b>Match Score:</b> ${escapeHTML(match.match_score)}/100</div>
       <div class="recmatch-explanation"><em>${escapeHTML(match.explanation)}</em></div>
       <button class="view-profile">View Profile</button>
-      <button class="make-offer-btn" data-username="${profile.username}">Make Offer</button>
+      <button class="make-offer-btn" data-username="${escapeHTML(profile.username)}">Make Offer</button>
     </div>
   `;
   div.querySelector('.view-profile').addEventListener('click', () => {
@@ -94,35 +94,35 @@ async function renderOfferCard(offer, match, alreadyApplied = false) {
     ? offer.platforms.map(p => {
         const logos = {
           youtube: 'youtubelogo.png',
-          instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+          instagram: 'instagramlogo.png',
           tiktok: 'tiktoklogo.png',
           twitter: 'twitterlogo.png',
-          facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+          facebook: 'facebooklogo.png',
           twitch: 'twitchlogo.png',
           snapchat: 'snaplogo.png'
         };
         const logo = logos[p.toLowerCase()];
         return logo
-          ? `<img src="${logo}" alt="${p}" title="${p}" class="platform-logo-icon" style="height:21px;vertical-align:middle;">`
-          : `<span class="platform-badge">${p}</span>`;
+          ? `<img src="${logo}" alt="${escapeHTML(p)}" title="${escapeHTML(p)}" class="platform-logo-icon" style="height:21px;vertical-align:middle;">`
+          : `<span class="platform-badge">${escapeHTML(p)}</span>`;
       }).join(' ')
     : '';
 
   div.innerHTML = `
     <figure>
-      <img src="${sponsorLogo}" alt="${companyOrSponsor}" class="profile-pic">
+      <img src="${escapeHTML(sponsorLogo)}" alt="${escapeHTML(companyOrSponsor)}" class="profile-pic">
       <div class="platforms-row">${platformBadges}</div>
     </figure>
     <div class="user-profile-content">
       <figcaption>
         <strong>${escapeHTML(offer.offer_title)}</strong><br>
         ${escapeHTML(companyOrSponsor)}<br>
-        $${offer.offer_amount ?? '-'}
+        $${escapeHTML(offer.offer_amount ?? '-')}
       </figcaption>
-      <div class="recmatch-score-row"><b>Match Score:</b> ${match.match_score}/100</div>
+      <div class="recmatch-score-row"><b>Match Score:</b> ${escapeHTML(match.match_score)}/100</div>
       <div class="recmatch-explanation"><em>${escapeHTML(match.explanation)}</em></div>
       <button class="view-offer">View Offer</button>
-      <button class="apply-offer-btn" data-offer-id="${offer.id}" ${alreadyApplied ? 'disabled style="background:#888;opacity:0.7;cursor:not-allowed;"' : ''}>
+      <button class="apply-offer-btn" data-offer-id="${escapeHTML(offer.id)}" ${alreadyApplied ? 'disabled style="background:#888;opacity:0.7;cursor:not-allowed;"' : ''}>
         ${alreadyApplied ? 'Applied' : 'Apply'}
       </button>
     </div>
@@ -145,7 +145,7 @@ function showLoading() {
   container.innerHTML = '<div class="loading-recmatch">Loading recommendations…</div>';
 }
 function showError(msg) {
-  container.innerHTML = `<div class="error-recmatch" style="color:#b00;">${msg}</div>`;
+  container.textContent = msg;
 }
 
 // Utility
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Fetch profile and determine type
   const { data: profile, error: profErr } = await supabase
     .from('users_extended_data')
-    .select('*')
+    .select('user_id, userType')
     .eq('user_id', session.user.id)
     .single();
 
@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: offers } = await supabase
       .from('public_offers')
       .select('*')
+      .eq('status', 'open')
       .in('id', Array.from(idsToFetch));
     (offers || []).forEach(offer => { details[offer.id] = offer; });
   } else {

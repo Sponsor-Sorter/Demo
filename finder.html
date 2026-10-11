@@ -127,7 +127,8 @@
 <script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script>
 <link rel="stylesheet" href="./workspace-layout.css?v=20261011-nav2">
 <script type="module" src="./js/workspaceLayout.js?v=20261010-workspace1"></script>
-<link rel="stylesheet" href="./workspace-experience.css?v=20261011-onboard1">
+<link rel="stylesheet" href="./workspace-experience.css?v=20261011-campaign1">
+<link rel="stylesheet" href="./finder-discovery.css?v=20261011-discovery1">
 <script type="module" src="./js/workspaceExperience.js?v=20261011-onboard1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
 </head>
@@ -200,9 +201,9 @@
   <section class="search-section" style="width: 85vw;">
     <h2>Welcome, <span id="sponsorName"></span>!</h2>
     <div class="search-toggle-row" style="margin-bottom:18px;display:flex;gap:10px;align-items:center;">
-      <button id="user-search-toggle" class="active-toggle">User Search</button>
-      <button id="offer-search-toggle">Offer Search</button>
-      <button id="group-search-toggle">Group Search</button>
+      <button id="user-search-toggle" class="active-toggle">Find partners</button>
+      <button id="offer-search-toggle">Open opportunities</button>
+      <button id="group-search-toggle">Creator groups</button>
       <button id="create-public-offer-btn" class="toggle-row-spacer" style="margin-left:auto;display:none;">+ Create Public Offer</button>
     </div>
     <div class="help-block" style="margin-bottom:14px;">
@@ -347,7 +348,7 @@
   <div class="help-block" style="margin-bottom:10px;">
     <em>
       <strong>Other Accounts:</strong><br>
-      Here are a few random <b id="help-accounts-label"></b> you may wish to view or connect with.
+      Browse a few <b id="help-accounts-label"></b> in alphabetical order you may wish to view or connect with.
       Click <b>View Profile</b> for more details.
     </em>
   </div>
@@ -370,6 +371,8 @@
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
+
+import { escapeFinderText } from './js/finderDiscovery.js?v=20261011-discovery1';
 
 async function renderRecentOffers() {
   const container = document.getElementById('recent-offers-list');
@@ -422,18 +425,18 @@ async function renderRecentOffers() {
     return `
       <div style="background:#222;padding:18px 16px 16px 16px;border-radius:14px;min-width:260px;max-width:330px;flex:0 0 270px;display:flex;flex-direction:column;align-items:stretch;box-shadow:0 3px 18px #1117;">
         <div style="font-weight:700;font-size:1.13em;line-height:1.25;text-align:center;margin-bottom:10px;letter-spacing:0.01em;color:#fff;">
-          ${offer.offer_title}
+          ${escapeFinderText(offer.offer_title)}
         </div>
         <div style="display:flex;flex-direction:row;gap:16px;">
           <div style="flex-shrink:0;text-align:center;">
-            <img src="${sponsorLogo}" alt="${offer.sponsor_username}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;" onerror="this.src='logos.png'">
-            <div style="font-size:.95em;opacity:.85;color:#e4e9fc;">By<br><span style="font-weight:500;color:#d5d5ff">${offer.sponsor_username}</span></div>
+            <img src="${escapeFinderText(sponsorLogo)}" alt="${escapeFinderText(offer.sponsor_username)}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid #3a3a3a;margin-bottom:6px;background:#222;" onerror="this.src='logos.png'">
+            <div style="font-size:.95em;opacity:.85;color:#e4e9fc;">By<br><span style="font-weight:500;color:#d5d5ff">${escapeFinderText(offer.sponsor_username)}</span></div>
           </div>
           <div style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:.99em;color:#fff;">
-            <span><b>Amount:</b> $${offer.offer_amount}</span>
+            <span><b>Amount:</b> $${escapeFinderText(offer.offer_amount)}</span>
             <span><b>Posted:</b> ${dateStr}</span>
             <span><b>Deadline:</b> ${deadlineStr}</span>
-            <span><b>Applicants:</b> <b>${applicantCount}</b>/${maxApplicants} <span style="color:#9bf59b;">(${successfulCount} accepted)</span></span>
+            <span><b>Applicants:</b> <b>${applicantCount}</b>/${escapeFinderText(maxApplicants)} <span style="color:#9bf59b;">(${successfulCount} accepted)</span></span>
           </div>
         </div>
       </div>
@@ -474,6 +477,7 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { notifySponsorOnApplication } from './js/publicOffers.js';
+import { mountFinderDiscovery, escapeFinderText } from './js/finderDiscovery.js?v=20261011-discovery1';
 
 window.currentUser = null;
 window.isSponsee = false;
@@ -521,14 +525,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const sponsorNameElem = document.getElementById('sponsorName');
   const searchHeader = document.querySelector('.search-section h3');
-  const resultsDiv = document.getElementById('searchResults');
-  const currentPageLabel = document.getElementById('currentPage');
-  const searchForm = document.getElementById('searchForm');
-  const nextPageBtn = document.getElementById('nextPage');
-  const prevPageBtn = document.getElementById('prevPage');
   const otherProfilesContainer = document.getElementById('otherAccountsProfiles');
-  let currentPage = 1;
-  const resultsPerPage = 20;
 
   /* helper: platform badges */
   function extractPlatformBadges(socialHandles) {
@@ -538,11 +535,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       try { handlesObj = JSON.parse(handlesObj); } catch (e) { return ''; }
     }
     const platformLogos = {
-      instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+      instagram: 'instagramlogo.png',
       tiktok: 'tiktoklogo.png',
       youtube: 'youtubelogo.png',
       twitter: 'twitterlogo.png',
-      facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+      facebook: 'facebooklogo.png',
       twitch: 'twitchlogo.png',
       snapchat: 'snaplogo.png',
     };
@@ -554,8 +551,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     return platformsArray.map(p => {
       const logoSrc = platformLogos[p.toLowerCase()];
       return logoSrc
-        ? `<img src="${logoSrc}" alt="${p}" title="${p}" class="platform-logo-icon">`
-        : `<span class="platform-badge">${p}</span>`;
+        ? `<img src="${logoSrc}" alt="${escapeFinderText(p)}" title="${escapeFinderText(p)}" class="platform-logo-icon">`
+        : `<span class="platform-badge">${escapeFinderText(p)}</span>`;
     }).join(' ');
   }
 
@@ -640,13 +637,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: allUsers, error } = await supabase
       .from('public_user_directory')
       .select('user_id, username, location, profile_pic, contenttype, social_handles, userType, planType')
-      .eq('userType', targetType);
+      .eq('userType', targetType).order('username', {ascending:true}).limit(4);
 
     if (error || !allUsers?.length) {
       otherProfilesContainer.innerHTML = '<div style="padding:18px 8px;">No other accounts found.</div>';
       return;
     }
-    const shuffled = allUsers.sort(() => 0.4 - Math.random()).slice(0, 4);
+    const shuffled = allUsers.slice(0, 4);
     const followerMap = await fetchFollowerMap(
       shuffled.map(u => u.user_id).filter(Boolean)
     );
@@ -666,17 +663,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       div.innerHTML = `
         <figure>
-          <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
+          <img src="${escapeFinderText(imgSrc)}" alt="${escapeFinderText(user.username)}" class="profile-pic" onerror="this.src='logos.png'">
           <div class="platforms-row">${platformsHTML}</div>
         </figure>
         <div class="user-profile-content">
           <figcaption>
             <div class="user-header-row">
-              <strong>${user.username}</strong>
+              <strong>${escapeFinderText(user.username)}</strong>
               ${renderPlanBadge(user.planType)}
             </div>
-            ${user.contenttype}<br>
-            ${user.location}
+            ${escapeFinderText(user.contenttype)}<br>
+            ${escapeFinderText(user.location)}
             <div class="user-badge-row">
               ${followersHtml}
             </div>
@@ -692,125 +689,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   loadOtherAccounts();
 
-  /* ---------- USER SEARCH ---------- */
-  async function fetchAndRenderResults(isSearch = false) {
-    if (!isSearch) currentPage = 1;
-    const name = document.getElementById('search-name').value.trim();
-    const contenttype = document.getElementById('search-contenttype').value.trim();
-    const location = document.getElementById('search-location').value.trim();
-    const platform = document.getElementById('search-platform').value.trim();
-
-    let query = supabase
-      .from('public_user_directory')
-      .select('user_id, username, location, profile_pic, contenttype, social_handles, planType')
-      .eq('userType', targetType);
-
-    if (name) query = query.ilike('username', `%${name}%`);
-    if (contenttype) query = query.ilike('contenttype', `%${contenttype}%`);
-    if (location) query = query.ilike('location', `%${location}%`);
-    if (platform) {
-      query = query
-        .filter(`social_handles->>${platform}`, 'not.is', null)
-        .filter(`social_handles->>${platform}`, 'neq', '');
-    }
-
-    const from = (currentPage - 1) * resultsPerPage;
-    const to = from + resultsPerPage - 1;
-    query = query.range(from, to);
-
-    const { data, error } = await query;
-
-    resultsDiv.innerHTML = '';
-
-    if (error) {
-      resultsDiv.textContent = 'Error fetching results';
-      return;
-    }
-
-    const followerMap = await fetchFollowerMap(
-      (data || []).map(u => u.user_id).filter(Boolean)
-    );
-
-    if (!data.length) {
-      resultsDiv.textContent = 'No matching users found.';
-    } else {
-      data.forEach(user => {
-        const div = document.createElement('div');
-        div.classList.add('user-profile');
-        const imgSrc = user.profile_pic
-          ? (safePublicUrl('logos', user.profile_pic) || 'logos.png')
-          : 'logos.png';
-        const platformsHTML = extractPlatformBadges(user.social_handles);
-
-        const totalFollowers = followerMap[user.user_id] || 0;
-        const followersHtml = totalFollowers
-          ? `<span class="followers-pill" title="Approx combined followers across linked platforms">👥 ${formatFollowers(totalFollowers)} followers</span>`
-          : '';
-
-        div.innerHTML = `
-          <figure>
-            <img src="${imgSrc}" alt="${user.username}" class="profile-pic" onerror="this.src='logos.png'">
-            <div class="platforms-row">${platformsHTML}</div>
-          </figure>
-          <div class="user-profile-content">
-            <figcaption>
-              <div class="user-header-row">
-                <strong>${user.username}</strong>
-                ${renderPlanBadge(user.planType)}
-              </div>
-              ${user.contenttype}<br>
-              ${user.location}
-              <div class="user-badge-row">
-                ${followersHtml}
-              </div>
-            </figcaption>
-            <button class="view-profile">View Profile</button>
-            ${isSponsor ? `<button class="make-offer-btn" data-username="${user.username}">Make Offer</button>` : ''}
-          </div>
-        `;
-        resultsDiv.appendChild(div);
-
-        const viewBtn = div.querySelector('.view-profile');
-        viewBtn.addEventListener('click', () => {
-          viewProfileByUserType(user.username);
-        });
-
-        if (isSponsor) {
-          const offerBtn = div.querySelector('.make-offer-btn');
-          if (offerBtn) {
-            offerBtn.addEventListener('click', () => {
-              const encodedUsername = encodeURIComponent(user.username);
-              window.location.href = `newoffer.html?username=${encodedUsername}`;
-            });
-          }
-        }
-      });
-    }
-
-    currentPageLabel.textContent = `Page ${currentPage}`;
-    prevPageBtn.disabled = currentPage === 1;
-    nextPageBtn.disabled = data.length < resultsPerPage;
-  }
-
-  fetchAndRenderResults();
-
-  searchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    currentPage = 1;
-    fetchAndRenderResults(true);
-  });
-
-  nextPageBtn.addEventListener('click', () => {
-    currentPage++;
-    fetchAndRenderResults(true);
-  });
-
-  prevPageBtn.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      fetchAndRenderResults(true);
-    }
-  });
+  /* ---------- PUBLIC DIRECTORY DISCOVERY ---------- */
+  mountFinderDiscovery({client:supabase, accountId:user.id, isSponsor, fetchFollowerMap, safePublicUrl});
 
   /* ---------- PUBLIC OFFER SEARCH ---------- */
   const offerSearchForm = document.getElementById('offerSearchForm');
@@ -825,7 +705,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const offerNextPageBtn = document.getElementById('offer-nextPage');
   const offerCurrentPageLabel = document.getElementById('offer-currentPage');
 
+  let publicOfferVersion = 0;
   async function loadPublicOffers(search = {}) {
+    const version = ++publicOfferVersion;
     offersContainer.innerHTML = '';
     offersError.textContent = '';
     let query = supabase
@@ -837,14 +719,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (search.title) query = query.ilike('offer_title', `%${search.title}%`);
     if (search.sponsor) query = query.ilike('sponsor_username', `%${search.sponsor}%`);
     if (search.platform) query = query.filter('platforms', 'cs', `["${search.platform}"]`);
-    if (search.minAmount) query = query.gte('offer_amount', search.minAmount);
-    if (search.maxAmount) query = query.lte('offer_amount', search.maxAmount);
+    if (Number.isFinite(search.minAmount)) query = query.gte('offer_amount', search.minAmount);
+    if (Number.isFinite(search.maxAmount)) query = query.lte('offer_amount', search.maxAmount);
 
     const from = (offerPage - 1) * offersPerPage;
     const to = from + offersPerPage - 1;
     query = query.range(from, to);
 
     const { data: offers, error } = await query;
+    if (version !== publicOfferVersion) return;
 
     if (error || !offers) {
       offersError.textContent = 'Could not load public offers.';
@@ -858,7 +741,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     for (const offer of offers) {
-      offersContainer.appendChild(await window.renderOfferCard(offer));
+      const card = await window.renderOfferCard(offer);
+      if (version !== publicOfferVersion) return;
+      offersContainer.appendChild(card);
     }
     offerCurrentPageLabel.textContent = `Page ${offerPage}`;
     offerPrevPageBtn.disabled = offerPage === 1;
@@ -1012,15 +897,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return `
               <div class="member-chip">
-                <img class="profile" src="${img}" alt="${name}" onerror="this.src='logos.png'">
+                <img class="profile" src="${escapeFinderText(img)}" alt="${escapeFinderText(name)}" onerror="this.src='logos.png'">
                 <div class="member-info" style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;">
                   <!-- username + status inline -->
                   <div class="member-top" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                     <a href="${profilePage}?username=${encodeURIComponent(name)}"
                        style="text-decoration:none;color:#eaeaff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin: 20px;">
-                       <strong>@${name}</strong>
+                       <strong>@${escapeFinderText(name)}</strong>
                     </a>
-                    <span class="member-role" style="margin-left:6px;padding:2px 6px;border:1px solid #3b824e;border-radius:6px;color:#9be7ae;background:#1f3825;">${role}</span>
+                    <span class="member-role" style="margin-left:6px;padding:2px 6px;border:1px solid #3b824e;border-radius:6px;color:#9be7ae;background:#1f3825;">${escapeFinderText(role)}</span>
                   </div>
                   <!-- badges on line below -->
                   <div class="member-badges" style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -1057,17 +942,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div>
           <!-- TOP: group logo + name/meta/description -->
           <div style="display:flex;gap:16px;align-items:flex-start;">
-            <img src="${groupImg}" alt="${g.name}"
+            <img src="${escapeFinderText(groupImg)}" alt="${escapeFinderText(g.name)}"
                  style="width:100px;height:100px;border-radius:10px;border:1px solid #333;object-fit:cover;background:unset;"
                  onerror="this.src='grouplogo.png'">
             <div style="flex:1;">
-              <h4 style="margin:0 0 4px 0;">${g.name}</h4>
+              <h4 style="margin:0 0 4px 0;">${escapeFinderText(g.name)}</h4>
               <div class="group-meta">
-                <div><strong>Visibility:</strong> ${g.visibility || 'private'}</div>
+                <div><strong>Visibility:</strong> ${escapeFinderText(g.visibility || 'private')}</div>
                 <div><strong>Members:</strong> ${memberCount}</div>
                 <div style="color:#9bf59b;"><strong>Accepting Offers</strong></div>
               </div>
-              <div style="margin-top:8px;opacity:.9;">${g.description || ''}</div>
+              <div style="margin-top:8px;opacity:.9;">${escapeFinderText(g.description || '')}</div>
             </div>
           </div>
 
@@ -1124,21 +1009,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       const p = offer.platforms[0];
       const logos = {
         youtube: 'youtubelogo.png',
-        instagram: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png',
+        instagram: 'instagramlogo.png',
         tiktok: 'tiktoklogo.png',
         twitter: 'twitterlogo.png',
-        facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+        facebook: 'facebooklogo.png',
         twitch: 'twitchlogo.png',
         snapchat: 'snaplogo.png'
       };
-      platformBadge = `<img src="${logos[p] || ''}" alt="${p}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${p}">`;
+      platformBadge = `<img src="${logos[p] || ''}" alt="${escapeFinderText(p)}" style="width:26px;vertical-align:middle;margin-right:5px;" title="${escapeFinderText(p)}">`;
     }
     let detailsId = `details-${offer.id}`;
     let imagesId = `images-${offer.id}`;
     let constraintsHtml = '';
-    if (offer.max_applicants) constraintsHtml += `<strong>Max Applicants:</strong> ${offer.max_applicants} <br>`;
-    if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
-    if (offer.audience_country) constraintsHtml += `<strong>Audience Country:</strong> ${offer.audience_country} <br>`;
+    if (offer.max_applicants) constraintsHtml += `<strong>Max Applicants:</strong> ${escapeFinderText(offer.max_applicants)} <br>`;
+    if (offer.min_followers) constraintsHtml += `<strong>Min Followers:</strong> ${escapeFinderText(offer.min_followers)} <br>`;
+    if (offer.audience_country) constraintsHtml += `<strong>Audience Country:</strong> ${escapeFinderText(offer.audience_country)} <br>`;
 
     let alreadyApplied = false;
     if (window.currentUser && window.isSponsee) {
@@ -1165,24 +1050,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     div.innerHTML = `
       <div style="display:flex;align-items:flex-start;gap:28px;">
         <div style="flex-shrink:0;text-align:center;">
-          <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='logos.png'">
+          <img src="${escapeFinderText(sponsorLogo)}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='logos.png'">
           <div style="margin-top:7px;font-size:1em;line-height:1.2;">
-            <div style="margin-bottom:5px;"><strong>By:</strong> ${offer.sponsor_username}</div>
+            <div style="margin-bottom:5px;"><strong>By:</strong> ${escapeFinderText(offer.sponsor_username)}</div>
             <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
           </div>
         </div>
         <div style="flex:1;">
           <div style="display:flex;align-items:center;gap:10px;">
             ${platformBadge}
-            <span style="font-size:1.24em;font-weight:700;letter-spacing:0.01em;">Offer: ${offer.offer_title}</span>
+            <span style="font-size:1.24em;font-weight:700;letter-spacing:0.01em;">Offer: ${escapeFinderText(offer.offer_title)}</span>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:13px 46px;margin:14px 0 7px 0;">
             <div><strong>Status:</strong> OPEN</div>
-            <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+            <div><strong>Amount:</strong> $${escapeFinderText(offer.offer_amount)}</div>
             <div><strong>Date:</strong> ${offer.creation_date ? new Date(offer.creation_date).toLocaleDateString() : '-'}</div>
             <div><strong>Deadline:</strong> ${offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'}</div>
-            <div><strong>Payment Schedule:</strong> ${offer.payment_schedule}</div>
-            <div><strong>Duration:</strong> ${offer.sponsorship_duration}</div>
+            <div><strong>Payment Schedule:</strong> ${escapeFinderText(offer.payment_schedule)}</div>
+            <div><strong>Duration:</strong> ${escapeFinderText(offer.sponsorship_duration)}</div>
           </div>
           ${constraintsHtml ? `<div style="font-size:0.96em;margin:0 0 8px 0;">${constraintsHtml}</div>` : ''}
           <div style="margin:9px 0 5px 0;">
@@ -1195,10 +1080,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       : ''}
           </div>
           <div id="${detailsId}" class="public-offer-details" style="display:none;margin:12px 0 6px 0;">
-            <strong>Description:</strong><br>${offer.offer_description || ''}
-            <br><strong>Instructions:</strong><br>${offer.instructions || ''}
-            <br><strong>Job Type:</strong> ${offer.job_type || ''} <br>
-            <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+            <strong>Description:</strong><br>${escapeFinderText(offer.offer_description || '')}
+            <br><strong>Instructions:</strong><br>${escapeFinderText(offer.instructions || '')}
+            <br><strong>Job Type:</strong> ${escapeFinderText(offer.job_type || '')} <br>
+            <strong>Deliverable:</strong> ${escapeFinderText(offer.deliverable_type || '')}
           </div>
           <div id="${imagesId}" class="public-offer-images" style="display:none;margin:12px 0;">
             ${(offer.offer_images && offer.offer_images.length)
@@ -1351,7 +1236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 <script type="module" src="./js/alerts.js"></script>
 <script type="module" src="./js/settings.js"></script>
-<script type="module" src="./js/recmatch.js"></script>
+<script type="module" src="./js/recmatch.js?v=20261011-discovery1"></script>
 
 </body>
 </html>

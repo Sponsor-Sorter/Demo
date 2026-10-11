@@ -485,3 +485,21 @@ test('deadline filters exclude closed campaigns and keep today available', () =>
   assert.deepEqual(Array.from(selectCampaigns(offers,{deadline:'overdue'},now),o=>o.id),[2]);
   assert.deepEqual(Array.from(selectCampaigns(offers,{deadline:'soon'},now),o=>o.id),[1]);
 });
+const finderSource = fs.readFileSync(path.join(__dirname,'../js/finderDiscovery.js'),'utf8');
+const finderTools = vm.runInNewContext(finderSource.replaceAll('export function','function') + '; ({cleanFinderFilters,finderMatchReasons,buildFinderQuery,escapeFinderText})');
+test('Finder normalises filters and gives factual match reasons',()=>{
+ const filters=finderTools.cleanFinderFilters({name:'  FitStyle ',platform:'bad->query',sort:'injected',location:'UK'});
+ assert.equal(filters.name,'FitStyle'); assert.equal(filters.platform,'');assert.equal(filters.sort,'az');
+ assert.deepEqual(Array.from(finderTools.finderMatchReasons(filters)),['Location: UK']);
+ assert.equal(finderTools.escapeFinderText('<img src=x onerror="bad()">'), '&lt;img src=x onerror=&quot;bad()&quot;&gt;');
+});
+test('Finder filters and orders the public query before pagination',()=>{
+ const calls=[];const query=new Proxy({}, {get:(_,method)=>(...args)=>{calls.push([method,...args]);return query;}});
+ const client={from:table=>{calls.push(['from',table]);return query;}};
+ finderTools.buildFinderQuery(client,'besponsored',finderTools.cleanFinderFilters({name:'a_%',platform:'youtube',sort:'za'}),2,['test-id']);
+ assert.equal(calls[0][1],'public_user_directory');
+ assert.equal(calls.find(c=>c[0]==='ilike')[2],'%a\\_\\%%');
+ assert.equal(calls.find(c=>c[0]==='order')[2].ascending,false);
+ assert.deepEqual(calls.at(-1),['range',12,23]);
+ assert(calls.find(c=>c[0]==='in' && c[1]==='user_id'));
+});

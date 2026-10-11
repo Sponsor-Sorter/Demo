@@ -1,0 +1,165 @@
+.finder-discovery-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  border: 1px solid #30495f;
+  border-radius: 12px;
+  background: #101720;
+  margin-top: 16px;
+  text-align: left;
+}
+.finder-discovery-options .workspace-filter {
+  flex: 1 1 180px;
+}
+.finder-discovery-options select {
+  padding: 10px;
+  background: #090e14;
+  color: #fff;
+  border: 1px solid #526775;
+  border-radius: 7px;
+  font: inherit;
+}
+.finder-shortlist-filter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1 1 200px;
+}
+.finder-shortlist-filter input {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+}
+.finder-discovery-options > p {
+  flex: 1 1 260px;
+  margin: 0;
+  color: #a7bed1;
+  font-size: 0.9rem;
+}
+.finder-result-status {
+  text-align: left;
+  color: #8de5ff;
+  padding: 10px 0;
+}
+.workspace-refresh #searchResults {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.workspace-refresh .finder-discovery-card {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0 !important;
+  min-width: 0;
+  width: 100% !important;
+  box-sizing: border-box;
+  padding: 22px !important;
+  text-align: left;
+}
+.finder-discovery-card > .profile-pic {
+  flex: 0 0 78px;
+  width: 78px !important;
+  height: 78px !important;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.finder-discovery-card .user-profile-content {
+  min-width: 0;
+  flex: 1;
+}
+.finder-discovery-card h4 {
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+.finder-discovery-card p {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.finder-audience {
+  color: #b8c7d6;
+}
+.finder-match-reasons {
+  color: #83dffa;
+}
+.finder-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.finder-card-actions a,
+.finder-card-actions button {
+  box-sizing: border-box;
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  font: inherit;
+  font-size: 0.9rem;
+  border-radius: 7px;
+  text-decoration: none;
+}
+.finder-profile-link {
+  background: #19344f;
+  color: #e8f5ff;
+}
+.finder-offer-link {
+  background: #155cac;
+  color: #fff;
+}
+.finder-card-actions button[aria-pressed="true"] {
+  background: #163f42;
+  color: #a7fff0;
+}
+.finder-empty {
+  grid-column: 1/-1;
+  padding: 30px;
+  border: 1px dashed #52768b;
+  border-radius: 12px;
+  color: #c8d6e5;
+}
+.finder-discovery-options :focus-visible,
+.finder-card-actions :focus-visible {
+  outline: 2px solid #42dafa;
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .workspace-refresh #searchResults {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .workspace-refresh .finder-discovery-card {
+    flex-direction: column;
+    padding: 16px !important;
+  }
+  .finder-discovery-options {
+    padding: 14px;
+    gap: 14px;
+  }
+  .finder-card-actions > * {
+    flex: 1 1 130px;
+    text-align: center;
+  }
+}
+
+.finder-plan {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid #486476;
+  border-radius: 20px;
+  color: #bad7eb;
+  font-size: 0.75rem;
+}
+.workspace-refresh #searchForm .workspace-filter {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.workspace-refresh #searchForm {
+  row-gap: 18px !important;
+}
