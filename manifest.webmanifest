@@ -1,0 +1,30 @@
+{
+  "id": "/",
+  "name": "Sponsor Sorter",
+  "short_name": "Sponsor Sorter",
+  "description": "Your creator and sponsorship workspace. Find partners, manage offers and review campaign content.",
+  "start_url": "/index.html?source=installed-app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#080b10",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/app-assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Find partnerships",
+      "url": "/finder.html"
+    },
+    {
+      "name": "Account settings",
+      "url": "/settings.html"
+    }
+  ]
+}
