@@ -813,3 +813,10 @@ body.admin-page {
     transition: none !important;
   }
 }
+
+/* Verified payment receipts and settlement controls. */
+#verified-settlements { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1rem; margin-block: 1rem 2rem; }
+.verified-settlement { min-width: 0; padding: 1.15rem; border: 1px solid #304e68; border-radius: 14px; background: #101a26; overflow-wrap: anywhere; }
+.verified-settlement h3 { margin: 0 0 .65rem; font-size: 1.05rem; }
+.verified-settlement p { line-height: 1.55; margin-block: .6rem; }
+.verified-settlement button { max-width: 100%; white-space: normal; }
