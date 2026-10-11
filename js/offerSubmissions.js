@@ -20,6 +20,15 @@ export function validateDraftFile(file) {
   return TYPES.get(file.type);
 }
 
+export function draftUploadError(error) {
+  const status = Number(error?.originalResponse?.getStatus?.() || error?.statusCode || error?.status || 0);
+  if (status === 401) return new Error("Your session expired. Sign in again before uploading.");
+  if (status === 403) return new Error("Upload permission denied. Check that this offer is accepted and belongs to your account.");
+  if (status === 409) return new Error("This upload already exists. Select the video again to start a new upload.");
+  if (status === 413) return new Error("The server rejected the video size. Choose a video under 50 MB.");
+  return new Error(status ? `Video upload failed (HTTP ${status}). Please retry or contact support.` : "Upload interrupted. Check your connection and try again.");
+}
+
 export function safeCommentElement(comment) {
   const row = document.createElement("p");
   const author = document.createElement("strong");
@@ -54,6 +63,17 @@ async function uploadDraft(file, path, progress) {
   } = await supabase.auth.getSession();
   if (!session?.access_token)
     throw new Error("Sign in again before uploading.");
+  // Small files use the Storage SDK; larger videos use resumable chunks.
+  if (file.size <= 6 * 1024 * 1024) {
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+      contentType: file.type,
+      cacheControl: "3600",
+      upsert: false,
+    });
+    if (error) throw draftUploadError(error);
+    progress.value = 100;
+    return;
+  }
   // Pinned TUS implementation; 6 MB chunks follow Supabase's upload contract.
   const { Upload } = await import("https://esm.sh/tus-js-client@4.3.1");
   await new Promise((resolve, reject) => {
@@ -74,10 +94,7 @@ async function uploadDraft(file, path, progress) {
       onProgress: (bytes, total) => {
         progress.value = Math.round((bytes / total) * 100);
       },
-      onError: () =>
-        reject(
-          new Error("Upload interrupted. Check your connection and try again."),
-        ),
+      onError: (error) => reject(draftUploadError(error)),
       onSuccess: resolve,
     });
     upload.start();

@@ -1,5 +1,5 @@
-import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts1';
-import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts1';
+import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts2';
+import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts2';
 // public/js/sponseeOffers.js
 import { supabase } from './supabaseClient.js';
 import {

@@ -343,7 +343,7 @@ test('completed campaign performance remains available on both dashboards after 
 function draftValidation() {
   const context={URL,Date,Map,Number};
   let source=fs.readFileSync(path.join(__dirname,'../js/offerSubmissions.js'),'utf8');
-  source=source.slice(source.indexOf('const BUCKET'),source.indexOf('export function safeCommentElement')).replace('export ','');
+  source=source.slice(source.indexOf('const BUCKET'),source.indexOf('export function safeCommentElement')).replaceAll('export ','');
   vm.runInNewContext(source,context);
   const workflow=fs.readFileSync(path.join(__dirname,'../js/offerWorkflow.js'),'utf8').replace('export ','');
   vm.runInNewContext(workflow,context);return context;
@@ -377,4 +377,22 @@ test('offer payment and refund UI cannot mark success before a verified settleme
  assert.doesNotMatch(sponsor,/live_date: new Date\(\)/);
  assert.match(creator,/Payment release requires verified funding/);
  assert.match(sponsor,/Automatic refunds are temporarily unavailable/);
+});
+
+
+test('draft upload errors give safe actionable status without leaking server details',()=>{
+ const c=draftValidation();
+ assert.match(c.draftUploadError({statusCode:'403',message:'SECRET'}).message,/permission denied/);
+ assert.match(c.draftUploadError({originalResponse:{getStatus:()=>401}}).message,/session expired/);
+ assert.match(c.draftUploadError({status:413}).message,/video size/);
+ assert.doesNotMatch(c.draftUploadError({status:500,message:'SECRET'}).message,/SECRET/);
+});
+
+test('small draft upload uses private SDK storage without overwriting',async()=>{
+ const writes=[];const context={supabase:{auth:{getSession:async()=>({data:{session:{access_token:'test'}}})},storage:{from:bucket=>({upload:async(...args)=>{writes.push({bucket,args});return {error:null};}})}}};
+ let source=fs.readFileSync(path.join(__dirname,'../js/offerSubmissions.js'),'utf8');
+ source=source.slice(source.indexOf('const BUCKET'),source.indexOf('export async function mountOfferSubmissions')).replaceAll('export ','');
+ vm.runInNewContext(source,context);const progress={value:0};
+ await context.uploadDraft({size:1024,type:'video/mp4'},'private/path.mp4',progress);
+ assert.equal(writes[0].bucket,'offer-submissions');assert.equal(writes[0].args[2].upsert,false);assert.equal(progress.value,100);
 });
