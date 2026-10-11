@@ -4,7 +4,7 @@ Deno.env.set('SUPABASE_URL','https://database.invalid');Deno.env.set('SUPABASE_S
 function check(value:unknown,expected:unknown){if(value!==expected)throw Error(`Expected ${expected}: ${value}`);}
 Deno.test('settlement verifies funding and recipient, reuses transfers, and survives reconciliation failures',async()=>{
  const original=globalThis.fetch;let created=0,recorded=0,existing=false,recordFailure=false,authorized=true,capable=true,refunded=false;
- const settlement={id:'22222222-2222-4222-8222-222222222222',status:'processing',livemode:false,payment_intent_id:'pi_fixture',total_cents:11000,amount_cents:10000,currency:'usd',destination:'acct_fixture',started_at:new Date().toISOString()};
+ const settlement={order_id:order,id:'22222222-2222-4222-8222-222222222222',status:'processing',livemode:false,payment_intent_id:'pi_fixture',total_cents:11000,amount_cents:10000,currency:'usd',destination:'acct_fixture',started_at:new Date().toISOString()};
  const transfer={id:'tr_fixture',amount:10000,currency:'usd',destination:'acct_fixture',livemode:false,source_transaction:'ch_fixture',metadata:{settlement_id:settlement.id}};
  globalThis.fetch=async(input,init)=>{
   const url=String(input instanceof Request?input.url:input);

@@ -17,8 +17,9 @@ async function load(){
    const status=document.createElement('p');status.setAttribute('role','status');
    button.addEventListener('click',async()=>{
     button.disabled=true;status.textContent='Checking verified funding and recipient…';
-    const {data,error}=await supabase.functions.invoke('settle-sponsorship',{body:{order_id:row.order_id}});
-    if(error || data?.status!=='transferred'){status.textContent=data?.error || 'Settlement could not be confirmed. Retry or request reconciliation.';button.disabled=false;return;}
+    let {data,error}=await supabase.functions.invoke('settle-sponsorship',{body:{order_id:row.order_id}});
+    if(error?.context){try{data=await error.context.json();}catch{}}
+    if(error || data?.status!=='transferred'){status.textContent=(data?.code ? data.code+': ' : '')+(data?.error || 'Settlement could not be confirmed. Retry or request reconciliation.');button.disabled=false;return;}
     await load();
    });card.append(button,status);
   }
