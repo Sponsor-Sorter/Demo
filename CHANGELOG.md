@@ -170,3 +170,8 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Upload failures show actionable, sanitized status messages.
 - Added transport and error handling regression tests (40 tests passing).
 - Restored login email delivery by verifying the sending domain DNS; owner confirmed recovery.
+
+## 2026-10-11 — multidirectional connection lights
+- Header lights now follow 117 paths traced from the original grid artwork, turning up/down/left/right.
+- 44 staggered lights fade out, select a different route and reappear. Reduced-motion support retained; animations pause in background tabs.
+- Original artwork, header sizing and navigation preserved. 42 automated tests pass.

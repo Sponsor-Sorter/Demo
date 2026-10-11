@@ -37,31 +37,17 @@
 .connection-grid .grid-signal {
   fill: none;
   stroke: #92eaff;
-  stroke-width: 1.25;
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 2px #55d7ff);
   stroke-linecap: round;
   stroke-dasharray: 4 764;
   animation: connection-travel 12s linear infinite;
 }
-.connection-grid .signal-two {
-  animation-delay: -4s;
-  animation-duration: 16s;
-}
-.connection-grid .signal-three {
-  animation-delay: -9s;
-  animation-duration: 19s;
-}
 @keyframes connection-travel {
-  from {
-    stroke-dashoffset: 768;
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-    opacity: 0.35;
-  }
+  0% { stroke-dashoffset: 768; opacity: 0; }
+  12% { opacity: 0.95; }
+  82% { opacity: 0.95; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
 }
 .admin-page .admin-site-header.connection-header {
   width: 100%;
