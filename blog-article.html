@@ -1,84 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Sponsor Sorter Blog Article – deep dives, tips, and platform updates for creators and sponsors">
-  <title>Blog Article - Sponsor Sorter</title>
-
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="./styles.css?v=20261010">
-
-  <!-- Optional charts for posts that use custom_chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Settings + alerts (they only do things if user is logged in) -->
-  <script type="module" src="./js/alerts.js"></script>
-  <script type="module" src="./js/settings.js"></script>
-<script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script>
-<link rel="stylesheet" href="./public-pages.css?v=20261011-nav2">
-<link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
-<script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
-<script type="module" src="./js/secondaryPages.js?v=20261011-audit1"></script>
-<link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
-</head>
-<body class="secondary-page public-content-page" id="site-top">
-<header class="navbar1">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Practical guide | Sponsor Sorter</title><meta name="description" content="Practical guides to finding sponsorship partners, planning campaigns, pricing creative work and measuring results."><link rel="canonical" href="https://sponsorsorter.com/blog-article.html"><link rel="icon" href="./favicon.ico"><link rel="stylesheet" href="./styles.css?v=20261010"><link rel="stylesheet" href="./public-pages.css?v=20261011-nav2"><link rel="stylesheet" href="./site-shell.css?v=20261011-shell1"><link rel="stylesheet" href="./blog.css?v=20261011-blog1"><script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script><script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script><script type="module" src="./js/settings.js"></script><script type="module" src="./js/alerts.js"></script></head>
+<body class="public-content-page blog-page" id="site-top"><header class="navbar1">
   <section class="navbar">
     <div class="navii">
       <h5 class="site-brand-wrap"><a class="site-brand" href="./index.html"><img src="./logos.png" width="88" height="88" alt=""><span>Sponsor Sorter</span></a></h5>
       <div>
         <background-img class="navimg" src="./navimg.png" alt=""></background-img>
+
         <nav>
           <li><a href="./index.html">Home</a></li>
           <li><a href="./finder.html">Finder</a></li>
         </nav>
+
         <nav class="nav">
           <li class="navr" id="auth-link"><a href="./signup.html">Signup</a></li>
           <li><a href="./login.html" id="login-logout-link">Login</a></li>
 
-          <!-- Hidden for guests; shown via JS when logged in -->
-          <li id="notification-bell-li" style="display:none;">
-            <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="./bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
-              <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:-6px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
-            </button>
-          </li>
-          <li id="settings-cog-li" style="display:none;position:relative;">
-            <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
-              <img src="./cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
-            </button>
-            <div id="settings-dropdown" class="settings-dropdown">
-              <div class="dropdown-arrow"></div>
-              <ul>
-                <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
-                <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
-                <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
-                <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button></li>
-              </ul>
+          <!-- Hidden for guests -->
+          <li id="settings-notif-bar" style="display:none;">
+            <div class="icon-bar-bg">
+              <button id="notification-bell" class="notification-bell-btn" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="./bell.png" alt="Notifications" style="width:28px;vertical-align:middle;">
+                <span id="notification-count" class="notification-badge" style="position:absolute;top:-6px;right:2px;background:red;color:white;border-radius:50%;font-size:12px;padding:1px 6px;display:none;">0</span>
+              </button>
+
+              <button id="settings-cog-btn" class="settings-cog-btn" title="Settings" style="background:none;border:none;cursor:pointer;position:relative;vertical-align:middle;">
+                <img src="./cog.svg" alt="Settings" style="width:27px;vertical-align:middle;">
+              </button>
+
+              <div id="settings-dropdown" class="settings-dropdown">
+                <div class="dropdown-arrow"></div>
+                <ul>
+                  <li><button type="button" class="dropdown-item" id="change-profile-logo-btn">Change Profile Logo</button></li>
+                  <li><button type="button" class="dropdown-item" id="edit-profile-description-btn">Edit Profile Description</button></li>
+                  <li><button type="button" class="dropdown-item" id="relink-social-btn">Relink Social Media Handles</button></li>
+                  <li><button type="button" class="dropdown-item" id="toggle-help-blocks-btn">Hide/Show All Help Blocks</button></li>
+                  <li><button type="button" class="dropdown-item" id="toggle-onboarding-btn">Show Guided Onboarding</button></li>
+                </ul>
+              </div>
             </div>
           </li>
         </nav>
+
       </div>
     </div>
   </section>
 </header>
-
-<main>
-  <!-- Guest banner (soft prompt, not a gate) -->
-  <div id="blog-guest-banner" class="blog-guest-banner" style="display:none;"></div>
-
-  <div class="blog-article-container" id="blog-article-container">
-    <div class="blog-article-loading">Loading article...</div>
-  </div>
-
-  <div class="blog-back-link">
-    <a href="./blog.html">&larr; Back to Blog</a>
-  </div>
-</main>
-
-<footer class="site-footer" aria-label="Site footer">
+<div id="reading-progress" class="reading-progress" aria-hidden="true"></div><main class="blog-main">
+<p class="article-breadcrumb"><a href="./index.html">Home</a> / <a href="./blog.html">Resources</a></p>
+<p id="blog-status" class="blog-status" role="status" aria-live="polite">Loading resources…</p><article id="blog-article-container" ></article>
+<section id="blog-editor" class="editor-panel" aria-label="Article editor" hidden></section><noscript><p>Enable JavaScript to load the resource library.</p></noscript></main><footer class="site-footer" aria-label="Site footer">
   <div class="site-footer-top">
     <div class="site-footer-intro">
       <a class="site-brand" href="./index.html"><img src="./logos.png" width="34" height="34" alt=""><span>Sponsor Sorter</span></a>
@@ -90,428 +61,4 @@
   </div>
   <div class="site-footer-bottom"><span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span><span>Built for the partnership.</span><a href="#site-top">Back to top ↑</a></div>
 </footer>
-
-<style>
-/* --- Guest banner (non-blocking) --- */
-.blog-guest-banner {
-  max-width: 830px;
-  margin: 18px auto 0 auto;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: #23232b;
-  border: 1.5px solid #323247;
-  color: #f8f8ff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.blog-guest-banner .left {
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.blog-guest-banner .left strong {
-  color:#36a2eb;
-}
-.blog-guest-banner .actions {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.blog-guest-banner .btn-primary,
-.blog-guest-banner .btn-secondary {
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:8px;
-  font-weight:800;
-  text-decoration:none;
-}
-.blog-guest-banner .btn-primary {
-  background:#f6c62e;
-  color:#222;
-}
-.blog-guest-banner .btn-secondary {
-  background:#23232b;
-  color:#fff;
-  border:1px solid #3a3a4e;
-}
-
-/* --- Share Buttons --- */
-.blog-article-share {
-  margin-top: 24px;
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.5em;
-  flex-wrap: wrap;
-}
-.share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 18px 7px 13px;
-  border-radius: 28px;
-  border: none;
-  background: #232e43;
-  color: #36a2eb;
-  font-weight: 600;
-  font-size: 0.98em;
-  cursor: pointer;
-  transition: background .13s, color .13s;
-  outline: none;
-  box-shadow: 0 2px 10px #0002;
-  margin-left: 0;
-}
-.share-btn svg {
-  width: 1.22em;
-  height: 1.22em;
-  vertical-align:middle;
-}
-.share-btn.copy   { background: #262626; color: #fff; }
-.share-btn.copy:hover { background: #555; color: #ffe877;}
-.share-btn.x      { background: #17181c; color: #1da1f2;}
-.share-btn.x:hover { background: #1da1f2; color:#fff;}
-.share-btn.linkedin { background: #18354b; color: #29b6f6;}
-.share-btn.linkedin:hover { background: #29b6f6; color: #fff;}
-@media (max-width:600px) {
-  .blog-article-share {
-    flex-direction:column;
-    align-items:flex-end;
-    gap:0.4em;
-  }
-}
-
-/* --- Article layout --- */
-.blog-article-container {
-  max-width: 740px;
-  margin: 24px auto 34px auto;
-  background: #23232b;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px #0003;
-  padding: 32px 22px 40px 22px;
-}
-.blog-article-loading {
-  text-align: center;
-  color: #bbb;
-  font-size: 1.25em;
-}
-.blog-article-cover {
-  width: 100%;
-  max-height: 330px;
-  object-fit: cover;
-  border-radius: 13px;
-  background: #151522;
-  margin-bottom: 24px;
-}
-.blog-article-title {
-  color: #36a2eb;
-  font-size: 2.2em;
-  font-weight: 800;
-  margin-bottom: 9px;
-  line-height: 1.2;
-}
-.blog-article-meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 1em;
-  color: #bcbcbc;
-  margin-bottom: 13px;
-  flex-wrap: wrap;
-}
-.blog-article-author-img {
-  width: 39px;
-  height: 39px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #2a2a40;
-  margin-right: 6px;
-  border:2px solid #23232b;
-}
-.blog-article-excerpt {
-  color: #ffed9d;
-  font-size: 1.15em;
-  font-style: italic;
-  margin-bottom: 16px;
-}
-.blog-article-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-bottom: 12px;
-}
-.blog-article-tag {
-  background: #36a2eb33;
-  color: #36a2eb;
-  font-size: 0.9em;
-  border-radius: 8px;
-  padding: 3px 11px;
-  font-weight: 500;
-}
-.blog-article-content {
-  color: #fff;
-  font-size: 1.14em;
-  line-height: 1.75;
-  margin-bottom: 20px;
-  word-break: break-word;
-}
-.blog-chart-canvas {
-  margin: 30px 0 22px 0;
-  background:#23232b;
-  border-radius:9px;
-  max-width:100%;
-}
-.blog-back-link {
-  margin: 0 auto 22px auto;
-  text-align: center;
-}
-.blog-back-link a {
-  color: #36a2eb;
-  font-weight: 600;
-  font-size: 1.12em;
-  text-decoration: none;
-}
-.blog-back-link a:hover {
-  text-decoration: underline;
-}
-@media (max-width: 800px) {
-  .blog-article-container {
-    max-width:97vw;
-    padding:20px 3vw 30px 3vw;
-  }
-  .blog-article-title {
-    font-size:1.4em;
-  }
-}
-</style>
-
-<script type="module">
-import { supabase } from './js/supabaseClient.js';
-
-const container = document.getElementById('blog-article-container');
-const guestBanner = document.getElementById('blog-guest-banner');
-
-function getQueryParam(name) {
-  return new URLSearchParams(window.location.search).get(name);
-}
-
-function escapeHtml(text) {
-  if (!text) return '';
-  return text.replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
-
-function renderContent(raw) {
-  // strip any script tags as a safety precaution
-  return (raw || '').replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
-}
-
-function showGuestBanner() {
-  if (!guestBanner) return;
-  guestBanner.style.display = '';
-  guestBanner.innerHTML = `
-    <div class="left">
-      <strong>Reading as a guest</strong>
-      <div style="opacity:.9;">Create a free Sponsor Sorter account to manage offers, track payments, and get more tools.</div>
-    </div>
-    <div class="actions">
-      <a class="btn-secondary" href="./login.html">Log in</a>
-      <a class="btn-primary" href="./signup.html">Create account</a>
-    </div>
-  `;
-}
-
-function hideGuestBanner() {
-  if (!guestBanner) return;
-  guestBanner.style.display = 'none';
-  guestBanner.innerHTML = '';
-}
-
-async function updateNavForSession(session) {
-  const authLink = document.getElementById('auth-link');
-  const loginLogout = document.getElementById('login-logout-link');
-  const notifLi = document.getElementById('notification-bell-li');
-  const settingsLi = document.getElementById('settings-cog-li');
-
-  if (notifLi) notifLi.style.display = session?.user ? 'inline' : 'none';
-  if (settingsLi) settingsLi.style.display = session?.user ? 'inline' : 'none';
-
-  if (!authLink || !loginLogout) return;
-
-  if (session?.user) {
-    let dashboardUrl = './dashboardsponsee.html';
-    try {
-      const { data: ext } = await supabase
-        .from('users_extended_data')
-        .select('userType')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
-
-      const t = (ext?.userType || '').toLowerCase();
-      if (t === 'sponsor') dashboardUrl = './dashboardsponsor.html';
-      else if (t === 'admin') dashboardUrl = './admindashboard.html';
-      else dashboardUrl = './dashboardsponsee.html';
-    } catch {
-      // fallback stays sponsee dashboard
-    }
-
-    authLink.innerHTML = `<a href="${dashboardUrl}">Dashboard</a>`;
-    loginLogout.textContent = 'Logout';
-    loginLogout.href = '#';
-    loginLogout.onclick = async (e) => {
-      e.preventDefault();
-      try {
-        await supabase.auth.signOut();
-      } finally {
-        window.location.href = './login.html';
-      }
-    };
-  } else {
-    authLink.innerHTML = `<a href="./signup.html">Signup</a>`;
-    loginLogout.textContent = 'Login';
-    loginLogout.href = './login.html';
-    loginLogout.onclick = null;
-  }
-}
-
-async function renderArticle() {
-  const articleId = getQueryParam('id');
-  if (!articleId) {
-    container.innerHTML = `<div class="blog-article-loading">Invalid article ID.</div>`;
-    return;
-  }
-
-  const { data: post, error } = await supabase
-    .from('blog_posts')
-    .select('*, author:author_id(user_id, username, profile_pic)')
-    .eq('id', articleId)
-    .maybeSingle();
-
-  if (error || !post) {
-    container.innerHTML = `<div class="blog-article-loading">Article not found.</div>`;
-    return;
-  }
-
-  let authorImg = './logos.png';
-  if (post.author?.profile_pic) {
-    authorImg = post.author.profile_pic.startsWith('http')
-      ? post.author.profile_pic
-      : `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${post.author.profile_pic}`;
-  } else if (post.author_image) {
-    authorImg = post.author_image;
-  }
-
-  const authorName = post.author?.username || post.author_name || 'Sponsor Sorter Team';
-  const date = post.created_at
-    ? new Date(post.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
-    : '';
-
-  const tagsHtml = Array.isArray(post.tags) && post.tags.length
-    ? `<div class="blog-article-tags">${post.tags.map(tag => `<span class="blog-article-tag">${escapeHtml(tag)}</span>`).join('')}</div>`
-    : '';
-
-  const chartHtml = post.custom_chart
-    ? `<canvas id="blog-chart" class="blog-chart-canvas"></canvas>`
-    : '';
-
-  const shareHtml = `
-    <div class="blog-article-share">
-      <button class="share-btn copy" id="copy-link-btn">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v10h2V4h8V2H6zm3 4a2 2 0 0 0-2 2v8h8a2 2 0 0 0 2-2V6H9z"/>
-        </svg>
-        Copy Link
-      </button>
-      <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}"
-         class="share-btn x" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M18 2H15L9 10.5L4 2H2L8.25 12L2 22H5L10.5 13.5L16 22H18L11.75 12L18 2Z"/>
-        </svg>
-        Post to X
-      </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}"
-         class="share-btn linkedin" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M20.447 20.452H17.2V15.4c0-1.206-.022-2.759-1.683-2.759-1.684 0-1.941 1.318-1.941 2.676v5.136H10.329V9h3.123v1.561h.044c.434-.82 1.494-1.683 3.073-1.683 3.285 0 3.89 2.163 3.89 4.978v6.596zM5.337 7.433A1.833 1.833 0 1 1 5.335 3.77a1.833 1.833 0 0 1 .002 3.663zm1.761 13.019H3.573V9h3.525v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.209 24 24 23.229 24 22.271V1.723C24 .771 23.209 0 22.225 0z"/>
-        </svg>
-        LinkedIn
-      </a>
-    </div>
-  `;
-
-  container.innerHTML = `
-    ${post.cover_image
-      ? `<img src="${post.cover_image}" alt="" class="blog-article-cover" loading="lazy"
-              onerror="handleImgError(event, './logos.png')">`
-      : ''
-    }
-    <div class="blog-article-title">${escapeHtml(post.title)}</div>
-    <div class="blog-article-meta">
-      <img src="${authorImg}" class="blog-article-author-img" title="${escapeHtml(authorName)}"
-           onerror="handleImgError(event, './logos.png')">
-      <span>${escapeHtml(authorName)}</span>
-      <span>🗓️ ${date}</span>
-      <span>📂 ${escapeHtml(post.category || 'General')}</span>
-    </div>
-    <div class="blog-article-excerpt">${escapeHtml(post.excerpt || '')}</div>
-    ${tagsHtml}
-    <div class="blog-article-content">${renderContent(post.content)}</div>
-    ${chartHtml}
-    ${shareHtml}
-  `;
-
-  if (post.custom_chart) {
-    try {
-      const ctx = document.getElementById('blog-chart');
-      if (ctx) new Chart(ctx, post.custom_chart);
-    } catch {
-      // ignore chart errors
-    }
-  }
-
-  const copyBtn = document.getElementById('copy-link-btn');
-  if (copyBtn && navigator.clipboard?.writeText) {
-    const originalHtml = copyBtn.innerHTML;
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => { copyBtn.innerHTML = originalHtml; }, 1200);
-      } catch {
-        // ignore copy errors
-      }
-    });
-  }
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-
-  await updateNavForSession(session);
-  if (session?.user) hideGuestBanner(); else showGuestBanner();
-
-  await renderArticle();
-
-  supabase.auth.onAuthStateChange(async (_event, sess) => {
-    await updateNavForSession(sess);
-    if (sess?.user) hideGuestBanner(); else showGuestBanner();
-  });
-});
-</script>
-
-<script>
-  // Fallback image handler for ALL images
-  window.handleImgError = function(event, fallback = './logos.png') {
-    if (!event?.target?.src) return;
-    if (!event.target.src.endsWith(fallback)) {
-      event.target.src = fallback;
-    }
-  };
-</script>
-
-</body>
-</html>
-
+<script type="module" src="./js/blog.js?v=20261011-blog1"></script></body></html>
