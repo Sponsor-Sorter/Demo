@@ -17,8 +17,10 @@
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <script type="module" src="./js/secondaryPages.js?v=20261011-audit1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="supporters">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
     <!-- NAVBAR (same as index.html) -->
     <header class="navbar1">
         <section class="navbar"> 
@@ -44,10 +46,11 @@
             <p></p>  
         </section>
     </header>
+<div class="page-intro"><p class="page-eyebrow">Support the platform</p><h1>Help shape the next chapter.</h1><p>Explore supporter options and rewards, or share Sponsor Sorter with a creator or brand you know.</p></div>
 
     <div class="leftmain">
         <!-- SUPPORTER BANNER -->
-        <section>
+        <section id="page-content" tabindex="-1">
             <div class="referral-banner" style="width:100%;border-radius:15px;background: linear-gradient(0deg,#1a1a1a 10%,#444 100%);padding:11px 0;text-align:center;font-size:1.08em;color:#efefef;letter-spacing:0.01em;margin-left:10px;margin-right:10px;">
                 <b>Become an early supporter of Sponsor Sorter</b>
                 <span style="margin-left:12px;font-size:0.98em;display:block;margin-top:4px;">
@@ -63,9 +66,9 @@
                     <div class="hero-grid">
                         <!-- LEFT: main copy -->
                         <div class="hero-copy">
-                            <h1 style="font-size:2.2em;letter-spacing:0.03em;">
+                            <h2 style="font-size:2.2em;letter-spacing:0.03em;" class="page-content-heading">
                                 Support Sponsor Sorter’s Launch
-                            </h1>
+                            </h2>
                             <p style="font-size:1.12em;">
                                 Sponsor Sorter is built for real people: family businesses, small brands, and creators who want fair, transparent sponsorships without the spam. 
                                 Your support helps cover launch costs, moderation, infrastructure, and safety features so we can open the doors properly.
@@ -302,8 +305,8 @@
                 <a href="https://youtube.com/yourchannel" target="_blank" style="margin:0 7px;"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" style="height:24px;width:24px;"></a>
             </div>
         </section>
-
-        <footer class="site-footer" aria-label="Site footer">
+    </div>
+<footer class="site-footer" aria-label="Site footer">
   <div class="site-footer-top">
     <div class="site-footer-intro">
       <a class="site-brand" href="./index.html"><img src="./logos.png" width="34" height="34" alt=""><span>Sponsor Sorter</span></a>
@@ -315,7 +318,6 @@
   </div>
   <div class="site-footer-bottom"><span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span><span>Built for the partnership.</span><a href="#site-top">Back to top ↑</a></div>
 </footer>
-    </div>
 
     <!-- JS -->
     <script type="module" src="./js/supabaseClient.js"></script>

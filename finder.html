@@ -132,8 +132,10 @@
 <script type="module" src="./js/workspaceExperience.js?v=20261011-onboard1"></script>
 <script type="module" src="./js/finderLayout.js?v=20261011-layout2"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="workspace-page" id="site-top">
+<body class="workspace-page" id="site-top" data-page="finder">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -199,7 +201,7 @@
 </header>
 
 <fieldset class="finder">
-  <section class="search-section" style="width: 85vw;">
+  <section class="search-section" style="width: 85vw;" id="page-content" tabindex="-1">
     <h2>Welcome, <span id="sponsorName"></span>!</h2>
     <div class="search-toggle-row" style="margin-bottom:18px;display:flex;gap:10px;align-items:center;">
       <button id="user-search-toggle" class="active-toggle">Find partners</button>

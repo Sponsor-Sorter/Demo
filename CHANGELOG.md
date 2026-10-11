@@ -264,3 +264,6 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 
 ## 2026-10-12 — Retained campaign performance
 Added participant-only report access on sponsor/creator dashboards, timestamped history, honest stale/unknown states and safe CSV export. Tightened platform URL recognition. Payment changes are not included in this release.
+
+## 2026-10-12 — Secondary page overhaul
+Unified older content, community, proposal, profile, settings and status layouts. Added responsive form/profile grids and reading widths. Retired obsolete sample dashboards and duplicate legacy HTML pages through maintained redirects. See RESPONSIVE_PAGE_RELEASE.md for test scope and limitations.

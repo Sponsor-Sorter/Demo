@@ -12,8 +12,10 @@
 <link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="payment-success-group">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -32,9 +34,10 @@
     </div>
   </section>
 </header>
+<div class="page-intro"><p class="page-eyebrow">Group checkout</p><h1>Check your group sponsorship.</h1><p>Review the checkout result below. Contact support with your payment reference if anything is unclear.</p></div>
 
-<main style="min-height:40vh;">
-  <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
+<main style="min-height:40vh;" id="page-content" tabindex="-1">
+  <div class="page-status-card" style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
     <h2 style="color:green;">Checking your checkout</h2>
     <div id="insert-status">Submitting your group offer to the selected group...</div>
   </div>

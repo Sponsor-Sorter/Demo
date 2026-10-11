@@ -14,8 +14,10 @@
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <script type="module" src="./js/secondaryPages.js?v=20261011-audit1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="settings">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 
 <header class="navbar1">
   <section class="navbar"> 
@@ -37,10 +39,11 @@
     </div>
   </section>
 </header>
+<div class="page-intro"><p class="page-eyebrow">Your account</p><h1>Make Sponsor Sorter work for you.</h1><p>Manage your profile and connected platforms. Review each change before saving it.</p></div>
 
-<main class="page-content" style="max-width:1100px;margin:20px auto 40px auto;padding:0 12px;">
+<main class="page-content" style="max-width:1100px;margin:20px auto 40px auto;padding:0 12px;" id="page-content" tabindex="-1">
   <section style="margin-bottom:18px;">
-    <h1 style="margin-bottom:6px;">Settings</h1>
+    <h2 style="margin-bottom:6px;" class="page-content-heading">Settings</h2>
     <p style="color:#ccc;max-width:680px;">
       Manage your profile, notifications, connected platforms, referrals, subscriptions,
       security &amp; 2FA, and more — all in one place.

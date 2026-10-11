@@ -303,3 +303,6 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 
 ## 12 October 2026 — Campaign report release
 See CAMPAIGN_REPORT_RELEASE.md for published scope, validation and remaining payment release gates. Financial handlers and their callers remain local and must not be deployed independently.
+
+## Responsive page follow-up — 12 October 2026
+See RESPONSIVE_PAGE_RELEASE.md. Publish includes layout-only versions of previously dirty HTML; unfinished financial/packages/preferences integrations remain local and must not be staged accidentally. Final browser sweep covers 34 active targets at phone, tablet, desktop and ultrawide widths; selected-record and complete business-flow testing is separate.

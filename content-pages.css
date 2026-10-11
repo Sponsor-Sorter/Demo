@@ -1,0 +1,137 @@
+/* Content pages: a bounded reading canvas from small phones to ultrawide displays.
+   Scoped rules replace legacy page dimensions without changing brand artwork. */
+body[data-page] { --page-width: 1200px; --page-gutter: clamp(16px, 3vw, 40px); }
+body.content-refresh { background: #000; color: #eef2f8; font: 400 16px/1.65 'Segoe UI', Arial, sans-serif; }
+.content-refresh *, .content-refresh *::before, .content-refresh *::after { box-sizing: border-box; }
+.content-refresh .page-intro {
+  width: min(var(--page-width), calc(100% - 2 * var(--page-gutter)));
+  margin: clamp(28px, 5vw, 64px) auto 28px;
+  padding: 0;
+  text-align: left;
+}
+.content-refresh .page-eyebrow { margin: 0 0 12px; color: #62d9f5; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.content-refresh .page-intro h1 { margin: 0; padding: 0; border: 0; font-size: clamp(1.8rem, 3.4vw, 3.1rem); line-height: 1.15; letter-spacing: -.035em; color: #fff; background: none; -webkit-text-fill-color: currentColor; }
+.content-refresh .page-intro p:last-child { max-width: 66ch; margin: 18px 0 0; color: #b8c5d7; font-size: clamp(1rem, 1.4vw, 1.125rem); line-height: 1.7; }
+.content-refresh .page-content-heading { font-size: 1.3rem; }
+.content-refresh.content-refresh > :where(main, section, .dashboard, .reviews-container, .leftmain, .container, form#offerForm) {
+  width: min(var(--page-width), calc(100% - 2 * var(--page-gutter))) !important;
+  max-width: var(--page-width) !important;
+  min-width: 0 !important;
+  margin: 24px auto !important;
+  padding: clamp(18px, 3vw, 32px) !important;
+  border: 1px solid #303a4b;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #151b26, #0d1119);
+  text-align: left;
+}
+.content-refresh > .page-intro { border: 0; background: none; padding: 0 !important; margin-top: clamp(28px, 5vw, 64px) !important; }
+.content-refresh :is(main, section, fieldset, article, form, .profile-info, .card, .forum-thread) { min-width: 0; overflow-wrap: anywhere; }
+.content-refresh :is(main, section, form) :is(h2,h3) { line-height: 1.3; color: #f4f7fc; }
+.content-refresh :is(main, section, form) p { line-height: 1.7; }
+.content-refresh :is(main, section, form) :is(img, video, canvas, iframe) { max-width: 100%; }
+.content-refresh :is(main, section, form) :is(fieldset, .help-block) { width: 100% !important; min-width: 0 !important; max-width: 100% !important; margin-inline: 0 !important; }
+.content-refresh fieldset { padding: clamp(16px, 2.5vw, 28px); border: 1px solid #354054; border-radius: 14px; background: #101620; }
+.content-refresh legend { max-width: 100%; padding: 0 8px; color: #f0f4fa; font-weight: 700; font-size: 1.05rem; white-space: normal; }
+.content-refresh .help-block { padding: 14px 16px; background: #172335; border: 1px solid #2e4765; border-radius: 10px; color: #c4d2e5; font-size: .9rem; }
+.content-refresh :is(input, select, textarea) { max-width: 100%; min-width: 0; box-sizing: border-box; font: inherit; }
+.content-refresh :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]), select, textarea) { border: 1px solid #43516a; border-radius: 9px; padding: 12px 14px; background: #0b1018; color: #f4f7fc; min-height: 44px; }
+.content-refresh input::placeholder, .content-refresh textarea::placeholder { color: #a3aec0; opacity: 1; }
+.content-refresh textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+.content-refresh label { color: #dce5f1; line-height: 1.5; }
+.content-refresh :is(button, .cta-button) { max-width: 100%; min-height: 44px; padding: 10px 18px; border-radius: 9px; font-size: .95rem; line-height: 1.35; white-space: normal; overflow-wrap: anywhere; }
+.content-refresh :is(a, button, input, select, textarea):focus-visible { outline: 2px solid #62d9f5; outline-offset: 3px; }
+.content-refresh .table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid #354054; border-radius: 12px; }
+.content-refresh .table-scroll table { margin: 0; min-width: 640px; }
+.content-refresh .table-scroll th, .content-refresh .table-scroll td { padding: 12px 16px; text-align: left; line-height: 1.5; }
+/* Proposal forms retain their IDs, validation and submission handlers. */
+.content-refresh #offerForm { display: grid; gap: 24px; padding: 0 !important; border: 0; background: none; }
+.content-refresh #offerForm > section { width: 100%; margin: 0; padding: 0; }
+.content-refresh #offerForm :is(input:not([type=checkbox]):not([type=radio]), select, textarea) { width: 100%; }
+.content-refresh #offerForm :is(.form-row, .row) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 16px 0; }
+.content-refresh #offerForm .form-group { width: 100%; min-width: 0; margin: 0; }
+.content-refresh #offerForm label { display: inline-block; margin: 8px 0; }
+.content-refresh #offerForm br + br { display: none; }
+.content-refresh .profile-header { display: grid !important; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); gap: 28px !important; width: 100% !important; align-items: start !important; }
+.content-refresh .profile-picture { width: 100%; min-width: 0; text-align: center; }
+.content-refresh .profile-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; }
+.content-refresh .profile-info { width: 100% !important; padding: 0 !important; margin: 0 !important; text-align: left; }
+.content-refresh .stars-row { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 24px !important; }
+.content-refresh .review-wrapper { display: grid !important; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.content-refresh .review-wrapper > section { width: 100%; margin: 0; padding: 0; }
+.content-refresh .profile-display { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+/* Community and reputation: useful controls first, readable discussion cards. */
+.content-refresh .forum-hero { text-align: left; margin-bottom: 24px; }
+.content-refresh .forum-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, 240px) auto; gap: 12px; margin: 24px 0; }
+.content-refresh .forum-controls > * { width: 100%; margin: 0; }
+.content-refresh :is(.forum-tabs, .tabs) { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; padding: 0; }
+.content-refresh :is(.forum-tab, .tab-btn) { border: 1px solid #3c4d64; background: #121c2a; color: #dce7f8; box-shadow: none; }
+.content-refresh :is(.forum-tab.active, .tab-btn.active) { border-color: #63d7f6; background: #15334a; color: #fff; }
+.content-refresh :is(.forum-list, .forum-thread, .review-card, .review-thread) { width: 100% !important; max-width: 100% !important; min-width: 0 !important; margin-inline: 0 !important; }
+.content-refresh .forum-thread { padding: 22px; margin-block: 16px; border: 1px solid #354054; border-radius: 12px; background: #111a27; }
+.content-refresh .forum-thread :is(h2,h3) { margin-top: 0; }
+.content-refresh :is(.forum-thread-meta, .thread-meta) { color: #aabbd1; font-size: .875rem; }
+.content-refresh .reviews-container { max-width: 960px !important; }
+/* Support page: consistent sections and reward cards, no overflowing nested frame. */
+.content-refresh .leftmain { display: grid; gap: 28px; padding: 0 !important; border: 0; background: none; }
+.content-refresh .leftmain > :is(main, section, fieldset) { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 24px !important; border: 1px solid #303a4b; border-radius: 16px; background: #111722; }
+.content-refresh .leftmain .referral-banner { width: auto !important; margin: 0 !important; padding: 16px !important; }
+.content-refresh .leftmain .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: center; width: 100%; }
+.content-refresh .leftmain .hero-phone-img { max-height: 360px; width: auto; object-fit: contain; }
+.content-refresh :is(.supporter-badge-grid, .tier-grid) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; width: 100%; }
+.content-refresh :is(.supporter-badge-card, .tier-card) { min-width: 0; width: 100%; margin: 0; padding: 24px 20px; border: 1px solid #354054; border-radius: 14px; background: #17202e; }
+.content-refresh .newsletter { width: 100%; padding: 24px; margin: 0; }
+.content-refresh .newsletter input { width: 100%; }
+.content-refresh .newsletter form { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 12px; align-items: end; }
+/* Connection/recovery pages have a narrow reading measure. */
+body[data-page=reset-password] { --page-width: 720px; }
+.content-refresh .login-wrapper, .content-refresh .loginbox { width: 100% !important; max-width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; border: 0; box-shadow: none; background: none; }
+.content-refresh .loginbox .logo { display: none; }
+.content-refresh .password-input-wrapper { position: relative; width: 100%; }
+.content-refresh .password-input-wrapper input { width: 100%; padding-right: 52px; }
+.content-refresh .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); }
+.content-refresh .page-status-card { width: 100%; max-width: 640px !important; margin: 0 auto !important; padding: 24px !important; background: #101722 !important; border: 1px solid #354054; border-radius: 12px; box-shadow: none !important; color: #e8eef7 !important; }
+.content-refresh .page-status-card :is(h2, p, .supporta, #fail-status) { color: #e8eef7 !important; }
+.content-refresh .page-status-card button { margin: 8px 8px 0 0 !important; }
+body[data-page=roadmap] .container { box-shadow: none; }
+body[data-page=roadmap] .subtitle { color: #b8c5d7; font-size: 1rem; }
+/* Constrain dialogs rather than concealing document overflow. */
+body[data-page] :is(.modal-content, .modal-box, .settings-dropdown) { max-width: calc(100vw - 32px); min-width: 0; max-height: 85dvh; overflow: auto; }
+@media (max-width: 800px) {
+  .content-refresh :is(.profile-display, .leftmain .hero-grid) { grid-template-columns: minmax(0, 1fr); }
+  .content-refresh :is(.supporter-badge-grid, .tier-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-refresh .forum-controls { grid-template-columns: minmax(0, 1fr) minmax(130px, 180px); }
+  .content-refresh .forum-controls button { grid-column: 1 / -1; }
+}
+@media (max-width: 540px) {
+  .content-refresh .profile-header, .content-refresh #offerForm :is(.form-row, .row), .content-refresh :is(.supporter-badge-grid, .tier-grid), .content-refresh .forum-controls, .content-refresh .newsletter form { grid-template-columns: minmax(0, 1fr); }
+  .content-refresh .profile-header { gap: 20px !important; }
+  .content-refresh .profile-picture { text-align: left; }
+  .content-refresh :is(.forum-tabs, .tabs) > button { flex: 1 1 110px; }
+  .content-refresh .leftmain > :is(main, section, fieldset) { padding: 18px !important; }
+}
+@media print { .content-refresh .page-intro { margin-top: 0 !important; } }
+
+/* Remaining legacy content containers. */
+.content-refresh > .review-page-container { width: min(960px, calc(100% - 2 * var(--page-gutter))) !important; max-width: 960px; margin: 24px auto !important; padding: clamp(18px, 3vw, 32px); border: 1px solid #303a4b; border-radius: 18px; background: #111722; }
+.content-refresh :is(.review-thread-container, .featured-wrap, .featured-hero, .featured-wrap .grid, .settings-profile-wrap, .settings-profile-main) { min-width: 0 !important; max-width: 100% !important; }
+.content-refresh .featured-wrap .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.content-refresh .review-header { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: center; }
+.content-refresh .review-text { max-width: 72ch; line-height: 1.75; white-space: pre-wrap; }
+.content-refresh .review-action-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.content-refresh .settings-profile-wrap { display: grid !important; grid-template-columns: 180px minmax(0,1fr); gap: 24px !important; }
+.content-refresh .settings-profile-grid { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px !important; }
+.content-refresh :is(.settings-profile-grid, .settings-profile-main) input { width: 100%; }
+.content-refresh .contact-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.content-refresh .contact-form { max-width: 720px; margin: 0; }
+.content-refresh .contact-form label { display: block; margin: 16px 0 6px; }
+.content-refresh .contact-form :is(input,textarea) { width: 100%; }
+@media(max-width:700px) { .content-refresh :is(.featured-wrap .grid, .settings-profile-wrap, .settings-profile-grid, .contact-grid) { grid-template-columns: minmax(0,1fr) !important; } }
+
+.content-refresh .dashboard > section, .content-refresh .sponsee-info > section { width: 100% !important; max-width: 100% !important; margin: 0 0 24px !important; padding: 0; }
+.page-skip-link { position: fixed; top: 8px; left: 8px; z-index: 100000; padding: 12px 18px; border-radius: 8px; background: #fff; color: #101722; transform: translateY(-160%); }
+.page-skip-link:focus { transform: translateY(0); }
+
+.content-refresh .forum-hero { width: 100%; max-width: none; margin: 0 0 24px !important; padding: 0; }
+.content-refresh .forum-controls { width: 100%; max-width: none; }
+
+.content-refresh .newsletter > label { grid-column: 1 / -1; }

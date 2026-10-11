@@ -9,8 +9,10 @@
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
 <script type="module" src="./js/connectionHeader.js?v=20261011-grid4"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body id="site-top">
+<body class="content-refresh" id="site-top" data-page="oauth2callback">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -29,8 +31,9 @@
     </div>
   </section>
 </header>
+<div class="page-intro"><p class="page-eyebrow">Connected platforms</p><h1>Connecting your account.</h1><p>Follow the status below. Never share your password or a platform access token in a message.</p></div>
 
-<main style="min-height:40vh;">
+<main style="min-height:40vh;" id="page-content" tabindex="-1">
   <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
     <h2 id="platform-heading" style="color:#4886f4;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span>🔗 Connecting to <b id="platform-name" style="color:#111;font-weight:700;">Your Platform</b>…</span>

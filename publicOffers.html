@@ -39,8 +39,10 @@
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <script type="module" src="./js/secondaryPages.js?v=20261011-audit1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="publicOffers">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 
 <header class="navbar1">
   <section class="navbar">
@@ -60,13 +62,14 @@
     </div>
   </section>
 </header>
+<div class="page-intro"><p class="page-eyebrow">Open opportunities</p><h1>Find the right creator for your brief.</h1><p>Publish a clear opportunity with your goals, budget and deliverables so creators know what you need.</p></div>
 
 <div class="wallet">
   Wallet: $[Wallet]
   <span class="info-icon" data-tooltip="For refunded Money" style="color: white;">🛈</span>
 </div>
 
-<section class="userprofile">
+<section class="userprofile" id="page-content" tabindex="-1">
   <fieldset>
     <legend>Your Sponsor Profile</legend>
     <div class="profile-header">

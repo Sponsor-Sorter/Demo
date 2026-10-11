@@ -50,8 +50,10 @@
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <script type="module" src="./js/secondaryPages.js?v=20261011-audit1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="reviews">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
   <header class="navbar1">
     <section class="navbar">
       <div class="navii">
@@ -69,8 +71,9 @@
       </div>
     </section>
   </header>
+<div class="page-intro" id="page-content" tabindex="-1"><p class="page-eyebrow">Community feedback</p><h1>Hear from the people using Sponsor Sorter.</h1><p>Browse submitted reviews and share your experience. Individual experiences can differ.</p></div>
   <div class="review-page-container">
-    <h1 style="margin-bottom:18px;">User Reviews of Sponsor Sorter</h1>
+    <h2 style="margin-bottom:18px;" class="page-content-heading">User Reviews of Sponsor Sorter</h2>
     <div id="reviews-summary" class="reviews-summary-block"></div>
     <div id="review-form-section" class="review-form-block" style="display:none;">
       <h3>Leave a Review</h3>

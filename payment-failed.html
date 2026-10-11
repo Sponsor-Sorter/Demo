@@ -12,13 +12,15 @@
 <link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
+  <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 </head>
 <style>
     .supporta a {
         background-color: #fff7f7;color: #2429bc;text-decoration: underline;
     }
 </style>
-<body class="secondary-page public-content-page" id="site-top">
+<body class="secondary-page public-content-page content-refresh" id="site-top" data-page="payment-failed">
+<a class="page-skip-link" href="#page-content">Skip to content</a>
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -37,12 +39,13 @@
     </div>
   </section>
 </header>
-<main style="min-height:40vh;">
-  <div style="max-width:500px;margin:38px auto;padding:24px 28px;background:#fff7f7;border-radius:14px;box-shadow:0 2px 24px 0 #f8d7da;">
+<div class="page-intro"><p class="page-eyebrow">Checkout</p><h1>Your payment needs attention.</h1><p>Check the status below before retrying. Contact support if you are unsure whether a payment was collected.</p></div>
+<main style="min-height:40vh;" id="page-content" tabindex="-1">
+  <div class="page-status-card" style="max-width:500px;margin:38px auto;padding:24px 28px;background:#fff7f7;border-radius:14px;box-shadow:0 2px 24px 0 #f8d7da;">
     <h2 style="color:#c9302c;">❌ Payment Failed</h2>
     <div id="fail-status" style="margin-bottom:16px;color:#c9302c;">
       Unfortunately, your payment did not complete.<br>
-      <strong>No money was charged and your account/offer was not created.</strong>
+      <strong>Do not assume payment was collected or refunded. Check your receipt or contact support before retrying.</strong>
     </div>
     <div class="supporta" style="margin-bottom:18px;color:black">
       You can try again below or contact <a href="mailto:support@sponsorsorter.com">support</a> if you need help.
