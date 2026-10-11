@@ -1,4 +1,4 @@
-import { renderCampaignToday } from "./campaignToday.js?v=20261011-today1";
+import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js

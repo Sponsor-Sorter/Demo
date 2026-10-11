@@ -574,7 +574,21 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  test('both dashboard entrypoints invalidate cached campaign modules for priorities release',()=>{
  for(const role of ['sponsor','sponsee']){
  const html=fs.readFileSync(path.join(__dirname,'../dashboard'+role+'.html'),'utf8');
- assert.ok(html.includes('./js/'+role+'Offers.js?v=20261011-today1'));
+ assert.ok(html.includes('./js/'+role+'Offers.js?v=20261011-calendar1'));
  assert.ok(!html.includes('./js/'+role+'Offers.js?v=20261011-campaign1'));
  }
+ });
+
+ test('calendar exports only upcoming agreed deadlines with exclusive end dates and stable IDs',async()=>{
+ const {campaignCalendar}=await import('../js/campaignCalendar.js');
+ const now=new Date('2026-10-11T12:00:00Z');const base={id:'one',stage:2,status:'accepted',deadline:'2026-12-31',offer_title:'Test'};
+ const result=campaignCalendar([base,base,{...base,id:'pending',stage:1},{...base,id:'done',stage:5},{...base,id:'old',deadline:'2020-01-01'},{...base,id:'bad',deadline:'2026-02-30'},{...base,id:'archived',archived:true}],now);
+ assert.equal(result.count,1);assert.match(result.content,/DTSTART;VALUE=DATE:20261231/);assert.match(result.content,/DTEND;VALUE=DATE:20270101/);assert.match(result.content,/UID:campaign-one@sponsorsorter.com/);assert.match(result.content,/CLASS:PRIVATE/);
+ });
+ test('calendar escapes injected properties and folds Unicode lines at 75 bytes',async()=>{
+ const {campaignCalendar}=await import('../js/campaignCalendar.js');
+ const result=campaignCalendar([{id:'id\r\nATTENDEE:bad',stage:3,deadline:'2026-12-20',offer_title:'Title,semi;slash\\\r\nATTENDEE:bad '+ '🎬'.repeat(80),sponsee_email:'private@example.com',offer_amount:999}],new Date('2026-10-11T12:00:00Z'));
+ assert.equal(result.count,1);assert.ok(!result.content.includes('\r\nATTENDEE:'));assert.ok(!result.content.includes('private@example.com'));assert.ok(!result.content.includes('999'));
+ for(const line of result.content.split('\r\n')) assert.ok(Buffer.byteLength(line,'utf8')<=75);
+ assert.ok(result.content.includes('\\,'));assert.ok(result.content.includes('\\;'));
  });

@@ -288,3 +288,9 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 
 ### Daily priorities cache correction
 - Live deployment contained the new module but HTML still imported the old campaign1 cache key: the earlier replacement updated only the first occurrence in each document. Corrected both explicit offer-module entrypoints to today1 and added a regression test. Prior live verification was incomplete; this correction addresses stale browser module caching.
+
+## 2026-10-11 — Campaign calendar export
+
+- Both next-step panels offer a local ICS download when loaded campaigns have upcoming deadlines in stages 2–4. Excludes pending/unagreed, terminal, archived, invalid dates and past deadlines; deduplicates IDs. Date-only deadlines export as all-day events, explicit timestamps use browser-local dates. No background sync, calendar account connection or external transmission.
+- RFC5545 content uses CRLF, UTF-8-aware 75-byte folding, escaped text, stable event UIDs, private/free calendar classification and exclusive next-day end dates. Only campaign title/date/opaque ID exported; no participants, contact details, prices, tokens or file URLs. UI states that the snapshot contains titles/dates and does not automatically update.
+- Browser downloaded sponsor-sorter-deadlines.ics from fictional two-campaign fixture; inspected both events and dates. Layout client/scroll1280 equal. Automated suite60 tests passes, including exclusions, date validation, year boundary, property-injection protection and Unicode folding. Calendar import into an external calendar application not exercised. No account data writes or payment changes.

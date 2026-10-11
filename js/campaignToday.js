@@ -1,3 +1,7 @@
+import {
+  campaignCalendar,
+  downloadCampaignCalendar,
+} from "./campaignCalendar.js?v=20261011-calendar1";
 // Read-only attention summary from the dashboard's already authorised records.
 export function attentionItems(offers, role, now = Date.now()) {
   return offers
@@ -86,6 +90,22 @@ export function renderCampaignToday(host, offers, role, onOpen) {
       " due in 7 days"
     : "No active campaigns need attention. Explore Finder for your next partnership.";
   section.append(heading, summary);
+  const calendar = campaignCalendar(offers);
+  if (calendar.count) {
+    const exportBar = document.createElement("div");
+    exportBar.className = "today-calendar";
+    const download = document.createElement("button");
+    download.type = "button";
+    download.textContent = "Export " + calendar.count + " upcoming deadlines";
+    download.addEventListener("click", () =>
+      downloadCampaignCalendar(calendar),
+    );
+    const description = document.createElement("p");
+    description.textContent =
+      "Download a calendar file. It includes campaign titles and dates, and does not update automatically.";
+    exportBar.append(download, description);
+    section.append(exportBar);
+  }
   if (!items.length) {
     const link = document.createElement("a");
     link.href = "finder.html";

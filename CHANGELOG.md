@@ -239,3 +239,7 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Added researched creator hub development roadmap.
 
 - Fixed dashboard module cache invalidation so returning visitors receive the daily priorities update.
+
+## 2026-10-11 — Calendar export
+- Download upcoming agreed campaign deadlines as a calendar file from either dashboard.
+- Clear snapshot explanation; excludes closed campaigns and private contact/payment details.

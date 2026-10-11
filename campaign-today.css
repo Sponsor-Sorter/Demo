@@ -77,3 +77,30 @@
   outline: 2px solid #55dcff;
   outline-offset: 3px;
 }
+
+.campaign-today .today-calendar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+.campaign-today .today-calendar button {
+  flex: 0 1 auto;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid #3b6380;
+  border-radius: 7px;
+  background: #193c59;
+  color: #d7efff;
+  font-size: 0.85rem;
+  white-space: normal;
+  box-shadow: none;
+}
+.campaign-today .today-calendar p {
+  flex: 1 1 220px;
+  margin: 0;
+  color: #a9bdce;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
