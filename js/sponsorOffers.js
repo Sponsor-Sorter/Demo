@@ -1,7 +1,7 @@
-import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts2';
+import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
-import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts2';
+import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts3';
 import { notifyComment, notifyOfferUpdate } from './alerts.js';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';

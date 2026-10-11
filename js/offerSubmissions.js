@@ -94,10 +94,23 @@ async function uploadDraft(file, path, progress) {
       onProgress: (bytes, total) => {
         progress.value = Math.round((bytes / total) * 100);
       },
-      onError: (error) => reject(draftUploadError(error)),
+      onError: (error) => reject(error),
       onSuccess: resolve,
     });
     upload.start();
+  }).catch(async (error) => {
+    const status = Number(error?.originalResponse?.getStatus?.() || error?.statusCode || error?.status || 0);
+    // Some networks block TUS/PATCH. Retry through the SDK only when no
+    // HTTP response was received; never work around an authorization denial.
+    if (status) throw draftUploadError(error);
+    progress.value = 0;
+    const { error: fallbackError } = await supabase.storage.from(BUCKET).upload(path, file, {
+      contentType: file.type,
+      cacheControl: "3600",
+      upsert: false,
+    });
+    if (fallbackError) throw draftUploadError(fallbackError);
+    progress.value = 100;
   });
 }
 

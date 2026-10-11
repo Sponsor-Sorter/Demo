@@ -396,3 +396,13 @@ test('small draft upload uses private SDK storage without overwriting',async()=>
  await context.uploadDraft({size:1024,type:'video/mp4'},'private/path.mp4',progress);
  assert.equal(writes[0].bucket,'offer-submissions');assert.equal(writes[0].args[2].upsert,false);assert.equal(progress.value,100);
 });
+
+
+test('resumable network failures fall back without overriding server denials',async()=>{
+ for(const status of [0,403,413]) {
+  const writes=[];const context={supabase:{auth:{getSession:async()=>({data:{session:{access_token:'test'}}})},storage:{from:()=>({upload:async(...args)=>{writes.push(args);return {error:null};}})}},Upload:class{constructor(file,options){this.options=options;}start(){this.options.onError({originalResponse:{getStatus:()=>status}});}}};
+  let source=fs.readFileSync(path.join(__dirname,'../js/offerSubmissions.js'),'utf8');source=source.slice(source.indexOf('const BUCKET'),source.indexOf('export async function mountOfferSubmissions')).replaceAll('export ','').replace('const { Upload } = await import("https://esm.sh/tus-js-client@4.3.1");','');vm.runInNewContext(source,context);
+  const result=context.uploadDraft({size:8*1024*1024,type:'video/mp4'},'test/path.mp4',{value:0});
+  if(status) {await assert.rejects(result);assert.equal(writes.length,0);}else{await result;assert.equal(writes.length,1);assert.equal(writes[0][2].upsert,false);}
+ }
+});
