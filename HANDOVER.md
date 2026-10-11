@@ -300,3 +300,6 @@ Brand/tab cache version grid3 across 37 pages. Text up to 72px and icon up to 88
 - Public profile now offers a concise media kit preview and Print / save PDF action. New js/creatorMediaKit.js projects an explicit public field allowlist (introduction, name, category, broad location, declared platforms, valid public review summary and canonical public link). No new database reads or permissions, no personal contacts, wallet, audience estimates or invented rates. Missing ratings remain unknown.
 - Preview uses safe textContent, accessible expanded state and an optional public link. Focused print sheet hides surrounding UI only during explicit media-kit print mode and cleans up on afterprint. Regular browser printing is not blanked by the feature.
 - Fictional browser preview verified expansion, public content, print preparation using a local stub (not an actual PDF output), and client/scroll1265px equal. 62 automated tests pass including public allowlist, malformed slug, rating validation and cache entrypoint. Actual OS PDF rendering remains unverified. Live profile check follows deployment.
+
+## 12 October 2026 — Campaign report release
+See CAMPAIGN_REPORT_RELEASE.md for published scope, validation and remaining payment release gates. Financial handlers and their callers remain local and must not be deployed independently.

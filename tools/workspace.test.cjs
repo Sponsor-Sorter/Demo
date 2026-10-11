@@ -298,11 +298,11 @@ function snapshotFixture(row, writeFails = false) {
       maybeSingle: async () => ({data: payload, error: writeFails ? new Error('denied') : null})
     }; } }; }
   };
-  const context = { URL, TextEncoder, console, supabase: {
+  const context = { URL, TextEncoder, console, observedMetrics: input => input, supabase: {
     from: () => query, auth: {getSession: async () => ({data:{session:{user:{id:'fixture'}}}})}
   }};
   const source = fs.readFileSync(path.join(__dirname, '../js/statsnap.js'), 'utf8')
-    .replace(/^import .*;\r?\n/gm, '').replace(/export /g, '');
+    .replace(/^import[\s\S]*?;\r?\n/gm, '').replace(/export /g, '');
   vm.runInNewContext(source, context);
   return {context, writes};
 }
@@ -462,7 +462,7 @@ test('every deployed page has the canonical footer and shared brand assets',()=>
  for(const file of [...fs.readdirSync(root).filter(f=>f.endsWith('.html')),'u/index.html']) {
   const html=fs.readFileSync(path.join(root,file),'utf8');if(!/<body\b/i.test(html))continue;
   const base=file.includes('/')?'../':'./';
-  assert.ok(html.includes(template.replaceAll('{{base}}',base)),file);
+  assert.ok(html.replaceAll('\r\n','\n').includes(template.replaceAll('\r\n','\n').replaceAll('{{base}}',base)),file);
   assert.equal((html.match(/<footer\b/g)||[]).length,1,file);
   assert.ok(html.includes('site-shell.css'),file);assert.ok(html.includes('connectionHeader.js'),file);
   assert.ok(html.includes('id="site-top"'),file);
@@ -574,7 +574,7 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  test('both dashboard entrypoints invalidate cached campaign modules for priorities release',()=>{
  for(const role of ['sponsor','sponsee']){
  const html=fs.readFileSync(path.join(__dirname,'../dashboard'+role+'.html'),'utf8');
- assert.ok(html.includes('./js/'+role+'Offers.js?v=20261011-calendar1'));
+ assert.ok(html.includes('./js/'+role+'Offers.js?v=20261011-reports1'));
  assert.ok(!html.includes('./js/'+role+'Offers.js?v=20261011-campaign1'));
  }
  });

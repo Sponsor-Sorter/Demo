@@ -261,3 +261,6 @@ Bell, messages and settings stay beside tabs on the right; removed the legacy se
 - Invitation identity is immutable; only the recipient can accept/decline and the sender revoke a pending invite. Acceptance requires existing membership established by the atomic join operation. Server sets response timestamps.
 - Loading group offers no longer automatically finalizes overdue offers or queues payouts. Lookup/queue/close failures stop completion and success notifications; invalid amounts and missing private agreements fail explicitly.
 - Database guard tested in isolated PGlite and applied transactionally via Supabase dashboard. Existing 70 tests and dedicated group settlement error checks pass. Manual settlement remains non-atomic across queue and group status; provider-backed settlement is still outstanding.
+
+## 2026-10-12 — Retained campaign performance
+Added participant-only report access on sponsor/creator dashboards, timestamped history, honest stale/unknown states and safe CSV export. Tightened platform URL recognition. Payment changes are not included in this release.

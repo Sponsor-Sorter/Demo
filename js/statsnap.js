@@ -1,3 +1,4 @@
+import { observedMetrics } from './campaignReports.js?v=20261011-reports1';
 // ./js/statsnap.js
 //
 // Lightweight snapshot helper:
@@ -22,6 +23,9 @@
 import { supabase } from './supabaseClient.js';
 
 /* ------------ URL normalization & platform detection ------------ */
+function isPlatformHost(host, domain) {
+  return host === domain || host.endsWith('.' + domain);
+}
 function stripTrackingParams(u) {
   const drop = new Set([
     'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
@@ -39,9 +43,9 @@ function sortSearchParams(u) {
 function canonicalYouTube(u) {
   const h = u.hostname.toLowerCase();
   let id = null;
-  if (h.includes('youtu.be')) {
+  if (isPlatformHost(h, 'youtu.be')) {
     id = u.pathname.replace(/^\/+/, '').split('/')[0] || null;
-  } else if (h.includes('youtube.com')) {
+  } else if (isPlatformHost(h, 'youtube.com')) {
     const p = u.pathname;
     if (p.startsWith('/shorts/')) id = p.split('/')[2] || null;
     if (!id) id = u.searchParams.get('v');
@@ -56,11 +60,12 @@ function canonicalYouTube(u) {
 export function normalizeUrl(original) {
   let u;
   try { u = new URL(original); } catch { return String(original || '').trim(); }
+  if (u.protocol !== 'https:' || u.username || u.password) return u.toString();
   u.hash = '';
   u.hostname = u.hostname.toLowerCase();
   stripTrackingParams(u);
   sortSearchParams(u);
-  if (u.hostname.includes('youtube.com') || u.hostname.includes('youtu.be')) {
+  if (isPlatformHost(u.hostname, 'youtube.com') || isPlatformHost(u.hostname, 'youtu.be')) {
     u = canonicalYouTube(u);
   }
   if (u.pathname !== '/' && u.pathname.endsWith('/')) {
@@ -70,12 +75,13 @@ export function normalizeUrl(original) {
 }
 export function detectPlatform(url) {
   try {
-    const h = new URL(url).hostname.toLowerCase();
-    if (h.includes('youtube.com') || h.includes('youtu.be')) return 'youtube';
-    if (h.includes('tiktok.com')) return 'tiktok';
-    if (h.includes('instagram.com')) return 'instagram';
-    if (h.includes('facebook.com')) return 'facebook';
-    if (h.includes('twitch.tv')) return 'twitch';
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'https:' || parsed.username || parsed.password) return 'unknown';
+    const h = parsed.hostname.toLowerCase();
+    if (isPlatformHost(h, 'youtube.com') || isPlatformHost(h, 'youtu.be')) return 'youtube';
+    for (const [domain, platform] of [['tiktok.com', 'tiktok'], ['instagram.com', 'instagram'], ['facebook.com', 'facebook'], ['twitch.tv', 'twitch']]) {
+      if (isPlatformHost(h, domain)) return platform;
+    }
   } catch {}
   return 'unknown';
 }
@@ -135,6 +141,14 @@ async function upsertSnapshot(payload){
 export async function statsnapSaveAfterSuccess({ originalUrl, platformHint, offerId = null, liveMetrics, raw }){
   const normalized_url = normalizeUrl(originalUrl);
   const platform = platformHint || detectPlatform(normalized_url);
+  const cleanMetrics = observedMetrics(liveMetrics || {});
+  if (offerId && Object.keys(cleanMetrics).length) {
+    try {
+      await supabase.rpc('record_campaign_observation', {
+        campaign_id: offerId, content_url: originalUrl, platform, metrics: cleanMetrics
+      });
+    } catch { /* Saving history must not hide the current result. */ }
+  }
   const forHash = { platform, url: normalized_url, metrics: liveMetrics || {} };
   const metrics_hash = await sha256Hex(stableStringify(forHash));
   const now = new Date().toISOString();
@@ -150,7 +164,7 @@ export async function statsnapSaveAfterSuccess({ originalUrl, platformHint, offe
         normalized_url,
         platform,
         offer_id: existing?.offer_id ?? offerId,
-        last_stats: raw ?? { metrics: liveMetrics || {} },
+        last_stats: { metrics: cleanMetrics },
         metrics_hash,
         last_success_at: now,
         last_checked_at: now,

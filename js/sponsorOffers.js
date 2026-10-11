@@ -1,3 +1,4 @@
+import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
@@ -9,7 +10,7 @@ import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
-import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-performance1';
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-reports1';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
@@ -325,7 +326,7 @@ async function renderSingleOffer(offer, version) {
         <button class="offer-Comments">Comments</button>
         <button class="offer-img">Offer Images</button>
         <button class="expand-btn">View Details</button>
-        ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button>' : ''}
+        ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button><button class="campaign-report-btn">Performance history</button>' : ''}
         ${actionButton}
         ${offer.stage === 4 && !(offer.sponsor_live_confirmed || offer.sponsor_live_confirm) ? '<button class="confirm-live-btn">Confirm Live Content</button>' : ''}
         <div class="details-section" style="display: none;">
@@ -669,6 +670,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         prevBtn.onclick = () => showImage((currentIndex - 1 + imageUrls.length) % imageUrls.length);
         nextBtn.onclick = () => showImage((currentIndex + 1) % imageUrls.length);
       }
+    }
+
+    if (e.target.classList.contains('campaign-report-btn')) {
+      hideAllSections();dataSummarySection.style.display='block';
+      await mountCampaignReport(dataSummarySection,offerId).catch(()=>{dataSummarySection.textContent='Report unavailable. Please retry.';});
+      return;
     }
 
     // --- DATA SUMMARY with snapshot fallback ---

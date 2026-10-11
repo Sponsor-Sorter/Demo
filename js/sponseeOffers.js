@@ -1,3 +1,4 @@
+import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts3';
@@ -41,7 +42,7 @@ async function getCurrentSponseeActiveOfferCount() {
 
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
-import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-performance1';
+import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-reports1';
 
 let allSponseeOffers = [];
 let currentPage = 1;
@@ -640,7 +641,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
           <button class="offer-Comments">Comments</button>
           <button class="offer-img">Offer Images</button>
           <button class="expand-btn">View Details</button>
-          ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button>' : ''}
+          ${Number(offer.stage) >= 4 || ['completed', 'review_completed', 'review-completed'].includes(offer.status) ? '<button class="data-summary-btn">Content Performance</button><button class="campaign-report-btn">Performance history</button>' : ''}
           <div class="details-section" style="display:none;">
             <p><fieldset><legend><strong>Description:</strong></legend>${offer.offer_description}</fieldset></p>
             <div class="job-deliverable-row">
@@ -769,6 +770,12 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     }
 
     // --- Data Summary (multi-URL; toggle; shows "Loading i of N") ---
+    if (e.target.classList.contains('campaign-report-btn')) {
+      hideAllSections();dataSummarySection.style.display='block';
+      await mountCampaignReport(dataSummarySection,offerId).catch(()=>{dataSummarySection.textContent='Report unavailable. Please retry.';});
+      return;
+    }
+
     if (e.target.classList.contains('data-summary-btn')) {
       if (!dataSummarySection) return;
 
