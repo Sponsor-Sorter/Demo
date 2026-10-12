@@ -11,4 +11,21 @@ button?.addEventListener('click',async()=>{
  const prompt=pendingPrompt;pendingPrompt=null;button.disabled=true;
  try{await prompt.prompt();const choice=await prompt.userChoice;status.textContent=choice.outcome==='accepted'?'Installation requested. Follow your phone’s confirmation.':'Installation cancelled. You can still use the website or install from your browser menu.';}catch{status.textContent='Use your browser’s install or Add to Home Screen option below.';}
 });
-if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost' || location.hostname==='127.0.0.1'))navigator.serviceWorker.register('/service-worker.js',{scope:'/'}).catch(()=>{if(status)status.textContent='You can use Sponsor Sorter online. If installation is unavailable, try your browser’s Add to Home Screen option.';});
+// Check the worker on launch, resume and reconnect. Do not reload active forms.
+// Pages are served from the network, so the next navigation gets the latest release.
+if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost' || location.hostname==='127.0.0.1')){
+ navigator.serviceWorker.register('/service-worker.js',{scope:'/',updateViaCache:'none'}).then(registration=>{
+  if(!registration)return;
+  let lastCheck=0;
+  const check=()=>{
+   if(document.visibilityState==='hidden' || navigator.onLine===false)return;
+   const now=Date.now();
+   if(lastCheck && now-lastCheck<60000)return;
+   lastCheck=now;
+   registration.update().catch(()=>{});
+  };
+  check();
+  document.addEventListener('visibilitychange',check);
+  window.addEventListener('online',check);
+ }).catch(()=>{if(status)status.textContent='You can use Sponsor Sorter online. If installation is unavailable, try your browser’s Add to Home Screen option.';});
+}

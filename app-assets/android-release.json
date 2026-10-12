@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "versionCode": 4,
+  "package": "com.sponsorsorter.app",
+  "minimumAndroidVersion": "7.0",
+  "apkUrl": "https://expo.dev/artifacts/eas/mZEOdMtsergw1yNrfti7iiHBdPCxM2EVvavNGCZQ4R8.apk",
+  "sha256": "76a54492325f44c7d7f0f4e85e9e6c845e51415219c199a726c4fc786f64899e",
+  "signingCertificateSha256": "93b87832450ba5810b488e53e15848903b947a81b0fe5282927978a68a90bd72",
+  "runtimeVersion": "57947c994b19dfb702694fd7d3e49de67d7ff933",
+  "updateChannel": "preview",
+  "releaseDate": "2026-10-12"
+}
