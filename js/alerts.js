@@ -2,6 +2,11 @@
 import { supabase } from './supabaseClient.js';
 import { appendNotificationContent } from './notificationContent.js?v=20261012-safe1';
 
+const notificationStyles = document.createElement('link');
+notificationStyles.rel = 'stylesheet';
+notificationStyles.href = new URL('../notifications.css?v=20261012-brand4', import.meta.url).href;
+document.head.appendChild(notificationStyles);
+
 // === UI notification dropdown logic (shared by sponsor & sponsee) ===
 
 let notifications = [];
@@ -91,12 +96,16 @@ function consumeDeepLinkIfPresent() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const bell = document.getElementById('notification-bell');
+  let bell = document.getElementById('notification-bell');
   const badge = document.getElementById('notification-count');
   if (!bell || !badge) {
     consumeDeepLinkIfPresent(); // still consume deep link even if no bell on page
     return;
   }
+
+  // Imported helpers and versioned script tags can load separate module instances.
+  if (document.documentElement.dataset.notificationsReady) return;
+  document.documentElement.dataset.notificationsReady = 'true';
 
   // Build dropdown once
   let dropdown = document.getElementById('notification-dropdown');
@@ -104,19 +113,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     dropdown = document.createElement('div');
     dropdown.id = 'notification-dropdown';
     dropdown.style.display = 'none';
-    dropdown.style.position = 'absolute';
-    dropdown.style.right = '10px';
-    dropdown.style.top = '55px';
-    dropdown.style.background = '#222';
-    dropdown.style.color = '#fff';
-    dropdown.style.minWidth = '290px';
-    dropdown.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
-    dropdown.style.borderRadius = '11px';
-    dropdown.style.zIndex = '200';
-    dropdown.style.padding = '10px 0';
-    dropdown.style.maxHeight = '380px';
-    dropdown.style.overflowY = 'auto';
+    dropdown.setAttribute('role', 'region');
+    dropdown.setAttribute('aria-label', 'Notifications');
+    dropdown.addEventListener('click', e => e.stopPropagation());
     document.body.appendChild(dropdown);
+  }
+
+  bell.setAttribute('aria-controls', 'notification-dropdown');
+  bell.setAttribute('aria-expanded', 'false');
+  function closeNotifications() {
+    dropdown.style.display = 'none';
+    bell.setAttribute('aria-expanded', 'false');
   }
 
   // Session + user
@@ -214,38 +221,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
  function renderDropdown() {
   if (!dropdown) return;
-  dropdown.innerHTML = '';
+  dropdown.replaceChildren();
 
   const readCount   = notifications.filter(n => n.read).length;
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  const header = document.createElement('div'); header.className = 'notification-heading';
+  const heading = document.createElement('h2'); heading.textContent = 'Notifications';
+  const summary = document.createElement('p'); summary.textContent = unreadCount ? unreadCount + ' unread · latest updates' : 'You’re all caught up';
+  const close = document.createElement('button'); close.type = 'button'; close.className = 'notification-close';
+  close.textContent = '×'; close.setAttribute('aria-label', 'Close notifications'); close.onclick = closeNotifications;
+  header.append(heading, summary, close); dropdown.append(header);
+
   // === Actions row (Mark all read + Clear read) on ONE line ===
   if (unreadCount > 0 || readCount > 0) {
-    const actionsRow = document.createElement('div');
-    actionsRow.style.display = 'flex';
-    actionsRow.style.justifyContent = 'space-between';
-    actionsRow.style.alignItems = 'center';
-    actionsRow.style.gap = '8px';
-    actionsRow.style.padding = '4px 12px 10px 12px';
-    actionsRow.style.borderBottom = '1px solid #333';
-    actionsRow.style.marginBottom = '6px';
+    const actionsRow = document.createElement('div'); actionsRow.className = 'notification-actions';
 
     // Mark all read (left)
     if (unreadCount > 0) {
       const markAllBtn = document.createElement('button');
       markAllBtn.innerText = `Mark all read (${unreadCount})`;
-      markAllBtn.style.flex = '1';
-      markAllBtn.style.boxShadow = 'none';
-      markAllBtn.style.padding = '6px 10px';
-      markAllBtn.style.background = '#444';
-      markAllBtn.style.color = '#fff';
-      markAllBtn.style.border = 'none';
-      markAllBtn.style.borderRadius = '6px';
-      markAllBtn.style.cursor = 'pointer';
-      markAllBtn.style.fontWeight = 'bold';
-      markAllBtn.style.fontSize = '0.85rem';
-      markAllBtn.onmouseenter = () => (markAllBtn.style.background = '#555');
-      markAllBtn.onmouseleave = () => (markAllBtn.style.background = '#444');
       markAllBtn.onclick = async (e) => {
         e.stopPropagation();
         await markAllNotificationsRead();
@@ -256,18 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Clear read (right)
     if (readCount > 0) {
       const clearBtn = document.createElement('button');
-      clearBtn.innerText = `Clear Read (${readCount})`;
-      clearBtn.style.flex = '1';
-      clearBtn.style.padding = '6px 10px';
-      clearBtn.style.background = '#0096FF';
-      clearBtn.style.color = '#fff';
-      clearBtn.style.border = 'none';
-      clearBtn.style.borderRadius = '6px';
-      clearBtn.style.cursor = 'pointer';
-      clearBtn.style.fontWeight = 'bold';
-      clearBtn.style.fontSize = '0.85rem';
-      clearBtn.onmouseenter = () => (clearBtn.style.background = '#006ed1');
-      clearBtn.onmouseleave = () => (clearBtn.style.background = '#0096FF');
+      clearBtn.innerText = `Clear read (${readCount})`;
       clearBtn.onclick = async (e) => {
         e.stopPropagation();
         await clearReadNotifications();
@@ -280,22 +264,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // If no notifications at all
   if (!notifications.length) {
-    dropdown.innerHTML += `
-      <div class="notif-item"
-           style="padding:20px;text-align:center;color:#aaa;">
-        No notifications.
-      </div>`;
+    const empty = document.createElement('p'); empty.className = 'notification-empty';
+    empty.textContent = 'No updates yet. Your offers, messages and campaign activity will appear here.';
+    dropdown.append(empty);
     return;
   }
 
   // === Notification list ===
   notifications.forEach(n => {
-    const notif = document.createElement('div');
-    notif.className = 'notif-item';
-    notif.style.padding = '12px 18px';
-    notif.style.cursor = 'pointer';
-    notif.style.borderBottom = '1px solid #333';
-    notif.style.background = n.read ? 'transparent' : '#292929';
+    const notif = document.createElement('button');
+    notif.type = 'button';
+    notif.className = 'notif-item' + (n.read ? '' : ' is-unread');
     appendNotificationContent(notif, n);
 
     notif.onclick = async () => {
@@ -321,7 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const shouldBeSponsor = dashboard.toLowerCase().includes('dashboardsponsor.html');
       const isCorrectDashboard = (shouldBeSponsor && onSponsor) || (!shouldBeSponsor && onSponsee);
 
-      dropdown.style.display = 'none';
+      closeNotifications();
 
       // If we're on the wrong dashboard, just navigate there with deep-link params.
       if (!isCorrectDashboard) {
@@ -360,20 +339,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   // Bell open/close
-  bell.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
+    const currentBell = e.target.closest?.('#notification-bell');
+    if (!currentBell) return;
+    bell = currentBell;
+    bell.setAttribute('aria-controls', 'notification-dropdown');
     e.stopPropagation();
     if (dropdown.style.display === 'none') {
       const rect = bell.getBoundingClientRect();
-      dropdown.style.right = (window.innerWidth - rect.right + 12) + 'px';
-      dropdown.style.top = (rect.bottom + 8) + 'px';
+      dropdown.style.setProperty('--notification-right', Math.max(12, window.innerWidth - rect.right) + 'px');
+      const top = Math.min(rect.bottom + 8, window.innerHeight - 180);
+      dropdown.style.top = Math.max(12, top) + 'px';
+      dropdown.style.setProperty('--notification-room', Math.max(160, window.innerHeight - top - 12) + 'px');
       dropdown.style.display = 'block';
+      bell.setAttribute('aria-expanded', 'true');
     } else {
-      dropdown.style.display = 'none';
+      closeNotifications();
     }
   });
 
-  document.addEventListener('click', () => {
-    if (dropdown && dropdown.style.display === 'block') dropdown.style.display = 'none';
+  document.addEventListener('click', e => {
+    if (e.target.closest?.('#notification-bell, #notification-dropdown')) return;
+    closeNotifications();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && dropdown.style.display === 'block') { closeNotifications(); bell.focus(); }
   });
 
   // Initial load + polling

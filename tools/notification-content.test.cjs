@@ -19,3 +19,13 @@ test('shared notification dropdown uses the safe renderer',()=>{
  const alerts=fs.readFileSync('js/alerts.js','utf8');assert.match(alerts,/appendNotificationContent\(notif, n\)/);
  assert.doesNotMatch(alerts,/\$\{n\.(title|message)/);
 });
+
+test('notification inbox shares one initializer and supports keyboard controls',()=>{
+ const alerts=fs.readFileSync('js/alerts.js','utf8');
+ assert.ok(alerts.includes('if (document.documentElement.dataset.notificationsReady) return'));
+ assert.ok(alerts.includes("document.documentElement.dataset.notificationsReady = 'true'"));
+ assert.ok(alerts.includes("e.target.closest?.('#notification-bell')"));
+ assert.ok(alerts.includes("e.key === 'Escape'"));
+ const css=fs.readFileSync('notifications.css','utf8');
+ assert.ok(css.includes('calc(100% - 24px)'));assert.ok(css.includes(':focus-visible'));
+});
