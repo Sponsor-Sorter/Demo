@@ -7,6 +7,8 @@ Installed over build 4 on the authorized Samsung without clearing data. The exis
 
 This does not resolve legacy MFA enforcement, dependency advisories, database-advisor findings or the actual sandbox settlement blocker. A fresh install on a second device remains unverified. Build 4 remains available as a prior artifact; the following sections record that release's historical evidence.
 
+Build 5 OTA verification: published group `d83ecfc2-1770-4df8-94fa-b492c3708102`, Android update `01a12f6e-592b-71d2-bf73-79d2c78aa6bb`. Startup downloaded the update and a subsequent cold launch applied it automatically. Authenticated Settings displayed `Release 01a12f6e · preview`; login was retained. Evidence: native release/build5-ota-settings-ui.xml and build5-ota-verified.png. Live installer and JSON metadata both returned build 5 and its verified hash after deployment of b7e3ac0.
+
 ## Distribution
 The canonical QR destination is https://sponsorsorter.com/install.html. The page links directly to the public Expo-hosted signed APK, not the website wrapper. Release metadata is in app-assets/android-release.json. Do not replace this link with an unverified build.
 
