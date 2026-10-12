@@ -14,7 +14,7 @@
 // HTML container: <div id="admin-affiliate-section"></div>
 
 import { supabase } from "./supabaseClient.js";
-import { notifyOfferUpdate } from "./alerts.js";
+import { notifyOfferUpdate } from "./alerts.js?notifications=20261012brand5";
 
 /* =========================
    Utilities

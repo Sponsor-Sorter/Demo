@@ -6,7 +6,7 @@ import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
 import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts3';
-import { notifyComment, notifyOfferUpdate } from './alerts.js';
+import { notifyComment, notifyOfferUpdate } from './alerts.js?notifications=20261012brand5';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 

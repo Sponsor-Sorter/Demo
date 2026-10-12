@@ -57,7 +57,7 @@
 <script type="module">
 import { escapeHtml } from "./js/safePresentation.js";
 import { supabase } from './js/supabaseClient.js';
-import { notifyOfferUpdate } from './js/alerts.js'; // This uses your universal notification logic!
+import { notifyOfferUpdate } from './js/alerts.js?notifications=20261012brand5'; // This uses your universal notification logic!
 
 async function createPublicOfferFromSession() {
   const statusDiv = document.getElementById('insert-status');

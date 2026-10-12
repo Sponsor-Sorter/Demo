@@ -10,7 +10,7 @@
 // - No triggers. No schema changes.
 
 import { supabase } from './supabaseClient.js';
-import { notifyPayout } from './alerts.js';
+import { notifyPayout } from './alerts.js?notifications=20261012brand5';
 
 const DEFAULT_SIGNUP_PRICE = 10;
 

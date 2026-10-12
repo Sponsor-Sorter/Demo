@@ -438,14 +438,14 @@
 </script>
 
 <!-- Global Scripts (relative paths only) -->
-<script type="module" src="./js/alerts.js?v=20261012-brand4"></script>
-<script type="module">import './js/sponsorOffers.js?v=20261012-safe1';</script>
+<script type="module" src="./js/alerts.js?v=20261012-brand4&notifications=20261012brand5"></script>
+<script type="module">import './js/sponsorOffers.js?v=20261012-safe1&notifications=20261012brand5';</script>
 <script type="module">import './js/sponsorLogic.js?v=20261011-drafts3';</script>
 <script type="module" src="./js/userReports.js"></script>
 <script type="module" src="./js/privacy.js?v=20261011-profile1"></script>
 <script type="module" src="./js/settings.js"></script>
 <script type="module">
-  import { renderSponsorPublicOffers } from './js/publicOffers.js';
+  import { renderSponsorPublicOffers } from './js/publicOffers.js?notifications=20261012brand5';
   document.addEventListener('DOMContentLoaded', () => renderSponsorPublicOffers('offers-container'));
 </script>
 
