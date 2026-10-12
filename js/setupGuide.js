@@ -36,8 +36,10 @@ export async function startSetupGuide(force = false) {
       if(step<3)return move(step+1);
       busy=true;render();
       try {
+        const {data:{user:currentUser},error:currentAuthError}=await supabase.auth.getUser();
+        if(currentAuthError || currentUser?.id!==user.id)throw Error('Account changed');
         const {error,data}=await supabase.from('users_extended_data').update({onboarded:true}).eq('user_id',user.id).select('user_id').single();
-        if(error || !data)throw Error('Save failed');
+        if(error || data?.user_id!==user.id)throw Error('Save failed');
         try{localStorage.removeItem(key);}catch{}
         panel.replaceChildren(); const done=document.createElement('p'); done.setAttribute('role','status');
         done.textContent='You’re ready to explore. Reopen this guide from Getting started whenever you need it.'; panel.append(done);
@@ -48,6 +50,6 @@ export async function startSetupGuide(force = false) {
     const status=document.createElement('p');status.setAttribute('role','status');status.textContent=message;
     panel.append(progress,title,copy,action,controls,status);
   }
-  function move(value){step=value;try{localStorage.setItem(key,String(step));}catch{}render();panel.querySelector('h2')?.focus({preventScroll:true});}
+  function move(value){step=value;let message='';try{localStorage.setItem(key,String(step));if(localStorage.getItem(key)!==String(step))throw Error('Storage unavailable');}catch{message='Progress is available for this visit; it could not be saved in this browser.';}render(message);panel.querySelector('h2')?.focus({preventScroll:true});}
   render();
 }

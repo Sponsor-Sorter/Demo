@@ -8,14 +8,14 @@ class Element {
  all(){return this.children.flatMap(n=>[n,...(n.all?.()||[])]);}
 }
 async function fixture({role='besponsored',onboarded=false,saved='0',result={data:{user_id:'fixture'},error:null}}={}){
- let panel,writes=0,updating=false;const values=new Map([['ss_setup_step:fixture',saved]]);
+ let panel,writes=0,updating=false,currentId='fixture';const values=new Map([['ss_setup_step:fixture',saved]]);
  const profile={select(){return this;},eq(){return this;},update(){updating=true;writes++;return this;},single:async()=>updating?result:{data:{userType:role,onboarded},error:null}};
- const context={supabase:{auth:{getUser:async()=>({data:{user:{id:'fixture'}}})},from:()=>profile},URL,fetch:async()=>({ok:true,json:async()=>catalog}),
+ const context={supabase:{auth:{getUser:async()=>({data:{user:currentId?{id:currentId}:null}})},from:()=>profile},URL,fetch:async()=>({ok:true,json:async()=>catalog}),
  document:{getElementById:()=>null,querySelector:()=>({after:p=>panel=p}),createElement:tag=>new Element(tag)},
  localStorage:{getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)}};
  const source=fs.readFileSync('js/setupGuide.js','utf8').replace(/^import .*;\r?\n/,'').replace('export async function','async function').replace('import.meta.url',"'https://example.invalid/js/setupGuide.js'");
  vm.createContext(context);vm.runInContext(source,context);await context.startSetupGuide();
- return {panel,values,writes:()=>writes,button:text=>panel.all().find(n=>n.tag==='button'&&n.textContent===text)};
+ return {panel,values,setAccount:id=>{currentId=id;},writes:()=>writes,button:text=>panel.all().find(n=>n.tag==='button'&&n.textContent===text)};
 }
 test('creator and sponsor guides start with the correct role and save progress',async()=>{
  for(const [role,title] of [['besponsored','Make your profile useful'],['sponsor','Introduce your brand']]){
@@ -42,4 +42,11 @@ test('website and app use the same four-step role guides with safe destinations'
  const nativeCatalog='../SponsorSorterApp/assets/data/setup-guide.json';
  if(fs.existsSync(nativeCatalog))assert.deepEqual(catalog,JSON.parse(fs.readFileSync(nativeCatalog,'utf8')));
  for(const steps of Object.values(catalog)){assert.equal(steps.length,4);for(const s of steps){assert.match(s.web,/^\.\//);assert.match(s.app,/^\/\(tabs\)\/|^https:\/\/sponsorsorter\.com\//);assert.ok(s.body.length>80);}}
+});
+
+test('account switch or signout prevents stale guide completion',async()=>{
+ for(const id of ['other',null]){const f=await fixture({saved:'3'});f.setAccount(id);await f.button('Finish guide').onclick();assert.equal(f.writes(),0);assert.ok(f.button('Finish guide'));}
+});
+test('wrong returned owner cannot mark completion successful',async()=>{
+ const f=await fixture({saved:'3',result:{data:{user_id:'other'},error:null}});await f.button('Finish guide').onclick();assert.ok(f.button('Finish guide'));assert.equal(f.values.get('ss_setup_step:fixture'),'3');
 });
