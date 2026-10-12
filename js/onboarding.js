@@ -1,6 +1,11 @@
 // File: ./js/onboarding.js
 
 import { supabase } from './supabaseClient.js';
+import { startSetupGuide } from './setupGuide.js?v=20261012-setup1';
+const setupStyles = document.createElement('link');
+setupStyles.rel = 'stylesheet';
+setupStyles.href = new URL('../setup-guide.css?v=20261012-setup1', import.meta.url).href;
+document.head.append(setupStyles);
 
 const onboardingFlows = {
   '/dashboardsponsee.html': [
@@ -532,7 +537,7 @@ async function startOnboarding(force = false) {
 }
 
 window.restartOnboarding = () => {
-  startOnboarding(true);
+  startSetupGuide(true).catch(() => alert('Could not load setup. Check your connection and try again.'));
 };
 
 // --- Global Styles ---
@@ -570,11 +575,14 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-document.addEventListener('DOMContentLoaded', async () => {
+function initializeSetupGuide() {
   const url = new URL(window.location.href);
   const shouldOnboard = url.searchParams.get('onboarding');
-  if (!await hasCompletedOnboarding() || shouldOnboard) startOnboarding(true);
-});
+  startSetupGuide(!!shouldOnboard).catch(error => console.warn('Setup guide could not load:', error.message));
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeSetupGuide, {once:true});
+} else initializeSetupGuide();
 
 // Tooltip (optional utility)
 export function showTooltip(selector, text, ms = 3500) {

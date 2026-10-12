@@ -1,0 +1,14 @@
+{
+  "sponsor": [
+    {"title":"Introduce your brand","body":"Add your logo and a short description in Settings. Tell creators what your business does and the audience you want to reach.","action":"Edit your profile","web":"./settings.html","app":"/(tabs)/settings"},
+    {"title":"Find the right partner","body":"Use Finder to compare content, platforms and audience fit. Save a shortlist and read each creator’s profile before making an offer.","action":"Explore Finder","web":"./finder.html","app":"/(tabs)/finder"},
+    {"title":"Agree the work before paying","body":"Your brief should specify deliverables, platforms, deadline, revisions and usage rights. Check the total and payment terms before confirming checkout.","action":"Read the sponsorship guide","web":"./help.html","app":"https://sponsorsorter.com/help.html"},
+    {"title":"Approve, publish and measure","body":"Review private drafts in the offer conversation. Request changes or approve the latest version. Confirm the agreed published links, then revisit available results in your campaign history. Completion and payout are separate steps.","action":"Open your offers","web":"./dashboardsponsor.html#workspace-active-offers","app":"/(tabs)/offers"}
+  ],
+  "creator": [
+    {"title":"Make your profile useful","body":"Add a photo, a clear introduction and your content categories in Settings. Explain your audience and the kinds of partnerships you welcome.","action":"Edit your profile","web":"./settings.html","app":"/(tabs)/settings"},
+    {"title":"Connect your platforms","body":"Connect supported social accounts from Settings. Check the permissions requested. Connections and available metrics vary by platform; you can continue without linking every account.","action":"Open Settings","web":"./settings.html","app":"/(tabs)/settings"},
+    {"title":"Choose a suitable opportunity","body":"Use Finder to discover brands and opportunities. Review the brief, deadline, revisions, rights and payment terms before accepting. A proposed partnership is not a guaranteed booking.","action":"Explore Finder","web":"./finder.html","app":"/(tabs)/finder"},
+    {"title":"Deliver with a clear approval trail","body":"Send your private video draft in the offer conversation before publication. After approval, publish on the agreed platforms and submit the links. Check payout setup separately; marking work complete does not mean money has reached your bank.","action":"Open your offers","web":"./dashboardsponsee.html#workspace-active-offers","app":"/(tabs)/offers"}
+  ]
+}

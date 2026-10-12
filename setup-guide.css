@@ -1,0 +1,19 @@
+.account-setup-guide {
+  box-sizing: border-box;
+  width: min(1200px, calc(100% - 32px));
+  margin: 20px auto;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid #34546d;
+  border-radius: 16px;
+  background: #101821;
+  color: #eef2f8;
+  text-align: left;
+}
+.account-setup-guide :is(p,h2) { margin: 0 0 14px; padding: 0; background: none; line-height: 1.6; overflow-wrap: anywhere; }
+.account-setup-guide h2 { font-size: clamp(1.2rem, 3vw, 1.6rem); border: 0; }
+.account-setup-guide .setup-progress { color: #7fdfff; font-size: .9rem; }
+.account-setup-guide a { color: #7fdfff; display: inline-block; padding-block: 8px; }
+.account-setup-guide .setup-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.account-setup-guide button { min-height: 44px; margin: 0; padding: 10px 16px; border: 1px solid #34546d; border-radius: 9px; background: #103a62; color: #fff; white-space: normal; }
+.account-setup-guide button:disabled { opacity: .5; }
+.account-setup-guide :is(button,a):focus-visible { outline: 2px solid #7fdfff; outline-offset: 3px; }
