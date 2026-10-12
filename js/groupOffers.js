@@ -7,7 +7,7 @@
 // - Post-commit in-app notifications (email delivery is limited to verified 2FA)
 
 import { supabase } from './supabaseClient.js';
-import * as Alerts from './alerts.js?notifications=20261012brand5';
+import * as Alerts from './alerts.js?notifications=20261012brand6';
 
 // ---------- Safe helpers for alerts integration (fallbacks if not exported) ----------
 const notifyOfferUpdate = Alerts?.notifyOfferUpdate || (async (payload) => {

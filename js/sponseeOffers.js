@@ -10,7 +10,7 @@ import {
   notifyComment,
   notifyOfferStatus,
   notifyOfferUpdate
-} from './alerts.js?notifications=20261012brand5';
+} from './alerts.js?notifications=20261012brand6';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 

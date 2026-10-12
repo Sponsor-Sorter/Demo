@@ -1,6 +1,6 @@
 // ./js/reviewPage.js
 import { supabase } from './supabaseClient.js';
-import { notifyReview } from './alerts.js?notifications=20261012brand5'; // unchanged
+import { notifyReview } from './alerts.js?notifications=20261012brand6'; // unchanged
 import { famBotModerateWithModal } from './FamBot.js'; // unchanged
 
 document.addEventListener("DOMContentLoaded", async () => {

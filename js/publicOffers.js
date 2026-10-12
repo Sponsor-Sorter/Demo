@@ -1,6 +1,6 @@
 // ./js/publicOffers.js
 import { supabase } from './supabaseClient.js';
-import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand5';
+import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
 if (!window.sponsorOfferStatusFilter) window.sponsorOfferStatusFilter = '';

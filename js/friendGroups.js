@@ -243,7 +243,7 @@ function resolveGroupImageURL(g) {
 // Never blocks UI; group invites use in-app notifications only.
 
 async function _dynAlerts() {
-  try { return await import('./alerts.js?notifications=20261012brand5'); } catch { return null; }
+  try { return await import('./alerts.js?notifications=20261012brand6'); } catch { return null; }
 }
 
 async function _getNotifyRow(user_id) {

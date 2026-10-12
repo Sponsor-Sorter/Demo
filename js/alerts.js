@@ -44,7 +44,8 @@ function flashNode(node) {
 
 /** Try to find a card/row by offer id and scroll/highlight it */
 function jumpToOfferId(offerId) {
-  if (!offerId) return false;
+  // IDs from URLs and stored alerts are untrusted selector input.
+  if (typeof offerId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(offerId)) return false;
   let card =
     document.querySelector(`.public-offer-card[data-offer-id="${offerId}"]`) ||
     document.querySelector(`.listing-stage[data-offer-id="${offerId}"]`) ||
@@ -285,8 +286,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           .update({ read: true })
           .eq('id', n.id);
         if (error) console.error('alerts.js: mark read failed:', error.message);
-        n.read = true;
-        loadNotifications();
+        if (!error) {
+          n.read = true;
+          await loadNotifications();
+        }
       }
 
       const dashboard = resolveDashboardPath(userType);

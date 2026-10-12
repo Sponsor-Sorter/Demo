@@ -29,3 +29,16 @@ test('notification inbox shares one initializer and supports keyboard controls',
  const css=fs.readFileSync('notifications.css','utf8');
  assert.ok(css.includes('calc(100% - 24px)'));assert.ok(css.includes(':focus-visible'));
 });
+
+
+test('notification deep links reject selector injection and malformed identifiers',()=>{
+ const alerts=fs.readFileSync('js/alerts.js','utf8');
+ const fn=alerts.slice(alerts.indexOf('function jumpToOfferId('),alerts.indexOf('/** Poll for target'));
+ let queries=0,scrolled=0;
+ const context={document:{querySelector:()=>{queries++;return {scrollIntoView:()=>scrolled++}}},flashNode:()=>{}};
+ vm.createContext(context);vm.runInContext(fn,context);
+ for(const id of [null,42,'',']','x], body, [x=','javascript:alert(1)']) assert.equal(context.jumpToOfferId(id),false);
+ assert.equal(queries,0);
+ assert.equal(context.jumpToOfferId('00000000-0000-4000-8000-000000000001'),true);
+ assert.equal(scrolled,1);
+});
