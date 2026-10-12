@@ -10,7 +10,7 @@
     />
     <link rel="icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./login.css?v=20261010-login1" />
-    <script type="module" src="./js/login.js?v=20261010-login1"></script>
+    <script type="module" src="./js/login.js?v=20261012-session2"></script>
     <script
       type="module"
       src="./js/connectionHeader.js?v=20261012-connections2"
@@ -139,15 +139,15 @@
             />
           </div>
 
-          <!-- Remember this device (email 2FA) -->
+          <p id="email-remember-help">Applies only to this browser. Private browsing, clearing site data or using another browser will ask for a code again.</p>
           <div class="form-group twofa-remember">
             <label class="twofa-remember-label">
               <input
                 type="checkbox"
                 id="twofa-remember-device"
-                name="twofa-remember-device"
+                name="twofa-remember-device" aria-describedby="email-remember-help"
               />
-              Remember this device for 30 days
+              Remember this browser for 30 days
             </label>
           </div>
 
@@ -227,15 +227,15 @@
             </small>
           </div>
 
-          <!-- Remember this device (TOTP 2FA or backup) -->
+          <p id="totp-remember-help">Applies only to this browser. Private browsing, clearing site data or using another browser will ask for a code again.</p>
           <div class="form-group twofa-remember">
             <label class="twofa-remember-label">
               <input
                 type="checkbox"
                 id="twofa-totp-remember-device"
-                name="twofa-totp-remember-device"
+                name="twofa-totp-remember-device" aria-describedby="totp-remember-help"
               />
-              Remember this device for 30 days
+              Remember this browser for 30 days
             </label>
           </div>
 

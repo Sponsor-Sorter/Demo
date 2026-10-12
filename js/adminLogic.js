@@ -204,7 +204,7 @@ function bindAdminControls() {
   bind("logout-link", "click", async (event) => {
     event.preventDefault();
     localStorage.removeItem("impersonate_user_id");
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: 'local' });
     location.replace("login.html");
   });
   const impersonating = Boolean(localStorage.getItem("impersonate_user_id"));

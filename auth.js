@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Logout logic — clears Supabase session
       logoutBtn.addEventListener("click", async (e) => {
         e.preventDefault()
-        await supabase.auth.signOut()
+        await supabase.auth.signOut({ scope: 'local' })
         window.location.href = "login.html"
       })
     }

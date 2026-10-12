@@ -123,8 +123,10 @@ function readJsonFromStorage(key, fallback) {
 function writeJsonToStorage(key, value) {
   try {
     window.localStorage.setItem(key, JSON.stringify(value));
+    return true;
   } catch (e) {
     console.warn('[2FA] Failed to write localStorage', e);
+    return false;
   }
 }
 
@@ -187,7 +189,7 @@ function recordFailedTwofaAttempt(userId) {
 function isDeviceTrustedForUser(userId) {
   const all = readJsonFromStorage(TWOFA_TRUSTED_KEY, {});
   const entry = all[userId];
-  if (!entry || !entry.trustedUntil) return false;
+  if (!entry || !Number.isFinite(entry.trustedUntil)) return false;
 
   const now = Date.now();
   if (now >= entry.trustedUntil) {
@@ -203,7 +205,14 @@ function setDeviceTrustedForUser(userId, days) {
   const all = readJsonFromStorage(TWOFA_TRUSTED_KEY, {});
   const now = Date.now();
   all[userId] = { trustedUntil: now + days * 24 * 60 * 60 * 1000 };
-  writeJsonToStorage(TWOFA_TRUSTED_KEY, all);
+  if (!writeJsonToStorage(TWOFA_TRUSTED_KEY, all)) return false;
+  return readJsonFromStorage(TWOFA_TRUSTED_KEY, {})[userId]?.trustedUntil === all[userId].trustedUntil;
+}
+
+function rememberDeviceOrExplain(userId) {
+  if (!setDeviceTrustedForUser(userId, TWOFA_TRUST_DAYS)) {
+    alert('Your code was accepted, but this browser could not save the remembered-device setting. You can still sign in. Browser storage must be available to remember this browser next time.');
+  }
 }
 
 // =======================
@@ -863,7 +872,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // Remember device if checked
       if (twofaRememberCheckbox && twofaRememberCheckbox.checked) {
-        setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
+        rememberDeviceOrExplain(twofaContext.userId);
       }
 
       setTwofaStatus('Code verified! Signing you in...', 'success');
@@ -896,7 +905,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (twofaCancelBtn) {
     twofaCancelBtn.addEventListener('click', async () => {
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({ scope: 'local' });
       resetToLoginForm();
     });
   }
@@ -992,7 +1001,7 @@ window.addEventListener('DOMContentLoaded', () => {
           resetTwofaAttempts(twofaContext.userId);
 
           if (totpRememberCheckbox && totpRememberCheckbox.checked) {
-            setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
+            rememberDeviceOrExplain(twofaContext.userId);
           }
 
           setTotpStatus('Backup code accepted! Signing you in...', 'success');
@@ -1049,7 +1058,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // Remember device if checked
       if (totpRememberCheckbox && totpRememberCheckbox.checked) {
-        setDeviceTrustedForUser(twofaContext.userId, TWOFA_TRUST_DAYS);
+        rememberDeviceOrExplain(twofaContext.userId);
       }
 
       setTotpStatus('Code verified! Signing you in...', 'success');
@@ -1061,7 +1070,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (totpCancelBtn) {
     totpCancelBtn.addEventListener('click', async () => {
-      await supabase.auth.signOut();
+      await supabase.auth.signOut({ scope: 'local' });
       resetToLoginForm();
     });
   }
@@ -1117,7 +1126,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       const freshUser = freshUserData.user;
-      console.log('Fresh user:', freshUser);
 
       const { data: extendedData, error: dataError } = await supabase
         .from('users_extended_data')

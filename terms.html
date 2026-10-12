@@ -316,7 +316,7 @@
       authA.textContent = 'Logout';
       authA.addEventListener('click', async (e) => {
         e.preventDefault();
-        try { await supabase.auth.signOut(); } catch {}
+        try { await supabase.auth.signOut({ scope: 'local' }); } catch {}
         window.location.href = './login.html';
       });
     }

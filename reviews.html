@@ -163,7 +163,7 @@
         signupA.setAttribute('href', '#');
         signupA.addEventListener('click', async (e) => {
           e.preventDefault();
-          try { await supabase.auth.signOut(); }
+          try { await supabase.auth.signOut({ scope: 'local' }); }
           finally { window.location.href = 'login.html'; }
         }, { once: true });
       } catch (_) {
