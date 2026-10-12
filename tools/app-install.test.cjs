@@ -1,5 +1,14 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const script=fs.readFileSync('js/appInstall.js','utf8');
+test('worker revalidates navigation and removes only obsolete Sponsor Sorter caches',async()=>{
+ const events={},deleted=[],requests=[];
+ const context={URL,Response,self:{location:{origin:'https://sponsorsorter.com'},addEventListener:(name,fn)=>events[name]=fn,clients:{claim:async()=>{}},skipWaiting:async()=>{}},caches:{keys:async()=>['sponsorsorter-offline-v1','sponsorsorter-offline-v2','another-app-cache'],delete:async key=>deleted.push(key)},fetch:async(request,options)=>{requests.push(options);return new Response('fresh');}};
+ vm.runInNewContext(fs.readFileSync('service-worker.js','utf8'),context);
+ let activation;events.activate({waitUntil:p=>activation=p});await activation;
+ assert.deepEqual(deleted,['sponsorsorter-offline-v1']);
+ let navigation;events.fetch({request:{method:'GET',mode:'navigate',url:'https://sponsorsorter.com/index.html'},respondWith:p=>navigation=p});
+ assert.equal(await (await navigation).text(),'fresh');assert.equal(requests[0].cache,'no-cache');
+});
 test('Android guide publishes the verified signed APK and truthful update instructions',()=>{
  const release=JSON.parse(fs.readFileSync('app-assets/android-release.json','utf8'));
  const page=fs.readFileSync('install.html','utf8');
