@@ -1,5 +1,6 @@
 // alerts.js
 import { supabase } from './supabaseClient.js';
+import { appendNotificationContent } from './notificationContent.js?v=20261012-safe1';
 
 // === UI notification dropdown logic (shared by sponsor & sponsee) ===
 
@@ -295,17 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     notif.style.cursor = 'pointer';
     notif.style.borderBottom = '1px solid #333';
     notif.style.background = n.read ? 'transparent' : '#292929';
-    notif.innerHTML = `
-      <div style="font-weight:bold;font-size:1em;color:${n.read ? '#fff' : '#3498fd'}">
-        ${n.title || '[No Title]'}
-      </div>
-      <div style="font-size:0.95em;line-height:1.5;">
-        ${n.message || ''}
-      </div>
-      <div style="font-size:0.85em;color:#aaa;margin-top:3px;">
-        ${n.created_at ? new Date(n.created_at).toLocaleString() : ''}
-      </div>
-    `;
+    appendNotificationContent(notif, n);
 
     notif.onclick = async () => {
       // Mark read if needed
