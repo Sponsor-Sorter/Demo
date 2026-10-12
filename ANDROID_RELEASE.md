@@ -1,5 +1,12 @@
 # Android early-access release — 12 October 2026
 
+## Current release: build 5
+Build `7b8bce3c-1a09-4c59-be7f-77902a513849` adds Expo SecureStore for native authentication sessions. Runtime `9c4a9c26d48afb6445115927f0897bc9818156f8`; APK SHA-256 `982081ef5e2952e0cb7c1a442ead362d22906fd94f68d66601e05bf59fcb55e7`. The original signing certificate was verified with apksigner. Android 7 minimum and target SDK 35 remain.
+
+Installed over build 4 on the authorized Samsung without clearing data. The existing fitstyle session survived the migration and a second cold launch. Device evidence: native release/build5-first-launch-ui.xml, build5-relaunch-ui.xml and build5-dashboard.png. Native TypeScript, 38 regression tests (including five storage migration/failure tests), and eight installer tests pass. Build 4's compatible OTA was previously proven below; build 5 is a new native runtime and needs its own compatible OTA. Adding SecureStore cannot be delivered to build 4 by OTA.
+
+This does not resolve legacy MFA enforcement, dependency advisories, database-advisor findings or the actual sandbox settlement blocker. A fresh install on a second device remains unverified. Build 4 remains available as a prior artifact; the following sections record that release's historical evidence.
+
 ## Distribution
 The canonical QR destination is https://sponsorsorter.com/install.html. The page links directly to the public Expo-hosted signed APK, not the website wrapper. Release metadata is in app-assets/android-release.json. Do not replace this link with an unverified build.
 

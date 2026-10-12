@@ -12,7 +12,7 @@ test('worker revalidates navigation and removes only obsolete Sponsor Sorter cac
 test('Android guide publishes the verified signed APK and truthful update instructions',()=>{
  const release=JSON.parse(fs.readFileSync('app-assets/android-release.json','utf8'));
  const page=fs.readFileSync('install.html','utf8');
- assert.equal(release.package,'com.sponsorsorter.app');assert.equal(release.versionCode,4);
+ assert.equal(release.package,'com.sponsorsorter.app');assert.equal(release.versionCode,5);
  assert.match(release.apkUrl,/^https:\/\/expo\.dev\/artifacts\/eas\/[A-Za-z0-9_-]+\.apk$/);
  assert.ok(page.includes('href="'+release.apkUrl+'"'));assert.ok(page.includes(release.sha256));assert.ok(page.includes(release.signingCertificateSha256));
  assert.match(page,/next full launch/);assert.match(page,/Android asks you to confirm/);assert.match(page,/Keep Google Play Protect enabled/);
