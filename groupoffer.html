@@ -172,13 +172,13 @@
           Base Amount: <span id="offer-cost-amount" style="color: #6fe3d9;">$0.00</span>
         </div>
         <div id="listing-fee-line" style="font-size: 1.04em; color: #FFD600; margin-bottom: 4px;">
-          Listing Fee (10%): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
+          Platform fee (10%): <span id="listing-fee-amount" style="color:#ffc97b;">$0.00</span>
         </div>
         <div id="total-cost-line" style="font-size: 1.14em; color: #99f1b8;">
           Total Including Fee: <span id="total-cost-amount" style="color:#50ffa4;">$0.00</span>
         </div>
         <div id="cost-details" style="font-size: .99em; color: #c7dcfc;">
-          For group offers we charge a simple 10% listing fee upfront. This covers secure payments and platform operations.
+          Checkout includes the total creator budget plus a 10% platform fee. The creator budget is divided among eligible members, with allocations fixed when the first member accepts.
         </div>
       </fieldset>
 
@@ -479,7 +479,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       status: 'pending'
     };
 
-    localStorage.setItem('pendingGroupOfferData', JSON.stringify(pending));
+    const requestFingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(pending))))).map(v=>v.toString(16).padStart(2,'0')).join('');
+    const requestKey = 'group-sponsorship-request:' + pending.sponsor_id + ':' + requestFingerprint;
+    const requestId = sessionStorage.getItem(requestKey) || crypto.randomUUID();
+    sessionStorage.setItem(requestKey, requestId);
+    const { data: order, error: orderError } = await supabase.rpc('prepare_group_sponsorship_order', {offer: pending, request_id: requestId});
+    if (orderError || !order?.id) { alert(orderError?.message || 'Could not save your proposal.'); return; }
 
     // Calculate fee & total
     const fee = amount * 0.10;
@@ -502,24 +507,24 @@ document.addEventListener('DOMContentLoaded', async () => {
           ...(jwt2 ? { 'Authorization': `Bearer ${jwt2}` } : {})
         },
         body: JSON.stringify({
-          amount: totalWithFee,
-          offerId: `group-${title}-${Date.now()}`,
+          order_id: order.id,
+          
           offerType: 'group',            // backend should route to payment-success-group.html
           frontendBaseUrl                // used by your Edge Function to build success/cancel URLs
         })
       });
 
       const data = await res.json();
+      if (data.code === 'CHECKOUT_COMPLETE' && data.sessionId) {
+        window.location.href = './payment-success-group.html?session_id=' + encodeURIComponent(data.sessionId);
+        return;
+      }
       if (!data.sessionId) {
         alert('Could not start payment. ' + (data.error || 'Unknown error.'));
         return;
       }
-      const stripe = Stripe(STRIPE_PK);
-      const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
-      if (error) {
-        alert('Stripe redirect failed: ' + error.message);
-        return;
-      }
+      if (!res.ok || !data.checkoutUrl?.startsWith('https://checkout.stripe.com/')) throw new Error(data.error || 'Checkout is unavailable.');
+      window.location.assign(data.checkoutUrl);
     } catch (err) {
       alert('Failed to initiate payment: ' + err.message);
       return;

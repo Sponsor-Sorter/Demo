@@ -17,19 +17,32 @@ function fixture(name, overrides = {}) {
   const subscription = { customer: 'cus_test', status: 'active',
     items: { data: [{ price: { id: price } }] }, ...overrides.subscription };
   class Stripe {
-    checkout = { sessions: { create: async params => {
-      calls.push({ stripe: params });
+    webhooks = { constructEventAsync: async (raw, signature, secret) => {
+      calls.push({ verification: { raw, signature, secret } });
+      if (overrides.invalidSignature) throw new Error('Invalid signature');
+      return { type: overrides.eventType || 'checkout.session.completed', data: { object: session } };
+    } };
+    checkout = { sessions: { create: async (params, options) => {
+      calls.push({ stripe: params, options });
       return { id: 'cs_test_fixture', url: 'https://checkout.stripe.com/test-fixture' };
     } } };
   }
   const source = fs.readFileSync(path.join(__dirname, '../supabase/functions', name, 'index.ts'), 'utf8')
-    .replace(/^import .*;\r?\n/gm, '');
+    .replace(/^import .*;\r?\n/gm, '').replace(/export /g, '').replace('import.meta.main', 'true');
   const context = vm.createContext({ Request, Response, URL, console, Stripe,
     serve: callback => { handler = callback; },
-    Deno: { env: { get: key => ({ STRIPE_SECRET_KEY: 'fixture-only',
-      SUPABASE_URL: 'https://database.invalid', SUPABASE_SERVICE_ROLE_KEY: 'fixture-only' })[key] } },
+    Deno: { env: { get: key => ({ STRIPE_SECRET_KEY: 'fixture-only', SPONSORSHIP_STRIPE_SECRET_KEY: 'fixture-only',
+      SUPABASE_URL: 'https://database.invalid', SUPABASE_SERVICE_ROLE_KEY: 'fixture-only',
+      SPONSORSHIP_STRIPE_WEBHOOK_SECRET: 'whsec_fixture', ...overrides.env })[key] } },
     fetch: async (url, options) => {
       calls.push({ url, options });
+      if (url.endsWith('/auth/v1/user') && overrides.user) return Response.json(overrides.user);
+      if (url.includes('/rest/v1/sponsorship_orders?')) return Response.json(overrides.orders || []);
+      if (url.endsWith('/rpc/bind_sponsorship_checkout')) return Response.json(null, { status: overrides.bindStatus || 200 });
+      if (url.endsWith('/rpc/fund_sponsorship_checkout')) {
+        if (overrides.networkFailure) throw new Error('Network unavailable');
+        return Response.json('offer-fixture', { status: overrides.fundStatus || 200 });
+      }
       if (url.includes('/checkout/sessions/')) return Response.json(session);
       if (url.includes('/subscriptions/')) return Response.json(subscription);
       if (url.includes('/admin/users/')) return Response.json({ email: overrides.authEmail || 'test@example.com' });
@@ -75,6 +88,34 @@ test('checkout refuses a forged authorization header', async () => {
   assert.notEqual((await f.request({ amount: 10, offerType: 'private' }, 'POST', 'https://sponsorsorter.com', { authorization: 'Bearer forged' })).status, 200);
   assert.equal(f.calls.filter(c => c.stripe).length, 0);
 });
+
+const buyer = { id: '11111111-1111-4111-8111-111111111111' };
+const savedOrder = { id:'44444444-4444-4444-8444-444444444444', sponsor_user_id:buyer.id, source:'stripe',offer_kind:'private',status:'pending',total_cents:11000 };
+test('private checkout uses server price and stable order key, not caller amount or metadata',async()=>{
+ const f=fixture('stripe-checkout',{user:buyer,orders:[savedOrder]});
+ const response=await f.request({offerType:'private',order_id:savedOrder.id,amount:0.01,metadata:{sponsor_user_id:'attacker'},frontendBaseUrl:'https://sponsorsorter.com'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'});
+ assert.equal(response.status,200);
+ const c=f.calls.find(c=>c.stripe);assert.equal(c.stripe.line_items[0].price_data.unit_amount,11000);
+ assert.equal(c.stripe.metadata.sponsor_user_id,buyer.id);assert.equal(c.stripe.allow_promotion_codes,false);
+ assert.equal(c.options.idempotencyKey,'sponsorship-'+savedOrder.id);
+ assert.equal(f.calls.filter(c=>c.url?.endsWith('/rpc/bind_sponsorship_checkout')).length,1);
+});
+test('private checkout refuses another account order before contacting Stripe',async()=>{
+ const f=fixture('stripe-checkout',{user:buyer,orders:[{...savedOrder,sponsor_user_id:'other'}]});
+ assert.equal((await f.request({offerType:'private',order_id:savedOrder.id,frontendBaseUrl:'https://sponsorsorter.com'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'})).status,409);
+ assert.equal(f.calls.filter(c=>c.stripe).length,0);
+});
+const paidPrivate={id:'cs_test_fixture',metadata:{offerType:'private',order_id:savedOrder.id,sponsor_user_id:buyer.id},mode:'payment',status:'complete',payment_status:'paid',payment_intent:'pi_fixture',amount_total:11000,currency:'usd'};
+test('private completion verifies Stripe and delegates atomic fulfillment',async()=>{
+ const f=fixture('complete-sponsorship-checkout',{user:buyer,session:paidPrivate});
+ assert.equal((await f.request({session_id:'cs_test_fixture'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'})).status,200);
+ const rpc=f.calls.find(c=>c.url?.endsWith('/rpc/fund_sponsorship_checkout'));assert.equal(JSON.parse(rpc.options.body).paid_cents,11000);
+});
+for(const [label,changed,status] of [['unpaid',{payment_status:'unpaid'},409],['incomplete',{status:'open'},409],['another buyer',{metadata:{...paidPrivate.metadata,sponsor_user_id:'other'}},403]])test('private completion rejects '+label,async()=>{
+ const f=fixture('complete-sponsorship-checkout',{user:buyer,session:{...paidPrivate,...changed}});
+ assert.equal((await f.request({session_id:'cs_test_fixture'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'})).status,status);
+ assert.equal(f.calls.filter(c=>c.url?.endsWith('/rpc/fund_sponsorship_checkout')).length,0);
+});
 test('bounty checkout rejects an external return destination', async () => {
   const f = fixture('stripe-checkout');
   assert.equal((await f.request({ kind: 'game_bounty', amount: 10, success_url: 'https://evil.invalid', cancel_url: 'https://evil.invalid' })).status, 400);
@@ -116,4 +157,33 @@ test('signup rejects unapproved origins before external requests', async () => {
 test('provisioning failure does not report success', async () => {
   const f = fixture('complete-paid-signup', { rpcStatus: 500 });
   assert.equal((await f.request(completion)).status, 500);
+});
+
+test('webhook verifies the original body and signature before fulfillment', async () => {
+  const f = fixture('sponsorship-payment-webhook', {session:paidPrivate});
+  const body = {id:'evt_fixture'};
+  assert.equal((await f.request(body,'POST','https://sponsorsorter.com',{'stripe-signature':'fixture-signature'})).status,200);
+  assert.equal(f.calls[0].verification.raw,JSON.stringify(body));
+  assert.equal(f.calls[0].verification.signature,'fixture-signature');
+  assert.equal(f.calls.filter(c=>c.url?.endsWith('/rpc/fund_sponsorship_checkout')).length,1);
+});
+for (const [label, overrides, expected] of [
+  ['invalid signature',{invalidSignature:true},400],
+  ['missing configuration',{env:{SPONSORSHIP_STRIPE_WEBHOOK_SECRET:undefined}},503],
+  ['unpaid checkout',{session:{...paidPrivate,payment_status:'unpaid'}},200],
+  ['unrelated event',{eventType:'customer.updated'},200],
+  ['database failure',{fundStatus:500},500],
+  ['network failure',{networkFailure:true},500],
+]) test('webhook handles '+label+' safely',async()=>{
+  const f=fixture('sponsorship-payment-webhook',{session:paidPrivate,...overrides});
+  assert.equal((await f.request({id:'evt_fixture'})).status,expected);
+  if (!['database failure','network failure'].includes(label)) assert.equal(f.calls.filter(c=>c.url?.endsWith('/rpc/fund_sponsorship_checkout')).length,0);
+});
+
+test('group checkout also uses a server-held budget and verifies fulfillment',async()=>{
+ const f=fixture('stripe-checkout',{user:buyer,orders:[{...savedOrder,offer_kind:'group'}]});
+ const r=await f.request({offerType:'group',order_id:savedOrder.id,amount:0.01,frontendBaseUrl:'https://sponsorsorter.com'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'});
+ assert.equal(r.status,200);const c=f.calls.find(c=>c.stripe);assert.equal(c.stripe.line_items[0].price_data.unit_amount,11000);assert.equal(c.stripe.metadata.offerType,'group');
+ const completion=fixture('complete-sponsorship-checkout',{user:buyer,session:{...paidPrivate,metadata:{...paidPrivate.metadata,offerType:'group'}}});
+ assert.equal((await completion.request({session_id:'cs_test_fixture'},'POST','https://sponsorsorter.com',{authorization:'Bearer fixture'})).status,200);
 });

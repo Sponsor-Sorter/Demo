@@ -649,6 +649,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   const offerForm = document.getElementById('offerForm');
+  const selectedPackageId = new URL(location.href).searchParams.get('package_id');
+  if (selectedPackageId) {
+    const { data: chosenPackage, error: packageError } = await supabase.from('creator_packages')
+      .select('id,creator_user_id,title,deliverables,price_cents,platforms,revisions,turnaround_days,usage_rights,availability')
+      .eq('id',selectedPackageId).eq('creator_user_id',cachedSponseeData.user_id).eq('published',true).maybeSingle();
+    if (packageError || !chosenPackage || chosenPackage.availability === 'paused') {
+      alert('This package is unavailable. Please review the creator profile.');
+      offerForm.querySelector('[type="submit"]').disabled = true;
+      return;
+    }
+    document.getElementById('offerTitle').value = chosenPackage.title;
+    document.getElementById('offerDescription').value = 'Please describe your brand, campaign goals and any additional brief here.';
+    const packagePrice = document.getElementById('price');
+    packagePrice.step = '0.01'; packagePrice.value = chosenPackage.price_cents / 100; packagePrice.readOnly = true;
+    for (const input of document.querySelectorAll('input[name="offer_platforms"]')) { input.checked = chosenPackage.platforms.includes(input.value); input.disabled = true; }
+    const terms = document.createElement('p'); terms.style.whiteSpace = 'pre-wrap';
+    terms.textContent = chosenPackage.deliverables + '\nIncluded revisions: ' + chosenPackage.revisions + '\nTurnaround: ' + chosenPackage.turnaround_days + ' days\nUsage: ' + chosenPackage.usage_rights;
+    document.getElementById('offerDescription').before(terms);
+  }
+
   offerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -766,7 +786,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       offer_images: uploadedImageNames,
       optional_file: optionalFileName,
       platforms: selectedPlatforms,
+      ...(selectedPackageId ? { package_id: selectedPackageId } : {}),
     };
+
+    // Retain the request across retries; never charge twice for the same submission.
+    const fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(offerData))))).map(v=>v.toString(16).padStart(2,'0')).join('');
+    const requestKey = 'sponsorship-request:' + cachedSponsorData.user_id + ':' + fingerprint;
+    const purchaseRequestId = sessionStorage.getItem(requestKey) || crypto.randomUUID();
+    sessionStorage.setItem(requestKey, purchaseRequestId);
 
     // Compute fee + total once, used for both wallet + Stripe
     const feeAmount = (amount * PLATFORM_FEE_PERCENT) / 100;
@@ -787,35 +814,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const walletBalance = parseFloat(sponsorDataUpdated?.wallet || 0);
 
     if (walletBalance >= totalWithFee) {
-      // Deduct base + fee from wallet
-      const { data: walletResult, error: deductError } = await supabase.rpc('use_wallet_funds', {
-        user_id: cachedSponsorData.id,
-        amount: totalWithFee
+      const { data: order, error: purchaseError } = await supabase.rpc('prepare_sponsorship_order', {
+        offer: offerData, payment_source: 'wallet', request_id: purchaseRequestId
       });
-      if (deductError) {
-        alert('Failed to deduct from wallet: ' + deductError.message);
+      if (purchaseError || !order?.offer_id) {
+        alert(purchaseError?.message || 'Purchase could not be completed.');
         return;
       }
-      if (!walletResult) {
-        alert('Wallet balance changed, not enough funds!');
-        return;
-      }
-
-      // Insert the offer as paid
-      const { data: offerInsertData, error: offerInsertError } = await supabase
-        .from('private_offers')
-        .insert([{
-          ...offerData,
-          stage: 1,
-          status: 'pending'
-        }])
-        .select()
-        .single();
-
-      if (offerInsertError) {
-        alert('Offer creation failed: ' + offerInsertError.message);
-        return;
-      }
+      const offerInsertData = { id: order.offer_id, offer_title: title };
 
       // Notify sponsee of new offer
       await notifyNewOffer({
@@ -832,7 +838,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       // ===== STRIPE PAYMENT FLOW (with 10% platform fee) =====
       // Store the base offer data (without fee) so payment-success flow can create the offer
-      localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
+      const { data: order, error: orderError } = await supabase.rpc('prepare_sponsorship_order', {
+        offer: offerData, payment_source: 'stripe', request_id: purchaseRequestId
+      });
+      if (orderError || !order?.id) { alert(orderError?.message || 'Could not save the purchase.'); return; }
+      if (order.offer_id) { window.location.href = './dashboardsponsor.html'; return; }
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -848,7 +858,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
           },
           body: JSON.stringify({
-            amount: totalWithFee,
+            order_id: order.id,
             offerId: title + '-' + Date.now(),
             offerType: 'private',
             frontendBaseUrl
@@ -856,17 +866,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         const sessionData = await sessionRes.json();
+        if (sessionData.code === 'CHECKOUT_EXPIRED') {
+          sessionStorage.removeItem(requestKey);
+          alert(sessionData.error); return;
+        }
+        if (sessionData.code === 'CHECKOUT_COMPLETE') {
+          window.location.href = './payment-success.html?session_id=' + encodeURIComponent(sessionData.sessionId); return;
+        }
         if (!sessionData.sessionId) {
           alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
           return;
         }
 
-        const stripe = Stripe(STRIPE_PK);
-        const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
-        if (error) {
-          alert('Stripe redirect failed: ' + error.message);
-          return;
+        const checkoutUrl = new URL(sessionData.checkoutUrl);
+        if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com' || checkoutUrl.username || checkoutUrl.password) {
+          throw new Error('Invalid checkout destination. Please contact support.');
         }
+        window.location.assign(checkoutUrl.href);
       } catch (err) {
         alert('Failed to initiate payment: ' + err.message);
         return;

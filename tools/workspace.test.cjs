@@ -73,7 +73,7 @@ test("public stats text and image attributes cannot inject HTML", () => {
   assert.equal(presentation.ratingStars(10000000), "★★★★★");
 });
 
-test("checkout return has one fulfillment handler and safe spotlight output", async () => {
+test("checkout return delegates fulfillment to the authenticated server", async () => {
   const html = fs.readFileSync(
     path.join(__dirname, "../payment-success.html"),
     "utf8",
@@ -99,16 +99,10 @@ test("checkout return has one fulfillment handler and safe spotlight output", as
   vm.runInContext(modules[0][1].replace(/^import .*;$/gm, ""), context);
   assert.equal(listeners.length, 1);
   await listeners[0]();
-  assert.match(status.innerHTML, /No valid payment/);
-  vm.runInContext(
-    "renderPremiumResult({slotIndex: '<img src=x onerror=alert(1)>'})",
-    context,
-  );
-  assert.doesNotMatch(
-    status.innerHTML,
-    /<img|purchase confirmed|spotlight is scheduled/,
-  );
-  assert.match(status.innerHTML, /verification needed/);
+  assert.match(status.textContent, /No checkout reference/);
+  assert.match(modules[0][1], /complete-sponsorship-checkout/);
+  assert.doesNotMatch(modules[0][1], /handleOfferCreate|assign-featured-star|\.insert\(/);
+
 });
 
 test("public community stats never query private tables and handle errors", async () => {
@@ -604,5 +598,27 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  test('media kit missing ratings stay unknown and print hiding requires explicit print mode',async()=>{
  const {mediaKitData}=await import('../js/creatorMediaKit.js');assert.equal(mediaKitData({avg_rating:null,review_count:2},'https://sponsorsorter.com').rating,null);
  const css=fs.readFileSync(path.join(__dirname,'../public-profile.css'),'utf8');assert.ok(css.includes('body.public-profile-page.media-kit-printing > *:not(#media-kit-print)'));
- const html=fs.readFileSync(path.join(__dirname,'../u/index.html'),'utf8');assert.ok(html.includes('publicDashboard.js?v=20261011-kit1'));
+ const html=fs.readFileSync(path.join(__dirname,'../u/index.html'),'utf8');assert.ok(html.includes('publicDashboard.js?v=20261011-packages1'));
  });
+
+const reportSource = fs.readFileSync(path.join(__dirname,'../js/campaignReports.js'),'utf8').replace(/^import[\s\S]*?;\r?\n/gm,'').replaceAll('export ','');
+const reportTools = vm.runInNewContext(reportSource+';({observedMetrics,reportCsv})');
+test('report metrics preserve unknown values and reject invalid or private fields',()=>{
+ const metrics=reportTools.observedMetrics({views:null,likes:0,comments:-1,shares:'unknown',access_token:'private'});
+ assert.equal(metrics.views,null);assert.equal(metrics.likes,0);assert.equal(metrics.comments,null);assert.equal(metrics.shares,null);assert.equal(metrics.access_token,undefined);
+});
+test('report CSV escapes formulas and does not include private provider payloads',()=>{
+ const csv=reportTools.reportCsv([{recorded_at:'2026-10-11',platform:'=bad()',content_url:'https://example.invalid',metrics:{views:null,likes:0},raw_data:{secret:'private'}}]);
+ assert.ok(csv.includes("'=bad()"));assert.ok(csv.includes('not independently verified'));assert.ok(!csv.includes('secret'));assert.ok(csv.includes('\r\n'));
+});
+
+test('platform detection rejects lookalike hosts and unsafe URLs', () => {
+  const {context} = snapshotFixture(null);
+  for (const url of ['https://youtube.com.evil.invalid/watch?v=abc','https://notyoutube.com/watch?v=abc','https://evil-tiktok.com/video/1','http://twitch.tv/a','https://name:password@instagram.com/p/1']) {
+    assert.equal(context.detectPlatform(url),'unknown');
+  }
+  assert.equal(context.detectPlatform('https://www.youtube.com/watch?v=abc'),'youtube');
+  assert.equal(context.detectPlatform('https://m.tiktok.com/video/1'),'tiktok');
+  assert.equal(new URL(context.normalizeUrl('https://notyoutube.com/watch?v=abc')).hostname,'notyoutube.com');
+  assert.equal(context.normalizeUrl('https://youtu.be/abc?utm_source=test'),'https://www.youtube.com/watch?v=abc');
+});

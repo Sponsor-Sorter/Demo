@@ -58,95 +58,16 @@
 </footer>
 
 <script type="module">
-import { escapeHtml } from "./js/safePresentation.js";
 import { supabase } from './js/supabaseClient.js';
-import { notifyOfferUpdate } from './js/alerts.js';
-
-async function createGroupOfferFromSession() {
-  const statusDiv = document.getElementById('insert-status');
-  const url = new URL(window.location.href);
-  const session_id = url.searchParams.get('session_id');
-  const payment_status = url.searchParams.get('payment_status');
-
-  // 1) Validate first
-  if (!session_id || payment_status !== 'success') {
-    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
-    return;
-  }
-
-  // 2) Idempotency check (only with a valid session_id)
-  const { data: existing } = await supabase
-    .from('group_offers')
-    .select('id')
-    .eq('stripe_session_id', session_id)
-    .limit(1);
-
-  if (existing && existing.length) {
-    statusDiv.innerHTML = `<span style="color:green;">Group offer already recorded. Redirecting...</span>`;
-    localStorage.removeItem('pendingGroupOfferData');
-    setTimeout(() => window.location.href = './dashboardsponsor.html', 1500);
-    return;
-  }
-
-  if (!session_id || payment_status !== 'success') {
-    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
-    return;
-  }
-
-  let offerData = localStorage.getItem('pendingGroupOfferData');
-  if (!offerData) {
-    statusDiv.innerHTML = `<span style="color:red;">No offer data found. Please resubmit your group offer.</span>`;
-    return;
-  }
-  offerData = JSON.parse(offerData);
-  offerData.stripe_session_id = session_id;
-  offerData.stripe_payment_status = payment_status;
-
-  // Insert into group_offers
-  const { data: insertedOffers, error: insertError } = await supabase
-    .from('group_offers')
-    .insert([offerData])
-    .select('id, group_id, offer_title');
-
-  if (insertError || !insertedOffers || insertedOffers.length === 0) {
-    statusDiv.innerHTML = `<span style="color:red;">Group offer creation failed: ${escapeHtml(insertError?.message || 'Unknown error.')}</span>`;
-    return;
-  }
-
-  const inserted = insertedOffers[0];
-
-  // Notify owner/admins of the group (AFTER commit)
-  try {
-    const { data: admins } = await supabase
-      .from('friend_group_members')
-      .select('user_id, role')
-      .eq('group_id', offerData.group_id);
-
-    const adminIds = (admins || [])
-      .filter(m => ['owner','admin'].includes((m.role||'').toLowerCase()))
-      .map(m => m.user_id)
-      .filter(Boolean);
-
-    for (const to_user_id of adminIds) {
-      await notifyOfferUpdate({
-        to_user_id,
-        offer_id: inserted.id,
-        type: 'group_offer_created',
-        title: 'New Group Offer',
-        message: `A new group offer "${offerData.offer_title}" was submitted to your group.`
-      });
-    }
-  } catch (e) {
-    // non-critical
-  }
-
-  statusDiv.innerHTML = `<span style="color:green;">Group offer submitted! It will appear in the group's Pending Offers.<br>Redirecting to your dashboard...</span>`;
-  localStorage.removeItem('pendingGroupOfferData');
-  setTimeout(() => window.location.href = './dashboardsponsor.html', 2400);
-}
-
-document.addEventListener('DOMContentLoaded', createGroupOfferFromSession);
+const status = document.getElementById('insert-status');
+try {
+ const session_id = new URL(location.href).searchParams.get('session_id');
+ if (!session_id) throw new Error('Missing payment reference. Contact support if you have paid.');
+ const { data, error } = await supabase.functions.invoke('complete-sponsorship-checkout', { body: {session_id} });
+ if (error || !data?.offer_id) throw new Error(data?.error || 'Payment needs verification. Keep your receipt and contact support; do not pay again.');
+ status.textContent = 'Payment verified. Your group sponsorship is ready in your dashboard.';
+ const link = document.createElement('a'); link.href = './dashboardsponsor.html'; link.textContent = 'Open sponsor dashboard'; status.append(document.createElement('br'),link);
+} catch(error) { status.textContent = error.message; }
 </script>
-
 </body>
 </html>

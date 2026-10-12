@@ -93,7 +93,7 @@ serve(async (req) => {
       amount, amount_cents,
 
       // legacy context
-      offerId, offerType, subscriptionPriceId, frontendBaseUrl, signupEmail,
+      offerId, offerType, order_id, subscriptionPriceId, frontendBaseUrl, signupEmail,
       success_path, cancel_path, mode, reason, metadata,
 
       // ✅ game bounty payload (from gamebounty.html)
@@ -123,6 +123,7 @@ serve(async (req) => {
         headers: { ...CORS, "Content-Type": "application/json" },
       });
     }
+    let authenticatedUserId: string | null = null;
     if (!isSignup && !isGameBounty) {
       const authResponse = await fetch(`${Deno.env.get("SUPABASE_URL")}/auth/v1/user`, {
         headers: { Authorization: authHeader!, apikey: Deno.env.get("SUPABASE_ANON_KEY")! },
@@ -131,6 +132,7 @@ serve(async (req) => {
       if (!user?.id || user.is_anonymous === true) {
         return Response.json({ error: "Unauthorized" }, { status: 401, headers: CORS });
       }
+      authenticatedUserId = user.id;
     }
 
     // Base URL for web pages
@@ -188,6 +190,7 @@ serve(async (req) => {
     }
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      integration_identifier: 'sponsorsorter_abcdefgh',
       success_url: finalSuccessUrl,
       cancel_url: finalCancelUrl,
       allow_promotion_codes: true,
@@ -282,6 +285,38 @@ serve(async (req) => {
       cents = Math.round(Number(amount) * 100);
     }
 
+    let privateOrder: { id: string; total_cents: number; sponsor_user_id: string } | null = null;
+    if (offerType === 'private' || offerType === 'group') {
+      if (typeof order_id !== 'string' || !/^[0-9a-f-]{36}$/i.test(order_id)) {
+        return Response.json({ error: 'A saved sponsorship order is required.' }, { status: 400, headers: CORS });
+      }
+      const result = await fetch(`${Deno.env.get('SUPABASE_URL')}/rest/v1/sponsorship_orders?id=eq.${order_id}&select=id,total_cents,sponsor_user_id,source,status,stripe_session_id,checkout_expired,offer_kind`, {
+        headers: { Authorization: authHeader!, apikey: Deno.env.get('SUPABASE_ANON_KEY')! },
+      });
+      const orders = result.ok ? await result.json() : [];
+      const order = orders[0];
+      if (!order || order.sponsor_user_id !== authenticatedUserId || order.source !== 'stripe' || order.offer_kind !== offerType || order.status !== 'pending') {
+        return Response.json({ error: 'Purchase is unavailable for checkout.' }, { status: 409, headers: CORS });
+      }
+      privateOrder = order;
+      if (order.checkout_expired) return Response.json({ error: 'Checkout expired. Please start a new proposal.', code: 'CHECKOUT_EXPIRED' }, { status: 409, headers: CORS });
+      const privateKey = Deno.env.get('SPONSORSHIP_STRIPE_SECRET_KEY');
+      if (!privateKey) return Response.json({ error: 'Sponsorship checkout is not configured.' }, { status: 503, headers: CORS });
+      if (order.stripe_session_id) {
+        const existing = await new Stripe(privateKey, { apiVersion: '2026-08-26.dahlia' }).checkout.sessions.retrieve(order.stripe_session_id);
+        if (existing.status === 'expired') return Response.json({ error: 'Checkout expired. Please start a new proposal.', code: 'CHECKOUT_EXPIRED' }, { status: 409, headers: CORS });
+        if (existing.status === 'complete') return Response.json({ error: 'Payment is being reconciled. Open your checkout receipt; do not pay again.', code: 'CHECKOUT_COMPLETE', sessionId: existing.id }, { status: 409, headers: CORS });
+        if (existing.status === 'open' && existing.url) return Response.json({ sessionId: existing.id, checkoutUrl: existing.url, orderId: order.id, totalCents: order.total_cents, livemode: existing.livemode }, { headers: CORS });
+      }
+      cents = Number(order.total_cents);
+      sessionParams.allow_promotion_codes = false;
+      sessionParams.adaptive_pricing = { enabled: false };
+      sessionParams.metadata = { offerType, order_id: order.id, sponsor_user_id: authenticatedUserId! };
+      sessionParams.payment_intent_data = { metadata: { offerType, order_id: order.id } };
+      // Stable destinations also keep retries compatible with Stripe idempotency.
+      sessionParams.success_url = 'https://sponsorsorter.com/payment-success.html?session_id={CHECKOUT_SESSION_ID}';
+      sessionParams.cancel_url = 'https://sponsorsorter.com/newoffer.html?payment=cancelled';
+    }
     if (!Number.isSafeInteger(cents) || cents < 1 || cents > 99999999) {
       return new Response(JSON.stringify({ error: "Invalid amount." }), {
         status: 400,
@@ -335,7 +370,7 @@ serve(async (req) => {
               offerType === "group" ? "Sponsorship Offer Payment (Group)"
               : offerType === "signup" ? "Signup Fee"
               : "Sponsorship Offer Payment",
-            description: offerId ? `Ref: ${offerId}` : undefined,
+            description: privateOrder ? `Order: ${privateOrder.id}` : offerId ? `Ref: ${offerId}` : undefined,
           },
           unit_amount: cents,
         },
@@ -343,13 +378,24 @@ serve(async (req) => {
       }];
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    const checkoutStripe = privateOrder ? new Stripe(Deno.env.get('SPONSORSHIP_STRIPE_SECRET_KEY')!, { apiVersion: '2026-08-26.dahlia' }) : stripe;
+    const session = await checkoutStripe.checkout.sessions.create(sessionParams,
+      privateOrder ? { idempotencyKey: `sponsorship-${privateOrder.id}` } : undefined);
+    if (privateOrder) {
+      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const bound = await fetch(`${Deno.env.get('SUPABASE_URL')}/rest/v1/rpc/bind_sponsorship_checkout`, {
+        method: 'POST', headers: { Authorization: `Bearer ${serviceKey}`, apikey: serviceKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order_id: privateOrder.id, session_id: session.id }),
+      });
+      if (!bound.ok) throw new Error('Purchase binding failed');
+    }
 
     return new Response(JSON.stringify({
       sessionId: session.id,
       checkoutUrl: session.url,
       sessionUrl: session.url,
       url: session.url,
+      ...(privateOrder ? { orderId: privateOrder.id, totalCents: privateOrder.total_cents, livemode: session.livemode } : {}),
     }), {
       status: 200,
       headers: { ...CORS, "Content-Type": "application/json" },

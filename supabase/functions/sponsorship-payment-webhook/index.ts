@@ -34,11 +34,11 @@ export async function handleWebhook(req: Request): Promise<Response> {
         event.type === 'charge.refunded' || event.type === 'charge.dispute.created' || event.type === 'charge.dispute.closed') {
       const object = event.data.object as unknown as { id: string; payment_intent?: string; amount_refunded?: number; metadata?: Record<string,string> };
       const isCheckout = event.type.startsWith('checkout.');
-      if (isCheckout && object.metadata?.offerType !== 'private') return new Response('Ignored');
+      if (isCheckout && !['private','group'].includes(object.metadata?.offerType || '')) return new Response('Ignored');
       if (!isCheckout) {
         if (typeof object.payment_intent !== 'string') return new Response('Ignored');
         const intent = await new Stripe(apiKey, { apiVersion: '2026-08-26.dahlia' }).paymentIntents.retrieve(object.payment_intent);
-        if (intent.metadata?.offerType !== 'private') return new Response('Ignored');
+        if (!['private','group'].includes(intent.metadata?.offerType || '')) return new Response('Ignored');
       }
       const result = await fetch(`${databaseUrl}/rest/v1/rpc/record_sponsorship_payment_event`, {
         method: 'POST', headers: { Authorization: `Bearer ${key}`, apikey: key, 'Content-Type': 'application/json' },
@@ -58,7 +58,7 @@ export async function handleWebhook(req: Request): Promise<Response> {
     ) return new Response("Ignored");
     const session = event.data.object as Stripe.Checkout.Session;
     if (
-      session.metadata?.offerType !== "private" || !session.metadata?.order_id
+      !["private", "group"].includes(session.metadata?.offerType || "") || !session.metadata?.order_id
     ) return new Response("Ignored");
     if (
       session.payment_status !== "paid" || session.status !== "complete" ||
