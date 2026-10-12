@@ -1,5 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const script=fs.readFileSync('js/appInstall.js','utf8');
+test('shared navigation list wrappers fill their grid cells',()=>{
+ const css=fs.readFileSync('connection-header.css','utf8');
+ assert.match(css,/\.header\.connection-header > nav > li\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;/);
+ const html=fs.readFileSync('install.html','utf8');
+ assert.doesNotMatch(html,/>Logout<\/a>/);
+ assert.match(html,/Why does Android show an installation warning/);
+});
 test('worker revalidates navigation and removes only obsolete Sponsor Sorter caches',async()=>{
  const events={},deleted=[],requests=[];
  const context={URL,Response,self:{location:{origin:'https://sponsorsorter.com'},addEventListener:(name,fn)=>events[name]=fn,clients:{claim:async()=>{}},skipWaiting:async()=>{}},caches:{keys:async()=>['sponsorsorter-offline-v1','sponsorsorter-offline-v2','another-app-cache'],delete:async key=>deleted.push(key)},fetch:async(request,options)=>{requests.push(options);return new Response('fresh');}};

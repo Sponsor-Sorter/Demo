@@ -23,7 +23,7 @@ const pick = items => items[Math.floor(Math.random() * items.length)];
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 const stylesheet = document.createElement('link');
 stylesheet.rel = 'stylesheet';
-stylesheet.href = new URL('../connection-header.css?v=20261012-connections2', import.meta.url).href;
+stylesheet.href = new URL('../connection-header.css?v=20261012-nav-cells3', import.meta.url).href;
 document.head.append(stylesheet);
 
 for (const header of document.querySelectorAll('header.navbar1, header.header, header.admin-site-header')) {

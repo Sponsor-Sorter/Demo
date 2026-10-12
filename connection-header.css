@@ -136,6 +136,19 @@
   color: #cbd4e2;
   border-bottom: 3px solid transparent;
 }
+
+/* Each legacy list wrapper must fill its grid cell. Older phone styles
+   capped list items at half width, shrinking the tab artwork behind text. */
+.header.connection-header > nav > li {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  align-self: stretch;
+  justify-self: stretch;
+  list-style: none;
+}
 .header.connection-header > nav a:hover {
   background: #202938;
   color: #fff;
