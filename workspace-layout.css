@@ -361,3 +361,30 @@ body.workspace-page
   width: auto !important;
   min-width: max-content;
 }
+
+/* Keep legacy phone rules from shrinking artwork and overflowing tab labels. */
+body.workspace-page header.navbar1 nav.workspace-nav > li > a {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+@media (max-width: 540px) {
+  body.workspace-page header.navbar1 nav.workspace-nav { padding-inline: 8px !important; }
+  body.workspace-page header.navbar1 nav.workspace-nav > li > a {
+    font-size: .7rem !important;
+    padding-inline: 2px !important;
+    white-space: nowrap;
+  }
+  body.workspace-page header.navbar1 nav.workspace-nav #settings-notif-bar .icon-bar-bg > button {
+    width: 28px !important; min-width: 28px;
+  }
+}
+@media (max-width: 360px) {
+  body.workspace-page header.navbar1 nav.workspace-nav > li > a { font-size: .625rem !important; }
+}
+
+body.workspace-page header.navbar1 nav.workspace-nav > li { max-width: none !important; }
+@media (max-width: 360px) {
+  body.workspace-page header.navbar1 nav.workspace-nav { padding-inline: 0 !important; }
+  body.workspace-page header.navbar1 nav.workspace-nav #settings-notif-bar .icon-bar-bg { gap: 0 !important; padding: 0 !important; }
+}

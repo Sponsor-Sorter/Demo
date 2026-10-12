@@ -50,3 +50,9 @@ test('account switch or signout prevents stale guide completion',async()=>{
 test('wrong returned owner cannot mark completion successful',async()=>{
  const f=await fixture({saved:'3',result:{data:{user_id:'other'},error:null}});await f.button('Finish guide').onclick();assert.ok(f.button('Finish guide'));assert.equal(f.values.get('ss_setup_step:fixture'),'3');
 });
+
+
+test('setup guide spacing and phone tab widths override legacy page rules',()=>{
+ const css=fs.readFileSync('setup-guide.css','utf8');assert.match(css,/#account-setup-guide/);assert.match(css,/padding: clamp\(18px, 3vw, 28px\) !important/);
+ const nav=fs.readFileSync('workspace-layout.css','utf8');assert.ok(nav.includes('nav.workspace-nav > li { max-width: none !important; }'));assert.ok(nav.includes('font-size: .625rem !important'));
+});
