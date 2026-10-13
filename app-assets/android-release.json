@@ -1,12 +1,12 @@
 {
   "version": "1.0.0",
-  "versionCode": 5,
+  "versionCode": 7,
   "package": "com.sponsorsorter.app",
   "minimumAndroidVersion": "7.0",
-  "apkUrl": "https://expo.dev/artifacts/eas/wIYFjBGbFUu91n3FyFPEO9KP6Hu6iow8l429DKc0Hxw.apk",
-  "sha256": "982081ef5e2952e0cb7c1a442ead362d22906fd94f68d66601e05bf59fcb55e7",
+  "apkUrl": "https://expo.dev/artifacts/eas/sjctgZB2DUI549Mu8zOgkAQbLmltwAbz-PNcsZ2fZ74.apk",
+  "sha256": "920c7c1f249a63c267a9b741a7a3168dac99e014f624b8a3411b0c6cbb5bddb9",
   "signingCertificateSha256": "93b87832450ba5810b488e53e15848903b947a81b0fe5282927978a68a90bd72",
-  "runtimeVersion": "9c4a9c26d48afb6445115927f0897bc9818156f8",
+  "runtimeVersion": "e54ecfc03bd107242155d6a181b8f777bc30b02b",
   "updateChannel": "preview",
-  "releaseDate": "2026-10-12"
+  "releaseDate": "2026-10-13"
 }
