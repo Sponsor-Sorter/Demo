@@ -19,9 +19,9 @@ test('worker revalidates navigation and removes only obsolete Sponsor Sorter cac
 test('Android guide publishes the verified signed APK and truthful update instructions',()=>{
  const release=JSON.parse(fs.readFileSync('app-assets/android-release.json','utf8'));
  const page=fs.readFileSync('install.html','utf8');
- assert.equal(release.package,'com.sponsorsorter.app');assert.equal(release.versionCode,7);
+ assert.equal(release.package,'com.sponsorsorter.app');assert.equal(release.versionCode,8);assert.equal(release.minimumAndroidApi,24);assert.equal(release.targetSdkVersion,36);assert.equal(release.easBuildId,'9dfb34be-d364-4289-9d29-38594954491c');assert.equal(release.runtimeVersion,'cf58f92c37ce6493d8a33f6c48333f63463e68a8');assert.equal(release.sha256,'F29286F2AED785A16EA987EE0AA491BF81BC786414DF6312DE4AF403E8282731');assert.equal(release.signingCertificateSha256,'93b87832450ba5810b488e53e15848903b947a81b0fe5282927978a68a90bd72');
  assert.match(release.apkUrl,/^https:\/\/expo\.dev\/artifacts\/eas\/[A-Za-z0-9_-]+\.apk$/);
- assert.ok(page.includes('href="'+release.apkUrl+'"'));assert.ok(page.includes(release.sha256));assert.ok(page.includes(release.signingCertificateSha256));
+ assert.ok(page.includes('href="'+release.apkUrl+'"'));assert.ok(page.includes('Build 8'));assert.ok(page.includes(release.sha256));assert.ok(page.includes(release.signingCertificateSha256));assert.ok(page.includes('src="./app-assets/install-qr.svg"'));assert.ok(page.includes('https://sponsorsorter.com/install.html'));assert.ok(!page.includes('Build 7'));
  assert.match(page,/next full launch/);assert.match(page,/Android asks you to confirm/);assert.match(page,/Keep Google Play Protect enabled/);
  assert.doesNotMatch(page,/Native App Store and Google Play downloads are not available here yet/);
 });

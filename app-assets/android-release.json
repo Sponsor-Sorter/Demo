@@ -1,12 +1,15 @@
 {
   "version": "1.0.0",
-  "versionCode": 7,
+  "versionCode": 8,
   "package": "com.sponsorsorter.app",
   "minimumAndroidVersion": "7.0",
-  "apkUrl": "https://expo.dev/artifacts/eas/sjctgZB2DUI549Mu8zOgkAQbLmltwAbz-PNcsZ2fZ74.apk",
-  "sha256": "920c7c1f249a63c267a9b741a7a3168dac99e014f624b8a3411b0c6cbb5bddb9",
+  "apkUrl": "https://expo.dev/artifacts/eas/yrNldyiqXLN4zoxMmk6eu6HY8nFLhZgIvatLhbAYXOE.apk",
+  "sha256": "F29286F2AED785A16EA987EE0AA491BF81BC786414DF6312DE4AF403E8282731",
   "signingCertificateSha256": "93b87832450ba5810b488e53e15848903b947a81b0fe5282927978a68a90bd72",
-  "runtimeVersion": "e54ecfc03bd107242155d6a181b8f777bc30b02b",
+  "runtimeVersion": "cf58f92c37ce6493d8a33f6c48333f63463e68a8",
   "updateChannel": "preview",
-  "releaseDate": "2026-10-13"
+  "releaseDate": "2026-10-13",
+  "minimumAndroidApi": 24,
+  "targetSdkVersion": 36,
+  "easBuildId": "9dfb34be-d364-4289-9d29-38594954491c"
 }
