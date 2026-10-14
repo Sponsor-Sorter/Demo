@@ -16,13 +16,13 @@ document.getElementById('privacy-export-btn').onclick = async () => {
 };
 
 document.getElementById('privacy-delete-btn').onclick = async () => {
-  if (!confirm("Are you sure? This will permanently delete your account and all related data (after verification).")) return;
+  if (!confirm("Submit an account deletion request for review? This does not delete your account immediately. Support will contact you for verification.")) return;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) return alert("Not logged in");
   const { error } = await supabase
     .from('user_privacy_requests')
     .insert([{ user_id: session.user.id, email: session.user.email, type: 'delete' }]);
-  if (!error) alert("Your delete request was submitted. We’ll contact you for confirmation.");
+  if (!error) alert("Your deletion request was submitted for review. Your account has not been deleted; support will contact you for verification.");
   else alert("Error: " + error.message);
 };
 
@@ -34,21 +34,47 @@ async function showPrivacyRequestStatus() {
     .select('*')
     .eq('user_id', session.user.id)
     .order('created_at', { ascending: false });
-  let html = '';
-  if (!requests || requests.length === 0) html = '';
-  else {
-    html = '<ul>' + requests.map(req =>
-      `<li>
-        ${req.type.toUpperCase()} — <b>${req.status}</b> (${new Date(req.created_at).toLocaleString()})
-        ${req.result_url ? ` <a href="${req.result_url}" download>Download</a>` : ''}
-        ${req.status === 'pending'
-          ? `<button class="cancel-privacy-request-btn" data-id="${req.id}" title="Cancel Request" style="color:#f33;border:none;background:transparent;font-weight:bold;font-size:1.2em;margin-left:8px;cursor:pointer;box-shadow:none;">×</button>`
-          : ''}
-      </li>`
-    ).join('') + '</ul>';
-  }
   const statusEl = document.getElementById('privacy-request-status');
-  if (statusEl) statusEl.innerHTML = html;
+  if (!statusEl) return;
+  statusEl.replaceChildren();
+  if (!requests?.length) return;
+  const list = document.createElement('ul');
+  for (const req of requests) {
+    const item = document.createElement('li');
+    const requestType = String(req.type || 'request').toUpperCase();
+    const requestStatus = String(req.status || 'unknown');
+    const createdAt = new Date(req.created_at).toLocaleString();
+    item.appendChild(document.createTextNode(`${requestType} — ${requestStatus} (${createdAt})`));
+    if (req.result_url) {
+      try {
+        const resultUrl = new URL(req.result_url);
+        if (resultUrl.protocol === 'https:') {
+          const link = document.createElement('a');
+          link.href = resultUrl.href;
+          link.textContent = 'Download';
+          link.rel = 'noopener noreferrer';
+          link.setAttribute('download', '');
+          item.appendChild(document.createTextNode(' '));
+          item.appendChild(link);
+        }
+      } catch {
+        // Ignore malformed result URLs; never interpolate database values as markup.
+      }
+    }
+    if (req.status === 'pending') {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'cancel-privacy-request-btn';
+      button.setAttribute('data-id', String(req.id ?? ''));
+      button.setAttribute('aria-label', 'Cancel pending privacy request');
+      button.title = 'Cancel request';
+      button.textContent = '×';
+      button.style.cssText = 'color:#f33;border:none;background:transparent;font-weight:bold;font-size:1.2em;margin-left:8px;cursor:pointer;box-shadow:none;';
+      item.appendChild(button);
+    }
+    list.appendChild(item);
+  }
+  statusEl.appendChild(list);
 
   document.querySelectorAll('.cancel-privacy-request-btn').forEach(btn => {
     btn.onclick = async function () {

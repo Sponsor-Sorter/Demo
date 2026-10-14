@@ -2,12 +2,15 @@
 
 import { supabase } from './supabaseClient.js';
 import { getActiveUser } from './impersonationHelper.js';
+import { accountScopedStorageKey } from './accountScopedCache.js';
 
 const BTN_ID = 'messags-btn';
 
 // Set false if you never want chats to restore after refresh
 const PERSIST_CHATS = true;
-const LS_KEY = 'ss_open_chats_v2';
+const LS_KEY_PREFIX = 'ss_open_chats_v2';
+const LEGACY_LS_KEY = 'ss_open_chats_v2';
+try { localStorage.removeItem(LEGACY_LS_KEY); } catch {}
 
 // Profile image bucket (per your note)
 const PROFILE_BUCKET = 'logos';
@@ -1046,6 +1049,8 @@ async function refreshThreads() {
 
 function persistOpenChats() {
   if (!PERSIST_CHATS) return;
+  const storageKey = accountScopedStorageKey(LS_KEY_PREFIX, activeUser?.id);
+  if (!storageKey) return;
   try {
     const payload = [];
     for (const [offerId, st] of openChats.entries()) {
@@ -1056,14 +1061,16 @@ function persistOpenChats() {
         lastOpenedAt: st.lastOpenedAt || Date.now(),
       });
     }
-    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+    localStorage.setItem(storageKey, JSON.stringify(payload));
   } catch {}
 }
 
 function restoreOpenChats() {
   if (!PERSIST_CHATS) return [];
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    const storageKey = accountScopedStorageKey(LS_KEY_PREFIX, activeUser?.id);
+    if (!storageKey) return [];
+    const raw = localStorage.getItem(storageKey);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];

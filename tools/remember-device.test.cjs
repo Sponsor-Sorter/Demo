@@ -26,5 +26,5 @@ test('ordinary website logout and cancelled login preserve other signed-in devic
   assert.match(text,/signOut\(\{ scope: 'local' \}\)/,path);
  }
  // Changing a password still revokes other sessions intentionally.
- assert.match(fs.readFileSync('js/resetPassword.js','utf8'),/supabase\.auth\.signOut\(\)/);
+ assert.match(fs.readFileSync('js/resetPassword.js','utf8'),/supabase\.auth\.signOut\(\{\s*scope:\s*'global'\s*\}\)/);
 });

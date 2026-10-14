@@ -10,7 +10,7 @@
     />
     <link rel="icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./login.css?v=20261010-login1" />
-    <script type="module" src="./js/login.js?v=20261012-session2"></script>
+    <script type="module" src="./js/login.js?v=20261015-recovery1"></script>
     <script
       type="module"
       src="./js/connectionHeader.js?v=20261012-connections2"
@@ -21,7 +21,6 @@
 </head>
   <body id="site-top" data-page="login">
 <a class="page-skip-link" href="#main">Skip to content</a>
-    <a class="skip" href="#main">Skip to content</a>
     <header class="header">
       <a class="brand" href="./index.html"
         ><img src="./logos.png" width="46" height="46" alt="" /><span
@@ -34,7 +33,7 @@
         ><a href="./login.html" aria-current="page">Login</a>
       </nav>
     </header>
-    <main id="main" class="login-layout wrap">
+    <main id="main" class="login-layout wrap" tabindex="-1">
       <section class="login-intro" aria-labelledby="login-title">
         <p class="eyebrow">Your next partnership is waiting</p>
         <h1 id="login-title">Welcome back.<br />Let’s keep things moving.</h1>
@@ -331,7 +330,7 @@
             <button type="submit">Send Reset Link</button>
           </div>
 
-          <p id="reset-password-status" class="reset-status"></p>
+          <p id="reset-password-status" class="reset-status" role="status" aria-live="polite" aria-atomic="true"></p>
         </form>
       </div>
     </div>

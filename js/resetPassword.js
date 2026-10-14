@@ -7,11 +7,6 @@ const SUPABASE_ANON_KEY =
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Optional: log the PASSWORD_RECOVERY event when it happens
-supabase.auth.onAuthStateChange((event, session) => {
-  console.log('[reset-password] auth event:', event, session);
-});
-
 window.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('new-password-form');
   const newPasswordInput = document.getElementById('new-password');
@@ -136,7 +131,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     const { data, error } = await supabase.auth.getSession();
     if (error) {
-      console.warn('[reset-password] getSession error:', error);
+      setStatus('Could not verify this recovery link. Check your connection or request a new reset email.', true);
+      const btn = form?.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      return;
     }
 
     if (!data || !data.session) {
@@ -150,8 +148,11 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
       return;
     }
-  } catch (e) {
-    console.warn('[reset-password] unexpected getSession error:', e);
+  } catch {
+    setStatus('Could not verify this recovery link. Check your connection or request a new reset email.', true);
+    const btn = form?.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+    return;
   }
 
   if (!form || !newPasswordInput || !confirmPasswordInput) return;
@@ -161,8 +162,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault();
     setStatus('');
 
-    const newPassword = newPasswordInput.value.trim();
-    const confirmPassword = confirmPasswordInput.value.trim();
+    // Passwords are opaque user input. Trimming changes valid passwords and
+    // can make password-manager generated credentials impossible to set.
+    const newPassword = newPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
 
     if (newPassword.length < 8) {
       setStatus('Password must be at least 8 characters long.', true);
@@ -179,8 +182,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       });
 
       if (error) {
-        console.warn('[reset-password] updateUser error:', error);
-        setStatus('Error updating password: ' + error.message, true);
+        setStatus('Could not update your password. The recovery link may have expired; request a new one and try again.', true);
         return;
       }
 
@@ -189,14 +191,11 @@ window.addEventListener('DOMContentLoaded', async () => {
       // Optionally sign out and send them back to login
       setTimeout(async () => {
         try {
-          await supabase.auth.signOut();
-        } catch (e) {
-          console.warn('[reset-password] signOut error:', e);
-        }
+          await supabase.auth.signOut({ scope: 'global' });
+        } catch {}
         window.location.href = './login.html';
       }, 2000);
-    } catch (err) {
-      console.warn('[reset-password] unexpected error:', err);
+    } catch {
       setStatus('Unexpected error updating password. Please try again.', true);
     }
   });

@@ -1,9 +1,26 @@
 // Re-use the shared Supabase client so we’re consistent with the rest of the app
 import { supabase } from './supabaseClient.js';
+import { escapeHtml, safeImageUrl } from './safePresentation.js';
 import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
 // Keep this so we can still call the edge function by URL
 const SUPABASE_URL = 'https://mqixtrnhotqqybaghgny.supabase.co';
+
+function profileHTML(user) {
+  const username = user?.username || 'Sponsor';
+  const path = String(user?.profile_pic || '')
+    .split('/')
+    .filter(segment => segment && segment !== '.' && segment !== '..')
+    .map(encodeURIComponent)
+    .join('/');
+  const picUrl = path
+    ? safeImageUrl(`${SUPABASE_URL}/storage/v1/object/public/logos/${path}`)
+    : 'logos.png';
+  return `<li><figure>
+      <img src="${escapeHtml(picUrl)}" alt="Sponsor Logo">
+      <figcaption>@${escapeHtml(username)}</figcaption>
+    </figure></li>`;
+}
 
 // =======================
 // Sponsor logo carousels
@@ -22,17 +39,6 @@ async function loadSponsorCarousels() {
   const shuffled = users.sort(() => Math.random() - 0.5);
   const left = shuffled.slice(0, 3);
   const right = shuffled.slice(3, 6);
-
-  function profileHTML(user) {
-    const picUrl = user.profile_pic
-      ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${user.profile_pic}`
-      : 'logos.png';
-    const username = user.username || 'Sponsor';
-    return `<li><figure>
-      <img src="${picUrl}" alt="Sponsor Logo">
-      <figcaption>@${username}</figcaption>
-    </figure></li>`;
-  }
 
   const leftList = document.getElementById('sponsor-list-left');
   if (leftList) leftList.innerHTML = left.map(profileHTML).join('');
@@ -509,27 +515,23 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const redirectTo = `${window.location.origin}/reset-password.html`;
+        const redirectTo = new URL('./reset-password.html', window.location.href).href;
 
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        await supabase.auth.resetPasswordForEmail(email, {
           redirectTo,
         });
 
-        if (error) {
-          if (resetStatus) {
-            resetStatus.textContent = 'Error sending reset email: ' + error.message;
-            resetStatus.className = 'reset-status error';
-          }
-        } else {
-          if (resetStatus) {
-            resetStatus.textContent =
-              'If that email exists in our system, a reset link has been sent.';
-            resetStatus.className = 'reset-status success';
-          }
-        }
-      } catch (err) {
         if (resetStatus) {
-          resetStatus.textContent = 'Unexpected error sending reset email.';
+          // Use the same response for known and unknown emails. Supabase
+          // enforces delivery/rate limits; do not surface account-specific
+          // errors here.
+          resetStatus.textContent =
+            'If an account matches that email, a reset link will be sent. If nothing arrives shortly, try again later or contact support.';
+          resetStatus.className = 'reset-status success';
+        }
+      } catch {
+        if (resetStatus) {
+          resetStatus.textContent = 'We could not submit the reset request. Check your connection and try again.';
           resetStatus.className = 'reset-status error';
         }
       }
