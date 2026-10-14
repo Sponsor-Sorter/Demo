@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Payment Success - Sponsor Sorter">
-  <title>Payment Success | Sponsor Sorter</title>
+  <meta name="description" content="Public card payment status and support guidance - Sponsor Sorter">
+  <title>Payment Status | Sponsor Sorter</title>
   <link rel="stylesheet" href="styles.css?v=20261010" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 <script type="module" src="./js/connectionHeader.js?v=20261012-connections2"></script>
@@ -35,11 +35,11 @@
     </div>
   </section>
 </header>
-<div class="page-intro"><p class="page-eyebrow">Public offer checkout</p><h1>Check your sponsorship payment.</h1><p>Review the result below before creating another payment for the same offer.</p></div>
+<div class="page-intro"><p class="page-eyebrow">Public offer checkout</p><h1>We can’t verify this payment here.</h1><p>Please don’t pay again. Contact support so we can reconcile your payment and offer.</p></div>
 <main style="min-height:40vh;" id="page-content" tabindex="-1">
   <div class="page-status-card" style="max-width:500px;margin:38px auto;padding:24px 28px;background:#f5f8ff;border-radius:14px;box-shadow:0 2px 24px 0 #e2e2e2;">
-    <h2 style="color:green;">Checking your checkout</h2>
-    <div id="insert-status">Creating your public offer...</div>
+    <h2>Payment status needs support</h2>
+    <div id="insert-status" role="status" aria-live="polite"></div>
   </div>
 </main>
 <footer class="site-footer" aria-label="Site footer">
@@ -55,59 +55,8 @@
   <div class="site-footer-bottom"><span>© 2026 Sponsor Sorter · ABN 23 801 694 480</span><span>Built for the partnership.</span><a href="#site-top">Back to top ↑</a></div>
 </footer>
 <script type="module">
-import { escapeHtml } from "./js/safePresentation.js";
-import { supabase } from './js/supabaseClient.js';
-import { notifyOfferUpdate } from './js/alerts.js?notifications=20261012brand6'; // This uses your universal notification logic!
-
-async function createPublicOfferFromSession() {
-  const statusDiv = document.getElementById('insert-status');
-  const url = new URL(window.location.href);
-  const session_id = url.searchParams.get('session_id');
-  const payment_status = url.searchParams.get('payment_status');
-  if (!session_id || payment_status !== 'success') {
-    statusDiv.innerHTML = `<span style="color:red;">No valid payment found. Please contact support if this is an error.</span>`;
-    return;
-  }
-
-  let offerData = localStorage.getItem('pendingOfferData');
-  if (!offerData) {
-    statusDiv.innerHTML = `<span style="color:red;">No offer data found. Please resubmit your offer.</span>`;
-    return;
-  }
-  offerData = JSON.parse(offerData);
-  offerData.stripe_session_id = session_id;
-  offerData.stripe_payment_status = payment_status;
-
-  // Insert offer to public_offers
-  const { data: insertedOffers, error: insertError } = await supabase
-    .from('public_offers')
-    .insert([offerData])
-    .select();
-
-  if (insertError || !insertedOffers || insertedOffers.length === 0) {
-    statusDiv.innerHTML = `<span style="color:red;">Offer creation failed: ${escapeHtml(insertError?.message || 'Unknown error.')}</span>`;
-    return;
-  }
-
-  // --- Notify sponsor (themselves) that their public offer is live
-  try {
-    await notifyOfferUpdate({
-      to_user_id: offerData.sponsor_id || offerData.user_id,
-      offer_id: insertedOffers[0].id,
-      type: 'public_offer_live',
-      title: 'Your public offer is now live!',
-      message: `Your public offer "${offerData.offer_title}" is live and accepting applicants!`
-    });
-  } catch (e) {
-    // Notification error is non-critical; do nothing here
-  }
-
-  statusDiv.innerHTML = `<span style="color:green;">Public offer posted successfully! You'll be notified when applicants apply.<br>Your offer is now live. Redirecting to dashboard...</span>`;
-  localStorage.removeItem('pendingOfferData');
-  setTimeout(() => window.location.href = './dashboardsponsor.html', 2400);
-}
-
-document.addEventListener('DOMContentLoaded', createPublicOfferFromSession);
+document.getElementById('insert-status').textContent =
+  'This page cannot verify whether your card was charged, and it cannot confirm that an offer was created. Do not submit payment again. Contact support to reconcile the payment and your offer. Your saved offer draft, if present in this browser, has been left untouched.';
 </script>
 
 

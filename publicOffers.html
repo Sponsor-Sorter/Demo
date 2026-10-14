@@ -7,8 +7,6 @@
   <title>Post Public Offer | Sponsor Sorter</title>
   <link rel="stylesheet" href="./styles.css?v=20261010" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <script src="https://js.stripe.com/v3/"></script>
-
   <style>
     /* Simple processing spinner for submit button */
     #submitOfferBtn.is-processing {
@@ -96,6 +94,7 @@
   </fieldset>
 </section>
 
+<p id="offerCheckoutStatus" class="help-block" role="status" aria-live="polite" hidden></p>
 <form id="offerForm" enctype="multipart/form-data">
   <section>
     <fieldset>
@@ -321,9 +320,7 @@
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { famBotModerateWithModal } from './js/FamBot.js';
-
-const STRIPE_BACKEND = "https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout";
-const STRIPE_PK = 'pk_live_51RSqPjGpIACU7TxK4XxMXjNPKpkEvhmfya1DgnxtZEcMeCe8wgzrhT9v6BxqbWXhl7s30nl23DRR9CclIQuvwAQX00zkJcVmOV';
+import { showPublicCheckoutUnavailable } from './js/publicCheckoutNotice.js';
 
 // HARDCODED PAYMENT MODEL (as requested)
 const HARD_PAYMENT_SCHEDULE = 'full on completion';
@@ -748,51 +745,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
-      // ===== STRIPE FALLBACK =====
-      // Store the offer data for your existing payment-success-public flow
-      localStorage.setItem('pendingOfferData', JSON.stringify(offerData));
-
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        const jwt = session?.access_token;
-
-        const frontendBaseUrl = window.location.origin.includes('github.io')
-          ? 'https://sponsor-sorter.github.io/Demo'
-          : window.location.origin;
-
-        const sessionRes = await fetch(STRIPE_BACKEND, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
-          },
-          body: JSON.stringify({
-            amount: totalWithFee,
-            offerId: title + '-' + Date.now(),
-            offerType: 'public',
-            frontendBaseUrl
-          })
-        });
-
-        const sessionData = await sessionRes.json();
-        if (!sessionData.sessionId) {
-          alert('Could not start payment. ' + (sessionData.error || 'Unknown error.'));
-          return;
-        }
-
-        const stripe = Stripe(STRIPE_PK);
-        const { error } = await stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
-        if (error) {
-          alert('Stripe redirect failed: ' + error.message);
-          return;
-        }
-
-        // If redirect succeeds, page navigates away
-        keepProcessing = true;
-      } catch (err) {
-        alert('Failed to initiate payment: ' + err.message);
-        return;
-      }
+      // Public card checkout is disabled until verified fulfillment is available.
+      showPublicCheckoutUnavailable(offerData);
+      return;
 
     } finally {
       if (!keepProcessing) setProcessing(false);
