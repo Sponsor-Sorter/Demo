@@ -1,5 +1,6 @@
 // ./js/formSubmit.js
 import { supabase } from './supabaseClient.js';
+import { moderateSignupWithFamBot } from './famBotSignup.js';
 
 let refCode = null;
 
@@ -8,9 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   refCode = urlParams.get('ref');
 });
-
-const SUPABASE_ANON_KEY = '024636ea4f7d172f905c02347888f84e405b115a0255326a0b185bf767d2baf0';
-const FAMBOT_SIGNUP_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBotSignup';
 
 // Stripe checkout Edge Function + keys
 const STRIPE_BACKEND = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe-checkout';
@@ -94,44 +92,24 @@ document.addEventListener('DOMContentLoaded', () => {
       // ===== END NEW =====
 
       // ===== FamBot moderation before proceeding =====
-      let famResult;
-      try {
-        const famBotContent = {
-          username: data.username,
-          about_yourself: data['about-yourself'],
-          title: data.title,
-          company_name: data.company_name,
-          contenttype: data.contenttype
-        };
-        const combinedContent = Object.values(famBotContent)
-          .filter(Boolean)
-          .join(' ');
-
-        const famResponse = await fetch(FAMBOT_SIGNUP_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-          },
-          body: JSON.stringify({
-            user_id: null,
-            content: combinedContent
-          })
-        });
-
-        famResult = await famResponse.json();
-
-        if (!famResponse.ok || !famResult || typeof famResult !== 'object' || typeof famResult.flagged !== 'boolean') {
-          throw new Error('[FamBot] We could not check this content right now. Please try again.');
-        }
-
-        if (famResult.flagged) {
-          showFamBotModal(famResult);
-          throw new Error('FamBot blocked this signup.');
-        }
-      } catch (err) {
-        logError('FamBot', err);
-        throw err;
+      const famBotContent = {
+        username: data.username,
+        about_yourself: data['about-yourself'],
+        title: data.title,
+        company_name: data.company_name,
+        contenttype: data.contenttype
+      };
+      const combinedContent = Object.values(famBotContent)
+        .filter(Boolean)
+        .join(' ');
+      const famCheck = await moderateSignupWithFamBot(supabase, combinedContent);
+      if (famCheck.status === 'unavailable') {
+        alert('We could not check this content right now. Please try again.');
+        return;
+      }
+      if (famCheck.status === 'blocked') {
+        showFamBotModal(famCheck.result);
+        return;
       }
 
       // Platforms and social handles

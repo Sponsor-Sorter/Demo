@@ -265,6 +265,7 @@ test('empty reset request is rejected locally before an auth call', async () => 
 });
 
 test('signup rejects invalid agreement/password, locks early, prevents duplicates, and retries', async () => {
+  const { moderateSignupWithFamBot } = await import('../js/famBotSignup.js');
   let readyHandlers = [];
   let submitCount = 0;
   let releaseFetch;
@@ -297,7 +298,9 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
     },
     window: { location: { search: '', origin: 'https://example.invalid', href: '', assign() {} } },
     URLSearchParams, FormData: FixtureFormData,
-    fetch: () => { submitCount++; return new Promise(resolve => { releaseFetch = resolve; }); },
+    supabase: { functions: { invoke: () => { submitCount++; return new Promise(resolve => { releaseFetch = resolve; }); } } },
+    moderateSignupWithFamBot,
+    fetch: () => { throw new Error('signup moderation must use the Supabase function client'); },
     localStorage: { setItem() {}, getItem() { return null; }, removeItem() {} },
     btoa: value => Buffer.from(value).toString('base64'), Date, URL, console: { error() {} }, alert() {},
   };
@@ -322,7 +325,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
   assert.equal(backButton.disabled, true);
   await submit(event());
   assert.equal(submitCount, 1);
-  releaseFetch({ ok: false, status: 503, statusText: 'synthetic failure', json: async () => ({ error: 'mock failure' }) });
+  releaseFetch({ data: null, error: new Error('synthetic failure') });
   await first;
   assert.equal(context.window.__signupProcessing, false);
   assert.equal(button.disabled, false);
@@ -332,7 +335,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
 
   const malformedDecision = submit(event());
   assert.equal(submitCount, 2);
-  releaseFetch({ ok: true, status: 200, json: async () => ({ message: 'synthetic response without a decision' }) });
+  releaseFetch({ data: { message: 'synthetic response without a decision' }, error: null });
   await malformedDecision;
   assert.equal(context.window.__signupProcessing, false);
   assert.equal(context.window.location.href, '');
@@ -340,7 +343,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
 
   const retry = submit(event());
   assert.equal(submitCount, 3);
-  releaseFetch({ ok: true, status: 200, json: async () => ({ flagged: false }) });
+  releaseFetch({ data: { flagged: false }, error: null });
   await retry;
   assert.equal(context.window.__signupProcessing, false);
   assert.equal(context.window.location.href, './payment-success-signup.html?mode=free');

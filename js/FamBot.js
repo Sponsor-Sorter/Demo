@@ -1,3 +1,5 @@
+import { supabase } from './supabaseClient.js';
+
 const FAMBOT_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBot';
 const FAMBOT_UNAVAILABLE_MESSAGE = 'We could not check this content right now. Please try again.';
 
@@ -9,6 +11,7 @@ export async function famBotModerateWithModal({ user_id, content, jwt, type = 'c
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'apikey': supabase.supabaseKey,
         ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
       },
       body: JSON.stringify({ user_id, content })

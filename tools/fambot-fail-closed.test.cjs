@@ -6,6 +6,7 @@ const vm = require('node:vm');
 
 const rawSource = fs.readFileSync(path.join(__dirname, '../js/FamBot.js'), 'utf8');
 const source = rawSource.split('// --- Modal/UX Logic ---')[0]
+  .replace("import { supabase } from './supabaseClient.js';", '')
   .replace(/^export async function /m, 'async function ')
   .replace(/^export function /m, 'function ');
 
@@ -17,6 +18,7 @@ function fixture(fetchImpl) {
       calls.push(args);
       return fetchImpl(...args);
     },
+    supabase: { supabaseKey: 'synthetic-project-key' },
     famBotShowModal: (result, type) => modals.push({ result, type }),
   };
   vm.runInNewContext(source + '\nthis.famBotModerateWithModal = famBotModerateWithModal;', context);
@@ -37,6 +39,7 @@ test('valid synthetic moderation decision allows clean content and sends only ac
   assert.match(url, /\/functions\/v1\/FamBot$/);
   assert.equal(request.method, 'POST');
   assert.equal(request.headers.Authorization, 'Bearer synthetic-jwt');
+  assert.equal(request.headers.apikey, 'synthetic-project-key');
   assert.deepEqual(JSON.parse(request.body), { user_id: 'synthetic-actor', content: 'synthetic text' });
 });
 
@@ -58,7 +61,9 @@ test('synthetic moderation response text is escaped before rendering', () => {
     body: { appendChild() {} },
   };
   const context = { document };
-  vm.runInNewContext(rawSource.replace(/^export async function /m, 'async function '), context);
+  vm.runInNewContext(rawSource
+    .replace("import { supabase } from './supabaseClient.js';", '')
+    .replace(/^export async function /m, 'async function '), context);
   context.famBotShowModal({
     flagged: true,
     message: '<img src=x onerror=alert(1)>',
