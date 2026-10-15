@@ -128,15 +128,16 @@
 <link rel="stylesheet" href="./workspace-layout.css?v=20261013-nav3">
 <script type="module" src="./js/workspaceLayout.js?v=20261010-workspace1"></script>
 <link rel="stylesheet" href="./workspace-experience.css?v=20261011-campaign1">
-<link rel="stylesheet" href="./finder-discovery.css?v=20261011-match2">
+<link rel="stylesheet" href="./finder-discovery.css?v=20261015-auth-gate1">
 <script type="module" src="./js/workspaceExperience.js?v=20261011-onboard1"></script>
 <script type="module" src="./js/finderLayout.js?v=20261011-layout2"></script>
 <link rel="stylesheet" href="./site-shell.css?v=20261011-shell1">
   <link rel="stylesheet" href="./content-pages.css?v=20261012-pages1">
 <link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#080b10"><link rel="apple-touch-icon" href="./app-assets/icon-512.png"><meta name="apple-mobile-web-app-capable" content="yes"><script type="module" src="./js/appInstall.js?v=20261012-app2"></script>
 </head>
-<body class="workspace-page" id="site-top" data-page="finder">
+<body class="workspace-page" id="site-top" data-page="finder" data-auth-state="checking">
 <a class="page-skip-link" href="#page-content">Skip to content</a>
+<div id="finder-auth-status" class="finder-auth-status" role="status" aria-live="polite">Checking your session…</div>
 <header class="navbar1">
   <section class="navbar">
     <div class="navii">
@@ -497,7 +498,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     .select('username, userType')
     .eq('user_id', user.id)
     .single();
-  if (profileError) return;
+  if (profileError || !profile) {
+    const status = document.getElementById('finder-auth-status');
+    status.textContent = 'Your Finder profile could not be loaded. Check your connection and try again.';
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.textContent = 'Retry';
+    retry.addEventListener('click', () => window.location.reload());
+    status.appendChild(document.createTextNode(' '));
+    status.appendChild(retry);
+    document.body.dataset.authState = 'error';
+    return;
+  }
   const isSponsor = profile.userType === 'sponsor';
   const isSponsee = profile.userType === 'besponsored';
   window.isSponsee = isSponsee;
@@ -595,6 +607,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const targetLabel = isSponsor ? 'Discover creators' : 'Discover sponsors';
   sponsorNameElem.innerText = profile.username ?? user.email;
   searchHeader.innerText = targetLabel;
+  document.getElementById('finder-auth-status').hidden = true;
+  document.body.removeAttribute('data-auth-state');
 
   const dashboardLink = document.getElementById('dashboard-link');
   if (dashboardLink && dashboardLink.firstElementChild) {
