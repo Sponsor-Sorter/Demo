@@ -330,8 +330,16 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
   assert.equal(backButton.disabled, false);
   assert.equal(label.textContent, 'Sign Up');
 
-  const retry = submit(event());
+  const malformedDecision = submit(event());
   assert.equal(submitCount, 2);
+  releaseFetch({ ok: true, status: 200, json: async () => ({ message: 'synthetic response without a decision' }) });
+  await malformedDecision;
+  assert.equal(context.window.__signupProcessing, false);
+  assert.equal(context.window.location.href, '');
+  assert.equal(button.disabled, false);
+
+  const retry = submit(event());
+  assert.equal(submitCount, 3);
   releaseFetch({ ok: true, status: 200, json: async () => ({ flagged: false }) });
   await retry;
   assert.equal(context.window.__signupProcessing, false);

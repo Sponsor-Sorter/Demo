@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         famResult = await famResponse.json();
 
-        if (!famResponse.ok) {
-          throw new Error(`[FamBot] ${famResult.error || famResponse.statusText}`);
+        if (!famResponse.ok || !famResult || typeof famResult !== 'object' || typeof famResult.flagged !== 'boolean') {
+          throw new Error('[FamBot] We could not check this content right now. Please try again.');
         }
 
         if (famResult.flagged) {
@@ -356,9 +356,16 @@ function showFamBotModal(result) {
   const existing = document.getElementById('fambot-modal');
   if (existing) existing.remove();
 
-  const categories = (result.flaggedCategories || [])
-    .map(cat => cat.charAt(0).toUpperCase() + cat.slice(1))
+  const escapeText = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+  const categories = (Array.isArray(result.flaggedCategories) ? result.flaggedCategories : [])
+    .filter(cat => typeof cat === 'string')
+    .map(cat => escapeText(cat.charAt(0).toUpperCase() + cat.slice(1)))
     .join(', ');
+  const message = typeof result.message === 'string' && result.message
+    ? escapeText(result.message)
+    : 'This content was blocked by moderation. Please try again with different wording.';
 
   const modal = document.createElement('div');
   modal.id = 'fambot-modal';
@@ -367,7 +374,7 @@ function showFamBotModal(result) {
       <div style="background:white;padding:2.5rem 2rem 1.5rem 2rem;max-width:430px;border-radius:18px;box-shadow:0 6px 32px 4px rgba(0,0,0,.12);text-align:center;">
         <h2 style="margin-bottom:12px;color:#C41A1A;">Profile Details Unacceptable</h2>
         <p style="color:#222;font-size:1.04em;margin-bottom:1em;">
-          ${result.message || 'This content was blocked by moderation. Please try again with different wording.'}
+          ${message}
         </p>
         ${
           categories

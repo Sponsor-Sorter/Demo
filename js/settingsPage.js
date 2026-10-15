@@ -1365,7 +1365,14 @@ addEventListener('DOMContentLoaded', async () => {
           }
         } catch (err) {
           console.error('FamBot moderation failed (profile details):', err);
-          // If FamBot fails, fall through and allow the save instead of bricking the form.
+          if (detailsMsg) {
+            detailsMsg.textContent = 'We could not check this content right now. Please try again.';
+            detailsMsg.style.color = '#ff6b6b';
+          }
+          if (window.showToast) {
+            window.showToast('We could not check this content right now. Please try again.', 'error');
+          }
+          return; // Do not save profile text without a moderation decision.
         }
       }
       // -------- End FamBot moderation --------

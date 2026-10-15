@@ -1,5 +1,12 @@
 # Sponsor Sorter handover
 
+## 2026-10-15 — Fail-closed FamBot client handling
+
+- Both the FamBot content-check wrapper and the separate signup checker now require a successful HTTP response with an explicit boolean `flagged` decision. HTTP errors, transport failures, invalid JSON, and malformed decisions block the pending write and show generic retry guidance.
+- FamBot response messages/categories are escaped before display. The profile-details fallback now blocks saving if moderation unexpectedly throws.
+- Added synthetic tests for allowed/flagged results, non-success status, malformed decisions, network/JSON errors, signup fail-closed behavior, and escaped response text. `npm test`: 109 passing. No FamBot endpoint was invoked; the deployed Edge Function source and its event writes are outside this Website checkout and remain unverified.
+- Instrumentation remains coordinated with the Supabase/Admin owner; no duplicate event schema or live database changes were added.
+
 ## 2026-10-15 — Authentication form reliability
 
 - Login, signup, reset-request and password-recovery forms now lock during pending submissions, provide retryable error states, and preserve password characters exactly. Signup passwords declare the existing eight-character minimum in native form validation.
