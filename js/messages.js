@@ -40,11 +40,31 @@ const unreadByOffer = new Map(); // offer_id -> unread count (session-based)
 const openChats = new Map();     // offer_id -> { minimized, infoOpen, lastOpenedAt, renderedIds:Set, unread, lastMsgAt }
 const sendInFlight = new Set();
 const draftRevisions = new WeakMap();
+let accountGeneration = 0;
+let accountSyncGeneration = 0;
+let threadRefreshGeneration = 0;
+let offerLoadGeneration = 0;
+const chatLoadGenerations = new Map();
+let authStateSubscription = null;
 
 let activeUser = null;
 let rtSponsorCh = null;
 let rtSponseeCh = null;
 let pollTimer = null;
+
+function nextChatLoadGeneration(offerId) {
+  const generation = (chatLoadGenerations.get(offerId) || 0) + 1;
+  chatLoadGenerations.set(offerId, generation);
+  return generation;
+}
+
+function isCurrentChatLoad(offerId, generation, accountVersion) {
+  return accountVersion === accountGeneration && chatLoadGenerations.get(offerId) === generation;
+}
+
+function isCurrentThreadRefresh(generation, accountVersion) {
+  return generation === threadRefreshGeneration && accountVersion === accountGeneration;
+}
 
 function $(id) { return document.getElementById(id); }
 
@@ -814,10 +834,11 @@ function updateBadge() {
   }
 }
 
-async function loadMyOffers() {
+async function loadMyOffers(expectedAccountGeneration = accountGeneration) {
+  const requestGeneration = ++offerLoadGeneration;
   const email = myEmail();
   const uname = myUsername();
-  if (!email && !uname) return [];
+  if (!email && !uname) return { data: [], error: null };
 
   const orParts = [];
   if (email) {
@@ -830,9 +851,11 @@ async function loadMyOffers() {
   }
 
   // Columns verified against schema (private_offers)
-  const { data, error } = await supabase
-    .from('private_offers')
-    .select([
+  let result;
+  try {
+    result = await supabase
+      .from('private_offers')
+      .select([
       'id',
       'offer_title',
       'offer_description',
@@ -856,26 +879,37 @@ async function loadMyOffers() {
       'sponsee_email',
       'sponsee_username',
       'sponsor_id',
-    ].join(','))
-    .or(orParts.join(','))
-    .order('created_at', { ascending: false });
+      ].join(','))
+      .or(orParts.join(','))
+      .order('created_at', { ascending: false });
+  } catch (error) {
+    console.error('[messages.js] loadMyOffers error:', error);
+    return { data: null, error };
+  }
+
+  const { data, error } = result || {};
 
   if (error) {
     console.error('[messages.js] loadMyOffers error:', error);
-    return [];
+    return { data: null, error };
   }
+  if (!Array.isArray(data)) {
+    return { data: null, error: new Error('Invalid conversation list response') };
+  }
+  if (expectedAccountGeneration !== accountGeneration || requestGeneration !== offerLoadGeneration) return { data: null, error: null, stale: true };
 
   offerById.clear();
   peerByOfferId.clear();
   (data || []).forEach(o => offerById.set(o.id, o));
 
-  await loadPeerProfiles(data || []);
+  await loadPeerProfiles(data || [], expectedAccountGeneration);
+  if (expectedAccountGeneration !== accountGeneration || requestGeneration !== offerLoadGeneration) return { data: null, error: null, stale: true };
 
   for (const o of (data || [])) {
     peerByOfferId.set(o.id, getPeerForOffer(o));
   }
 
-  return data || [];
+  return { data: data || [], error: null };
 }
 
 function getPeerForOffer(offer) {
@@ -916,7 +950,7 @@ function getPeerForOffer(offer) {
   };
 }
 
-async function loadPeerProfiles(offers) {
+async function loadPeerProfiles(offers, expectedAccountGeneration = accountGeneration) {
   const email = myEmail();
   const uname = myUsername();
   if (!email && !uname) return;
@@ -936,15 +970,24 @@ async function loadPeerProfiles(offers) {
   const emails = Array.from(wanted).filter(Boolean);
   if (!emails.length) return;
 
-  const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('email, username, profile_pic')
-    .in('email', emails);
+  let result;
+  try {
+    result = await supabase
+      .from('users_extended_data')
+      .select('email, username, profile_pic')
+      .in('email', emails);
+  } catch (error) {
+    console.warn('[messages.js] loadPeerProfiles blocked or failed:', error?.message || error);
+    return;
+  }
+
+  const { data, error } = result || {};
 
   if (error) {
     console.warn('[messages.js] loadPeerProfiles blocked or failed:', error?.message || error);
     return;
   }
+  if (expectedAccountGeneration !== accountGeneration) return;
 
   for (const row of (data || [])) {
     const k = safeLower(row.email);
@@ -956,22 +999,34 @@ async function loadPeerProfiles(offers) {
   }
 }
 
-async function loadLatestCommentsForMe(limit = 300) {
+async function loadLatestCommentsForMe(limit = 300, expectedAccountGeneration = accountGeneration) {
   const email = myEmail();
-  if (!email) return [];
+  if (!email) return { data: [], error: null };
 
-  const { data, error } = await supabase
-    .from('private_offer_comments')
-    .select('id, offer_id, comment_text, created_at, sender, user_id, sponsor_email, sponsee_email')
-    .or(`sponsor_email.eq.${email},sponsee_email.eq.${email}`)
-    .order('created_at', { ascending: false })
-    .limit(limit);
+  let result;
+  try {
+    result = await supabase
+      .from('private_offer_comments')
+      .select('id, offer_id, comment_text, created_at, sender, user_id, sponsor_email, sponsee_email')
+      .or(`sponsor_email.eq.${email},sponsee_email.eq.${email}`)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+  } catch (error) {
+    console.error('[messages.js] loadLatestCommentsForMe error:', error);
+    return { data: null, error };
+  }
+
+  const { data, error } = result || {};
 
   if (error) {
     console.error('[messages.js] loadLatestCommentsForMe error:', error);
-    return [];
+    return { data: null, error };
   }
-  return data || [];
+  if (!Array.isArray(data)) {
+    return { data: null, error: new Error('Invalid conversation preview response') };
+  }
+  if (expectedAccountGeneration !== accountGeneration) return { data: null, error: null, stale: true };
+  return { data: data || [], error: null };
 }
 
 function avatarHTML({ picUrl, initial, sizeClass = 'ss-ava' }) {
@@ -1036,11 +1091,36 @@ function renderThreads(threads) {
   }
 }
 
+function renderThreadStatus(message) {
+  const list = $(UI.dropdownList);
+  if (!list) return;
+  list.innerHTML = '';
+  const status = document.createElement('div');
+  status.className = 'ss-dd-empty';
+  status.setAttribute('role', 'status');
+  status.textContent = message;
+  list.appendChild(status);
+}
+
 async function refreshThreads() {
   ensureUI();
 
-  const offers = await loadMyOffers();
-  const comments = await loadLatestCommentsForMe();
+  const expectedAccountGeneration = accountGeneration;
+  const requestGeneration = ++threadRefreshGeneration;
+  const [offersResult, commentsResult] = await Promise.all([
+    loadMyOffers(expectedAccountGeneration),
+    loadLatestCommentsForMe(300, expectedAccountGeneration),
+  ]);
+
+  if (!isCurrentThreadRefresh(requestGeneration, expectedAccountGeneration)) return false;
+  if (offersResult.error || commentsResult.error) {
+    renderThreadStatus('Could not load conversations. Select refresh to try again.');
+    return false;
+  }
+  if (offersResult.stale || commentsResult.stale) return false;
+
+  const offers = offersResult.data || [];
+  const comments = commentsResult.data || [];
 
   const latestByOffer = new Map();
   for (const c of comments) {
@@ -1076,6 +1156,7 @@ async function refreshThreads() {
 
   renderThreads(threads);
   updateBadge();
+  return true;
 }
 
 function persistOpenChats() {
@@ -1288,6 +1369,7 @@ function toggleMinimizeChat(offerId) {
 }
 
 function closeChat(offerId) {
+  nextChatLoadGeneration(offerId);
   document.querySelector(`.ss-chat[data-offer-id="${offerId}"]`)?.remove();
   openChats.delete(offerId);
   persistOpenChats();
@@ -1295,18 +1377,26 @@ function closeChat(offerId) {
 }
 
 async function fetchOfferMessages(offerId, limit = 400) {
-  const { data, error } = await supabase
-    .from('private_offer_comments')
-    .select('id, offer_id, comment_text, created_at, sender, user_id, sponsor_email, sponsee_email')
-    .eq('offer_id', offerId)
-    .order('created_at', { ascending: true })
-    .limit(limit);
+  let result;
+  try {
+    result = await supabase
+      .from('private_offer_comments')
+      .select('id, offer_id, comment_text, created_at, sender, user_id, sponsor_email, sponsee_email')
+      .eq('offer_id', offerId)
+      .order('created_at', { ascending: true })
+      .limit(limit);
+  } catch (error) {
+    console.error('[messages.js] fetchOfferMessages error:', error);
+    return { data: null, error };
+  }
+  const { data, error } = result || {};
 
   if (error) {
     console.error('[messages.js] fetchOfferMessages error:', error);
-    return [];
+    return { data: null, error };
   }
-  return data || [];
+  if (!Array.isArray(data)) return { data: null, error: new Error('Invalid message history response') };
+  return { data, error: null };
 }
 
 async function fetchOfferMessagesSince(offerId, sinceIso, limit = 50) {
@@ -1319,12 +1409,20 @@ async function fetchOfferMessagesSince(offerId, sinceIso, limit = 50) {
 
   if (sinceIso) q = q.gt('created_at', sinceIso);
 
-  const { data, error } = await q;
+  let result;
+  try {
+    result = await q;
+  } catch (error) {
+    console.warn('[messages.js] fetchOfferMessagesSince error:', error);
+    return { data: null, error };
+  }
+  const { data, error } = result || {};
   if (error) {
     console.warn('[messages.js] fetchOfferMessagesSince error:', error);
-    return [];
+    return { data: null, error };
   }
-  return data || [];
+  if (!Array.isArray(data)) return { data: null, error: new Error('Invalid incremental history response') };
+  return { data, error: null };
 }
 
 function buildMiniAvatar({ picUrl, initial }) {
@@ -1415,6 +1513,41 @@ function renderChatMessages(offerId, rows) {
   }
 
   scrollChatToBottom(offerId);
+}
+
+function renderChatLoading(offerId) {
+  const box = document.getElementById(`ss-chat-msgs-${offerId}`);
+  if (!box) return;
+  box.innerHTML = '';
+  const loading = document.createElement('div');
+  loading.className = 'ss-dd-empty';
+  loading.textContent = 'Loading messages…';
+  box.appendChild(loading);
+}
+
+function renderChatError(offerId) {
+  const box = document.getElementById(`ss-chat-msgs-${offerId}`);
+  if (!box) return;
+  box.innerHTML = '';
+  const message = document.createElement('div');
+  message.className = 'ss-dd-empty';
+  message.textContent = 'Could not load messages. Try again.';
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.textContent = 'Retry';
+  retry.addEventListener('click', () => openChat(offerId, { focus: false }));
+  message.appendChild(retry);
+  box.appendChild(message);
+}
+
+function renderChatHistoryResult(offerId, result, onRead) {
+  if (result?.error) {
+    renderChatError(offerId);
+    return false;
+  }
+  renderChatMessages(offerId, result?.data || []);
+  onRead?.();
+  return true;
 }
 
 function appendOneMessage(offerId, m, isMeOverride = null) {
@@ -1679,12 +1812,20 @@ function ensureChatElement(offerId) {
 
 async function openChat(offerId, { focus } = { focus: true }) {
   ensureUI();
+  const expectedAccountGeneration = accountGeneration;
+  const loadGeneration = nextChatLoadGeneration(offerId);
 
   if (!offerById.has(offerId)) {
-    await loadMyOffers();
+    const offersResult = await loadMyOffers(expectedAccountGeneration);
+    if (!isCurrentChatLoad(offerId, loadGeneration, expectedAccountGeneration)) return false;
+    if (offersResult.error || offersResult.stale) {
+      renderThreadStatus('Could not load conversations. Select refresh to try again.');
+      return false;
+    }
   } else {
     const offer = offerById.get(offerId);
-    await loadPeerProfiles([offer]);
+    await loadPeerProfiles([offer], expectedAccountGeneration);
+    if (!isCurrentChatLoad(offerId, loadGeneration, expectedAccountGeneration)) return false;
     peerByOfferId.set(offerId, getPeerForOffer(offer));
   }
 
@@ -1717,14 +1858,19 @@ async function openChat(offerId, { focus } = { focus: true }) {
 
   refreshChatHeaderAndInfo(offerId);
 
-  const rows = await fetchOfferMessages(offerId);
-  renderChatMessages(offerId, rows);
-
-  if (!st?.minimized) markOfferRead(offerId);
+  renderChatLoading(offerId);
+  const historyResult = await fetchOfferMessages(offerId);
+  if (!isCurrentChatLoad(offerId, loadGeneration, expectedAccountGeneration)) return false;
+  const historyLoaded = renderChatHistoryResult(
+    offerId,
+    historyResult,
+    !st?.minimized ? () => markOfferRead(offerId) : null,
+  );
 
   if (focus && !st?.minimized) {
     document.getElementById(`ss-chat-input-${offerId}`)?.focus();
   }
+  return historyLoaded;
 }
 
 async function sendMessage(offerId) {
@@ -1739,6 +1885,7 @@ async function sendMessage(offerId) {
 
   const offer = offerById.get(offerId);
   if (!offer) return;
+  const expectedAccountGeneration = accountGeneration;
 
   const meId = myAuthId();
   const meName = myUsername();
@@ -1772,13 +1919,17 @@ async function sendMessage(offerId) {
       .single();
   } catch (err) {
     console.error('[messages.js] insert unexpected error:', err);
+    if (expectedAccountGeneration !== accountGeneration) return;
     setSendStatus(offerId, unconfirmedMessage);
     return;
   } finally {
-    sendInFlight.delete(offerId);
-    setSendButtonState(offerId, ta, sendBtn);
+    if (expectedAccountGeneration === accountGeneration) {
+      sendInFlight.delete(offerId);
+      setSendButtonState(offerId, ta, sendBtn);
+    }
   }
 
+  if (expectedAccountGeneration !== accountGeneration) return;
   const { data, error } = result || {};
   if (error || !isConfirmedMessageRow(data, offerId, meId, text)) {
     if (error) console.error('[messages.js] insert error:', error);
@@ -1840,15 +1991,21 @@ function wireDropdown() {
 function wireRealtime() {
   const email = myEmail();
   if (!email) return;
+  const expectedAccountGeneration = accountGeneration;
 
   if (rtSponsorCh) supabase.removeChannel(rtSponsorCh);
   if (rtSponseeCh) supabase.removeChannel(rtSponseeCh);
 
   const onInsert = async (row) => {
+    if (expectedAccountGeneration !== accountGeneration) return;
     if (!row?.offer_id) return;
 
     // Ensure offer/peer cache is warm (so avatars/names stay correct)
-    if (!offerById.has(row.offer_id)) await loadMyOffers();
+    if (!offerById.has(row.offer_id)) {
+      const result = await loadMyOffers(expectedAccountGeneration);
+      if (result.error || result.stale || expectedAccountGeneration !== accountGeneration) return;
+    }
+    if (expectedAccountGeneration !== accountGeneration) return;
 
     acceptIncomingMessage(row.offer_id, row);
 
@@ -1874,7 +2031,71 @@ function wireRealtime() {
     .subscribe();
 }
 
+function clearAccountScopedMessagingState() {
+  stopPolling();
+  if (rtSponsorCh) supabase.removeChannel(rtSponsorCh);
+  if (rtSponseeCh) supabase.removeChannel(rtSponseeCh);
+  rtSponsorCh = null;
+  rtSponseeCh = null;
+  for (const offerId of openChats.keys()) nextChatLoadGeneration(offerId);
+  openChats.clear();
+  unreadByOffer.clear();
+  offerById.clear();
+  peerByOfferId.clear();
+  peerProfileByEmail.clear();
+  sendInFlight.clear();
+  document.querySelectorAll('.ss-chat').forEach((el) => el.remove());
+}
+
+async function syncActiveAccount() {
+  const syncGeneration = ++accountSyncGeneration;
+  accountGeneration += 1;
+  threadRefreshGeneration += 1;
+  offerLoadGeneration += 1;
+  clearAccountScopedMessagingState();
+  activeUser = null;
+  let nextUser;
+  try {
+    nextUser = await getActiveUser();
+  } catch (error) {
+    console.warn('[messages.js] active account refresh failed:', error);
+    renderThreadStatus('Could not refresh the active account. Reload the page to try again.');
+    return false;
+  }
+  if (syncGeneration !== accountSyncGeneration) return false;
+  activeUser = nextUser;
+  if (!activeUser) {
+    renderThreadStatus('Sign in to view conversations.');
+    updateBadge();
+    return true;
+  }
+
+  await refreshThreads();
+  if (syncGeneration !== accountSyncGeneration) return false;
+  await restoreChatsAfterLoad();
+  if (syncGeneration !== accountSyncGeneration) return false;
+  wireRealtime();
+  startPolling();
+  return true;
+}
+
+function wireAccountChangeSignals() {
+  if (authStateSubscription) return;
+  const authResult = supabase.auth?.onAuthStateChange?.((event) => {
+    if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED', 'PASSWORD_RECOVERY'].includes(event)) return;
+    window.setTimeout(() => {
+      syncActiveAccount().catch((error) => console.warn('[messages.js] account sync failed:', error));
+    }, 0);
+  });
+  authStateSubscription = authResult?.data?.subscription || null;
+  window.addEventListener('storage', (event) => {
+    if (event.key !== 'impersonate_user_id') return;
+    syncActiveAccount().catch((error) => console.warn('[messages.js] account sync failed:', error));
+  });
+}
+
 async function pollOpenChatsOnce() {
+  const expectedAccountGeneration = accountGeneration;
   const entries = Array.from(openChats.entries());
   if (!entries.length) return;
 
@@ -1890,14 +2111,19 @@ async function pollOpenChatsOnce() {
     // but avoid huge loads: just fetch the last ~40 and render if empty.
     if (!since) {
       const rows = await fetchOfferMessages(offerId, 80);
+      if (expectedAccountGeneration !== accountGeneration) return;
       // Render only if the box is still showing Loading/empty (don’t clobber a populated chat)
       const box = document.getElementById(`ss-chat-msgs-${offerId}`);
       const isPlaceholder = !!box?.querySelector('.ss-dd-empty');
-      if (isPlaceholder) renderChatMessages(offerId, rows);
+      if (isPlaceholder && rows.error) renderChatError(offerId);
+      else if (isPlaceholder) renderChatMessages(offerId, rows.data || []);
       continue;
     }
 
-    const newRows = await fetchOfferMessagesSince(offerId, since, 50);
+    const result = await fetchOfferMessagesSince(offerId, since, 50);
+    if (expectedAccountGeneration !== accountGeneration) return;
+    if (result.error) continue;
+    const newRows = result.data || [];
     if (!newRows.length) continue;
 
     // Append each safely (dedupe with renderedIds)
@@ -1963,12 +2189,16 @@ function wireResize() {
 
 async function init() {
   ensureUI();
-
-  activeUser = await getActiveUser();
-  if (!activeUser) return;
-
   wireDropdown();
   wireResize();
+
+  activeUser = await getActiveUser();
+  accountGeneration += 1;
+  wireAccountChangeSignals();
+  if (!activeUser) {
+    renderThreadStatus('Sign in to view conversations.');
+    return;
+  }
 
   await refreshThreads();
   updateBadge();
@@ -1985,4 +2215,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('beforeunload', () => {
   stopPolling();
+  authStateSubscription?.unsubscribe?.();
 });

@@ -56,6 +56,7 @@ function fixture(insertResponse) {
     sponsee_email: 'sponsee@example.test',
   };
   const context = {
+    accountGeneration: 1,
     sendInFlight: new Set(),
     draftRevisions,
     offerById: new Map([['offer-1', offer]]),
