@@ -22,8 +22,9 @@ function logError(label, err) {
 }
 
 // Utility: build a deterministic-ish temporary ID for logo path before user exists
-function getPendingUserId(email) {
-  return `${btoa(email)}-${Date.now()}`;
+function getPendingUserId() {
+  const randomId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `pending-${randomId}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,9 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (backButton) backButton.disabled = true;
 
+    let pendingLogoPath = null;
+    let pendingLogoToDelete = false;
     try {
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
+      data.email = String(data.email || '').trim().toLowerCase();
       const password = data.password;
       const confirm_password = data.confirm_password;
 
@@ -125,13 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       // ===== Logo pre-upload to Supabase Storage =====
-      let pendingLogoPath = null;
-      let pendingLogoToDelete = false;
       const logoFile = formData.get('logofile');
 
       if (logoFile && logoFile.size > 0 && data.email) {
         try {
-          const tempUserId = getPendingUserId(data.email);
+          const tempUserId = getPendingUserId();
           const sanitized = logoFile.name
             .toLowerCase()
             .replace(/\s+/g, '_')
@@ -152,10 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (uploadErr) throw uploadErr;
 
-          localStorage.setItem('pendingLogoPath', pendingLogoPath);
           pendingLogoToDelete = true;
           data.logo_path = pendingLogoPath;
           data.hasLogo = true;
+          localStorage.setItem('pendingLogoPath', pendingLogoPath);
         } catch (err) {
           logError('LogoUpload', err);
         }
@@ -171,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Keep passwords in memory for payment-success flow (only in this tab)
       window.__signupPassword = password;
-      window.__signupConfirmPassword = confirm_password;
 
       localStorage.setItem('pendingRegistration', JSON.stringify(registration));
 
@@ -220,10 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         logError('StripeCheckout', err);
-        if (pendingLogoToDelete && pendingLogoPath) {
-          await supabase.storage.from('logos').remove([pendingLogoPath]);
-          localStorage.removeItem('pendingLogoPath');
-        }
         throw err;
       }
 
@@ -237,14 +234,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       } catch (err) {
         logError('StripeRedirect', err);
-        if (pendingLogoToDelete && pendingLogoPath) {
-          await supabase.storage.from('logos').remove([pendingLogoPath]);
-          localStorage.removeItem('pendingLogoPath');
-        }
         throw err;
       }
     } catch (error) {
-      // Errors already surfaced via logError
+      console.error('[Signup] Could not continue registration.', error);
+      if (pendingLogoToDelete && pendingLogoPath) {
+        try { await supabase.storage.from('logos').remove([pendingLogoPath]); } catch (_) {}
+        try { localStorage.removeItem('pendingLogoPath'); } catch (_) {}
+      }
+      if (!String(error?.message || '').startsWith('[Stripe]')) {
+        alert('We could not continue signup. Check your browser storage and connection, then try again.');
+      }
     } finally {
       window.__signupProcessing = false;
       if (submitButton) {

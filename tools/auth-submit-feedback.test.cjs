@@ -281,7 +281,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
   tos.checked = false;
   const els = { registrationForm: form, submitBtn: button, agreeTOS: tos, 'back-step-3': backButton, 'userType': element('besponsored'), 'planType': element('free') };
   const data = {
-    username: 'Fixture', email: 'fixture@example.invalid', password: 'synthetic-password',
+    username: 'Fixture', email: ' FIXTURE@EXAMPLE.INVALID ', password: 'synthetic-password',
     confirm_password: 'synthetic-password', 'about-yourself': 'fixture bio', userType: 'besponsored', planType: 'free',
   };
   class FixtureFormData {
@@ -290,6 +290,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
     getAll() { return []; }
     get() { return null; }
   }
+  const saved = new Map();
   const context = {
     document: {
       addEventListener: (_name, fn) => readyHandlers.push(fn),
@@ -301,7 +302,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
     supabase: { functions: { invoke: () => { submitCount++; return new Promise(resolve => { releaseFetch = resolve; }); } } },
     moderateSignupWithFamBot,
     fetch: () => { throw new Error('signup moderation must use the Supabase function client'); },
-    localStorage: { setItem() {}, getItem() { return null; }, removeItem() {} },
+    localStorage: { setItem(key, value) { saved.set(key, value); }, getItem(key) { return saved.get(key) ?? null; }, removeItem(key) { saved.delete(key); } },
     btoa: value => Buffer.from(value).toString('base64'), Date, URL, console: { error() {} }, alert() {},
   };
   vm.runInNewContext(signupSource, context);
@@ -347,4 +348,7 @@ test('signup rejects invalid agreement/password, locks early, prevents duplicate
   await retry;
   assert.equal(context.window.__signupProcessing, false);
   assert.equal(context.window.location.href, './payment-success-signup.html?mode=free');
+  const savedRegistration = JSON.parse(saved.get('pendingRegistration'));
+  assert.equal(savedRegistration.email, 'fixture@example.invalid');
+  assert.equal(Object.hasOwn(savedRegistration, 'password'), false);
 });

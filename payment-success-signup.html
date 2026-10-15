@@ -56,6 +56,7 @@
 </footer>
 <script type="module">
 import { escapeHtml } from "./js/safePresentation.js";
+import { createOrResumeSignupAccount } from "./js/signupCompletion.js";
 import { supabase } from './js/supabaseClient.js';
 
 // Helper for orphan logo cleanup
@@ -75,6 +76,11 @@ async function finalizeSignupAfterPayment() {
   const payment_status = url.searchParams.get('payment_status');
   const mode = url.searchParams.get('mode') || 'paid'; // 'paid' (Stripe) or 'free'
 
+  if (!['paid', 'free'].includes(mode)) {
+    statusDiv.textContent = 'This signup link is invalid. Return to signup and try again.';
+    return;
+  }
+
   // For paid mode, ensure we have a valid payment
   if (mode === 'paid') {
     if (!session_id || payment_status !== 'success') {
@@ -90,15 +96,20 @@ async function finalizeSignupAfterPayment() {
     await cleanupPendingLogo();
     return;
   }
-  regData = JSON.parse(regData);
+  try {
+    regData = JSON.parse(regData);
+  } catch {
+    statusDiv.textContent = 'Your saved signup details could not be read. Return to signup and try again.';
+    await cleanupPendingLogo();
+    return;
+  }
 
   // Get password (from memory if available, or prompt user)
   let password = window.__signupPassword;
   if (!password) {
     password = prompt('Please re-enter your password to complete signup (for your security):');
     if (!password) {
-      statusDiv.innerHTML = `<span style="color:red;">No password found. Please try signing up again.</span>`;
-      await cleanupPendingLogo();
+      statusDiv.textContent = 'Enter the password you chose during signup to finish setup. Your saved signup details are still available in this browser.';
       return;
     }
   }
@@ -114,47 +125,37 @@ async function finalizeSignupAfterPayment() {
   statusDiv.innerHTML += `<br><span style="color:blue;">Creating your Sponsor Sorter account...</span>`;
   let authData, signUpError;
   try {
-    ({ data: authData, error: signUpError } = await supabase.auth.signUp({
+    ({ data: authData, error: signUpError } = await createOrResumeSignupAccount(supabase, {
       email: regData.email,
-      password: password,
-      options: {
-        data: {
-          username: regData.username,
-          title: regData.title,
-          about_yourself: regData['about-yourself'],
-          location: regData.location,
-          company_name: regData['company_name'],
-          agreed_tos: true
-        }
+      password,
+      metadata: {
+        username: regData.username,
+        title: regData.title,
+        about_yourself: regData['about-yourself'],
+        location: regData.location,
+        company_name: regData['company_name'],
+        agreed_tos: true
       }
     }));
     if (signUpError) {
-      statusDiv.innerHTML = `<span style="color:red;">Sign-up error: ${escapeHtml(signUpError.message)}</span>`;
-      await cleanupPendingLogo();
+      statusDiv.innerHTML = `<span style="color:red;">${escapeHtml(signUpError.message)}</span><br><span>Your signup details are still saved in this browser. If you already started this signup, verify your email or log in, then reopen this link to finish setup.</span>`;
       return;
     }
   } catch (err) {
-    statusDiv.innerHTML = `<span style="color:red;">Sign-up failed: ${escapeHtml(err.message)}</span>`;
-    await cleanupPendingLogo();
+    statusDiv.innerHTML = `<span style="color:red;">Sign-up could not continue: ${escapeHtml(err.message)}</span><br><span>Your signup details are still saved in this browser. Please retry this link or contact support.</span>`;
     return;
   }
 
   const userId = authData?.user?.id;
   if (!userId) {
-    statusDiv.innerHTML = `<span style="color:green;">Signup succeeded! Please verify your email before logging in.</span>`;
-    localStorage.removeItem('pendingRegistration');
-    await cleanupPendingLogo();
-    setTimeout(() => window.location.href = './login.html', 3000);
+    statusDiv.textContent = 'We could not confirm your account yet. Check your email or log in, then reopen this link to finish setup. Your saved signup details have been kept.';
     return;
   }
 
   // 3. If logo was pre-uploaded, keep that path
   let finalLogoPath = null;
   const pendingLogoPath = localStorage.getItem('pendingLogoPath');
-  if (pendingLogoPath) {
-    finalLogoPath = pendingLogoPath;
-    localStorage.removeItem('pendingLogoPath');
-  }
+  finalLogoPath = pendingLogoPath || regData.logo_path || null;
 
   // 4. Insert into users_extended_data
   statusDiv.innerHTML = `<span style="color:blue;">Saving your details to our database...</span>`;
@@ -199,28 +200,33 @@ async function finalizeSignupAfterPayment() {
     } else {
       const { data, error } = await supabase
         .rpc('register_pending_profile', { p_user_id: userId, p_profile: extendedData });
-      completionError = error || (data !== true ? new Error('This account already has a profile or is not eligible for free signup.') : null);
+      // The RPC returns false when this exact account already has a profile,
+      // making a browser retry after a lost response safe and idempotent.
+      completionError = error || (typeof data !== 'boolean' ? new Error('Free signup could not be confirmed.') : null);
     }
 
     if (completionError) {
-      statusDiv.innerHTML = `<span style="color:orange;">Your Auth account was created, but profile setup could not be verified. Please contact support before trying signup again.</span>`;
+      statusDiv.innerHTML = `<span style="color:orange;">Your account was created, but profile setup did not finish. Your signup details are still saved; retry this link. If it continues to fail, contact support.</span>`;
       console.error('Profile completion failed:', completionError);
       return;
     } else {
       if (mode === 'free') {
-        statusDiv.innerHTML = `<span style="color:green;">Signup successful! You're on the Free plan. Please check your email to verify your account.<br>Redirecting to login...</span>`;
+        const nextStep = authData.session ? 'Your account is ready. Redirecting to login...' : 'Please check your email to verify your account. Redirecting to login...';
+        statusDiv.innerHTML = `<span style="color:green;">Signup successful! You're on the Free plan. ${nextStep}</span>`;
       } else {
-        statusDiv.innerHTML = `<span style="color:green;">Signup successful! Please check your email to verify your account.<br>Redirecting to login...</span>`;
+        const nextStep = authData.session ? 'Your account is ready. Redirecting to login...' : 'Please check your email to verify your account. Redirecting to login...';
+        statusDiv.innerHTML = `<span style="color:green;">Signup successful! ${nextStep}</span>`;
       }
     }
   } catch (e) {
-    statusDiv.innerHTML = `<span style="color:orange;">Your Auth account was created, but profile setup could not be verified. Please contact support before trying signup again.</span>`;
+    statusDiv.innerHTML = `<span style="color:orange;">Your account was created, but profile setup did not finish. Your signup details are still saved; retry this link. If it continues to fail, contact support.</span>`;
     console.error('Profile completion failed:', e);
     return;
   }
 
   localStorage.removeItem('pendingReferralCode');
   localStorage.removeItem('pendingRegistration');
+  localStorage.removeItem('pendingLogoPath');
   setTimeout(() => window.location.href = './login.html', 3400);
 }
 
