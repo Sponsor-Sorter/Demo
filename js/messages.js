@@ -38,6 +38,8 @@ const profilePicUrlCache = new Map(); // raw string -> resolved url/null
 
 const unreadByOffer = new Map(); // offer_id -> unread count (session-based)
 const openChats = new Map();     // offer_id -> { minimized, infoOpen, lastOpenedAt, renderedIds:Set, unread, lastMsgAt }
+const sendInFlight = new Set();
+const draftRevisions = new WeakMap();
 
 let activeUser = null;
 let rtSponsorCh = null;
@@ -45,6 +47,35 @@ let rtSponseeCh = null;
 let pollTimer = null;
 
 function $(id) { return document.getElementById(id); }
+
+function setSendButtonState(offerId, textarea, sendButton) {
+  if (sendButton) {
+    sendButton.disabled = sendInFlight.has(offerId) || !textarea?.value.trim();
+  }
+}
+
+function markDraftEdited(textarea) {
+  draftRevisions.set(textarea, (draftRevisions.get(textarea) || 0) + 1);
+}
+
+function setSendStatus(offerId, message = '') {
+  const status = document.getElementById(`ss-chat-status-${offerId}`);
+  if (!status) return;
+  status.textContent = message;
+  status.hidden = !message;
+}
+
+function isConfirmedMessageRow(row, offerId, userId, text) {
+  return Boolean(
+    row &&
+    typeof row === 'object' &&
+    !Array.isArray(row) &&
+    row.id != null && String(row.id).trim() &&
+    offerId != null && row.offer_id != null && String(row.offer_id) === String(offerId) &&
+    userId != null && row.user_id != null && String(row.user_id) === String(userId) &&
+    row.comment_text === text
+  );
+}
 
 function escapeHtml(s) {
   return String(s ?? '')
@@ -1584,6 +1615,8 @@ function ensureChatElement(offerId) {
         <div class="ss-dd-empty">Loading…</div>
       </div>
 
+      <div class="ss-chat-send-status" id="ss-chat-status-${offerId}" role="status" aria-live="polite" hidden style="padding:4px 10px;color:#f1d6a0;font-size:12px;"></div>
+
       <form class="ss-chat-form" id="ss-chat-form-${offerId}" autocomplete="off">
         <textarea class="ss-chat-input" id="ss-chat-input-${offerId}" rows="1" placeholder="Type a message…"></textarea>
         <button class="ss-chat-send" id="ss-chat-send-${offerId}" type="submit" disabled>Send</button>
@@ -1618,7 +1651,8 @@ function ensureChatElement(offerId) {
   ta?.addEventListener('input', () => {
     ta.style.height = 'auto';
     ta.style.height = Math.min(110, ta.scrollHeight) + 'px';
-    sendBtn.disabled = ta.value.trim().length === 0;
+    markDraftEdited(ta);
+    setSendButtonState(offerId, ta, sendBtn);
   });
 
   ta?.addEventListener('keydown', (e) => {
@@ -1693,34 +1727,14 @@ async function openChat(offerId, { focus } = { focus: true }) {
   }
 }
 
-function updateOptimisticRowToReal(domRow, realRow, offerId) {
-  if (!domRow || !realRow) return;
-  try {
-    const oldId = domRow.dataset.messageId || '';
-    const newId = String(realRow.id || '');
-
-    if (newId) domRow.dataset.messageId = newId;
-
-    const timeEl = domRow.querySelector('.ss-meta-time');
-    if (timeEl) timeEl.textContent = fmtDate(realRow.created_at);
-
-    // Ensure renderedIds has the real id (and optionally drop the temp id)
-    const st = openChats.get(offerId);
-    if (st?.renderedIds) {
-      if (oldId) st.renderedIds.delete(oldId);
-      if (newId) st.renderedIds.add(newId);
-    }
-
-    if (realRow.created_at) setLastMsgAt(offerId, realRow.created_at);
-  } catch {}
-}
-
 async function sendMessage(offerId) {
   const ta = document.getElementById(`ss-chat-input-${offerId}`);
   const sendBtn = document.getElementById(`ss-chat-send-${offerId}`);
-  if (!ta) return;
+  if (!ta || sendInFlight.has(offerId)) return;
 
-  const text = ta.value.trim();
+  const originalDraft = ta.value;
+  const originalDraftRevision = draftRevisions.get(ta) || 0;
+  const text = originalDraft.trim();
   if (!text) return;
 
   const offer = offerById.get(offerId);
@@ -1744,48 +1758,53 @@ async function sendMessage(offerId) {
     sponsee_email: offer.sponsee_email || null,
   };
 
-  // Optimistic UI (shows immediately without refresh)
-  const optimistic = {
-    ...insertRow,
-    id: `temp-${Date.now()}`,
-    created_at: new Date().toISOString(),
-  };
-  const domRow = appendOneMessage(offerId, optimistic, true);
+  const unconfirmedMessage = 'We could not confirm whether this message was sent. Check the conversation before retrying.';
+  setSendStatus(offerId);
+  sendInFlight.add(offerId);
+  setSendButtonState(offerId, ta, sendBtn);
 
-  ta.value = '';
-  ta.style.height = 'auto';
-  if (sendBtn) sendBtn.disabled = true;
-
+  let result;
   try {
-    // Return the inserted row so we can reconcile IDs/timestamps immediately
-    const { data, error } = await supabase
+    result = await supabase
       .from('private_offer_comments')
       .insert([insertRow])
       .select('id, offer_id, comment_text, created_at, sender, user_id, sponsor_email, sponsee_email')
       .single();
-
-    if (error) {
-      console.error('[messages.js] insert error:', error);
-      appendOneMessage(
-        offerId,
-        { comment_text: 'Failed to send. Please try again.', sender: 'System', created_at: new Date().toISOString() },
-        false
-      );
-      return;
-    }
-
-    if (data) updateOptimisticRowToReal(domRow, data, offerId);
-
-    // If realtime is slow/unavailable, we still have the message visible.
-    // Optional: refresh dropdown preview if it's open
-    if (dropdownOpen()) await refreshThreads();
   } catch (err) {
     console.error('[messages.js] insert unexpected error:', err);
-    appendOneMessage(
-      offerId,
-      { comment_text: 'Failed to send. Please try again.', sender: 'System', created_at: new Date().toISOString() },
-      false
-    );
+    setSendStatus(offerId, unconfirmedMessage);
+    return;
+  } finally {
+    sendInFlight.delete(offerId);
+    setSendButtonState(offerId, ta, sendBtn);
+  }
+
+  const { data, error } = result || {};
+  if (error || !isConfirmedMessageRow(data, offerId, meId, text)) {
+    if (error) console.error('[messages.js] insert error:', error);
+    setSendStatus(offerId, unconfirmedMessage);
+    return;
+  }
+
+  setSendStatus(offerId);
+  if (!alreadyRendered(offerId, String(data.id))) {
+    appendOneMessage(offerId, data, true);
+  }
+
+  // Clear only the exact draft submitted; keep any text the user edited in flight.
+  if (ta.value === originalDraft && (draftRevisions.get(ta) || 0) === originalDraftRevision) {
+    ta.value = '';
+    ta.style.height = 'auto';
+  }
+  setSendButtonState(offerId, ta, sendBtn);
+
+  // A refresh failure after a confirmed insert must not turn success into an unknown result.
+  if (dropdownOpen()) {
+    try {
+      await refreshThreads();
+    } catch (err) {
+      console.warn('[messages.js] thread refresh after confirmed send failed:', err);
+    }
   }
 }
 
