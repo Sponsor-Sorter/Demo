@@ -13,3 +13,13 @@ test('payment failure copy does not fabricate an uncharged or refunded result',(
 test('responsive content rules use bounded grids and do not hide document overflow',()=>{
  const css=fs.readFileSync(path.join(root,'content-pages.css'),'utf8');assert.ok(css.includes('minmax(0, 1fr)'));assert.ok(css.includes('max-width: 540px'));assert.ok(css.includes('--page-width: 1200px'));assert.ok(!css.includes('overflow-x: hidden'));
 });
+test('primary pages expose exactly one skip-to-content link',()=>{
+ for(const name of ['index','help','guest']){
+  const source=fs.readFileSync(path.join(root,name+'.html'),'utf8');
+  assert.equal((source.match(/>\s*Skip to content\s*</gi)||[]).length,1,name);
+  assert.match(source,/<a class="page-skip-link" href="#main">Skip to content<\/a>/i,name);
+  const main=source.match(/<main\b[^>]*\bid="main"[^>]*>/i)?.[0];
+  assert.ok(main,name);
+  assert.match(main,/\btabindex="-1"/i,name);
+ }
+});
