@@ -158,8 +158,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (!form || !newPasswordInput || !confirmPasswordInput) return;
 
   // -------- Form submit: actually update the password via Supabase --------
+  const submitButton = form.querySelector('button[type="submit"]');
+  let passwordUpdating = false;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (passwordUpdating) return;
     setStatus('');
 
     // Passwords are opaque user input. Trimming changes valid passwords and
@@ -176,8 +179,17 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
+    passwordUpdating = true;
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
+      submitButton.textContent = 'Updating…';
+    }
+    newPasswordInput.disabled = true;
+    confirmPasswordInput.disabled = true;
+    let redirecting = false;
     try {
-      const { data, error } = await supabase.auth.updateUser({
+      const { error } = await supabase.auth.updateUser({
         password: newPassword
       });
 
@@ -187,16 +199,35 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
 
       setStatus('Password updated! Redirecting you to the login page...', false);
+      redirecting = true;
 
       // Optionally sign out and send them back to login
       setTimeout(async () => {
         try {
-          await supabase.auth.signOut({ scope: 'global' });
-        } catch {}
-        window.location.href = './login.html';
+          const { error: signOutError } = await supabase.auth.signOut({ scope: 'global' });
+          if (signOutError) throw signOutError;
+          window.location.href = './login.html';
+        } catch {
+          setStatus('Your password was updated, but we could not confirm sign-out. Use the login link below to continue; this session may still be active.', true);
+          if (submitButton) {
+            submitButton.removeAttribute('aria-busy');
+            submitButton.textContent = 'Password Updated';
+          }
+        }
       }, 2000);
     } catch {
       setStatus('Unexpected error updating password. Please try again.', true);
+    } finally {
+      if (!redirecting) {
+        passwordUpdating = false;
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.removeAttribute('aria-busy');
+          submitButton.textContent = 'Update Password';
+        }
+        newPasswordInput.disabled = false;
+        confirmPasswordInput.disabled = false;
+      }
     }
   });
 });

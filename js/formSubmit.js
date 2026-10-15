@@ -31,12 +31,14 @@ function getPendingUserId(email) {
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registrationForm');
   const submitButton = document.getElementById('submitBtn');
+  const backButton = document.getElementById('back-step-3');
   const btnText = submitButton?.querySelector('.btn-text');
   const spinner = submitButton?.querySelector('.spinner');
   if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (window.__signupProcessing) return;
 
     // TOS guard – must be checked for ANY signup
     const tosCheckbox = document.getElementById('agreeTOS');
@@ -45,11 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Claim the submit synchronously before any async moderation or upload work.
+    window.__signupProcessing = true;
     if (submitButton) {
       submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
       if (btnText) btnText.textContent = 'Signing up...';
       if (spinner) spinner.style.display = 'inline-block';
     }
+    if (backButton) backButton.disabled = true;
 
     try {
       const formData = new FormData(form);
@@ -206,9 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (window.__signupProcessing) return;
-      window.__signupProcessing = true;
-
       // ===== Start Stripe subscription for signup (paid plans) =====
       let sessionRes, sessionData;
       try {
@@ -268,9 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
       window.__signupProcessing = false;
       if (submitButton) {
         submitButton.disabled = false;
+        submitButton.removeAttribute('aria-busy');
         if (btnText) btnText.textContent = 'Sign Up';
         if (spinner) spinner.style.display = 'none';
       }
+      if (backButton) backButton.disabled = false;
     }
   });
 });

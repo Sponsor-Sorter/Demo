@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-15 — Authentication form reliability
+
+- Login, signup, reset-request and password-recovery forms now lock during pending submissions, provide retryable error states, and preserve password characters exactly. Signup passwords declare the existing eight-character minimum in native form validation.
+- Added local fixture coverage for duplicate submits, provider/network errors, retry state, TOTP re-entry, signup moderation failure, reset sign-out failure, and native form constraints.
+- Focused auth/recovery regressions: 32 passing. Project suite (`npm test`): 79 passing. JavaScript syntax checks passed. No live auth requests, account changes, or payments were performed.
+- Limitation: native keyboard submission was checked from markup and handler fixtures; an actual browser-generated Enter-key check was unavailable. No real-provider login, reset-email delivery, or password-reset round trip was performed.
+
 ## 2026-10-11 — Private offer reads and public profile sharing
 
 - Applied Supabase migration restrict_private_offer_reads (tracked SQL 20261010200217): removed six SELECT-true development/homepage policies and revoked anon SELECT on private_offers/private_offer_reviews. Existing participant/admin read policies and deliberately projected public views remain.

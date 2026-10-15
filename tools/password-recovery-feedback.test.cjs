@@ -62,7 +62,11 @@ function recoveryPage(overrides = {}) {
   let ready;
   const timers = [];
   const calls = [];
-  const submitButton = { disabled: false };
+  const submitButton = {
+    disabled: false, textContent: 'Update Password', attributes: {},
+    setAttribute(name, value) { this.attributes[name] = value; },
+    removeAttribute(name) { delete this.attributes[name]; },
+  };
   const form = {
     handlers: {},
     addEventListener(name, fn) { this.handlers[name] = fn; },
@@ -70,6 +74,7 @@ function recoveryPage(overrides = {}) {
   };
   const element = (value = "") => ({
     value,
+    disabled: false,
     style: {},
     attributes: {},
     addEventListener() {},
@@ -93,22 +98,25 @@ function recoveryPage(overrides = {}) {
     },
     updateUser: async value => {
       calls.push({ method: "updateUser", value });
+      if (overrides.updateUser) return overrides.updateUser(value);
       return overrides.updateResult || { data: { user: { id: "synthetic-user" } }, error: null };
     },
     signOut: async options => {
       calls.push({ method: "signOut", options });
+      if (overrides.signOut) return overrides.signOut(options);
       return { error: null };
     },
   } };
   const source = resetScript.replace(/^import .*;\r?\n/m, "");
+  const location = { href: "https://example.invalid/reset-password.html#synthetic-token" };
   vm.runInNewContext(source, {
-    window: { addEventListener: (_name, fn) => { ready = fn; }, location: { href: "https://example.invalid/reset-password.html#synthetic-token" } },
+    window: { addEventListener: (_name, fn) => { ready = fn; }, location },
     document: { getElementById: id => elements[id] || null },
     createClient: () => supabase,
     setTimeout: fn => { timers.push(fn); return timers.length; },
   });
   return { calls, elements, form, submitButton, timers, ready: async () => ready(),
-    supabase, location: "https://example.invalid/reset-password.html#synthetic-token" };
+    supabase, location };
 }
 
 test("missing, expired, reused or malformed recovery results do not enable password update", async () => {
@@ -139,6 +147,8 @@ test("valid synthetic session updates exact password then requests global sign-o
   const page = recoveryPage();
   await page.ready();
   assert.equal(page.submitButton.disabled, false);
+  assert.equal(page.elements["new-password"].disabled, false);
+  assert.equal(page.elements["confirm-password"].disabled, false);
   page.elements["new-password"].value = "  synthetic password  ";
   page.elements["confirm-password"].value = "  synthetic password  ";
   let prevented = false;
@@ -147,6 +157,91 @@ test("valid synthetic session updates exact password then requests global sign-o
   assert.equal(page.calls.find(c => c.method === "updateUser").value.password, "  synthetic password  ");
   assert.equal(page.calls.some(c => c.method === "signOut"), false);
   assert.equal(page.timers.length, 1);
+  await page.timers[0]();
+  assert.equal(page.calls.find(c => c.method === "signOut").options.scope, "global");
+  assert.equal(page.location.href, "./login.html");
+});
+
+test("successful password update reports sign-out failure and leaves a usable login link", async () => {
+  for (const signOut of [
+    async () => ({ error: { message: "synthetic returned sign-out error" } }),
+    async () => { throw new Error("synthetic sign-out network failure"); },
+  ]) {
+    const page = recoveryPage({ signOut });
+    await page.ready();
+    page.elements["new-password"].value = "synthetic-password";
+    page.elements["confirm-password"].value = "synthetic-password";
+    await page.form.handlers.submit({ preventDefault() {} });
+    assert.match(page.elements["new-password-status"].textContent, /password updated/i);
+    await page.timers[0]();
+    assert.match(page.elements["new-password-status"].textContent, /could not confirm sign-out/i);
+    assert.match(page.elements["new-password-status"].textContent, /login link below/i);
+    assert.equal(page.location.href, "https://example.invalid/reset-password.html#synthetic-token");
+    assert.equal(page.submitButton.disabled, true);
+    assert.equal(page.submitButton.attributes["aria-busy"], undefined);
+    assert.equal(page.submitButton.textContent, "Password Updated");
+    assert.match(resetPage, /href="login\.html">login page<\/a>/);
+  }
+});
+
+test("new-password validation rejects short and mismatched values before provider calls", async () => {
+  const page = recoveryPage();
+  await page.ready();
+  page.elements["new-password"].value = "short";
+  page.elements["confirm-password"].value = "short";
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.match(page.elements["new-password-status"].textContent, /at least 8 characters/i);
+  page.elements["new-password"].value = "synthetic-password";
+  page.elements["confirm-password"].value = "different-password";
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.match(page.elements["new-password-status"].textContent, /do not match/i);
+  assert.equal(page.calls.filter(c => c.method === "updateUser").length, 0);
+  assert.equal(page.submitButton.disabled, false);
+});
+
+test("new-password update blocks duplicates, restores retry on provider error, and locks after success", async () => {
+  let releaseFirst;
+  const page = recoveryPage({ updateUser: value => {
+    const attempt = page.calls.filter(c => c.method === "updateUser").length;
+    if (attempt === 1) {
+      return new Promise(resolve => { releaseFirst = resolve; });
+    }
+    if (attempt === 2) return Promise.resolve({ data: null, error: { message: "synthetic provider failure" } });
+    return Promise.resolve({ data: { user: { id: "synthetic-user" } }, error: null });
+  } });
+  await page.ready();
+  page.elements["new-password"].value = "  synthetic password  ";
+  page.elements["confirm-password"].value = "  synthetic password  ";
+  const first = page.form.handlers.submit({ preventDefault() {} });
+  assert.equal(page.submitButton.disabled, true);
+  assert.equal(page.submitButton.attributes["aria-busy"], "true");
+  assert.equal(page.submitButton.textContent, "Updating…");
+  assert.equal(page.elements["new-password"].disabled, true);
+  assert.equal(page.elements["confirm-password"].disabled, true);
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.equal(page.calls.filter(c => c.method === "updateUser").length, 1);
+  releaseFirst(Promise.reject(new Error("synthetic offline")));
+  await first;
+  assert.match(page.elements["new-password-status"].textContent, /unexpected error/i);
+  assert.equal(page.submitButton.disabled, false);
+
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.match(page.elements["new-password-status"].textContent, /could not update/i);
+  assert.equal(page.submitButton.disabled, false);
+  assert.equal(page.submitButton.attributes["aria-busy"], undefined);
+  assert.equal(page.submitButton.textContent, "Update Password");
+  assert.equal(page.elements["new-password"].disabled, false);
+  assert.equal(page.elements["confirm-password"].disabled, false);
+
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.equal(page.calls.filter(c => c.method === "updateUser").length, 3);
+  assert.match(page.elements["new-password-status"].textContent, /password updated/i);
+  assert.equal(page.submitButton.disabled, true);
+  assert.equal(page.elements["new-password"].disabled, true);
+  assert.equal(page.elements["confirm-password"].disabled, true);
+  assert.equal(page.timers.length, 1);
+  await page.form.handlers.submit({ preventDefault() {} });
+  assert.equal(page.calls.filter(c => c.method === "updateUser").length, 3);
   await page.timers[0]();
   assert.equal(page.calls.find(c => c.method === "signOut").options.scope, "global");
 });

@@ -368,6 +368,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
+  const loginSubmitButton = loginForm?.querySelector('button[type="submit"]');
   const toggle = document.getElementById('password-toggle');
 
   const errorBox = document.getElementById('login-error-box');
@@ -497,8 +498,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // -------- Reset password form submit --------
   if (resetForm) {
+    const resetSubmitButton = resetForm.querySelector('button[type="submit"]');
+    let resetSubmitting = false;
     resetForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (resetSubmitting) return;
       if (!resetEmailInput) return;
 
       const email = resetEmailInput.value.trim();
@@ -514,12 +518,20 @@ window.addEventListener('DOMContentLoaded', () => {
         resetLastPasswordInput.value = '';
       }
 
+      resetSubmitting = true;
+      resetEmailInput.disabled = true;
+      if (resetSubmitButton) {
+        resetSubmitButton.disabled = true;
+        resetSubmitButton.setAttribute('aria-busy', 'true');
+        resetSubmitButton.textContent = 'Sending…';
+      }
       try {
         const redirectTo = new URL('./reset-password.html', window.location.href).href;
 
-        await supabase.auth.resetPasswordForEmail(email, {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo,
         });
+        if (error) throw error;
 
         if (resetStatus) {
           // Use the same response for known and unknown emails. Supabase
@@ -533,6 +545,14 @@ window.addEventListener('DOMContentLoaded', () => {
         if (resetStatus) {
           resetStatus.textContent = 'We could not submit the reset request. Check your connection and try again.';
           resetStatus.className = 'reset-status error';
+        }
+      } finally {
+        resetSubmitting = false;
+        resetEmailInput.disabled = false;
+        if (resetSubmitButton) {
+          resetSubmitButton.disabled = false;
+          resetSubmitButton.removeAttribute('aria-busy');
+          resetSubmitButton.textContent = 'Send Reset Link';
         }
       }
     });
@@ -1097,11 +1117,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // -------- Login submit handler --------
   if (loginForm) {
+    let loginSubmitting = false;
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (loginSubmitting || twofaContext) return;
 
       const email = usernameInput?.value.trim();
-      const password = passwordInput?.value.trim();
+      const password = passwordInput?.value;
 
       if (!email || !password) {
         showLoginErrorBox();
@@ -1109,89 +1131,99 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       hideLoginErrorBox();
+      loginSubmitting = true;
+      if (loginSubmitButton) {
+        loginSubmitButton.disabled = true;
+        loginSubmitButton.setAttribute('aria-busy', 'true');
+        loginSubmitButton.textContent = 'Signing in…';
+      }
+      if (usernameInput) usernameInput.disabled = true;
+      if (passwordInput) passwordInput.disabled = true;
+      try {
+        const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+        if (loginError) {
+          console.warn('Login failed:', loginError.message);
+          showLoginErrorBox();
+          return;
+        }
 
-      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+        const { data: freshUserData, error: userFetchError } = await supabase.auth.getUser();
+        if (userFetchError) {
+          alert('Failed to fetch fresh user data: ' + userFetchError.message);
+          return;
+        }
 
-      if (loginError) {
-        console.warn('Login failed:', loginError.message);
+        const freshUser = freshUserData.user;
+
+        const { data: extendedData, error: dataError } = await supabase
+          .from('users_extended_data')
+          .select('userType, referral_code, twofa_enabled, twofa_method, email')
+          .eq('user_id', freshUser.id)
+          .single();
+
+        if (dataError || !extendedData) {
+          alert('Failed to fetch user data: ' + (dataError?.message || 'No extended data found.'));
+          return;
+        }
+
+        const isEmailConfirmed = !!freshUser.confirmed_at;
+
+        const { error: updateError } = await supabase
+          .from('users_extended_data')
+          .update({ email_verified: isEmailConfirmed })
+          .eq('user_id', freshUser.id);
+
+        if (updateError) {
+          console.warn('Failed to sync email_verified field:', updateError.message);
+        }
+
+        if (isEmailConfirmed && extendedData.referral_code) {
+          await processReferralReward(freshUser);
+        }
+
+        if (!isEmailConfirmed) {
+          alert('Email not verified yet. Redirecting to limited dashboard.');
+          window.location.href = 'limited-dashboard.html';
+          return;
+        }
+
+        const userType = extendedData.userType?.toLowerCase();
+        const twofaEnabled = !!extendedData.twofa_enabled;
+        const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
+
+        if (twofaEnabled) {
+          if (isDeviceTrustedForUser(freshUser.id)) {
+            console.log('[2FA] Trusted device detected, skipping 2FA step.');
+            redirectToDashboardByType(userType);
+            return;
+          }
+
+          const loginEmail = extendedData.email || freshUser.email || email;
+          if (twofaMethod === 'totp') {
+            console.log('[2FA] TOTP 2FA enabled for this user. Starting TOTP login flow.');
+            await beginTotpLoginFlow(freshUser, extendedData, loginEmail);
+            return;
+          }
+          if (twofaMethod === 'email' || !twofaMethod) {
+            console.log('[2FA] Email 2FA enabled for this user. Starting 2FA login flow.');
+            await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
+            return;
+          }
+        }
+
+        redirectToDashboardByType(userType);
+      } catch {
         showLoginErrorBox();
-        return;
-      }
-
-      const { data: freshUserData, error: userFetchError } = await supabase.auth.getUser();
-      if (userFetchError) {
-        alert('Failed to fetch fresh user data: ' + userFetchError.message);
-        return;
-      }
-
-      const freshUser = freshUserData.user;
-
-      const { data: extendedData, error: dataError } = await supabase
-        .from('users_extended_data')
-        .select('userType, referral_code, twofa_enabled, twofa_method, email')
-        .eq('user_id', freshUser.id)
-        .single();
-
-      if (dataError || !extendedData) {
-        alert('Failed to fetch user data: ' + (dataError?.message || 'No extended data found.'));
-        return;
-      }
-
-      const isEmailConfirmed = !!freshUser.confirmed_at;
-
-      const { error: updateError } = await supabase
-        .from('users_extended_data')
-        .update({ email_verified: isEmailConfirmed })
-        .eq('user_id', freshUser.id);
-
-      if (updateError) {
-        console.warn('Failed to sync email_verified field:', updateError.message);
-      }
-
-      if (isEmailConfirmed && extendedData.referral_code) {
-        await processReferralReward(freshUser);
-      }
-
-      if (!isEmailConfirmed) {
-        alert('Email not verified yet. Redirecting to limited dashboard.');
-        window.location.href = 'limited-dashboard.html';
-        return;
-      }
-
-      const userType = extendedData.userType?.toLowerCase();
-      const twofaEnabled = !!extendedData.twofa_enabled;
-      const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
-
-      // 2FA enabled?
-      if (twofaEnabled) {
-        // If device is trusted, skip 2FA entirely
-        if (isDeviceTrustedForUser(freshUser.id)) {
-          console.log('[2FA] Trusted device detected, skipping 2FA step.');
-          redirectToDashboardByType(userType);
-          return;
+      } finally {
+        loginSubmitting = false;
+        if (loginSubmitButton) {
+          loginSubmitButton.disabled = false;
+          loginSubmitButton.removeAttribute('aria-busy');
+          loginSubmitButton.textContent = 'Sign In';
         }
-
-        const loginEmail = extendedData.email || freshUser.email || email;
-
-        if (twofaMethod === 'totp') {
-          console.log('[2FA] TOTP 2FA enabled for this user. Starting TOTP login flow.');
-          await beginTotpLoginFlow(freshUser, extendedData, loginEmail);
-          return;
-        }
-
-        // Default / email 2FA
-        if (twofaMethod === 'email' || !twofaMethod) {
-          console.log('[2FA] Email 2FA enabled for this user. Starting 2FA login flow.');
-          await beginTwofaLoginFlow(freshUser, extendedData, loginEmail);
-          return;
-        }
+        if (usernameInput) usernameInput.disabled = false;
+        if (passwordInput) passwordInput.disabled = false;
       }
-
-      // No 2FA: redirect based on user type
-      redirectToDashboardByType(userType);
     });
   }
 });
