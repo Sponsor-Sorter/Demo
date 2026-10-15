@@ -1351,9 +1351,9 @@ addEventListener('DOMContentLoaded', async () => {
           });
 
           if (modResult && modResult.allowed === false) {
-            const msg =
-              modResult.message ||
-              'Some of your profile details were blocked by moderation. Please adjust and try again.';
+            const msg = modResult.unavailable
+              ? 'We could not check this content right now. Please try again.'
+              : 'Some profile details were flagged and not saved. This notice reports a content decision only; account status is not shown here. Edit the details and try again.';
             if (detailsMsg) {
               detailsMsg.textContent = msg;
               detailsMsg.style.color = '#ff6b6b';

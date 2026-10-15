@@ -73,12 +73,9 @@ function famBotShowModal(result, type) {
     .filter(cat => typeof cat === 'string')
     .map(cat => escapeText(cat.charAt(0).toUpperCase() + cat.slice(1)))
     .join(', ');
-  const message = typeof result.message === 'string' && result.message
-    ? escapeText(result.message)
-    : 'This content was blocked by moderation. Please try again with different wording.';
-  const strikes = Number.isInteger(result.strikes) && result.strikes >= 0 && result.strikes <= 3
-    ? result.strikes
-    : 0;
+  const message = result.unavailable
+    ? FAMBOT_UNAVAILABLE_MESSAGE
+    : `${typeLabel} was flagged and was not submitted. This notice reports a content decision only; account status is not shown here. Edit it and try again.`;
 
   // Modal HTML
   const modal = document.createElement('div');
@@ -91,7 +88,7 @@ function famBotShowModal(result, type) {
       <div style="
         background:white;padding:2.5rem 2rem 1.5rem 2rem;max-width:430px;
         border-radius:18px;box-shadow:0 6px 32px 4px rgba(0,0,0,.12);text-align:center;">
-        <h2 style="margin-bottom:12px;color:#C41A1A;">${typeLabel} ${result.unavailable ? 'Could Not Be Checked' : 'Blocked'}</h2>
+        <h2 style="margin-bottom:12px;color:#C41A1A;">${typeLabel} ${result.unavailable ? 'Could Not Be Checked' : 'Flagged'}</h2>
         <p style="color:#222;font-size:1.04em;margin-bottom:1em;">
           ${message}
         </p>
@@ -104,13 +101,6 @@ function famBotShowModal(result, type) {
                 </div>
                </div>`
             : ''
-        }
-        ${!result.unavailable && result.banned === true ?
-          `<div style="color:#C41A1A;font-weight:700;margin-bottom:.7em;">Your account is now banned from submitting content.</div>`
-          : !result.unavailable && strikes >= 1 ?
-          `<div style="color:#bf8800;font-weight:700;margin-bottom:.7em;">
-            You have received a strike (${strikes}/3). Further violations will result in a ban.
-          </div>` : ''
         }
         <button id="fambot-close" style="
           margin-top:8px;background:#0c7a1a;color:#fff;padding:7px 28px;

@@ -341,16 +341,14 @@ function showFamBotModal(result) {
     .filter(cat => typeof cat === 'string')
     .map(cat => escapeText(cat.charAt(0).toUpperCase() + cat.slice(1)))
     .join(', ');
-  const message = typeof result.message === 'string' && result.message
-    ? escapeText(result.message)
-    : 'This content was blocked by moderation. Please try again with different wording.';
+  const message = 'This signup content was flagged and was not submitted. This notice reports a content decision only; account status is not shown here. Edit it and try again.';
 
   const modal = document.createElement('div');
   modal.id = 'fambot-modal';
   modal.innerHTML = `
     <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:10000;display:flex;align-items:center;justify-content:center;">
       <div style="background:white;padding:2.5rem 2rem 1.5rem 2rem;max-width:430px;border-radius:18px;box-shadow:0 6px 32px 4px rgba(0,0,0,.12);text-align:center;">
-        <h2 style="margin-bottom:12px;color:#C41A1A;">Profile Details Unacceptable</h2>
+        <h2 style="margin-bottom:12px;color:#C41A1A;">Signup Content Flagged</h2>
         <p style="color:#222;font-size:1.04em;margin-bottom:1em;">
           ${message}
         </p>
