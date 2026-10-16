@@ -1,4 +1,5 @@
 import { observedMetrics } from './campaignReports.js?v=20261011-reports1';
+import { projectSnapshotRaw } from './socialSnapshotMetrics.mjs';
 // ./js/statsnap.js
 //
 // Lightweight snapshot helper:
@@ -142,16 +143,23 @@ export async function statsnapSaveAfterSuccess({ originalUrl, platformHint, offe
   const normalized_url = normalizeUrl(originalUrl);
   const platform = platformHint || detectPlatform(normalized_url);
   const cleanMetrics = observedMetrics(liveMetrics || {});
-  if (offerId && Object.keys(cleanMetrics).length) {
+  const historyMetricKeys = ['views','likes','comments','shares','video_views','impressions','reach','saved','engagement'];
+  const historyMetrics = Object.fromEntries(historyMetricKeys
+    .filter(key => typeof cleanMetrics[key] === 'number')
+    .map(key => [key, cleanMetrics[key]]));
+  if (offerId && Object.keys(historyMetrics).length) {
     try {
       await supabase.rpc('record_campaign_observation', {
-        campaign_id: offerId, content_url: originalUrl, platform, metrics: cleanMetrics
+        campaign_id: offerId, content_url: originalUrl, platform, metrics: historyMetrics
       });
     } catch { /* Saving history must not hide the current result. */ }
   }
   const forHash = { platform, url: normalized_url, metrics: liveMetrics || {} };
   const metrics_hash = await sha256Hex(stableStringify(forHash));
   const now = new Date().toISOString();
+  const projectedRaw = projectSnapshotRaw(platform, raw);
+  const lastStats = { metrics: cleanMetrics };
+  if (projectedRaw !== null) lastStats.raw = projectedRaw;
 
   // who updated?
   const { data: s } = await supabase.auth.getSession();
@@ -159,12 +167,13 @@ export async function statsnapSaveAfterSuccess({ originalUrl, platformHint, offe
 
   try {
     const existing = await getSnapshotRow(normalized_url, platform);
-    if (!existing || existing.metrics_hash !== metrics_hash) {
+    if (!existing || existing.metrics_hash !== metrics_hash ||
+        (projectedRaw !== null && existing.last_stats?.raw === undefined)) {
       return await upsertSnapshot({
         normalized_url,
         platform,
         offer_id: existing?.offer_id ?? offerId,
-        last_stats: { metrics: cleanMetrics },
+        last_stats: lastStats,
         metrics_hash,
         last_success_at: now,
         last_checked_at: now,
@@ -210,10 +219,25 @@ export async function statsnapFallback({ originalUrl, platformHint }){
     // Derive a light metrics object for convenience (map common fields)
     const raw = row.last_stats || {};
     const values = raw.metrics || raw;
+    const metricNumberOrNull = value => {
+      if (value === null || value === undefined || value === '') return null;
+      if (!['number', 'string'].includes(typeof value)) return null;
+      const number = Number(value);
+      return Number.isFinite(number) && number >= 0 && number <= Number.MAX_SAFE_INTEGER ? number : null;
+    };
+    const firstPresent = (...candidates) => candidates.find(value => value !== null && value !== undefined);
     const metrics = {
-      views: Number(values?.viewCount ?? values?.views ?? values?.statistics?.viewCount ?? 0) || 0,
-      likes: Number(values?.likeCount ?? values?.likes ?? values?.statistics?.likeCount ?? 0) || 0,
-      comments: Number(values?.commentCount ?? values?.comments ?? values?.statistics?.commentCount ?? 0) || 0,
+      views: metricNumberOrNull(firstPresent(values?.views, values?.viewCount, values?.statistics?.viewCount)),
+      likes: metricNumberOrNull(firstPresent(values?.likes, values?.likeCount, values?.statistics?.likeCount)),
+      comments: metricNumberOrNull(firstPresent(values?.comments, values?.commentCount, values?.statistics?.commentCount)),
+      reactions: metricNumberOrNull(values?.reactions),
+      shares: metricNumberOrNull(values?.shares),
+      video_views: metricNumberOrNull(values?.video_views),
+      impressions: metricNumberOrNull(firstPresent(values?.impressions, values?.post_impressions)),
+      reach: metricNumberOrNull(firstPresent(values?.reach, values?.post_impressions_unique)),
+      engaged_users: metricNumberOrNull(firstPresent(values?.engaged_users, values?.post_engaged_users)),
+      post_media_view: metricNumberOrNull(values?.post_media_view),
+      post_total_media_view_unique: metricNumberOrNull(values?.post_total_media_view_unique),
       lastSuccessAt: row.last_success_at
     };
 

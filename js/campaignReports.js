@@ -1,7 +1,7 @@
 import { supabase } from './supabaseClient.js';
 
 export function observedMetrics(input={}) {
- const result={};for(const key of ['views','likes','comments','shares','video_views','impressions','reach','saved','engagement']){
+ const result={};for(const key of ['views','likes','comments','shares','video_views','impressions','reach','saved','engagement','reactions','engaged_users','post_media_view','post_total_media_view_unique']){
   if(!(key in input))continue;const value=input[key];result[key]=['number','string'].includes(typeof value) && String(value).trim()!=='' && Number.isFinite(Number(value)) && Number(value)>=0 && Number(value)<=Number.MAX_SAFE_INTEGER ? Number(value):null;
  }return result;
 }

@@ -12,6 +12,7 @@ import { famBotModerateWithModal } from './FamBot.js';
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
 import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-reports1';
+import { facebookPostSnapshotMetrics, renderFacebookPostCard, renderYoutubePostCard, youtubeVideoSnapshotMetrics } from './socialSnapshotMetrics.mjs';
 
 let allSponsorOffers = [];
 let sponsor_username = '';
@@ -500,6 +501,9 @@ function renderSnapshotBlock(platform, link, metrics = {}, dateBadge = '', subti
   if (metrics.reach != null) rows.push(`<div><b>📣 Reach:</b><br>${fmtNum(metrics.reach)}</div>`);
   if (metrics.engaged_users != null) rows.push(`<div><b>🤝 Engaged Users:</b><br>${fmtNum(metrics.engaged_users)}</div>`);
   if (metrics.video_views != null) rows.push(`<div><b>▶️ Video Views:</b><br>${fmtNum(metrics.video_views)}</div>`);
+  if (metrics.reactions != null) rows.push('<div><b>Reactions:</b><br>' + fmtNum(metrics.reactions) + '</div>');
+  if (metrics.post_media_view != null) rows.push('<div><b>Post media views:</b><br>' + fmtNum(metrics.post_media_view) + '</div>');
+  if (metrics.post_total_media_view_unique != null) rows.push('<div><b>Unique post media views:</b><br>' + fmtNum(metrics.post_total_media_view_unique) + '</div>');
 
   const color = colors[platform] || '#ddd';
   const logo = logos[platform] || '';
@@ -778,11 +782,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const stats = await resp.json();
             if (resp.ok && stats?.success) {
-              const metrics = {
-                views: Number(stats.video?.statistics?.viewCount) || 0,
-                likes: Number(stats.video?.statistics?.likeCount) || 0,
-                comments: Number(stats.video?.statistics?.commentCount) || 0
-              };
+              const metrics = youtubeVideoSnapshotMetrics(stats.video);
               // ✅ Save snapshot
               try {
                 await statsnapSaveAfterSuccess({
@@ -794,30 +794,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
               } catch {}
 
-              const thumbnail = stats.video.snippet?.thumbnails?.medium?.url || '';
-              const duration = parseISO8601Duration(stats.video.contentDetails?.duration || '');
-              addBlock(container(`
-                <div style="display:flex;align-items:center;gap:18px;font-size:1.17em;margin-bottom:12px;">
-                  ${thumbnail ? `<img src="${thumbnail}" alt="Thumbnail" style="width:auto;height:80px;border-radius:7px;box-shadow:0 1px 8px #0004;object-fit:cover;">` : ''}
-                  <div>
-                    <b style="color:#ffe75b;">
-                      <img src="youtubelogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                      ${stats.video.snippet.title}
-                    </b>
-                    <div style="font-size:0.8em;margin-top:3px;"><span style="background:none;padding:2px 7px;border-radius:6px;color:#ffe;">Video duration ⏱ ${duration}</span></div>
-                    ${dateBadge}
-                  </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${wrapRow('📅 Published:', new Date(stats.video.snippet.publishedAt).toLocaleDateString())}
-                  ${wrapRow('👀 Views:', stats.video.statistics.viewCount)}
-                  ${wrapRow('👍 Likes:', stats.video.statistics.likeCount || '-') }
-                  ${wrapRow('💬 Comments:', stats.video.statistics.commentCount || '-') }
-                </div>
-                <div style="margin-top:10px;text-align:right;">
-                  <a href="https://youtube.com/watch?v=${stats.video.id}" target="_blank" style="color:#36aaff;text-decoration:underline;font-size:0.96em;">Open on YouTube ↗</a>
-                </div>
-              `));
+              const dateLabel = date ? `Live date (set): ${new Date(date).toLocaleDateString()}` : '';
+              const durationLabel = parseISO8601Duration(stats.video.contentDetails?.duration || '');
+              addBlock(renderYoutubePostCard(stats.video, { metrics, dateLabel, durationLabel }));
             } else {
               // ❌ Live failed → snapshot
               const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'youtube' });
@@ -1151,50 +1130,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                   originalUrl: liveUrl,
                   platformHint: 'facebook',
                   offerId,
-                  liveMetrics: {
-                    reactions: Number(reactions ?? 0),
-                    comments: Number(comments ?? 0),
-                    shares: Number(shares ?? 0),
-                    impressions: Number(impressions ?? 0),
-                    reach: Number(reach ?? 0),
-                    engaged_users: Number(engaged ?? 0)
-                  },
+                  liveMetrics: facebookPostSnapshotMetrics({
+                    post: p, insights: ins, reactions, comments, shares, impressions, reach, engagedUsers: engaged
+                  }),
                   raw: { post: p, insights: ins }
                 });
               } catch {}
 
               const permalink = p.permalink_url || p.link || liveUrl;
               const created = p.created_time || p.created_at || p.created || null;
-              const message = (p.message || p.story || '').toString().trim();
-              const shortMsg = message ? (message.length > 150 ? message.slice(0,150) + '…' : message) : '';
-
-              const thumb = fbFindImage(p) || 'facebooklogo.png';
-
-              addBlock(container(`
-                <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
-                  <img src="${thumb}" referrerpolicy="no-referrer" alt="Facebook post" style="width:auto;height:80px;border-radius:8px;object-fit:cover;border:1px solid #222;background:#111;margin-right:10px;">
-                  <div>
-                    <b style="color:#7fb4ff;font-size:1.17em;">
-                      <img src="facebooklogo.png" style="height:18px;vertical-align:-2px;margin-right:6px;">
-                      Facebook Post
-                    </b>
-                    ${created ? `<div style="font-size:0.96em;color:white;margin-top:2px;">Published ${new Date(created).toLocaleDateString()}</div>` : ''}
-                    ${dateBadge}
-                    ${shortMsg ? `<div style="font-size:0.95em;color:#ddd;margin-top:6px;">${shortMsg}</div>` : ''}
-                  </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:24px 32px;">
-                  ${reactions != null ? wrapRow('👍 Reactions:', fmtNum(reactions)) : ''}
-                  ${comments  != null ? wrapRow('💬 Comments:', fmtNum(comments)) : ''}
-                  ${shares    != null ? wrapRow('🔁 Shares:',   fmtNum(shares))   : ''}
-                  ${impressions != null ? wrapRow('👁️ Impressions:', fmtNum(impressions)) : ''}
-                  ${reach       != null ? wrapRow('📣 Reach:',       fmtNum(reach))       : ''}
-                  ${engaged     != null ? wrapRow('🤝 Engaged Users:', fmtNum(engaged))   : ''}
-                </div>
-                <div style="margin-top:10px;text-align:right;">
-                  <a href="${permalink}" target="_blank" style="color:#7fb4ff;text-decoration:underline;font-size:0.96em;">Open on Facebook ↗</a>
-                </div>
-              `));
+              addBlock(renderFacebookPostCard(p, facebookPostSnapshotMetrics({
+                post: p, insights: ins, reactions, comments, shares, impressions, reach, engagedUsers: engaged
+              }), {
+                permalink,
+                dateLabel: date ? `Live date (set): ${new Date(date).toLocaleDateString()}` : ''
+              }));
             } else {
               const fbSnap = await statsnapFallback({ originalUrl: liveUrl, platformHint: 'facebook' });
               if (fbSnap) {

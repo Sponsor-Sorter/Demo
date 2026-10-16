@@ -292,7 +292,7 @@ function snapshotFixture(row, writeFails = false) {
       maybeSingle: async () => ({data: payload, error: writeFails ? new Error('denied') : null})
     }; } }; }
   };
-  const context = { URL, TextEncoder, console, observedMetrics: input => input, supabase: {
+  const context = { URL, TextEncoder, console, observedMetrics: input => input, projectSnapshotRaw: () => null, supabase: {
     from: () => query, auth: {getSession: async () => ({data:{session:{user:{id:'fixture'}}}})}
   }};
   const source = fs.readFileSync(path.join(__dirname, '../js/statsnap.js'), 'utf8')
