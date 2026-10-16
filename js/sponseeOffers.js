@@ -1,3 +1,4 @@
+import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
@@ -811,8 +812,8 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
       const countNode = dataSummarySection.querySelector('#ds-count');
       const resultsNode = dataSummarySection.querySelector('#ds-results');
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const jwt = session?.access_token;
+      const socialSession = await readSocialSession(supabase);
+      const jwt = socialSession.token;
 
       const blocks = [];
       let index = 0;
@@ -1112,20 +1113,17 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         // === Instagram ===
         if (/instagram\.com/i.test(link)) {
           try {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ url: link })
-            });
+            const resp = await requestSocialMetrics(socialSession, 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', { url: link });
             const ig = await resp.json();
             if (resp.ok && ig?.ok && ig?.found && ig?.media) {
               const m = ig.media;
               const ins = ig.insights || {};
               const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
               const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
-              const likes = Number(m.like_count ?? 0);
-              const comments = Number(m.comments_count ?? 0);
-              const vviews = (m.video_views != null) ? Number(m.video_views) : null;
+              const instagramMetrics = instagramSnapshotMetrics(m, ins);
+              const likes = instagramMetrics.likes;
+              const comments = instagramMetrics.comments;
+              const vviews = instagramMetrics.video_views;
 
               // ✅ Save snapshot
               try {
@@ -1133,15 +1131,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
                   originalUrl: link,
                   platformHint: 'instagram',
                   offerId,
-                  liveMetrics: {
-                    likes,
-                    comments,
-                    video_views: vviews ?? 0,
-                    impressions: Number(ins.impressions ?? 0),
-                    reach: Number(ins.reach ?? 0),
-                    saved: Number(ins.saved ?? 0),
-                    engagement: Number(ins.engagement ?? 0)
-                  },
+                  liveMetrics: instagramMetrics,
                   raw: { media: m, insights: ins }
                 });
               } catch {}
@@ -1171,10 +1161,10 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
                     <div><b>👍 Likes:</b><br>${likesTxt}</div>
                     <div><b>💬 Comments:</b><br>${commentsTxt}</div>
                     ${viewsTxt ? `<div><b>▶️ Video Views:</b><br>${viewsTxt}</div>` : ''}
-                    <div><b>👁️ Impressions:</b><br>${fmtNum(ins.impressions)}</div>
-                    <div><b>📣 Reach:</b><br>${fmtNum(ins.reach)}</div>
-                    <div><b>💾 Saved:</b><br>${fmtNum(ins.saved)}</div>
-                    <div><b>🤝 Engagement:</b><br>${fmtNum(ins.engagement)}</div>
+                    <div><b>👁️ Impressions:</b><br>${fmtNum(instagramMetrics.impressions)}</div>
+                    <div><b>📣 Reach:</b><br>${fmtNum(instagramMetrics.reach)}</div>
+                    <div><b>💾 Saved:</b><br>${fmtNum(instagramMetrics.saved)}</div>
+                    <div><b>🤝 Engagement:</b><br>${fmtNum(instagramMetrics.engagement)}</div>
                   </div>
                   <div style="margin-top:10px;text-align:right;">
                     <a href="${m.permalink || link}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
@@ -1196,12 +1186,12 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
                 blocks.push(`<div style="color:#faa;">Could not fetch Instagram stats for ${link}.</div>`);
               }
             }
-          } catch {
+          } catch (error) {
             const fb = await statsnapFallback({ originalUrl: link, platformHint: 'instagram' });
             if (fb) {
-              blocks.push(renderSnapshotBlock('instagram', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+              blocks.push(renderSnapshotBlock('instagram', link, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.' + (socialRequestFailureText(error) ? ' ' + socialRequestFailureText(error) : '')));
             } else {
-              blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}.</div>`);
+              blocks.push(`<div style="color:#faa;">Error loading Instagram stats for ${link}. ${socialRequestFailureText(error)}</div>`);
             }
           }
           resultsNode.innerHTML = blocks.join('');
@@ -1211,11 +1201,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         // === Facebook ===
         if (/(facebook\.com|fb\.watch)/i.test(link)) {
           try {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ url: link })
-            });
+            const resp = await requestSocialMetrics(socialSession, 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', { url: link });
             const fb = await resp.json();
 
             if (resp.ok && (fb?.ok || fb?.success)) {
@@ -1263,12 +1249,12 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
                 blocks.push(`<div style="color:#faa;">Could not fetch Facebook post stats for <a href="${link}" target="_blank" style="color:#7fb4ff;">${link}</a>.</div>`);
               }
             }
-          } catch {
+          } catch (error) {
             const fbSnap = await statsnapFallback({ originalUrl: link, platformHint: 'facebook' });
             if (fbSnap) {
-              blocks.push(renderSnapshotBlock('facebook', link, fbSnap.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+              blocks.push(renderSnapshotBlock('facebook', link, fbSnap.metrics, dateBadge, 'Error fetching live — showing cached stats.' + (socialRequestFailureText(error) ? ' ' + socialRequestFailureText(error) : '')));
             } else {
-              blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}.</div>`);
+              blocks.push(`<div style="color:#faa;">Error loading Facebook post stats for ${link}. ${socialRequestFailureText(error)}</div>`);
             }
           }
           resultsNode.innerHTML = blocks.join('');

@@ -1,3 +1,4 @@
+import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
 import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
@@ -727,8 +728,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const totalEl = dataSummarySection.querySelector('#ds-total');
       const resultsEl  = dataSummarySection.querySelector('#ds-results');
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const jwt = session?.access_token;
+      const socialSession = await readSocialSession(supabase);
+      const jwt = socialSession.token;
 
       const wrapRow = (label, value) => `<div><b>${label}</b><br>${value ?? '-'}</div>`;
       const container = (inner) => `
@@ -1014,15 +1015,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           // === Instagram ===
           if (isInstagramUrl(liveUrl)) {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
+            const resp = await requestSocialMetrics(socialSession, 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-instagram-media-from-url', {
                 url: liveUrl,
                 userId: sponseeUserId,
                 offerId: offerId 
-              })
-            });
+              });
             const ig = await resp.json();
             if (resp.ok && ig?.ok && ig?.found && ig?.media) {
               const m = ig.media;
@@ -1030,9 +1027,10 @@ document.addEventListener("DOMContentLoaded", async () => {
               const thumb = m.thumbnail_url || m.media_url || 'instagramlogo.png';
               const kind = (m.media_product_type || m.media_type || '').toString().toUpperCase();
 
-              const likes = Number(m.like_count ?? 0);
-              const comments = Number(m.comments_count ?? 0);
-              const vviews = (m.video_views != null) ? Number(m.video_views) : null;
+              const instagramMetrics = instagramSnapshotMetrics(m, ins);
+              const likes = instagramMetrics.likes;
+              const comments = instagramMetrics.comments;
+              const vviews = instagramMetrics.video_views;
 
               // ✅ Save snapshot
               try {
@@ -1040,15 +1038,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                   originalUrl: liveUrl,
                   platformHint: 'instagram',
                   offerId,
-                  liveMetrics: {
-                    likes,
-                    comments,
-                    video_views: vviews ?? 0,
-                    impressions: Number(ins.impressions ?? 0),
-                    reach: Number(ins.reach ?? 0),
-                    saved: Number(ins.saved ?? 0),
-                    engagement: Number(ins.engagement ?? 0)
-                  },
+                  liveMetrics: instagramMetrics,
                   raw: { media: m, insights: ins }
                 });
               } catch {}
@@ -1073,10 +1063,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                   ${wrapRow('👍 Likes:', fmtNum(likes))}
                   ${wrapRow('💬 Comments:', fmtNum(comments))}
                   ${vviews != null ? wrapRow('▶️ Video Views:', fmtNum(vviews)) : ''}
-                  ${wrapRow('👁️ Impressions:', fmtNum(ins.impressions))}
-                  ${wrapRow('📣 Reach:', fmtNum(ins.reach))}
-                  ${wrapRow('💾 Saved:', fmtNum(ins.saved))}
-                  ${wrapRow('🤝 Engagement:', fmtNum(ins.engagement))}
+                  ${wrapRow('👁️ Impressions:', fmtNum(instagramMetrics.impressions))}
+                  ${wrapRow('📣 Reach:', fmtNum(instagramMetrics.reach))}
+                  ${wrapRow('💾 Saved:', fmtNum(instagramMetrics.saved))}
+                  ${wrapRow('🤝 Engagement:', fmtNum(instagramMetrics.engagement))}
                 </div>
                 <div style="margin-top:10px;text-align:right;">
                   <a href="${m.permalink || liveUrl}" target="_blank" style="color:#ff8bd2;text-decoration:underline;font-size:0.96em;">Open on Instagram ↗</a>
@@ -1097,16 +1087,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           // === Facebook ===
           if (isFacebookUrl(liveUrl)) {
-            const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
+            const resp = await requestSocialMetrics(socialSession, 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/get-facebook-post-from-url', {
                 url: liveUrl,
                 userId: sponseeUserId,
                 for_user_id: sponseeUserId,
                 offerId: offerId
-              })
-            });
+              });
             const fb = await resp.json();
 
             if (resp.ok && (fb?.ok || fb?.success)) {
@@ -1160,14 +1146,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           // Unknown / unsupported link
           addBlock(`<div style="color:#ccc;">No stats integration for: <a href="${liveUrl}" target="_blank" style="color:#9ad;">${liveUrl}</a>${date ? ` <em style="color:#ddd;">(${new Date(date).toLocaleDateString()})</em>` : ''}</div>`);
 
-        } catch {
+        } catch (error) {
           // Any unexpected error → snapshot try
           const platform = detectPlatformFromURL(liveUrl) || 'unknown';
           const fb = await statsnapFallback({ originalUrl: liveUrl, platformHint: platform });
           if (fb && platform !== 'unknown') {
-            addBlock(renderSnapshotBlock(platform, liveUrl, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.'));
+            addBlock(renderSnapshotBlock(platform, liveUrl, fb.metrics, dateBadge, 'Error fetching live — showing cached stats.' + (socialRequestFailureText(error) ? ' ' + socialRequestFailureText(error) : '')));
           } else {
-            addBlock(`<div style="color:#faa;">Error loading stats for ${liveUrl}.</div>`);
+            addBlock(`<div style="color:#faa;">Error loading stats for ${liveUrl}. ${socialRequestFailureText(error)}</div>`);
           }
         }
       }
