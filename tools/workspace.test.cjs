@@ -568,7 +568,7 @@ test('supporting profile cards render hostile names as text and keep safe recipi
  test('both dashboard entrypoints invalidate cached campaign modules for priorities release',()=>{
  for(const role of ['sponsor','sponsee']){
  const html=fs.readFileSync(path.join(__dirname,'../dashboard'+role+'.html'),'utf8');
- assert.ok(html.includes('./js/'+role+'Offers.js?v=20261012-safe1'));
+ assert.ok(html.includes('./js/'+role+'Offers.js?v=20261016-socialmetrics1'));
  assert.ok(!html.includes('./js/'+role+'Offers.js?v=20261011-campaign1'));
  }
  });
