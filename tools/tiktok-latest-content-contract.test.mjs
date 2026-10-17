@@ -14,4 +14,4 @@ test('legacy nested counters remain supported including measured zero',()=>{cons
 test('unknown counters clear prior rendered values',()=>{const e=run({view_count:7});run({},e);for(const k of ['lastViews','lastLikes','lastComments','lastShares'])assert.equal(e[k].textContent,'-');});
 test('nested zero takes precedence over flat fallback',()=>{const e=run({stats:{view_count:0},view_count:9});assert.equal(e.lastViews.textContent,'0');});
 test('optional UI fields may be absent',()=>{assert.doesNotThrow(()=>run({view_count:8},{}));});
-test('creator dashboard versions the edited module',()=>{const html=readFileSync(new URL('../dashboardsponsee.html',import.meta.url),'utf8');assert.match(html,/sponseeLogic\.js\?v=20261017-tiktok-content1/);});
+test('creator dashboard versions the edited module',()=>{const html=readFileSync(new URL('../dashboardsponsee.html',import.meta.url),'utf8');assert.match(html,/sponseeLogic\.js\?v=20261017-flow-fixes1/);});

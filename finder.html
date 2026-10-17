@@ -430,7 +430,7 @@ async function renderRecentOffers() {
             <span><b>Deadline:</b> ${deadlineStr}</span>
           </div>
         </div>
-        <a class="finder-recent-link" href="publicOffers.html">Browse open opportunities</a>
+        <a class="finder-recent-link" href="#offer-search-form-block">Browse open opportunities</a>
       </article>
     `;
   });
@@ -1167,6 +1167,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     groupSearchBlock.style.display = 'none';
     if (window.loadPublicOffersTab) window.loadPublicOffersTab();
   };
+  document.addEventListener('click', (event) => {
+    const browseLink = event.target?.closest?.('a.finder-recent-link');
+    if (!browseLink) return;
+    event.preventDefault();
+    offerSearchToggle.click();
+    offerSearchBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
   groupSearchToggle.onclick = () => {
     setActiveToggle(groupSearchToggle);
     userSearchBlock.style.display = 'none';

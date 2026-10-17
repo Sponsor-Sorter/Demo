@@ -126,7 +126,7 @@ async function loadFreePlanLimitCard() {
 
     // Only show this card for free-plan users
     if (planType !== 'free') {
-      cardEl.style.display = 'none';
+      cardEl.style.setProperty('display', 'none', 'important');
       return;
     }
 
