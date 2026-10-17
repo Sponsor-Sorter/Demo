@@ -1150,7 +1150,13 @@ async function populatePublicDashboardInline(user) {
 
 addEventListener('DOMContentLoaded', async () => {
   let currentUser = await getActiveUser();
-  if (!currentUser) return;
+  if (!currentUser) {
+    const summary = document.getElementById('referrals-subscription-summary');
+    const subscription = document.getElementById('settings-subscription-row');
+    if (summary) summary.textContent = 'Sign in to view your account and subscription settings.';
+    if (subscription) subscription.textContent = 'Subscription: Sign in to continue.';
+    return;
+  }
 
   // Wire up show/hide password toggles for any password fields
   wirePasswordVisibilityToggles();
