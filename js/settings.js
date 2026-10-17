@@ -2180,11 +2180,37 @@ async function aff_refreshDetectedStats(){
   const headers = { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' };
 
   async function callFn(name){
+    if (!jwt || jwt === 'undefined' || jwt === 'null') throw new Error('Sign in to load connected stats.');
     const base = `${aff_functionsBase()}/${name}`;
-    let r = await fetch(base, { method:'POST', headers, mode:'cors', cache:'no-store' }).catch(()=>null);
-    if (!r || !r.ok) r = await fetch(base, { method:'GET', headers, mode:'cors', cache:'no-store' }).catch(()=>null);
-    if (!r || !r.ok) throw new Error(`${name}: ${r ? r.status : 'network'}`);
-    return r.json();
+    const controller = new AbortController();
+    let timer;
+    try {
+      const work = (async () => {
+        const method = name === 'get-tiktok-stats' ? 'GET' : 'POST';
+        const body = name === 'get-instagram-stats' ? { period_days: 7 }
+          : name === 'get-facebook-page-insights' ? { period_days: 28 } : null;
+        const r = await fetch(base, {
+          method, headers, mode:'cors', cache:'no-store', signal: controller.signal,
+          ...(body ? { body: JSON.stringify(body) } : {})
+        });
+        if (!r.ok) throw new Error(`${name}: ${r.status}`);
+        const data = await r.json();
+        if (!data || typeof data !== 'object' || Array.isArray(data)
+            || data.ok === false || data.success === false || data.error) {
+          throw new Error(`${name}: stats unavailable`);
+        }
+        return data;
+      })();
+      const deadline = new Promise((_, reject) => {
+        timer = setTimeout(() => {
+          controller.abort();
+          reject(new Error(`${name}: request timed out`));
+        }, 12000);
+      });
+      return await Promise.race([work, deadline]);
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   // Only call stats functions for platforms that are actually linked.

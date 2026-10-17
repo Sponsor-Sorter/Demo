@@ -5,6 +5,7 @@
   "scripts": {
     "test": "node --experimental-loader=./tools/social-snapshot-test-loader.mjs --test tools/admin.test.cjs tools/payments.test.cjs tools/workspace.test.cjs tools/auth-submit-feedback.test.cjs tools/password-recovery-feedback.test.cjs tools/fambot-fail-closed.test.cjs tools/fambot-signup-client.test.cjs tools/signup-completion.test.cjs tools/messages-send-confirmation.test.cjs tools/messages-history-state.test.cjs tools/social-snapshot-caller-contract.test.mjs tools/social-caller-hardening.test.mjs",
     "start": "node server.js",
+    "test:detected-stats": "node --test tools/settings-detected-stats.test.mjs",
     "test:social-snapshot": "node --experimental-loader=./tools/social-snapshot-test-loader.mjs --test --test-concurrency=1 tools/social-snapshot-caller-contract.test.mjs tools/social-caller-hardening.test.mjs",
     "test:social-snapshot:ui": "node tools/social-snapshot-ui-browser.test.mjs"
   },
