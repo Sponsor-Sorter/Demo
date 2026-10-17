@@ -1382,14 +1382,13 @@ async function loadTikTokStats() {
       const d = secsOrMsToDate(c.create_time);
       ttEls.lastDate.textContent = d ? d.toLocaleDateString() : '';
 
-      setTTThumb(ttEls.lastThumb, c.cover || null, 'tiktoklogo.png');
+      setTTThumb(ttEls.lastThumb, c.cover || c.cover_image_url || c.thumbnail_url || null, 'tiktoklogo.png');
 
-      if (c.stats) {
-        if (ttEls.lastViews) ttEls.lastViews.textContent = fmtNum(c.stats.view_count);
-        if (ttEls.lastLikes) ttEls.lastLikes.textContent = fmtNum(c.stats.like_count);
-        if (ttEls.lastComments) ttEls.lastComments.textContent = fmtNum(c.stats.comment_count);
-        if (ttEls.lastShares) ttEls.lastShares.textContent = fmtNum(c.stats.share_count);
-      }
+      // Legacy responses nest counters; v27 projects available counters directly.
+      if (ttEls.lastViews) ttEls.lastViews.textContent = fmtNum(c.stats?.view_count ?? c.view_count);
+      if (ttEls.lastLikes) ttEls.lastLikes.textContent = fmtNum(c.stats?.like_count ?? c.like_count);
+      if (ttEls.lastComments) ttEls.lastComments.textContent = fmtNum(c.stats?.comment_count ?? c.comment_count);
+      if (ttEls.lastShares) ttEls.lastShares.textContent = fmtNum(c.stats?.share_count ?? c.share_count);
 
       ttEls.lastRow.style.display = '';
     } else {
