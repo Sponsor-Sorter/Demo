@@ -37,6 +37,11 @@ test('no legacy routes, browser wallet writes, commission calculations or admin 
   assert.match(dashboard, /callAffiliate\('summary'\)/);
   assert.match(settings, /path: 'affiliate\/applications'/);
 });
+test('application desired rate has a distinct ID from the dashboard display', () => {
+  assert.equal(settings.includes('id="aff-desired-rate" type="number"'), true);
+  assert.equal(settings.includes("getElementById('aff-desired-rate')?.value"), true);
+  assert.equal(settings.includes('id="aff-rate"'), false);
+});
 const walletSource = dashboard.slice(dashboard.indexOf('async function payApprovedToWallet()'), dashboard.indexOf('/* ------------- UI helpers'));
 for (const amount of [0, 2.75]) {
   test(`wallet uses returned credit ${amount} without database writes`, async () => {

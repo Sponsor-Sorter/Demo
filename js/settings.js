@@ -2077,7 +2077,7 @@ https://instagram.com/you
 https://youtube.com/@you"></textarea>
           </label>
 
-          <label>Desired Commission Rate (%) <input id="aff-rate" type="number" step="0.01" min="0" max="100" value="10"></label>
+          <label>Desired Commission Rate (%) <input id="aff-desired-rate" type="number" step="0.01" min="0" max="100" value="10"></label>
 
           <div style="display:flex;gap:10px;position:sticky;top:0;">
             <button id="aff-save-draft" style="padding:8px 14px;border-radius:8px;border:1px solid #444;background:#222;color:#fff;box-shadow:none;">Save Draft</button>
@@ -2140,7 +2140,7 @@ async function aff_submitApplication(submit){
     },
     links: (document.getElementById('aff-links')?.value || '')
       .split('\n').map(s=>s.trim()).filter(Boolean),
-    desired_rate: Number(document.getElementById('aff-rate')?.value || 0),
+    desired_rate: Number(document.getElementById('aff-desired-rate')?.value || 0),
 
     // >>> Include the captured snapshot so it persists on the row <<<
     stats_snapshot: AFF_SNAPSHOT || null,
