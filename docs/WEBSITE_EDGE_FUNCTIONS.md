@@ -56,6 +56,14 @@ Dashboard is authenticated, but no tokens or credentials were extracted. No paym
 
 ## Confirmed defects and remediation
 
+### TikTok OAuth writer diagnosis
+
+Backend owner independently confirmed from redacted audit history: identity fields were present before disconnect at 02:44:47Z; reconnection at 02:50:36Z saved connected=true and future expiry but left both identity fields blank. Current stats handler rejects missing tiktok_user_id before calling TikTok. This is a persisted OAuth identity omission, not a reason to ask for repeated reconnection.
+
+Website callback `js/oauth-handler.js` maps tiktok to `tiktok-oauth`, invokes `{code,redirect_uri}` with session bearer, and does not write identity columns itself. It currently checks SDK transport failure only before showing Connected; an application-level failure under HTTP 200 would be missed.
+
+Deployed `tiktok-oauth` source retrieval returned UNAVAILABLE. A recovered candidate was located at `C:/Users/jrbwi/Documents/Codex/2026-10-16/task-9/integration-package/desktop-recovered-candidates-2026-10-16/source/tiktok-oauth.txt`, SHA256 `97439167336D51ECF75A2081E65990F68A2ACAA78E4118C0E33743B67967BD73`. This is **not a verified deployed match**. Its lines 102–107 save tokens and connected=true first, without identity; lines 111–121 perform optional best-effort identity lookup and ignore lookup/update failure; lines 170–173 return ok:true even with null tiktok_user_id. That design is consistent with the observed failure. Candidate path/hash and exact code findings were handed to the Supabase owner for safe handler repair. No credentials were extracted, row patched, or OAuth restarted by Website owner.
+
 ### Retest after user reauthorization — 17 October, 13:52 AEDT
 
 User confirmed reconnections complete and authorized testing. Exactly one normal dashboard reload was performed. Independent `function_edge_logs` aggregate from `02:52:15Z` to `02:52:50Z` shows one request per endpoint, excluding OPTIONS:
