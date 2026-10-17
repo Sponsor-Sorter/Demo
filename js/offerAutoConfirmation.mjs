@@ -10,7 +10,7 @@ export function confirmationNoticeModel(info, role) {
   if (!info.due_at || !Number.isFinite(Date.parse(info.due_at))) throw new Error('Confirmation deadline unavailable');
   const due = new Date(info.due_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
   return {
-    text: `Automatic confirmation is scheduled for ${due}. A review may pause confirmation.`,
+    text: `Eligible for automatic confirmation after ${due}; checked daily. A review may pause confirmation.`,
     canRequest: role === 'sponsor',
   };
 }

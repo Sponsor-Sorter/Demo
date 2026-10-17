@@ -1,4 +1,4 @@
-import { mountAutoConfirmationNotice } from './offerAutoConfirmation.mjs?v=20261018-auto-confirm1';
+import { mountAutoConfirmationNotice } from './offerAutoConfirmation.mjs?v=20261018-auto-confirm2';
 import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';

@@ -11,7 +11,7 @@ test('only stage4 unconfirmed offers need a status check',()=>{
 });
 test('server due time supplies notice; sponsor can request review',()=>{
   const model=confirmationNoticeModel({ok:true,waiting:true,due_at:'2026-10-20T22:16:17Z'},'sponsor');
-  assert.equal(model.canRequest,true); assert.match(model.text,/scheduled/);
+  assert.equal(model.canRequest,true); assert.match(model.text,/Eligible for automatic confirmation after/); assert.match(model.text,/checked daily/);
 });
 test('creator sees status without sponsor review action',()=>{
   assert.equal(confirmationNoticeModel({ok:true,waiting:true,due_at:'2026-10-20T22:16:17Z'},'creator').canRequest,false);
