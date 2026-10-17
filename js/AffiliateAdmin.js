@@ -1,4 +1,4 @@
-import { conversionDisplay, affiliateReferralUrl } from './affiliateConversionDisplay.mjs?v=20261017-admin-affiliate1';
+import { conversionDisplay, affiliateReferralUrl, applicationHasSnapshot, usersNeedingAudience } from './affiliateConversionDisplay.mjs?v=20261017-admin-affiliate2';
 // ./js/AffiliateAdmin.js
 //
 // Admin dashboard logic for Affiliates/Partners.
@@ -169,7 +169,7 @@ function numbersFromSnapshot(snap) {
   const firstNum = (root, paths) => {
     for (const p of paths) {
       const v = get(root, p);
-      if (v != null && !isNaN(Number(v))) return Number(v);
+      if (v != null && String(v).trim() && Number.isFinite(Number(v)) && Number(v) >= 0) return Number(v);
     }
     return null;
   };
@@ -256,7 +256,7 @@ function normalizeAdminPayload(payload) {
       const v = p
         .split(".")
         .reduce((a, k) => (a && a[k] != null ? a[k] : undefined), obj);
-      if (v != null && !isNaN(Number(v))) return Number(v);
+      if (v != null && String(v).trim() && Number.isFinite(Number(v)) && Number(v) >= 0) return Number(v);
     }
     return null;
   };
@@ -292,11 +292,13 @@ async function fetchPlatformStatsForUser(user_id) {
     const qs = new URLSearchParams({ user_id }).toString();
     const payload = await affiliateRequest({ base: getFunctionsBaseUrl(),
       path: `affiliate-admin/audience?${qs}`, token });
-    out = normalizeAdminPayload(payload);
+    if (payload.success !== true || !payload.stats || !payload.availability) throw new Error('Audience response unavailable');
+    out = { ...normalizeAdminPayload(payload), observed_at: payload.observed_at || {}, availability: payload.availability || {}, fetched_at: payload.fetched_at }; 
     if (DEBUG_STATS)
       console.debug("[aff-admin] live stats", user_id, payload, out);
   } catch (e) {
-    if (DEBUG_STATS) console.debug("[aff-admin] live stats error", e);
+    out = { unavailable: true };
+    if (DEBUG_STATS) console.debug('Audience data could not be loaded.');
   }
   platformCache.set(user_id, out);
   return out;
@@ -600,7 +602,7 @@ function renderApplicationsTable(
         <td style="vertical-align:top">
           <div><b>${esc(uname)}</b></div>
           ${userStatsBlock(snapNums)}
-          <div style="margin-top:4px;opacity:.9;font-size:.95em">${statsBadgeRow(userRowStats)}</div>
+          <div style="margin-top:4px;opacity:.9;font-size:.95em">${applicationHasSnapshot(a) ? "" : userRowStats.unavailable ? "Current audience unavailable" : `Current audience: ${statsBadgeRow(userRowStats)}${userRowStats.fetched_at ? ` · Checked ${esc(fmtDate(userRowStats.fetched_at))}` : ""}`}</div>
         </td>
 
         <td style="vertical-align:top">${esc(a.partner_type || "affiliate")}</td>
@@ -730,20 +732,10 @@ async function loadApplications() {
 
   const statsPerUser = new Map();
   await Promise.all(
-    userIds.map(async (uid) => {
-      const hasSnap = apps.some(
-        (a) =>
-          a.user_id === uid &&
-          a.stats_snapshot &&
-          Object.keys(a.stats_snapshot || {}).length,
-      );
-      statsPerUser.set(
-        uid,
-        hasSnap ? {} : await fetchPlatformStatsForUser(uid),
-      );
+    usersNeedingAudience(apps).map(async (uid) => {
+      statsPerUser.set(uid, await fetchPlatformStatsForUser(uid));
     }),
   );
-
   renderApplicationsTable(el, apps, usernameMap, statsPerUser, snapNumsPerApp);
 }
 

@@ -26,3 +26,12 @@ export function affiliateReferralUrl(code, origin) {
   url.searchParams.set('ref', String(code));
   return url.href;
 }
+
+export function applicationHasSnapshot(application) {
+  const snapshot = application?.stats_snapshot;
+  return !!snapshot && typeof snapshot === 'object' && !Array.isArray(snapshot) && Object.keys(snapshot).length > 0;
+}
+
+export function usersNeedingAudience(applications) {
+  return [...new Set(applications.filter(application => !applicationHasSnapshot(application)).map(application => application.user_id).filter(Boolean))];
+}

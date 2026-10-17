@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
-import { conversionDisplay, affiliateReferralUrl } from '../js/affiliateConversionDisplay.mjs';
+import { conversionDisplay, affiliateReferralUrl, usersNeedingAudience, applicationHasSnapshot } from '../js/affiliateConversionDisplay.mjs';
 
 test('historical null-amount conversions earn 1, 1.50, 1.50 with their own rates', () => {
   const rows = [10,15,15].map(commission => conversionDisplay({ amount: null, commission }));
@@ -48,4 +48,18 @@ test('View Partner does not silently create a missing referral link', () => {
   const load = source.slice(source.indexOf('async function loadPartner('),source.indexOf('function renderConversions('));
   assert.equal(/const ensured = await ensureReferralLink/.test(load),false);
   assert.match(load,/role="alert">Affiliate totals are unavailable/);
+});
+test('one saved snapshot does not suppress current data for other applications', () => {
+  const applications=[{user_id:'same-user',stats_snapshot:{tt:1}},{user_id:'same-user',stats_snapshot:null},{user_id:'same-user',stats_snapshot:{}},{user_id:'another-user',stats_snapshot:null}];
+  assert.deepEqual(usersNeedingAudience(applications),['same-user','another-user']);
+});
+test('historical applications with snapshots do not request current audience', () => {
+  assert.deepEqual(usersNeedingAudience([{user_id:'historical-user',stats_snapshot:{tt:0}}]),[]);
+  assert.equal(applicationHasSnapshot({stats_snapshot:[]}),false);
+});
+test('audience display separates unavailable/current observations from saved snapshots', () => {
+  assert.match(source,/usersNeedingAudience\(apps\)\.map/);
+  assert.match(source,/applicationHasSnapshot\(a\) \? ""/);
+  assert.match(source,/Current audience unavailable/);
+  assert.match(source,/Checked/);
 });
