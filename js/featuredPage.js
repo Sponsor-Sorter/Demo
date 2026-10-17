@@ -1,4 +1,5 @@
 // ./js/featuredPage.js
+import { requestFeatured, activeFeaturedSlots } from './featuredApi.mjs?v=20261017-featured1';
 import { supabase } from './supabaseClient.js';
 import { injectUserBadge } from './badges.js';
 
@@ -246,16 +247,7 @@ function renderPlatforms(platforms, socialHandles) {
 
 /** Data **/
 async function fetchActiveSlots() {
-  const { data, error } = await supabase
-    .from('featured_slots')
-    .select('slot_index,user_id,label,starts_at,ends_at')
-    .order('slot_index', { ascending: true });
-
-  if (error) {
-    console.warn('featured_slots error:', error);
-    return [];
-  }
-  return (data || []).filter(timeWindowOk);
+  return activeFeaturedSlots(await requestFeatured(), location.origin);
 }
 
 async function fetchUserPublic(userId) {
@@ -280,60 +272,6 @@ async function fetchUserPublic(userId) {
   }
 
   return user;
-}
-
-// Pull the full row once (defensive) to detect a variety of flag names without schema coupling
-async function fetchUserPublicFlags(userId) {
-  const { data, error } = await supabase
-    .from('public_user_directory')
-    .select('*')
-    .eq('user_id', userId)
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    console.warn('users_extended_data flags error:', error);
-    return null;
-  }
-  return data || null;
-}
-
-function hasPublicDashboardFlag(row) {
-  if (!row || typeof row !== 'object') return false;
-
-  // Common/likely flag names we support
-  const candidates = [
-    'public_dashboard_enabled',
-    'public_profile_enabled',
-    'public_share_enabled',
-    'public_enabled',
-    'public_page_enabled',
-    'public_dashboard',
-    'share_profile_publicly',
-    'public_profile',
-    'public_page'
-  ];
-
-  for (const key of candidates) {
-    if (key in row) {
-      const v = row[key];
-      if (typeof v === 'boolean') return v;
-      if (typeof v === 'number') return v === 1;
-      if (typeof v === 'string') {
-        const s = v.trim().toLowerCase();
-        if (['true', 'yes', '1', 'enabled', 'on'].includes(s)) return true;
-      }
-    }
-  }
-
-  // Optional nested structures some implementations use
-  const nested = row.privacy || row.public_settings || null;
-  if (nested && typeof nested === 'object') {
-    const nv = nested.public_dashboard ?? nested.public_profile ?? nested.enabled;
-    return !!nv;
-  }
-
-  return false;
 }
 
 /** Render **/
@@ -372,84 +310,44 @@ function renderUser(user, slot) {
   const redirect = encodeURIComponent(window.location.href);
   const handle   = encodeURIComponent(user.username || '');
   ctaOffer.href  = `./signup.html?intent=message&to=${handle}&redirect=${redirect}`;
-  ctaView.href   = `./finder.html?user=${handle}`;
+  ctaView.href = slot.profile_url;
+  ctaView.textContent = 'View public profile';
 
   // NEW: Public Dashboard button (only if enabled in users_extended_data)
-  ensurePublicDashboardCTA(user).catch((e) => console.warn('public dashboard CTA error:', e));
+  if (ctaPublic) { ctaPublic.href = slot.profile_url; ctaPublic.style.display = ''; }
 }
 
 function renderOther(slots, activeSlotIdx) {
-  otherWrap.innerHTML = '';
-  const items = slots
-    .filter(s => s.slot_index !== activeSlotIdx)
-    .slice(0, 8);
-
-  if (!items.length) {
-    otherWrap.innerHTML = '<div class="muted">No other featured creators right now.</div>';
-    return;
+  otherWrap.replaceChildren();
+  for (const slot of slots.filter(item => item.slot_index !== activeSlotIdx)) {
+    const link = document.createElement('a');
+    link.className = 'mini-item';
+    link.href = `./featured.html?slot=${encodeURIComponent(slot.slot_index)}`;
+    link.textContent = `@${slot.profile.username}`;
+    otherWrap.append(link);
   }
-
-  for (const s of items) {
-    const row = document.createElement('div');
-    row.className = 'mini-item';
-    row.addEventListener('click', () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('slot', s.slot_index);
-      window.location.href = url.toString();
-    });
-
-    const img = document.createElement('img');
-    img.src = FALLBACK_IMG;
-    const name = document.createElement('div');
-    name.textContent = `Slot ${s.slot_index}`;
-
-    row.appendChild(img);
-    row.appendChild(name);
-    otherWrap.appendChild(row);
-
-    fetchUserPublic(s.user_id).then((u) => {
-      if (!u) return;
-      name.textContent = u.username ? `@${u.username}` : `Slot ${s.slot_index}`;
-      img.src = imgUrlFromProfilePic(u.profile_pic);
-    });
-  }
+  if (!otherWrap.children.length) otherWrap.textContent = 'No other featured accounts right now.';
 }
 
-// Create/show the Public Dashboard CTA if the user has it enabled
-async function ensurePublicDashboardCTA(user) {
-  // Need both a username (slug) and user_id (for flags)
-  if (!user?.user_id || !user?.username) {
-    // Hide if pre-existing element
-    const pre = $('cta-public');
-    if (pre) pre.style.display = 'none';
+async function reconcileFeaturedReturn() {
+  const session_id = new URL(location.href).searchParams.get('session_id');
+  if (!session_id) return;
+  const status = document.createElement('p');
+  status.setAttribute('role', 'status');
+  document.querySelector('main').prepend(status);
+  const { data } = await supabase.auth.getSession();
+  if (!data?.session?.access_token) {
+    status.textContent = 'Sign in with the account used at checkout, then return here to confirm your featured placement.';
     return;
   }
-
-  const row = await fetchUserPublicFlags(user.user_id);
-  const enabled = hasPublicDashboardFlag(row);
-
-  // Get or create the button
-  let btn = $('cta-public') || ctaPublic;
-  if (!btn) {
-    btn = document.createElement('a');
-    btn.id = 'cta-public';
-    // Try to inherit styling from existing CTA buttons
-    btn.className = (ctaView?.className || ctaOffer?.className || '').trim();
-    btn.textContent = 'Public Dashboard';
-    btn.style.display = 'none';
-    const parent =
-      (ctaView && ctaView.parentNode) ||
-      (ctaOffer && ctaOffer.parentNode) ||
-      profileCard ||
-      document.body;
-    parent.appendChild(btn);
-  }
-
-  if (enabled) {
-    btn.href = `${PUBLIC_DASHBOARD_BASE}${encodeURIComponent(user.username)}`;
-    btn.style.display = '';
-  } else {
-    btn.style.display = 'none';
+  status.textContent = 'Confirming your featured placement…';
+  try {
+    await requestFeatured({ token: data.session.access_token, body: { action: 'redeem', session_id } });
+    status.textContent = 'Your featured placement is confirmed.';
+    const url = new URL(location.href); url.searchParams.delete('session_id');
+    history.replaceState(null, '', url);
+  } catch {
+    status.textContent = 'Your placement could not be confirmed here. Keep your receipt and contact support before paying again.';
   }
 }
 
@@ -457,6 +355,7 @@ async function ensurePublicDashboardCTA(user) {
 (async function init() {
   try {
     heroSub.textContent = 'Loading featured profile…';
+    await reconcileFeaturedReturn();
     const slots = await fetchActiveSlots();
 
     if (!slots.length) {
@@ -471,12 +370,20 @@ async function ensurePublicDashboardCTA(user) {
     if (slotIdx) {
       slot = slots.find(s => s.slot_index === slotIdx) || null;
     }
+    if (slotIdx && !slot) {
+      renderUser(null, null);
+      emptyState.textContent = 'This featured placement is no longer active.';
+      heroSub.textContent = 'Featured placement unavailable.';
+      renderOther(slots, null);
+      return;
+    }
     if (!slot) {
-      slot = slots[Math.floor(Math.random() * slots.length)];
+      slot = slots[0];
       slotIdx = slot.slot_index;
     }
 
-    const user = await fetchUserPublic(slot.user_id);
+    const publicDetails = await fetchUserPublic(slot.user_id);
+    const user = { ...(publicDetails || {}), ...slot.profile, user_id: slot.user_id };
     renderUser(user, slot);
     renderOther(slots, slotIdx);
     heroSub.textContent = 'Click “Message/Offer” to work with them.';

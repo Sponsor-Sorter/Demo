@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
 import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate1';
 import { getActiveUser } from './impersonationHelper.js';
 import { famBotModerateWithModal } from './FamBot.js';
@@ -2616,71 +2617,43 @@ function ensurePremiumModal(){
   document.getElementById('premium-cancel')?.addEventListener('click', () => closeModal('premium-modal'));
   document.getElementById('premium-refresh')?.addEventListener('click', loadMyFeaturedSlots);
 
-  // Buy button
-  document.getElementById('buy-featured-star')?.addEventListener('click', async () => {
+  // One authenticated checkout request; the server sets price, owner and return URL.
+  const buy = document.getElementById('buy-featured-star');
+  buy.disabled = true;
+  buy.addEventListener('click', async () => {
+    if (buy.disabled) return;
+    buy.disabled = true;
     const status = document.getElementById('premium-status');
+    status.textContent = 'Creating checkout…';
     try {
-      status.textContent = 'Creating checkout…';
-
-      const successUrl = new URL('./payment-success.html?premium=success', location.href).href;
-      const cancelUrl  = new URL('./settings.html?premium=cancel',  location.href).href;
-
-      const payload = {
-        mode: 'payment',
-        price_id: FEATURED_STAR_PRICE_ID,
-        quantity: 1,
-        amount: 10, // your Edge Function requires amount; keep in sync with display
-        metadata: { product: 'featured_star' },
-        success_url: successUrl,
-        cancel_url: cancelUrl
-      };
-
-      let checkoutUrl;
-
-      // Try invoke first
-      try {
-        if (supabase.functions?.invoke) {
-          const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
-          if (error) throw error;
-          checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
-        }
-      } catch (e) {
-        console.warn('invoke failed; falling back to fetch()', e);
-      }
-
-      // Fallback: direct fetch
-      if (!checkoutUrl) {
-        const jwt = await prem_getJwt();
-        const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}) },
-          body: JSON.stringify(payload)
-        });
-        const json = await resp.json().catch(() => ({}));
-        if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
-        checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
-      }
-
-      if (!checkoutUrl) throw new Error('No checkout URL returned');
-
-      // Mark intent locally (optional)
-      localStorage.setItem('premiumCheckout', 'featured_star');
-
-      status.textContent = 'Redirecting to Stripe…';
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      console.error(err);
-      if (status) status.textContent = 'Could not create checkout. Please try again.';
-      alert('Sorry, we could not start checkout. If this keeps happening, contact support.');
+      const config = await requestFeatured({ action: 'config' });
+      if (!config.checkout_available) throw new Error('Unavailable');
+      const result = await requestFeatured({ token: await prem_getJwt(), body: { action: 'checkout' } });
+      const url = new URL(result.url);
+      if (url.protocol !== 'https:' || url.hostname !== 'checkout.stripe.com') throw new Error('Invalid checkout destination');
+      status.textContent = 'Opening secure checkout…';
+      location.href = url.href;
+    } catch {
+      status.textContent = 'Featured checkout is unavailable. If you already paid, keep your receipt and contact support before trying again.';
+      buy.disabled = false;
     }
   });
+
 }
 
 // --- Wire dropdown item ---
 document.getElementById('open-premium-settings')?.addEventListener('click', async () => {
   ensurePremiumModal();
   openModal('premium-modal');               // your existing helper
-  await loadMyFeaturedSlots();              // <-- populate rows on open
+  const buy = document.getElementById('buy-featured-star');
+  const status = document.getElementById('premium-status');
+  buy.disabled = true;
+  try {
+    const config = await requestFeatured({ action: 'config' });
+    buy.disabled = !(config.checkout_available && config.amount_cents === 1000 && config.currency === 'usd');
+    status.textContent = buy.disabled ? 'Featured checkout is temporarily unavailable.' : '';
+  } catch { status.textContent = 'Featured checkout is temporarily unavailable.'; }
+  await loadMyFeaturedSlots();
 });
 
 // --- Settings dropdown → open full settings page ---

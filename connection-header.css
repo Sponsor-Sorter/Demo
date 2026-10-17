@@ -34,8 +34,12 @@
 .connection-header .navii {
   background-image: none;
 }
-.connection-grid .grid-light {
-  fill: #a6efff;
+.connection-grid .grid-travelling-line {
+  fill: none;
+  stroke: #a6efff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   filter: drop-shadow(0 0 2px #55d7ff);
 }
 .connection-grid .grid-connection-pulse {
@@ -43,6 +47,24 @@
   filter: drop-shadow(0 0 2px #b6f4ff);
 }
 .connection-grid[hidden] { display: none; }
+.featured-accounts {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 6px 14px; padding: 6px 12px;
+  background: #0b1018d9; color: #d9e4ef;
+}
+.featured-accounts-title { font-size: .8rem; }
+.featured-accounts ul {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px;
+  list-style: none; margin: 0; padding: 0; max-height: 100px; overflow: auto;
+}
+.featured-accounts .featured-account-star {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
+  padding: 4px 8px; color: #ffe38b; text-decoration: none;
+  font-size: .85rem; border-radius: 6px;
+}
+.featured-account-star > span:first-child { font-size: 1.3rem; text-shadow: 0 0 8px #f6c62e; }
+.featured-accounts .featured-account-star:hover { background: #30303d; }
+.featured-accounts .featured-account-star:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .admin-page .admin-site-header.connection-header {
   width: 100%;
   max-width: none;

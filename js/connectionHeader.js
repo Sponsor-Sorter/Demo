@@ -1,5 +1,8 @@
 import { connectionGridRoutes as routes } from './connectionGridRoutes.js?v=20261011-grid4';
 
+import { updateGridTrail } from './gridLineTrail.mjs?v=20261017-lines1';
+import './headerFeaturedAccounts.mjs?v=20261017-featured1';
+
 // Build junctions from the paths traced over the original grid artwork.
 const junctions = new Map();
 function junction(x, y) {
@@ -23,7 +26,7 @@ const pick = items => items[Math.floor(Math.random() * items.length)];
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 const stylesheet = document.createElement('link');
 stylesheet.rel = 'stylesheet';
-stylesheet.href = new URL('../connection-header.css?v=20261012-nav-cells3', import.meta.url).href;
+stylesheet.href = new URL('../connection-header.css?v=20261017-lines1', import.meta.url).href;
 document.head.append(stylesheet);
 
 for (const header of document.querySelectorAll('header.navbar1, header.header, header.admin-site-header')) {
@@ -39,14 +42,16 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
   layer.setAttribute('aria-hidden', 'true');
   layer.append(svg);
   header.prepend(layer);
-  const circle = className => {
-    const element = document.createElementNS(svg.namespaceURI, 'circle');
+  const shape = (className, tag = 'circle') => {
+    const element = document.createElementNS(svg.namespaceURI, tag);
     element.setAttribute('class', className);
     svg.append(element);
     return element;
   };
-  const lights = Array.from({ length: 84 }, () => ({ element: circle('grid-light') }));
+  const lights = Array.from({ length: 28 }, () => ({ element: shape('grid-travelling-line', 'path') }));
   const pulses = [];
+  svg.dataset.connections = '0';
+  svg.dataset.connectionRestarts = '0';
   let visibleNodes = nodes;
   function resize() {
     const { width, height } = header.getBoundingClientRect();
@@ -72,13 +77,13 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
     light.node = best;
     light.previous = null;
     light.x = light.node.x; light.y = light.node.y;
-    light.speed = 4 + Math.random() * 5;
+    light.speed = 48 + Math.random() * 42;
     light.waiting = false;
     light.grace = 0.8 + Math.random();
     turn(light);
-    light.element.setAttribute('r', '1.7');
-    light.element.setAttribute('cx', light.x);
-    light.element.setAttribute('cy', light.y);
+    light.trail = [{ x: light.x, y: light.y }];
+    light.life = 7 + Math.random() * 7;
+    light.element.setAttribute('d', updateGridTrail(light.trail, light.x, light.y));
     light.element.style.opacity = '0';
   }
   resize();
@@ -93,6 +98,8 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
     last = now;
     for (const light of lights) {
       if (light.waiting) continue;
+      light.life -= dt;
+      if (light.life <= 0) { spawn(light); continue; }
       light.grace = Math.max(0, light.grace - dt);
       let remaining = light.speed * dt;
       while (remaining > 0) {
@@ -101,6 +108,7 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
         if (distance <= remaining) {
           light.x = light.target.x; light.y = light.target.y;
           remaining -= distance;
+          updateGridTrail(light.trail, light.x, light.y);
           light.previous = light.node; light.node = light.target;
           turn(light);
         } else {
@@ -108,11 +116,10 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
           remaining = 0;
         }
       }
-      light.element.setAttribute('cx', light.x);
-      light.element.setAttribute('cy', light.y);
+      light.element.setAttribute('d', updateGridTrail(light.trail, light.x, light.y));
       light.element.style.opacity = String(Math.min(0.95, 1.8 - light.grace));
     }
-    // Spatial buckets keep collision checks small even with 84 lights.
+    // Spatial buckets keep collision checks small for the bounded line travellers.
     const buckets = new Map();
     for (const light of lights) {
       if (light.waiting || light.grace > 0) continue;
@@ -124,9 +131,10 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
         }
       }
       if (partner) {
+        svg.dataset.connections = String(Number(svg.dataset.connections) + 1);
         light.waiting = partner.waiting = true;
         light.element.style.opacity = partner.element.style.opacity = '0';
-        const element = circle('grid-connection-pulse');
+        const element = shape('grid-connection-pulse');
         element.setAttribute('cx', (light.x + partner.x) / 2);
         element.setAttribute('cy', (light.y + partner.y) / 2);
         pulses.push({ element, age: 0, pair: [light, partner] });
@@ -144,6 +152,7 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
       if (pulse.age >= 1) {
         pulse.element.remove();
         pulse.pair.forEach(spawn);
+        svg.dataset.connectionRestarts = String(Number(svg.dataset.connectionRestarts) + 2);
         pulses.splice(i, 1);
       }
     }
