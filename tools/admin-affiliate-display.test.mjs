@@ -63,3 +63,9 @@ test('audience display separates unavailable/current observations from saved sna
   assert.match(source,/Current audience unavailable/);
   assert.match(source,/Checked/);
 });
+test('affiliate layout can shrink and stack without fixed inline columns', () => {
+  assert.match(source,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(source,/@media \(max-width:1000px\)/);
+  assert.match(source,/aa-card\{ min-width:0; max-width:100%; overflow-x:auto/);
+  assert.doesNotMatch(source,/<div class="aa-grid" style=/);
+});

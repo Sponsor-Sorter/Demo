@@ -76,6 +76,11 @@ function ensureStyles() {
   const st = document.createElement("style");
   st.id = "aa-styles";
   st.textContent = `
+    .aa-grid{ display:grid; gap:16px; grid-template-columns:repeat(2,minmax(0,1fr)); min-width:0; }
+    .aa-grid > .aa-card{ min-width:0; max-width:100%; overflow-x:auto; }
+    .aa-grid .aa-inline input{ min-width:0; max-width:100%; }
+    #aa-details{ min-width:0; overflow-wrap:anywhere; }
+    @media (max-width:1000px){ .aa-grid{ grid-template-columns:minmax(0,1fr); } }
     .aa-links-wrap{ display:flex; justify-content:center; margin-top:8px; }
     .aa-icons-grid{ display:grid; grid-template-columns: repeat(8, 22px); gap:8px; width:max-content; justify-content:center; align-content:start; }
     @media (max-width:1200px){ .aa-icons-grid{ grid-template-columns: repeat(8, 22px); } }
@@ -382,7 +387,7 @@ function iconsGridHtml(links) {
 function renderShell(root) {
   ensureStyles();
   root.innerHTML = `
-    <div class="aa-grid" style="display:grid;gap:16px;grid-template-columns:1fr 1fr;">
+    <div class="aa-grid">
       <section class="aa-card" style="grid-column:1/-1;padding:12px;border:1px solid #444;border-radius:10px;">
         <h3 style="margin-top:0;">Affiliate Applications (Admin Review)</h3>
         <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
