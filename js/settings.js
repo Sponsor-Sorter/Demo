@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
 import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
 import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
 import { getActiveUser } from './impersonationHelper.js';
@@ -463,77 +464,33 @@ async function revokePlatforms(platform, tokenHints = {}) {
   });
 
   // --- Subscription & Free Month Rewards Modal Logic ---
-    // Stripe Price ID for the Pro monthly subscription (replace with your real ID)
-  const PRO_MONTHLY_PRICE_ID = 'price_1RTjwk2eA1800fRNzvisgTuO';
-
-    // Shared Pro upgrade helper so other parts of the app (e.g. Creator Groups)
-  // can start the same Stripe checkout flow.
-  window.startProUpgradeFlow = async function startProUpgradeFlow(source = 'general') {
+  let upgradeInProgress = false;
+  window.startProUpgradeFlow = async function startProUpgradeFlow() {
+    if (upgradeInProgress) return;
     const upgradeBtn = document.getElementById('upgrade-to-pro-btn');
     const originalText = upgradeBtn?.textContent;
-
-    if (upgradeBtn) {
-      upgradeBtn.disabled = true;
-      upgradeBtn.textContent = 'Redirecting…';
-    }
-
+    upgradeInProgress = true;
+    let requestOwnerId;
+    if (upgradeBtn) { upgradeBtn.disabled = true; upgradeBtn.textContent = 'Redirecting…'; }
     try {
-      const successUrl = new URL(`./payment-success.html?plan=pro&from=${encodeURIComponent(source)}`, location.href).href;
-      const cancelUrl  = new URL(`./settings.html?plan=pro_cancel&from=${encodeURIComponent(source)}`, location.href).href;
-
-      const payload = {
-        mode: 'subscription',
-        price_id: PRO_MONTHLY_PRICE_ID,
-        quantity: 1,
-        metadata: { product: 'pro_subscription', source },
-        success_url: successUrl,
-        cancel_url: cancelUrl
-      };
-
-      let checkoutUrl;
-
-      // Try Supabase functions.invoke first
-      try {
-        if (supabase.functions?.invoke) {
-          const { data, error } = await supabase.functions.invoke('stripe-checkout', { body: payload });
-          if (error) throw error;
-          checkoutUrl = data?.url || data?.session_url || data?.checkout_url;
-        }
-      } catch (err) {
-        console.warn('invoke stripe-checkout (pro) failed; falling back to fetch()', err);
+      if ((await getActiveUser())?.__impersonated) throw Object.assign(new Error('Stop impersonation to manage billing.'), { code: 'IMPERSONATION_ACTIVE' });
+      const { data: auth } = await supabase.auth.getSession();
+      requestOwnerId = auth?.session?.user?.id;
+      const request_id = checkoutRequestId(sessionStorage, requestOwnerId, () => crypto.randomUUID());
+      const frontendBaseUrl = location.hostname === 'sponsor-sorter.github.io'
+        ? 'https://sponsor-sorter.github.io/Demo' : location.origin;
+      const result = await subscriptionBilling(supabase, 'checkout', { request_id, frontendBaseUrl });
+      location.assign(stripeBillingUrl(result.checkoutUrl, 'checkout'));
+    } catch (error) {
+      if (error.code === 'CHECKOUT_EXPIRED' && requestOwnerId) {
+        try { sessionStorage.removeItem(`subscription-checkout:${requestOwnerId}`); } catch {}
       }
-
-      // Fallback: direct fetch to Functions endpoint
-      if (!checkoutUrl) {
-        const jwt = await prem_getJwt();              // already defined later in settings.js
-        const resp = await fetch(`${prem_functionsBase()}/stripe-checkout`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(jwt ? { Authorization: `Bearer ${jwt}` } : {})
-          },
-          body: JSON.stringify(payload)
-        });
-        const json = await resp.json().catch(() => ({}));
-        if (!resp.ok) throw new Error(json?.error || 'Checkout create failed');
-        checkoutUrl = json?.url || json?.session_url || json?.checkout_url;
-      }
-
-      if (!checkoutUrl) throw new Error('No checkout URL returned from stripe-checkout');
-
-      // Send user to Stripe Checkout
-      location.href = checkoutUrl;
-    } catch (err) {
-      console.error('Error starting Pro upgrade checkout:', err);
-      if (upgradeBtn) {
-        upgradeBtn.disabled = false;
-        upgradeBtn.textContent = originalText || 'Upgrade to Pro';
-      } else {
-        alert('There was a problem starting your Pro upgrade. Please try again.');
-      }
+      alert(billingErrorMessage(error));
+    } finally {
+      upgradeInProgress = false;
+      if (upgradeBtn) { upgradeBtn.disabled = false; upgradeBtn.textContent = originalText || 'Upgrade to Pro'; }
     }
   };
-
 
   document.getElementById('show-subscription-modal-btn')?.addEventListener('click', async () => {
     const modal = document.getElementById('subscription-modal');
@@ -547,6 +504,11 @@ async function revokePlatforms(platform, tokenHints = {}) {
       return;
     }
 
+    if (user.__impersonated) {
+      if (detailsDiv) detailsDiv.textContent = 'Stop impersonation to manage your own subscription.';
+      return;
+    }
+
       const planTypeRaw = user.planType || 'free';
   const isFreePlan = String(planTypeRaw).toLowerCase() === 'free';
 
@@ -555,89 +517,17 @@ async function revokePlatforms(platform, tokenHints = {}) {
 
   let stripeBlock = '';
   let subDetailsBlock = '';
-  let manageLink = '';
   let planCtaBlock = '';
 
-    if (user.stripe_customer_id) {
-      manageLink = `
-        <a href="https://dashboard.stripe.com/test/customers/${user.stripe_customer_id}" 
-          target="_blank" 
-          style="display:inline-block;margin-top:5px;margin-left:4px;background:#36a2eb;color:#fff;padding:5px 14px;border-radius:10px;text-decoration:none;font-size:1em;">
-          Manage Subscription
-        </a>`;
-
-      // Try to get their current subscription status via a backend function
-      try {
-        const jwt = (await supabase.auth.getSession()).data.session?.access_token;
-        const resp = await fetch('https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe_subscription_info', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-          },
-          body: JSON.stringify({ customer_id: user.stripe_customer_id })
-        });
-        if (resp.ok) {
-          const data = await resp.json();
-          if (data.subscription) {
-            const sub = data.subscription;
-
-            // Plan name
-            let planName = sub.plan?.nickname || sub.plan?.id || "N/A";
-            // Period
-            let periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000) : null;
-            let periodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000) : null;
-
-            let freeMonthMsg = "";
-            if (sub.discount && (sub.discount.id === "1MonthFreeSS2025" || (sub.discount.name && sub.discount.name.includes("free month")))) {
-              freeMonthMsg = `
-                <div style="margin-bottom:7px;font-size:1.04em;color:#ffd700;">
-                  <b>Next Month: </b> <span style="color:#32e232;">FREE (Referral Applied)</span>
-                </div>
-              `;
-            }
-            // Discount text
-            let couponText = "";
-            if (sub.discount?.percent_off) couponText = ` <span style="color:#ffd700;">(${sub.discount.percent_off}% off)</span>`;
-            if (sub.discount?.amount_off)  couponText = ` <span style="color:#ffd700;">($${(sub.discount.amount_off/100).toFixed(2)} off)</span>`;
-            subDetailsBlock = `
-              ${freeMonthMsg}
-              <div style="margin-bottom:7px;font-size:1em;color:white;">
-                <b>Status:</b> ${sub.status}
-                <span style="margin-left:18px;"><b>Renews:</b> ${periodEnd ? periodEnd.toLocaleDateString() : "N/A"}</span>
-              </div>
-              <div style="margin-bottom:7px;font-size:1em;">
-                <b>Plan:</b> <span style="color:#36a2eb;">${planName}${couponText}</span>
-              </div>
-              <div style="margin-bottom:7px;font-size:0.99em;color:#bbb;">
-                <b>Period:</b>
-                ${periodStart ? periodStart.toLocaleDateString() : "N/A"}
-                &rarr;
-                ${periodEnd ? periodEnd.toLocaleDateString() : "N/A"}
-              </div>
-            `;
-          }
-          else {
-            subDetailsBlock = `<div style="color:#f88;font-size:1em;">No active subscription found.</div>`;
-          }
-        } else {
-          subDetailsBlock = `<div style="color:#e93;font-size:1em;">Could not load subscription details.</div>`;
-        }
-      } catch (err) {
-        subDetailsBlock = `<div style="color:#e93;font-size:1em;">Error loading subscription info.</div>`;
-      }
-      stripeBlock = `
-        <div style="margin-bottom:16px;display:flex;align-items:center;">
-          <span style="font-size:0.98em;margin-right:8px;color:white">Your Stripe Customer ID:</span>
-          <span style="background:#222;color:#eee;font-family:monospace;padding:2.5px 12px 2.5px 12px;border-radius:14px;font-size:0.99em;letter-spacing:.01em;">
-            ${user.stripe_customer_id}
-          </span>
-          ${manageLink}
-        </div>
-        ${subDetailsBlock}
-      `;
-    } else {
-      stripeBlock = `<div style="margin-bottom:14px;font-size:1em;color:#888;">No linked Stripe subscription found.</div>`;
+    try {
+      const info = await subscriptionBilling(supabase, 'status');
+      subDetailsBlock = subscriptionStatusText(info);
+      // Fixed markup only; provider content is assigned through textContent below.
+      stripeBlock = '<p id="subscription-status-text" role="status"></p>';
+      if (info.customer_linked) stripeBlock += '<button id="manage-subscription-btn" type="button" style="min-height:44px">Manage Subscription</button><p id="subscription-manage-status" role="status"></p>';
+    } catch (error) {
+      subDetailsBlock = billingErrorMessage(error);
+      stripeBlock = '<p id="subscription-status-text" role="status"></p>';
     }
 
       // Build plan CTA (Free vs Pro)
@@ -721,6 +611,21 @@ async function revokePlatforms(platform, tokenHints = {}) {
     <hr style="margin:10px 0 18px 0;">
     <div>${freeMonthBlock}</div>
   `;
+  const subscriptionText = document.getElementById('subscription-status-text');
+  if (subscriptionText) subscriptionText.textContent = subDetailsBlock;
+  document.getElementById('manage-subscription-btn')?.addEventListener('click', async event => {
+    const button = event.currentTarget;
+    if (button.disabled) return;
+    button.disabled = true;
+    const status = document.getElementById('subscription-manage-status');
+    if (status) status.textContent = 'Opening subscription management…';
+    try {
+      const result = await subscriptionBilling(supabase, 'portal');
+      location.assign(stripeBillingUrl(result.url, 'portal'));
+    } catch (error) {
+      if (status) status.textContent = billingErrorMessage(error);
+    } finally { button.disabled = false; }
+  });
 
    // Upgrade-to-Pro button (Free plan only)
   const upgradeBtn = document.getElementById('upgrade-to-pro-btn');

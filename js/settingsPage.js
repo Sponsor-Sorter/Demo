@@ -15,6 +15,7 @@
 //  - Proxies the nice buttons on this page to the hidden hooks that settings.js already uses.
 
 import { supabase } from './supabaseClient.js';
+import { subscriptionBilling, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
 import { famBotModerateWithModal } from './FamBot.js';
 import { getActiveUser } from './impersonationHelper.js';
 
@@ -403,70 +404,19 @@ async function populateReferralsAndSubscription(user) {
       }
     }
 
-    // ---- Subscription summary (Stripe) ----
-    if (subRow) {
-      if (user.stripe_customer_id) {
-        subRow.textContent = 'Subscription: Checking Stripe subscription…';
-        subRow.style.color = '#bbb';
-
-        try {
-          const sessionRes = await supabase.auth.getSession();
-          const jwt = sessionRes?.data?.session?.access_token;
-
-          if (!jwt) {
-            subRow.textContent =
-              'Subscription: Unable to load subscription (missing session).';
-            subRow.style.color = '#e93';
-          } else {
-            const resp = await fetch(
-              'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/stripe_subscription_info',
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${jwt}`,
-                },
-                body: JSON.stringify({ customer_id: user.stripe_customer_id }),
-              }
-            );
-
-            if (resp.ok) {
-              const data = await resp.json();
-              if (data.subscription) {
-                const sub = data.subscription;
-                const planName = sub.plan?.nickname || sub.plan?.id || '';
-                const periodEnd = sub.current_period_end
-                  ? new Date(sub.current_period_end * 1000)
-                  : null;
-                const when = periodEnd
-                  ? periodEnd.toLocaleDateString()
-                  : 'N/A';
-
-                subRow.textContent = `Subscription: Active${
-                  planName ? ` – ${planName}` : ''
-                } (next billing ${when})`;
-                subRow.style.color = '#7CFFA1';
-              } else {
-                subRow.textContent =
-                  'Subscription: No active Stripe subscription found.';
-                subRow.style.color = '#ffd062';
-              }
-            } else {
-              subRow.textContent =
-                'Subscription: Could not load subscription details.';
-              subRow.style.color = '#e93';
-            }
-          }
-        } catch (err) {
-          console.error('Error loading Stripe subscription info:', err);
-          subRow.textContent =
-            'Subscription: Error loading subscription info.';
-          subRow.style.color = '#e93';
-        }
-      } else {
-        subRow.textContent =
-          'Subscription: No Stripe subscription linked yet.';
-        subRow.style.color = '#ffd062';
+    // ---- Subscription summary: backend resolves the signed-in billing owner ----
+    if (subRow && user.__impersonated) {
+      subRow.textContent = 'Stop impersonation to view your own subscription.';
+    } else if (subRow) {
+      subRow.textContent = 'Subscription: Checking Stripe subscription…';
+      subRow.style.color = '#bbb';
+      try {
+        const info = await subscriptionBilling(supabase, 'status');
+        subRow.textContent = subscriptionStatusText(info);
+        subRow.style.color = '#ddd';
+      } catch (error) {
+        subRow.textContent = billingErrorMessage(error);
+        subRow.style.color = '#e93';
       }
     }
 
@@ -1742,4 +1692,9 @@ addEventListener('DOMContentLoaded', async () => {
       document.getElementById('open-security-settings')?.click();
     });
   }
+});
+
+window.addEventListener('subscription-billing-updated', async () => {
+  const user = await getActiveUser(true);
+  await populateReferralsAndSubscription(user);
 });
