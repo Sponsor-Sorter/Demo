@@ -293,7 +293,7 @@ async function fetchPlatformStatsForUser(user_id) {
     const payload = await affiliateRequest({ base: getFunctionsBaseUrl(),
       path: `affiliate-admin/audience?${qs}`, token });
     if (payload.success !== true || !payload.stats || !payload.availability) throw new Error('Audience response unavailable');
-    out = { ...normalizeAdminPayload(payload), observed_at: payload.observed_at || {}, availability: payload.availability || {}, fetched_at: payload.fetched_at }; 
+    out = { ...normalizeAdminPayload(payload), observed_at: payload.observed_at || {}, availability: payload.availability || {}, fetched_at: payload.fetched_at };
     if (DEBUG_STATS)
       console.debug("[aff-admin] live stats", user_id, payload, out);
   } catch (e) {
