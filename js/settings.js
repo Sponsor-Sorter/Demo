@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate1';
 import { getActiveUser } from './impersonationHelper.js';
 import { famBotModerateWithModal } from './FamBot.js';
 import { initTwoFASettings } from './twofa.js';
@@ -2152,14 +2153,9 @@ async function aff_submitApplication(submit){
   msg.textContent = submit ? 'Submitting…' : 'Saving draft…';
 
   try {
-    const resp = await fetch(`${aff_functionsBase()}/affiliate-apply`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${await aff_getJwt()}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      mode: 'cors',
-    });
-    const json = await resp.json().catch(()=>({ ok:false, error:'Bad JSON' }));
-    if (!json.ok) throw new Error(json.error || 'Unknown error');
+    const json = await affiliateRequest({ base: aff_functionsBase(), path: 'affiliate/applications',
+      token: await aff_getJwt(), method: 'POST', body });
+    if (json.ok !== true) throw new Error('Application request failed');
 
     msg.style.color = '#21d32e';
     msg.textContent = submit ? 'Application submitted!' : 'Draft saved.';

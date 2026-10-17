@@ -13,6 +13,8 @@
 //
 // HTML container: <div id="admin-affiliate-section"></div>
 
+import { affiliateRequest } from "./affiliateRequest.mjs?v=20261017-affiliate1";
+
 import { supabase } from "./supabaseClient.js";
 import { notifyOfferUpdate } from "./alerts.js?notifications=20261012brand6";
 
@@ -41,22 +43,14 @@ function getFunctionsBaseUrl() {
   return supabase.functionsUrl || `${location.origin}/functions/v1`;
 }
 async function callFunction(name, { method = "POST", query = "", body } = {}) {
-  const token = await getAccessToken();
-  const url = `${getFunctionsBaseUrl()}/${name}${query ? `?${query}` : ""}`;
-  const res = await fetch(url, {
-    method,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
   try {
-    return await res.json();
-  } catch {
-    return { ok: false, error: `Bad JSON from ${name}` };
+    return await affiliateRequest({ base: getFunctionsBaseUrl(),
+      path: `${name}${query ? `?${query}` : ""}`, token: await getAccessToken(), method, body });
+  } catch (error) {
+    return { ok: false, error: error.message || 'Affiliate request failed.' };
   }
 }
+
 function esc(v) {
   if (v == null) return "";
   return String(v)
@@ -138,55 +132,17 @@ async function ensureReferralLink({
   preferred_code,
   allow_override = false,
 }) {
-  const body = {
-    user_id,
-    partner_id,
-    preferred_code,
-    desired_code: preferred_code,
-    requested_code: preferred_code,
-    ref: preferred_code,
-    slug: preferred_code,
-    code: preferred_code,
-    allow_override,
-    overwrite: allow_override,
-    force: allow_override,
-  };
-  const res = await callFunction("affiliate-ensure-referral-link", { body });
-  if (DEBUG_STATS) console.debug("[aff-admin] ensure-referral-link raw:", res);
-  if (!res || res.ok === false) return null;
+  const res = await callFunction("affiliate-admin/referral-link", {
+    body: { user_id, partner_id, code: preferred_code || undefined, allow_override },
+  });
+  if (!res || res.ok !== true) return null;
   return parseEnsureLinkResponse(res);
 }
-/** Try to set/rename the code to an exact value. Uses an admin function if it exists,
- *  and falls back to ensureReferralLink with override flags. */
 async function setReferralCode({ user_id, partner_id, code }) {
   const desired = slugifyCode(code);
   if (!desired) return { ok: false, error: "empty code" };
-
-  // 1) If you have a dedicated admin function, try that first.
-  try {
-    const res = await callFunction("affiliate-set-referral-code", {
-      body: { user_id, partner_id, code: desired },
-    });
-    if (res?.ok && (res.link || res.referral_code)) {
-      const link = normalizeReferralRow(res.link) || {
-        referral_code: res.referral_code,
-      };
-      return { ok: true, link };
-    }
-  } catch (e) {
-    /* ignore and fall back */
-  }
-
-  // 2) Fall back to ensure with override-ish knobs.
-  const ensured = await ensureReferralLink({
-    user_id,
-    partner_id,
-    preferred_code: desired,
-    allow_override: true,
-  });
-  if (ensured?.referral_code) return { ok: true, link: ensured };
-
-  return { ok: false, error: "Could not set referral code" };
+  const link = await ensureReferralLink({ user_id, partner_id, preferred_code: desired, allow_override: true });
+  return link ? { ok: true, link } : { ok: false, error: "Could not set referral code" };
 }
 
 /* =========================
@@ -332,12 +288,9 @@ async function fetchPlatformStatsForUser(user_id) {
   let out = {};
   try {
     const token = await getAccessToken();
-    const qs = new URLSearchParams({ user_id, uid: user_id }).toString();
-    const url = `${getFunctionsBaseUrl()}/affiliate-admin-get-stats?${qs}`;
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const payload = await res.json();
+    const qs = new URLSearchParams({ user_id }).toString();
+    const payload = await affiliateRequest({ base: getFunctionsBaseUrl(),
+      path: `affiliate-admin/audience?${qs}`, token });
     out = normalizeAdminPayload(payload);
     if (DEBUG_STATS)
       console.debug("[aff-admin] live stats", user_id, payload, out);
@@ -985,11 +938,11 @@ async function loadPartner(partnerId) {
       (cb) => cb.value,
     );
     if (!ids.length) return uiToast("Select at least one conversion.");
-    const res = await callFunction("affiliate-mark-paid", {
+    const res = await callFunction("affiliate-admin/conversions/mark-paid", {
       body: { conversion_ids: ids },
     });
     if (res?.ok) {
-      uiToast(`Marked ${ids.length} conversion(s) as paid.`);
+      uiToast(`Marked ${res.updated_count ?? 0} conversion(s) as paid.`);
       await loadPartner(partnerId);
     } else {
       uiToast(`Error: ${res?.message || res?.error || "Unknown"}`);
@@ -1001,7 +954,7 @@ async function loadPartner(partnerId) {
   if (btnApprovePending) {
     btnApprovePending.onclick = async () => {
       btnApprovePending.textContent = "Approving…";
-      const res = await callFunction("affiliate-approve-pending", {
+      const res = await callFunction("affiliate-admin/conversions/approve", {
         body: { partner_id: partner.id },
       });
       if (res?.ok) {
@@ -1020,7 +973,7 @@ async function loadPartner(partnerId) {
     btnPayApproved.onclick = async () => {
       btnPayApproved.textContent = "Marking…";
 
-      const res = await callFunction("affiliate-mark-approved-paid", {
+      const res = await callFunction("affiliate-admin/conversions/mark-paid", {
         body: { partner_id: partner.id },
       });
 
@@ -1036,7 +989,7 @@ async function loadPartner(partnerId) {
                 to_user_id: uid,
                 offer_id: null,
                 type: "offer_update",
-                title: "Affiliate payout sent",
+                title: "Affiliate payment status updated",
                 message: `We just marked ${res.updated_count ?? 0} commission(s) as Paid.`,
               }),
             ),
@@ -1047,7 +1000,7 @@ async function loadPartner(partnerId) {
             to_user_id: partner.user_id,
             offer_id: null,
             type: "offer_update",
-            title: "Affiliate payout sent",
+            title: "Affiliate payment status updated",
             message: `We just marked ${res.updated_count ?? 0} commission(s) as Paid.`,
           });
         }
@@ -1150,7 +1103,7 @@ async function onSavePartner() {
   if (commission_rate < 0 || commission_rate > 100)
     return uiToast("Rate must be 0..100.");
 
-  const res = await callFunction("affiliate-register", {
+  const res = await callFunction("affiliate-admin/partners", {
     body: { user_id, partner_type, commission_rate, active },
   });
   if (res?.ok) {
@@ -1197,13 +1150,11 @@ async function approveApplication(
     rateMaybe == null || isNaN(Number(rateMaybe)) ? null : Number(rateMaybe);
   const p_note = (partner_name || "").trim() || null;
 
-  const { error } = await supabase.rpc("approve_affiliate", {
-    p_app_id,
-    p_commission_rate,
-    p_note,
+  const review = await callFunction(`affiliate-admin/applications/${encodeURIComponent(p_app_id)}/review`, {
+    body: { decision: 'approve', commission_rate: p_commission_rate ?? undefined, note: p_note },
   });
-  if (error) {
-    uiToast(`Approve error: ${error.message || error}`);
+  if (review.ok !== true) {
+    uiToast(`Approve error: ${review.error || 'Request failed'}`);
     return;
   }
 
@@ -1235,9 +1186,11 @@ async function rejectApplication(p_app_id) {
     .maybeSingle();
   const uid = app?.user_id || null;
 
-  const { error } = await supabase.rpc("reject_affiliate", { p_app_id });
-  if (error) {
-    uiToast(`Reject error: ${error.message || error}`);
+  const review = await callFunction(`affiliate-admin/applications/${encodeURIComponent(p_app_id)}/review`, {
+    body: { decision: 'reject' },
+  });
+  if (review.ok !== true) {
+    uiToast(`Reject error: ${review.error || 'Request failed'}`);
     return;
   }
 
