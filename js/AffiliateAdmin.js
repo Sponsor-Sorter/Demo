@@ -1,3 +1,4 @@
+import { conversionDisplay, affiliateReferralUrl } from './affiliateConversionDisplay.mjs?v=20261017-admin-affiliate1';
 // ./js/AffiliateAdmin.js
 //
 // Admin dashboard logic for Affiliates/Partners.
@@ -6,7 +7,7 @@
 // - Create/Update partner (affiliate-register)
 // - Ensure/Set referral link (affiliate-ensure-referral-link / affiliate-set-referral-code)
 // - List partners with filter (shows username)
-// - View partner totals (computed locally, rate*amount with $10 fallback)
+// - View canonical partner totals from the admin summary route
 // - Show platform stats from SNAPSHOT (stats_snapshot) with live fallback
 // - Approve all pending conversions (Edge Fn: affiliate-approve-pending)
 // - Mark all approved as paid (Edge Fn: affiliate-mark-approved-paid)
@@ -503,7 +504,7 @@ function userStatsBlock(snapNums) {
 function renderPartnerDetails(el, partner, username, link, stats) {
   const code = link?.referral_code || "N/A";
   const linkUrl = link?.referral_code
-    ? `${window.location.origin}/?ref=${esc(link.referral_code)}`
+    ? esc(affiliateReferralUrl(link.referral_code, window.location.origin))
     : "";
 
   el.innerHTML = `
@@ -661,59 +662,19 @@ function renderApplicationsTable(
 }
 
 /* =========================
-   Totals calculator (rate * amount with $10 fallback)
+   Canonical backend summary
    ========================= */
 
 async function computeAffiliateTotals(partner) {
-  const DEFAULT_SIGNUP_PRICE = 10;
-  const ratePct = Number(partner?.commission_rate ?? 0);
-  const rate = ratePct / 100;
-
-  // Read conversions for this partner
-  const { data: rows, error } = await supabase
-    .from("affiliate_conversions")
-    .select("status, amount, referred_user_id")
-    .eq("partner_id", partner.id);
-
-  if (error || !rows?.length) {
-    return {
-      total_conversions: 0,
-      unique_referred_users: 0,
-      total_gmv: 0,
-      pending_commission: 0,
-      approved_commission: 0,
-      paid_commission: 0,
-    };
+  const stats = await callFunction('affiliate-admin/summary', {
+    method: 'GET', query: new URLSearchParams({ partner_id: partner.id }).toString(),
+  });
+  const fields = ['total_conversions', 'unique_referred_users', 'total_gmv',
+    'pending_commission', 'approved_commission', 'paid_commission'];
+  if (stats.ok !== true || fields.some(key => stats[key] == null || !Number.isFinite(Number(stats[key])) || Number(stats[key]) < 0)) {
+    throw new Error('Affiliate totals are unavailable. Please refresh this partner.');
   }
-
-  let total_conversions = 0;
-  let total_gmv = 0;
-  let pending_commission = 0;
-  let approved_commission = 0;
-  let paid_commission = 0;
-  const seen = new Set();
-
-  for (const r of rows) {
-    total_conversions += 1;
-    const price = Number(r.amount ?? 0) || DEFAULT_SIGNUP_PRICE;
-    total_gmv += price;
-    if (r.referred_user_id) seen.add(r.referred_user_id);
-
-    const commission = price * rate;
-    const s = String(r.status || "").toLowerCase();
-    if (s === "pending") pending_commission += commission;
-    else if (s === "approved") approved_commission += commission;
-    else if (s === "paid") paid_commission += commission;
-  }
-
-  return {
-    total_conversions,
-    unique_referred_users: seen.size,
-    total_gmv,
-    pending_commission,
-    approved_commission,
-    paid_commission,
-  };
+  return stats;
 }
 
 /* =========================
@@ -856,32 +817,16 @@ async function loadPartner(partnerId) {
     readErr = e;
   }
 
-  // ---- If missing or unreadable, ensure via Edge Function and USE ITS RETURN ----
-  if (!link?.referral_code) {
-    try {
-      const ensured = await ensureReferralLink({
-        user_id: partner.user_id,
-        partner_id: partner.id,
-      });
-      if (ensured?.referral_code) {
-        link = ensured;
-      } else {
-        const { data: linkRow2 } = await supabase
-          .from("referral_links")
-          .select("*")
-          .eq("user_id", partner.user_id)
-          .maybeSingle();
-        link = normalizeReferralRow(linkRow2);
-      }
-    } catch (e) {
-      if (readErr)
-        console.debug("[aff-admin] referral_links read error:", readErr);
-      console.debug("[aff-admin] ensure-referral-link error:", e);
-    }
+  // Viewing a partner does not create a missing referral link.
+  // The explicit Ensure Referral Link control handles that action.
+  let totals;
+  try {
+    totals = await computeAffiliateTotals(partner);
+  } catch {
+    elDetails.innerHTML = '<p class="admin-data-error" role="alert">Affiliate totals are unavailable. Please refresh this partner.</p>';
+    elConvs.replaceChildren();
+    return;
   }
-
-  // ---- Totals (compute locally for correctness) ----
-  let totals = await computeAffiliateTotals(partner);
 
   // ---- Render ----
   renderPartnerDetails(elDetails, partner, username, link, totals);
@@ -928,7 +873,7 @@ async function loadPartner(partnerId) {
   if (cErr) {
     elConvs.innerHTML = `<p class="admin-data-error" role="alert">Error loading conversions: ${esc(cErr.message)}</p>`;
   } else {
-    renderConversions(elConvs, convs || [], partner.commission_rate);
+    renderConversions(elConvs, convs || []);
   }
 
   // ---- Mark selected paid ----
@@ -1017,34 +962,16 @@ async function loadPartner(partnerId) {
   }
 }
 
-function renderConversions(el, list, ratePct) {
+function renderConversions(el, list) {
   if (!list?.length) {
     el.innerHTML = `<p>No conversions.</p>`;
     return;
   }
 
-  const DEFAULT_SIGNUP_PRICE = 10;
-  const rateNum = Number(ratePct ?? 0);
-  const rate = isNaN(rateNum) ? 0 : rateNum / 100;
-  const rateLabel = isNaN(rateNum)
-    ? "—"
-    : Number.isInteger(rateNum)
-      ? `${rateNum.toFixed(0)}%`
-      : `${rateNum.toFixed(2)}%`;
-
   const rows = list
     .map((c) => {
-      // price we base commission on
-      const price =
-        c.amount != null && !isNaN(Number(c.amount))
-          ? Number(c.amount)
-          : DEFAULT_SIGNUP_PRICE;
-
-      // If a row already has a stored commission, use it; otherwise compute from rate
-      const earned =
-        c.commission != null && !isNaN(Number(c.commission))
-          ? Number(c.commission)
-          : price * rate;
+      const { earned, rate } = conversionDisplay(c);
+      const rateLabel = rate == null ? '—' : `${Number.isInteger(rate) ? rate : rate.toFixed(2)}%`;
 
       return `
       <tr>
@@ -1052,8 +979,8 @@ function renderConversions(el, list, ratePct) {
         <td>${esc(c.referred_user_id || "-")}</td>
         <td>${esc(c.status)}</td>
         <!-- Amount column shows how much they EARNED for this conversion -->
-        <td>${fmtMoney(earned)}</td>
-        <!-- Commission column shows the partner's commission RATE for clarity -->
+        <td>${earned == null ? "—" : fmtMoney(earned)}</td>
+        <!-- Each conversion keeps its own historical percentage. -->
         <td>${rateLabel}</td>
         <td>${fmtDate(c.created_at)}</td>
       </tr>`;
@@ -1124,7 +1051,7 @@ async function onEnsureLink() {
   const link = await ensureReferralLink({ user_id });
   const out = document.getElementById("aa-ensure-result");
   if (link?.referral_code) {
-    const full = `${window.location.origin}/?ref=${esc(link.referral_code)}`;
+    const full = esc(affiliateReferralUrl(link.referral_code, window.location.origin));
     out.innerHTML = `Referral code: <code>${esc(link.referral_code)}</code><br>URL: <input style="width:100%" class="aa-input" value="${full}" readonly>`;
     uiToast("Referral link ensured.");
   } else {
