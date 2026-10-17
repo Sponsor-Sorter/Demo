@@ -2,7 +2,7 @@
 
 import { supabase } from './supabaseClient.js';
 import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
-import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate1';
+import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
 import { getActiveUser } from './impersonationHelper.js';
 import { famBotModerateWithModal } from './FamBot.js';
 import { initTwoFASettings } from './twofa.js';

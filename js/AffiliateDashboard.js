@@ -12,7 +12,7 @@
 import { supabase } from './supabaseClient.js';
 import { notifyPayout } from './alerts.js?notifications=20261012brand6';
 
-import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate1';
+import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
 
 // Affiliate watermark file (placed in project root)
 const WATERMARK_FILE = './Sponsor Sorter Watermark.gif';

@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       moderation: () => Promise.all([loadFamBotLogs(), loadIpModerationLogs()]),
       analytics: () => Promise.all([loadCharts(), loadAdvancedAnalytics()]),
       affiliates: async () =>
-        (await import("./AffiliateAdmin.js?v=20261017-admin-affiliate2&notifications=20261012brand6")).initAffiliateAdmin(),
+        (await import("./AffiliateAdmin.js?v=20261017-admin-affiliate3&notifications=20261012brand6")).initAffiliateAdmin(),
     });
     await workspace.start();
     supabase.auth.onAuthStateChange((event) => {

@@ -19,6 +19,12 @@ test('routed request sends JWT and canonical URL', async () => {
 test('missing JWT prevents request', async () => {
   await assert.rejects(affiliateRequest({ ...args, token: '', fetchImpl: () => assert.fail('must not fetch') }), /sign in/);
 });
+test('SDK URL object functions base is normalized before fetch', async () => {
+  await affiliateRequest({ ...args, base: new URL(args.base), fetchImpl: async (url) => {
+    assert.equal(url,'https://example.test/functions/v1/affiliate/summary');
+    return { ok:true, json:async()=>({ok:true}) };
+  } });
+});
 for (const payload of [null, [], { ok: false }, { success: false }, { error: 'private provider detail' }]) {
   test(`application failure rejected: ${JSON.stringify(payload)}`, async () => {
     await assert.rejects(affiliateRequest({ ...args, fetchImpl: async () => ({ ok: true, json: async () => payload }) }), /request failed/);

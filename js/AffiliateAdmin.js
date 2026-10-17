@@ -14,7 +14,7 @@ import { conversionDisplay, affiliateReferralUrl, applicationHasSnapshot, usersN
 //
 // HTML container: <div id="admin-affiliate-section"></div>
 
-import { affiliateRequest } from "./affiliateRequest.mjs?v=20261017-affiliate1";
+import { affiliateRequest } from "./affiliateRequest.mjs?v=20261017-affiliate2";
 
 import { supabase } from "./supabaseClient.js";
 import { notifyOfferUpdate } from "./alerts.js?notifications=20261012brand6";
