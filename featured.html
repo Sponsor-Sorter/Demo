@@ -22,6 +22,11 @@
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
     .featured-title {margin: 0; letter-spacing: .03em; }
+    .featured-hero > div { min-width: 0; }
+    #slot-label { overflow-wrap: anywhere; }
+    @media (max-width: 600px) {
+      .featured-hero { flex-direction: column; align-items: flex-start; }
+    }
     .role-pill { display:inline-block; padding:4px 10px; border-radius:999px; font-size:.82em; font-weight:700; background:#2b2b2b; color:#f6c62e; margin-left:8px; }
     .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
     @media (min-width: 900px) { .grid { grid-template-columns: 420px 1fr; } }
@@ -73,7 +78,7 @@ div.badge-row:nth-child(2) {
 
     .empty { text-align:center; padding:28px 14px; color:#ddd; }
   </style>
-<script type="module" src="./js/connectionHeader.js?v=20261017-featured-lines1"></script>
+<script type="module" src="./js/connectionHeader.js?v=20261017-featured-lines2"></script>
 <link rel="stylesheet" href="./public-pages.css?v=20261011-nav2">
 <link rel="stylesheet" href="./secondary-pages.css?v=20261011-audit1">
 <script type="module" src="./js/publicPageLayout.js?v=20261010-public1"></script>
@@ -202,6 +207,6 @@ div.badge-row:nth-child(2) {
   <!-- JS: load supabase, then badges.js (global), then the page module -->
   <script type="module" src="./js/supabaseClient.js"></script>
   <script type="module" src="./js/badges.js"></script>
-  <script type="module" src="./js/featuredPage.js?v=20261017-featured1"></script>
+  <script type="module" src="./js/featuredPage.js?v=20261017-featured2"></script>
 </body>
 </html>

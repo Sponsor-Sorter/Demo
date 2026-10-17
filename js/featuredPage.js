@@ -314,7 +314,7 @@ function renderUser(user, slot) {
   ctaView.textContent = 'View public profile';
 
   // NEW: Public Dashboard button (only if enabled in users_extended_data)
-  if (ctaPublic) { ctaPublic.href = slot.profile_url; ctaPublic.style.display = ''; }
+  if (ctaPublic) ctaPublic.style.display = 'none';
 }
 
 function renderOther(slots, activeSlotIdx) {
@@ -383,7 +383,8 @@ async function reconcileFeaturedReturn() {
     }
 
     const publicDetails = await fetchUserPublic(slot.user_id);
-    const user = { ...(publicDetails || {}), ...slot.profile, user_id: slot.user_id };
+    const user = { ...(publicDetails || {}), ...slot.profile, user_id: slot.user_id,
+      profile_pic: slot.profile.profile_pic || publicDetails?.profile_pic };
     renderUser(user, slot);
     renderOther(slots, slotIdx);
     heroSub.textContent = 'Click “Message/Offer” to work with them.';

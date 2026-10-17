@@ -65,6 +65,7 @@
 .featured-account-star > span:first-child { font-size: 1.3rem; text-shadow: 0 0 8px #f6c62e; }
 .featured-accounts .featured-account-star:hover { background: #30303d; }
 .featured-accounts .featured-account-star:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+#buy-featured-star:disabled { opacity: .5; cursor: not-allowed; }
 .admin-page .admin-site-header.connection-header {
   width: 100%;
   max-width: none;

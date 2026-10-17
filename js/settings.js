@@ -2477,7 +2477,7 @@ const FEATURED_STAR_PRICE_ID = 'price_1SRAl62eA1800fRN56wtcQbH';
 // Optional: label/amount to show in the modal
 const FEATURED_STAR_DISPLAY = {
   title: 'Featured Star',
-  blurb: 'Buy a sparkle placement on the homepage that links visitors to your public spotlight.',
+  blurb: 'Feature your account in the Website header with a link to your public profile.',
   displayPrice: '$10 one-time for 1 month'
 };
 
