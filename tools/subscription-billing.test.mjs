@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { billingBody, stripeBillingUrl, subscriptionBilling, checkoutRequestId, subscriptionStatusText } from '../js/subscriptionBilling.mjs';
 
 const id = '00000000-0000-4000-8000-000000000001';
@@ -56,4 +57,13 @@ test('status is explicit and never treats every subscription object as active', 
   assert.match(subscriptionStatusText({ok:true,plan:'free',customer_linked:false,subscription:null}),/No Stripe subscription linked/);
   assert.match(subscriptionStatusText({ok:true,plan:'free',customer_linked:true,subscription:{status:'past_due'}}),/Payment overdue/);
   assert.throws(()=>subscriptionStatusText({ok:true,plan:'pro'}));
+});
+test('Website uses owner-bound billing and does not claim an unchecked summary is current', () => {
+  const settings=readFileSync(new URL('../js/settings.js',import.meta.url),'utf8');
+  const page=readFileSync(new URL('../js/settingsPage.js',import.meta.url),'utf8');
+  assert.doesNotMatch(settings,/dashboard\.stripe\.com|stripe_subscription_info|PRO_MONTHLY_PRICE_ID/);
+  assert.doesNotMatch(page,/Referrals & subscription up to date|stripe_subscription_info/);
+  assert.match(page,/Referral and subscription results are shown below/);
+  assert.match(settings,/subscriptionBilling\(supabase, 'portal'\)/);
+  assert.match(page,/subscriptionBilling\(supabase, 'status'\)/);
 });

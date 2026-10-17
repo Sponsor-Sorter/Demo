@@ -525,7 +525,7 @@ async function populateReferralsAndSubscription(user) {
     }
   } finally {
     if (summaryEl) {
-      summaryEl.textContent = 'Referrals & subscription up to date.';
+      summaryEl.textContent = 'Referral and subscription results are shown below.';
       summaryEl.style.color = '#7CFFA1';
     }
   }
