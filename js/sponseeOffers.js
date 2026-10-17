@@ -1,3 +1,4 @@
+import { mountAutoConfirmationNotice } from './offerAutoConfirmation.mjs?v=20261018-auto-confirm1';
 import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
@@ -675,6 +676,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     `;
     if (version !== offerRenderVersion) return;
     listingContainer.appendChild(card);
+    void mountAutoConfirmationNotice({ client: supabase, card, offer, role: 'creator' });
   }
 
   listingContainer.addEventListener('click', async (e) => {
