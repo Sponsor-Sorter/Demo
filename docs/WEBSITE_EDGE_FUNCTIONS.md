@@ -58,6 +58,8 @@ Dashboard is authenticated, but no tokens or credentials were extracted. No paym
 
 ### TikTok OAuth writer diagnosis
 
+Website connection request also omitted `user.info.basic`. TikTok's official [Get User Info documentation](https://developers.tiktok.com/docs/en/tiktok-api-v2-get-user-info) associates open_id with this scope and requires the fields query parameter. Local Website fix now requests `user.info.basic,user.info.profile,user.info.stats,video.list`. The new test executes the actual launchTikTokOAuth function against a fake popup, verifies endpoint/scopes/redirect/state, and makes no OAuth request. Integrated regression result is now **54 passed, zero failed**, including 13 Settings tests. Backend owner is implementing required fields/identity persistence checks; no backend source replacement was deployed by Website. Scope change is local only; no consent or permission grant was performed. Keep reconnect on hold until the coordinated frontend/backend fixes are live.
+
 Backend owner independently confirmed from redacted audit history: identity fields were present before disconnect at 02:44:47Z; reconnection at 02:50:36Z saved connected=true and future expiry but left both identity fields blank. Current stats handler rejects missing tiktok_user_id before calling TikTok. This is a persisted OAuth identity omission, not a reason to ask for repeated reconnection.
 
 Website callback `js/oauth-handler.js` maps tiktok to `tiktok-oauth`, invokes `{code,redirect_uri}` with session bearer, and does not write identity columns itself. It currently checks SDK transport failure only before showing Connected; an application-level failure under HTTP 200 would be missed.

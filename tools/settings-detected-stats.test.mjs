@@ -17,3 +17,17 @@ test('missing session makes no request',async()=>{const h=harness({jwt:null});aw
 test('HTTP failure does not retry with another method',async()=>{const h=harness({response:{ok:false,status:503}});await assert.rejects(h.run('get-youtube-stats'),/503/);assert.equal(h.calls.length,1);});
 test('deadline covers stalled JSON body and aborts',async()=>{const h=harness({timeout:true,response:{ok:true,json:()=>new Promise(()=>{})}});await assert.rejects(h.run('get-tiktok-stats'),/timed out/);assert.equal(h.calls[0].signal.aborted,true);});
 test('malformed JSON fails without retry',async()=>{const h=harness({response:{ok:true,json:async()=>{throw new SyntaxError('bad JSON')}}});await assert.rejects(h.run('get-tiktok-stats'));assert.equal(h.calls.length,1);});
+test('TikTok authorization requests basic identity scope and preserves state/redirect',()=>{
+  const begin=source.indexOf('  function launchTikTokOAuth() {');
+  const finish=source.indexOf('\n  function showTikTokSuccessNotification()',begin);
+  let opened;
+  const fakeWindow={top:{outerHeight:900,outerWidth:1200,screenX:0,screenY:0},open:(url)=>{opened=url;return {};}};
+  new Function('getTikTokRedirectUri','createOAuthState','URL','window','let oauthPopupWindow;\n'+source.slice(begin,finish)+'\nlaunchTikTokOAuth();')(()=> 'https://fixture.invalid/oauth2callback.html',provider=>{assert.equal(provider,'tiktok');return 'tiktok:fixture-state';},URL,fakeWindow);
+  const url=new URL(opened);
+  assert.equal(url.origin,'https://www.tiktok.com');
+  assert.equal(url.pathname,'/v2/auth/authorize/');
+  assert.deepEqual(url.searchParams.get('scope').split(','),['user.info.basic','user.info.profile','user.info.stats','video.list']);
+  assert.equal(url.searchParams.get('state'),'tiktok:fixture-state');
+  assert.equal(url.searchParams.get('redirect_uri'),'https://fixture.invalid/oauth2callback.html');
+  assert.equal(url.searchParams.get('response_type'),'code');
+});

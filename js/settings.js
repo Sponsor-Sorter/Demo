@@ -1080,7 +1080,7 @@ async function getCurrentUser() {
     // TODO: replace with your real Client Key (public; safe to expose)
     const TIKTOK_CLIENT_KEY = 'sbawbcrozip468vh2m';
     const REDIRECT = getTikTokRedirectUri();
-    const SCOPES = ['user.info.profile','user.info.stats','video.list'].join(',');
+    const SCOPES = ['user.info.basic','user.info.profile','user.info.stats','video.list'].join(',');
 
     // CSRF
     const state = createOAuthState('tiktok');
