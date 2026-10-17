@@ -56,6 +56,21 @@ Dashboard is authenticated, but no tokens or credentials were extracted. No paym
 
 ## Confirmed defects and remediation
 
+### Retest after user reauthorization — 17 October, 13:52 AEDT
+
+User confirmed reconnections complete and authorized testing. Exactly one normal dashboard reload was performed. Independent `function_edge_logs` aggregate from `02:52:15Z` to `02:52:50Z` shows one request per endpoint, excluding OPTIONS:
+
+| Function | Version | Method/status | UI outcome |
+|---|---|---|---|
+| get-tiktok-stats | 27 | GET 503 | Unavailable; console `account_identity_unavailable` at 02:52:29.985Z |
+| get-instagram-stats | 20 | POST 502 | Unavailable; no detailed browser error |
+| get-facebook-page-insights | 9 | POST 502 | Unavailable; console `provider_unavailable` at 02:52:30.875Z |
+| get-youtube-stats | 19 | POST 200 | 27 subscribers, 19,728 views, 33 videos |
+| get-twitch-stats | 16 | POST 200 | sponsorsorter (@sponsorsorter), 0 followers, Offline; account differs from prior test |
+| affiliate-get-referral-link | 6 | GET 200 | Referral section loaded |
+
+Supabase owner reports migration `20261017024607_install_tiktok_refresh_lease_and_redact_audit_secrets` installed the six refresh RPCs, with a rollback-only lease check and no leftover rows. This is owner-reported migration verification. Current TikTok failure has changed from refresh unavailable to account identity unavailable; the deployed handler requires a stored TikTok identity before provider reads. Backend owner was asked to inspect OAuth persistence and Meta credential/page consistency. Do not assume a successful OAuth redirect proves working downstream stats. No further reload was made. Raw response JSON and automatic database/provider side effects remain unverified. These results supersede the earlier Facebook UI success for current account state.
+
 1. TikTok v26 returned success:true but omitted ok:true, and profile fields were in different locations. Supabase owner deployed additive v27; current source readback confirms ok:true and nested profile aliases. Website still fails with token_refresh_unavailable. Compatibility is fixed at source; complete live success remains unverified.
 2. Settings accepts HTTP200 `{success:false}` / `{ok:false}` as stats success and tries a second method on any HTTP/network failure. Standalone candidate `candidate/js/settings.js` rejects failure envelopes, uses TikTok GET and other profile POST contracts, supplies 7/28-day periods, refuses missing auth, and bounds fetch plus JSON decoding to 12 seconds. Tests extract the actual edited function. Candidate is not published or integrated into a Git checkout.
 3. Dashboard generic Instagram/TikTok error labels obscure actionable failures. TikTok console warning exposed the refresh issue; Instagram cause still needs server evidence. Do not relabel unverified missing data as a successful result.
