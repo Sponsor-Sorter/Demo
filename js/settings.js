@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { disconnectProvider, disconnectMessage } from './providerDisconnect.mjs?v=20261018-disconnect1';
 import { isFreeMonthReward } from './referralRewards.mjs?v=20261018-referral1';
 import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
 import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
@@ -27,56 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return false;
   }
   return true;
-}
-
-
-
-  // Remove a platform string from users_extended_data.platforms[]
-async function removePlatformFromArray(userId, platformKey) {
-  const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('id, platforms')
-    .eq('user_id', userId)
-    .single();
-  if (error || !data) return false;
-  const arr = Array.isArray(data.platforms) ? data.platforms : [];
-  const filtered = arr.filter(p => (p || '').toLowerCase() != String(platformKey).toLowerCase());
-  if (filtered.length == arr.length) return true;
-  const { error: updErr } = await supabase
-    .from('users_extended_data')
-    .update({ platforms: filtered })
-    .eq('id', data.id);
-  return !updErr;
-}
-
-
-
-  // === Edge Function helper: revoke_platforms ===
-// === Edge Function helper: revoke_platforms (robust URL fallback) ===
-const SUPA_FN_BASE =
-  (supabase && supabase.functionsUrl) // if your client exposes it
-  || 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1'; // your project
-
-async function revokePlatforms(platform, tokenHints = {}) {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.access_token) throw new Error('Not signed in');
-
-  const url = `${SUPA_FN_BASE}/revoke_platforms`;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${session.access_token}`,
-    },
-    body: JSON.stringify({ platform, ...tokenHints }),
-  });
-
-  let json = null;
-  try { json = await resp.json(); } catch {}
-  if (!resp.ok || !json?.ok) {
-    throw new Error(json?.error || `HTTP ${resp.status}`);
-  }
-  return json; // { ok:true, db_updated:boolean, warning?:string }
 }
 
 
@@ -1165,6 +1116,18 @@ async function getCurrentUser() {
   }
 
 
+  function showDisconnectStatus(message) {
+    let notice = document.getElementById('oauth-disconnect-status');
+    if (!notice) {
+      notice = document.createElement('p');
+      notice.id = 'oauth-disconnect-status';
+      notice.setAttribute('role', 'status');
+      notice.style.cssText = 'padding:12px;border:1px solid #777;border-radius:8px;';
+      oauthAccountsList.parentElement.insertBefore(notice, oauthAccountsList);
+    }
+    notice.textContent = message;
+  }
+
   async function refreshOauthAccountsUI() {
     let user = await getActiveUser(true); // Get latest user data
     let html = supportedPlatforms.map(p => {
@@ -1202,233 +1165,52 @@ async function getCurrentUser() {
         const plat = btn.getAttribute('data-platform');
         const user = await getActiveUser(true);
 
-        // NEW: enforce Free plan limit of 1 OAuth-linked platform
-        if (!(await enforceFreePlanOauthLimitOrToast(user, plat))) {
-          return; // stop here if user is at limit on Free
+        if (['youtube','twitch','instagram','facebook','tiktok'].includes(plat) && isPlatformConnected(user, plat)) {
+          if (btn.disabled) return;
+          btn.disabled = true;
+          btn.innerText = 'Disconnecting...';
+          let confirmed = false;
+          try {
+            if (user?.__impersonated) throw Object.assign(new Error(), { code: 'OWNER_REQUIRED' });
+            const result = await disconnectProvider(supabase, plat, user?.user_id);
+            confirmed = true;
+            await refreshOauthAccountsUI();
+            showDisconnectStatus(result.provider_revoked
+              ? 'Platform access was revoked and the Website connection was removed.'
+              : 'The Website connection was already removed. Provider revocation is not confirmed by this result.');
+          } catch (error) {
+            showDisconnectStatus(confirmed
+              ? 'The server confirmed disconnection. Reload Settings to update the displayed connection status.'
+              : disconnectMessage(error?.code));
+          } finally {
+            btn.disabled = false;
+            btn.innerText = 'Disconnect';
+          }
+          return;
         }
 
-if (plat === "youtube") {
-          if (user.youtube_connected) {
-            // --- DISCONNECT YOUTUBE ---
-            btn.innerText = "Disconnecting...";
+        // Free-plan gate applies to new connections; disconnection is above.
+        if (!(await enforceFreePlanOauthLimitOrToast(user, plat))) return;
 
-            await revokePlatforms('youtube', { refresh_token: user.youtube_refresh_token || null, access_token: user.youtube_access_token || null });
-
-            btn.disabled = true;
-            const { error } = await supabase
-              .from("users_extended_data")
-              .update({
-                youtube_refresh_token: null,
-                youtube_access_token: null,
-                youtube_token_expiry: null,
-                youtube_connected: false
-              })
-              .eq("user_id", user.user_id);
-            if (!error) {
-              await removePlatformFromArray(user.user_id, 'youtube');
-
-              btn.innerText = "Connect";
-              btn.style.background = "#2d7bfa";
-              document.getElementById('youtube-status-badge').innerText = "Not linked";
-              document.getElementById('youtube-status-badge').style.color = "#888";
-              showYouTubeDisconnectedNotification();
-              await refreshOauthAccountsUI();
-            } else {
-              btn.innerText = "Failed!"; btn.style.background = "#e22";
-              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-            }
-          } else {
-            // --- CONNECT YOUTUBE ---
-            oauthModal.style.display = 'block';
-            oauthMsg.innerHTML = 'Connecting...';
-            connectYouTubeBtn.click();
-            oauthLinkModal.style.display = "none";
-          }
-        }
-
-        else if (plat === "twitch") {
-          if (user.twitch_connected) {
-            // --- DISCONNECT TWITCH ---
-            btn.innerText = "Disconnecting...";
-
-            await revokePlatforms('twitch', { access_token: user.twitch_access_token || null, twitch_client_id: (window.__twitch_client_id__ || null) });
-
-            btn.disabled = true;
-
-            const { error } = await supabase
-              .from('users_extended_data')
-              .update({
-                twitch_access_token: null,
-                twitch_refresh_token: null,
-                twitch_token_expiry: null,
-                twitch_connected: false
-              })
-              .eq('user_id', user.user_id);
-
-            if (!error) {
-              await removePlatformFromArray(user.user_id, 'twitch');
-
-              btn.innerText = "Connect";
-              btn.style.background = "#2d7bfa";
-              const badge = document.getElementById('twitch-status-badge');
-              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
-              await refreshOauthAccountsUI();
-            } else {
-              btn.innerText = "Failed!"; btn.style.background = "#e22";
-              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-            }
-          } else {
-            // --- CONNECT TWITCH ---
-            launchTwitchOAuth();                  // open Twitch popup
-            oauthLinkModal.style.display = "none"; // close the picker while user authorizes
-          }
-        }
-
-        else if (plat === "instagram") {
-          if (user.instagram_connected) {
-            // --- DISCONNECT INSTAGRAM ---
-            btn.innerText = "Disconnecting...";
-
-            await revokePlatforms('instagram', { access_token: user.instagram_access_token || null });
-
-            btn.disabled = true;
-
-            const { error } = await supabase
-              .from('users_extended_data')
-              .update({
-                instagram_access_token: null,
-                instagram_refresh_token: null,
-                instagram_token_expiry: null,
-                instagram_connected: false,
-                instagram_user_id: null
-              })
-              .eq('user_id', user.user_id);
-
-            if (!error) {
-              await removePlatformFromArray(user.user_id, 'instagram');
-
-              btn.innerText = "Connect";
-              btn.style.background = "#2d7bfa";
-              const badge = document.getElementById('instagram-status-badge');
-              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
-              showInstagramDisconnectedNotification();
-              await refreshOauthAccountsUI();
-            } else {
-              btn.innerText = "Failed!"; btn.style.background = "#e22";
-              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-            }
-          } else {
-            // --- CONNECT INSTAGRAM ---
-            const url = buildInstagramAuthUrl();
-            oauthLinkModal.style.display = "none";
-            // Full-page redirect (Meta blocks popup in many cases)
-            window.location.href = url;
-          }
-        }
-
-        // --- NEW: FACEBOOK CONNECT/DISCONNECT ---
-       // --- FACEBOOK CONNECT/DISCONNECT (correct token param + no update to generated column) ---
-else if (plat === "facebook") {
-  const fbConnected = isPlatformConnected(user, 'facebook');
-
-  if (fbConnected) {
-    // --- DISCONNECT FACEBOOK ---
-    btn.innerText = "Disconnecting...";
-
-    try {
-      // IMPORTANT: Edge function expects `access_token`; include `page_id` when using a Page token.
-      // If you later store a user token (e.g. facebook_user_access_token), prefer that first:
-      const accessToken =
-        user.facebook_user_access_token /* optional future column */ ||
-        user.facebook_access_token      /* current schema: page token */ ||
-        null;
-
-      await revokePlatforms('facebook', {
-        access_token: accessToken,
-        page_id: user.facebook_page_id || null
-      });
-    } catch (e) {
-      console.warn('Facebook revoke warning:', e?.message || e);
-      // Continue to local unlink either way
-    }
-
-    btn.disabled = true;
-
-    // DO NOT include `facebook_connected` here (it's a generated column).
-    const { error } = await supabase
-      .from('users_extended_data')
-      .update({
-        facebook_user_id: null,
-        facebook_page_id: null,
-        facebook_page_name: null,
-        facebook_access_token: null,
-        // facebook_user_access_token: null, // uncomment if you add that column later
-        facebook_token_expires_at: null
-      })
-      .eq('user_id', user.user_id);
-
-    if (!error) {
-      await removePlatformFromArray(user.user_id, 'facebook');
-
-      btn.innerText = "Connect";
-      btn.style.background = "#2d7bfa";
-      const badge = document.getElementById('facebook-status-badge');
-      if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
-      showFacebookDisconnectedNotification?.();
-      await refreshOauthAccountsUI();
-    } else {
-      btn.innerText = "Failed!"; btn.style.background = "#e22";
-      setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-    }
-  } else {
-    // --- CONNECT FACEBOOK ---
-    const url = buildFacebookAuthUrl(); // state=facebook
-    oauthLinkModal.style.display = "none";
-    window.location.href = url; // full redirect (Meta-friendly)
-  }
-}
-
-
-        // --- NEW: TIKTOK CONNECT/DISCONNECT ---
-        else if (plat === "tiktok") {
-          if (isPlatformConnected(user, 'tiktok')) {
-            // --- DISCONNECT TIKTOK ---
-            btn.innerText = "Disconnecting...";
-
-            await revokePlatforms('tiktok', { access_token: user.tiktok_access_token || null });
-
-            btn.disabled = true;
-
-            const { error } = await supabase
-              .from('users_extended_data')
-              .update({
-                tiktok_access_token: null,
-                tiktok_refresh_token: null,
-                tiktok_token_expiry: null,
-                tiktok_connected: false,
-                tiktok_user_id: null,
-                tiktok_username: null
-              })
-              .eq('user_id', user.user_id);
-
-            if (!error) {
-              await removePlatformFromArray(user.user_id, 'tiktok');
-
-              btn.innerText = "Connect";
-              btn.style.background = "#2d7bfa";
-              const badge = document.getElementById('tiktok-status-badge');
-              if (badge) { badge.innerText = "Not linked"; badge.style.color = "#888"; }
-              showTikTokDisconnectedNotification();
-              await refreshOauthAccountsUI();
-            } else {
-              btn.innerText = "Failed!"; btn.style.background = "#e22";
-              setTimeout(() => { btn.innerText = "Disconnect"; btn.style.background = "#f55"; btn.disabled = false; }, 1200);
-            }
-          } else {
-            // --- CONNECT TIKTOK ---
-            launchTikTokOAuth();                  // popup using state=tiktok:<csrf>
-            oauthLinkModal.style.display = "none"; // close the picker while user authorizes
-          }
+        if (plat === 'youtube') {
+          oauthModal.style.display = 'block';
+          oauthMsg.innerHTML = 'Connecting...';
+          connectYouTubeBtn.click();
+          oauthLinkModal.style.display = 'none';
+        } else if (plat === 'twitch') {
+          launchTwitchOAuth();
+          oauthLinkModal.style.display = 'none';
+        } else if (plat === 'instagram') {
+          const url = buildInstagramAuthUrl();
+          oauthLinkModal.style.display = 'none';
+          window.location.href = url;
+        } else if (plat === 'facebook') {
+          const url = buildFacebookAuthUrl();
+          oauthLinkModal.style.display = 'none';
+          window.location.href = url;
+        } else if (plat === 'tiktok') {
+          launchTikTokOAuth();
+          oauthLinkModal.style.display = 'none';
         }
 
         // Future placeholders
