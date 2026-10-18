@@ -84,6 +84,31 @@
       "bytes": 21777
     },
     {
+      "id": "loom",
+      "kind": "effect",
+      "bytes": 31391
+    },
+    {
+      "id": "cook",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "bees",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "honey",
+      "kind": "effect",
+      "bytes": 31391
+    },
+    {
+      "id": "shopbell",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
       "id": "jade-welcome",
       "kind": "voice",
       "bytes": 109759
@@ -146,12 +171,42 @@
     {
       "id": "jay-care",
       "kind": "voice",
-      "bytes": 175901
+      "bytes": 146121
     },
     {
       "id": "jay-sell",
       "kind": "voice",
       "bytes": 151764
+    },
+    {
+      "id": "jay-stock",
+      "kind": "voice",
+      "bytes": 125119
+    },
+    {
+      "id": "jay-friends",
+      "kind": "voice",
+      "bytes": 134523
+    },
+    {
+      "id": "rhys-craft",
+      "kind": "voice",
+      "bytes": 144240
+    },
+    {
+      "id": "rhys-home",
+      "kind": "voice",
+      "bytes": 155839
+    },
+    {
+      "id": "jade-honey",
+      "kind": "voice",
+      "bytes": 152704
+    },
+    {
+      "id": "jade-fruit",
+      "kind": "voice",
+      "bytes": 134523
     },
     {
       "id": "place",

@@ -68,5 +68,23 @@
     "jade": "Hope - upbeat and clear",
     "rhys": "Noah - YA Audiobooks Narrator",
     "jay": "Mike - Animation, Explainers & Gaming"
+  },
+  "release56": {
+    "effects": {
+      "honey": "Small glass honey jar filled and gently set down",
+      "bees": "A few friendly honeybees softly buzzing",
+      "shopbell": "Tiny friendly shop door bell",
+      "cook": "Gentle farmhouse cooking with a wooden spoon and bubbling pot",
+      "loom": "Small wooden hand loom weaving yarn; isolated natural workshop Foley"
+    },
+    "lessons": [
+      "jade-honey",
+      "jade-fruit",
+      "rhys-craft",
+      "rhys-home",
+      "jay-stock",
+      "jay-friends"
+    ],
+    "updatedVoice": "jay-care"
   }
 }

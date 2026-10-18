@@ -11,7 +11,7 @@
   function load(id){
     if(buffers.has(id))return Promise.resolve(buffers.get(id));
     if(pending.has(id))return pending.get(id);
-    const task=fetch(base+id+'.mp3?v=46').then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
+    const task=fetch(base+id+'.mp3?v=56').then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
     pending.set(id,task);return task;
   }
   function volumes(){if(!context)return;const t=context.currentTime;master.gain.setTargetAtTime(prefs.muted?0:1,t,.08);musicGain.gain.setTargetAtTime(prefs.music,t,.15);effectsGain.gain.setTargetAtTime(prefs.effects,t,.04);ambientGain.gain.setTargetAtTime(prefs.ambience,t,.15);voiceGain.gain.setTargetAtTime(prefs.voice,t,.06)}
