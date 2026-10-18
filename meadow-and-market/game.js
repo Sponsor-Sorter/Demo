@@ -172,7 +172,6 @@
   for(const f of Object.values(state.farms))for(const a of f.objects||[])if(a.type==='chicken'||a.type==='cow'){a.hunger=clamp((a.hunger??80)-awayHrs*5,0,100);a.clean=clamp((a.clean??80)-awayHrs*2,0,100);a.lastCare=Date.now()}
   // Ensure an order is available on every unlocked farm.
   for(const f of Object.values(state.farms))if(!f.orders||!f.orders.length)f.orders=[makeOrder()];
-  $$('.nav-button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
   $$('.brand').forEach(b=>b.addEventListener('click',()=>setView('farm')));
   $$('.mode-button').forEach(b=>b.addEventListener('click',()=>{mode(b.dataset.mode);render()}));
   $('#map-switch').addEventListener('click',mapDialog);$('#expand-button').addEventListener('click',expand);$('#settings-button').addEventListener('click',showSettings);$('#orientation').addEventListener('click',()=>notify('Turn your device — the farm adjusts to portrait and landscape automatically.'));
@@ -184,8 +183,14 @@
   $('#build-minimize').addEventListener('click',()=>{const tray=$('#build-tray'),button=$('#build-minimize'),collapsed=tray.classList.toggle('collapsed');button.textContent=collapsed?'Expand':'Minimize';button.setAttribute('aria-expanded',String(!collapsed))});
   $('#build-done').addEventListener('click',()=>{state.mode='tend';state.moving=null;state.selected=null;state.placing=null;mode('tend');render()});
   $('#panel-close').addEventListener('click',()=>setView('farm'));
-  $$('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
-  $$('.map-hotspot').forEach(b=>b.addEventListener('click',()=>{if(state.mode==='build')mode('tend');setView(b.dataset.mapView);notify(b.getAttribute('aria-label')+' · Explore this part of your farm')}));
+  // Delegate navigation in capture phase so HUD buttons and map regions remain
+  // reliable after the game redraws its dynamic map and panels.
+  document.addEventListener('click',e=>{
+    const hotspot=e.target.closest('.map-hotspot[data-map-view]');
+    if(hotspot){e.preventDefault();e.stopImmediatePropagation();if(state.mode==='build')mode('tend');setView(hotspot.dataset.mapView);notify(hotspot.getAttribute('aria-label')+' · Explore this part of your farm');return}
+    const nav=e.target.closest('[data-view]');
+    if(nav){e.preventDefault();e.stopImmediatePropagation();setView(nav.dataset.view)}
+  },true);
   // Make care meters decay visibly while the game is open.
   setInterval(()=>{let changed=false;for(const a of current().objects)if(a.type==='chicken'||a.type==='cow'){a.hunger=clamp(a.hunger-0.12,0,100);a.clean=clamp(a.clean-0.045,0,100);changed=true}if(changed&&state.view==='animals')renderAnimals()},60000);
   window.addEventListener('pagehide',save);
