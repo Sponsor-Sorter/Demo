@@ -14,10 +14,10 @@
     {id:'move',person:'rhys',title:'Move it into place',text:'In Build mode, tap an existing item and then a clear tile to move it. Hold an item still for 1.2 seconds to pick it up, then drag or tap a clear tile. A quick swipe pans the camera. Its highlighted ground area shows the space it needs. Undo reverses the last move.',action:'Pick up an item',focus:'move'},
     {id:'upgrade',person:'rhys',title:'Give your animals more room',text:'Tap a coop, barn, paddock, orchard, field, or well in Tend mode to see its upgrades. Each stage needs enough gold and clear space. Bigger homes hold more animals and improve their yield.',action:'Show a building’s upgrades',focus:'upgrade'},
     {id:'expand',person:'rhys',title:'Open another part of the meadow',text:'The expand button on the right opens more land on this farm. Check the price first, and keep your existing farm growing as you unlock the new space.',action:'See the next expansion',focus:'expand'},
-    {id:'care',person:'jay',title:'Meet your animal friends',text:'I’m Farmer Jay—Farmer Rhys is my twin! Open Animals and tap Care to feed and clean a friend. Food, cleanliness, and happiness help them produce eggs or milk. Basic care is free.',action:'Visit animal care',focus:'care'},
+    {id:'care',person:'jay',title:'Meet your animal friends',text:'I’m Farmer Jay—Farmer Rhys is my twin! Open Animals and visit a friend to feed, brush and play. Food, cleanliness, and happiness help them produce eggs or milk. Basic care is free.',action:'Visit animal care',focus:'care'},
     {id:'sell',person:'jay',title:'Bring a basket to the village',text:'The Market buys individual goods and offers requests with better rewards. Read what a vendor needs and compare it with your basket. Completing requests also earns village reputation.',action:'Open the village market',focus:'sell'}
   ];
-  let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0, lastInteraction=Date.now();
+  let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0, lastInteraction=Date.now(), pendingHint=null;
   window.addEventListener('pointerdown',()=>{lastInteraction=Date.now()},{passive:true});
   const get = () => {
     const s=api.state();
@@ -29,7 +29,7 @@
   const image = id => 'assets/generated/guides/'+people[id].image+'.webp';
   const next = person => lessons.find(l=>(!person||l.person===person)&&!get().completed.includes(l.id));
   function save(){api.save();updateLauncher()}
-  function updateLauncher(){if(!launcher)return;const t=get();launcher.querySelector('small').textContent=t.completed.length+'/'+lessons.length+' lessons';launcher.classList.toggle('guide-inviting',!t.started)}
+  function updateLauncher(){if(!launcher)return;const t=get();launcher.querySelector('small').textContent=pendingHint?'New farm tip':t.completed.length+'/'+lessons.length+' lessons';launcher.classList.toggle('guide-inviting',!t.started||!!pendingHint)}
   function hide(){window.meadowAudio?.stopVoice();panel.hidden=true;document.querySelectorAll('.guide-target').forEach(el=>el.classList.remove('guide-target'))}
   function card(person,title,text,action,label,extra='',voice=''){
     const p=people[person]; panel.hidden=false;panel.dataset.person=person;
@@ -69,9 +69,9 @@
   function attach(a){
     api=a;root=document.createElement('div');root.id='farm-guides';
     root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Farmer Rhys and Farmer Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
-    document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');launcher.onclick=menu;updateLauncher();
+    document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');launcher.onclick=()=>{if(!pendingHint){menu();return}const hint=pendingHint;pendingHint=null;updateLauncher();card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')};updateLauncher();
     if(!get().introduced)setTimeout(()=>{if(!document.querySelector('dialog[open]')){get().introduced=true;save();welcome()}},1200);
-    setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint)card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')},30000);
+    setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint){pendingHint=hint;lastTipAt=Date.now();updateLauncher()}},30000);
   }
   window.meadowGuides={attach,event,context,menu,lesson:showLesson};
 })();
