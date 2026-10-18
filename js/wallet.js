@@ -9,7 +9,7 @@
 // - Exposes updateWallet() globally (and legacy alias updateSponseeWallet)
 
 import { supabase } from './supabaseClient.js';
-import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect3';
+import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect4';
 
 const MIN_PAYOUT = 10; // $10 minimum; adjust if needed
 
@@ -391,7 +391,7 @@ async function refreshDestinationPanel(choice, destPanel, msgDiv) {
     explanation.textContent = 'This connects a payout account. Manage your Pro subscription separately in Settings. Withdrawal requests do not send money immediately.';
     destPanel.append(explanation);
     const setup = document.createElement('button'); setup.type = 'button'; setup.id = 'btn-open-stripe';
-    setup.textContent = state.test_mode ? 'Open test payout setup' : 'Set up / Fix Stripe payouts';
+    setup.textContent = state.migration_required ? 'Review existing Stripe payout account' : (state.test_mode ? 'Open test payout setup' : 'Set up / Fix Stripe payouts');
     destPanel.append(setup);
     setup.addEventListener('click', async () => {
       if (setup.disabled) return;

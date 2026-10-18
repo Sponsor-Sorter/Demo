@@ -12,9 +12,10 @@ export function connectErrorMessage(error) {
   return MESSAGES[error?.code] || 'Stripe payout settings could not be confirmed. Please try again later.';
 }
 export function connectPayoutReady(info) {
-  return !!info?.account_id && info.test_mode === false && info.status?.payouts_enabled === true && info.status?.capabilities?.transfers === 'active';
+  return !!info?.account_id && info.test_mode === false && info.migration_required === false && info.settlement_ready === true && info.status?.capability_source === 'accounts_v2' && info.status?.payouts_enabled === true && info.status?.capabilities?.transfers === 'active';
 }
 export function connectStatusMessage(info) {
+  if (info.migration_required) return (info.test_mode ? 'Stripe test account. ' : '') + 'Existing Stripe account needs an upgrade before automated settlement. Updating account details does not complete this upgrade or enable live withdrawals.';
   if (info.test_mode) return 'Stripe test account. This does not enable live withdrawals.';
   if (!info.account_id) return 'No Stripe payout account linked. Setup is required.';
   if (connectPayoutReady(info)) return 'Stripe payout account is enabled. Withdrawal requests still require processing.';
@@ -24,14 +25,17 @@ export function validateConnectStatus(data) {
   const status=data?.status, context=data?.stripe_context;
   if (data?.ok !== true || !context || !ACCOUNT.test(context.account_id || '') ||
       typeof context.livemode !== 'boolean' || data.test_mode !== !context.livemode ||
-      typeof data.setup_required !== 'boolean' ||
+      typeof data.setup_required !== 'boolean' || typeof data.migration_required !== 'boolean' || typeof data.settlement_ready !== 'boolean' ||
       !(data.account_id === null || ACCOUNT.test(data.account_id || '')) ||
       typeof status?.details_submitted !== 'boolean' || typeof status?.payouts_enabled !== 'boolean' ||
       !(status.disabled_reason === null || (typeof status.disabled_reason === 'string' && status.disabled_reason.length <= 300)) ||
       !['active','pending','inactive','unrequested','unavailable'].includes(status.capabilities?.transfers) ||
-      (data.account_id !== null && status.capability_source !== 'accounts_v2') ||
+      (data.account_id !== null && !['accounts_v2','accounts_v1_legacy'].includes(status.capability_source)) ||
+      (status.capability_source === 'accounts_v1_legacy' && (!data.migration_required || data.settlement_ready || status.payouts_enabled || typeof status.legacy_payouts_enabled !== 'boolean')) ||
+      (status.capability_source === 'accounts_v2' && data.migration_required) ||
+      (data.settlement_ready && (data.account_id === null || status.capability_source !== 'accounts_v2' || !status.payouts_enabled || status.capabilities.transfers !== 'active')) ||
       !['currently_due','past_due'].every(key => Array.isArray(status[key]) && status[key].length <= 100 && status[key].every(value => typeof value === 'string' && value.length <= 200)) ||
-      (data.account_id === null && (!data.setup_required || status.payouts_enabled || status.capabilities.transfers !== 'inactive'))) throw Error('Invalid payout status.');
+      (data.account_id === null && (!data.setup_required || data.migration_required || data.settlement_ready || status.payouts_enabled || status.capabilities.transfers !== 'inactive'))) throw Error('Invalid payout status.');
   return data;
 }
 export function connectStripeUrl(value) {
