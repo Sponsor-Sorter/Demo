@@ -26,7 +26,7 @@ const pick = items => items[Math.floor(Math.random() * items.length)];
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 const stylesheet = document.createElement('link');
 stylesheet.rel = 'stylesheet';
-stylesheet.href = new URL('../connection-header.css?v=20261017-lines2', import.meta.url).href;
+stylesheet.href = new URL('../connection-header.css?v=20261018-calm1', import.meta.url).href;
 document.head.append(stylesheet);
 
 for (const header of document.querySelectorAll('header.navbar1, header.header, header.admin-site-header')) {
@@ -77,12 +77,12 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
     light.node = best;
     light.previous = null;
     light.x = light.node.x; light.y = light.node.y;
-    light.speed = 48 + Math.random() * 42;
+    light.speed = 12 + Math.random() * 10;
     light.waiting = false;
     light.grace = 0.8 + Math.random();
     turn(light);
     light.trail = [{ x: light.x, y: light.y }];
-    light.life = 7 + Math.random() * 7;
+    light.life = 28 + Math.random() * 28;
     light.element.setAttribute('d', updateGridTrail(light.trail, light.x, light.y));
     light.element.style.opacity = '0';
   }
@@ -117,7 +117,7 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
         }
       }
       light.element.setAttribute('d', updateGridTrail(light.trail, light.x, light.y));
-      light.element.style.opacity = String(Math.min(0.95, 1.8 - light.grace));
+      light.element.style.opacity = String(Math.min(0.5, 1.8 - light.grace));
     }
     // Spatial buckets keep collision checks small for the bounded line travellers.
     const buckets = new Map();
@@ -148,7 +148,7 @@ for (const header of document.querySelectorAll('header.navbar1, header.header, h
       const pulse = pulses[i];
       pulse.age += dt;
       pulse.element.setAttribute('r', String(1.6 + Math.sin(Math.PI * pulse.age) * 1.1));
-      pulse.element.style.opacity = String(Math.max(0, 0.75 * (1 - pulse.age * pulse.age)));
+      pulse.element.style.opacity = String(Math.max(0, 0.25 * (1 - pulse.age * pulse.age)));
       if (pulse.age >= 1) {
         pulse.element.remove();
         pulse.pair.forEach(spawn);

@@ -21,7 +21,7 @@
   pointer-events: none;
   border-radius: inherit;
   overflow: hidden;
-  opacity: 0.75;
+  opacity: 0.3;
 }
 .connection-artwork {
   position: absolute;
@@ -36,15 +36,15 @@
 }
 .connection-grid .grid-travelling-line {
   fill: none;
-  stroke: #a6efff;
-  stroke-width: 1.8;
+  stroke: #6f9baa;
+  stroke-width: 1.4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 2px #55d7ff);
+  filter: drop-shadow(0 0 1px #557b88);
 }
 .connection-grid .grid-connection-pulse {
-  fill: #fff;
-  filter: drop-shadow(0 0 2px #b6f4ff);
+  fill: #91aeb8;
+  filter: drop-shadow(0 0 1px #6f9baa);
 }
 .connection-grid[hidden] { display: none; }
 .featured-accounts {
