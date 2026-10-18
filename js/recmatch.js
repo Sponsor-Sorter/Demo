@@ -1,84 +1,15 @@
 import { supabase } from "./supabaseClient.js";
-import { rankPartners } from "./partnerMatching.js?v=20261011-match1";
-import { supportingProfileCard } from "./finderSupporting.js?v=20261011-match1";
-import {
-  loadPartnerFeedback,
-  loadPartnerPreferences,
-  preferenceProfile,
-  setPartnerFeedback,
-} from "./partnerPreferences.js?v=20261011-prefs1";
+import { loadPartnerRecommendations } from "./partnerRecommendations.mjs?v=20261018-match2";
+import { supportingProfileCard } from "./finderSupporting.js?v=20261018-match2";
+import { setPartnerFeedback } from "./partnerPreferences.js?v=20261011-prefs1";
 const container = document.getElementById("recommendedMatches");
 const helpLabel = document.getElementById("help-accounts-label");
 function showLoading() {
   container.textContent = "Finding compatible partners…";
 }
 async function buildRecommendations(signal) {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session?.user?.id) {
-    throw new Error("Sign in to see partners selected for your profile.");
-  }
-  const fields =
-    "user_id,username,userType,contenttype,platforms,target_audience,preferred_content_format,partnership_type,minfollowers,location,social_handles";
-  const { data: profile, error } = await supabase
-    .from("users_extended_data")
-    .select(fields)
-    .eq("user_id", session.user.id)
-    .abortSignal(signal)
-    .single();
-  if (error || !profile) {
-    throw new Error("Your matching preferences could not be loaded.");
-  }
-  if (!["sponsor", "besponsored"].includes(profile.userType)) {
-    throw new Error("Complete your account type to find partners.");
-  }
-  const role = profile.userType === "sponsor" ? "besponsored" : "sponsor";
-  // Read only the public directory, in stable pages. No private candidate profiles.
-  const candidates = [];
-  for (let start = 0; start < 5000; start += 500) {
-    const { data, error } = await supabase
-      .from("public_user_directory")
-      .select(fields + ",profile_pic,planType")
-      .eq("userType", role)
-      .order("user_id")
-      .range(start, start + 499)
-      .abortSignal(signal);
-    if (error) {
-      throw new Error("Partner profiles could not be loaded. Please retry.");
-    }
-    candidates.push(...data);
-    if (data.length < 500) break;
-  }
-  const ids = [profile.user_id, ...candidates.map((p) => p.user_id)];
-  const followers = {};
-  for (let start = 0; start < ids.length; start += 100) {
-    const { data } = await supabase
-      .from("user_social_followers")
-      .select("user_id,total_followers")
-      .in("user_id", ids.slice(start, start + 100))
-      .abortSignal(signal);
-    for (const row of data || []) {
-      if (row.total_followers != null) {
-        followers[row.user_id] = Number(row.total_followers);
-      }
-    }
-  }
-  const [preferences, feedback] = await Promise.all([
-    loadPartnerPreferences(session.user.id, signal),
-    loadPartnerFeedback(session.user.id, signal),
-  ]);
-  const dismissed = new Set(
-    feedback.filter((f) => f.status === "dismissed").map((f) => f.partner_id),
-  );
-  const saved = new Set(
-    feedback.filter((f) => f.status === "saved").map((f) => f.partner_id),
-  );
-  const matches = rankPartners(
-    preferenceProfile(profile, preferences),
-    candidates.filter((p) => !dismissed.has(p.user_id)),
-    { followers },
-  );
+  const { viewerId, viewerRole, matches } = await loadPartnerRecommendations(supabase, { limit: 6, signal });
+  const saved = new Set(matches.filter(match => match.saved).map(match => match.profile.user_id));
   if (!matches.length) {
     throw new Error(
       "No supported partner matches yet. Add content interests, preferred platforms and partnership preferences to your profile, or explore profiles below.",
@@ -93,7 +24,7 @@ async function buildRecommendations(signal) {
   summary.className = "finder-support-muted";
   summary.style.gridColumn = "1 / -1";
   summary.textContent =
-    "Selected using your saved interests and preferences. Reasons reflect profile information, not guaranteed results. Combined followers may include overlapping audiences.";
+    "Selected using your saved interests and preferences. Reasons reflect profile information, not guaranteed results. Reported combined followers may include overlapping audiences. Missing or old counts need checking.";
   fragment.appendChild(summary);
   const preferencesLink = document.createElement("a");
   preferencesLink.href = "settings.html";
@@ -103,8 +34,9 @@ async function buildRecommendations(signal) {
   for (const match of matches) {
     const p = match.profile;
     const card = supportingProfileCard(p, {
-      isSponsor: profile.userType === "sponsor",
-      followers: followers[p.user_id],
+      isSponsor: viewerRole === "sponsor",
+      followers: match.followers,
+      followerLabel: "reported combined followers",
       imageUrl: p.profile_pic
         ? "https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/" +
           p.profile_pic
@@ -142,7 +74,7 @@ async function buildRecommendations(signal) {
       save.disabled = true;
       try {
         const value = saved.has(p.user_id) ? null : "saved";
-        await setPartnerFeedback(session.user.id, p.user_id, value);
+        await setPartnerFeedback(viewerId, p.user_id, value);
         value ? saved.add(p.user_id) : saved.delete(p.user_id);
         save.textContent = value ? "Saved partner" : "Save partner";
         save.setAttribute("aria-pressed", String(!!value));
@@ -156,7 +88,7 @@ async function buildRecommendations(signal) {
     dismiss.addEventListener("click", async () => {
       dismiss.disabled = true;
       try {
-        await setPartnerFeedback(session.user.id, p.user_id, "dismissed");
+        await setPartnerFeedback(viewerId, p.user_id, "dismissed");
         const notice = document.createElement("p");
         notice.textContent = "Partner dismissed. ";
         const undo = document.createElement("button");
@@ -165,7 +97,7 @@ async function buildRecommendations(signal) {
         undo.addEventListener("click", async () => {
           undo.disabled = true;
           try {
-            await setPartnerFeedback(session.user.id, p.user_id, null);
+            await setPartnerFeedback(viewerId, p.user_id, null);
             loadRecommendations();
           } catch (error) {
             notice.textContent = error.message;

@@ -1,7 +1,7 @@
 // Compact public-profile cards shared by Finder's supporting sections.
 export function supportingProfileCard(
   profile,
-  { isSponsor = false, imageUrl, followers = null } = {},
+  { isSponsor = false, imageUrl, followers = null, followerLabel = "combined followers" } = {},
 ) {
   const card = document.createElement("article");
   card.className = "finder-support-card";
@@ -69,8 +69,8 @@ export function supportingProfileCard(
   const audience = document.createElement("p");
   audience.className = "finder-support-muted";
   audience.textContent =
-    Number(followers) > 0
-      ? Math.round(Number(followers)).toLocaleString() + " combined followers"
+    typeof followers === "number" && Number.isFinite(followers) && followers >= 0
+      ? Math.round(followers).toLocaleString() + " " + followerLabel
       : "Audience data unavailable";
   const actions = document.createElement("div");
   actions.className = "finder-support-actions";
