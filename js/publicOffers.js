@@ -1,5 +1,6 @@
 // ./js/publicOffers.js
 import { supabase } from './supabaseClient.js';
+import { sydneyDate, publicOfferAvailability, publicOfferRequest, publicOfferMessage } from './publicOfferActions.mjs?v=20261018-public1';
 import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
@@ -227,7 +228,7 @@ async function renderSponsorOfferCard(offer) {
           <button style="flex:1 1 0;background:#13b257;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" data-offerid="${offer.id}" class="view-applicants-btn">View Applicants</button>
           <button style="flex:1 1 0;background:#4061b3;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="view-details-btn" data-detailsid="${detailsId}">View Details</button>
           <button style="flex:1 1 0;background:#684ad1;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="view-images-btn" data-imagesid="${imagesId}">View Images</button>
-          <button style="flex:1 1 0;background:#c90b3e;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="remove-offer-btn" data-offerid="${offer.id}">Remove Offer</button>
+          <button style="flex:1 1 0;background:#c90b3e;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="remove-offer-btn" data-offerid="${offer.id}">Close Offer</button>
         </div>
         <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
           <strong>Description:</strong> ${offer.offer_description || ''}<br>
@@ -288,31 +289,30 @@ async function renderSponsorOfferCard(offer) {
     const images = div.querySelector(`#${imagesId}`);
     images.style.display = images.style.display === 'block' ? 'none' : 'block';
   };
+  div.querySelector('.remove-offer-btn').disabled = !publicOfferAvailability(offer).available;
   div.querySelector('.remove-offer-btn').onclick = () => {
     if (
       confirm(
-        'Are you sure you want to remove this offer? This cannot be undone.',
+        'Close this public listing? Its applications and accepted private work will be retained.',
       )
     ) {
       removePublicOffer(offer.id, div);
     }
   };
+  mountPublicAvailability(div, offer);
   return div;
 }
 
-async function removePublicOffer(offerId, cardDiv) {
-  const { error } = await supabase
-    .from('public_offers')
-    .delete()
-    .eq('id', offerId);
-  if (error) {
-    alert('Failed to remove offer: ' + (error.message || 'Unknown error'));
+async function removePublicOffer(offerId) {
+  const { data, error } = await supabase.from('public_offers')
+    .update({ status: 'closed' }).eq('id', offerId)
+    .eq('status', 'open').gte('deadline', sydneyDate()).select('id').maybeSingle();
+  if (error || !data) {
+    alert('The listing could not be closed. Reload its current status.');
     return;
   }
-  if (cardDiv) cardDiv.remove();
-  alert('Offer removed.');
-  if (typeof renderSponsorPublicOffers === 'function')
-    renderSponsorPublicOffers();
+  alert('Listing closed. Applications and accepted private work are retained. No refund is confirmed by this change.');
+  await renderSponsorPublicOffers();
 }
 
 async function showApplicantsModal(offerId) {
@@ -342,6 +342,8 @@ async function showApplicantsModal(offerId) {
   document.body.appendChild(modal);
   document.getElementById('close-modal').onclick = () => modal.remove();
 
+  const { data: parentOffer } = await supabase.from('public_offers').select('status,deadline').eq('id', offerId).maybeSingle();
+  const parentAvailable = publicOfferAvailability(parentOffer).available;
   const list = modal.querySelector('#applicants-list');
   if (error || !applicants || !applicants.length) {
     list.innerHTML = '<p>No applicants for this offer yet.</p>';
@@ -364,11 +366,11 @@ async function showApplicantsModal(offerId) {
     let acceptBtnHtml = '';
     if (a.status === 'accepted') {
       acceptBtnHtml = `<button disabled style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:not-allowed;">Accepted</button>`;
-    } else {
+    } else if (a.status === 'pending' && parentAvailable) {
       acceptBtnHtml = `<button style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:pointer;" onclick="this.disabled=true;this.innerText='Accepting...';window.acceptApplicant('${a.id}', this)">Accept</button>`;
     }
     let withdrawBtnHtml = `<button style="background:#c90b3e;color:#fff;padding:5px 14px;border-radius:7px;border:none;cursor:pointer;margin-left:5px;" onclick="window.deleteApplicant('${a.id}', this)" ${
-      a.status === 'withdrawn' ? 'disabled' : ''
+      a.status !== 'pending' || !parentAvailable ? 'disabled' : ''
     }>Remove</button>`;
 
     const rowId = `app-row-${a.id}`;
@@ -408,276 +410,15 @@ async function showApplicantsModal(offerId) {
   }
 }
 
-// === ACCEPT LOGIC WITH FREE-TIER HANDLING & NOTIFICATION ===
+// Server validates acceptance atomically; funding review currently blocks fulfillment.
 window.acceptApplicant = async function (appId, btn) {
+  if (btn) { btn.disabled = true; btn.innerText = 'Checking...'; }
   try {
-    if (btn) {
-      btn.disabled = true;
-      btn.innerText = 'Accepting...';
-    }
-
-    // 1. Load application + related public offer
-    let { data: app, error: appError } = await supabase
-      .from('public_offer_applications')
-      .select('*, public_offers(*)')
-      .eq('id', appId)
-      .single();
-
-    if (appError || !app) {
-      alert('Could not find application!');
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = 'Accept';
-      }
-      return;
-    }
-
-    const offer = app.public_offers;
-    if (!offer) {
-      alert('Could not load the related offer for this application.');
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = 'Accept';
-      }
-      return;
-    }
-
-    // 2. Resolve sponsee user
-    let sponseeUserId = null,
-      sponseeUsername = '',
-      sponseeEmail = '',
-      sponseeRow = null;
-
-    if (app.sponsee_id) sponseeUserId = app.sponsee_id;
-
-    if (sponseeUserId) {
-      const { data: userData } = await supabase
-        .from('users_extended_data')
-        .select('user_id, username, email, planType')
-        .eq('user_id', sponseeUserId)
-        .maybeSingle();
-      if (userData) {
-        sponseeUserId = userData.user_id;
-        sponseeUsername = userData.username;
-        sponseeEmail = userData.email;
-        sponseeRow = userData;
-      }
-    }
-
-    if (!sponseeUserId && app.sponsee_username) {
-      const { data: userData } = await supabase
-        .from('users_extended_data')
-        .select('user_id, username, email, planType')
-        .eq('username', app.sponsee_username)
-        .maybeSingle();
-      if (userData) {
-        sponseeUserId = userData.user_id;
-        sponseeUsername = userData.username;
-        sponseeEmail = userData.email;
-        sponseeRow = userData;
-      }
-    }
-
-    if (!sponseeUserId) {
-      alert('Cannot determine sponsee user_id! Please check that user exists.');
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = 'Accept';
-      }
-      return;
-    }
-
-    // 3. Sponsor & free-plan limit check
-    const sponsor = await getActiveSponsor();
-    if (!sponsor) {
-      alert("Can't verify sponsor identity.");
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = 'Accept';
-      }
-      return;
-    }
-
-    const sPlanType =
-      (sponseeRow && sponseeRow.planType
-        ? String(sponseeRow.planType)
-        : 'pro'
-      ).toLowerCase();
-
-    if (sPlanType === 'free') {
-      const { count: activeCount, error: activeErr } = await supabase
-        .from('private_offers')
-        .select('id', { count: 'exact', head: true })
-        .eq('sponsee_id', sponseeUserId)
-        .in('stage', [2, 3, 4]);
-
-      if (!activeErr && (activeCount || 0) >= 1) {
-        const sponsorMsg =
-          'This creator already has 1 active sponsorship.\n\n' +
-          'Free Sponsor Sorter accounts can only have one active sponsorship at a time. ' +
-          'Ask them to complete their current sponsorship or upgrade to Pro before you accept them for another offer.';
-
-        alert(sponsorMsg);
-
-        // Notify sponsee that a sponsor *tried* to accept but they hit their free cap
-        try {
-          await notifyOfferUpdate({
-            to_user_id: sponseeUserId,
-            offer_id: offer.id || null,
-            type: 'sponsee_free_limit_block',
-            title: 'Sponsor tried to accept you',
-            message:
-              `${sponsor.username || 'A sponsor'} on a public offer tried to accept you, ` +
-              'but your free account already has an active offer. ' +
-              'Either complete your existing offer first or upgrade to a Pro account.',
-          });
-        } catch (notifyErr) {
-          console.warn(
-            'Failed to send free-plan limit notification to sponsee:',
-            notifyErr,
-          );
-        }
-
-        if (btn) {
-          btn.disabled = false;
-          btn.innerText = 'Accept';
-        }
-        return;
-      }
-    }
-
-    // 4. Prevent duplicate private offer thread for this sponsor + sponsee + offer
-    const { data: existing } = await supabase
-      .from('private_offers')
-      .select('id')
-      .eq('sponsor_id', sponsor.user_id)
-      .eq('sponsee_email', sponseeEmail)
-      .eq('offer_title', offer.offer_title);
-
-    if (existing && existing.length > 0) {
-      if (btn) {
-        btn.innerText = 'Accepted';
-        btn.disabled = true;
-      }
-      alert('You have already accepted this applicant for this offer.');
-      return;
-    }
-
-    // 5. Prepare insert object for private_offers
-    const insertObj = {
-      sponsor_email: sponsor.email,
-      sponsor_company: sponsor.company_name || offer.sponsor_company || '',
-      sponsor_id: sponsor.user_id,
-      sponsor_username: sponsor.username,
-      sponsee_username: sponseeUsername || app.sponsee_username || '',
-      sponsee_email: sponseeEmail || app.sponsee_email || '',
-      sponsee_id: sponseeUserId,
-      offer_title: offer.offer_title,
-      offer_description: offer.offer_description,
-      offer_amount: offer.offer_amount,
-      offer_images: offer.offer_images,
-      active: true,
-      stage: 2,
-      created_at: new Date().toISOString(),
-      deadline: offer.deadline,
-      deliverable_type: offer.deliverable_type,
-      instructions: offer.instructions,
-      job_type: offer.job_type,
-      optional_file: offer.optional_file,
-      payment_schedule: offer.payment_schedule,
-      sponsorship_duration: offer.sponsorship_duration,
-      status: 'accepted',
-      creation_date: new Date().toISOString().slice(0, 10),
-      platforms: offer.platforms,
-      sponsee_live_confirmed: false,
-      sponsor_live_confirmed: false,
-      live_date: null,
-      live_url: null,
-      archived: false,
-    };
-
-    // 6. Insert private offer thread
-    const { data: newOfferRows, error: insertError } = await supabase
-      .from('private_offers')
-      .insert([insertObj])
-      .select('id');
-
-    if (insertError) {
-      console.error('Error inserting private_offers row', insertError);
-      alert(
-        'Failed to create private offer: ' +
-          (insertError.message || 'Unknown error'),
-      );
-      if (btn) {
-        btn.disabled = false;
-        btn.innerText = 'Accept';
-      }
-      return;
-    }
-
-    const insertedPrivateOfferId =
-      newOfferRows && newOfferRows[0] ? newOfferRows[0].id : null;
-
-    // 7. Update application status
-    const { error: updateError } = await supabase
-      .from('public_offer_applications')
-      .update({ status: 'accepted' })
-      .eq('id', appId);
-
-    if (updateError) {
-      alert(
-        'Private offer created, but failed to update application status: ' +
-          updateError.message,
-      );
-    }
-
-    if (btn) {
-      btn.innerText = 'Accepted';
-      btn.disabled = true;
-    }
-    alert('Private offer thread created successfully!');
-
-    // 8. Notify sponsee about acceptance
-    if (insertedPrivateOfferId && sponseeUserId) {
-      await notifyOfferUpdate({
-        to_user_id: sponseeUserId,
-        offer_id: insertedPrivateOfferId,
-        type: 'offer_acceptance',
-        title: 'Offer Accepted!',
-        message: `Congratulations! You have been accepted for "${insertObj.offer_title}".`,
-      });
-    }
-
-    // 9. If offer is now full, remove public offer and notify sponsor
-    const { count: acceptedCount, error: countError } = await supabase
-      .from('public_offer_applications')
-      .select('*', { count: 'exact', head: true })
-      .eq('offer_id', offer.id)
-      .eq('status', 'accepted');
-
-    const maxApplicants = offer.max_applicants || 0;
-    if (!countError && acceptedCount >= maxApplicants && maxApplicants > 0) {
-      await notifyOfferUpdate({
-        to_user_id: sponsor.user_id,
-        offer_id: offer.id,
-        type: 'public_offer_full',
-        title: 'Offer Filled',
-        message: `Your public offer "${offer.offer_title}" has reached the maximum number of accepted applicants and has now been removed.`,
-      });
-      removePublicOffer(offer.id);
-      if (typeof renderSponsorPublicOffers === 'function')
-        renderSponsorPublicOffers();
-    }
-  } catch (err) {
-    console.error('acceptApplicant error', err);
-    alert(
-      'Something went wrong while accepting this applicant. Please try again.',
-    );
-    if (btn) {
-      btn.disabled = false;
-      btn.innerText = 'Accept';
-    }
-  }
+    const result = await publicOfferRequest(supabase, 'accept', appId);
+    alert(result.ok ? 'Application accepted.' : publicOfferMessage(result.code));
+    if (result.ok) await renderSponsorPublicOffers();
+  } catch (error) { alert(error.message); }
+  finally { if (btn) { btn.disabled = false; btn.innerText = 'Accept'; } }
 };
 
 window.deleteApplicant = async function (appId, btn) {
@@ -965,8 +706,9 @@ async function renderSponseePublicOfferAppCard(app, offer) {
     const images = div.querySelector(`#${imagesId}`);
     images.style.display = images.style.display === 'block' ? 'none' : 'block';
   };
+  div.querySelector('.withdraw-btn').disabled = app.status !== 'pending' || !publicOfferAvailability(offer).available;
   div.querySelector('.withdraw-btn').onclick = async () => {
-    if (app.status === 'withdrawn') return;
+    if (app.status !== 'pending' || !publicOfferAvailability(offer).available) return;
     if (
       !confirm('Are you sure you want to withdraw your application?')
     )
@@ -981,6 +723,7 @@ async function renderSponseePublicOfferAppCard(app, offer) {
       alert('Error withdrawing: ' + error.message);
     }
   };
+  mountPublicAvailability(div, offer);
   return div;
 }
 
@@ -1164,90 +907,18 @@ window.showApplyModal = function (offer) {
   document.getElementById('apply-offer-form').onsubmit = async function (e) {
     e.preventDefault();
 
-    const {
-      data: { user },
-      error: userErr,
-    } = await supabase.auth.getUser();
-    if (userErr || !user) {
-      alert('Not logged in!');
-      return;
-    }
-
-    // Free-plan monthly public application limit (10 per calendar month)
-    let planType = 'pro';
+    const submit = e.currentTarget.querySelector('button[type="submit"]');
+    submit.disabled = true;
     try {
-      const { data: ext } = await supabase
-        .from('users_extended_data')
-        .select('planType')
-        .eq('user_id', user.id)
-        .maybeSingle();
-      if (ext && ext.planType) {
-        planType = ext.planType;
-      }
-    } catch (err) {
-      console.warn(
-        'Could not load planType for public application limit:',
-        err,
-      );
-    }
-
-    if (String(planType).toLowerCase() === 'free') {
-      const startOfMonth = new Date();
-      startOfMonth.setDate(1);
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      const { count: appCount, error: countError } = await supabase
-        .from('public_offer_applications')
-        .select('*', { count: 'exact', head: true })
-        .eq('sponsee_id', user.id)
-        .gte('created_at', startOfMonth.toISOString());
-
-      if (!countError && (appCount || 0) >= 10) {
-        alert(
-          'Free Sponsor Sorter accounts can apply to up to 10 public offers per month.\n\n' +
-            'You\'ve reached your monthly limit. To apply for more offers this month, ' +
-            'please upgrade to Pro in Settings.',
-        );
-        return;
-      }
-    }
-
-    const { data: existing } = await supabase
-      .from('public_offer_applications')
-      .select('id')
-      .eq('offer_id', offer.id)
-      .eq('sponsee_id', user.id)
-      .maybeSingle();
-
-    if (existing && existing.id) {
-      alert('You have already applied for this offer.');
-      return;
-    }
-
-    const application_text =
-      document.getElementById('application_text').value.trim();
-    const sponsee_email = user.email || user.user_metadata?.email || '';
-
-    const { error } = await supabase
-      .from('public_offer_applications')
-      .insert([
-        {
-          offer_id: offer.id,
-          sponsee_id: user.id,
-          sponsee_username: user.user_metadata?.username || '',
-          sponsee_email,
-          status: 'pending',
-          application_text,
-          created_at: new Date().toISOString(),
-        },
-      ]);
-
-    if (error) {
-      alert('Could not apply: ' + error.message);
-    } else {
+      const result = await publicOfferRequest(supabase, 'apply', offer.id,
+        document.getElementById('application_text').value.trim());
+      if (!result.ok) { alert(publicOfferMessage(result.code)); return; }
+      if (!result.replayed) void notifySponsorOnApplication({ offer_id: offer.id, application_id: result.application_id }).catch(() => console.warn('Application submitted; notification could not be confirmed.'));
       alert('Application submitted!');
       modal.remove();
-    }
+    } catch (error) { alert(error.message); }
+    finally { submit.disabled = false; }
+
   };
 
   modal.onclick = (e) => {
@@ -1259,7 +930,12 @@ export async function notifySponsorOnApplication({
   offer_id,
   sponsee_user_id,
   sponsee_username,
+  application_id,
 }) {
+  if (!sponsee_username && application_id) {
+    const { data: application } = await supabase.from('public_offer_applications').select('sponsee_username').eq('id', application_id).maybeSingle();
+    sponsee_username = application?.sponsee_username || 'A creator';
+  }
   const { data: offerRow } = await supabase
     .from('public_offers')
     .select('sponsor_id, offer_title, id')
@@ -1292,4 +968,13 @@ if (typeof window !== 'undefined') {
       });
     }
   });
+}
+
+function mountPublicAvailability(card, offer) {
+  const state = publicOfferAvailability(offer);
+  if (state.available) return;
+  const notice = document.createElement('p');
+  notice.setAttribute('role', 'status');
+  notice.textContent = state.message;
+  card.appendChild(notice);
 }

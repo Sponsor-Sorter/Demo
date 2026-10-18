@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=name=>readFileSync(new URL(`../${name}`,import.meta.url),'utf8').replace(/\r\n/g,'\n');
 const sponsor=read('js/sponsorOffers.js'),creator=read('js/sponseeOffers.js');
-const baseline=name=>execFileSync('git',['-c','gc.auto=0','-c',`safe.directory=${root.replace(/\\/g,'/').replace(/\/$/,'')}`,'-C',root,'show',`47c52df34b284059f030655f801b4b7016f27692:${name}`],{encoding:'utf8'}).replace(/\r\n/g,'\n');
+const baseline=(name,revision='47c52df34b284059f030655f801b4b7016f27692')=>execFileSync('git',['-c','gc.auto=0','-c',`safe.directory=${root.replace(/\\/g,'/').replace(/\/$/,'')}`,'-C',root,'show',`${revision}:${name}`],{encoding:'utf8'}).replace(/\r\n/g,'\n');
 
 test('private comment/status flows no longer issue duplicate browser notifications',()=>{
   for(const source of [sponsor,creator]) {
@@ -48,7 +48,7 @@ test('notification edits remove exactly seven post-commit helper calls',()=>{
   assert.equal(before.length-after.length,7);
 });
 test('unrelated producers, inbox readers, 2FA and messaging remain byte-identical',()=>{
-  for(const file of ['js/alerts.js','js/messages.js','js/groupOffers.js','js/friendGroups.js','js/publicOffers.js','js/reviewPage.js','js/AffiliateAdmin.js','js/AffiliateDashboard.js','js/adminLogic.js','js/login.js','js/twofa.js','service-worker.js']) assert.equal(read(file),baseline(file).replace("from './FamBot.js'","from './FamBot.js?v=20261018-fambot1'").replace('.eq("action", "auto-strike")','.in("action", ["auto-strike", "auto-ban", "fambot-unban"])'),file);
+  for(const file of ['js/alerts.js','js/messages.js','js/groupOffers.js','js/friendGroups.js','js/reviewPage.js','js/AffiliateAdmin.js','js/AffiliateDashboard.js','js/adminLogic.js','js/login.js','js/twofa.js','service-worker.js']) assert.equal(read(file),baseline(file,file==='js/login.js'?'89b3b746426ab9b7dbedcd1ca46bc55654e65c63':undefined).replace("from './FamBot.js'","from './FamBot.js?v=20261018-fambot1'").replace('.eq("action", "auto-strike")','.in("action", ["auto-strike", "auto-ban", "fambot-unban"])'),file);
 });
 test('dashboard cache keys load the new offer modules while shared alerts stay loaded',()=>{
   for(const [page,module] of [['dashboardsponsor.html','sponsorOffers'],['dashboardsponsee.html','sponseeOffers']]) {
@@ -56,4 +56,12 @@ test('dashboard cache keys load the new offer modules while shared alerts stay l
     assert.match(source,new RegExp(`${module}\\.js\\?v=\\d{8}-[a-z0-9-]+`));
     assert.match(source,/js\/alerts\.js\?/);
   }
+});
+
+test('public application notification remains separate from committed private UPDATE events',()=>{
+  const source=read('js/publicOffers.js');
+  assert.match(source,/export async function notifySponsorOnApplication/);
+  assert.match(source,/type: 'public_offer_application'/);
+  assert.match(source,/if \(!result.replayed\) void notifySponsorOnApplication/);
+  assert.match(read('finder.html'),/if \(!result.replayed\) void notifySponsorOnApplication/);
 });

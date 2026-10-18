@@ -376,6 +376,7 @@
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
+import { sydneyDate, publicOfferRequest, publicOfferMessage } from './js/publicOfferActions.mjs?v=20261018-public1';
 
 import { escapeFinderText } from './js/finderDiscovery.js?v=20261011-prefs1';
 
@@ -387,7 +388,7 @@ async function renderRecentOffers() {
   const { data: offers, error } = await supabase
     .from('public_offers')
     .select('id, offer_title, offer_amount, sponsor_username, sponsor_id, max_applicants, deadline, creation_date')
-    .eq('status', 'open')
+    .eq('status', 'open').gte('deadline', sydneyDate())
     .order('creation_date', { ascending: false })
     .limit(8);
 
@@ -468,7 +469,8 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
 
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
-import { notifySponsorOnApplication } from './js/publicOffers.js?notifications=20261012brand6';
+import { sydneyDate, publicOfferRequest, publicOfferMessage } from './js/publicOfferActions.mjs?v=20261018-public1';
+import { notifySponsorOnApplication } from './js/publicOffers.js?notifications=20261012brand6&publicoffers=20261018-1';
 import { supportingProfileCard } from './js/finderSupporting.js?v=20261011-support3';
 import { mountFinderDiscovery, escapeFinderText } from './js/finderDiscovery.js?v=20261011-prefs1';
 
@@ -688,7 +690,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let query = supabase
       .from('public_offers')
       .select('*')
-      .eq('status', 'open')
+      .eq('status', 'open').gte('deadline', sydneyDate())
       .order('creation_date', { ascending: false });
 
     if (search.title) query = query.ilike('offer_title', `%${search.title}%`);
@@ -1095,49 +1097,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('cancel-modal').onclick = () => modal.remove();
     document.getElementById('submit-application').onclick = async () => {
       const msg = document.getElementById('application-message').value.trim();
-      modal.remove();
+      const submit = document.getElementById('submit-application');
+      submit.disabled = true;
       await window.applyToOffer(offerId, btn, msg);
+      if (btn.innerText === 'Applied!') modal.remove();
+      else submit.disabled = false;
     };
   };
 
   window.applyToOffer = async function(offerId, btn, applicationText = '') {
     btn.disabled = true;
     btn.innerText = 'Applying...';
-    const userId = window.currentUser.id;
-    const { data: userExt, error: userExtErr } = await supabase
-      .from('users_extended_data')
-      .select('username, email')
-      .eq('user_id', userId)
-      .single();
-    if (userExtErr || !userExt) {
-      btn.innerText = 'Error';
+    try {
+      const result = await publicOfferRequest(supabase, 'apply', offerId, applicationText);
+      if (!result.ok) throw new Error(publicOfferMessage(result.code));
+      if (!result.replayed) void notifySponsorOnApplication({ offer_id: offerId, application_id: result.application_id }).catch(() => console.warn('Application submitted; notification could not be confirmed.'));
+      btn.innerText = 'Applied!';
+      btn.style.background = '#13b257';
+    } catch (error) {
+      alert(error.message);
+      btn.innerText = 'Apply';
       btn.disabled = false;
-      return;
     }
-    const { error: applyErr } = await supabase
-      .from('public_offer_applications')
-      .insert([{
-        offer_id: offerId,
-        sponsee_id: userId,
-        sponsee_username: userExt.username,
-        sponsee_email: userExt.email,
-        status: 'pending',
-        application_text: applicationText,
-        created_at: new Date().toISOString()
-      }]);
-    if (applyErr) {
-      btn.innerText = 'Error';
-      btn.disabled = false;
-      return;
-    }
-    btn.innerText = 'Applied!';
-    btn.style.background = '#13b257';
-
-    await notifySponsorOnApplication({
-      offer_id: offerId,
-      sponsee_user_id: userId,
-      sponsee_username: userExt.username
-    });
   };
 
   /* ---------- Toggle wiring (add Group Search) ---------- */

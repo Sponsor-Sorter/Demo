@@ -1,5 +1,6 @@
 // ./js/globalSearch.js
 import { supabase } from './supabaseClient.js';
+import { sydneyDate } from './publicOfferActions.mjs?v=20261018-public1';
 
 /** Feature flags (tables now provided) */
 const ENABLE_FORUM = true;  // forum_posts schema provided ✅
@@ -221,6 +222,7 @@ const runSearch = debounce(async (q) => {
         const { data, error } = await supabase
           .from('public_offers')
           .select('id, offer_title, offer_description, deadline')
+          .eq('status', 'open').gte('deadline', sydneyDate())
           .or(`offer_title.ilike.${like},offer_description.ilike.${like}`)
           .limit(8);
         if (error || !data) return [];

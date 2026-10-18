@@ -15,7 +15,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="./js/sponsorCharts.js"></script>
   <script type="module" src="./js/onboarding.js?v=20261012-setup1"></script>
-  <script type="module" src="./js/globalSearch.js"></script>
+  <script type="module" src="./js/globalSearch.js?publicoffers=20261018-1"></script>
   <script type="module" src="./js/messages.js?v=20261015-cache1"></script>
   <script type="module" src="./js/wallet.js?v=20261018-connect5"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -249,12 +249,13 @@
     </fieldset>
 
     <fieldset>
-      <legend>Open Public Offers</legend>
+      <legend>Public Offers</legend>
       Filter by Status:
       <select id="sponsor-offer-status-filter">
         <option value="">All</option>
         <option value="open">Open</option>
         <option value="closed">Closed</option>
+                <option value="expired">Expired</option>
       </select>
 
       <div id="offers-container"></div>
@@ -445,7 +446,7 @@
 <script type="module" src="./js/privacy.js?v=20261015-privacy1"></script>
 <script type="module" src="./js/settings.js?v=20261018-billing1&fambot=20261018-1&referrals=20261018-1"></script>
 <script type="module">
-  import { renderSponsorPublicOffers } from './js/publicOffers.js?notifications=20261012brand6';
+  import { renderSponsorPublicOffers } from './js/publicOffers.js?notifications=20261012brand6&publicoffers=20261018-1';
   document.addEventListener('DOMContentLoaded', () => renderSponsorPublicOffers('offers-container'));
 </script>
 
