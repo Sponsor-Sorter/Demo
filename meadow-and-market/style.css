@@ -398,3 +398,5 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 
 /* Flower atlas padding must never block neighbouring fields. */
 .farm-grid>.farm-object.flowers img{pointer-events:none!important}
+
+.farm-grid>.farm-object img{-webkit-user-drag:none;touch-action:none}
