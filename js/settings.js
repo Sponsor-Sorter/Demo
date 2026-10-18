@@ -1,7 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
-import { anchorSettingsDropdown } from './settingsDropdown.mjs?v=20261018-menu1';
+import { anchorSettingsDropdown } from './settingsDropdown.mjs?v=20261018-menu2';
 import { disconnectProvider, disconnectMessage } from './providerDisconnect.mjs?v=20261018-disconnect1';
 import { isFreeMonthReward } from './referralRewards.mjs?v=20261018-referral1';
 import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
