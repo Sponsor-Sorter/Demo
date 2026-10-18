@@ -8,6 +8,7 @@ function harness(){
  const doc={addEventListener:(name,fn)=>docEvents[name]=fn,body:{appendChild:el=>el.parentElement=doc.body},head:{appendChild:el=>doc.sheet=el},getElementById:()=>null,createElement:()=>({})};
  const trigger={getBoundingClientRect:()=>anchor,setAttribute:(k,v)=>attrs[k]=v,addEventListener:(name,fn)=>triggerEvents[name]=fn,contains:target=>target==='cog',focus:()=>focused=true};
  const panel={id:'settings-dropdown',ownerDocument:doc,addEventListener:(name,fn)=>panelEvents[name]=fn,style:{display:'none',setProperty:(key,value,priority)=>properties[key]={value,priority}},contains:target=>target==='menu'};
+ let scroll=0;Object.defineProperty(panel,'scrollTop',{get:()=>scroll,set:value=>{if(panel.style.display!=='none')scroll=value;}});
  const controls=anchorSettingsDropdown(trigger,panel,win);
  return {win,panel,doc,panelEvents,properties,attrs,events,docEvents,triggerEvents,controls,frames,setRect:value=>anchor=value,flush:()=>frames.splice(0).forEach(fn=>fn()),focused:()=>focused};
 }
@@ -44,7 +45,7 @@ test('cog toggles without an immediate outside-click close',()=>{
  const h=harness();let stopped=0;h.triggerEvents.click({stopPropagation:()=>stopped++});assert.equal(h.panel.style.display,'block');h.triggerEvents.click({stopPropagation:()=>stopped++});assert.equal(h.panel.style.display,'none');assert.equal(stopped,2);
 });
 
-test('reopening starts at first setting instead of retaining old scroll',()=>{const h=harness();h.panel.scrollTop=250;h.controls.open();assert.equal(h.panel.scrollTop,0);});
+test('reopening starts at first setting instead of retaining old scroll',()=>{const h=harness();h.controls.open();h.panel.scrollTop=250;h.controls.close();h.controls.open();assert.equal(h.panel.scrollTop,0);});
 
 test('menu is portaled outside navigation and gets scoped row styles',()=>{const h=harness();assert.equal(h.panel.parentElement,h.doc.body);assert.match(h.doc.sheet.textContent,/#settings-dropdown ul/);assert.match(h.doc.sheet.textContent,/transition:none!important/);});
 test('settings action closes menu and updates expanded state',()=>{const h=harness();h.controls.open();h.panelEvents.click({target:{closest:()=>({})}});assert.equal(h.panel.style.display,'none');assert.equal(h.attrs['aria-expanded'],'false');});

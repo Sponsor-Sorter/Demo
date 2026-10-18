@@ -50,7 +50,7 @@ export function anchorSettingsDropdown(trigger, panel, win = window) {
     if (frame !== null || panel.style.display !== 'block') return;
     frame = win.requestAnimationFrame(() => { frame = null; position(); });
   };
-  const open = () => { panel.scrollTop = 0; panel.style.display = 'block'; trigger.setAttribute('aria-expanded', 'true'); position(); };
+  const open = () => { panel.style.display = 'block'; panel.scrollTop = 0; trigger.setAttribute('aria-expanded', 'true'); position(); };
   const toggle = event => { event.stopPropagation(); panel.style.display === 'block' ? close() : open(); };
   const outside = event => { if (!panel.contains(event.target) && !trigger.contains(event.target)) close(); };
   const keydown = event => { if (event.key === 'Escape' && panel.style.display === 'block') { close(); trigger.focus(); } };
