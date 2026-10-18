@@ -1,0 +1,32 @@
+{
+  "directions": [
+    "S",
+    "SW",
+    "W",
+    "NW",
+    "N",
+    "NE",
+    "E",
+    "SE"
+  ],
+  "columns": 8,
+  "rows": 8,
+  "frameSize": 128,
+  "walkingFramesPerDirection": 8,
+  "actionFramesPerDirection": 8,
+  "characters": [
+    "jade",
+    "rhys",
+    "jay"
+  ],
+  "actions": {
+    "jade": "harvest with basket and sickle",
+    "rhys": "sow with seed packet and hand trowel",
+    "jay": "animal care with feed bucket and brush",
+    "drink": "raise, sip and lower a wooden drinking cup"
+  },
+  "drinkingFramesPerDirection": 8,
+  "totalFrames": 576,
+  "extraction": "Explicit inspected source row boundaries; transparent connected components; fixed foot baseline and torso anchor. Seven-row drink sources mapped into eight directional output rows with mirrored side views.",
+  "sourceRowCuts": {}
+}

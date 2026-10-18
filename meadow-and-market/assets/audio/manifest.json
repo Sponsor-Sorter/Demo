@@ -1,0 +1,165 @@
+{
+  "provider": "ElevenLabs",
+  "generated": "2026-10-19",
+  "musicTitle": "Sunny Harvest Walk",
+  "files": [
+    {
+      "id": "farm-theme",
+      "kind": "music",
+      "bytes": 1921402
+    },
+    {
+      "id": "plant",
+      "kind": "effect",
+      "bytes": 20106
+    },
+    {
+      "id": "water",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "harvest",
+      "kind": "effect",
+      "bytes": 28883
+    },
+    {
+      "id": "build",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "upgrade",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "coins",
+      "kind": "effect",
+      "bytes": 23449
+    },
+    {
+      "id": "tap",
+      "kind": "effect",
+      "bytes": 6731
+    },
+    {
+      "id": "chicken",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "cow",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "sheep",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "goat",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "meadow-ambience",
+      "kind": "ambience",
+      "bytes": 481115
+    },
+    {
+      "id": "bridge",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "care",
+      "kind": "effect",
+      "bytes": 25121
+    },
+    {
+      "id": "till",
+      "kind": "effect",
+      "bytes": 21777
+    },
+    {
+      "id": "jade-welcome",
+      "kind": "voice",
+      "bytes": 109759
+    },
+    {
+      "id": "jade-crops",
+      "kind": "voice",
+      "bytes": 131702
+    },
+    {
+      "id": "jade-till",
+      "kind": "voice",
+      "bytes": 139225
+    },
+    {
+      "id": "jade-plant",
+      "kind": "voice",
+      "bytes": 145181
+    },
+    {
+      "id": "jade-water",
+      "kind": "voice",
+      "bytes": 166183
+    },
+    {
+      "id": "jade-harvest",
+      "kind": "voice",
+      "bytes": 160541
+    },
+    {
+      "id": "rhys-welcome",
+      "kind": "voice",
+      "bytes": 133583
+    },
+    {
+      "id": "rhys-place",
+      "kind": "voice",
+      "bytes": 147062
+    },
+    {
+      "id": "rhys-move",
+      "kind": "voice",
+      "bytes": 174960
+    },
+    {
+      "id": "rhys-upgrade",
+      "kind": "voice",
+      "bytes": 168064
+    },
+    {
+      "id": "rhys-expand",
+      "kind": "voice",
+      "bytes": 128880
+    },
+    {
+      "id": "jay-welcome",
+      "kind": "voice",
+      "bytes": 139225
+    },
+    {
+      "id": "jay-care",
+      "kind": "voice",
+      "bytes": 175901
+    },
+    {
+      "id": "jay-sell",
+      "kind": "voice",
+      "bytes": 151764
+    },
+    {
+      "id": "place",
+      "source": "build"
+    },
+    {
+      "id": "reward",
+      "source": "upgrade"
+    }
+  ]
+}

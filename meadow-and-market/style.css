@@ -332,3 +332,13 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .plot-upgrade-stages>div.active{background:#e5edcf;border-color:#a4b48b}
 .plot-upgrade-stages strong{font-size:20px}.plot-upgrade-stages span{font-size:11px}.plot-upgrade-stages small{font-size:10px;color:#7b795f}
 #manage-plot,#move-plot{margin-top:12px;min-height:40px}
+
+.audio-settings h3{margin-top:0}.audio-mute{display:flex;align-items:center;gap:10px;margin:12px 0}.audio-slider{display:grid;grid-template-columns:120px minmax(70px,1fr) 42px;align-items:center;gap:10px;margin:16px 0}.audio-slider input{width:100%;accent-color:#426e51;min-height:32px;touch-action:pan-x}.audio-slider output{text-align:right;font-size:12px}@media(max-width:450px){.audio-slider{grid-template-columns:92px minmax(65px,1fr) 36px;gap:6px}}
+
+.well-art{position:absolute;left:-5%;bottom:29%;width:110%;height:230%;pointer-events:none}.well-art img{width:100%;height:100%;object-fit:contain;object-position:center bottom}.well-preview{display:block;width:180px;height:200px;object-fit:contain;margin:0 auto}.well-helper-face{width:48px;height:48px;object-fit:contain}.farm-worker{position:absolute;width:7%;aspect-ratio:1;transform:translate(-50%,-88%);pointer-events:none;contain:layout style;filter:drop-shadow(0 2px 1px #30492a30)}.worker-sprite{position:absolute;inset:0;background-size:800% 800%;background-repeat:no-repeat}.worker-shadow{position:absolute;left:34%;bottom:6%;width:32%;height:9%;border-radius:50%;background:#26402735}.worker-name{position:absolute;bottom:0;left:50%;transform:translate(-50%,100%);font-size:7px;background:#fff8e5d9;color:#45623b;border-radius:5px;padding:1px 4px;white-space:nowrap}.farm-worker[hidden]{display:none}
+
+/* Keep currency, journal and settings reachable while a panel is open. */
+.side-panel{top:calc(env(safe-area-inset-top,0px) + 78px)!important}
+
+
+.farm-object.hold-pending::after{content:"";position:absolute;inset:-5px;border:3px solid #f7d26c;border-radius:50%;pointer-events:none;opacity:0;animation:object-hold-feedback 1.2s linear forwards}@keyframes object-hold-feedback{0%,25%{opacity:0;transform:scale(.75)}100%{opacity:1;transform:scale(1)}}

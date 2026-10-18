@@ -2,19 +2,19 @@
   'use strict';
   const people = {
     jade: {name:'Farmer Jade',role:'Growing & harvesting',image:'jade'},
-    rhys: {name:'Rhys',role:'Building & making room',image:'rhys'},
-    jay: {name:'Jay',role:'Animal care & village life',image:'jay'}
+    rhys: {name:'Farmer Rhys',role:'Building & making room',image:'rhys'},
+    jay: {name:'Farmer Jay',role:'Animal care & village life',image:'jay'}
   };
   const lessons = [
     {id:'till',person:'jade',title:'Start with healthy soil',text:'Tap an empty dirt bed once to till it. The soil stays the same size through every crop stage. If all your beds are busy, we can place a free new one.',action:'Show me a garden bed',focus:'till'},
-    {id:'plant',person:'jade',title:'Choose what to grow',text:'Tap a tilled bed, then choose a crop. A seed comes from your basket first; otherwise its listed seed price is paid in gold. Different farms offer different crops.',action:'Find a bed to plant',focus:'plant'},
-    {id:'water',person:'jade',title:'Give your crop a drink',text:'Tap a growing crop to see its stages and remaining time. Water it once for 1 gold to earn a bonus at harvest. Only the plant grows; its soil and tile stay put.',action:'Show a growing crop',focus:'water'},
+    {id:'plant',person:'jade',title:'Choose what to grow',text:'Tap a tilled bed, then choose a crop. The listed seed price pays for every tile in the field. Different farms offer different crops.',action:'Find a bed to plant',focus:'plant'},
+    {id:'water',person:'jade',title:'Give your crop a drink',text:'Tap a growing crop to see its stages and remaining time. Water the field once for one gold per tile to earn a bonus at harvest. Only the plant grows; its soil and tile stay put.',action:'Show a growing crop',focus:'water'},
     {id:'harvest',person:'jade',title:'Pick your first harvest',text:'A sparkle marks a fully grown crop. Tap it to collect your produce, then plant the tilled bed again. Crops also grow while you are away. We can learn another lesson while we wait.',action:'Find a crop to harvest',focus:'harvest'},
-    {id:'place',person:'rhys',title:'Make the farm your own',text:'I’m Rhys, Jade’s brother. Open Build, swipe across the item row, then tap an item and a clear diamond to place it. Minimize the tray when you need more room. Let’s try a free garden bed.',action:'Choose a free garden bed',focus:'place'},
+    {id:'place',person:'rhys',title:'Make the farm your own',text:'I’m Farmer Rhys, Jade’s brother. Open Build, swipe across the item row, then tap an item and a clear diamond to place it. Minimize the tray when you need more room. Let’s try a free garden bed.',action:'Choose a free garden bed',focus:'place'},
     {id:'move',person:'rhys',title:'Move it into place',text:'In Build mode, tap an existing item and then a clear tile to move it. You can also drag it, or hold it to pick it up. Its highlighted ground area shows the space it needs. Undo reverses the last move.',action:'Pick up an item',focus:'move'},
-    {id:'upgrade',person:'rhys',title:'Give your animals more room',text:'Tap a coop, barn, paddock, or orchard in Tend mode to see its upgrades. Each stage needs enough gold and clear space. Bigger homes hold more animals and improve their yield.',action:'Show a building’s upgrades',focus:'upgrade'},
+    {id:'upgrade',person:'rhys',title:'Give your animals more room',text:'Tap a coop, barn, paddock, orchard, field, or well in Tend mode to see its upgrades. Each stage needs enough gold and clear space. Bigger homes hold more animals and improve their yield.',action:'Show a building’s upgrades',focus:'upgrade'},
     {id:'expand',person:'rhys',title:'Open another part of the meadow',text:'The expand button on the right opens more land on this farm. Check the price first, and keep your existing farm growing as you unlock the new space.',action:'See the next expansion',focus:'expand'},
-    {id:'care',person:'jay',title:'Meet your animal friends',text:'I’m Jay—Rhys is my twin! Open Animals and tap Care to feed and clean a friend. Food, cleanliness, and happiness help them produce eggs or milk. Basic care is free.',action:'Visit animal care',focus:'care'},
+    {id:'care',person:'jay',title:'Meet your animal friends',text:'I’m Farmer Jay—Farmer Rhys is my twin! Open Animals and tap Care to feed and clean a friend. Food, cleanliness, and happiness help them produce eggs or milk. Basic care is free.',action:'Visit animal care',focus:'care'},
     {id:'sell',person:'jay',title:'Bring a basket to the village',text:'The Market buys individual goods and offers requests with better rewards. Read what a vendor needs and compare it with your basket. Completing requests also earns village reputation.',action:'Open the village market',focus:'sell'}
   ];
   let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0;
@@ -29,26 +29,27 @@
   const next = person => lessons.find(l=>(!person||l.person===person)&&!get().completed.includes(l.id));
   function save(){api.save();updateLauncher()}
   function updateLauncher(){if(!launcher)return;const t=get();launcher.querySelector('small').textContent=t.completed.length+'/'+lessons.length+' lessons';launcher.classList.toggle('guide-inviting',!t.started)}
-  function hide(){panel.hidden=true;document.querySelectorAll('.guide-target').forEach(el=>el.classList.remove('guide-target'))}
-  function card(person,title,text,action,label,extra=''){
+  function hide(){window.meadowAudio?.stopVoice();panel.hidden=true;document.querySelectorAll('.guide-target').forEach(el=>el.classList.remove('guide-target'))}
+  function card(person,title,text,action,label,extra='',voice=''){
     const p=people[person]; panel.hidden=false;panel.dataset.person=person;
-    panel.innerHTML=`<button class="guide-close" aria-label="Minimize guide">−</button><img class="guide-portrait" src="${image(person)}" alt="${p.name}"><div class="guide-copy"><small>${p.name} · ${p.role}</small><h2>${title}</h2><p>${text}</p><div class="guide-actions">${action?`<button class="primary-button guide-main">${label}</button>`:''}<button class="guide-lessons">All lessons</button></div>${extra}</div>`;
+    panel.innerHTML=`<button class="guide-close" aria-label="Minimize guide">−</button><img class="guide-portrait" src="${image(person)}" alt="${p.name}"><div class="guide-copy"><small>${p.name} · ${p.role}</small><h2>${title}</h2><p>${text}</p><div class="guide-actions">${action?`<button class="primary-button guide-main">${label}</button>`:''}${voice?'<button class="guide-replay" aria-label="Replay spoken tip">🔊 Listen</button>':''}<button class="guide-lessons">All lessons</button></div>${extra}</div>`;
     panel.querySelector('.guide-close').onclick=hide;
     panel.querySelector('.guide-lessons').onclick=menu;
     if(action)panel.querySelector('.guide-main').onclick=action;
+    if(voice){window.meadowAudio?.speak(voice);panel.querySelector('.guide-replay').onclick=()=>window.meadowAudio?.speak(voice)}else window.meadowAudio?.stopVoice();
     lastTipAt=Date.now();
   }
   function showLesson(lesson){
-    if(!lesson){card('jade','You know your way around!','You’ve tried every farm lesson. Rhys, Jay and I are still here whenever you want a reminder or a helping hand.',menu,'Meet your farm helpers');return}
+    if(!lesson){card('jade','You know your way around!','You’ve tried every farm lesson. Farmer Rhys, Farmer Jay and I are still here whenever you want a reminder or a helping hand.',menu,'Meet your farm helpers');return}
     currentLesson=lesson;const done=get().completed.includes(lesson.id);
-    card(lesson.person,lesson.title,lesson.text,()=>{silenceUntil=Date.now()+1200;hide();api.focus(lesson.focus)},lesson.action,`<small class="guide-reward">${done?'✓ You’ve completed this lesson':'Complete this task to earn 10 gold · once per lesson'}</small>`);
+    card(lesson.person,lesson.title,lesson.text,()=>{silenceUntil=Date.now()+1200;hide();api.focus(lesson.focus)},lesson.action,`<small class="guide-reward">${done?'✓ You’ve completed this lesson':'Complete this task to earn 10 gold · once per lesson'}</small>`,lesson.person+'-'+lesson.id);
   }
-  function welcome(){card('jade','Welcome to our little corner!','I’m Jade, and my twin brothers Rhys and Jay help around the farm. I’ll show you growing, Rhys knows building, and Jay loves animals. Try a lesson whenever you like—we’ll help you find the right place to tap.',()=>{get().started=true;save();showLesson(next())},'Let’s learn together')}
+  function welcome(){card('jade','Welcome to our little corner!','I’m Jade, and my twin brothers Farmer Rhys and Farmer Jay help around the farm. I’ll show you growing, Farmer Rhys knows building, and Farmer Jay loves animals. Try a lesson whenever you like—we’ll help you find the right place to tap.',()=>{get().started=true;save();showLesson(next())},'Let’s learn together','','jade-welcome')}
   function menu(){
     hide();const dialog=document.getElementById('guide-dialog'),t=get();
-    dialog.innerHTML=`<div class="sheet-head"><div><small class="eyebrow">YOUR FARM HELPERS</small><h2>Jade, Rhys & Jay</h2></div><button class="close-button guide-menu-close" aria-label="Close farm helpers">×</button></div><p class="sheet-copy">Little lessons, real farm tasks. Completed lessons stay saved with your farm.</p><div class="guide-team">${Object.entries(people).map(([id,p])=>`<button class="guide-person" data-person="${id}"><img src="${image(id)}" alt="${p.name}"><strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div><div class="guide-lesson-list">${lessons.map(l=>`<button data-lesson="${l.id}"><span>${t.completed.includes(l.id)?'✓':'○'}</span><div><strong>${l.title}</strong><small>${people[l.person].name}</small></div></button>`).join('')}</div><div class="section-label">LEND ME A HAND</div><div class="guide-assists"><button data-assist="harvest">Jade: harvest ready crops</button><button data-assist="care">Jay: care for my animals</button><button data-assist="space">Rhys: find building space</button></div><label class="guide-pause"><input type="checkbox" id="guide-pause" ${t.paused?'checked':''}> Pause automatic tips (help stays available)</label>`;
+    dialog.innerHTML=`<div class="sheet-head"><div><small class="eyebrow">YOUR FARM HELPERS</small><h2>Jade, Farmer Rhys & Farmer Jay</h2></div><button class="close-button guide-menu-close" aria-label="Close farm helpers">×</button></div><p class="sheet-copy">Little lessons, real farm tasks. Completed lessons stay saved with your farm.</p><div class="guide-team">${Object.entries(people).map(([id,p])=>`<button class="guide-person" data-person="${id}"><img src="${image(id)}" alt="${p.name}"><strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div><div class="guide-lesson-list">${lessons.map(l=>`<button data-lesson="${l.id}"><span>${t.completed.includes(l.id)?'✓':'○'}</span><div><strong>${l.title}</strong><small>${people[l.person].name}</small></div></button>`).join('')}</div><div class="section-label">LEND ME A HAND</div><div class="guide-assists"><button data-assist="harvest">Jade: harvest ready crops</button><button data-assist="care">Farmer Jay: care for my animals</button><button data-assist="space">Farmer Rhys: find building space</button></div><label class="guide-pause"><input type="checkbox" id="guide-pause" ${t.paused?'checked':''}> Pause automatic tips (help stays available)</label>`;
     dialog.querySelector('.guide-menu-close').onclick=()=>dialog.close();
-    dialog.querySelectorAll('[data-person]').forEach(b=>b.onclick=()=>{dialog.close();get().started=true;save();showLesson(next(b.dataset.person)||lessons.find(l=>l.person===b.dataset.person))});
+    dialog.querySelectorAll('[data-person]').forEach(b=>b.onclick=()=>{dialog.close();get().started=true;const t=get(),id=b.dataset.person;t.metPeople ||= [];const lesson=next(id)||lessons.find(l=>l.person===id);if(!t.metPeople.includes(id)){t.metPeople.push(id);save();const intro={jade:'I’m Jade! I’ll help you grow and harvest your crops.',rhys:'I’m Farmer Rhys! I’ll help you build and make room. Improve the family well and I can sow more fields between drinks.',jay:'I’m Farmer Jay, Farmer Rhys’s twin! I love caring for our animals. Improve the family well and I can help for longer between drinks.'};card(id,'Hello, I’m '+people[id].name,intro[id],()=>showLesson(lesson),'Show my lessons','',id+'-welcome')}else{save();showLesson(lesson)}});
     dialog.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>{dialog.close();get().started=true;save();showLesson(lessons.find(l=>l.id===b.dataset.lesson))});
     dialog.querySelector('#guide-pause').onchange=e=>{get().paused=e.target.checked;save()};
     dialog.querySelectorAll('[data-assist]').forEach(b=>b.onclick=()=>{dialog.close();hide();const result=api.assist(b.dataset.assist);if(b.dataset.assist!=='space')card(b.dataset.assist==='care'?'jay':'jade','A little helping hand',result,hide,'Thanks!')});
@@ -66,7 +67,7 @@
   }
   function attach(a){
     api=a;root=document.createElement('div');root.id='farm-guides';
-    root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Rhys and Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
+    root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Farmer Rhys and Farmer Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
     document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');launcher.onclick=menu;updateLauncher();
     if(!get().introduced)setTimeout(()=>{if(!document.querySelector('dialog[open]')){get().introduced=true;save();welcome()}},1200);
     setInterval(()=>{if(document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint)card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')},30000);

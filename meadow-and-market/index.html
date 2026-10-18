@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#183f31">
   <meta name="description" content="Build a farm, care for animals, and bring a little more joy to the village.">
-  <title>Meadow &amp; Market</title>
+  <title>Meadow Markets</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=45">
+  <link rel="stylesheet" href="style.css?v=46">
   <link rel="stylesheet" href="guides.css?v=1">
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
-      <button class="brand" data-view="farm" aria-label="Go to farm"><span class="brand-mark">✿</span><span><small>YOUR LITTLE CORNER</small><strong>Meadow &amp; Market</strong></span></button>
+      <button class="brand" data-view="farm" aria-label="Go to farm"><span class="brand-mark">✿</span><span><small>YOUR LITTLE CORNER</small><strong>Meadow Markets</strong></span></button>
       <div class="farm-heading top-hud-farm"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch" aria-label="Choose one of my farms">🗺 <span>My farms</span></button></div>
-      <div class="resource-bar"><span class="resource"><span>🪙</span><b id="coins">0</b></span><span class="resource"><span>⭐</span><b id="level">Lv. 1</b></span><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
+      <div class="resource-bar"><span class="resource"><span>🪙</span><b id="coins">0</b></span><span class="resource"><span>⭐</span><b id="level">Lv. 1</b></span><button class="icon-button" id="journal-button" aria-label="Farm journal">📖</button><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
     </header>
 
     <section class="game-layout">
@@ -35,7 +35,7 @@
     <footer class="footer"><span>Made with a little sunshine <b>☼</b></span><button id="save-status">Saved on this device</button><a class="download-link" href="meadow-and-market.apk" download>Android APK ↓</a></footer>
   </main>
 
-  <dialog id="update-dialog" class="sheet update-sheet" aria-labelledby="update-title"><div class="sheet-head"><div><small class="eyebrow">FARM UPDATE</small><h2 id="update-title">A new Meadow &amp; Market build is ready</h2></div></div><p class="sheet-copy">Install the latest farm improvements now. The game will reload with the new build.</p><div class="update-actions"><button id="later-update" class="small-button">Later</button><button id="install-update" class="primary-button">Install update</button></div></dialog>
+  <dialog id="update-dialog" class="sheet update-sheet" aria-labelledby="update-title"><div class="sheet-head"><div><small class="eyebrow">FARM UPDATE</small><h2 id="update-title">A new Meadow Markets build is ready</h2></div></div><p class="sheet-copy">Install the latest farm improvements now. The game will reload with the new build.</p><div class="update-actions"><button id="later-update" class="small-button">Later</button><button id="install-update" class="primary-button">Install update</button></div></dialog>
   <dialog id="build-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">MAKE IT YOURS</small><h2>Farm building</h2></div><button class="close-button" data-close="build-dialog">×</button></div><p class="sheet-copy">Choose something lovely for your farm. You can move it whenever you like.</p><div class="build-list" id="build-list"></div></dialog>
   <dialog id="maps-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">YOUR WORLD</small><h2>Choose a farm</h2></div><button class="close-button" data-close="maps-dialog">×</button></div><p class="sheet-copy">Every farm has its own little story. Your progress carries with you.</p><div class="map-list" id="map-list"></div></dialog>
   <dialog id="modal-dialog" class="sheet"><div id="modal-content"></div></dialog>
@@ -45,8 +45,10 @@
     window.meadowSupabase=createClient('https://ejavqlyozqhzqogflqzr.supabase.co','sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE');
     window.dispatchEvent(new Event('meadow-supabase-ready'));
   </script>
-  <script src="guides.js?v=1"></script>
-  <script src="game.js?v=41"></script>
+  <script src="workers.js?v=2"></script>
+  <script src="audio.js?v=2"></script>
+  <script src="guides.js?v=2"></script>
+  <script src="game.js?v=42"></script>
 </body>
 </html>
 
