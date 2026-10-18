@@ -37,16 +37,16 @@
   <dialog id="build-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">MAKE IT YOURS</small><h2>Farm building</h2></div><button class="close-button" data-close="build-dialog">×</button></div><p class="sheet-copy">Choose something lovely for your farm. You can move it whenever you like.</p><div class="build-list" id="build-list"></div></dialog>
   <dialog id="maps-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">YOUR WORLD</small><h2>Choose a farm</h2></div><button class="close-button" data-close="maps-dialog">×</button></div><p class="sheet-copy">Every farm has its own little story. Your progress carries with you.</p><div class="map-list" id="map-list"></div></dialog>
   <dialog id="modal-dialog" class="sheet"><div id="modal-content"></div></dialog>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <div class="toast" id="toast" aria-live="polite"></div>
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     window.meadowSupabase=createClient('https://ejavqlyozqhzqogflqzr.supabase.co','sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE');
     window.dispatchEvent(new Event('meadow-supabase-ready'));
   </script>
-  <script src="game.js?v=25"></script>
+  <script src="game.js?v=26"></script>
 </body>
 </html>
+
 
 
 

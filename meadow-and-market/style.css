@@ -237,3 +237,15 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 
 
 
+
+/* One ground tile per occupied farm square: prevent a second cell outline showing around placed soil and buildings. */
+.farm-grid>.farm-object.plot .field-soil{width:100%!important;height:100%!important;align-self:stretch!important;transform:none!important;filter:none!important}
+.farm-grid>.farm-object.plot .field-soil img{width:100%!important;height:100%!important;object-fit:fill!important}
+.share-qr-wrap{display:grid;place-items:center;margin:8px auto 10px;padding:10px;width:max-content;max-width:100%;border:1px solid #e5e1d1;border-radius:16px;background:#fffdf6}
+.share-qr{display:block;width:min(196px,52vw);height:auto;aspect-ratio:1;image-rendering:pixelated}
+.share-game-card{padding:8px 10px!important;margin:5px 0!important}
+.share-game-card .task-row{gap:8px}
+.share-game-card .task-icon{width:32px;height:32px;font-size:17px}
+.share-qr-wrap{margin:5px auto 7px;padding:5px;border-radius:12px}
+.share-qr{width:min(126px,34vw)}
+.sheet:has(.share-game-card){max-height:94dvh;overflow-y:auto;overscroll-behavior:contain}
