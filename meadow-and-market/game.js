@@ -46,6 +46,18 @@
   }
   function load(){try{const raw=JSON.parse(localStorage.getItem(SAVE_KEY));if(!raw||raw.version!==1)return defaultState();const d=defaultState();return {...d,...raw,farms:{...d.farms,...raw.farms},inventory:{...d.inventory,...raw.inventory}}}catch{return defaultState()}}
   let state=load();
+  const camera={x:0,y:0,zoom:1,pointers:new Map(),drag:null,pinch:null,suppressClick:false};
+  const cameraScene=$('#farm-land'),cameraMap=$('#camera-map');
+  function mapWidth(){return Math.max(innerWidth,innerHeight*1.5)}
+  function cameraClamp(){const w=mapWidth(),h=w*2/3,z=camera.zoom;camera.x=clamp(camera.x,-Math.max(0,(w*z-innerWidth)/2),Math.max(0,(w*z-innerWidth)/2));camera.y=clamp(camera.y,Math.min(0,innerHeight-h*z),0)}
+  function cameraApply(){cameraClamp();cameraMap.style.setProperty('--camera-x',camera.x+'px');cameraMap.style.setProperty('--camera-y',camera.y+'px');cameraMap.style.setProperty('--camera-zoom',camera.zoom)}
+  function cameraZoom(z,cx=innerWidth/2,cy=innerHeight/2){const old=camera.zoom,w=mapWidth(),h=w*2/3,ax=(cx-innerWidth/2-camera.x)/old,ay=(cy-h/2-camera.y)/old;camera.zoom=clamp(z,1,2.8);camera.x=cx-innerWidth/2-ax*camera.zoom;camera.y=cy-h/2-ay*camera.zoom;cameraApply()}
+  function pinchStart(){const p=[...camera.pointers.values()];if(p.length<2)return;const dx=p[1].x-p[0].x,dy=p[1].y-p[0].y,cx=(p[0].x+p[1].x)/2,cy=(p[0].y+p[1].y)/2,w=mapWidth(),h=w*2/3;camera.pinch={distance:Math.hypot(dx,dy),zoom:camera.zoom,ax:(cx-innerWidth/2-camera.x)/camera.zoom,ay:(cy-h/2-camera.y)/camera.zoom}}
+  cameraScene.addEventListener('pointerdown',e=>{if(e.target.closest('.scene-actions,.farm-heading,.farm-hud,.build-tray,.side-panel,.farm-object,.map-hotspot,.build-hint'))return;cameraScene.setPointerCapture?.(e.pointerId);camera.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(camera.pointers.size===1)camera.drag={x:e.clientX,y:e.clientY,cx:camera.x,cy:camera.y,moved:false};if(camera.pointers.size===2)pinchStart()});
+  window.addEventListener('pointermove',e=>{if(!camera.pointers.has(e.pointerId))return;camera.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(camera.pointers.size>=2&&camera.pinch){const p=[...camera.pointers.values()],dx=p[1].x-p[0].x,dy=p[1].y-p[0].y,cx=(p[0].x+p[1].x)/2,cy=(p[0].y+p[1].y)/2,w=mapWidth(),h=w*2/3;camera.zoom=clamp(camera.pinch.zoom*Math.hypot(dx,dy)/camera.pinch.distance,1,2.8);camera.x=cx-innerWidth/2-camera.pinch.ax*camera.zoom;camera.y=cy-h/2-camera.pinch.ay*camera.zoom;cameraApply();return}if(camera.drag&&camera.pointers.size===1){const dx=e.clientX-camera.drag.x,dy=e.clientY-camera.drag.y;if(Math.abs(dx)+Math.abs(dy)>5)camera.drag.moved=true;if(camera.drag.moved){camera.x=camera.drag.cx+dx;camera.y=camera.drag.cy+dy;cameraApply()}}});
+  function pointerEnd(e){if(!camera.pointers.has(e.pointerId))return;camera.pointers.delete(e.pointerId);if(camera.drag?.moved)camera.suppressClick=true;camera.drag=null;camera.pinch=null;if(camera.pointers.size===1){const p=[...camera.pointers.values()][0];camera.drag={x:p.x,y:p.y,cx:camera.x,cy:camera.y,moved:true}}if(camera.pointers.size>=2)pinchStart()}
+  window.addEventListener('pointerup',pointerEnd);window.addEventListener('pointercancel',pointerEnd);cameraScene.addEventListener('click',e=>{if(camera.suppressClick){e.preventDefault();e.stopImmediatePropagation();camera.suppressClick=false}},true);window.addEventListener('resize',cameraApply);
+  $('#zoom-in').addEventListener('click',()=>cameraZoom(camera.zoom+.25));$('#zoom-out').addEventListener('click',()=>cameraZoom(camera.zoom-.25));$('#zoom-button').addEventListener('click',()=>{camera.x=0;camera.y=0;camera.zoom=1;cameraApply()});
   if(!state.farms[state.active]) state.active='willow';
   // Move the original starter layout into the new illustrated map's buildable meadow.
   const oldStarter={p1:[1,1],p2:[2,1],p3:[1,2],a1:[4,1],b1:[4,2],t1:[0,0],f1:[3,0],w1:[0,3]};
@@ -118,7 +130,7 @@
   $$('.nav-button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
   $$('.brand').forEach(b=>b.addEventListener('click',()=>setView('farm')));
   $$('.mode-button').forEach(b=>b.addEventListener('click',()=>{mode(b.dataset.mode);render()}));
-  $('#map-switch').addEventListener('click',mapDialog);$('#expand-button').addEventListener('click',expand);$('#settings-button').addEventListener('click',showSettings);$('#orientation').addEventListener('click',()=>notify('Turn your device — the farm adjusts to portrait and landscape automatically.'));$('#zoom-button').addEventListener('click',()=>{const land=$('#farm-land');land.animate([{transform:'scale(1)'},{transform:'scale(1.025)'},{transform:'scale(1)'}],{duration:350});notify('Back to the whole farm 🌿')});
+  $('#map-switch').addEventListener('click',mapDialog);$('#expand-button').addEventListener('click',expand);$('#settings-button').addEventListener('click',showSettings);$('#orientation').addEventListener('click',()=>notify('Turn your device — the farm adjusts to portrait and landscape automatically.'));
   $('#undo-button').addEventListener('click',()=>{if(state.previous){current().objects=state.previous;state.previous=null;state.moving=null;render();$('#undo-button').disabled=true;notify('Last move undone ↶')}});
   $$('.close-button').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close)?.close()));
   document.addEventListener('click',e=>{const d=e.target.closest('dialog');if(d&&e.target===d)d.close()});
@@ -133,6 +145,7 @@
   setInterval(()=>{let changed=false;for(const a of current().objects)if(a.type==='chicken'||a.type==='cow'){a.hunger=clamp(a.hunger-0.12,0,100);a.clean=clamp(a.clean-0.045,0,100);changed=true}if(changed&&state.view==='animals')renderAnimals()},60000);
   window.addEventListener('pagehide',save);
   render();
+  cameraApply();
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(reg=>{reg.update();setInterval(()=>reg.update().catch(()=>{}),5*60*1000);let hadController=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadController)location.reload();else hadController=true})}).catch(()=>{}));
 })();
 

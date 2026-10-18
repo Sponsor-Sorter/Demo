@@ -47,6 +47,33 @@
 .map-hotspot{border:0!important;border-radius:0!important;background:transparent!important;clip-path:none;}
 .map-hotspot span{opacity:0!important;left:50%;top:100%;transform:translate(-50%,3px);pointer-events:none;font-size:8px}
 .map-hotspot:hover span,.map-hotspot:focus-visible span{opacity:1!important}
+.app-shell{position:fixed;inset:0;max-width:none;width:100%;height:100dvh;margin:0;padding:0;overflow:hidden;background:#9fcb8b}
+body{height:100dvh;min-height:0;overflow:hidden;background:#9fcb8b;overscroll-behavior:none}
+.topbar{position:absolute;z-index:20;left:0;right:0;top:0;height:auto;min-height:58px;margin:0;padding:calc(env(safe-area-inset-top) + 8px) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));background:linear-gradient(#f7f6edee,#f7f6edaa 75%,transparent);pointer-events:none}
+.topbar>*{pointer-events:auto}.brand-mark{box-shadow:0 2px 12px #284b2b22}.resource-bar{gap:6px}.resource{background:#fffef0df;box-shadow:0 2px 10px #29462520}
+.game-layout{position:absolute;inset:0;display:block}
+.farm-panel{position:absolute;inset:0;display:block;min-width:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}
+.farm-heading{position:absolute;z-index:10;left:max(12px,env(safe-area-inset-left));top:calc(env(safe-area-inset-top) + 62px);margin:0;padding:8px 11px;border-radius:14px;background:#fffef0d9;box-shadow:0 3px 12px #26442221;pointer-events:auto}
+.farm-heading h1{font-size:clamp(16px,2vw,22px)}.farm-heading .eyebrow{font-size:8px}.map-switch{padding:9px 11px;background:#fffef5e8}
+.farm-scene{position:absolute;inset:0;width:100%;height:100dvh;min-height:0;border-radius:0;background:#9fcb8b;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.camera-map{position:absolute;left:calc((100vw - max(100vw,150dvh))/2);top:0;width:max(100vw,150dvh);aspect-ratio:3/2;transform:translate3d(var(--camera-x,0px),var(--camera-y,0px),0) scale(var(--camera-zoom,1));transform-origin:50% 50%;will-change:transform}
+.map-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;object-position:center}
+.farm-grid{left:14%!important;right:14%!important;top:29%!important;bottom:3%!important;gap:0!important;transform:perspective(1000px) rotateX(22deg)!important;transform-origin:50% 100%!important}
+.farm-object.plot .crop-art{width:114%!important;height:114%!important}
+.farm-object.plot.stage-0 .crop-art{transform:scale(.48) translateY(14%)}.farm-object.plot.stage-1 .crop-art{transform:scale(.70) translateY(8%)}.farm-object.plot.stage-2 .crop-art{transform:scale(.92) translateY(3%)}.farm-object.plot.stage-3 .crop-art{transform:scale(1.08)}
+.homestead{left:8%;top:4%;width:18%;height:24%;clip-path:polygon(7% 25%,58% 0,100% 11%,96% 78%,61% 96%,15% 100%,0 57%)}
+.barnyard{left:23%;top:0;width:20%;height:29%;clip-path:polygon(6% 28%,48% 0,95% 2%,100% 72%,70% 100%,10% 84%,0 49%)}
+.orchard-area{left:42%;top:0;width:34%;height:28%;clip-path:polygon(0 34%,25% 5%,56% 0,100% 30%,91% 79%,53% 100%,12% 83%)}
+.bridge-area{left:77%;right:auto;top:26%;width:20%;height:34%;clip-path:polygon(69% 0,100% 8%,34% 100%,0 85%)}
+.farm-hud{position:absolute;z-index:15;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 10px) max(12px,env(safe-area-inset-left));background:linear-gradient(transparent,#f5f4e9eb 22%,#f5f4e9f5);pointer-events:none}
+.farm-hud>*{pointer-events:auto}.mode-switch,.hud-actions{box-shadow:0 3px 14px #314a2a26}.build-tray{position:absolute;z-index:18;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:calc(env(safe-area-inset-bottom) + 73px);max-height:34dvh;overflow:auto;background:#fffef2f2;backdrop-filter:blur(12px);box-shadow:0 5px 22px #26442230}
+.scene-actions{position:absolute;z-index:12;right:max(12px,env(safe-area-inset-right));top:calc(env(safe-area-inset-top) + 64px);display:grid;gap:7px}
+.scene-action{width:42px;height:42px;border:1px solid #ffffffa8;border-radius:14px;background:#fffef0dc;color:#385b3c;font-size:21px;box-shadow:0 3px 12px #25432135;backdrop-filter:blur(8px);touch-action:manipulation}
+.build-hint{position:absolute;z-index:12;left:max(12px,env(safe-area-inset-left));bottom:calc(env(safe-area-inset-bottom) + 76px);font-size:11px;padding:7px 10px;border-radius:11px;background:#fffef0d9;color:#52684d;pointer-events:none}
+.side-panel{top:calc(env(safe-area-inset-top) + 10px);right:max(10px,env(safe-area-inset-right));bottom:calc(env(safe-area-inset-bottom) + 78px);width:min(390px,calc(100vw - 20px));max-height:none;z-index:30;border:1px solid #fff9;box-shadow:0 8px 30px #253d2940;backdrop-filter:blur(14px)}
+.footer{display:none!important}.farm-object .nameplate{display:none!important}.farm-object:focus-visible .nameplate{display:block!important}.farm-object.plot:focus-visible .nameplate{display:block!important}
+@media(max-width:700px){.farm-heading{top:calc(env(safe-area-inset-top) + 56px)}.farm-hud{align-items:flex-end;flex-direction:column}.mode-switch{align-self:flex-start}.hud-actions{width:100%;justify-content:space-between}.hud-action{flex:1}.build-tray{bottom:calc(env(safe-area-inset-bottom) + 105px);max-height:32dvh}.build-hint{bottom:calc(env(safe-area-inset-bottom) + 160px)}.farm-object.plot .crop-state{width:18px;height:18px}.side-panel{top:calc(env(safe-area-inset-top) + 12px);bottom:calc(env(safe-area-inset-bottom) + 126px)}}
+@media(orientation:landscape) and (max-height:520px){.topbar{min-height:42px}.farm-heading{top:calc(env(safe-area-inset-top) + 46px)}.farm-hud{flex-direction:row;align-items:center;padding-bottom:calc(env(safe-area-inset-bottom) + 6px)}.mode-switch{align-self:auto}.hud-actions{width:auto}.hud-action{flex:initial}.build-tray{bottom:calc(env(safe-area-inset-bottom) + 60px);max-height:42dvh}.build-hint{bottom:calc(env(safe-area-inset-bottom) + 64px)}.side-panel{bottom:calc(env(safe-area-inset-bottom) + 64px)}}
 .homestead{left:15.5%;top:4%;width:13%;height:24%;clip-path:polygon(7% 25%,58% 0,100% 11%,96% 78%,61% 96%,15% 100%,0 57%)}
 .barnyard{left:26%;top:0;width:16%;height:28%;clip-path:polygon(6% 28%,48% 0,95% 2%,100% 72%,70% 100%,10% 84%,0 49%)}
 .orchard-area{left:40%;top:0;width:28%;height:27%;clip-path:polygon(0 34%,25% 5%,56% 0,100% 30%,91% 79%,53% 100%,12% 83%)}
