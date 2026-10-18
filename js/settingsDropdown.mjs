@@ -42,7 +42,7 @@ export function anchorSettingsDropdown(trigger, panel, win = window) {
       position: 'fixed', top: `${target.top}px`, left: `${target.left}px`, right: 'auto',
       transform: 'none', margin: '0', width: `${target.width}px`, 'min-width': '0',
       'max-width': `${viewport.width - 16}px`, 'max-height': `${target.maxHeight}px`,
-      'box-sizing': 'border-box', 'overflow-y': 'auto', 'z-index': 'var(--z-dropdown, 4000)',
+      'box-sizing': 'border-box', 'overflow-x': 'hidden', 'overflow-y': 'auto', 'z-index': 'var(--z-dropdown, 4000)',
     };
     for (const [key, value] of Object.entries(properties)) panel.style.setProperty(key, value, 'important');
   };

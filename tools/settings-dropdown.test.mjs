@@ -23,7 +23,7 @@ test('height is limited to space below the cog rather than shifting away',()=>{
 test('open overrides conflicting legacy position, transforms and margins',()=>{
  const h=harness();h.controls.open();assert.equal(h.panel.style.display,'block');assert.equal(h.attrs['aria-expanded'],'true');
  for(const key of ['position','top','left','right','transform','margin','width','min-width'])assert.equal(h.properties[key].priority,'important');
- assert.equal(h.properties.position.value,'fixed');assert.equal(h.properties.top.value,'252px');assert.equal(h.properties.transform.value,'none');assert.equal(h.properties.margin.value,'0');
+ assert.equal(h.properties.position.value,'fixed');assert.equal(h.properties.top.value,'252px');assert.equal(h.properties.transform.value,'none');assert.equal(h.properties.margin.value,'0');assert.equal(h.properties['overflow-x'].value,'hidden');
 });
 test('scroll follows the cog and coalesces layout work into one frame',()=>{
  const h=harness();h.controls.open();h.setRect({...rect,top:146,bottom:194});h.events.scroll();h.events.scroll();assert.equal(h.frames.length,1);h.flush();assert.equal(h.properties.top.value,'202px');
