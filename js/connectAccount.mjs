@@ -15,7 +15,7 @@ export function connectPayoutReady(info) {
   return !!info?.account_id && info.test_mode === false && info.migration_required === false && info.settlement_ready === true && info.status?.capability_source === 'accounts_v2' && info.status?.payouts_enabled === true && info.status?.capabilities?.transfers === 'active';
 }
 export function connectStatusMessage(info) {
-  if (info.migration_required) return (info.test_mode ? 'Stripe test account. ' : '') + 'Existing Stripe account needs an upgrade before automated settlement. Updating account details does not complete this upgrade or enable live withdrawals.';
+  if (info.migration_required) return (info.test_mode ? 'Stripe test account. ' : '') + 'Legacy Stripe integration detected; automated settlement support needs an update. Your account is unchanged. Live withdrawals are not enabled.';
   if (info.test_mode) return 'Stripe test account. This does not enable live withdrawals.';
   if (!info.account_id) return 'No Stripe payout account linked. Setup is required.';
   if (connectPayoutReady(info)) return 'Stripe payout account is enabled. Withdrawal requests still require processing.';

@@ -29,7 +29,7 @@ test('live Connect platform prerequisite is shown safely without suggesting setu
 
 test('legacy accounts preserve honest migration requirement and never become ready',()=>{
  const legacy=valid({migration_required:true,settlement_ready:false,test_mode:true,stripe_context:{account_id:'acct_Platform123',livemode:false},status:{...valid().status,payouts_enabled:false,legacy_payouts_enabled:true,capability_source:'accounts_v1_legacy'}});
- assert.equal(validateConnectStatus(legacy),legacy);assert.equal(connectPayoutReady(legacy),false);assert.match(connectStatusMessage(legacy),/test account/);assert.match(connectStatusMessage(legacy),/needs an upgrade before automated settlement/);
+ assert.equal(validateConnectStatus(legacy),legacy);assert.equal(connectPayoutReady(legacy),false);assert.match(connectStatusMessage(legacy),/test account/);assert.match(connectStatusMessage(legacy),/automated settlement support needs an update/);
  for(const patch of [{migration_required:false},{settlement_ready:true},{status:{...legacy.status,payouts_enabled:true}},{status:{...legacy.status,legacy_payouts_enabled:undefined}}])assert.throws(()=>validateConnectStatus({...legacy,...patch}));
 });
 test('v2 settlement readiness and no-account metadata cannot contradict status',()=>{
