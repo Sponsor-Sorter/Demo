@@ -7,8 +7,9 @@ import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=202610
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js
 import { supabase } from './supabaseClient.js';
+// Committed database events create comment and private-offer update notifications.
 import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts3';
-import { notifyComment, notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
+import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
@@ -1235,12 +1236,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert('Failed to submit comment.');
       } else {
         textarea.value = '';
-        await notifyComment({
-          to_user_id: sponseeUserId,
-          offer_id: offerId,
-          from_username: currentSponsorUsername,
-          message: commentText
-        });
         renderOffersByFilter(currentFilter);
       }
     }
@@ -1286,13 +1281,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      await notifyOfferUpdate({
-        to_user_id: sponseeUserId,
-        offer_id: offerId,
-        type: "content_live_confirmed",
-        title: "Content Confirmed Live",
-        message: `${sponsor_username} has confirmed the content is live.`
-      });
 
       alert("Content marked as live and offer moved to Completed!");
       renderOffersByFilter('all');

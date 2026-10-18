@@ -8,11 +8,7 @@ import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts3'
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponseeOffers.js
 import { supabase } from './supabaseClient.js';
-import {
-  notifyComment,
-  notifyOfferStatus,
-  notifyOfferUpdate
-} from './alerts.js?notifications=20261012brand6';
+// Committed database events create comment and private-offer update notifications.
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js';
 
@@ -1318,13 +1314,6 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         textarea.value = '';
         await reloadOfferComments();
 
-        await notifyComment({
-          offer_id: offerId,
-          from_user_id: sponsee_id,
-          to_user_id: sponsorId,
-          from_username: sender,
-          message: commentText
-        });
       }
       return;
     }
@@ -1374,12 +1363,6 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         if (error) {
           alert(`Error accepting offer: ${error.message}`);
         } else {
-          await notifyOfferStatus({
-            offer_id: offerId,
-            to_user_id: sponsorId,
-            status: 'accepted',
-            offer_title: offerCard.querySelector('.offer-left strong').nextSibling.textContent
-          });
           await loadSponseeOffers();
         }
       }
@@ -1394,12 +1377,6 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
           .eq('id', offerId);
         if (error) alert(`Error rejecting offer: ${error.message}`);
         else {
-          await notifyOfferStatus({
-            offer_id: offerId,
-            to_user_id: sponsorId,
-            status: 'rejected',
-            offer_title: offerCard.querySelector('.offer-left strong').nextSibling.textContent
-          });
           await loadSponseeOffers();
         }
       }
@@ -1420,13 +1397,6 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
         .eq('id', offerId);
       if (error) alert(`Failed to update stage: ${error.message}`);
       else {
-        await notifyOfferUpdate({
-          to_user_id: sponsorId,
-          offer_id: offerId,
-          type: 'creation_date_set',
-          title: 'Creation Date Set',
-          message: `${sponsee_username} scheduled creation for ${selectedDate}.`
-        });
         await loadSponseeOffers();
       }
       return;
@@ -1467,13 +1437,6 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
       if (error) {
         alert(`Failed to go live: ${error.message}`);
       } else {
-        await notifyOfferUpdate({
-          to_user_id: sponsorId,
-          offer_id: offerId,
-          type: 'content_live',
-          title: 'Content is Live!',
-          message: `${sponsee_username} has gone live with the sponsored content!`
-        });
         await loadSponseeOffers();
       }
       return;
