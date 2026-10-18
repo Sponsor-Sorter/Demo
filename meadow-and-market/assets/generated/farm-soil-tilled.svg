@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 176" fill="none">
+  <defs>
+    <linearGradient id="earth" x1="9" y1="4" x2="249" y2="172" gradientUnits="userSpaceOnUse"><stop stop-color="#a27a4d"/><stop offset=".48" stop-color="#805936"/><stop offset="1" stop-color="#67452f"/></linearGradient>
+    <linearGradient id="furrow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c29862"/><stop offset=".5" stop-color="#9a7045"/><stop offset="1" stop-color="#5c402c"/></linearGradient>
+    <pattern id="grain" width="21" height="19" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.2" fill="#e5c48b" opacity=".38"/><circle cx="15" cy="14" r="1" fill="#422f24" opacity=".4"/></pattern>
+    <clipPath id="tile"><path d="M128 0 256 88 128 176 0 88Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#tile)"><path d="M128 0 256 88 128 176 0 88Z" fill="url(#earth)"/><path d="M128 0 256 88 128 176 0 88Z" fill="url(#grain)"/><path d="m-8 88 136 88 136-88M9 76l119 78 119-78M31 61l97 65 97-65M56 46l72 48 72-48M81 29l47 32 47-32" stroke="url(#furrow)" stroke-width="8" stroke-linecap="round" opacity=".8"/><path d="m-8 88 136 88 136-88M9 76l119 78 119-78M31 61l97 65 97-65M56 46l72 48 72-48M81 29l47 32 47-32" stroke="#cfaa75" stroke-width="2.2" stroke-linecap="round" opacity=".62"/></g>
+</svg>

@@ -175,5 +175,65 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
   .bridge-area{left:78%;top:25%;width:20%;height:34%}
 }
 
+/* Meadow grid: fixed tile spacing, fitted to the central clearing in the map art. */
+.farm-grid{left:12%!important;right:8%!important;top:29.5%!important;bottom:5.5%!important;display:block!important;transform:none!important;perspective:none!important;overflow:visible!important;z-index:9!important;}
+.map-hotspots{z-index:4!important;}
+.farm-grid>.land-cell,.farm-grid>.farm-object{position:absolute!important;margin:0!important;min-width:0!important;min-height:0!important;}
+.farm-grid>.land-cell{padding:0!important;border:0!important;border-radius:0!important;clip-path:none!important;background:transparent!important;box-shadow:none!important;transition:background .15s;}
+.farm-grid>.land-cell:before,.farm-grid>.land-cell:after{content:"";display:block!important;position:absolute;inset:0;pointer-events:none;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+.farm-grid>.land-cell:before{background:#eee5b997;}
+.farm-grid>.land-cell:after{inset:1.5px;background:#a9bf6d12;}
+.farm-grid>.land-cell.alternate:after{background:#eaf0b81c;}
+.farm-grid>.land-cell.locked:before{background:#465a3f92;}
+.farm-grid>.land-cell.locked:after{background:#7b845f29;}
+.building-mode .farm-grid>.land-cell.unlocked:before,.farm-grid>.land-cell.place-target:before{background:#fff7d9e8;}
+.building-mode .farm-grid>.land-cell.unlocked:after,.farm-grid>.land-cell.place-target:after{background:#d9f29d40;}
+.building-mode .farm-grid>.land-cell.unlocked:hover:after,.farm-grid>.land-cell.place-target:hover:after{background:#e6f6a477;}
+.farm-grid>.farm-object{padding:0!important;}
+.farm-grid>.farm-object.plot{z-index:10!important;overflow:visible!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+.farm-grid>.farm-object.plot:before{display:none!important;}
+.farm-object.plot .field-soil{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;margin:0!important;overflow:hidden!important;transform:none!important;filter:none!important;transition:none!important;animation:none!important;z-index:1!important;}
+.farm-object.plot .field-soil img{display:block!important;width:100%!important;height:100%!important;object-fit:fill!important;}
+.farm-object.plot .crop-art{z-index:2!important;}
+.farm-object.plot .soil-action{z-index:3!important;}
+.farm-grid>.farm-object.barn,.farm-grid>.farm-object.building{z-index:11!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+.barn-level{position:absolute!important;inset:0!important;display:block!important;}
+.barn-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;filter:drop-shadow(0 4px 3px #26392055)!important;}
+.barn-capacity,.paddock-capacity{position:absolute;z-index:4;left:50%;bottom:1%;transform:translateX(-50%);white-space:nowrap;padding:3px 6px;border-radius:9px;background:#fffdf0e8;color:#52694b;font-size:clamp(6px,.8vw,9px);font-weight:900;}
+.farm-object.paddock{z-index:10!important;background:transparent!important;border:0!important;box-shadow:none!important;}
+.paddock-level{position:absolute;inset:0;display:block;}
+.paddock-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 3px 2px #26392048);}
+.paddock-cow{position:absolute;z-index:2;width:15%;height:21%;object-fit:contain;filter:drop-shadow(0 2px 2px #26392070);}
+.cow-slot-0{left:31%;top:20%}.cow-slot-1{left:47%;top:24%}.cow-slot-2{left:63%;top:33%}.cow-slot-3{left:26%;top:40%}.cow-slot-4{left:43%;top:45%}.cow-slot-5{left:60%;top:51%}.cow-slot-6{left:34%;top:63%}.cow-slot-7{left:52%;top:69%}
+.paddock-capacity{bottom:4%;color:#405d37;}
+.paddock-preview{height:150px;margin:12px 0;position:relative;display:grid;place-items:center;background:#e8f0dc;border-radius:14px;overflow:hidden;}
+.paddock-preview>img:first-child{width:100%;height:100%;object-fit:contain;}
+.paddock-preview>img:not(:first-child){position:absolute;width:15%;height:34%;object-fit:contain;filter:drop-shadow(0 2px 2px #26392055);}
+.paddock-preview>img:nth-child(2){left:34%;top:33%}.paddock-preview>img:nth-child(3){left:50%;top:42%}.paddock-preview>img:nth-child(4){left:40%;top:52%}.paddock-preview>img:nth-child(5){left:57%;top:58%}
+@media(orientation:landscape){.farm-grid{left:12%!important;right:8%!important;top:29.5%!important;bottom:5.5%!important;}}
+
+/* Keep the isometric plot grid on the usable clearing; map-painted coop and orchard yards stay scenery. */
+.farm-grid>.land-cell:before,.farm-grid>.land-cell:after{display:block!important;}
+.farm-object.orchard{z-index:12!important;filter:drop-shadow(0 5px 4px #234a2c66)!important;}
+.orchard-level{position:absolute;inset:0;display:block;overflow:visible;}
+.orchard-canopy{position:absolute;inset:-26% -20% -4%;width:140%;height:130%;object-fit:contain;opacity:.25;filter:blur(2px) saturate(.8);pointer-events:none;}
+.orchard-tree{position:absolute;z-index:2;width:39%;height:62%;object-fit:contain;filter:drop-shadow(0 4px 3px #183b2866);}
+.orchard-tree.tree-slot-0{left:5%;top:5%}.orchard-tree.tree-slot-1{right:5%;top:3%}.orchard-tree.tree-slot-2{left:31%;top:0}.orchard-tree.tree-slot-3{left:1%;bottom:0}.orchard-tree.tree-slot-4{right:1%;bottom:0}.orchard-tree.tree-slot-5{left:21%;bottom:-7%}.orchard-tree.tree-slot-6{right:21%;bottom:-7%}
+.orchard-count{position:absolute;z-index:4;left:50%;bottom:-4%;transform:translateX(-50%);white-space:nowrap;border:1px solid #fff9d5;background:#fff8e7ee;color:#4b6439;border-radius:9px;padding:3px 7px;font-size:clamp(6px,.8vw,9px);font-weight:900;box-shadow:0 2px 5px #26452650;}
+.orchard-preview{height:150px;margin:12px 0;position:relative;display:grid;place-items:center;background:radial-gradient(ellipse,#d5e7b4,#edf2e0);border-radius:14px;overflow:hidden;}
+.orchard-preview-tree{position:absolute;width:34%;height:72%;object-fit:contain;filter:drop-shadow(0 4px 4px #24452d60);}
+.orchard-preview-tree.tree-slot-0{left:12%;top:8%}.orchard-preview-tree.tree-slot-1{right:12%;top:7%}.orchard-preview-tree.tree-slot-2{left:33%;top:0}.orchard-preview-tree.tree-slot-3{left:0;bottom:0}.orchard-preview-tree.tree-slot-4{right:0;bottom:0}.orchard-preview-tree.tree-slot-5{left:23%;bottom:-4%}.orchard-preview-tree.tree-slot-6{right:23%;bottom:-4%}
+.orchard-preview>span{position:absolute;bottom:7px;z-index:4;border-radius:8px;padding:4px 8px;background:#fffdf0e8;color:#52694b;font-size:9px;font-weight:800;}
+
+/* Farm identity shares the existing top HUD row; it does not add another row or height. */
+.topbar{display:flex;align-items:center!important;gap:12px;min-height:76px;padding-bottom:8px;}
+.top-hud-farm{position:static!important;inset:auto!important;z-index:auto!important;display:flex;align-items:center;justify-content:center;gap:9px;flex:1 1 auto;min-width:0;max-width:400px;margin:0 auto;padding:0 8px;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;}
+.top-hud-farm>div{min-width:0;}
+.top-hud-farm .eyebrow{color:#d6dfc5!important;font-size:clamp(6px,.62vw,8px)!important;line-height:1.2;}
+.top-hud-farm h1{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff9e9!important;font-size:clamp(12px,1.25vw,17px)!important;line-height:1.2;letter-spacing:-.2px!important;margin:2px 0 0!important;}
+.top-hud-farm .map-switch{position:static!important;left:auto!important;top:auto!important;flex:none;padding:6px 8px;border-radius:10px;font-size:10px;white-space:nowrap;}
+.topbar>.resource-bar{flex:none;margin-left:auto;}
+@media(max-width:700px){.topbar{gap:5px;min-height:76px;padding-right:max(8px,env(safe-area-inset-right));padding-left:max(8px,env(safe-area-inset-left));}.topbar .brand{gap:6px;flex:none}.topbar .brand-mark{width:32px;height:32px}.topbar .brand small{font-size:7px;letter-spacing:.03em;text-transform:none}.topbar .brand strong{display:none}.top-hud-farm{flex:1 1 auto;max-width:none;gap:3px;padding:0 2px}.top-hud-farm .eyebrow{display:none}.top-hud-farm h1{max-width:clamp(50px,17vw,100px);font-size:clamp(9px,2.4vw,12px)!important}.top-hud-farm .map-switch{width:27px;height:27px;padding:0;display:grid;place-items:center;font-size:12px}.top-hud-farm .map-switch span{display:none}.topbar>.resource-bar{gap:3px}.topbar .resource{min-height:30px;padding:4px 5px;gap:3px;font-size:10px}.topbar .resource b{font-size:10px}.topbar .icon-button{width:29px;height:29px}.topbar .orientation{display:none}}
+
 
 

@@ -8,18 +8,18 @@
   <title>Meadow &amp; Market</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <button class="brand" data-view="farm" aria-label="Go to farm"><span class="brand-mark">✿</span><span><small>YOUR LITTLE CORNER</small><strong>Meadow &amp; Market</strong></span></button>
+      <div class="farm-heading top-hud-farm"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch" aria-label="Choose one of my farms">🗺 <span>My farms</span></button></div>
       <div class="resource-bar"><span class="resource"><span>🪙</span><b id="coins">0</b></span><span class="resource"><span>⭐</span><b id="level">Lv. 1</b></span><button class="icon-button orientation" id="orientation" aria-label="Toggle screen orientation">▱</button><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
     </header>
 
     <section class="game-layout">
       <section class="farm-panel">
-        <div class="farm-heading"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch">🗺 <span>My farms</span></button></div>
         <div class="farm-scene" id="farm-land" aria-label="Your farm map">
           <div class="camera-map" id="camera-map"><img class="map-art" src="assets/generated/willowbrook-meadow-map.png" alt="Willowbrook farm map with farmhouse, orchard, animal yard, creek and bridge"><div class="farm-grid" id="farm-grid"></div><div class="map-hotspots"><button class="map-hotspot homestead" data-map-view="home" aria-label="Visit farmhouse"></button><button class="map-hotspot barnyard" data-map-view="animals" aria-label="Visit barn and animal yard"></button><button class="map-hotspot orchard-area" data-map-view="market" aria-label="Visit orchard and produce market"></button><button class="map-hotspot bridge-area" data-map-view="market" aria-label="Visit village market"></button></div></div>
           <div class="build-hint" id="build-hint">Drag to explore · Pinch to zoom</div>
@@ -43,7 +43,7 @@
     window.meadowSupabase=createClient('https://ejavqlyozqhzqogflqzr.supabase.co','sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE');
     window.dispatchEvent(new Event('meadow-supabase-ready'));
   </script>
-  <script src="game.js?v=22"></script>
+  <script src="game.js?v=24"></script>
 </body>
 </html>
 

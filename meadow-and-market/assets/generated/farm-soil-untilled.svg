@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 176" fill="none">
+  <defs>
+    <linearGradient id="earth" x1="14" y1="8" x2="244" y2="168" gradientUnits="userSpaceOnUse"><stop stop-color="#76965a"/><stop offset=".18" stop-color="#967248"/><stop offset=".62" stop-color="#795637"/><stop offset="1" stop-color="#684a32"/></linearGradient>
+    <pattern id="grain" width="24" height="20" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.5" fill="#e5c489" opacity=".36"/><circle cx="17" cy="13" r="1" fill="#3e4e2e" opacity=".34"/><path d="m8 17 4-2" stroke="#d4aa70" stroke-width="1" opacity=".42"/></pattern>
+    <clipPath id="tile"><path d="M128 0 256 88 128 176 0 88Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#tile)"><path d="M128 0 256 88 128 176 0 88Z" fill="url(#earth)"/><path d="M128 0 256 88 128 176 0 88Z" fill="url(#grain)"/><path d="M128 0v176" stroke="#4b4e32" stroke-width="1" opacity=".12"/><path d="m32 63 12-5m142 62 10 3M73 39l6-3m-35 87 7 2" stroke="#d8b783" stroke-width="2" stroke-linecap="round" opacity=".48"/></g>
+</svg>
