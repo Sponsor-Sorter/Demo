@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 176" fill="none">
+  <defs>
+    <linearGradient id="ground" x1="30" y1="29" x2="220" y2="154" gradientUnits="userSpaceOnUse"><stop stop-color="#87613a"/><stop offset=".48" stop-color="#67442b"/><stop offset="1" stop-color="#4d3527"/></linearGradient>
+    <linearGradient id="furrow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b18450"/><stop offset="1" stop-color="#5d3c26"/></linearGradient>
+    <filter id="shadow" x="5" y="9" width="246" height="162" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <path d="M128 13 239 66 128 162 17 66 128 13Z" fill="#203b25" opacity=".22" filter="url(#shadow)"/>
+  <path d="M128 10 238 62 128 156 18 62 128 10Z" fill="url(#ground)" stroke="#517346" stroke-width="5" stroke-linejoin="round"/>
+  <path d="m31 63 97-45 97 45m-172 9 75-35 75 35m-154 9 79-37 79 37m-151 9 72-34 72 34m-138 8 66-31 66 31m-123 8 57-27 57 27m-107 8 50-24 50 24" stroke="url(#furrow)" stroke-width="6" stroke-linecap="round" opacity=".96"/>
+  <path d="m22 62 106 90M45 51l106 91M70 39l105 91M95 28l105 90M234 62l-106 90M211 51l-106 91M186 39l-105 91M161 28 56 118" stroke="#c39a61" stroke-width="1.7" opacity=".28"/>
+  <path d="m28 62 100-47 100 47-100 87L28 62Z" stroke="#e1b571" stroke-width="2" opacity=".36"/>
+</svg>
