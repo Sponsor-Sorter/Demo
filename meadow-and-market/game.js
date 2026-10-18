@@ -86,7 +86,7 @@
   function gridRows(){return 10} function expansionLevel(f=current()){return Math.max(0,Math.min(3,Number(f.expansionLevel)||0))} function tileUnlocked(x,y,f=current()){return y<7+expansionLevel(f)}
   // Buildable meadow traced in normalized map-art coordinates (1536×1024).
   // A tile is accepted only when its whole diamond perimeter stays inside this grass boundary.
-  const meadowOutline=[[28,39],[30,35],[34,33],[39,32],[45,31],[51,30],[57,30],[63,31],[68,33],[73,35],[77,38],[80,42],[82,47],[84,52],[86,58],[88,64],[89,70],[88,75],[86,80],[83,84],[80,88],[76,92],[72,95],[67,98],[61,100],[55,100],[49,99],[43,97],[38,95],[34,92],[30,89],[27,85],[24,81],[22,77],[20,72],[19,67],[18,62],[19,57],[20,52],[22,48],[24,44],[26,41]];
+  const meadowOutline=[[27,31],[31,29],[36,28],[42,27],[49,27],[56,27],[63,29],[70,31],[76,34],[81,38],[84,42],[87,47],[89,52],[91,57],[92,62],[90,66],[88,71],[87,76],[85,81],[82,85],[79,89],[75,92],[71,94],[66,96],[61,97],[56,97],[50,96],[45,95],[41,93],[37,91],[33,88],[30,85],[27,82],[24,78],[21,74],[18,70],[16,66],[14,62],[12,58],[12,54],[14,50],[16,46],[19,42],[22,38],[25,34]];
   function pointInMeadow(px,py){let inside=false;for(let i=0,j=meadowOutline.length-1;i<meadowOutline.length;j=i++){const [ax,ay]=meadowOutline[i],[bx,by]=meadowOutline[j];if(((ay>py)!==(by>py))&&px<(bx-ax)*(py-ay)/(by-ay)+ax)inside=!inside}return inside}
   function meadowCell(x,y){const cols=14,rows=gridRows(),step=100/((cols+rows)/2),baseX=50-((cols-rows)/2)*step/2,baseY=50-((cols+rows-2)/2)*step/2,grid=$('#farm-grid'),map=$('#camera-map'),gr=grid.getBoundingClientRect(),mr=map.getBoundingClientRect(),cx=baseX+(x-y)*step/2,cy=baseY+(x+y)*step/2,hw=step*gr.width/mr.width/2,hh=step*gr.height/mr.height/2,originX=(gr.left-mr.left)/mr.width*100,originY=(gr.top-mr.top)/mr.height*100,scaleX=gr.width/mr.width,scaleY=gr.height/mr.height,diamond=[[cx,cy-hh/scaleY],[cx+hw/scaleX,cy],[cx,cy+hh/scaleY],[cx-hw/scaleX,cy]],perimeter=[];for(let i=0;i<diamond.length;i++){const a=diamond[i],b=diamond[(i+1)%diamond.length];for(let s=0;s<8;s++){const t=s/8,gx=a[0]+(b[0]-a[0])*t,gy=a[1]+(b[1]-a[1])*t;perimeter.push([originX+gx*scaleX,originY+gy*scaleY])}}perimeter.push([originX+cx*scaleX,originY+cy*scaleY]);return perimeter.every(([px,py])=>pointInMeadow(px,py))}
   function fitsFootprint(item,x,y,ignoreId,rows=gridRows()){const fp=footprint({...item,x,y});if(x<0||y<0||x+fp.w>14||y+fp.h>rows)return false;for(let yy=y;yy<y+fp.h;yy++)for(let xx=x;xx<x+fp.w;xx++)if(!tileUnlocked(xx,yy)||!meadowCell(xx,yy))return false;for(const other of current().objects){if(other.id===ignoreId||(other.type==='chicken'&&other.coopId)||(other.type==='cow'&&(other.barnId||other.paddockId)))continue;const op=footprint(other);if(x<other.x+op.w&&x+fp.w>other.x&&y<other.y+op.h&&y+fp.h>other.y)return false}return true}
@@ -199,7 +199,17 @@
   cameraApply();
   window.addEventListener('meadow-cloud-ready',()=>{const connect=$('#send-friend-request');if(connect)connect.disabled=false;if($('#friends-online-list'))refreshFriends()});
   window.addEventListener('meadow-supabase-ready',startCloud,{once:true});if(window.meadowSupabase)startCloud();
-  if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(reg=>{reg.update();setInterval(()=>reg.update().catch(()=>{}),5*60*1000);let hadController=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadController)location.reload();else hadController=true})}).catch(()=>{}));
+  if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(reg=>{
+    let acceptedUpdate=false;
+    const promptForUpdate=()=>{const dialog=$('#update-dialog');if(navigator.serviceWorker.controller&&reg.waiting&&dialog&&!dialog.open)dialog.showModal()};
+    reg.update();
+    promptForUpdate();
+    reg.addEventListener('updatefound',()=>{const installing=reg.installing;if(!installing)return;installing.addEventListener('statechange',()=>{if(installing.state==='installed')promptForUpdate()})});
+    setInterval(()=>reg.update().catch(()=>{}),5*60*1000);
+    $('#install-update')?.addEventListener('click',()=>{if(!reg.waiting)return;acceptedUpdate=true;reg.waiting.postMessage('SKIP_WAITING')});
+    $('#later-update')?.addEventListener('click',()=>$('#update-dialog')?.close());
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{if(acceptedUpdate)location.reload()});
+  }).catch(()=>{}));
 })();
 
 

@@ -8,7 +8,7 @@
   <title>Meadow &amp; Market</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=33">
+  <link rel="stylesheet" href="style.css?v=34">
 </head>
 <body>
   <main class="app-shell">
@@ -34,6 +34,7 @@
     <footer class="footer"><span>Made with a little sunshine <b>☼</b></span><button id="save-status">Saved on this device</button><a class="download-link" href="meadow-and-market.apk" download>Android APK ↓</a></footer>
   </main>
 
+  <dialog id="update-dialog" class="sheet update-sheet" aria-labelledby="update-title"><div class="sheet-head"><div><small class="eyebrow">FARM UPDATE</small><h2 id="update-title">A new Meadow &amp; Market build is ready</h2></div></div><p class="sheet-copy">Install the latest farm improvements now. The game will reload with the new build.</p><div class="update-actions"><button id="later-update" class="small-button">Later</button><button id="install-update" class="primary-button">Install update</button></div></dialog>
   <dialog id="build-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">MAKE IT YOURS</small><h2>Farm building</h2></div><button class="close-button" data-close="build-dialog">×</button></div><p class="sheet-copy">Choose something lovely for your farm. You can move it whenever you like.</p><div class="build-list" id="build-list"></div></dialog>
   <dialog id="maps-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">YOUR WORLD</small><h2>Choose a farm</h2></div><button class="close-button" data-close="maps-dialog">×</button></div><p class="sheet-copy">Every farm has its own little story. Your progress carries with you.</p><div class="map-list" id="map-list"></div></dialog>
   <dialog id="modal-dialog" class="sheet"><div id="modal-content"></div></dialog>
@@ -43,7 +44,7 @@
     window.meadowSupabase=createClient('https://ejavqlyozqhzqogflqzr.supabase.co','sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE');
     window.dispatchEvent(new Event('meadow-supabase-ready'));
   </script>
-  <script src="game.js?v=29"></script>
+  <script src="game.js?v=30"></script>
 </body>
 </html>
 

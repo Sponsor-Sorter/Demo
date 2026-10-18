@@ -256,7 +256,7 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 @media(orientation:landscape){.build-tray.collapsed{width:min(300px,32vw);max-width:300px;padding:7px 9px}.build-tray.collapsed .build-tray-head{gap:8px}}
 
 /* Keep the plotted cells, map landmarks, and their tap areas registered to the same full map canvas. */
-.farm-grid{left:12%!important;right:8%!important;top:29.5%!important;bottom:5.5%!important;z-index:9!important}
+.farm-grid{left:7%!important;right:6%!important;top:26.5%!important;bottom:3.5%!important;z-index:9!important}
 .farm-grid>.land-cell{z-index:1!important;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)!important}
 .farm-grid>.farm-object{z-index:20!important;pointer-events:auto!important}
 .map-hotspots{z-index:8!important;pointer-events:none!important}
@@ -265,7 +265,7 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .barnyard{left:22%!important;top:2%!important;width:30%!important;height:28%!important;clip-path:polygon(7% 23%,42% 0,78% 3%,100% 45%,91% 85%,58% 100%,15% 88%,0 53%)!important}
 .orchard-area{left:49%!important;top:0!important;width:38%!important;height:31%!important;clip-path:polygon(9% 27%,32% 0,71% 3%,100% 26%,93% 74%,67% 100%,22% 87%,0 53%)!important}
 .bridge-area{left:77%!important;right:auto!important;top:28%!important;width:23%!important;height:48%!important;clip-path:polygon(76% 0,100% 9%,40% 100%,0 84%,43% 42%)!important}
-@media(orientation:landscape){.farm-grid{left:12%!important;right:8%!important;top:29.5%!important;bottom:5.5%!important}}
+@media(orientation:landscape){.farm-grid{left:7%!important;right:6%!important;top:26.5%!important;bottom:3.5%!important}}
 .farm-grid>.land-cell:before{background:#fff7!important}
 .farm-grid>.land-cell:after{inset:1.25px!important;background:#7f9c5730!important}
 .farm-grid>.land-cell.alternate:after{background:#e2edb948!important}
@@ -273,5 +273,7 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .building-mode .farm-grid>.land-cell.unlocked{border:1.5px solid #fffdebdc!important}
 .building-mode .farm-grid>.land-cell.unlocked:before,.building-mode .farm-grid>.land-cell.place-target:before{background:#fffdebf2!important}
 .building-mode .farm-grid>.land-cell.unlocked:after,.building-mode .farm-grid>.land-cell.place-target:after{background:#b9d47c28!important}
-.building-mode .farm-grid>.land-cell.locked:before{background:#465a3f92!important}
-.building-mode .farm-grid>.land-cell.locked:after{background:#7b845f29!important}
+.building-mode .farm-grid>.land-cell.locked:before{background:#f4e8c477!important}
+.building-mode .farm-grid>.land-cell.locked:after{background:#80916a36!important}
+.update-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.update-actions button{min-height:42px;padding-inline:18px}
