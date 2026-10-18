@@ -472,6 +472,7 @@
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { injectUserBadge } from './js/badges.js';
+import { presentPublicProvider, publicTwitchStatus, publicCount, publicAudienceSummary, publicSnapshotTime, publicSnapshotLabel, readPublicStats } from './js/publicStatsPresentation.mjs?v=20261018-publicstats1';
 import './js/userReports.js';
 
 /* ---------- simple page context ---------- */
@@ -482,8 +483,8 @@ const PROFILE_CTX = {
 
 /* ---------- small helpers for numbers/dates ---------- */
 function formatNumber(val) {
-  const n = Number(val);
-  return Number.isFinite(n) ? n.toLocaleString() : '-';
+  const n = publicCount(val);
+  return n === null ? '—' : n.toLocaleString();
 }
 function formatDate(val) {
   if (!val) return '-';
@@ -771,17 +772,9 @@ async function loadFollowersTotalViaRLS(username) {
 
 /* ---------- Live cross-platform stats (Edge Function) ---------- */
 async function loadProfileLiveStats(username) {
+  const totalFollowersEl = document.getElementById('total-followers');
   try {
-    const { data, error } = await supabase.functions.invoke('get-profile-live-stats', {
-      body: { username }
-    });
-
-    if (error || !data || data.error || data.ok === false) {
-      console.warn('get-profile-live-stats error:', error || data?.error);
-      return;
-    }
-
-    const totalFollowersEl = document.getElementById('total-followers');
+    const data = await readPublicStats(supabase, username);
     if (!totalFollowersEl) return;
 
     const tiktokBlock    = document.getElementById('tiktok-stats-block');
@@ -794,7 +787,6 @@ async function loadProfileLiveStats(username) {
       if (b) b.style.display = 'none';
     });
 
-    const isConnected = (obj) => !!(obj && (obj.connected || obj.is_connected || obj.status === 'connected'));
     const $id = (id) => document.getElementById(id);
 
     const yt  = data.youtube   || null;
@@ -803,48 +795,21 @@ async function loadProfileLiveStats(username) {
     const tt  = data.tiktok    || null;
     const fb  = data.facebook  || null;
 
-    let connectedFromFunction = 0;
-    let total = 0;
-    const addVal = (val) => {
-      const n = Number(val);
-      if (Number.isFinite(n) && n > 0) total += n;
-    };
-
-    if (isConnected(yt)) {
-      connectedFromFunction++;
-      addVal(yt.subscriber_count ?? yt.subscribers ?? yt.follower_count ?? yt.followers);
-    }
-    if (isConnected(ig)) {
-      connectedFromFunction++;
-      addVal(ig.follower_count ?? ig.followers);
-    }
-    if (isConnected(twt)) {
-      connectedFromFunction++;
-      addVal(twt.follower_count ?? twt.followers);
-    }
-    if (isConnected(tt)) {
-      connectedFromFunction++;
-      addVal(tt.follower_count ?? tt.followers);
-    }
-    if (isConnected(fb)) {
-      connectedFromFunction++;
-      addVal(fb.follower_count ?? fb.followers);
-    }
-
-    if (total > 0) {
-      totalFollowersEl.textContent = total.toLocaleString();
-      PROFILE_CTX.fallbackTotalFollowers = total;
-      setFollowersUpdated(data.fetched_at || new Date().toISOString());
-      totalFollowersEl.title = 'Combined live audience across linked accounts (not deduped)';
-    }
-
-    if (connectedFromFunction > 0) {
-      PROFILE_CTX.connectedCount = connectedFromFunction;
-      renderFollowersNote();
+    const audience = publicAudienceSummary(data);
+    totalFollowersEl.textContent = audience.total === null ? 'Unknown' : audience.total.toLocaleString();
+    totalFollowersEl.title = 'Reported public audience across available connected platforms; not deduplicated. Unavailable counts are unknown.';
+    if (audience.total !== null) PROFILE_CTX.fallbackTotalFollowers = audience.total;
+    PROFILE_CTX.connectedCount = audience.connected;
+    setFollowersUpdated(publicSnapshotTime(data));
+    renderFollowersNote();
+    const audienceNote = document.getElementById('followers-note');
+    if (audienceNote) {
+      audienceNote.style.display = 'block';
+      audienceNote.textContent = `${audience.unknown ? 'Some public counts are unknown; a complete combined audience is unavailable. ' : ''}${publicSnapshotLabel(data)}`;
     }
 
     /* ---- TikTok card ---- */
-    if (isConnected(tt) && tiktokBlock) {
+    if (presentPublicProvider(tiktokBlock, 'tiktok', tt, data)) {
       tiktokBlock.style.display = 'block';
 
       if ($id('tt-display-name')) {
@@ -880,8 +845,8 @@ async function loadProfileLiveStats(username) {
         const wrap = $id('tt-videos-wrap'); if (wrap) wrap.style.display = 'block';
       }
 
-      if ($id('tt-updated') && (tt.updated_at || data.fetched_at)) {
-        $id('tt-updated').textContent = formatDate(tt.updated_at || data.fetched_at);
+      if ($id('tt-updated') && (data.fetched_at)) {
+        $id('tt-updated').textContent = formatDate(data.fetched_at);
         const wrap = $id('tt-updated-wrap'); if (wrap) wrap.style.display = 'block';
       }
 
@@ -916,7 +881,7 @@ async function loadProfileLiveStats(username) {
     }
 
     /* ---- YouTube card ---- */
-    if (isConnected(yt) && youtubeBlock) {
+    if (presentPublicProvider(youtubeBlock, 'youtube', yt, data)) {
       youtubeBlock.style.display = 'block';
 
       if ($id('yt-channel-title')) {
@@ -974,7 +939,7 @@ async function loadProfileLiveStats(username) {
     }
 
     /* ---- Twitch card ---- */
-    if (isConnected(twt) && twitchBlock) {
+    if (presentPublicProvider(twitchBlock, 'twitch', twt, data)) {
       twitchBlock.style.display = 'block';
 
       if ($id('tw-display-name')) {
@@ -998,9 +963,9 @@ async function loadProfileLiveStats(username) {
         $id('tw-created').textContent = formatDate(twt.created_at || twt.started_at);
       }
       if ($id('tw-live-status')) {
-        $id('tw-live-status').textContent = twt.is_live ? 'Live' : 'Offline';
+        $id('tw-live-status').textContent = publicTwitchStatus(twt);
       }
-      if (twt.is_live && $id('tw-viewers') && (twt.viewer_count ?? twt.viewers)) {
+      if (twt.is_live === true && $id('tw-viewers') && (twt.viewer_count ?? twt.viewers) != null) {
         $id('tw-viewers').textContent = formatNumber(twt.viewer_count ?? twt.viewers);
         const wrap = $id('tw-viewers-wrap'); if (wrap) wrap.style.display = 'block';
       }
@@ -1028,7 +993,7 @@ async function loadProfileLiveStats(username) {
     }
 
     /* ---- Instagram card ---- */
-    if (isConnected(ig) && instagramBlock) {
+    if (presentPublicProvider(instagramBlock, 'instagram', ig, data)) {
       instagramBlock.style.display = 'block';
 
       if ($id('ig-username')) {
@@ -1061,8 +1026,8 @@ async function loadProfileLiveStats(username) {
         $id('ig-eng-rate').textContent = Number.isFinite(er) ? `${er.toFixed(1)}%` : '-';
       }
 
-      if ($id('ig-updated') && (ig.updated_at || data.fetched_at)) {
-        $id('ig-updated').textContent = formatDate(ig.updated_at || data.fetched_at);
+      if ($id('ig-updated') && (data.fetched_at)) {
+        $id('ig-updated').textContent = formatDate(data.fetched_at);
       }
 
       if (ig.insights_7d) {
@@ -1135,7 +1100,7 @@ async function loadProfileLiveStats(username) {
     }
 
     /* ---- Facebook card ---- */
-    if (isConnected(fb) && facebookBlock) {
+    if (presentPublicProvider(facebookBlock, 'facebook', fb, data)) {
       facebookBlock.style.display = 'block';
 
       if ($id('fb-page-name')) {
@@ -1160,8 +1125,8 @@ async function loadProfileLiveStats(username) {
         $id('fb-likes').textContent = formatNumber(fb.page_likes ?? fb.likes);
       }
 
-      if ($id('fb-updated') && (fb.updated_at || data.fetched_at)) {
-        $id('fb-updated').textContent = formatDate(fb.updated_at || data.fetched_at);
+      if ($id('fb-updated') && (data.fetched_at)) {
+        $id('fb-updated').textContent = formatDate(data.fetched_at);
       }
 
       if (fb.insights_28d) {
@@ -1201,7 +1166,13 @@ async function loadProfileLiveStats(username) {
       }
     }
   } catch (e) {
-    console.warn('loadProfileLiveStats error:', e);
+    for (const provider of ['youtube','twitch','tiktok','instagram','facebook']) {
+      presentPublicProvider(document.getElementById(`${provider}-stats-block`), provider, null, null);
+    }
+    if (totalFollowersEl) totalFollowersEl.textContent = 'Unknown';
+    setFollowersUpdated(null);
+    const note = document.getElementById('followers-note');
+    if (note) { note.style.display = 'block'; note.textContent = 'Public platform statistics are unavailable. Counts and live status are unknown.'; }
   }
 }
 

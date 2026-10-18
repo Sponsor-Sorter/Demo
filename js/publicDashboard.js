@@ -5,6 +5,7 @@ import { mountMediaKit } from "./creatorMediaKit.js?v=20261011-kit1";
 import { supabase } from "./supabaseClient.js";
 import { escapeHtml, safeImageUrl } from "./safePresentation.js";
 import { profileSlug, wireProfileSharing } from "./publicProfileSharing.js";
+import { presentPublicProvider, publicTwitchStatus, publicCount, readPublicStats } from "./publicStatsPresentation.mjs?v=20261018-publicstats1";
 
 const $ = (id) => document.getElementById(id);
 const q = (sel) => document.querySelector(sel);
@@ -218,8 +219,8 @@ function renderStarsInto(containerEl, avg) {
 
 /* --------------- Number & date helpers --------------- */
 function formatCount(v) {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return "—";
+  const n = publicCount(v);
+  if (n === null) return "—";
   if (n >= 1_000_000)
     return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
   if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
@@ -379,9 +380,9 @@ function renderTwitchStats(tw) {
   const fEl = $("tw-followers");
   if (fEl) fEl.textContent = formatCount(tw.follower_count);
 
-  const isLive = !!tw.is_live;
+  const isLive = tw.is_live === true;
   const statusEl = $("tw-status");
-  if (statusEl) statusEl.textContent = isLive ? "Live now" : "Offline";
+  if (statusEl) statusEl.textContent = publicTwitchStatus(tw);
 
   const viewEl = $("tw-viewers");
   if (viewEl)
@@ -390,7 +391,7 @@ function renderTwitchStats(tw) {
 
   const wrap = $("tw-latest-wrapper");
   const stream =
-    isLive && tw.current_stream ? tw.current_stream : tw.last_stream || null;
+    isLive && tw.current_stream ? tw.current_stream : tw.is_live === false ? tw.last_stream || null : null;
   if (!stream || (!stream.thumbnail_url && !stream.url && !stream.title)) {
     showEl(wrap, false);
     return;
@@ -567,15 +568,10 @@ function renderFacebookStats(fb) {
 }
 
 function renderLiveStats(payload) {
-  if (!payload) return;
-  try {
-    renderYoutubeStats(payload.youtube);
-    renderTiktokStats(payload.tiktok);
-    renderTwitchStats(payload.twitch);
-    renderInstagramStats(payload.instagram);
-    renderFacebookStats(payload.facebook);
-  } catch (e) {
-    console.error("[publicdashboard] renderLiveStats error", e);
+  const renderers = { youtube: renderYoutubeStats, tiktok: renderTiktokStats, twitch: renderTwitchStats, instagram: renderInstagramStats, facebook: renderFacebookStats };
+  for (const [provider, render] of Object.entries(renderers)) {
+    const info = payload?.[provider];
+    if (presentPublicProvider($(`platform-${provider}`), provider, info, payload)) render(info);
   }
 }
 
@@ -775,31 +771,9 @@ function renderReviews(items) {
 
 /* --------------- Live stats loader --------------- */
 async function loadLiveStats(profile) {
-  if (!profile || !profile.username) return;
-  try {
-    const { data, error } = await supabase.functions.invoke(
-      "get-profile-live-stats",
-      {
-        body: { username: profile.username },
-      },
-    );
-    if (error) {
-      console.error("[publicdashboard] get-profile-live-stats error", error);
-      return;
-    }
-    if (!data || data.error) {
-      if (data && data.error) {
-        console.warn(
-          "[publicdashboard] get-profile-live-stats payload error",
-          data.error,
-        );
-      }
-      return;
-    }
-    renderLiveStats(data);
-  } catch (e) {
-    console.error("[publicdashboard] get-profile-live-stats exception", e);
-  }
+  if (!profile?.username) return;
+  try { renderLiveStats(await readPublicStats(supabase, profile.username)); }
+  catch { renderLiveStats(null); }
 }
 
 /* ---------------- Load ---------------- */
