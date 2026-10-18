@@ -198,7 +198,7 @@
   for(const f of Object.values(state.farms))if(!f.orders||!f.orders.length)f.orders=[makeOrder()];
   $$('.brand').forEach(b=>b.addEventListener('click',()=>setView('farm')));
   $$('.mode-button').forEach(b=>b.addEventListener('click',()=>{mode(b.dataset.mode);render()}));
-  $('#map-switch').addEventListener('click',mapDialog);$('#expand-button').addEventListener('click',expand);$('#settings-button').addEventListener('click',showSettings);$('#orientation').addEventListener('click',()=>notify('Turn your device — the farm adjusts to portrait and landscape automatically.'));
+  $('#map-switch').addEventListener('click',mapDialog);$('#expand-button').addEventListener('click',expand);$('#settings-button').addEventListener('click',showSettings);
   $('#undo-button').addEventListener('click',()=>{if(state.previous){current().objects=state.previous;state.previous=null;state.moving=null;render();$('#undo-button').disabled=true;notify('Last move undone ↶')}});
   $$('.close-button').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close)?.close()));
   document.addEventListener('click',e=>{const d=e.target.closest('dialog');if(d&&e.target===d)d.close()});

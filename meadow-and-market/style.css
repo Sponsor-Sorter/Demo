@@ -289,3 +289,7 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .farm-grid>.farm-object.tree .nameplate,.farm-grid>.farm-object.flowers .nameplate{bottom:-12px}
 .update-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
 .update-actions button{min-height:42px;padding-inline:18px}
+
+/* Let the farm remain visible around the floating controls. */
+.topbar,.farm-hud{background:transparent;box-shadow:none;backdrop-filter:none}
+.topbar .brand,.top-hud-farm{text-shadow:0 1px 4px #173f31,0 1px 8px #173f3199}
