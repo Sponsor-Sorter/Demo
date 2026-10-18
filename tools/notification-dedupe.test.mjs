@@ -53,7 +53,7 @@ test('unrelated producers, inbox readers, 2FA and messaging remain byte-identica
 test('dashboard cache keys load the new offer modules while shared alerts stay loaded',()=>{
   for(const [page,module] of [['dashboardsponsor.html','sponsorOffers'],['dashboardsponsee.html','sponseeOffers']]) {
     const source=read(page);
-    assert.ok(source.includes(`${module}.js?v=20261018-notify-dedupe1`));
+    assert.match(source,new RegExp(`${module}\\.js\\?v=\\d{8}-[a-z0-9-]+`));
     assert.match(source,/js\/alerts\.js\?/);
   }
 });

@@ -1,3 +1,4 @@
+import { pendingOfferAvailability } from './pendingOfferExpiry.mjs?v=20261018-expiry1';
 import {
   campaignCalendar,
   downloadCampaignCalendar,
@@ -19,13 +20,15 @@ export function attentionItems(offers, role, now = Date.now()) {
             /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw + "T23:59:59.999" : raw,
           )
         : NaN;
-      const overdue = stage >= 2 && Number.isFinite(due) && due < now;
+      const pending = stage === 1 ? pendingOfferAvailability(offer, now) : null;
+      const overdue = pending?.reason === 'deadline_passed' || (stage >= 2 && Number.isFinite(due) && due < now);
       const soon =
         stage >= 2 &&
         Number.isFinite(due) &&
         due >= now &&
         due <= now + 7 * 86400000;
       const action =
+        pending && !pending.canAccept ? pending.message :
         role === "sponsor"
           ? {
               1: "Awaiting creator response",
@@ -147,6 +150,6 @@ export function renderCampaignToday(host, offers, role, onOpen) {
   const note = document.createElement("p");
   note.className = "today-summary";
   note.textContent =
-    "Showing up to four priorities from your loaded private campaigns. Open a campaign to check its latest details. Date-only deadlines use your local day.";
+    "Showing up to four priorities from your loaded private campaigns. Open a campaign to check its latest details. Pending offer acceptance uses Australia/Sydney time. Other date-only campaign deadlines use your local day.";
   section.append(note);
 }

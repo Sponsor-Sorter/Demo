@@ -1,8 +1,9 @@
+import { pendingOfferAvailability, readPendingAcceptance, mountPendingExpiryNotice } from './pendingOfferExpiry.mjs?v=20261018-expiry1';
 import { mountAutoConfirmationNotice } from './offerAutoConfirmation.mjs?v=20261018-auto-confirm2';
 import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
-import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
+import { renderCampaignToday } from "./campaignToday.js?v=20261018-expiry1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { validatePublishedContent } from './offerWorkflow.js?v=20261011-drafts3';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
@@ -439,7 +440,7 @@ async function computeGroupShare(offer) {
     let actionButtons = '';
     if (offer.stage === 1 && offer.status === 'pending') {
       actionButtons = `
-        <button class="confirm-offer">Accept Offer</button>
+        ${pendingOfferAvailability(offer).canAccept ? '<button class="confirm-offer">Accept Offer</button>' : ''}
         <button class="reject-offer">Reject Offer</button>
       `;
     } else if (offer.stage === 2 && offer.status === 'accepted') {
@@ -672,6 +673,7 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     `;
     if (version !== offerRenderVersion) return;
     listingContainer.appendChild(card);
+    mountPendingExpiryNotice(card, offer);
     void mountAutoConfirmationNotice({ client: supabase, card, offer, role: 'creator' });
   }
 
@@ -1340,6 +1342,13 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
     }
 
     if (e.target.classList.contains('confirm-offer')) {
+      const localAvailability = pendingOfferAvailability(allSponseeOffers.find(item => String(item.id) === String(offerId)));
+      if (!localAvailability.canAccept) {
+        alert(localAvailability.message || 'This offer is no longer available for acceptance.');
+        await loadSponseeOffers();
+        return;
+      }
+
 
       // -------- Free-plan cap: max 1 active sponsorship --------
       const plan = (window.SS_PLAN_TYPE || '').toLowerCase();
@@ -1356,6 +1365,18 @@ card.dataset.groupOffer = _isGroupOffer ? 'true' : 'NULL';
       // ---------------------------------------------------------
 
       if (window.confirm("Are you sure you want to accept this offer?")) {
+        try {
+          const currentAvailability = await readPendingAcceptance(supabase, offerId);
+          if (!currentAvailability.canAccept) {
+            alert(currentAvailability.message || 'This offer is no longer available for acceptance.');
+            await loadSponseeOffers();
+            return;
+          }
+        } catch (error) {
+          alert(error.message);
+          return;
+        }
+
         const { error } = await supabase
           .from('private_offers')
           .update({ status: 'accepted', stage: 2 })

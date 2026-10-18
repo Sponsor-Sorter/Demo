@@ -1,8 +1,9 @@
+import { mountPendingExpiryNotice } from './pendingOfferExpiry.mjs?v=20261018-expiry1';
 import { mountAutoConfirmationNotice } from './offerAutoConfirmation.mjs?v=20261018-auto-confirm2';
 import { readSocialSession, requestSocialMetrics, socialRequestFailureText, instagramSnapshotMetrics } from './socialMetricsRequest.mjs?v=20261017-callers1';
 import { offerText } from './offerPresentation.js?v=20261012-safe1';
 import { mountCampaignReport } from './campaignReports.js?v=20261011-reports1';
-import { renderCampaignToday } from "./campaignToday.js?v=20261011-calendar1";
+import { renderCampaignToday } from "./campaignToday.js?v=20261018-expiry1";
 import { selectCampaigns, mountCampaignTools } from './campaignTools.js?v=20261011-today1';
 import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js?v=20261011-drafts3';
 // public/js/sponsorOffers.js
@@ -364,6 +365,7 @@ async function renderSingleOffer(offer, version) {
 
   if (version !== offerRenderVersion) return;
   listingContainer.appendChild(listing);
+  mountPendingExpiryNotice(listing, offer);
   void mountAutoConfirmationNotice({ client: supabase, card: listing, offer, role: 'sponsor' });
 }
 
