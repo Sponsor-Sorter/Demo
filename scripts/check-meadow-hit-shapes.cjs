@@ -4,7 +4,8 @@ vm.runInNewContext(read('hit-shapes.js'),scope);
 const {shapes,project}=scope.window.meadowHitShapes;
 assert.equal(Object.keys(shapes).length,29);
 for(const [file,shape] of Object.entries(shapes)){
-  assert.equal(shape.sha256,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'assets/generated',file))).digest('hex'),'Regenerate silhouette after changing '+file);
+  const source=fs.readFileSync(path.join(root,'assets/generated',file)),bytes=file.endsWith('.svg')?Buffer.from(source.toString().replace(/\r?\n/g,'\r\n')):source;
+  assert.equal(shape.sha256,crypto.createHash('sha256').update(bytes).digest('hex'),'Regenerate silhouette after changing '+file);
   assert(shape.points.length>3);
   assert(shape.points.every(p=>p.length===2&&p.every(n=>Number.isFinite(n)&&n>=0&&n<=1)));
 }
