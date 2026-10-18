@@ -267,13 +267,16 @@
   });
   window.addEventListener('meadow-cloud-ready',()=>{const connect=$('#send-friend-request');if(connect)connect.disabled=false;if($('#friends-online-list'))refreshFriends()});
   window.addEventListener('meadow-supabase-ready',startCloud,{once:true});if(window.meadowSupabase)startCloud();
-  if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').then(reg=>{
+  const currentBuild=42;
+  if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false;
     const promptForUpdate=()=>{const dialog=$('#update-dialog');if(navigator.serviceWorker.controller&&reg.waiting&&dialog&&!dialog.open)dialog.showModal()};
-    const checkForUpdate=()=>{if(!document.hidden)reg.update().catch(()=>{})};
+    const checkForUpdate=async()=>{if(document.hidden)return;try{const response=await fetch('./release.json?check='+Date.now(),{cache:'no-store'});if(!response.ok)return;const release=await response.json();if(Number.isInteger(release.build)&&release.build>currentBuild&&!reg.installing&&!reg.waiting){reg=await navigator.serviceWorker.register('./sw.js?build='+release.build,{scope:'./',updateViaCache:'none'});watchRegistration()}else await reg.update();promptForUpdate()}catch{}};
+    const watched=new WeakSet();
+    const watchRegistration=()=>{if(watched.has(reg))return;watched.add(reg);reg.addEventListener('updatefound',()=>{const installing=reg.installing;if(!installing)return;installing.addEventListener('statechange',()=>{if(installing.state==='installed')promptForUpdate()})})};
+    watchRegistration();
     checkForUpdate();
     promptForUpdate();
-    reg.addEventListener('updatefound',()=>{const installing=reg.installing;if(!installing)return;installing.addEventListener('statechange',()=>{if(installing.state==='installed')promptForUpdate()})});
     setInterval(checkForUpdate,60000);
     window.addEventListener('focus',checkForUpdate);
     document.addEventListener('visibilitychange',checkForUpdate);
