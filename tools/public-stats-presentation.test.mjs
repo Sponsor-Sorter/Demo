@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { publicProviderAvailable, publicTwitchStatus, publicCount, publicSnapshotTime, publicSnapshotLabel, publicAudienceSummary, presentPublicProvider, readPublicStats } from '../js/publicStatsPresentation.mjs';
+import { publicProviderAvailable, publicTwitchStatus, publicCount, publicMediaDate, publicSnapshotTime, publicSnapshotLabel, publicAudienceSummary, presentPublicProvider, readPublicStats } from '../js/publicStatsPresentation.mjs';
 const fetched_at='2026-10-18T06:14:11.249Z';
 const unlinked=()=>({connected:false,available:false,state:'not_connected'});
 const available=extra=>({connected:true,available:true,state:'available',...extra});
@@ -25,6 +25,11 @@ test('Twitch null and unavailable are Unknown, only observed false is Offline',(
 test('missing values never become zero; observed zero is retained',()=>{
  for(const value of [null,undefined,'',' ',false,[],{},-1,NaN,Infinity,'0x10',0.5]) assert.equal(publicCount(value),null);
  assert.equal(publicCount(0),0);assert.equal(publicCount('0'),0);assert.equal(publicCount(27),27);
+});
+test('media timestamps distinguish Unix seconds, milliseconds and ISO strings',()=>{
+ const iso='2025-09-01T07:43:37.000Z';const ms=Date.parse(iso);
+ for(const value of [ms/1000,String(ms/1000),ms,String(ms),iso]) assert.equal(publicMediaDate(value)?.toISOString(),iso);
+ for(const value of [null,undefined,'',false,{},'not-a-date',Infinity]) assert.equal(publicMediaDate(value),null);
 });
 test('cache hit retains source time and reports source age',()=>{
  const p={...payload(),cache_hit:true};const now=Date.parse(fetched_at)+4*60000;
@@ -64,6 +69,11 @@ test('public read deadline aborts without retry',async()=>{
 });
 const dashboard=readFileSync(new URL('../js/publicDashboard.js',import.meta.url),'utf8');
 const profile=readFileSync(new URL('../viewprofile.html',import.meta.url),'utf8');
+test('actual viewprofile date formatter cannot turn TikTok seconds into 1970',()=>{
+ const start=profile.indexOf('function formatDate(val)');const end=profile.indexOf('/* ---------- Dynamic Nav Bar ---------- */',start);
+ const format=new Function('publicMediaDate',profile.slice(start,end)+'\nreturn formatDate;')(publicMediaDate);
+ const ms=Date.parse('2025-09-01T07:43:37Z');assert.equal(format(ms/1000),format(ms));assert.match(format(ms/1000),/2025/);assert.equal(format(null),'—');
+});
 test('actual public dashboard dispatcher gates each renderer on shared availability',()=>{
  const start=dashboard.indexOf('function renderLiveStats(payload)');const end=dashboard.indexOf('/* --------------- Renderers --------------- */',start);
  const cards=Object.fromEntries(['youtube','twitch','tiktok','instagram','facebook'].map(p=>[`platform-${p}`,dom().card]));const rendered=[];

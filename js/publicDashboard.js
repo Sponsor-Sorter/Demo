@@ -5,7 +5,7 @@ import { mountMediaKit } from "./creatorMediaKit.js?v=20261011-kit1";
 import { supabase } from "./supabaseClient.js";
 import { escapeHtml, safeImageUrl } from "./safePresentation.js";
 import { profileSlug, wireProfileSharing } from "./publicProfileSharing.js";
-import { presentPublicProvider, publicTwitchStatus, publicCount, readPublicStats } from "./publicStatsPresentation.mjs?v=20261018-publicstats1";
+import { presentPublicProvider, publicTwitchStatus, publicCount, publicMediaDate, readPublicStats } from "./publicStatsPresentation.mjs?v=20261018-publicstats2";
 
 const $ = (id) => document.getElementById(id);
 const q = (sel) => document.querySelector(sel);
@@ -227,19 +227,7 @@ function formatCount(v) {
   return n.toLocaleString();
 }
 function parseDateLike(v) {
-  if (!v && v !== 0) return null;
-  if (typeof v === "number") {
-    const d = new Date(v * 1000);
-    return Number.isNaN(d.getTime()) ? null : d;
-  }
-  const s = String(v);
-  if (/^\d+$/.test(s)) {
-    const n = Number(s);
-    const d = new Date(n * 1000);
-    if (!Number.isNaN(d.getTime())) return d;
-  }
-  const d = new Date(s);
-  return Number.isNaN(d.getTime()) ? null : d;
+  return publicMediaDate(v);
 }
 function formatDate(v) {
   const d = parseDateLike(v);

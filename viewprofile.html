@@ -472,7 +472,7 @@
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { injectUserBadge } from './js/badges.js';
-import { presentPublicProvider, publicTwitchStatus, publicCount, publicAudienceSummary, publicSnapshotTime, publicSnapshotLabel, readPublicStats } from './js/publicStatsPresentation.mjs?v=20261018-publicstats1';
+import { presentPublicProvider, publicTwitchStatus, publicCount, publicMediaDate, publicAudienceSummary, publicSnapshotTime, publicSnapshotLabel, readPublicStats } from './js/publicStatsPresentation.mjs?v=20261018-publicstats2';
 import './js/userReports.js';
 
 /* ---------- simple page context ---------- */
@@ -487,9 +487,8 @@ function formatNumber(val) {
   return n === null ? '—' : n.toLocaleString();
 }
 function formatDate(val) {
-  if (!val) return '-';
-  const d = new Date(val);
-  return isNaN(d) ? val : d.toLocaleString();
+  const d = publicMediaDate(val);
+  return d ? d.toLocaleString() : '—';
 }
 
 /* ---------- Dynamic Nav Bar ---------- */
@@ -830,17 +829,17 @@ async function loadProfileLiveStats(username) {
         $id('tt-followers').textContent = formatNumber(tt.follower_count ?? tt.followers);
       }
 
-      if ($id('tt-following') && (tt.following_count ?? tt.following)) {
+      if ($id('tt-following')) {
         $id('tt-following').textContent = formatNumber(tt.following_count ?? tt.following);
         const wrap = $id('tt-following-wrap'); if (wrap) wrap.style.display = 'block';
       }
 
-      if ($id('tt-likes') && (tt.likes_count ?? tt.total_likes)) {
+      if ($id('tt-likes')) {
         $id('tt-likes').textContent = formatNumber(tt.likes_count ?? tt.total_likes);
         const wrap = $id('tt-likes-wrap'); if (wrap) wrap.style.display = 'block';
       }
 
-      if ($id('tt-videos') && (tt.video_count ?? tt.videos)) {
+      if ($id('tt-videos')) {
         $id('tt-videos').textContent = formatNumber(tt.video_count ?? tt.videos);
         const wrap = $id('tt-videos-wrap'); if (wrap) wrap.style.display = 'block';
       }
@@ -888,8 +887,8 @@ async function loadProfileLiveStats(username) {
         $id('yt-channel-title').textContent =
           yt.channel_title || yt.title || yt.handle || 'YouTube Channel';
       }
-      if ($id('yt-channel-desc') && (yt.channel_description || yt.description)) {
-        $id('yt-channel-desc').textContent = yt.channel_description || yt.description;
+      if ($id('yt-channel-desc')) {
+        $id('yt-channel-desc').textContent = yt.channel_description || yt.description || '';
       }
       if ($id('yt-profile-pic') && (yt.profile_pic || yt.profile_image_url || yt.avatar_url)) {
         $id('yt-profile-pic').src = yt.profile_pic || yt.profile_image_url || yt.avatar_url;
@@ -949,8 +948,8 @@ async function loadProfileLiveStats(username) {
       if ($id('tw-login') && (twt.login || twt.username)) {
         $id('tw-login').textContent = `@${twt.login || twt.username}`;
       }
-      if ($id('tw-bio') && twt.bio) {
-        $id('tw-bio').textContent = twt.bio;
+      if ($id('tw-bio')) {
+        $id('tw-bio').textContent = twt.bio || '';
       }
       if ($id('tw-profile-pic') && (twt.profile_pic || twt.profile_image_url || twt.avatar_url)) {
         $id('tw-profile-pic').src = twt.profile_pic || twt.profile_image_url || twt.avatar_url;

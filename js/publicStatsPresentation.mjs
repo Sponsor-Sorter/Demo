@@ -12,6 +12,16 @@ export function publicCount(value) {
   const n = Number(value);
   return Number.isSafeInteger(n) && n >= 0 ? n : null;
 }
+export function publicMediaDate(value) {
+  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return null;
+  let date;
+  if (typeof value === 'number' || (typeof value === 'string' && /^\d+$/.test(value))) {
+    const epoch = Number(value);
+    date = new Date(Math.abs(epoch) < 100000000000 ? epoch * 1000 : epoch);
+  } else if (typeof value === 'string') date = new Date(value);
+  else return null;
+  return Number.isFinite(date.getTime()) ? date : null;
+}
 export function publicSnapshotTime(payload) {
   if (typeof payload?.fetched_at !== 'string') return null;
   const time = Date.parse(payload.fetched_at);
