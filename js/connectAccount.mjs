@@ -1,5 +1,6 @@
 const ACCOUNT = /^acct_[A-Za-z0-9]+$/;
 const MESSAGES = {
+  CONNECT_PLATFORM_NOT_ENABLED: 'Stripe payout setup is unavailable until Sponsor Sorter completes its live Stripe setup. Contact support.',
   SIGN_IN_REQUIRED: 'Sign in to check your payout account.',
   ACCOUNT_UNAVAILABLE: 'Your account cannot manage payout settings right now.',
   VERIFY_EMAIL_REQUIRED: 'Verify your email before setting up a payout account.',

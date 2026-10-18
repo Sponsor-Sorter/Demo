@@ -22,3 +22,7 @@ test('missing account has no provider capability source, unavailable capability 
  delete data.status.capability_source;assert.equal(validateConnectStatus(data),data);
  const unavailable=valid({status:{...valid().status,payouts_enabled:false,capabilities:{transfers:'unavailable'}}});assert.equal(validateConnectStatus(unavailable),unavailable);assert.equal(connectPayoutReady(unavailable),false);
 });
+
+test('live Connect platform prerequisite is shown safely without suggesting setup succeeded',async()=>{
+ await assert.rejects(connectAccount(client(async()=>({data:{ok:false,code:'CONNECT_PLATFORM_NOT_ENABLED',detail:'private'}}))),error=>error.code==='CONNECT_PLATFORM_NOT_ENABLED'&&error.message.includes('completes its live Stripe setup')&&!error.message.includes('private'));
+});

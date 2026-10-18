@@ -9,7 +9,7 @@
 // - Exposes updateWallet() globally (and legacy alias updateSponseeWallet)
 
 import { supabase } from './supabaseClient.js';
-import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect2';
+import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect3';
 
 const MIN_PAYOUT = 10; // $10 minimum; adjust if needed
 
