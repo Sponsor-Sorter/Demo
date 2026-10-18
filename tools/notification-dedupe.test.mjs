@@ -58,10 +58,10 @@ test('dashboard cache keys load the new offer modules while shared alerts stay l
   }
 });
 
-test('public application notification remains separate from committed private UPDATE events',()=>{
-  const source=read('js/publicOffers.js');
-  assert.match(source,/export async function notifySponsorOnApplication/);
-  assert.match(source,/type: 'public_offer_application'/);
-  assert.match(source,/if \(!result.replayed\) void notifySponsorOnApplication/);
-  assert.match(read('finder.html'),/if \(!result.replayed\) void notifySponsorOnApplication/);
+test('public application inbox notice is server-owned in both application paths',()=>{
+  for (const name of ['js/publicOffers.js','finder.html']) {
+    const source=read(name);
+    assert.doesNotMatch(source,/notifySponsorOnApplication|getNotificationInfo|type: 'public_offer_application'/);
+    assert.match(source,/publicOfferRequest\(supabase, 'apply'/);
+  }
 });

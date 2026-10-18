@@ -470,7 +470,6 @@ document.addEventListener('DOMContentLoaded', renderRecentOffers);
 <script type="module">
 import { supabase } from './js/supabaseClient.js';
 import { sydneyDate, publicOfferRequest, publicOfferMessage } from './js/publicOfferActions.mjs?v=20261018-public1';
-import { notifySponsorOnApplication } from './js/publicOffers.js?notifications=20261012brand6&publicoffers=20261018-1';
 import { supportingProfileCard } from './js/finderSupporting.js?v=20261011-support3';
 import { mountFinderDiscovery, escapeFinderText } from './js/finderDiscovery.js?v=20261011-prefs1';
 
@@ -1111,7 +1110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const result = await publicOfferRequest(supabase, 'apply', offerId, applicationText);
       if (!result.ok) throw new Error(publicOfferMessage(result.code));
-      if (!result.replayed) void notifySponsorOnApplication({ offer_id: offerId, application_id: result.application_id }).catch(() => console.warn('Application submitted; notification could not be confirmed.'));
       btn.innerText = 'Applied!';
       btn.style.background = '#13b257';
     } catch (error) {

@@ -1,7 +1,6 @@
 // ./js/publicOffers.js
 import { supabase } from './supabaseClient.js';
 import { sydneyDate, publicOfferAvailability, publicOfferRequest, publicOfferMessage } from './publicOfferActions.mjs?v=20261018-public1';
-import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
 if (!window.sponsorOfferStatusFilter) window.sponsorOfferStatusFilter = '';
@@ -913,7 +912,6 @@ window.showApplyModal = function (offer) {
       const result = await publicOfferRequest(supabase, 'apply', offer.id,
         document.getElementById('application_text').value.trim());
       if (!result.ok) { alert(publicOfferMessage(result.code)); return; }
-      if (!result.replayed) void notifySponsorOnApplication({ offer_id: offer.id, application_id: result.application_id }).catch(() => console.warn('Application submitted; notification could not be confirmed.'));
       alert('Application submitted!');
       modal.remove();
     } catch (error) { alert(error.message); }
@@ -925,32 +923,6 @@ window.showApplyModal = function (offer) {
     if (e.target === modal) modal.remove();
   };
 };
-
-export async function notifySponsorOnApplication({
-  offer_id,
-  sponsee_user_id,
-  sponsee_username,
-  application_id,
-}) {
-  if (!sponsee_username && application_id) {
-    const { data: application } = await supabase.from('public_offer_applications').select('sponsee_username').eq('id', application_id).maybeSingle();
-    sponsee_username = application?.sponsee_username || 'A creator';
-  }
-  const { data: offerRow } = await supabase
-    .from('public_offers')
-    .select('sponsor_id, offer_title, id')
-    .eq('id', offer_id)
-    .single();
-  if (offerRow && offerRow.sponsor_id) {
-    await notifyOfferUpdate({
-      to_user_id: offerRow.sponsor_id,
-      offer_id: offer_id,
-      type: 'public_offer_application',
-      title: 'New Applicant',
-      message: `${sponsee_username} applied for your public offer: "${offerRow.offer_title}".`,
-    });
-  }
-}
 
 if (typeof window !== 'undefined') {
   document.addEventListener('click', function (e) {
