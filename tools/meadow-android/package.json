@@ -1,0 +1,16 @@
+{
+  "name": "meadow-markets-android",
+  "private": true,
+  "version": "1.5.0",
+  "scripts": {
+    "android:sync": "node scripts/prepare-web.cjs && cap sync android",
+    "android:debug": "npm run android:sync && node scripts/build-android.cjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "7.6.9",
+    "@capacitor/core": "7.6.9"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.9"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "encoding": "WebP quality 92, lossless alpha; original dimensions preserved",
+  "files": [
+    {
+      "asset": "apple-tree",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1754465,
+      "webpBytes": 370258,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "barn",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1521002,
+      "webpBytes": 210694,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "chicken-coop",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1709863,
+      "webpBytes": 301976,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "cow",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1249525,
+      "webpBytes": 231094,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "flower-patch",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1610564,
+      "webpBytes": 320360,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "garden-bed",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1388412,
+      "webpBytes": 256288,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "goat",
+      "width": 512,
+      "height": 512,
+      "sourceBytes": 331637,
+      "webpBytes": 70966,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "grand-chicken-yard",
+      "width": 1322,
+      "height": 949,
+      "sourceBytes": 3014888,
+      "webpBytes": 368130,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "hay-bale",
+      "width": 372,
+      "height": 417,
+      "sourceBytes": 193003,
+      "webpBytes": 53998,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "hen",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 1413817,
+      "webpBytes": 254076,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "market-stall",
+      "width": 1254,
+      "height": 1254,
+      "sourceBytes": 2099156,
+      "webpBytes": 407078,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "meadow-tile",
+      "width": 390,
+      "height": 356,
+      "sourceBytes": 178984,
+      "webpBytes": 46910,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "sheep",
+      "width": 512,
+      "height": 512,
+      "sourceBytes": 478696,
+      "webpBytes": 70534,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "watering-can",
+      "width": 280,
+      "height": 245,
+      "sourceBytes": 90184,
+      "webpBytes": 28182,
+      "alphaPreserved": true
+    },
+    {
+      "asset": "willowbrook-meadow-map",
+      "width": 1536,
+      "height": 1024,
+      "sourceBytes": 3814694,
+      "webpBytes": 800674,
+      "alphaPreserved": true
+    }
+  ]
+}

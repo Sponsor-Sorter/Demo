@@ -41,3 +41,4 @@ const runtimeUrls=[...read('index.html').matchAll(/(?:src|href)="([^"\s]+\.(?:js
 
 require('./check-meadow-lessons.cjs');
 require('./check-meadow-pantry.cjs');
+require('./check-meadow-art.cjs');

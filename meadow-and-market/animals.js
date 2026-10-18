@@ -9,7 +9,7 @@
     a.needsAt=now;return a;
   }
   function ready(a,now=Date.now()){return a.hunger>45&&a.clean>35&&a.happy>50&&now-(a.lastProductAt||0)>=products[a.type].time}
-  function image(a){return 'assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.png'}
+  function image(a){return 'assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.webp'}
   function home(a){return api.home(a)?.type==='coop'?'Chicken coop':api.home(a)?.type==='paddock'?'Livestock paddock':api.home(a)?'Farm barn':'Roaming the farm'}
   function productText(a){const p=products[a.type];return a.hunger<=45?'A little food will help production.':a.clean<=35?'A clean home will help production.':a.happy<=50?'Some attention will help production.':ready(a)?api.items[p.item].name+' ready · '+(api.yield(a)+(a.treatBonus?1:0)):Math.max(1,Math.ceil((p.time-(Date.now()-(a.lastProductAt||0)))/1000))+' seconds until the next collection'}
   function care(id,action='all'){

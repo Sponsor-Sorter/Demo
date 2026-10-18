@@ -1,0 +1,16 @@
+{
+  "appId": "com.meadowandmarket.game",
+  "appName": "Meadow Markets",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "url": "https://sponsorsorter.com/meadow-and-market/"
+  }
+}
+
+
+
+
+
+
