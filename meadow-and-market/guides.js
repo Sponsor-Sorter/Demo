@@ -11,13 +11,14 @@
     {id:'water',person:'jade',title:'Give your crop a drink',text:'Tap a growing crop to see its stages and remaining time. Water the field once for one gold per tile to earn a bonus at harvest. Only the plant grows; its soil and tile stay put.',action:'Show a growing crop',focus:'water'},
     {id:'harvest',person:'jade',title:'Pick your first harvest',text:'A sparkle marks a fully grown crop. Tap it to collect your produce, then plant the tilled bed again. Crops also grow while you are away. We can learn another lesson while we wait.',action:'Find a crop to harvest',focus:'harvest'},
     {id:'place',person:'rhys',title:'Make the farm your own',text:'I’m Farmer Rhys, Jade’s brother. Open Build, swipe across the item row, then tap an item and a clear diamond to place it. Minimize the tray when you need more room. Let’s try a free garden bed.',action:'Choose a free garden bed',focus:'place'},
-    {id:'move',person:'rhys',title:'Move it into place',text:'In Build mode, tap an existing item and then a clear tile to move it. You can also drag it, or hold it to pick it up. Its highlighted ground area shows the space it needs. Undo reverses the last move.',action:'Pick up an item',focus:'move'},
+    {id:'move',person:'rhys',title:'Move it into place',text:'In Build mode, tap an existing item and then a clear tile to move it. Hold an item still for 1.2 seconds to pick it up, then drag or tap a clear tile. A quick swipe pans the camera. Its highlighted ground area shows the space it needs. Undo reverses the last move.',action:'Pick up an item',focus:'move'},
     {id:'upgrade',person:'rhys',title:'Give your animals more room',text:'Tap a coop, barn, paddock, orchard, field, or well in Tend mode to see its upgrades. Each stage needs enough gold and clear space. Bigger homes hold more animals and improve their yield.',action:'Show a building’s upgrades',focus:'upgrade'},
     {id:'expand',person:'rhys',title:'Open another part of the meadow',text:'The expand button on the right opens more land on this farm. Check the price first, and keep your existing farm growing as you unlock the new space.',action:'See the next expansion',focus:'expand'},
     {id:'care',person:'jay',title:'Meet your animal friends',text:'I’m Farmer Jay—Farmer Rhys is my twin! Open Animals and tap Care to feed and clean a friend. Food, cleanliness, and happiness help them produce eggs or milk. Basic care is free.',action:'Visit animal care',focus:'care'},
     {id:'sell',person:'jay',title:'Bring a basket to the village',text:'The Market buys individual goods and offers requests with better rewards. Read what a vendor needs and compare it with your basket. Completing requests also earns village reputation.',action:'Open the village market',focus:'sell'}
   ];
-  let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0;
+  let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0, lastInteraction=Date.now();
+  window.addEventListener('pointerdown',()=>{lastInteraction=Date.now()},{passive:true});
   const get = () => {
     const s=api.state();
     if(!s.tutorial||s.tutorial.version!==1)s.tutorial={version:1,completed:[],rewarded:[],seenContexts:[],started:false,paused:false};
@@ -70,7 +71,7 @@
     root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Farmer Rhys and Farmer Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
     document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');launcher.onclick=menu;updateLauncher();
     if(!get().introduced)setTimeout(()=>{if(!document.querySelector('dialog[open]')){get().introduced=true;save();welcome()}},1200);
-    setInterval(()=>{if(document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint)card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')},30000);
+    setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint)card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')},30000);
   }
   window.meadowGuides={attach,event,context,menu,lesson:showLesson};
 })();
