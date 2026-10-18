@@ -27,10 +27,10 @@ export function validateConnectStatus(data) {
       !(data.account_id === null || ACCOUNT.test(data.account_id || '')) ||
       typeof status?.details_submitted !== 'boolean' || typeof status?.payouts_enabled !== 'boolean' ||
       !(status.disabled_reason === null || (typeof status.disabled_reason === 'string' && status.disabled_reason.length <= 300)) ||
-      !['active','pending','inactive','unrequested'].includes(status.capabilities?.transfers) ||
-      (status.capability_source ?? data.capability_source) !== 'accounts_v2' ||
+      !['active','pending','inactive','unrequested','unavailable'].includes(status.capabilities?.transfers) ||
+      (data.account_id !== null && status.capability_source !== 'accounts_v2') ||
       !['currently_due','past_due'].every(key => Array.isArray(status[key]) && status[key].length <= 100 && status[key].every(value => typeof value === 'string' && value.length <= 200)) ||
-      (data.account_id === null && (!data.setup_required || status.payouts_enabled))) throw Error('Invalid payout status.');
+      (data.account_id === null && (!data.setup_required || status.payouts_enabled || status.capabilities.transfers !== 'inactive'))) throw Error('Invalid payout status.');
   return data;
 }
 export function connectStripeUrl(value) {
