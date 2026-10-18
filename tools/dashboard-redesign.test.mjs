@@ -35,3 +35,13 @@ test('empty creator filters never display page zero',()=>{
  assert.doesNotMatch(source,/Page \$\{totalOffers === 0 \? 0/);
  assert.match(source,/No matching campaigns/);
 });
+
+test('dashboard uses home page background, panel surfaces and shared banner class',()=>{
+ const css=readFileSync(new URL('dashboard-workspace.css',root),'utf8');
+ const source=readFileSync(new URL('js/dashboardWorkspace.mjs',root),'utf8');
+ assert.match(css,/background:#08090a!important/);
+ assert.match(css,/background:#151719!important/);
+ assert.match(css,/border:1px solid #34383e!important;border-radius:16px/);
+ assert.match(source,/header.classList.add\('header', 'dw-site-header'\)/);
+ assert.doesNotMatch(css,/connection-grid.*display:none/);
+});

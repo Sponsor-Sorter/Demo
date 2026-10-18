@@ -16,17 +16,19 @@ export function initDashboardWorkspace(doc = document, win = window) {
   const header = doc.querySelector('header.navbar1');
   const legacyHeader = header?.querySelector('.navbar');
   if (legacyHeader) {
-    const bar = doc.createElement('div'); bar.className = 'dw-topbar';
     const brand = legacyHeader.querySelector('.site-brand');
     const search = legacyHeader.querySelector('.nav-search');
     const icons = legacyHeader.querySelector('.icon-bar-bg');
-    const links = doc.createElement('div'); links.className = 'dw-toplinks'; links.setAttribute('role', 'navigation'); links.setAttribute('aria-label', 'Main navigation');
-    for (const anchor of [...legacyHeader.querySelectorAll('nav > li > a')]) {
-      if (!anchor.closest('#auth-link')) links.append(anchor);
+    const links = doc.createElement('nav'); links.setAttribute('aria-label', 'Main navigation');
+    for (const item of [...legacyHeader.querySelectorAll('nav > li')]) {
+      if (item.id === 'settings-notif-bar') continue;
+      links.append(item);
     }
-    const auth = legacyHeader.querySelector('#auth-link'); if (auth) { auth.hidden = true; links.append(auth); }
-    if (brand) bar.append(brand); if (search) bar.append(search); bar.append(links); if (icons) bar.append(icons);
-    legacyHeader.replaceWith(bar);
+    const utility = doc.createElement('div'); utility.className = 'dw-header-tools';
+    if (search) utility.append(search); if (icons) utility.append(icons);
+    header.classList.remove('navbar1'); header.classList.add('header', 'dw-site-header');
+    if (brand) { brand.className = 'brand'; brand.setAttribute('aria-label', 'Sponsor Sorter home'); header.append(brand); }
+    header.append(links, utility); legacyHeader.remove();
   }
   const select = selector => dashboard.querySelector(selector);
   const field = selector => select(selector)?.closest('fieldset');
