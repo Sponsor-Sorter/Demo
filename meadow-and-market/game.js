@@ -99,7 +99,7 @@
   function gridRows(){return 10} function expansionLevel(f=current()){return Math.max(0,Math.min(3,Number(f.expansionLevel)||0))} function tileUnlocked(x,y,f=current()){return expansionLevel(f)===3||y<7+expansionLevel(f)}
   // Buildable meadow traced in normalized map-art coordinates (1536×1024).
   // A tile is accepted only when its whole diamond perimeter stays inside this grass boundary.
-  const meadowOutline=[[27,31],[31,29],[36,28],[42,27],[49,27],[56,27],[63,29],[70,31],[76,33],[82,34],[86,37],[89,41],[91,46],[93,51],[95,56],[96,61],[95,65],[93,69],[91,73],[89,77],[87,81],[84,85],[81,89],[77,92],[73,95],[68,97],[62,98],[56,98],[50,97],[45,96],[41,94],[37,92],[33,89],[30,86],[27,83],[24,79],[21,75],[18,71],[16,67],[14,63],[12,59],[12,54],[14,50],[16,46],[19,42],[22,38],[25,34]];
+  const meadowOutline=[[32,34],[38,31],[45,30],[51,31],[58,33],[64,31],[70,32],[76,34],[77,37],[80,41],[83,46],[85,51],[86,56],[84,62],[83,67],[84,71],[82,76],[79,80],[75,84],[70,86],[64,87],[58,90],[51,89],[45,86],[39,84],[34,81],[29,77],[25,72],[22,67],[20,61],[17,57],[16,53],[18,49],[21,45],[24,41],[27,38],[30,36]];
   const areaOutlines={east:[[20,31],[30,29],[43,23],[57,18],[70,16],[81,17],[87,25],[92,39],[92,62],[88,77],[81,83],[64,85],[48,84],[30,80],[21,74],[18,61],[18,43]],back:[[24,18],[38,18],[53,20],[72,20],[84,24],[91,36],[93,55],[89,73],[81,84],[67,85],[51,84],[36,79],[26,70],[20,55],[20,37]]};
   function pointInMeadow(px,py){let inside=false;const outline=areaOutlines[state.active]||meadowOutline;for(let i=0,j=outline.length-1;i<outline.length;j=i++){const [ax,ay]=outline[i],[bx,by]=outline[j];if(((ay>py)!==(by>py))&&px<(bx-ax)*(py-ay)/(by-ay)+ax)inside=!inside}return inside}
   function meadowCell(x,y){const cols=14,rows=gridRows(),step=100/((cols+rows)/2),baseX=50-((cols-rows)/2)*step/2,baseY=50-((cols+rows-2)/2)*step/2,grid=$('#farm-grid'),map=$('#camera-map'),gr=grid.getBoundingClientRect(),mr=map.getBoundingClientRect(),cx=baseX+(x-y)*step/2,cy=baseY+(x+y)*step/2,hw=step*gr.width/mr.width/2,hh=step*gr.height/mr.height/2,originX=(gr.left-mr.left)/mr.width*100,originY=(gr.top-mr.top)/mr.height*100,scaleX=gr.width/mr.width,scaleY=gr.height/mr.height,diamond=[[cx,cy-hh/scaleY],[cx+hw/scaleX,cy],[cx,cy+hh/scaleY],[cx-hw/scaleX,cy]],perimeter=[];for(let i=0;i<diamond.length;i++){const a=diamond[i],b=diamond[(i+1)%diamond.length];for(let s=0;s<8;s++){const t=s/8,gx=a[0]+(b[0]-a[0])*t,gy=a[1]+(b[1]-a[1])*t;perimeter.push([originX+gx*scaleX,originY+gy*scaleY])}}perimeter.push([originX+cx*scaleX,originY+cy*scaleY]);return perimeter.every(([px,py])=>pointInMeadow(px,py))}
@@ -267,7 +267,7 @@
   });
   window.addEventListener('meadow-cloud-ready',()=>{const connect=$('#send-friend-request');if(connect)connect.disabled=false;if($('#friends-online-list'))refreshFriends()});
   window.addEventListener('meadow-supabase-ready',startCloud,{once:true});if(window.meadowSupabase)startCloud();
-  const currentBuild=42;
+  const currentBuild=43;
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false;
     const promptForUpdate=()=>{const dialog=$('#update-dialog');if(navigator.serviceWorker.controller&&reg.waiting&&dialog&&!dialog.open)dialog.showModal()};
