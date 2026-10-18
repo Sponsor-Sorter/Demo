@@ -370,3 +370,12 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .farm-grid>.farm-object:not(.plot) img{pointer-events:auto!important}
 
 .travelling .farm-worker{opacity:0}.travelling .farm-grid *{pointer-events:none!important}
+
+.home-adoption-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.home-adoption-actions button{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px}.home-adoption-actions img{width:48px;height:48px;object-fit:contain}.home-adoption-actions small{font-size:10px}#animal-home{margin:8px 0 14px;width:100%}
+/* Only the real isometric footprint receives ground taps; overlapping rectangular boxes do not. */
+.farm-grid>.farm-object{pointer-events:none!important}
+.farm-grid>.farm-object>.object-footprint{display:block!important;pointer-events:auto!important;background:transparent}
+.building-mode .farm-grid>.farm-object>.object-footprint,.farm-grid>.farm-object.selected>.object-footprint{background:#d4e6a84d}
+#friend-visit-overlay .farm-object *,.travelling .farm-grid>.farm-object *{pointer-events:none!important}
+/* Match the illustrated bridge deck instead of covering the river below it. */
+.bridge-area{left:77%!important;top:28%!important;width:23%!important;height:16%!important;clip-path:polygon(9% 0,96% 57%,78% 100%,0 35%)!important}

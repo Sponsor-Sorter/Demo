@@ -9,7 +9,7 @@
     ]},
     {name:'Made in the meadow',person:'jay',goals:[
       {id:'kitchen',title:'Something delicious',text:'Build your first farm kitchen from the Build catalogue or Shop.',target:1,reward:100,xp:20,measure:s=>objects(s).filter(o=>o.type==='kitchen').length},
-      {id:'batches',title:'The artisan’s basket',text:'Collect four completed kitchen batches. Flour, bread, jam, cheese and cake all count.',target:4,reward:160,xp:30,measure:s=>stats(s).craft||0},
+      {id:'batches',title:'The artisan’s basket',text:'Collect four finished batches from a kitchen or craft shed. Food and handmade goods both count.',target:4,reward:160,xp:30,measure:s=>stats(s).craft||0},
       {id:'customers',title:'Open for business',text:'Stock a market stall and sell ten items to visiting customers.',target:10,reward:180,xp:35,measure:s=>Object.values(s.farms).reduce((n,f)=>n+(f.shop?.sold||0),0)},
       {id:'honey',title:'A little sweetness',text:'Collect three jars of honey. Place a hive within four tiles of blooming flowers.',target:3,reward:150,xp:30,measure:s=>stats(s).honey||0},
       {id:'grove',title:'An orchard for everyone',text:'Upgrade an orchard grove to its second stage. Clear space for its larger footprint.',target:1,reward:180,xp:35,measure:s=>objects(s).some(o=>o.type==='orchard'&&o.tier>=1)?1:0}
