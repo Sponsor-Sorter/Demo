@@ -20,14 +20,12 @@
     <section class="game-layout">
       <section class="farm-panel">
         <div class="farm-heading"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch">🗺 <span>My farms</span></button></div>
-        <div class="farm-land" id="farm-land" aria-label="Your farm map"><div class="sun-glow"></div><div class="landscape-hills"></div><div class="stream"></div><div class="farm-grid" id="farm-grid"></div><div class="farm-decor decor-flowers">✿　❀　✿</div><div class="farm-decor decor-bushes">♣　♣　♣</div><div class="map-label"><span>WILLOW CREEK</span><span>✦</span></div><div class="build-hint" id="build-hint">Tap a plot or animal to tend · Build mode lets you rearrange your farm</div></div>
-        <div class="farm-tools"><div class="mode-switch" role="group" aria-label="Farm mode"><button class="mode-button active" data-mode="tend">🌱 <span>Tend</span></button><button class="mode-button" data-mode="build">🏡 <span>Build</span></button></div><div class="tool-actions"><button id="undo-button" class="tool-button" title="Undo last move" disabled>↶</button><button id="zoom-button" class="tool-button" title="Recenter farm">⌖</button><button id="expand-button" class="tool-button">＋ <span>Expand</span></button></div></div>
+        <div class="farm-scene" id="farm-land" aria-label="Your farm map"><div class="sun-glow"></div><div class="landscape-hills"></div><div class="stream"></div><div class="farm-grid" id="farm-grid"></div><div class="build-hint" id="build-hint">Tap crops and animals to tend</div><div class="scene-actions"><button class="scene-action" id="zoom-button" aria-label="Recenter farm">⌖</button><button class="scene-action" id="expand-button" aria-label="Expand farm">＋</button></div></div>
+        <div class="farm-hud"><div class="mode-switch" role="group" aria-label="Farm mode"><button class="mode-button active" data-mode="tend">🌱 <span>Tend</span></button><button class="mode-button" data-mode="build">🏡 <span>Build</span></button></div><div class="hud-actions"><button id="undo-button" class="tool-button" title="Undo last move" disabled>↶ Undo</button><button class="hud-action" data-view="market">🧺 <span>Market</span></button><button class="hud-action" data-view="animals">🐾 <span>Animals</span></button><button class="hud-action" data-view="shop">🏪 <span>Shop</span></button></div></div>
+        <div class="build-tray" id="build-tray" hidden><div class="build-tray-head"><strong>Build on your farm</strong><button id="build-done" class="small-button">Done</button></div><div id="build-tray-items" class="build-tray-items"></div><small class="tray-help" id="tray-help">Choose an item, then tap an empty grid tile to place it.</small></div>
       </section>
 
-      <aside class="side-panel">
-        <nav class="main-nav" aria-label="Main menu"><button data-view="farm" class="nav-button active"><span>⌂</span>Farm</button><button data-view="market" class="nav-button"><span>♧</span>Market <i id="order-dot"></i></button><button data-view="animals" class="nav-button"><span>♡</span>Animals</button><button data-view="shop" class="nav-button"><span>▤</span>My shop</button></nav>
-        <div id="view-content"></div>
-      </aside>
+      <aside class="side-panel" id="side-panel"><button class="panel-close" id="panel-close" aria-label="Close panel">×</button><div id="view-content"></div></aside>
     </section>
     <footer class="footer"><span>Made with a little sunshine <b>☼</b></span><button id="save-status">Saved on this device</button><a class="download-link" href="meadow-and-market.apk" download>Android APK ↓</a></footer>
   </main>
