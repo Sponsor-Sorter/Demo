@@ -1,6 +1,6 @@
 // Presentation only. Move original nodes so account and campaign handlers survive.
 export const dashboardSections = [
-  ['overview', 'Overview', 'Campaign overview', 'Your campaigns, deadlines and next steps â€” without the clutter.'],
+  ['overview', 'Overview', 'Campaign overview', 'Your campaigns, deadlines and next steps - without the clutter.'],
   ['public', 'Public offers', 'Open opportunities', 'Track public listings and applications in one place.'],
   ['history', 'History', 'Campaign history', 'Review past partnerships, feedback and campaign documents.'],
   ['analytics', 'Analytics', 'Performance', 'Explore the campaign results available for your account.'],
@@ -50,7 +50,7 @@ export function initDashboardWorkspace(doc = document, win = window) {
   const title = doc.createElement('h1'); title.tabIndex = -1;
   const description = doc.createElement('p'); description.className = 'dw-description';
   text.append(eyebrow, title, description);
-  const discover = doc.createElement('a'); discover.className = 'dw-primary'; discover.href = './finder.html'; discover.textContent = sponsor ? 'Find creators â†—' : 'Find opportunities â†—';
+  const discover = doc.createElement('a'); discover.className = 'dw-primary'; discover.href = './finder.html'; discover.textContent = sponsor ? 'Find creators' : 'Find opportunities';
   heading.append(text, discover); main.append(heading);
   const panels = new Map(); const buttons = new Map();
   for (const [key, label, name, copy] of dashboardSections) {
@@ -64,9 +64,9 @@ export function initDashboardWorkspace(doc = document, win = window) {
   const profileActions = doc.createElement('div'); profileActions.className = 'dw-profile-actions';
   const edit = doc.createElement('button'); edit.type = 'button'; edit.textContent = 'Edit profile';
   edit.addEventListener('click', () => doc.getElementById('settings-cog-btn')?.click());
-  const settings = doc.createElement('a'); settings.href = './settings.html'; settings.textContent = 'Account settings â†—';
+  const settings = doc.createElement('a'); settings.href = './settings.html'; settings.textContent = 'Account settings';
   profileActions.append(edit, settings); panels.get('profile')?.prepend(profileActions);
-  const help = doc.createElement('a'); help.href = './help.html'; help.className = 'dw-help'; help.textContent = 'Help & support â†—'; sidebar.append(help);
+  const help = doc.createElement('a'); help.href = './help.html'; help.className = 'dw-help'; help.textContent = 'Help & support'; sidebar.append(help);
   // Preserve welcome, wallet and onboarding controls in a compact account strip.
   const account = doc.createElement('div'); account.className = 'dw-account';
   const welcome = dashboard.querySelector('.userprofile > h2'); const wallet = select('.wallet');
