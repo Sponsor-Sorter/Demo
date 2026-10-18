@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f4e9">
+  <meta name="description" content="Build a farm, care for animals, and bring a little more joy to the village.">
+  <title>Meadow &amp; Market</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-view="farm" aria-label="Go to farm"><span class="brand-mark">✿</span><span><small>YOUR LITTLE CORNER</small><strong>Meadow &amp; Market</strong></span></button>
+      <div class="resource-bar"><span class="resource"><span>🪙</span><b id="coins">0</b></span><span class="resource"><span>⭐</span><b id="level">Lv. 1</b></span><button class="icon-button orientation" id="orientation" aria-label="Toggle screen orientation">▱</button><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
+    </header>
+
+    <section class="game-layout">
+      <section class="farm-panel">
+        <div class="farm-heading"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch">🗺 <span>My farms</span></button></div>
+        <div class="farm-land" id="farm-land" aria-label="Your farm map"><div class="sun-glow"></div><div class="landscape-hills"></div><div class="stream"></div><div class="farm-grid" id="farm-grid"></div><div class="farm-decor decor-flowers">✿　❀　✿</div><div class="farm-decor decor-bushes">♣　♣　♣</div><div class="map-label"><span>WILLOW CREEK</span><span>✦</span></div><div class="build-hint" id="build-hint">Tap a plot or animal to tend · Build mode lets you rearrange your farm</div></div>
+        <div class="farm-tools"><div class="mode-switch" role="group" aria-label="Farm mode"><button class="mode-button active" data-mode="tend">🌱 <span>Tend</span></button><button class="mode-button" data-mode="build">🏡 <span>Build</span></button></div><div class="tool-actions"><button id="undo-button" class="tool-button" title="Undo last move" disabled>↶</button><button id="zoom-button" class="tool-button" title="Recenter farm">⌖</button><button id="expand-button" class="tool-button">＋ <span>Expand</span></button></div></div>
+      </section>
+
+      <aside class="side-panel">
+        <nav class="main-nav" aria-label="Main menu"><button data-view="farm" class="nav-button active"><span>⌂</span>Farm</button><button data-view="market" class="nav-button"><span>♧</span>Market <i id="order-dot"></i></button><button data-view="animals" class="nav-button"><span>♡</span>Animals</button><button data-view="shop" class="nav-button"><span>▤</span>My shop</button></nav>
+        <div id="view-content"></div>
+      </aside>
+    </section>
+    <footer class="footer"><span>Made with a little sunshine <b>☼</b></span><button id="save-status">Saved on this device</button><a class="download-link" href="meadow-and-market.apk" download>Android APK ↓</a></footer>
+  </main>
+
+  <dialog id="build-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">MAKE IT YOURS</small><h2>Farm building</h2></div><button class="close-button" data-close="build-dialog">×</button></div><p class="sheet-copy">Choose something lovely for your farm. You can move it whenever you like.</p><div class="build-list" id="build-list"></div></dialog>
+  <dialog id="maps-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">YOUR WORLD</small><h2>Choose a farm</h2></div><button class="close-button" data-close="maps-dialog">×</button></div><p class="sheet-copy">Every farm has its own little story. Your progress carries with you.</p><div class="map-list" id="map-list"></div></dialog>
+  <dialog id="modal-dialog" class="sheet"><div id="modal-content"></div></dialog>
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>

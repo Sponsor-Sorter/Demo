@@ -1,0 +1,15 @@
+{
+  "name": "Meadow & Market",
+  "short_name": "Meadow Market",
+  "description": "A little farm full of things to grow and friends to meet.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f6f5ed",
+  "theme_color": "#f5f4e9",
+  "icons": [
+    {"src":"assets/icon-1024.png","sizes":"1024x1024","type":"image/png","purpose":"any maskable"},
+    {"src":"assets/apple-touch-icon.png","sizes":"180x180","type":"image/png","purpose":"any"}
+  ]
+}
