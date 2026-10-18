@@ -8,7 +8,7 @@
   <title>Meadow &amp; Market</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
   <main class="app-shell">
@@ -20,7 +20,7 @@
     <section class="game-layout">
       <section class="farm-panel">
         <div class="farm-heading"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch">🗺 <span>My farms</span></button></div>
-        <div class="farm-scene" id="farm-land" aria-label="Your farm map"><div class="sun-glow"></div><div class="landscape-hills"></div><div class="stream"></div><div class="farm-grid" id="farm-grid"></div><div class="build-hint" id="build-hint">Tap crops and animals to tend</div><div class="scene-actions"><button class="scene-action" id="zoom-button" aria-label="Recenter farm">⌖</button><button class="scene-action" id="expand-button" aria-label="Expand farm">＋</button></div></div>
+        <div class="farm-scene" id="farm-land" aria-label="Your farm map"><img class="map-art" src="assets/generated/willowbrook-meadow-map.png" alt="Willowbrook farm map with farmhouse, orchard, animal yard, creek and bridge"><div class="farm-grid" id="farm-grid"></div><div class="map-hotspots"><button class="map-hotspot homestead" data-map-view="home" aria-label="Visit farmhouse"><span>Farmhouse</span></button><button class="map-hotspot barnyard" data-map-view="animals" aria-label="Visit barn and animal yard"><span>Barn &amp; animals</span></button><button class="map-hotspot orchard-area" data-map-view="market" aria-label="Visit orchard and produce market"><span>Orchard</span></button><button class="map-hotspot bridge-area" data-map-view="market" aria-label="Visit village market"><span>Village market</span></button></div><div class="build-hint" id="build-hint">Tap crops and animals to tend</div><div class="scene-actions"><button class="scene-action" id="zoom-button" aria-label="Recenter farm">⌖</button><button class="scene-action" id="expand-button" aria-label="Expand farm">＋</button></div></div>
         <div class="farm-hud"><div class="mode-switch" role="group" aria-label="Farm mode"><button class="mode-button active" data-mode="tend">🌱 <span>Tend</span></button><button class="mode-button" data-mode="build">🏡 <span>Build</span></button></div><div class="hud-actions"><button id="undo-button" class="tool-button" title="Undo last move" disabled>↶ Undo</button><button class="hud-action" data-view="market">🧺 <span>Market</span></button><button class="hud-action" data-view="animals">🐾 <span>Animals</span></button><button class="hud-action" data-view="shop">🏪 <span>Shop</span></button></div></div>
         <div class="build-tray" id="build-tray" hidden><div class="build-tray-head"><strong>Build on your farm</strong><button id="build-done" class="small-button">Done</button></div><div id="build-tray-items" class="build-tray-items"></div><small class="tray-help" id="tray-help">Choose an item, then tap an empty grid tile to place it.</small></div>
       </section>
@@ -34,6 +34,6 @@
   <dialog id="maps-dialog" class="sheet"><div class="sheet-head"><div><small class="eyebrow">YOUR WORLD</small><h2>Choose a farm</h2></div><button class="close-button" data-close="maps-dialog">×</button></div><p class="sheet-copy">Every farm has its own little story. Your progress carries with you.</p><div class="map-list" id="map-list"></div></dialog>
   <dialog id="modal-dialog" class="sheet"><div id="modal-content"></div></dialog>
   <div class="toast" id="toast" aria-live="polite"></div>
-  <script src="game.js"></script>
+  <script src="game.js?v=9"></script>
 </body>
 </html>
