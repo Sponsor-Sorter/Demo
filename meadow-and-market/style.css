@@ -15,3 +15,17 @@
 @media(max-width:700px){.side-panel{top:48px;right:7px;bottom:42px;width:min(360px,calc(100vw - 14px))}}
 .map-hotspot span{left:5px;top:8px;transform:none}
 .building-mode .map-hotspot{pointer-events:none}
+
+.crop-art{width:80%!important;height:83%!important;align-self:start;position:relative;z-index:1;overflow:hidden;filter:drop-shadow(0 3px 2px #425c3035)}.crop-art img{width:300%!important;height:300%!important;max-width:none!important;max-height:none!important;object-fit:fill!important;position:absolute;left:0;top:0;filter:drop-shadow(0 3px 2px #24422242)}.farm-object.plot .nameplate{z-index:2}.farm-object.plot.stage-0 .crop-art{filter:saturate(.35) brightness(.82)}.farm-object.plot.stage-1 .crop-art{filter:saturate(.6) brightness(.95)}.farm-object.plot.stage-2 .crop-art{filter:saturate(.9)}.farm-object.plot.stage-3 .crop-art{filter:drop-shadow(0 0 8px #ffe57a) drop-shadow(0 3px 2px #24422242)}
+.farm-object.plot.crop-carrot .crop-art img{object-position:0% 0%}
+.farm-object.plot.crop-wheat .crop-art img{object-position:-100% 0%}
+.farm-object.plot.crop-strawberry .crop-art img{object-position:-200% 0%}
+.farm-object.plot.crop-corn .crop-art img{object-position:0% -100%}
+.farm-object.plot.crop-tomato .crop-art img{object-position:-100% -100%}
+.farm-object.plot.crop-lavender .crop-art img{object-position:-200% -100%}
+.farm-object.plot.crop-pumpkin .crop-art img{object-position:0% -200%}
+.farm-object.plot.crop-apple .crop-art img{object-position:-100% -200%}
+.farm-object.plot.crop-mushroom .crop-art img{object-position:-200% -200%}
+.farm-object.plot .crop-art{width:80%!important;height:83%!important;align-self:start;position:relative;z-index:1;overflow:hidden;filter:drop-shadow(0 3px 2px #425c3035)}.farm-object.plot .crop-art img{width:300%!important;height:300%!important;max-width:none!important;max-height:none!important;object-fit:fill!important;position:absolute;left:0;top:0;filter:drop-shadow(0 3px 2px #24422242)}.farm-object.plot .nameplate{z-index:2}.farm-object.plot.stage-0 .crop-art{filter:saturate(.35) brightness(.82)}.farm-object.plot.stage-1 .crop-art{filter:saturate(.6) brightness(.95)}.farm-object.plot.stage-2 .crop-art{filter:saturate(.9)}.farm-object.plot.stage-3 .crop-art{filter:drop-shadow(0 0 8px #ffe57a) drop-shadow(0 3px 2px #24422242)}
+.farm-object.plot.crop-carrot .crop-art img{object-position:0 0}.farm-object.plot.crop-wheat .crop-art img{object-position:50% 0}.farm-object.plot.crop-strawberry .crop-art img{object-position:100% 0}.farm-object.plot.crop-corn .crop-art img{object-position:0 50%}.farm-object.plot.crop-tomato .crop-art img{object-position:50% 50%}.farm-object.plot.crop-lavender .crop-art img{object-position:100% 50%}.farm-object.plot.crop-pumpkin .crop-art img{object-position:0 100%}.farm-object.plot.crop-apple .crop-art img{object-position:50% 100%}.farm-object.plot.crop-mushroom .crop-art img{object-position:100% 100%}
+.farm-object.plot .crop-art.watered:after{content:"💧";position:absolute;right:4%;top:0;font:18px system-ui;filter:drop-shadow(0 1px 2px #fff);z-index:3}.farm-object.plot.stage-3 .nameplate{background:#fff2bd;border-color:#f4d777;color:#775c24}
