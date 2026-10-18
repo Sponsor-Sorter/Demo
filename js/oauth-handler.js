@@ -2,6 +2,7 @@
 // One callback for YouTube + Twitch + Instagram + Facebook (Meta) + TikTok
 
 import { supabase } from './supabaseClient.js';
+import { exchangeMemberOAuth, memberOAuthMessage } from './memberOAuth.mjs?v=20261018-oauth1';
 
 const EDGE_FN = {
   youtube:   'youtube-oauth',
@@ -105,15 +106,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ---------- OAuth exchange ----------
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    const jwt = session?.access_token;
-    if (!jwt) throw new Error('Missing session');
-
-    const redirect_uri = location.origin + location.pathname; // must match the one used during auth
-    const fn = EDGE_FN[provider];
-    if (!fn) throw new Error('Unknown provider');
-
-    const { ok, status, payload } = await callEdgeFunction(fn, jwt, { code, redirect_uri });
+    const redirect_uri = location.origin + location.pathname;
+    let result;
+    if (provider === 'youtube' || provider === 'twitch') {
+      result = await exchangeMemberOAuth(supabase, provider, { code, redirect_uri });
+    } else {
+      const { data: { session } } = await supabase.auth.getSession();
+      const jwt = session?.access_token;
+      if (!jwt) throw new Error('Missing session');
+      const fn = EDGE_FN[provider];
+      if (!fn) throw new Error('Unknown provider');
+      result = await callEdgeFunction(fn, jwt, { code, redirect_uri });
+    }
+    const { ok, status, payload } = result;
 
     if (!ok) {
       const errMsg = normalizeErr(payload, status);
@@ -144,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return success(provider);
 
   } catch (e) {
-    return fail(`Failed to connect ${pretty}: ${e?.message || e}`);
+    return fail(`Failed to connect ${pretty}: ${provider === 'youtube' || provider === 'twitch' ? memberOAuthMessage(e?.code) : e?.message || e}`);
   }
 
   // ---------- helpers ----------
