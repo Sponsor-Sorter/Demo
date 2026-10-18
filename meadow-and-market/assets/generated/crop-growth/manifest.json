@@ -1,0 +1,89 @@
+{
+  "columns": 4,
+  "rows": 1,
+  "cell": 512,
+  "anchor": [
+    256,
+    480
+  ],
+  "stages": [
+    "sprout",
+    "young plant",
+    "developing crop",
+    "ripe"
+  ],
+  "crops": {
+    "carrot": {
+      "stageHeights": [
+        153,
+        268,
+        354,
+        460
+      ],
+      "file": "carrot.webp"
+    },
+    "wheat": {
+      "stageHeights": [
+        171,
+        255,
+        397,
+        460
+      ],
+      "file": "wheat.webp"
+    },
+    "strawberry": {
+      "stageHeights": [
+        174,
+        253,
+        340,
+        415
+      ],
+      "file": "strawberry.webp"
+    },
+    "corn": {
+      "stageHeights": [
+        124,
+        299,
+        452,
+        455
+      ],
+      "file": "corn.webp"
+    },
+    "tomato": {
+      "stageHeights": [
+        106,
+        291,
+        383,
+        460
+      ],
+      "file": "tomato.webp"
+    },
+    "lavender": {
+      "stageHeights": [
+        124,
+        253,
+        379,
+        460
+      ],
+      "file": "lavender.webp"
+    },
+    "pumpkin": {
+      "stageHeights": [
+        94,
+        235,
+        302,
+        383
+      ],
+      "file": "pumpkin.webp"
+    },
+    "mushroom": {
+      "stageHeights": [
+        167,
+        190,
+        254,
+        378
+      ],
+      "file": "mushroom.webp"
+    }
+  }
+}
