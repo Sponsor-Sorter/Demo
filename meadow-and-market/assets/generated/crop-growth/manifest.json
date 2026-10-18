@@ -84,6 +84,15 @@
         378
       ],
       "file": "mushroom.webp"
+    },
+    "flowers": {
+      "stageHeights": [
+        144,
+        215,
+        306,
+        411
+      ],
+      "file": "flowers.webp"
     }
   }
 }

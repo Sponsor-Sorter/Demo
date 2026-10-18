@@ -2,7 +2,9 @@
   'use strict';
   const products={flour:{name:'Stoneground flour',emoji:'🌾',sell:24},bread:{name:'Farmhouse bread',emoji:'🍞',sell:40},jam:{name:'Strawberry jam',emoji:'🍓',sell:35},cheese:{name:'Farm cheese',emoji:'🧀',sell:36}};
   for(const [id,item] of Object.entries(products))item.icon='assets/generated/production/'+id+'.webp';
+  products.honeycake={name:'Meadow honey cake',emoji:'🍰',sell:65,icon:'assets/generated/apiary/honeycake.webp'};
   const recipes=[{id:'flour',input:{wheat:3},count:2,time:35000},{id:'bread',input:{flour:2,egg:1},count:2,time:55000},{id:'jam',input:{strawberry:3},count:2,time:45000},{id:'cheese',input:{milk:3},count:2,time:60000}];
+  recipes.push({id:'honeycake',input:{honey:1,flour:2,egg:1},count:2,time:65000});
   const shopCaps=[8,14,22,32],shopIntervals=[45000,35000,25000,18000],shopPrices=[1,1.05,1.1,1.2];
   let api,openKitchen=null;
   const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],tier=o=>Math.max(0,Math.min(2,Number(o.tier)||0));
