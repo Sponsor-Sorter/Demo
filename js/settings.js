@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { anchorSettingsDropdown } from './settingsDropdown.mjs?v=20261018-menu1';
 import { disconnectProvider, disconnectMessage } from './providerDisconnect.mjs?v=20261018-disconnect1';
 import { isFreeMonthReward } from './referralRewards.mjs?v=20261018-referral1';
 import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
@@ -39,14 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Settings Dropdown ---
   const settingsCogBtn = document.getElementById('settings-cog-btn');
   const settingsDropdown = document.getElementById('settings-dropdown');
-  if (settingsCogBtn && settingsDropdown) {
-    settingsCogBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      settingsDropdown.style.display = (settingsDropdown.style.display === 'block') ? 'none' : 'block';
-    });
-    document.addEventListener('click', () => settingsDropdown.style.display = 'none');
-    settingsDropdown.addEventListener('click', (e) => e.stopPropagation());
-  }
+  if (settingsCogBtn && settingsDropdown) anchorSettingsDropdown(settingsCogBtn, settingsDropdown);
 
   // === HELP BLOCKS SLIDER ===
   const helpBlocksToggle = document.getElementById('toggle-help-slider');
