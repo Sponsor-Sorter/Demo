@@ -363,3 +363,10 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .story-chapter{margin-top:22px}.story-heading{display:flex;align-items:center;gap:12px}.story-heading img{width:54px;height:68px;object-fit:contain}.story-heading h3{font-size:17px}.story-chapter .task-main small{line-height:1.5;margin-top:6px}.story-chapter .progress-track{margin-top:12px;height:5px}
 
 .animal-preview{display:block;width:170px;height:150px;object-fit:contain;margin:0 auto}.animal-care-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.animal-care-actions button{min-height:44px}.animal-needs .stat-card b{font-size:20px}@media(orientation:landscape) and (max-height:600px){.animal-preview{height:100px;width:120px}}
+
+.farm-land[data-map="coast"] .farm-grid,.farm-land[data-map="pine"] .farm-grid,.farm-land[data-map="orchard"] .farm-grid{left:7%!important;right:6%!important;top:15%!important;bottom:9%!important}.map-option-preview{width:90px;height:64px;object-fit:cover;border-radius:9px;flex:none}.crossing-farmer{height:auto!important;aspect-ratio:1;background-image:url("assets/generated/workers/jade-walk.webp?v=49");background-size:800% 800%;background-repeat:no-repeat;transform:translate(-50%,-94%)}
+.building-mode .farm-grid>.land-cell.locked:before{opacity:1!important;background:#d5b774cc!important}.building-mode .farm-grid>.land-cell.locked:after{opacity:1!important;background:#48684035!important}
+/* Buildings and animals can be tapped on their visible artwork, above the ground footprint. */
+.farm-grid>.farm-object:not(.plot) img{pointer-events:auto!important}
+
+.travelling .farm-worker{opacity:0}.travelling .farm-grid *{pointer-events:none!important}
