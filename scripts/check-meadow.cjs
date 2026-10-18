@@ -49,4 +49,6 @@ require('./check-meadow-almanac.cjs');
 require('./check-meadow-update-flow.cjs');
 require('./check-meadow-growth-moves.cjs');
 require('./check-meadow-hit-shapes.cjs');
+require('./check-meadow-barns.cjs');
+require('./check-meadow-worker-layout.cjs');
 require('./check-meadow-cloud.cjs').catch(error=>{console.error(error);process.exitCode=1});

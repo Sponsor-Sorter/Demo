@@ -400,3 +400,9 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .farm-grid>.farm-object.flowers img{pointer-events:none!important}
 
 .farm-grid>.farm-object img{-webkit-user-drag:none;touch-action:none}
+
+/* Barn art keeps its authored proportions; its feet meet the consumed footprint. */
+.farm-object.barn .barn-level{inset:auto 0 0!important;width:100%!important;height:auto!important;aspect-ratio:1}
+.farm-object.barn .barn-art{object-fit:contain!important;transform:translateY(var(--barn-pad-bottom,8.453%))}
+.barn-stage-thumb{display:block;width:100%;height:58px;object-fit:contain;margin-bottom:5px}.barn-modal-art{height:180px}.barn-modal-art img{height:170px}
+.farm-grid>.farm-object.barn,.farm-grid>.farm-object.building,.farm-grid>.farm-object.paddock{z-index:var(--object-depth,20)!important}

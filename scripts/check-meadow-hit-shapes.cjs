@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.resolve(__dirname,'../meadow-and-market'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),scope={window:{addEventListener(){}}};
 vm.runInNewContext(read('hit-shapes.js'),scope);
 const {shapes,project}=scope.window.meadowHitShapes;
-assert.equal(Object.keys(shapes).length,29);
+assert.equal(Object.keys(shapes).length,32);
 for(const [file,shape] of Object.entries(shapes)){
   const source=fs.readFileSync(path.join(root,'assets/generated',file)),bytes=file.endsWith('.svg')?Buffer.from(source.toString().replace(/\r?\n/g,'\r\n')):source;
   assert.equal(shape.sha256,crypto.createHash('sha256').update(bytes).digest('hex'),'Regenerate silhouette after changing '+file);
@@ -14,5 +14,5 @@ assert.deepEqual(JSON.parse(JSON.stringify(project(square,200,100,'contain'))),[
 assert.deepEqual(JSON.parse(JSON.stringify(project(square,100,200,'contain',.5,1))),[[0,50],[100,100]]);
 assert(read('game.js').includes('window.meadowHitShapes?.apply(grid)'));
 assert(read('style.css').includes('.farm-grid>.farm-object.flowers img{pointer-events:none!important}'));
-assert(read('index.html').includes('hit-shapes.js?v=1'));
-console.log('29 artwork silhouettes, letterboxed hit projection and neighbouring flower targets passed.');
+assert(read('index.html').includes('hit-shapes.js?v=2'));
+console.log('32 artwork silhouettes, letterboxed hit projection and neighbouring flower targets passed.');

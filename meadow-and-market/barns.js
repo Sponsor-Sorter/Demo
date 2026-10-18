@@ -1,0 +1,1 @@
+(() => {'use strict';const stages=[{"file":"barn.webp","pad":8.453},{"file":"barns/barn-1.webp","pad":11.164},{"file":"barns/barn-2.webp","pad":15.072},{"file":"barns/barn-3.webp","pad":17.384}];const stage=t=>stages[Math.max(0,Math.min(3,Math.floor(Number(t)||0)))];window.meadowBarns={stages,image:t=>'assets/generated/'+stage(t).file,pad:t=>stage(t).pad};})();

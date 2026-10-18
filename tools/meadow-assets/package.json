@@ -1,0 +1,11 @@
+{
+  "name": "meadow-markets-artwork-tools",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "hit-shapes": "node build-hit-shapes.cjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.5"
+  }
+}
