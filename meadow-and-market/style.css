@@ -34,6 +34,12 @@
 .farm-grid{left:14%!important;right:14%!important;top:29%!important;bottom:3%!important;gap:0!important;transform:perspective(1000px) rotateX(22deg)!important;transform-origin:50% 100%!important}
 .farm-object.plot:before{display:none!important;content:none!important}
 .farm-object.plot .crop-art{width:100%!important;height:100%!important;align-self:center;transform-origin:50% 85%;transition:transform 1.1s cubic-bezier(.2,.8,.2,1),filter .8s;animation:crop-sway 3s ease-in-out infinite alternate}
+.farm-object.plot .field-soil{width:100%!important;height:100%!important;transform:none!important;transition:none!important;animation:none!important;position:absolute!important;inset:0!important}
+.farm-object.plot .crop-art{position:absolute!important;left:0;right:0;bottom:14%;width:100%!important;height:72%!important;align-self:auto!important;transform:scale(calc(.28 + var(--growth, 0%) * .0072))!important;transform-origin:50% 100%!important;transition:transform .9s ease,filter .9s ease!important}
+.farm-object.plot .crop-art img{width:100%!important;height:100%!important;object-fit:contain!important}
+/* Keep the isometric soil tile fixed while only the crop sprite scales from its soil anchor. */
+.farm-grid{transform:perspective(860px) rotateX(27deg)!important;transform-origin:50% 100%!important;gap:0!important}
+.farm-object.plot .field-soil{transform:none!important}
 .farm-object.plot .crop-art img{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;position:static;filter:drop-shadow(0 2px 1px #24422242)}
 .farm-object.plot.stage-0 .crop-art{transform:scale(.42) translateY(16%);filter:saturate(.5)}
 .farm-object.plot.stage-1 .crop-art{transform:scale(.62) translateY(10%);filter:saturate(.72)}
@@ -114,6 +120,8 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .coop-yard .yard-hen{position:absolute;display:none;width:21%;height:30%;object-fit:contain;z-index:2;filter:drop-shadow(0 2px 1px #40322070)}
 .coop-yard .coop-tier-mark{position:absolute;z-index:3;right:2%;top:0;padding:3px 6px;border:1px solid #fff8e7;border-radius:99px;background:#fff6d9;color:#715427;font:800 clamp(7px,1vw,11px) Manrope,sans-serif;box-shadow:0 2px 6px #3b4b2d38;white-space:nowrap}
 .coop-yard.tier-1 .coop-run,.coop-yard.tier-2 .coop-run,.coop-yard.tier-3 .coop-run{display:block}
+.coop-yard.tier-3 .grand-yard-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:4;filter:drop-shadow(0 4px 3px #27452c40)}
+.coop-yard.tier-3 .coop-tier-mark{display:none}
 .coop-yard.tier-1 .coop-house{left:20%;top:0;width:62%;height:84%}.coop-yard.tier-2 .coop-house{left:22%;top:-1%;width:58%;height:79%}.coop-yard.tier-3 .coop-house{left:30%;top:4%;width:40%;height:72%}
 .coop-yard.tier-1 .yard-hen:nth-of-type(3){display:block;left:5%;top:56%}
 .coop-yard.tier-2 .yard-hen:nth-of-type(3),.coop-yard.tier-2 .yard-hen:nth-of-type(4){display:block}.coop-yard.tier-2 .yard-hen:nth-of-type(3){left:8%;top:58%}.coop-yard.tier-2 .yard-hen:nth-of-type(4){right:5%;top:46%}
