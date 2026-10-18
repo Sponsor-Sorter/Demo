@@ -1,0 +1,23 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../meadow-and-market'),read=n=>fs.readFileSync(path.join(root,n),'utf8'),game=read('game.js');
+for(const n of ['game.js','guides.js','workers.js','audio.js','production.js','sw.js'])new vm.Script(read(n),{filename:n});
+assert(!/(?<!\$)\$\((?:'[^'\n]*'|"[^"\n]*")\)\.forEach/.test(game),'NodeList iteration uses $$');
+const release=JSON.parse(read('release.json')),html=read('index.html'),sw=read('sw.js');assert(game.includes('const currentBuild='+release.build));assert(html.includes(release.game));assert(html.includes(release.style));assert(sw.includes('meadow-market-v'+release.build));
+const files=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener"))+';FILES');for(const file of files){let p=file.split('?')[0];if(p==='./')p='index.html';assert(fs.existsSync(path.join(root,p)),'Missing precache asset: '+file)}
+const workers={window:{}};vm.runInNewContext(read('workers.js').replace('window.meadowWorkers={','window.workerTest={route,direction};window.meadowWorkers={'),workers);const {route,direction}=workers.window.workerTest;
+for(const [x,y,d]of [[1,-1,6],[1,0,7],[1,1,0],[0,1,1],[-1,1,2],[-1,0,3],[-1,-1,4],[0,-1,5]])assert.equal(direction(x,y),d);
+assert.equal(route({x:0,y:0},[{x:1,y:1}],[{x:0,y:0},{x:1,y:1}]),null,'Helpers must not cut blocked corners');
+const plots={clamp:(n,a,b)=>Math.max(a,Math.min(b,n))};vm.createContext(plots);for(const name of ['plotTier','plotSide','plotArea','plotWatered','plotYield','footprint'])vm.runInContext(game.match(new RegExp('  function '+name+'\\([^\\n]+'))[0],plots);
+for(let tier=0;tier<4;tier++){assert.equal(plots.plotYield({tier},false),[3,16,45,96][tier]);assert.equal(plots.plotYield({tier},true),[4,20,54,112][tier]);assert.equal(plots.footprint({type:'plot',tier}).w,tier+1)}assert.equal(plots.plotSide({}),1);
+// Exercise the actual hold handlers with a camera swipe and deliberate holds.
+const listeners={},timers=new Map(),state={mode:'tend'},camera={pointers:new Map(),suppressClick:false};let picked=0,placed=0;
+const gesture={window:{addEventListener:(n,f)=>listeners[n]=f},setTimeout:(f,ms)=>{const id=timers.size+1;timers.set(id,{f,ms});return id},clearTimeout:id=>timers.delete(id),camera,state,cameraScene:{setPointerCapture:()=>{}},render:()=>picked++,guideCollapseTray:()=>{},navigator:{vibrate:()=>{}},notify:()=>{},isoCellFromPoint:()=>({x:2,y:3}),placeAt:()=>placed++,objectClick:()=>{}};
+vm.runInNewContext(game.slice(game.indexOf('  const OBJECT_HOLD_MS='),game.indexOf('  let gridRender;'))+';window.bind=bindObjectGesture;',gesture);
+function element(){const handlers={};return {handlers,dataset:{},classList:{add:()=>{},remove:()=>{}},addEventListener:(n,f)=>handlers[n]=f}}
+const el=element();gesture.window.bind(el,{id:'plot-test'});const down=()=>el.handlers.pointerdown({pointerType:'touch',pointerId:1,clientX:100,clientY:100}),up=()=>listeners.pointerup({pointerId:1,clientX:120,clientY:100});
+down();assert.equal([...timers.values()][0].ms,1200);listeners.pointermove({pointerId:1,clientX:120,clientY:100});assert.equal(timers.size,0);up();assert.equal(state.mode,'tend');assert.equal(picked,0,'A camera swipe must not pick up an object');
+down();[...timers.values()][0].f();up();assert.equal(state.moving,'plot-test');assert.equal(picked,1);assert.equal(placed,0,'Holding still waits for a placement tap');
+down();[...timers.values()][0].f();listeners.pointermove({pointerId:1,clientX:120,clientY:100});up();assert.equal(placed,1,'Dragging after the hold places the object');
+// Production and elapsed-time shop sales, including repeat-check protection.
+let now=1000000;class Clock extends Date{static now(){return now}}const farm={objects:[],inventory:{wheat:9},shop:{unlocked:true,stock:{flour:5},earned:0,lastSaleAt:now}},production={window:{},Date:Clock,document:{querySelector:()=>null,querySelectorAll:()=>[]},setInterval:()=>0};vm.runInNewContext(read('production.js'),production);const p=production.window.meadowProduction;let coins=0;p.attach({current:()=>farm,farms:()=>({farm}),items:p.items,earn:n=>coins+=n,save:()=>{}});now+=45000;assert.equal(p.settleShop(farm),1);assert.equal(p.settleShop(farm),0);assert.equal(coins,24);const kitchen={tier:0,jobs:[]};assert(p.queue(kitchen,p.recipes[0]));assert(p.queue(kitchen,p.recipes[0]));assert(!p.queue(kitchen,p.recipes[0]));assert.equal(farm.inventory.wheat,3);assert.equal(kitchen.jobs[1].startAt,kitchen.jobs[0].finishAt);
+console.log('Meadow checks passed: release/assets, syntax, selectors, helpers, plots, hold versus pan, crafting queues and timed sales.');

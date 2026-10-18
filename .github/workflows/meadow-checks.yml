@@ -1,0 +1,15 @@
+name: Meadow Markets regression checks
+on:
+  push:
+    paths: ['meadow-and-market/**', 'scripts/check-meadow.cjs', '.github/workflows/meadow-checks.yml']
+  pull_request:
+    paths: ['meadow-and-market/**', 'scripts/check-meadow.cjs', '.github/workflows/meadow-checks.yml']
+jobs:
+  game-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/check-meadow.cjs
