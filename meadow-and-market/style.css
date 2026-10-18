@@ -379,3 +379,7 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 #friend-visit-overlay .farm-object *,.travelling .farm-grid>.farm-object *{pointer-events:none!important}
 /* Match the illustrated bridge deck instead of covering the river below it. */
 .bridge-area{left:77%!important;top:28%!important;width:23%!important;height:16%!important;clip-path:polygon(9% 0,96% 57%,78% 100%,0 35%)!important}
+
+.order-card+.order-card{margin-top:14px}.order-ready{background:#dcebd4;color:#244f32}.order-replace{margin:8px 0 0;min-height:40px}.order-replace:disabled{opacity:.65}.order-item .product-icon{width:30px;height:30px;object-fit:contain}
+
+.landscape-loading .friend-visit-map .farm-grid{visibility:hidden}.landscape-loading #visit-viewport:after{content:"Loading farm landscape…";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:16px 24px;border-radius:16px;background:#fff8e9;color:#244f32;font-weight:700}

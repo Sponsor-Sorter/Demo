@@ -40,3 +40,4 @@ const renderGate={uiPointers:new Set(),uiRenderPending:false,uiRenderTimer:0,pai
 const runtimeUrls=[...read('index.html').matchAll(/(?:src|href)="([^"\s]+\.(?:js|css)\?v=\d+)"/g)].map(m=>'./'+m[1]);for(const url of runtimeUrls)assert(files.includes(url),'Precache includes the runtime version '+url);const jsCss=files.filter(f=>/^\.\/[^/]+\.(js|css)\?/.test(f)).map(f=>f.split('?')[0]);assert.equal(new Set(jsCss).size,jsCss.length,'Only one cached version of each runtime module');assert.equal(typeof p.refreshShop,'function');console.log('Runtime module cache versions and shop refresh export passed.');
 
 require('./check-meadow-lessons.cjs');
+require('./check-meadow-pantry.cjs');
