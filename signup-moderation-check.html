@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signup moderation verification</title>
+<style>body{font:18px system-ui;max-width:760px;margin:3rem auto;padding:1rem;background:#101827;color:#fff}button{padding:1rem}output{display:block;white-space:pre-wrap;padding:1rem}</style>
+<h1>Signup moderation verification</h1>
+<p>This temporary check only checks a fixed benign sample. It does not create an account, upload files, start checkout or change account penalties.</p>
+<button id="check">Check benign signup sample</button>
+<output id="result" aria-live="polite">Ready</output>
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+import { moderateSignupWithFamBot } from './js/famBotSignup.js?v=20261018-signup1';
+const button=document.getElementById('check');
+const output=document.getElementById('result');
+button.addEventListener('click',async()=>{
+  button.disabled=true;
+  output.textContent='Checking benign sample…';
+  try {
+    const decision=await moderateSignupWithFamBot(supabase,'We help creators and brands plan clear, respectful sponsorship campaigns.');
+    output.textContent=JSON.stringify({status:decision.status,check_id:decision.result?.check_id,policy_version:decision.result?.policy_version,account_penalty:decision.result?.account_penalty},null,2);
+  } finally { button.disabled=false; }
+});
+</script>
+</html>
