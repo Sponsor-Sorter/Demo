@@ -215,6 +215,16 @@
     {
       "id": "reward",
       "source": "upgrade"
+    },
+    {
+      "id": "alpaca",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "jay-fleece",
+      "kind": "voice",
+      "bytes": 188440
     }
   ]
 }

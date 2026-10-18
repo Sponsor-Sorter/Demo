@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const products={chicken:{item:'egg',time:30000},cow:{item:'milk',time:30000},sheep:{item:'wool',time:90000},goat:{item:'goatmilk',time:30000}};
+  const products={chicken:{item:'egg',time:30000},cow:{item:'milk',time:30000},sheep:{item:'wool',time:90000},goat:{item:'goatmilk',time:30000},alpaca:{item:'fleece',time:120000}};
   let api;
   const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n)),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function settle(a,now=Date.now()){
@@ -21,7 +21,7 @@
       for(const key of ['hunger','happy'])a[key]=clamp(a[key]+15);
     }else for(const [key,amount,kind] of [['hunger',35,'feed'],['clean',35,'brush'],['happy',25,'play']])if(action==='all'||action===kind){const next=clamp(a[key]+amount);if(next>a[key]+.01)changed=true;a[key]=next}
     if((action==='all'||action==='collect')&&ready(a)){
-      collected=api.yield(a)+(a.treatBonus?1:0);const id=products[a.type].item;api.current().inventory[id]=(api.current().inventory[id]||0)+collected;a.lastProductAt=Date.now();a.treatBonus=false;changed=true;
+      collected=api.yield(a)+(a.treatBonus?1:0);const id=products[a.type].item;api.current().inventory[id]=(api.current().inventory[id]||0)+collected;a.lastProductAt=Date.now();a.treatBonus=false;changed=true;api.produce?.(id,collected);
     }
     a.lastCare=Date.now();a.needsAt=Date.now();
     if(changed){api.xp(collected?4:2);api.event('care')}

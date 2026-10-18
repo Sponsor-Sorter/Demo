@@ -21,6 +21,12 @@
       {id:'grand-field',title:'A field of plenty',text:'Upgrade a crop plot to a 4×4 field. It needs sixteen clear grass tiles.',target:1,reward:300,xp:50,measure:s=>objects(s).some(o=>o.type==='plot'&&o.tier>=3)?1:0}
     ]}
   ];
+  chapters.push({name:'Fleece, fibre and the country fair',person:'jay',goals:[
+    {id:'alpaca-friends',title:'A soft-hearted pair',text:'House two alpacas in barns or paddocks. They join the farm at Level 6.',target:2,reward:180,xp:35,measure:s=>objects(s).filter(o=>o.type==='alpaca'&&(o.barnId||o.paddockId)).length},
+    {id:'fleece-basket',title:'Soft fleece, happy friends',text:'Collect ten alpaca fleece. Healthy animals and upgraded homes give larger harvests.',target:10,reward:200,xp:40,measure:s=>stats(s).fleece||0},
+    {id:'woven-gifts',title:'Handmade warmth',text:'Collect six woven alpaca scarves from your craft shed.',target:6,reward:280,xp:50,measure:s=>stats(s).made_scarf||0},
+    {id:'country-shop',title:'The country fair pantry',text:'Sell fifty goods through your farm shops. Sales on every map count.',target:50,reward:350,xp:60,measure:s=>Object.values(s.farms).reduce((n,f)=>n+(f.shop?.sold||0),0)}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}

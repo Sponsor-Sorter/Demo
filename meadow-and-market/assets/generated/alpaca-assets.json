@@ -1,0 +1,19 @@
+{
+  "provider": "OpenAI image generation",
+  "generated": "2026-10-19",
+  "alpaca": {
+    "file": "alpaca.webp",
+    "size": 512,
+    "description": "Cream alpaca, southeast standing view, complete ears and feet, transparent padded sprite"
+  },
+  "fleece": {
+    "file": "fleece.webp",
+    "size": 256,
+    "description": "Soft cream fleece bundle tied with natural twine"
+  },
+  "scarf": {
+    "file": "scarf.webp",
+    "size": 256,
+    "description": "Folded teal alpaca scarf with cream stripe and tassels"
+  }
+}
