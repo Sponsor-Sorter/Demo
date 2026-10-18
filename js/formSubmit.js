@@ -1,6 +1,6 @@
 // ./js/formSubmit.js
 import { supabase } from './supabaseClient.js';
-import { moderateSignupWithFamBot } from './famBotSignup.js';
+import { moderateSignupWithFamBot } from './famBotSignup.js?v=20261018-signup1';
 
 let refCode = null;
 
