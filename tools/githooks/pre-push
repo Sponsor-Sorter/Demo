@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+node scripts/check-meadow.cjs
+node scripts/check-meadow-versions.cjs --committed

@@ -1,0 +1,2 @@
+tools/githooks/* text eol=lf
+tools/meadow-android/android/gradlew text eol=lf

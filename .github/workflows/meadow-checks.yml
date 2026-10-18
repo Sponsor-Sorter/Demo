@@ -1,15 +1,38 @@
 name: Meadow Markets regression checks
 on:
   push:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow.cjs', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', '.github/workflows/meadow-checks.yml']
   pull_request:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow.cjs', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', '.github/workflows/meadow-checks.yml']
 jobs:
   game-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - run: node scripts/check-meadow.cjs
+      - run: node scripts/check-meadow-versions.cjs --committed
+  android-build:
+    needs: game-checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/meadow-android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/meadow-android/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+      - run: npm ci --ignore-scripts
+      - run: npm run android:debug
