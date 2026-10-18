@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const end = start + offersPerPage;
     const paginatedOffers = filteredOffers.slice(start, end);
 
-    paginationLabel.textContent = `Page ${totalOffers === 0 ? 0 : currentPage} of ${window._totalPages}`;
+    paginationLabel.textContent = totalOffers === 0 ? 'No matching campaigns' : `Page ${currentPage} of ${window._totalPages}`;
     prevPageBtn.disabled = (currentPage <= 1);
     nextPageBtn.disabled = (currentPage >= window._totalPages);
     totalLabel.textContent = `Total Offers: ${totalOffers}`;
@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     controls.innerHTML = `
       <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>&laquo; Prev</button>
-      <span id="page-info" style="margin:0 10px;">Page ${totalOffers === 0 ? 0 : currentPage} of ${totalPages}</span>
+      <span id="page-info" style="margin:0 10px;">${totalOffers === 0 ? 'No matching campaigns' : `Page ${currentPage} of ${totalPages}`}</span>
       <button id="next-page" ${currentPage === totalPages || totalOffers === 0 ? 'disabled' : ''}>Next &raquo;</button>
     `;
     totalLabel.textContent = `Total Offers: ${totalOffers}`;

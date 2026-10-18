@@ -66,7 +66,7 @@ http
     }
     const ext = path.extname(file);
     if (
-      ![".html", ".css", ".js", ".jpg", ".png", ".svg", ".ico"].includes(ext)
+      ![".html", ".css", ".js", ".mjs", ".jpg", ".png", ".svg", ".ico"].includes(ext)
     ) {
       res.writeHead(403);
       res.end();
@@ -76,6 +76,7 @@ http
       ".html": "text/html",
       ".css": "text/css",
       ".js": "text/javascript",
+      ".mjs": "text/javascript",
       ".jpg": "image/jpeg",
       ".png": "image/png",
       ".svg": "image/svg+xml",
@@ -83,7 +84,7 @@ http
     };
     res.setHeader("Content-Type", types[ext] || "application/octet-stream");
     res.setHeader("Cache-Control", "no-store");
-    if (ext === ".js" || ext === ".html")
+    if (ext === ".js" || ext === ".mjs" || ext === ".html")
       res.end(
         fs
           .readFileSync(file, "utf8")
