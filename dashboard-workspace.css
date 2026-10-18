@@ -140,3 +140,19 @@ body#site-top.dashboard-redesign .dw-topbar .icon-bar-bg > button { min-width:32
 
 body#site-top.dashboard-redesign .dw-toplinks { min-height:0!important;height:auto!important;width:auto!important;padding:0!important;margin:0!important;justify-content:flex-start!important; }
 body#site-top.dashboard-redesign .dw-toplinks > a { padding:4px 0!important;margin:0!important;min-height:0!important;height:auto!important;background:none!important;box-shadow:none!important;line-height:1.5!important; }
+
+/* Sponsor Sorter identity within the new dashboard structure. */
+body#site-top.dashboard-redesign { --dw-bg:#090d17;--dw-panel:#121b2b;--dw-line:#2c3552;--dw-accent:#7bcfff;background-color:#090d17!important;background-image:radial-gradient(ellipse at 90% 0%,#36226c26,transparent 55%),linear-gradient(#4998d008 1px,transparent 1px),linear-gradient(90deg,#4998d008 1px,transparent 1px)!important;background-size:auto,44px 44px,44px 44px!important; }
+body#site-top.dashboard-redesign > header.navbar1 { background-color:#0a101c!important;background-image:linear-gradient(90deg,#0a101cf5,#0a101cd9),url('./handslogo2.jpg')!important;background-size:cover!important;background-position:center 72%!important;border-bottom:1px solid #5266a6!important; }
+body#site-top.dashboard-redesign > header.navbar1::after { content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,#734be9,#5297f6,#56d6ef,#734be9);pointer-events:none; }
+body#site-top.dashboard-redesign header .site-brand { font-family:'Cinzel',Georgia,serif!important;font-weight:900!important;font-size:19px!important;letter-spacing:.2px!important;text-shadow:0 0 16px #78a4ff35!important; }
+body#site-top.dashboard-redesign header .site-brand img { filter:drop-shadow(0 0 7px #557de944); }
+body#site-top.dashboard-redesign .dw-primary { background:linear-gradient(115deg,#6845d9,#3863c7)!important;color:#fff!important;border:1px solid #8c9af2!important;box-shadow:0 4px 16px #5738c32b!important; }
+body#site-top.dashboard-redesign .dw-primary:hover { background:linear-gradient(115deg,#7958e9,#4277da)!important; }
+body#site-top.dashboard-redesign .dw-sidebar > a[aria-current] { background:linear-gradient(100deg,#37265b,#1b304b)!important;box-shadow:inset 3px 0 #6dbce9!important;color:#eef4ff!important; }
+body#site-top.dashboard-redesign .dw-heading .dw-caption { color:#8fc8ed!important; }
+body#site-top.dashboard-redesign .dashboard-cards :is(.card,.summary-card) { background:linear-gradient(140deg,#162039,#101824)!important;border-top:2px solid #6355ab!important; }
+body#site-top.dashboard-redesign .dashboard-cards p:not(.small-text) { color:#d7ecff!important; }
+body#site-top.dashboard-redesign #campaign-today { border-color:#3d6597!important;background:linear-gradient(110deg,#192740,#151e33)!important; }
+body#site-top.dashboard-redesign .dw-panel button:is(.active,.active-tab,.selected,[aria-pressed="true"]) { background:linear-gradient(110deg,#6545c6,#355caa)!important;color:#fff!important;border-color:#8d9ae4!important; }
+@media(max-width:760px){body#site-top.dashboard-redesign .dw-topbar .site-brand { font-size:13px!important;letter-spacing:0!important; }}
