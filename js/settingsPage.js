@@ -15,6 +15,7 @@
 //  - Proxies the nice buttons on this page to the hidden hooks that settings.js already uses.
 
 import { supabase } from './supabaseClient.js';
+import { isFreeMonthReward } from './referralRewards.mjs?v=20261018-referral1';
 import { subscriptionBilling, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
 import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 import { getActiveUser } from './impersonationHelper.js';
@@ -502,11 +503,11 @@ async function populateReferralsAndSubscription(user) {
           ).length;
 
           const totalFreeMonths = rewards.filter(
-            (r) => r.reward_type === 'free_month'
+            (r) => isFreeMonthReward(r.reward_type)
           ).length;
 
           const unclaimedFreeMonths = rewards.filter(
-            (r) => r.reward_type === 'free_month' && !r.claimed
+            (r) => isFreeMonthReward(r.reward_type) && !r.claimed
           ).length;
 
           statsRow.textContent = `Referrals: ${successful} successful · Free month rewards: ${totalFreeMonths} (${unclaimedFreeMonths} unclaimed)`;

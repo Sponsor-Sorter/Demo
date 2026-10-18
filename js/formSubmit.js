@@ -280,29 +280,6 @@ window.previewLogo = function () {
   reader.readAsDataURL(file);
 };
 
-// Referral helper: record a successful referral for new user (called from payment-success flow)
-export async function processReferralForNewUser(newUserId) {
-  if (!refCode) return; // Only run if referral code present
-
-  // Look up the referrer by referral code
-  const { data: refLink, error: linkErr } = await supabase
-    .from('referral_links')
-    .select('user_id')
-    .eq('code', refCode)
-    .single();
-
-  if (!refLink || linkErr) return; // Fail silently if not valid
-
-  // Record the referral relationship in referral_rewards
-  await supabase
-    .from('referral_rewards')
-    .insert([{
-      referrer_id: refLink.user_id,
-      referred_user_id: newUserId,
-      reward_type: 'month_free'
-    }]);
-}
-
 // Show a little banner if user is coming in via referral code
 if (refCode) {
   supabase

@@ -1,5 +1,6 @@
 // Re-use the shared Supabase client so we’re consistent with the rest of the app
 import { supabase } from './supabaseClient.js';
+import { grantLoginReferralReward } from './referralRewards.mjs?v=20261018-referral1';
 import { escapeHtml, safeImageUrl } from './safePresentation.js';
 import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
 
@@ -51,55 +52,8 @@ async function loadSponsorCarousels() {
 // Referral reward helper
 // =======================
 async function processReferralReward(user) {
-  const { data: ext, error: extErr } = await supabase
-    .from('users_extended_data')
-    .select('referral_code')
-    .eq('user_id', user.id)
-    .single();
-
-  if (extErr) {
-    console.warn('[Referral Reward] Could not fetch extended user data:', extErr.message);
-    return;
-  }
-
-  const referral_code = ext?.referral_code;
-  if (!referral_code) {
-    return;
-  }
-
-  const { data: sessionData } = await supabase.auth.getSession();
-  const jwt = sessionData?.session?.access_token;
-
-  if (!jwt) {
-    console.warn('[Referral Reward] No JWT available. Cannot call edge function.');
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/referral_rewards',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwt}`,
-        },
-        body: JSON.stringify({ referred_user_id: user.id }),
-      }
-    );
-
-    const result = await response.json().catch(() => ({}));
-
-    if (response.ok && result.success) {
-      console.log('[Referral Reward] Reward processed:', result);
-    } else if (response.status === 409) {
-      console.log('[Referral Reward] Already granted:', result.error);
-    } else {
-      console.warn('[Referral Reward] Error:', result.error || result.details);
-    }
-  } catch (e) {
-    console.warn('[Referral Reward] Exception calling edge function:', e);
-  }
+  const result = await grantLoginReferralReward(supabase, user?.id);
+  if (result.status === 'unavailable') console.warn('[Referral Reward] Reward could not be confirmed; login will continue.');
 }
 
 // =======================

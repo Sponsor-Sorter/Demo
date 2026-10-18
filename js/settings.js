@@ -1,6 +1,7 @@
 // File: ./js/settings.js
 
 import { supabase } from './supabaseClient.js';
+import { isFreeMonthReward } from './referralRewards.mjs?v=20261018-referral1';
 import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
 import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
 import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
@@ -583,7 +584,7 @@ async function revokePlatforms(platform, tokenHints = {}) {
         ">
           <div style="font-size:1.1em;margin-bottom:2px;">
             <b>Type:</b>
-            <span style="color:#dfba03;">${r.reward_type.replace('_',' ')}</span>
+            <span style="color:#dfba03;">${isFreeMonthReward(r.reward_type) ? 'Free month' : 'Reward'}</span>
             <span style="margin-left:16px;color:${r.claimed ? '#31c634' : '#ff9900'};">
               ${r.claimed ? 'Claimed' : 'Available!'}
             </span>
