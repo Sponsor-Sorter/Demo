@@ -60,7 +60,8 @@ body{height:100dvh;min-height:0;overflow:hidden;background:#9fcb8b;overscroll-be
 .map-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;object-position:center}
 .farm-grid{left:14%!important;right:14%!important;top:29%!important;bottom:3%!important;gap:0!important;transform:perspective(1000px) rotateX(22deg)!important;transform-origin:50% 100%!important}
 .farm-object.plot .crop-art{width:114%!important;height:114%!important}
-.farm-object.plot.stage-0 .crop-art{transform:scale(.48) translateY(14%)}.farm-object.plot.stage-1 .crop-art{transform:scale(.70) translateY(8%)}.farm-object.plot.stage-2 .crop-art{transform:scale(.92) translateY(3%)}.farm-object.plot.stage-3 .crop-art{transform:scale(1.08)}
+.farm-object.plot .crop-art{transform:scale(calc(.34 + var(--growth, 0%) * .0074)) translateY(calc(24% - var(--growth, 0%) * .22%));transform-origin:50% 85%;transition:transform 2.2s cubic-bezier(.2,.8,.2,1),filter 2s;filter:saturate(calc(.42 + var(--growth, 0%) * .0058));animation:crop-sway 3s ease-in-out infinite alternate}
+.farm-object.plot.stage-3 .crop-art{filter:drop-shadow(0 0 5px #ffe57a)}
 .homestead{left:8%;top:4%;width:18%;height:24%;clip-path:polygon(7% 25%,58% 0,100% 11%,96% 78%,61% 96%,15% 100%,0 57%)}
 .barnyard{left:23%;top:0;width:20%;height:29%;clip-path:polygon(6% 28%,48% 0,95% 2%,100% 72%,70% 100%,10% 84%,0 49%)}
 .orchard-area{left:42%;top:0;width:34%;height:28%;clip-path:polygon(0 34%,25% 5%,56% 0,100% 30%,91% 79%,53% 100%,12% 83%)}
