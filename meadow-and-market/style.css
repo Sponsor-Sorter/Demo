@@ -249,3 +249,6 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .share-qr-wrap{margin:5px auto 7px;padding:5px;border-radius:12px}
 .share-qr{width:min(126px,34vw)}
 .sheet:has(.share-game-card){max-height:94dvh;overflow-y:auto;overscroll-behavior:contain}
+/* The old high-specificity build-mode border drew a square lattice behind the diamond tiles. */
+.building-mode .farm-grid>.land-cell{border:0!important;background:transparent!important}
+.share-game-card #share-game-url{min-width:0;font-size:11px;letter-spacing:0;text-transform:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
