@@ -277,5 +277,15 @@ button{transition:filter .15s ease,transform .15s ease,box-shadow .15s ease}butt
 .building-mode .farm-grid>.land-cell.unlocked:after,.building-mode .farm-grid>.land-cell.place-target:after{background:#b9d47c28!important}
 .building-mode .farm-grid>.land-cell.locked:before{background:#f4e8c477!important}
 .building-mode .farm-grid>.land-cell.locked:after{background:#80916a36!important}
+/* Object ground contact is the tile centre; tall art rises above that anchor. */
+.farm-grid>.farm-object{z-index:var(--object-depth,20)!important}
+.object-footprint{position:absolute;inset:0;display:none;pointer-events:none;clip-path:var(--footprint-shape,polygon(50% 0,100% 50%,50% 100%,0 50%));background:#d4e6a84d}
+.building-mode .object-footprint,.farm-object.selected .object-footprint{display:block}
+.building-mode .object-footprint:after{content:"";position:absolute;left:calc(50% - 2px);top:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:#fff3b8}
+.farm-grid>.farm-object.tree,.farm-grid>.farm-object.flowers{overflow:visible!important;transform:none!important}
+.farm-grid>.farm-object.tree .art.generated{position:absolute!important;left:4%!important;bottom:44%!important;top:auto!important;width:92%!important;height:184%!important;max-width:none!important;max-height:none!important;display:block!important;transform:none!important;margin:0!important}
+.farm-grid>.farm-object.flowers .art.generated.flower-art{position:absolute!important;left:9%!important;bottom:30%!important;top:auto!important;width:82%!important;height:164%!important;max-width:none!important;max-height:none!important;display:block!important;margin:0!important;transform:scale(var(--flower-scale,1))!important;transform-origin:50% 100%!important}
+.farm-grid>.farm-object.tree .art.generated img,.farm-grid>.farm-object.flowers .art.generated img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important;pointer-events:none}
+.farm-grid>.farm-object.tree .nameplate,.farm-grid>.farm-object.flowers .nameplate{bottom:-12px}
 .update-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
 .update-actions button{min-height:42px;padding-inline:18px}
