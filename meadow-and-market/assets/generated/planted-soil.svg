@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 176" fill="none">
+  <defs>
+    <linearGradient id="earth" x1="37" y1="24" x2="214" y2="150" gradientUnits="userSpaceOnUse"><stop stop-color="#8e6841"/><stop offset=".52" stop-color="#6f4b30"/><stop offset="1" stop-color="#523827"/></linearGradient>
+    <linearGradient id="furrow" x1="45" y1="30" x2="205" y2="140" gradientUnits="userSpaceOnUse"><stop stop-color="#c09056"/><stop offset="1" stop-color="#765032"/></linearGradient>
+    <filter id="soft" x="3" y="4" width="250" height="170" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <path d="m128 14 110 52-110 96L18 66 128 14Z" fill="#203b25" opacity=".24" filter="url(#soft)"/>
+  <path d="m128 12 108 51-108 91L20 63 128 12Z" fill="url(#earth)"/>
+  <path d="m34 62 94-44 94 44M44 72l84-39 84 39M55 82l73-34 73 34M66 92l62-29 62 29m-113 9 51-24 51 24m-91 9 40-19 40 19" stroke="url(#furrow)" stroke-width="5" stroke-linecap="round" opacity=".78"/>
+  <path d="m54 59 74 85m-45-98 74 85m-47-99 74 85m-38-95 74 85M202 59l-74 85m45-98-74 85m47-99-74 85m38-95-74 85" stroke="#d1a26b" stroke-width="1.5" opacity=".22"/>
+</svg>
