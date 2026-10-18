@@ -359,3 +359,5 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 
 .hive-art{position:absolute;left:1%;bottom:24%;width:98%;height:210%;pointer-events:none}.hive-art img{width:100%;height:100%;object-fit:contain;object-position:center bottom}.hive-preview{display:block;width:200px;height:210px;object-fit:contain;margin:0 auto}.farm-grid>.farm-object.flowers .art.generated.flower-art.has-growth-strip{transform:none!important}.farm-grid>.farm-object.flowers .art.generated.flower-art.has-growth-strip .crop-growth-layer img{position:absolute!important;top:0!important;width:400%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:fill!important;object-position:initial!important}
 @media(orientation:landscape) and (max-height:600px){.kitchen-preview,.hive-preview,.well-preview{width:130px;height:115px}}
+
+.story-chapter{margin-top:22px}.story-heading{display:flex;align-items:center;gap:12px}.story-heading img{width:54px;height:68px;object-fit:contain}.story-heading h3{font-size:17px}.story-chapter .task-main small{line-height:1.5;margin-top:6px}.story-chapter .progress-track{margin-top:12px;height:5px}
