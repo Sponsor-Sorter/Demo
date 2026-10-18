@@ -1,7 +1,7 @@
 // ./js/reviewPage.js
 import { supabase } from './supabaseClient.js';
 import { notifyReview } from './alerts.js?notifications=20261012brand6'; // unchanged
-import { famBotModerateWithModal } from './FamBot.js'; // unchanged
+import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1'; // unchanged
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);

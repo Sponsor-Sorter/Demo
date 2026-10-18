@@ -12,7 +12,7 @@ import { supabase } from './supabaseClient.js';
 import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts3';
 import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 import './userReports.js';
-import { famBotModerateWithModal } from './FamBot.js';
+import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 
 // ⬇️ NEW: snapshot helpers (no extra API calls)
 import { statsnapSaveAfterSuccess, statsnapFallback } from './statsnap.js?v=20261011-reports1';

@@ -1653,7 +1653,7 @@ async function loadFamBotLogs() {
     .select(
       "id, performed_by, target_id, action, target_type, message, created_at",
     )
-    .eq("action", "auto-strike")
+    .in("action", ["auto-strike", "auto-ban", "fambot-unban"])
     .order("created_at", { ascending: false })
     .limit(500);
 

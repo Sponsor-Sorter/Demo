@@ -48,7 +48,7 @@ test('notification edits remove exactly seven post-commit helper calls',()=>{
   assert.equal(before.length-after.length,7);
 });
 test('unrelated producers, inbox readers, 2FA and messaging remain byte-identical',()=>{
-  for(const file of ['js/alerts.js','js/messages.js','js/groupOffers.js','js/friendGroups.js','js/publicOffers.js','js/reviewPage.js','js/AffiliateAdmin.js','js/AffiliateDashboard.js','js/adminLogic.js','js/login.js','js/twofa.js','service-worker.js']) assert.equal(read(file),baseline(file),file);
+  for(const file of ['js/alerts.js','js/messages.js','js/groupOffers.js','js/friendGroups.js','js/publicOffers.js','js/reviewPage.js','js/AffiliateAdmin.js','js/AffiliateDashboard.js','js/adminLogic.js','js/login.js','js/twofa.js','service-worker.js']) assert.equal(read(file),baseline(file).replace("from './FamBot.js'","from './FamBot.js?v=20261018-fambot1'").replace('.eq("action", "auto-strike")','.in("action", ["auto-strike", "auto-ban", "fambot-unban"])'),file);
 });
 test('dashboard cache keys load the new offer modules while shared alerts stay loaded',()=>{
   for(const [page,module] of [['dashboardsponsor.html','sponsorOffers'],['dashboardsponsee.html','sponseeOffers']]) {

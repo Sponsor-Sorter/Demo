@@ -2,50 +2,61 @@ import { supabase } from './supabaseClient.js';
 
 const FAMBOT_ENDPOINT = 'https://mqixtrnhotqqybaghgny.supabase.co/functions/v1/FamBot';
 const FAMBOT_UNAVAILABLE_MESSAGE = 'We could not check this content right now. Please try again.';
+const FAMBOT_TIMEOUT_MS = 25000;
+const FAMBOT_MAX_CONTENT = 12000;
+const FAMBOT_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const FAMBOT_TYPES = new Set(['content', 'comment', 'offer', 'review', 'profile', 'report', 'testimonial', 'review_reply', 'social_handle', 'affiliate_pitch']);
 
-export async function famBotModerateWithModal({ user_id, content, jwt, type = 'content' }) {
-  let res;
-  let data;
+export async function famBotModerateWithModal({ user_id, content, jwt, type = 'content', request_id } = {}) {
+  const unavailable = () => ({ allowed: false, flagged: false, unavailable: true, message: FAMBOT_UNAVAILABLE_MESSAGE });
+  let result;
+  let timer;
+  const controller = new AbortController();
   try {
-    res = await fetch(FAMBOT_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': supabase.supabaseKey,
-        ...(jwt ? { 'Authorization': `Bearer ${jwt}` } : {})
-      },
-      body: JSON.stringify({ user_id, content })
-    });
-    data = await res.json();
-  } catch {
-    const unavailable = {
-      allowed: false,
-      flagged: false,
-      unavailable: true,
-      message: FAMBOT_UNAVAILABLE_MESSAGE
+    if (typeof content !== 'string' || !FAMBOT_TYPES.has(type)) throw new Error('Invalid moderation input');
+    const normalizedContent = content.normalize('NFC').trim();
+    if (!normalizedContent || Array.from(normalizedContent).length > FAMBOT_MAX_CONTENT) throw new Error('Invalid moderation input');
+    const requestId = request_id || crypto.randomUUID();
+    if (!FAMBOT_UUID.test(requestId)) throw new Error('Invalid request reference');
+    const operation = async () => {
+      let actor = user_id;
+      let token = jwt;
+      if (!token || !actor) {
+        const { data, error } = await supabase.auth.getSession();
+        const session = data?.session;
+        if (error || !session?.access_token || !session.user?.id || (actor && actor !== session.user.id)) throw new Error('Sign in required');
+        actor = session.user.id;
+        token = session.access_token;
+      }
+      if (!FAMBOT_UUID.test(actor) || typeof token !== 'string' || !token.trim() || token.length > 16384) throw new Error('Invalid moderation actor');
+      const body = JSON.stringify({ user_id: actor, content: normalizedContent, request_id: requestId, type });
+      if (new TextEncoder().encode(body).byteLength > 65536) throw new Error('Moderation request is too large');
+      if (controller.signal.aborted) throw new Error('Moderation timed out');
+      const res = await fetch(FAMBOT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: supabase.supabaseKey, Authorization: `Bearer ${token}` },
+        body,
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      if (!res.ok || !data || typeof data !== 'object' || Array.isArray(data) ||
+          typeof data.flagged !== 'boolean' || typeof data.banned !== 'boolean' || typeof data.allowed !== 'boolean' ||
+          !Number.isSafeInteger(data.strikes) || data.strikes < 0 || !FAMBOT_UUID.test(data.check_id || '') ||
+          data.policy_version !== 'fambot-three-distinct-v1' ||
+          typeof data.replayed !== 'boolean' || !Array.isArray(data.flaggedCategories) || data.flaggedCategories.some(category => typeof category !== 'string')) throw new Error('Invalid moderation decision');
+      const allowed = !data.flagged && !data.banned && data.allowed === true && data.unavailable !== true && data.ok !== false;
+      // Response fields never override the local deny rule.
+      if (!allowed && (!data.flagged || data.unavailable === true || data.ok === false)) return unavailable();
+      return { ...data, allowed };
     };
-    famBotShowModal(unavailable, type);
-    return unavailable;
-  }
-
-  // A missing/invalid decision or a non-success status is not an approval.
-  if (!res.ok || !data || typeof data !== 'object' || typeof data.flagged !== 'boolean') {
-    const unavailable = {
-      allowed: false,
-      flagged: false,
-      unavailable: true,
-      message: FAMBOT_UNAVAILABLE_MESSAGE
-    };
-    famBotShowModal(unavailable, type);
-    return unavailable;
-  }
-
-  // Show modal/dialog if flagged
-  if (data.flagged) {
-    famBotShowModal(data, type);
-    return { allowed: false, ...data };
-  }
-  return { allowed: true, ...data };
+    result = await Promise.race([
+      operation(),
+      new Promise((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('Moderation timed out')); }, FAMBOT_TIMEOUT_MS); }),
+    ]);
+  } catch { result = unavailable(); }
+  finally { clearTimeout(timer); }
+  if (!result.allowed) famBotShowModal(result, type);
+  return result;
 }
 
 // --- Modal/UX Logic ---
@@ -62,6 +73,10 @@ function famBotShowModal(result, type) {
     profile: "Profile",
     report: "Report",
     content: "Content",
+    review_reply: "Review reply",
+    testimonial: "Testimonial",
+    social_handle: "Social handle",
+    affiliate_pitch: "Affiliate pitch",
   };
   const typeLabel = typeNames[type] || "Content";
 

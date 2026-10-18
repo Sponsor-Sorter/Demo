@@ -11,7 +11,7 @@ import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js
 import { supabase } from './supabaseClient.js';
 // Committed database events create comment and private-offer update notifications.
 import './userReports.js';
-import { famBotModerateWithModal } from './FamBot.js';
+import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 
 // ---------- Free-plan helpers ----------
 

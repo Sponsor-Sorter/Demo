@@ -5,7 +5,7 @@ import { subscriptionBilling, stripeBillingUrl, checkoutRequestId, subscriptionS
 import { requestFeatured } from './featuredApi.mjs?v=20261017-featured1';
 import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
 import { getActiveUser } from './impersonationHelper.js';
-import { famBotModerateWithModal } from './FamBot.js';
+import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 import { initTwoFASettings } from './twofa.js';
 
 

@@ -16,7 +16,7 @@
 
 import { supabase } from './supabaseClient.js';
 import { subscriptionBilling, subscriptionStatusText, billingErrorMessage } from './subscriptionBilling.mjs?v=20261018-billing1';
-import { famBotModerateWithModal } from './FamBot.js';
+import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 import { getActiveUser } from './impersonationHelper.js';
 
 // ---------- Small helpers ----------
