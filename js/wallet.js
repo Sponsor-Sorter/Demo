@@ -4,11 +4,12 @@
 // - Deducts pending/approved/processing payout requests from display
 // - Modal to submit a payout request into `payouts`
 // - Destination dropdown: Stripe (automatic) or PayPal (up to 3 days)
-// - Stripe: "Set up / Fix Stripe" uses get_connect_onboarding_link and returns to the right dashboard
-// - On ?tab=payments, shows a toast: "Wallet is ready for instant withdrawals."
+// - Stripe payout setup uses the owner-authenticated Connect contract.
+// - Return URLs trigger a fresh status check; they do not prove payout readiness.
 // - Exposes updateWallet() globally (and legacy alias updateSponseeWallet)
 
 import { supabase } from './supabaseClient.js';
+import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect1';
 
 const MIN_PAYOUT = 10; // $10 minimum; adjust if needed
 
@@ -18,6 +19,8 @@ let currentUser = null;          // auth user
 let userRole = 'sponsee';        // 'sponsee' | 'sponsor' (resolved from users_extended_data.userType)
 let paypalEmail = '';            // from users_extended_data
 let stripeAccountId = '';        // users_extended_data.stripe_connect_account_id
+let destinationRefresh = 0;
+let stripeConnection = null;
 let stripeStatus = null;         // latest account status from Edge Function
 
 /* ---------------- utilities ---------------- */
@@ -250,7 +253,7 @@ async function openWithdrawModal() {
 
       <label style="font-size:1em;display:block;margin-top:4px;">Destination:</label>
       <select id="withdraw-destination-select" style="width:100%;margin-top:10px;margin-bottom:10px;padding:10px;border-radius:8px;border:none;background:#252525;color:#fff;">
-        <option value="stripe">Stripe (automatic)</option>
+        <option value="stripe">Stripe payout account</option>
         <option value="paypal">PayPal (up to 3 days)</option>
       </select>
 
@@ -300,7 +303,7 @@ async function openWithdrawModal() {
     let note = '';
     if (choice === 'stripe') {
       // require connect + (ideally) payouts enabled
-      const ready = (stripeStatus?.payouts_enabled === true) || false;
+      const ready = connectPayoutReady(stripeConnection);
       if (!stripeAccountId || !ready) {
         msgDiv.style.color = '#ff6b6b';
         msgDiv.textContent = 'Stripe Connect not ready. Click "Set up / Fix Stripe" first.';
@@ -357,66 +360,50 @@ async function openWithdrawModal() {
 
 /* ---------- destination panel rendering ---------- */
 async function refreshDestinationPanel(choice, destPanel, msgDiv) {
+  const refresh = ++destinationRefresh;
   if (choice === 'stripe') {
-    // pull latest status (GET)
-    const st = await fetchStripeStatusSafe();
-    stripeStatus = st?.status || null;
-    stripeAccountId = st?.account_id || stripeAccountId || '';
-
-    const connected = !!stripeAccountId;
-    const payoutsEnabled = !!stripeStatus?.payouts_enabled;
-    const disabledReason = stripeStatus?.disabled_reason || null;
-    const needsMore = (stripeStatus?.currently_due?.length || stripeStatus?.past_due?.length || disabledReason) ? true : false;
-
-    destPanel.innerHTML = `
-      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
-        <div>
-          <div style="font-weight:600;margin-bottom:6px;">Stripe (automatic)</div>
-          <div style="font-size:.95em;color:#bbb;">
-            ${connected ? `Account: <code style="color:#eee;background:#2a2a2a;padding:2px 6px;border-radius:6px;">${cescape(stripeAccountId)}</code>` : 'No Stripe account linked'}
-            <br/>
-            Status: ${payoutsEnabled ? '<span style="color:#41ff88;">Payouts enabled</span>' : (needsMore ? '<span style="color:#ffb456;">Action required</span>' : '<span style="color:#ffb456;">Setup required</span>')}
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <button id="btn-open-stripe" style="background:#f6c62e;color:#222;border:none;border-radius:10px;padding:9px 14px;cursor:pointer;">Set up / Fix Stripe</button>
-        </div>
-      </div>
-      ${needsMore && disabledReason ? `<div style="margin-top:8px;color:#ffb456;">Reason: ${cescape(disabledReason)}</div>` : ''}
-      <div style="margin-top:10px;font-size:.92em;color:#9aa;">
-        Your funds will transfer to your connected Stripe account automatically when approved.
-      </div>
-    `;
-
-    // Open Stripe in THIS tab; Stripe will return to the dashboard with ?tab=payments
-    document.getElementById('btn-open-stripe').onclick = async () => {
+    destPanel.textContent = 'Checking Stripe payout settings…';
+    stripeConnection = null;
+    stripeStatus = null;
+    let state;
+    try {
+      state = await fetchStripeStatusSafe();
+      if (refresh !== destinationRefresh || !destPanel.isConnected || choice !== document.getElementById('withdraw-destination-select')?.value) return;
+      stripeConnection = state;
+      stripeStatus = state.status;
+      stripeAccountId = state.account_id || '';
+    } catch (error) {
+      if (refresh !== destinationRefresh || !destPanel.isConnected || choice !== document.getElementById('withdraw-destination-select')?.value) return;
+      destPanel.textContent = connectErrorMessage(error);
+      const retry = document.createElement('button');
+      retry.type = 'button'; retry.textContent = 'Check payout status again';
+      retry.addEventListener('click', () => refreshDestinationPanel('stripe', destPanel, msgDiv));
+      destPanel.append(document.createElement('br'), retry);
+      return;
+    }
+    const note = document.createElement('p');
+    note.textContent = connectStatusMessage(state);
+    destPanel.replaceChildren(note);
+    if (state.account_id) {
+      const account = document.createElement('p'); account.textContent = 'Payout account: ' + state.account_id; destPanel.append(account);
+    }
+    const explanation = document.createElement('p');
+    explanation.textContent = 'This connects a payout account. Manage your Pro subscription separately in Settings. Withdrawal requests do not send money immediately.';
+    destPanel.append(explanation);
+    const setup = document.createElement('button'); setup.type = 'button'; setup.id = 'btn-open-stripe';
+    setup.textContent = state.test_mode ? 'Open test payout setup' : 'Set up / Fix Stripe payouts';
+    destPanel.append(setup);
+    setup.addEventListener('click', async () => {
+      if (setup.disabled) return;
+      setup.disabled = true;
+      msgDiv.textContent = 'Preparing Stripe payout setup…';
       try {
-        const session = (await supabase.auth.getSession()).data.session;
-        const resp = await fetch(`${functionsBase()}/get_connect_onboarding_link`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session?.access_token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            returnUrl: dashboardReturnUrl(),
-            refreshUrl: dashboardReturnUrl()
-          })
-        });
-        const data = await resp.json();
-        if (data?.onboarding_url) {
-          // Navigate away to Stripe; it will send them back to the dashboard (?tab=payments)
-          location.href = data.onboarding_url;
-        } else {
-          msgDiv.style.color = '#ffb456';
-          msgDiv.textContent = 'Could not create onboarding link. Try again.';
-        }
-      } catch (e) {
-        console.warn(e);
-        msgDiv.style.color = '#ff6b6b';
-        msgDiv.textContent = 'Stripe onboarding error. Please retry.';
-      }
-    };
+        const result = await connectAccount(supabase, 'onboarding', { returnUrl: dashboardReturnUrl(), refreshUrl: dashboardReturnUrl() });
+        location.assign(connectStripeUrl(result.onboarding_url));
+      } catch (error) {
+        msgDiv.style.color = '#ffb456'; msgDiv.textContent = connectErrorMessage(error);
+      } finally { setup.disabled = false; }
+    });
 
   } else {
     // PayPal panel
@@ -459,19 +446,7 @@ async function refreshDestinationPanel(choice, destPanel, msgDiv) {
 
 /* ---------- stripe status helper ---------- */
 async function fetchStripeStatusSafe() {
-  try {
-    const session = (await supabase.auth.getSession()).data.session;
-    const r = await fetch(`${functionsBase()}/get_connect_onboarding_link`, {
-      method: 'GET',
-      headers: { 'Authorization': `Bearer ${session?.access_token}` }
-    });
-    const data = await r.json();
-    if (!data?.ok) return null;
-    return data; // contains account_id + status
-  } catch (e) {
-    console.warn('[wallet] fetchStripeStatusSafe error', e);
-    return null;
-  }
+  return connectAccount(supabase, 'status');
 }
 
 /* ---------- event hooks ---------- */
@@ -484,12 +459,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toast if returning from Stripe with ?tab=payments
   const params = new URLSearchParams(location.search);
   if (params.get('tab') === 'payments') {
-    showToast('Wallet is ready for instant withdrawals.');
+    showToast('Returned from Stripe. Checking your payout account; no withdrawal is confirmed.');
     // Clean the URL so the toast doesn't repeat
     const cleanUrl = location.origin + location.pathname;
     history.replaceState({}, '', cleanUrl);
     // Optionally refresh Stripe status once back
-    fetchStripeStatusSafe().then(updateWallet).catch(() => updateWallet());
+    fetchStripeStatusSafe().then(state => {
+      stripeConnection = state; stripeStatus = state.status;
+      showToast(connectStatusMessage(state));
+    }).catch(error => showToast(connectErrorMessage(error))).finally(updateWallet);
   } else {
     updateWallet();
   }

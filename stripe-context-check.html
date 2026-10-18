@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stripe context diagnostics</title>
+<style>body{font:18px system-ui;max-width:760px;margin:3rem auto;padding:1rem;background:#101827;color:#fff}button{padding:1rem}output{display:block;white-space:pre-wrap;padding:1rem}</style>
+<h1>Stripe context diagnostics</h1><p>Explicit Admin read only. Checks configured Stripe account modes and webhook configuration. Does not create accounts, start checkout or send payouts.</p><button id="check">Check Stripe context</button><output id="result" aria-live="polite">Ready</output>
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+import { connectAccount,connectErrorMessage } from './js/connectAccount.mjs?v=20261018-connect1';
+const button=document.getElementById('check'),output=document.getElementById('result');
+button.addEventListener('click',async()=>{if(button.disabled)return;button.disabled=true;output.textContent='Checking…';try{output.textContent=JSON.stringify(await connectAccount(supabase,'diagnostics'),null,2);}catch(error){output.textContent=connectErrorMessage(error);}finally{button.disabled=false;}});
+</script></html>
