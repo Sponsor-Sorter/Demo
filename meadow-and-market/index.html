@@ -8,8 +8,8 @@
   <title>Meadow Markets</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=69">
-  <link rel="stylesheet" href="guides.css?v=69">
+  <link rel="stylesheet" href="style.css?v=70">
+  <link rel="stylesheet" href="guides.css?v=70">
 </head>
 <body>
   <main class="app-shell">
@@ -42,13 +42,17 @@
   <div class="toast" id="toast" aria-live="polite"></div>
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-    window.meadowSupabase=createClient('https://ejavqlyozqhzqogflqzr.supabase.co','sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE');
-    window.dispatchEvent(new Event('meadow-supabase-ready'));
+    const project='https://ejavqlyozqhzqogflqzr.supabase.co',key='sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',storageKey='meadow-markets-auth-v1';
+    // Copy a legacy session only when it already owns a game profile. Never remove or sign out another app's session.
+    let sessionReady=true;try{if(!localStorage.getItem(storageKey)){const legacy=JSON.parse(localStorage.getItem('sb-ejavqlyozqhzqogflqzr-auth-token')||'null');if(legacy?.access_token&&legacy?.user?.id){const response=await fetch(project+'/rest/v1/meadow_market_profiles?user_id=eq.'+encodeURIComponent(legacy.user.id)+'&select=user_id',{headers:{apikey:key}});if(!response.ok)throw Error('Cannot verify the old game session');if((await response.json()).some(row=>row.user_id===legacy.user.id))localStorage.setItem(storageKey,JSON.stringify(legacy))}}}catch{sessionReady=false;window.addEventListener('online',()=>location.reload(),{once:true})}
+    if(sessionReady)window.meadowSupabase=createClient(project,key,{auth:{storageKey}});
+    if(sessionReady)window.dispatchEvent(new Event('meadow-supabase-ready'));
   </script>
   <script src="hit-shapes.js?v=2"></script>
   <script src="barns.js?v=1"></script>
   <script src="farm-backups.js?v=1"></script>
   <script src="cloud-sync.js?v=1"></script>
+  <script src="accounts.js?v=2"></script>
   <script src="crop-growth.js?v=1"></script>
   <script src="moves.js?v=1"></script>
   <script src="almanac.js?v=2"></script>
@@ -59,10 +63,10 @@
   <script src="story.js?v=4"></script>
   <script src="apiary.js?v=2"></script>
   <script src="production.js?v=6"></script>
-  <script src="workers.js?v=5"></script>
+  <script src="workers.js?v=6"></script>
   <script src="audio.js?v=3"></script>
   <script src="guides.js?v=6"></script>
-  <script src="game.js?v=65"></script>
+  <script src="game.js?v=67"></script>
 </body>
 </html>
 

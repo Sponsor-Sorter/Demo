@@ -1,9 +1,9 @@
 name: Meadow Markets regression checks
 on:
   push:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-accounts/**', 'supabase/meadow-accounts.sql', '.github/workflows/meadow-checks.yml']
   pull_request:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-accounts/**', 'supabase/meadow-accounts.sql', '.github/workflows/meadow-checks.yml']
 jobs:
   game-checks:
     runs-on: ubuntu-latest

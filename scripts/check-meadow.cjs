@@ -55,3 +55,6 @@ require('./check-meadow-bonds.cjs');
 require('./check-meadow-home-care.cjs');
 require('./check-meadow-backups.cjs').catch(error=>{console.error(error);process.exitCode=1});
 require('./check-meadow-cloud.cjs').catch(error=>{console.error(error);process.exitCode=1});
+require('./check-meadow-accounts.cjs').catch(error=>{console.error(error);process.exitCode=1});
+require('./check-meadow-walking.cjs');
+require('./check-meadow-email.cjs');
