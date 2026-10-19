@@ -411,7 +411,7 @@
 
   function activateGameUpdate(worker,reload,later=setTimeout){let finished=false;const done=()=>{if(finished)return;finished=true;reload()};if(!worker){done();return}later(done,8000);try{worker.addEventListener('statechange',()=>{if(worker.state==='activated')done()});worker.postMessage('SKIP_WAITING')}catch{done()}}
   function isUpdateReady(current,available,waiting){return !!waiting||(Number.isInteger(available)&&available>current)}
-  const currentBuild=66;
+  const currentBuild=67;
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
     const promptForUpdate=()=>{const dialog=$('#update-dialog'),waitingBuild=Number(reg.waiting?new URL(reg.waiting.scriptURL).searchParams.get('build'):0);availableBuild=Math.max(availableBuild,waitingBuild);if(navigator.serviceWorker.controller&&isUpdateReady(currentBuild,availableBuild,waitingBuild>currentBuild)&&dialog){$('#update-title').textContent='Meadow Markets build '+availableBuild+' is ready';dialog.querySelector('.sheet-copy').textContent='You have build '+currentBuild+'. Install the latest farm improvements and keep your saved farm.';if(!dialog.open)dialog.showModal()}};

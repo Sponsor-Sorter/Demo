@@ -406,3 +406,5 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .farm-object.barn .barn-art{object-fit:contain!important;transform:translateY(var(--barn-pad-bottom,8.453%))}
 .barn-stage-thumb{display:block;width:100%;height:58px;object-fit:contain;margin-bottom:5px}.barn-modal-art{height:180px}.barn-modal-art img{height:170px}
 .farm-grid>.farm-object.barn,.farm-grid>.farm-object.building,.farm-grid>.farm-object.paddock{z-index:var(--object-depth,20)!important}
+
+.home-residents{margin:14px 0}.home-resident .animal-info{min-width:0}.home-resident .animal-info small{line-height:1.5}.animal-bond-card h3{margin-bottom:6px}.animal-bond-card>p:not(.sheet-copy){color:#b66250;letter-spacing:3px}
