@@ -10,7 +10,8 @@ revoke all on public.meadow_market_accounts from anon, authenticated;
 grant select on public.meadow_market_accounts to authenticated;
 grant all on public.meadow_market_accounts to service_role;
 create policy meadow_accounts_owner_read on public.meadow_market_accounts
-  for select to authenticated using ((select auth.uid()) = user_id);
+  for select to authenticated using ((select auth.uid()) = user_id
+    and coalesce(((select auth.jwt())->>'is_anonymous')::boolean,false) = false);
 
 create table if not exists public.meadow_market_auth_limits (
   bucket text primary key,
