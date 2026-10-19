@@ -291,6 +291,24 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 198784
+    },
+    {
+      "id": "market-welcome",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 307245
+    },
+    {
+      "id": "market-pack",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 214144
+    },
+    {
+      "id": "market-weigh",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 254582
     }
   ]
 }
