@@ -59,3 +59,4 @@ require('./check-meadow-accounts.cjs').catch(error=>{console.error(error);proces
 require('./check-meadow-walking.cjs');
 require('./check-meadow-email.cjs');
 require('./check-meadow-rotation.cjs');
+require('./check-meadow-camera-sync.cjs');

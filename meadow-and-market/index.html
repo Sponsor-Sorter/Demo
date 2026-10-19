@@ -8,8 +8,8 @@
   <title>Meadow Markets</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=71">
-  <link rel="stylesheet" href="guides.css?v=71">
+  <link rel="stylesheet" href="style.css?v=72">
+  <link rel="stylesheet" href="guides.css?v=72">
 </head>
 <body>
   <main class="app-shell">
@@ -23,6 +23,7 @@
       <section class="farm-panel">
         <div class="farm-scene" id="farm-land" aria-label="Your farm map">
           <div class="camera-map" id="camera-map"><img class="map-art" src="assets/generated/willowbrook-meadow-map.webp" alt="Willowbrook farm map with farmhouse, orchard, animal yard, creek and bridge"><div class="farm-grid" id="farm-grid"></div><div class="map-hotspots"><button class="map-hotspot homestead" data-map-view="home" aria-label="Visit farmhouse"></button><button class="map-hotspot barnyard" data-map-view="animals" aria-label="Visit barn and animal yard"></button><button class="map-hotspot orchard-area" data-map-view="market" aria-label="Visit orchard and produce market"></button><button class="map-hotspot bridge-area" data-map-view="market" aria-label="Visit village market"></button></div></div>
+          <button id="cloud-save-review" class="cloud-save-review" hidden>Farm updated on another device · Review</button>
           <div class="build-hint" id="build-hint">Drag to explore · Pinch to zoom</div>
           <div class="scene-actions"><button class="scene-action" id="zoom-out" aria-label="Zoom out">−</button><button class="scene-action" id="zoom-button" aria-label="Recenter farm">⌖</button><button class="scene-action" id="zoom-in" aria-label="Zoom in">＋</button><button class="scene-action" id="expand-button" aria-label="Expand farm">▢</button></div>
         </div>
@@ -52,6 +53,7 @@
   <script src="barns.js?v=1"></script>
   <script src="farm-backups.js?v=1"></script>
   <script src="cloud-sync.js?v=1"></script>
+  <script src="camera-state.js?v=1"></script>
   <script src="accounts.js?v=3"></script>
   <script src="crop-growth.js?v=1"></script>
   <script src="moves.js?v=1"></script>
@@ -66,7 +68,7 @@
   <script src="workers.js?v=6"></script>
   <script src="audio.js?v=3"></script>
   <script src="guides.js?v=6"></script>
-  <script src="game.js?v=68"></script>
+  <script src="game.js?v=69"></script>
 </body>
 </html>
 
