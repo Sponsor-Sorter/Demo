@@ -20,3 +20,12 @@ New ElevenLabs narration uses the existing character voices: Jay / Mike, Jade / 
 Both exports retain their source resolution at WebP quality 88. Sheep retains meadow.webp. Each round samples six separated positions inside the actual measured HUD/caption safe area. Rotation recomputes safe positions and pauses play. Progress, time, percentage and Pause now live inside one top HUD.
 
 Additional ElevenLabs recordings: `rhys-upgrade-howto`, `rhys-new-choices` and `minigame-milk-anywhere`, using the established Noah and Hope voices. Normalized to -18 LUFS, -2 dB peak, 44.1 kHz, 96 kbps MP3.
+
+## Build 80: memory and sorting
+
+- memory.webp: generated 1536×1024 warm painterly 3D garden greenhouse and potting worktable, broad clear centre, plants and flowers around edges, no people, text, cards or UI. Full viewport artwork for Garden memory.
+- sorting.webp: generated 1536×1024 sunny farm market shed with a broad clear pale wooden counter, produce crates and herbs around edges, green fields beyond, no people, text or UI. Full viewport artwork for Market basket sort.
+- produce/*.webp: six generated harvested produce groups on a transparent 1536×1024 atlas, exact 3×2 cells: apple, carrots, tomatoes, corn, pumpkin and strawberries. Exported from each 512×512 cell to 256×256 transparent WebP. Existing growing-plant assets are not used for harvested groceries.
+- Each game has its own ElevenLabs instruction recording: Jade/Hope for memory, Jay/Mike for sorting, with replay and mute support. Existing generated tap, care, harvest and reward sounds accompany actions. No extra narration was added to the original six mini-games.
+
+Memory has six shuffled pairs, 75 seconds, matched-card protection and a pause-safe mismatch delay. Sorting has a balanced shuffled delivery, 15 correct baskets in 50 seconds, a two-second wrong-basket penalty and duplicate-tap protection. Both use the standard top HUD, full-screen scenes, compact persistent results, daily capped farm rewards and an introduction before each new round.

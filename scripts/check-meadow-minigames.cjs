@@ -4,7 +4,7 @@ const elements=new Map(),el=id=>{if(!elements.has(id))elements.set(id,{children:
 let state={},gold=0,goods=0,saves=0,frames=0;const dialog=el('dialog'),scope={window:{addEventListener(){}},document:{hidden:false,createElement:()=>dialog,body:{append(){}},querySelector:el,addEventListener(){}},performance:{now:()=>0},requestAnimationFrame:()=>++frames,cancelAnimationFrame(){},setTimeout(){},Date,Math};
 vm.runInNewContext(source.replace('  window.meadowMinigames=', '  window.test={finish,tick,start,intro,pause,setRun:r=>run=r,getRun:()=>run};\n  window.meadowMinigames='),scope);
 const game=scope.window.meadowMinigames,t=scope.window.test;game.attach({state:()=>state,canPlay:()=>true,notify(){},save:()=>saves++,reward:(item,n,g)=>{goods+=n;gold+=g}});
-assert.equal(game.games.length,6);assert.equal(new Set(game.games.map(g=>g.id)).size,6);
+assert.equal(game.games.length,8);assert.equal(new Set(game.games.map(g=>g.id)).size,8);
 for(const g of game.games){assert(fs.existsSync(root+'/assets/generated/minigames/'+g.scene+'.webp'));assert(fs.statSync(root+'/assets/audio/minigame-'+g.id+'.mp3').size>1000);assert(g.text&&g.goal>0&&g.time>0)}
 const eggs=game.games[0];for(let i=0;i<5;i++){t.setRun({game:eggs,score:12,elapsed:20});t.finish(true)}assert.equal(goods,9);assert.equal(gold,75);assert.equal(state.minigames.records.eggs.wins,5);assert.equal(state.minigames.records.eggs.best,25);assert.equal(saves,5);
 t.setRun({game:eggs,score:2,misses:3,elapsed:10});t.finish(false);assert.equal(gold,75);assert(dialog.innerHTML.includes('Retry'));assert(dialog.innerHTML.includes('No thanks'));
@@ -24,3 +24,7 @@ assert(source.includes("bindTap($('#mini-milk'),milkAction);bindTap($('.mini-sta
 console.log('Three distinct search maps, 480 seeded safe-area layouts and both milking controls passed.');
 assert(source.includes('id="mini-next"'),'Results offer a next adventure');assert(source.includes('games[(games.findIndex(x=>x.id===g.id)+1)%games.length]'),'Next adventure wraps through the catalogue without auto-starting');
 const css=fs.readFileSync(root+'/minigames.css','utf8');assert(css.includes('grid-auto-rows:max-content'));assert(css.includes('flex:0 0 auto;gap:5px;min-height:72px'),'Card labels cannot shrink below their readable area');
+
+for(let seed=1;seed<=60;seed++){let x=seed;const rand=()=>((x=Math.imul(x,1664525)+1013904223>>>0)/4294967296),deck=game.memoryDeck(rand),q=game.sortingQueue(rand);assert.equal(deck.length,12);for(const id of new Set(deck))assert.equal(deck.filter(x=>x===id).length,2);assert.equal(new Set(deck).size,6);assert.equal(q.length,18);for(const id of ['apple','carrot','tomato'])assert.equal(q.filter(x=>x===id).length,6)}
+assert(source.includes('r.resetCardsAt=r.elapsed+.85'));assert(source.includes('r.elapsed>=r.resetCardsAt'));assert(source.includes('r.flipped.length===2'));assert(source.includes('r.matched.includes(i)'));assert(source.includes('r.elapsed+=2'));assert(source.includes('r.elapsed-r.lastSort<.22'));
+console.log('Memory pairs, fair sorting queues, mismatch timing, matched-card guards and sorting penalties passed.');

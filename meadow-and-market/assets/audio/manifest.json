@@ -279,6 +279,18 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 167124
+    },
+    {
+      "id": "minigame-memory",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 173080
+    },
+    {
+      "id": "minigame-sorting",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 198784
     }
   ]
 }
