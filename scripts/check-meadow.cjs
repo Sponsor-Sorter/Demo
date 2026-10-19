@@ -62,3 +62,4 @@ require('./check-meadow-rotation.cjs');
 require('./check-meadow-camera-sync.cjs');
 require('./check-meadow-minigames.cjs');
 require('./check-meadow-water-first.cjs');
+require('./check-meadow-upgrade-first.cjs');

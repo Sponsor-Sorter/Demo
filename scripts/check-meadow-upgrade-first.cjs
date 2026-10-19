@@ -1,0 +1,5 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
+const code=fs.readFileSync(path.resolve(__dirname,'../meadow-and-market/game.js'),'utf8'),fn=code.match(/  function prioritizeUpgradeActions[^\n]+/)[0];let after=[];const anchor={after:b=>after.push(b)};
+const ids=['upgrade-coop','upgrade-barn','upgrade-paddock','upgrade-orchard','upgrade-plot','upgrade-well','hive-upgrade','shop-upgrade','kitchen-upgrade','expand-confirm'];
+for(const id of ids){after=[];const action={id,disabled:true,onclick:()=>id,classList:{add:c=>assert.equal(c,'priority-action')},after:b=>after.push(b)},other={id:'manage-plot'};const root={querySelector:s=>s==='.sheet-head'?anchor:null,querySelectorAll:()=>[other,action]};const scope={root};vm.runInNewContext(fn+';prioritizeUpgradeActions(root)',scope);assert.equal(after[0],action);assert(action.disabled);assert.equal(action.onclick(),id)}
+assert(code.includes("prioritizeUpgradeActions($('#modal-content'))"));console.log('Coop, barn, paddock, orchard, plot, well, hive, shop, kitchen and expansion actions move beneath the popup heading without replacing handlers.');

@@ -15,3 +15,5 @@
 .mini-stage{width:min(100%,calc((100dvh - 160px)*1.5));flex:0 0 auto}.mini-dialog[data-game="milk"] .mini-stage{width:min(100%,calc((100dvh - 205px)*1.5))}@media(orientation:landscape) and (max-height:600px){.mini-stage{width:min(100%,calc((100dvh - 112px)*1.5))}.mini-dialog[data-game="milk"] .mini-stage{width:min(100%,calc((100dvh - 165px)*1.5))}}
 
 .mini-dialog{overflow:hidden;box-sizing:border-box}.mini-dialog::before{scale:1}.mini-menu{min-height:0;overscroll-behavior:contain}.mini-result-overlay{box-sizing:border-box}.mini-dialog:not([open]){display:none}
+
+.mini-card{color:#294d3b;display:flex;flex-direction:column;min-height:0}.mini-card img{display:block;flex:none}.mini-card span{flex:1;min-height:44px;line-height:1.2;box-sizing:border-box}.mini-card small{font-size:11px;line-height:1.25}.mini-menu{grid-auto-rows:minmax(145px,auto)}
