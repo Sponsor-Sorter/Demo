@@ -309,6 +309,30 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 254582
+    },
+    {
+      "id": "animals-welcome",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 290004
+    },
+    {
+      "id": "game-result-win",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 197844
+    },
+    {
+      "id": "game-result-lose",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 166183
+    },
+    {
+      "id": "market-result-win",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 188440
     }
   ]
 }

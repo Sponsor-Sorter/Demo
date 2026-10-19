@@ -61,7 +61,7 @@
   function event(id){
     if(!api)return;const lesson=lessons.find(l=>l.id===id);if(!lesson)return;const t=get();if(t.completed.includes(id))return;
     t.completed.push(id);if(!t.rewarded.includes(id)){t.rewarded.push(id);api.reward(10)}save();
-    if(!t.paused&&t.started){currentLesson=lesson;card(lesson.person,'Lovely work!','You completed “'+lesson.title+'” and earned 10 gold. Keep trying things at your own pace.',()=>showLesson(next()),'Choose the next lesson')}
+    if(!t.paused&&t.started&&api.state().view==='farm'){currentLesson=lesson;card(lesson.person,'Lovely work!','You completed “'+lesson.title+'” and earned 10 gold. Keep trying things at your own pace.',()=>showLesson(next()),'Choose the next lesson')}
   }
   function context(view){
     if(!api||view===lastContext)return;lastContext=view;const t=get();if(Date.now()<silenceUntil||t.paused||!panel.hidden||document.querySelector('dialog[open]')||t.seenContexts.includes(view))return;
@@ -69,14 +69,15 @@
     if(!tips[view])return;t.seenContexts.push(view);save();const [p,title,text]=tips[view];card(p,title,text,hide,'Got it','',({build:'rhys-place',animals:'jay-care',market:'jay-sell',shop:'jay-stock'})[view]);
   }
   function unlocks(level,details){if(!api)return;const t=get();t.unlockAnnouncements ||= [];if(t.unlockAnnouncements.some(x=>x.level===level))return;if(!(details.areas?.length||details.items?.length))return;t.unlockAnnouncements.push({level,...details});save()}
-  function announceUnlock(){if(!api||document.hidden||document.querySelector('dialog[open]')||!panel.hidden||get().paused||api.state().mode==='build')return;const t=get(),pending=t.unlockAnnouncements?.find(x=>!x.shown);if(!pending)return;pending.shown=true;save();const names=[...(pending.areas||[]),...(pending.items||[]).map(i=>i.name)];card('rhys','New at level '+pending.level,names.join(', ')+'. Your growing farm has opened new choices. Read each item’s purpose and gold price before buying. Your existing farms keep growing while you explore.',()=>{hide();api.focus(pending.areas?.length?'maps':'unlock:'+pending.items[0].id)},pending.areas?.length?'Explore My farms':'Show the new item','','rhys-new-choices')}
+  function announceUnlock(){if(!api||api.state().view!=='farm'||document.hidden||document.querySelector('dialog[open]')||!panel.hidden||get().paused||api.state().mode==='build')return;const t=get(),pending=t.unlockAnnouncements?.find(x=>!x.shown);if(!pending)return;pending.shown=true;save();const names=[...(pending.areas||[]),...(pending.items||[]).map(i=>i.name)];card('rhys','New at level '+pending.level,names.join(', ')+'. Your growing farm has opened new choices. Read each item’s purpose and gold price before buying. Your existing farms keep growing while you explore.',()=>{hide();api.focus(pending.areas?.length?'maps':'unlock:'+pending.items[0].id)},pending.areas?.length?'Explore My farms':'Show the new item','','rhys-new-choices')}
+  function maybeWelcome(){if(!api||get().introduced||api.state().view!=='farm'||api.state().mode==='build'||document.hidden||!panel.hidden||document.querySelector('dialog[open]'))return;get().introduced=true;save();welcome()}
   function attach(a){
     api=a;root=document.createElement('div');root.id='farm-guides';
     root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Farmer Rhys and Farmer Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
     document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');document.querySelector('#farm-help-slot')?.append(launcher);launcher.onclick=()=>{if(!pendingHint){menu();return}const hint=pendingHint;pendingHint=null;updateLauncher();card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')};updateLauncher();
     setInterval(announceUnlock,1500);
-    if(!get().introduced)setTimeout(()=>{if(!document.querySelector('dialog[open]')){get().introduced=true;save();welcome()}},1200);
+    if(!get().introduced){setTimeout(maybeWelcome,1200);setInterval(maybeWelcome,5000)}
     setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint){pendingHint=hint;lastTipAt=Date.now();updateLauncher()}},30000);
   }
-  window.meadowGuides={attach,event,context,menu,lesson:showLesson,unlocks};
+  window.meadowGuides={attach,event,context,menu,lesson:showLesson,unlocks,collapse:hide};
 })();
