@@ -20,7 +20,7 @@ Deno.serve(async req=>{
   try{
     const raw=await req.text();if(raw.length>4096)return reply(413,{error:'Request too large.'});
     const body=JSON.parse(raw),action=body.action,username=String(body.username||'').trim().toLowerCase(),password=typeof body.password==='string'?body.password:'';
-    if(!['register','login'].includes(action)||!namePattern.test(username)||password.length<8||new TextEncoder().encode(password).length>72)return reply(400,{error:'Use a username of 3–20 letters, numbers or underscores and a password of 8–72 bytes.'});
+    if(!['register','login'].includes(action)||!namePattern.test(username)||password.length<(action==='login'?6:8)||new TextEncoder().encode(password).length>72)return reply(400,{error:'Use a username of 3–20 letters, numbers or underscores and a password of 8–72 bytes.'});
     // Only hashes are retained, for 15 minutes. Auth also applies its own sign-in limits.
     const ip=(req.headers.get('x-forwarded-for')||req.headers.get('x-real-ip')||'unknown').split(',')[0].trim();
     const bucket=await digest(secret+':'+ip),attempt=await request('/rest/v1/rpc/meadow_market_auth_attempt','POST',{p_bucket:bucket,p_max:30});

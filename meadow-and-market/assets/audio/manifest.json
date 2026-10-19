@@ -225,6 +225,42 @@
       "id": "jay-fleece",
       "kind": "voice",
       "bytes": 188440
+    },
+    {
+      "id": "minigame-eggs",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 138285
+    },
+    {
+      "id": "minigame-milk",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 148002
+    },
+    {
+      "id": "minigame-flowers",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 142360
+    },
+    {
+      "id": "minigame-sheep",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 127000
+    },
+    {
+      "id": "minigame-goat",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 131702
+    },
+    {
+      "id": "minigame-cow",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 140479
     }
   ]
 }
