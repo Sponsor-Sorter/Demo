@@ -422,3 +422,10 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 
 /* Crop needs occupy the original borderless watered-icon anchor inside each plant. */
 .farm-object.plot .crop-need{position:absolute;right:4%;top:0;font:18px system-ui;filter:drop-shadow(0 1px 2px #fff);z-index:3;pointer-events:none;background:none;border:0;box-shadow:none;padding:0;width:auto;height:auto;border-radius:0;animation:none}
+
+/* Separate map-space overlay escapes each object's depth/transform stacking context. */
+.crop-need-layer{position:absolute;inset:0;z-index:100000;pointer-events:none!important;overflow:visible}
+.farm-object.plot .crop-need{visibility:hidden}
+.crop-need-floating{position:absolute;display:block;pointer-events:none!important;background:none;border:0;box-shadow:none;padding:0;filter:drop-shadow(0 1px 2px #fff);animation:crop-need-bob 2.4s ease-in-out infinite}
+@keyframes crop-need-bob{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@media(prefers-reduced-motion:reduce){.crop-need-floating{animation:none}}
