@@ -360,14 +360,18 @@
   const growthCrops=new Set(['carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','mushroom']);
   function cropGrowthFrames(progress){const f=clamp(progress,0,1)*3,index=Math.floor(f);return {index,next:Math.min(3,index+1),blend:f-index}}
   function growthPlant(crop,progress){const f=cropGrowthFrames(progress);return [f.index,f.next].map((index,i)=>'<span class="crop-growth-layer" style="opacity:'+(i?f.blend:1-f.blend)+'"><img src="assets/generated/crop-growth/'+crop+'.webp" alt="" style="left:'+(-100*index)+'%"></span>').join('')}
+  function cropNeedBadge(o,stage){
+    const need=!o.plantedAt?(o.stage?['plant','🌱','Ready to plant']:['till','⛏','Till soil']):stage>=3?['harvest','🧺','Ready to harvest']:!plotWatered(o)?['water','💧','Needs water']:null;
+    return need?'<span class="crop-state soil-action crop-need need-'+need[0]+'" role="img" aria-label="'+need[2]+'" title="'+need[2]+'">'+need[1]+'</span>':'';
+  }
   function plotArt(o,stage,percent,remaining){
     const side=plotSide(o),soil=o.plantedAt||o.stage?'tilled':'untilled';
     let html='<span class="art field-soil '+(o.plantedAt?'planted':soil)+'"><img src="assets/generated/plots/soil-'+soil+'-'+side+'.svg" alt="'+side+' by '+side+' soil plot"></span>';
     if(o.plantedAt){html+='<span class="plot-plants">';for(let y=0;y<side;y++)for(let x=0;x<side;x++){
       const cx=50+(x-y)*50/side,cy=(x+y+1)*50/side;
       html+='<span class="art crop-art crop-'+(o.crop||'carrot')+(growthCrops.has(o.crop||'carrot')?' has-growth-strip':'')+' stage-'+stage+(plotWatered(o)?' watered':'')+'" style="--plant-left:'+(cx-42/side)+'%;--plant-top:'+(cy-(growthCrops.has(o.crop||'carrot')?116:94)/side)+'%;--plant-width:'+84/side+'%;--plant-height:'+(growthCrops.has(o.crop||'carrot')?128:106)/side+'%;--growth:'+percent+'%;--scale-growth:'+percent/100+';z-index:'+(2+x+y)+'">'+(growthCrops.has(o.crop||'carrot')?growthPlant(o.crop||'carrot',percent/100):'<img src="assets/generated/crop-plants/'+(o.crop||'carrot')+'.png" alt="" loading="lazy">')+'</span>';
-    }html+='</span><span class="crop-state '+(stage===3?'is-ready':'')+'">'+(stage===3?'✦':stage===2?'🌼':stage===1?'🌱':'＋')+'</span><span class="crop-stats" title="'+(stage===3?'Harvest '+plotYield(o):remaining+' minutes remaining')+'"><i style="width:'+percent+'%"></i></span>'}
-    else html+='<span class="crop-state soil-action">'+(o.stage?'＋':'⛏')+'</span>';
+    }html+='</span>'+cropNeedBadge(o,stage)+'<span class="crop-stats" title="'+(stage===3?'Harvest '+plotYield(o):remaining+' minutes remaining')+'"><i style="width:'+percent+'%"></i></span>'}
+    else html+=cropNeedBadge(o,stage);
     return html;
   }
   function showPlotUpgrade(p){
@@ -458,7 +462,7 @@
   function isUpdateReady(current,available,waiting){return !!waiting||(Number.isInteger(available)&&available>current)}
   window.meadowFarmersMarket?.attach({state:()=>state,current,items:crops,coins:()=>state.coins,canTrade:()=>!activeVisit,earn:n=>state.coins+=n,xp,event:(id,n)=>{window.meadowStory?.event(id,n);guideEvent('sell')},save,refresh:render,notify,requests:()=>setView('requests'),build:type=>{const item=catalog.find(i=>i.id===type);if(state.level<(item.unlock||1)){notify(item.name+' unlocks at Level '+item.unlock);return}buyPlace(type)}});
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
-  const currentBuild=84;
+  const currentBuild=85;
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
     const promptForUpdate=()=>{const dialog=$('#update-dialog'),waitingBuild=Number(reg.waiting?new URL(reg.waiting.scriptURL).searchParams.get('build'):0);availableBuild=Math.max(availableBuild,waitingBuild);if(navigator.serviceWorker.controller&&isUpdateReady(currentBuild,availableBuild,waitingBuild>currentBuild)&&dialog){if(!gameUpdateCanPrompt({hidden:document.hidden,modal:$$('dialog[open]').some(d=>d.id!=='update-dialog'),build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil}))return;$('#update-title').textContent='Meadow Markets build '+availableBuild+' is ready';dialog.querySelector('.sheet-copy').textContent='You have build '+currentBuild+'. Install the latest farm improvements and keep your saved farm.';if(!dialog.open)dialog.showModal()}};

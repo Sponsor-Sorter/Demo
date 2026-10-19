@@ -419,3 +419,9 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .cloud-save-review{position:fixed;right:85px;top:calc(env(safe-area-inset-top,0px) + 90px);z-index:49;max-width:240px;min-height:44px;padding:10px 14px;border-radius:14px;border:1px solid #d6c898;background:#fff2c7;color:#315c46;box-shadow:0 4px 12px #193e3333;font-size:12px;font-weight:800}.cloud-save-review[hidden]{display:none!important}@media(max-width:620px){.cloud-save-review{top:calc(env(safe-area-inset-top,0px) + 118px);right:70px;max-width:210px;font-size:11px}}
 
 .upgrade-explainer{margin:8px 0;padding:8px 10px;background:#eef0dc;border-radius:10px}.upgrade-explainer p{font-size:12px;line-height:1.5;margin:7px 0 0}.upgrade-explainer p[hidden]{display:none}
+
+/* Only actionable crop needs appear above a plot; watered growing crops stay clear. */
+.farm-object.plot .crop-need{z-index:8!important;pointer-events:none;min-width:25px;min-height:25px;display:grid;place-items:center;border-radius:50%;background:#fff8e8;color:#714c2f;border:2px solid #fff4d5;box-shadow:0 2px 6px #51372055;font-size:17px;line-height:1}
+.farm-object.plot .need-water{background:#edf8ff;border-color:#c5e7fa}
+.farm-object.plot .need-harvest{background:#fff1c3;border-color:#efd58e}
+
