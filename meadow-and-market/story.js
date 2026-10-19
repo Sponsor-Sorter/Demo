@@ -27,6 +27,11 @@
     {id:'woven-gifts',title:'Handmade warmth',text:'Collect six woven alpaca scarves from your craft shed.',target:6,reward:280,xp:50,measure:s=>stats(s).made_scarf||0},
     {id:'country-shop',title:'The country fair pantry',text:'Sell fifty goods through your farm shops. Sales on every map count.',target:50,reward:350,xp:60,measure:s=>Object.values(s.farms).reduce((n,f)=>n+(f.shop?.sold||0),0)}
   ]});
+  chapters.push({name:'Friends for life',person:'jay',goals:[
+    {id:'animal-companion',title:'A familiar friendly face',text:'Reach friendship level 3 with an animal. Feed, brush and play; each activity earns a care star every ten minutes.',target:1,reward:150,xp:30,measure:s=>objects(s).filter(o=>window.meadowBonds.rank(o)>=3).length},
+    {id:'animal-best-friend',title:'Best farm friends',text:'Reach friendship level 5 with an animal. Best friends add two goods to each happy collection.',target:1,reward:300,xp:50,measure:s=>objects(s).filter(o=>window.meadowBonds.rank(o)>=5).length},
+    {id:'grand-barn-family',title:'A home for everyone',text:'House a cow, sheep, goat and alpaca together in one fully upgraded barn.',target:1,reward:350,xp:60,measure:s=>Object.values(s.farms).some(f=>f.objects.some(h=>h.type==='barn'&&h.tier>=3&&['cow','sheep','goat','alpaca'].every(type=>f.objects.some(o=>o.type===type&&o.barnId===h.id))))?1:0}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}
