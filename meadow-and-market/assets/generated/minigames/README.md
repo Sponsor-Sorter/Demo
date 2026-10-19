@@ -11,3 +11,12 @@ Prompts:
 The authored 3:2 artwork covers the entire viewport. Egg nests and dairy details project through the same cover transform, and hidden-animal targets use viewport coordinates. Portrait shows fewer nesting beds rather than creating offscreen eggs. Animals use the existing generated transparent sheep, goat and cow sprites. Foreground foliage copies the corresponding region of the same background, keeping occlusion aligned. Eggs, catch baskets, broken shells, milk streams and fill indicators are animated code-native shapes.
 
 New ElevenLabs narration uses the existing character voices: Jay / Mike, Jade / Hope, Rhys / Noah. Six `minigame-*.mp3` recordings give the exact instructions shown before each round. Existing generated sound effects accompany actions.
+
+## Build 77: distinct search areas
+
+- **goat-search.webp:** Generated HD 1536 × 1024 cozy painterly 3D goat hillside search map, no animals, people, UI or text; terraced grass, limestone boulders, wooden footbridges, wildflower shrubs, rustic stone shelter, split-rail fences, logs and clover, broad green play space and warm sunlight.
+- **cow-search.webp:** Generated HD 1536 × 1024 distinct dairy clover pasture search map, no animals, people, UI or text; clover fields, white painted fences, red dairy barn far back, willow trees, haystacks, water trough, flowering hedges, dirt lane edges, broad green centre, warm morning light.
+
+Both exports retain their source resolution at WebP quality 88. Sheep retains meadow.webp. Each round samples six separated positions inside the actual measured HUD/caption safe area. Rotation recomputes safe positions and pauses play. Progress, time, percentage and Pause now live inside one top HUD.
+
+Additional ElevenLabs recordings: `rhys-upgrade-howto`, `rhys-new-choices` and `minigame-milk-anywhere`, using the established Noah and Hope voices. Normalized to -18 LUFS, -2 dB peak, 44.1 kHz, 96 kbps MP3.

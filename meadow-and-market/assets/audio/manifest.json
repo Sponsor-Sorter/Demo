@@ -261,6 +261,24 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 140479
+    },
+    {
+      "id": "rhys-upgrade-howto",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 340159
+    },
+    {
+      "id": "rhys-new-choices",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 221981
+    },
+    {
+      "id": "minigame-milk-anywhere",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 167124
     }
   ]
 }

@@ -2,8 +2,8 @@
   'use strict';
   const games=[
     {id:'eggs',name:'Egg rescue',person:'jay',label:'Farmer Jay',scene:'coop',text:'Tap falling eggs before they hit the floor. Save 12 eggs before 3 break.',goal:12,time:45,item:'egg',amount:3},
-    {id:'milk',name:'Milking time',person:'jade',label:'Farmer Jade',scene:'dairy',text:'Tap Milk when the moving marker is inside the golden zone. Fill 8 buckets in 40 seconds. Give your hand a moment between squeezes!',goal:8,time:40,item:'milk',amount:3},
-    ...[['sheep','Sheep roundup','wool'],['goat','Goat hide-and-seek','goatmilk'],['cow','Find the wandering cows','milk']].map(([id,name,item])=>({id,name,person:'rhys',label:'Farmer Rhys',scene:'meadow',text:'Our '+(id==='sheep'?'sheep':id+'s')+' have wandered off! Find all 6 hiding in the meadow in 45 seconds. Tap each one to bring it home.',goal:6,time:45,item,amount:2})),
+    {id:'milk',name:'Milking time',person:'jade',label:'Farmer Jade',scene:'dairy',text:'Tap the playfield or Milk when the moving marker is inside the golden zone. Fill 8 buckets in 40 seconds. Give your hand a moment between squeezes!',goal:8,time:40,item:'milk',amount:3},
+    ...[['sheep','Sheep roundup','wool'],['goat','Goat hide-and-seek','goatmilk'],['cow','Find the wandering cows','milk']].map(([id,name,item])=>({id,name,person:'rhys',label:'Farmer Rhys',scene:id==='sheep'?'meadow':id+'-search',text:'Our '+(id==='sheep'?'sheep':id+'s')+' have wandered off! Find all 6 hiding in this area in 45 seconds. Tap each one to bring it home.',goal:6,time:45,item,amount:2})),
     {id:'flowers',name:'Busy bee bouquets',person:'jade',label:'Farmer Jade',scene:'meadow',text:'Tap the glowing flowers in the order they light up. Pick 12 before time runs out. Only the glowing flower counts.',goal:12,time:35,item:'nectar',amount:3}
   ];
   let api,dialog,run,raf=0,serial=0;
@@ -11,7 +11,7 @@
   const progress=(r)=>Math.min(1,r.score/r.game.goal);
   function day(){return new Date().toISOString().slice(0,10)}
   function records(){const s=api.state();s.minigames ||= {records:{},rewards:{}};return s.minigames}
-  function speak(g){window.meadowAudio?.speak('minigame-'+g.id)}
+  function speak(g){window.meadowAudio?.speak(g.id==='milk'?'minigame-milk-anywhere':'minigame-'+g.id)}
   function cleanup(){cancelAnimationFrame(raf);raf=0;run=null;window.meadowAudio?.stopVoice()}
   function close(){cleanup();dialog.close()}
   function shell(body){cleanup();dialog.innerHTML=body;if(!dialog.open)dialog.showModal()}
@@ -19,22 +19,31 @@
   function menu(){dialog.style.setProperty('--mini-scene','url(assets/generated/minigames/meadow.webp)');delete dialog.dataset.scene;delete dialog.dataset.game;if(!api.canPlay())return api.notify('Return to your own farm to play.');const r=records();shell(header('A little farm adventure')+'<p class="sheet-copy">Help the family with hands-on farm games. Each game rewards your first three wins each day; you can keep playing for a better score.</p><div class="mini-menu">'+games.map(g=>'<button class="mini-card" data-game="'+g.id+'"><img src="assets/generated/minigames/'+g.scene+'.webp" alt="'+g.name+' scene"><span><strong>'+g.name+'</strong><small>'+g.label+' · '+(r.records[g.id]?.wins||0)+' wins</small></span></button>').join('')+'</div>');$('#mini-close').onclick=close;dialog.querySelectorAll('[data-game]').forEach(b=>b.onclick=()=>intro(games.find(g=>g.id===b.dataset.game)))}
   function intro(g){dialog.dataset.scene=g.scene;dialog.dataset.game=g.id;dialog.style.setProperty('--mini-scene','url(assets/generated/minigames/'+g.scene+'.webp)');shell(header(g.name)+'<div class="mini-intro-art" style="background-image:url(assets/generated/minigames/'+g.scene+'.webp)"><img src="'+art('guides/'+g.person)+'" alt="'+g.label+'"></div><div class="mini-instructions"><h3>'+g.label+'</h3><p>'+g.text+'</p><button class="small-button" id="mini-listen">Listen again</button></div><div class="mini-buttons"><button class="primary-button" id="mini-start">Let’s play</button><button class="small-button" id="mini-back">Choose another game</button></div>');$('#mini-close').onclick=close;$('#mini-back').onclick=menu;$('#mini-listen').onclick=()=>speak(g);$('#mini-start').onclick=()=>start(g);speak(g)}
   const positions=[{x:22,y:39},{x:48,y:27},{x:82,y:37},{x:54,y:51},{x:30,y:65},{x:77,y:61}];
+  function safePositions(w,h,hudBottom,footerTop,random=Math.random){
+    const radius=Math.max(22,w*.04),left=radius+12,right=w-radius-12,top=Math.max(hudBottom+radius+12,h*.22),bottom=Math.min(footerTop-radius-12,h-radius-12),gap=radius*2+14,points=[];
+    for(let attempt=0;attempt<900&&points.length<6;attempt++){const p={x:left+random()*(right-left),y:top+random()*Math.max(1,bottom-top)};if(points.every(q=>Math.hypot(q.x-p.x,q.y-p.y)>=gap))points.push(p)}
+    if(points.length<6){points.length=0;for(let row=0;row<2;row++)for(let col=0;col<3;col++)points.push({x:left+(col+.5)*(right-left)/3,y:top+(row+.5)*Math.max(1,bottom-top)/2})}
+    return points.map(p=>({x:p.x/w*100,y:p.y/h*100}));
+  }
+  function targetPositions(){const stage=$('.mini-stage').getBoundingClientRect(),hud=$('.mini-header').getBoundingClientRect(),footer=$('.mini-caption').getBoundingClientRect();return safePositions(stage.width,stage.height,hud.bottom-stage.top,footer.top-stage.top)}
+  function reflowTargets(){if(!run)return;const spots=targetPositions();run.spots=spots;if(['sheep','goat','cow'].includes(run.game.id)){run.actors.forEach((a,i)=>{Object.assign(a,spots[i]);const b=$('[data-animal="'+i+'"]');b.style.left=a.x+'%';b.style.top=a.y+'%'});const foliage=$('.mini-foliage');if(foliage)foliage.innerHTML=run.actors.map(a=>'<div style="clip-path:ellipse(7% 7% at '+a.x+'% '+(a.y+6)+'%)"></div>').join('')}else if(run.game.id==='flowers')dialog.querySelectorAll('[data-flower]').forEach((b,i)=>{b.style.left=spots[i].x+'%';b.style.top=spots[i].y+'%'})}
   function start(g){
     dialog.dataset.scene=g.scene;dialog.dataset.game=g.id;dialog.style.setProperty('--mini-scene','url(assets/generated/minigames/'+g.scene+'.webp)');
     shell(header(g.name)+'<div class="mini-score"><span id="mini-count">0 / '+g.goal+'</span><span id="mini-timer">'+g.time+'s</span><span id="mini-status">'+(g.id==='eggs'?'0 / 3 broken':'Good luck!')+'</span><button class="small-button" id="mini-pause">Pause</button></div><div class="mini-stage '+g.id+'" style="background-image:url(assets/generated/minigames/'+g.scene+'.webp)"><div class="mini-actors"></div><div class="mini-flashes" aria-hidden="true"></div>'+(g.id==='milk'?'<div class="mini-milk-stream" aria-hidden="true"></div><div class="mini-pail" aria-label="Milk bucket"><div id="mini-fill"></div></div>':'')+'</div>'+(g.id==='milk'?'<div class="mini-milk-controls"><div class="mini-meter"><span class="mini-zone"></span><span id="mini-marker"></span></div><button class="primary-button" id="mini-milk">Milk</button></div>':'')+'<p class="mini-caption">'+g.text+'</p>');
     run={game:g,score:0,misses:0,elapsed:0,spawn:0,last:performance.now(),id:++serial,paused:false,actors:[],next:0,lastMilk:-1,marker:0};const r=run;
+    $('.mini-header').insertBefore($('.mini-score'),$('#mini-close'));layoutScene();r.spots=targetPositions();
     $('#mini-close').onclick=()=>pause(true);$('#mini-pause').onclick=()=>pause();
     if(['sheep','goat','cow'].includes(g.id)){
       // Positions use scene percentages, so sprites and touch targets stay together at every size.
       const offset=Math.floor(Math.random()*positions.length);
-      r.actors=positions.map((p,i)=>({...p,id:i,found:false,x:Math.max(7,Math.min(92,p.x+(Math.random()-.5)*2)),y:p.y}));
+      r.actors=r.spots.map((p,i)=>({...p,id:i,found:false}));
       $('.mini-actors').innerHTML=r.actors.map(a=>'<button class="mini-hidden-animal" data-animal="'+a.id+'" aria-label="Find '+g.id+' '+(a.id+1)+'" style="left:'+a.x+'%;top:'+a.y+'%;--turn:'+((a.id+offset)%2?-1:1)+'"><img src="'+art(g.id)+'" alt="'+g.id+'"></button>').join('');
-      const foliage=document.createElement('div');foliage.className='mini-foliage';foliage.innerHTML=r.actors.map(a=>'<div style="clip-path:ellipse(7% 7% at '+a.x+'% '+(a.y+6)+'%)"></div>').join('');$('.mini-stage').append(foliage);
+      const foliage=document.createElement('div');foliage.className='mini-foliage';foliage.style.setProperty('--search-scene','url(assets/generated/minigames/'+g.scene+'.webp)');foliage.innerHTML=r.actors.map(a=>'<div style="clip-path:ellipse(7% 7% at '+a.x+'% '+(a.y+6)+'%)"></div>').join('');$('.mini-stage').append(foliage);
       dialog.querySelectorAll('[data-animal]').forEach(b=>b.onclick=()=>{if(r!==run||r.paused)return;const a=r.actors[Number(b.dataset.animal)];if(a.found)return;a.found=true;b.classList.add('found');b.disabled=true;r.score++;window.meadowAudio?.play(g.id);flash('Found!',a.x,a.y);update();if(r.score>=g.goal)finish(true)});
     }else if(g.id==='flowers'){
-      $('.mini-actors').innerHTML=positions.map((p,i)=>'<button class="mini-flower" aria-label="Pick flower '+(i+1)+'" data-flower="'+i+'" style="left:'+p.x+'%;top:'+p.y+'%"><img src="'+art('flower-patch')+'" alt="Flower patch"></button>').join('');r.next=Math.floor(Math.random()*6);lightFlower();
-      dialog.querySelectorAll('[data-flower]').forEach(b=>bindTap(b,()=>{if(r!==run||r.paused)return;if(Number(b.dataset.flower)!==r.next){flash('Follow the glow',50,50);window.meadowAudio?.play('tap');return}r.score++;window.meadowAudio?.play('harvest');flash('Lovely!',positions[r.next].x,positions[r.next].y);r.next=(r.next+1+Math.floor(Math.random()*5))%6;lightFlower();update();if(r.score>=g.goal)finish(true)}));
-    }else if(g.id==='milk')$('#mini-milk').onclick=()=>{if(r!==run||r.paused||r.elapsed-r.lastMilk<.45)return;r.lastMilk=r.elapsed;const hit=r.marker>=.32&&r.marker<=.68;if(hit){r.score++;window.meadowAudio?.play('water');$('.mini-stage').classList.add('squeezing');setTimeout(()=>$('.mini-stage')?.classList.remove('squeezing'),330);$('#mini-fill').style.height=(progress(r)*100)+'%';flash('Bucket '+r.score+' filled',50,50)}else{window.meadowAudio?.play('tap');flash('Aim for gold',50,50)}update();if(r.score>=g.goal)finish(true)};
+      $('.mini-actors').innerHTML=r.spots.map((p,i)=>'<button class="mini-flower" aria-label="Pick flower '+(i+1)+'" data-flower="'+i+'" style="left:'+p.x+'%;top:'+p.y+'%"><img src="'+art('flower-patch')+'" alt="Flower patch"></button>').join('');r.next=Math.floor(Math.random()*6);lightFlower();
+      dialog.querySelectorAll('[data-flower]').forEach(b=>bindTap(b,()=>{if(r!==run||r.paused)return;if(Number(b.dataset.flower)!==r.next){flash('Follow the glow',50,50);window.meadowAudio?.play('tap');return}r.score++;window.meadowAudio?.play('harvest');flash('Lovely!',r.spots[r.next].x,r.spots[r.next].y);r.next=(r.next+1+Math.floor(Math.random()*5))%6;lightFlower();update();if(r.score>=g.goal)finish(true)}));
+    }else if(g.id==='milk'){const milkAction=()=>{if(r!==run||r.paused||r.elapsed-r.lastMilk<.45)return;r.lastMilk=r.elapsed;const hit=r.marker>=.32&&r.marker<=.68;if(hit){r.score++;window.meadowAudio?.play('water');$('.mini-stage').classList.add('squeezing');setTimeout(()=>$('.mini-stage')?.classList.remove('squeezing'),330);$('#mini-fill').style.height=(progress(r)*100)+'%';flash('Bucket '+r.score+' filled',50,50)}else{window.meadowAudio?.play('tap');flash('Aim for gold',50,50)}update();if(r.score>=g.goal)finish(true)};bindTap($('#mini-milk'),milkAction);bindTap($('.mini-stage'),milkAction)}
     layoutScene();raf=requestAnimationFrame(tick);
   }
   function bindTap(button,action){button.onpointerdown=e=>{if(e.button!==undefined&&e.button!==0)return;e.preventDefault();action()};button.onclick=e=>{if(e.detail===0)action()}}
@@ -61,6 +70,6 @@
     for(const child of dialog.children)child.inert=true;dialog.append(overlay);$('#mini-retry').onclick=()=>intro(g);$('#mini-no').onclick=close;$('#mini-more').onclick=menu;$('#mini-retry').focus();
   }
   function attach(callbacks){api=callbacks;dialog=document.createElement('dialog');dialog.id='minigames-dialog';dialog.className='mini-dialog';dialog.setAttribute('aria-label','Farm mini-games');document.body.append(dialog);dialog.addEventListener('cancel',e=>{e.preventDefault();if(run)pause(true);else if(!dialog.querySelector('.mini-result-overlay'))close()});dialog.addEventListener('close',cleanup);dialog.addEventListener('click',e=>{if(e.target===dialog)e.stopPropagation()});document.addEventListener('visibilitychange',()=>{if(document.hidden&&run)pause()});const b=document.createElement('button');b.id='farm-play-button';b.className='hud-action';b.textContent='🎮 Play';b.setAttribute('aria-label','Farm mini-games');b.onclick=menu;document.querySelector('.hud-actions').append(b)}
-  window.addEventListener('resize',()=>{if(run){layoutScene();pause()}});
-  window.meadowMinigames={attach,open:menu,games,progress,coverLayout,project};
+  window.addEventListener('resize',()=>{if(run){layoutScene();reflowTargets();pause()}});
+  window.meadowMinigames={attach,open:menu,games,progress,coverLayout,project,safePositions};
 })();

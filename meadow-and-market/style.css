@@ -417,3 +417,5 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 @media(max-width:620px){.account-art{min-height:140px}.account-art h1{font-size:32px;max-width:calc(100% - 115px);letter-spacing:-1px}.account-art h1 br{display:block}.account-art p{max-width:155px;font-size:12px;line-height:1.45}.account-family{width:130px;right:12px;bottom:12px}.account-family img{height:86px}}
 
 .cloud-save-review{position:fixed;right:85px;top:calc(env(safe-area-inset-top,0px) + 90px);z-index:49;max-width:240px;min-height:44px;padding:10px 14px;border-radius:14px;border:1px solid #d6c898;background:#fff2c7;color:#315c46;box-shadow:0 4px 12px #193e3333;font-size:12px;font-weight:800}.cloud-save-review[hidden]{display:none!important}@media(max-width:620px){.cloud-save-review{top:calc(env(safe-area-inset-top,0px) + 118px);right:70px;max-width:210px;font-size:11px}}
+
+.upgrade-explainer{margin:8px 0;padding:8px 10px;background:#eef0dc;border-radius:10px}.upgrade-explainer p{font-size:12px;line-height:1.5;margin:7px 0 0}.upgrade-explainer p[hidden]{display:none}

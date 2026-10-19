@@ -17,3 +17,8 @@ console.log('Six mini-games: assets, reward cap, wins, loss/retry, pause/backgro
 
 for(const [w,h] of [[1280,720],[3088,1440],[1440,3088],[390,844]]){const l=game.coverLayout(w,h);assert(l.rw>=w&&l.rh>=h,'Cover fills every viewport edge');const nests=[14,28,42,57,71,85].map(x=>game.project({x,y:31},l)).filter(p=>p.x>=7&&p.x<=93);assert(nests.length>=2,'At least two visible laying beds in either orientation');for(const p of nests)assert(p.y>10&&p.y<70,'Eggs begin at visible nesting beds');const dairy=game.coverLayout(w,h,.26,.8),bucket=game.project({x:43,y:72},dairy);assert(bucket.x>0&&bucket.x<100&&bucket.y>20&&bucket.y<95,'Dairy bucket stays visible')}
 console.log('Full-viewport cover projection keeps nests and dairy buckets visible in portrait and landscape.');
+
+assert.equal(new Set(game.games.filter(g=>['sheep','goat','cow'].includes(g.id)).map(g=>g.scene)).size,3,'Each animal search uses a distinct map');
+for(const [w,h,hud] of [[390,844,115],[844,390,64],[3088,1440,85],[1440,3088,130],[768,1024,80],[1024,768,80]]){for(let seed=1;seed<=80;seed++){let n=seed;const rand=()=>((n=Math.imul(n,1664525)+1013904223>>>0)/4294967296),r=Math.max(22,w*.04),spots=game.safePositions(w,h,hud,h-45,rand);assert.equal(spots.length,6);for(const p of spots){const x=p.x*w/100,y=p.y*h/100;assert(x-r>=0&&x+r<=w);assert(y-r>hud&&y+r<h-45,'Targets remain clear of HUD and captions')}for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)assert(Math.hypot((spots[i].x-spots[j].x)*w/100,(spots[i].y-spots[j].y)*h/100)>=2*r,'Targets do not overlap')}}
+assert(source.includes("bindTap($('#mini-milk'),milkAction);bindTap($('.mini-stage'),milkAction)"));
+console.log('Three distinct search maps, 480 seeded safe-area layouts and both milking controls passed.');
