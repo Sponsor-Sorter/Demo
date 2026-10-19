@@ -1,0 +1,97 @@
+{
+  "updated": "2026-10-19",
+  "entries": [
+    {
+      "id": "meadow-markets",
+      "title": "Meadow Markets",
+      "type": "Game",
+      "tagline": "A little farm. A growing adventure.",
+      "description": "Build your farm, grow crops, care for animals and explore a welcoming village. Start in your browser or take your farm with you on Android.",
+      "image": "./meadow-and-market/assets/icon-512.png",
+      "imageAlt": "Meadow Markets game icon",
+      "status": "Early access",
+      "build": "Browser build 74",
+      "releaseManifest": "./meadow-and-market/release.json",
+      "requirements": "Modern browser on phone, tablet or computer, or the Android testing package. Internet access is needed for online features.",
+      "instructionsTitle": "How to play",
+      "instructions": [
+        "Open Play in browser and follow the farm introduction.",
+        "Tap or click a farm plot to plant, water and harvest crops.",
+        "Care for your animals, sell produce and use your coins to grow the farm.",
+        "Open the in-game help and journal for goals, controls and new activities."
+      ],
+      "actions": [
+        {
+          "label": "Play in browser",
+          "url": "https://sponsorsorter.com/meadow-and-market/",
+          "primary": true
+        },
+        {
+          "label": "Download Android APK",
+          "url": "https://sponsorsorter.com/meadow-and-market/meadow-and-market.apk"
+        }
+      ],
+      "notes": "Early access. Browser and Android releases update separately; the browser build shown here is not an Android package build number. For Android, open the downloaded APK and confirm installation if your device requests it."
+    },
+    {
+      "id": "bargain-barge",
+      "title": "Bargain Barge",
+      "type": "App",
+      "tagline": "Find a deal worth opening.",
+      "description": "Browse Australian and New Zealand retailer offers and community deals, compare listed prices and open retailer pages in this Android testing app.",
+      "image": "./games-assets/bargain-barge.svg",
+      "imageAlt": "Bargain Barge app icon",
+      "status": "Android testing release",
+      "build": "Version 0.4.4 · Build 19",
+      "requirements": "Android 8.0 or newer. Internet connection for live feeds. Location permission is optional; you can choose a location manually.",
+      "instructionsTitle": "How to get started",
+      "instructions": [
+        "Download the Android APK on your phone and open the downloaded file.",
+        "If Android asks, approve installation from your downloading app, then install and open Bargain Barge.",
+        "Select Australia or New Zealand and choose a location or enter a suburb.",
+        "Search for an item, filter results and open an offer to refresh its source details. Confirm the final price, delivery and availability with the retailer."
+      ],
+      "actions": [
+        {
+          "label": "Get the Android app",
+          "url": "https://bargainbarge-download.johnny-busch-0374.chatgpt.site/",
+          "primary": true
+        }
+      ],
+      "sha256": "0563832B0A27A7DD3636653271EA1DDFD190437903570BBAC2E70D7176423C27",
+      "notes": "Android app only; there is no browser version. Listed prices are not a guarantee of branch stock or final checkout totals. App updates require your Android installation confirmation."
+    },
+    {
+      "id": "sponsor-sorter",
+      "title": "Sponsor Sorter",
+      "type": "App",
+      "tagline": "Your partnerships, in your pocket.",
+      "description": "Find sponsorship partners, manage campaigns and conversations, and follow sponsorship activity from your Android phone.",
+      "image": "./app-assets/icon-512.png",
+      "imageAlt": "Sponsor Sorter app icon",
+      "status": "Android early access",
+      "build": "Version 1.0.0 · Build 8",
+      "requirements": "Android 7.0 or newer on a phone or tablet. Internet connection and a Sponsor Sorter account.",
+      "instructionsTitle": "How to install",
+      "instructions": [
+        "Open the installation page on your Android phone or tablet.",
+        "Download the signed APK and open the downloaded file.",
+        "If Android asks, approve installation from your downloading app, then confirm Install.",
+        "Open Sponsor Sorter and sign in with your existing account. New Android packages require your installation confirmation."
+      ],
+      "actions": [
+        {
+          "label": "Get the Android app",
+          "url": "https://sponsorsorter.com/install.html",
+          "primary": true
+        },
+        {
+          "label": "Use the website",
+          "url": "https://sponsorsorter.com/index.html"
+        }
+      ],
+      "sha256": "F29286F2AED785A16EA987EE0AA491BF81BC786414DF6312DE4AF403E8282731",
+      "notes": "The public download is build 8. Later test builds are not listed until accepted for release. On iPhone or iPad, use the website."
+    }
+  ]
+}

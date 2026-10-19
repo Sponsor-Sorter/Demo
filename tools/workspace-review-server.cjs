@@ -65,8 +65,9 @@ http
       return;
     }
     const ext = path.extname(file);
+    if (ext === ".json" && pathname !== "/meadow-and-market/release.json") {res.writeHead(403);res.end();return;}
     if (
-      ![".html", ".css", ".js", ".mjs", ".jpg", ".png", ".svg", ".ico"].includes(ext)
+      ![".html", ".css", ".js", ".mjs", ".json", ".jpg", ".png", ".svg", ".ico"].includes(ext)
     ) {
       res.writeHead(403);
       res.end();
@@ -77,6 +78,7 @@ http
       ".css": "text/css",
       ".js": "text/javascript",
       ".mjs": "text/javascript",
+      ".json": "application/json",
       ".jpg": "image/jpeg",
       ".png": "image/png",
       ".svg": "image/svg+xml",
