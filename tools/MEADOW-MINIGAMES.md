@@ -15,3 +15,5 @@ Open **Play** in the farm HUD. Six games are available: Egg rescue, Milking time
 Separate QA accounts are `test_phone` and `test_browser`. Credentials are kept out of source control. Their existing farm IDs remain distinct; account conversion did not merge their inventories. Existing six-character test passwords can sign in, while new account creation still requires eight characters.
 
 Regression coverage: `node scripts/check-meadow.cjs` includes mini-game assets, reward caps, win/loss, retry, background/pause timing, egg break limits, and cleanup. Browser playthroughs completed all six games and the egg failure path. Physical Samsung testing is recorded separately in the release report.
+
+Build 74: full-screen mini-game HUDs and illustrated backgrounds; compact result overlays retain the frozen scene until Retry, No thanks, or Other games is chosen. The helper launcher sits beneath the game name. Water is the first crop-panel action for all plot sizes.

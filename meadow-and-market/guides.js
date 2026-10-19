@@ -71,7 +71,7 @@
   function attach(a){
     api=a;root=document.createElement('div');root.id='farm-guides';
     root.innerHTML='<button id="guide-launcher" aria-label="Ask Jade, Farmer Rhys and Farmer Jay for farm help"><img src="'+image('jade')+'" alt=""><span>Farm helpers<small></small></span></button><section id="guide-panel" aria-label="Farm guide" aria-live="polite" hidden></section><dialog id="guide-dialog" class="sheet guide-menu"></dialog>';
-    document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');launcher.onclick=()=>{if(!pendingHint){menu();return}const hint=pendingHint;pendingHint=null;updateLauncher();card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')};updateLauncher();
+    document.body.append(root);panel=root.querySelector('#guide-panel');launcher=root.querySelector('#guide-launcher');document.querySelector('#farm-help-slot')?.append(launcher);launcher.onclick=()=>{if(!pendingHint){menu();return}const hint=pendingHint;pendingHint=null;updateLauncher();card(hint.person,hint.title,hint.text,()=>{hide();api.focus(hint.focus)},'Show me')};updateLauncher();
     if(!get().introduced)setTimeout(()=>{if(!document.querySelector('dialog[open]')){get().introduced=true;save();welcome()}},1200);
     setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint){pendingHint=hint;lastTipAt=Date.now();updateLauncher()}},30000);
   }
