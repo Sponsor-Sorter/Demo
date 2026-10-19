@@ -65,3 +65,5 @@ require('./check-meadow-water-first.cjs');
 require('./check-meadow-upgrade-first.cjs');
 require('./check-meadow-farmers-market.cjs');
 require('./check-meadow-animal-room.cjs');
+
+require('./check-meadow-animal-care.cjs');

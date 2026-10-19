@@ -333,6 +333,34 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 188440
+    },
+    {
+      "id": "care-feed",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 182484
+    },
+    {
+      "id": "care-groom",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 230445
+    },
+    {
+      "id": "care-play",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 197844
+    },
+    {
+      "id": "care-result",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 204740
     }
   ]
 }
