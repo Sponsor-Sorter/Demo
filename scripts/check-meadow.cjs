@@ -58,3 +58,4 @@ require('./check-meadow-cloud.cjs').catch(error=>{console.error(error);process.e
 require('./check-meadow-accounts.cjs').catch(error=>{console.error(error);process.exitCode=1});
 require('./check-meadow-walking.cjs');
 require('./check-meadow-email.cjs');
+require('./check-meadow-rotation.cjs');
