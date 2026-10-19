@@ -17,3 +17,5 @@ Separate QA accounts are `test_phone` and `test_browser`. Credentials are kept o
 Regression coverage: `node scripts/check-meadow.cjs` includes mini-game assets, reward caps, win/loss, retry, background/pause timing, egg break limits, and cleanup. Browser playthroughs completed all six games and the egg failure path. Physical Samsung testing is recorded separately in the release report.
 
 Build 74: full-screen mini-game HUDs and illustrated backgrounds; compact result overlays retain the frozen scene until Retry, No thanks, or Other games is chosen. The helper launcher sits beneath the game name. Water is the first crop-panel action for all plot sizes.
+
+Build 76: gameplay artwork itself covers the full viewport without a contained art rectangle or blurred border. HUD controls overlay the scene. Cover projection keeps visible nests, milk streams and pails aligned. Rotation pauses an active round for a deliberate Resume.
