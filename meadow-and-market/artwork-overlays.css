@@ -1,0 +1,8 @@
+/* Artwork stays visible edge-to-edge. Only individual controls and result cards have surfaces. */
+.care-game .care-top,.care-game .care-bottom,.mini-dialog .mini-header,.mini-dialog .mini-caption,.mini-dialog .mini-milk-controls,.mini-dialog:has(.mini-intro-art) .mini-instructions,.mini-dialog:has(.mini-intro-art)>.mini-buttons,.fm-dialog .fm-header,.fm-dialog .fm-weigh-controls,.animal-room-head,.animal-room-hint,.farm-hud .hud-actions,.farm-hud .mode-switch{background:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important}
+.care-game .care-top,.care-game .care-bottom p,.mini-dialog .mini-header,.mini-dialog .mini-header .eyebrow,.mini-dialog .mini-caption,.mini-dialog .mini-instructions,.fm-dialog .fm-header,.fm-dialog #fm-feedback,.animal-room-head,.animal-room-hint{color:#fffaf0!important;text-shadow:0 1px 2px #281a10,0 2px 7px #281a10,0 0 12px #281a1080!important}
+.mini-dialog .mini-header>.mini-score{background:transparent!important;color:inherit!important;text-shadow:inherit!important}
+.care-bottom p,.mini-caption{font-weight:650}
+.fm-dialog #fm-feedback,.mini-sort-play #mini-sort-feedback{background:transparent!important;color:#fffaf0!important;text-shadow:0 1px 3px #281a10,0 2px 7px #281a10!important}
+.care-top button,.care-bottom button,.mini-header button,.mini-milk-controls button,.fm-header button,.fm-weigh-controls button,.animal-room-head button{text-shadow:none!important}
+.farm-hud .hud-actions{gap:5px}.farm-hud .hud-action,.farm-hud .tool-button,.farm-hud .mode-button:not(.active){background:#fff7e9ed;border:1px solid #d9c7aa;color:#624832;text-shadow:none;box-shadow:0 2px 5px #38261722}

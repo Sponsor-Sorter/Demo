@@ -11,3 +11,5 @@
 - Full-screen gameplay is mandatory: edge-to-edge game artwork, top HUD and bottom tool tray inside the game, no constrained popup playfields.
 - Physical care tools drag from the tray and remain under the finger. Rub tools over the actual animal silhouette; pour only over the matching trough; drop the ball onto the animal. Pointer cancel, rotation and pausing stop work immediately.
 - Farmer automation calls simulation care directly, respects the well stamina/rest cycle and never opens a mini-game; manual games pause helpers to avoid conflicting updates.
+
+- Never place opaque or gradient full-width background strips behind gameplay headers, captions, or bottom tool trays. Artwork must remain visible beneath those regions. Float individual buttons and readable shadowed text directly over the artwork.
