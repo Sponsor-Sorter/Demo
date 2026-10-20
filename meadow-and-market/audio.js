@@ -8,10 +8,12 @@
   let context,master,musicGain,effectsGain,ambientGain,voiceGain,speaker,voiceToken=0,started=false,loading;
   const buffers=new Map(),pending=new Map(),voices=new Set(),last=new Map();
   const loops=[];
+  const pinnedBuffers=new Set(['farm-theme','meadow-ambience']),bufferBudget=32*1024*1024;
+  function trimBuffers(){let bytes=0;for(const [id,b] of buffers)if(!pinnedBuffers.has(id))bytes+=b.length*b.numberOfChannels*4;for(const [id,b] of buffers){if(bytes<=bufferBudget)break;if(pinnedBuffers.has(id))continue;buffers.delete(id);bytes-=b.length*b.numberOfChannels*4}}
   function load(id){
-    if(buffers.has(id))return Promise.resolve(buffers.get(id));
+    if(buffers.has(id)){const b=buffers.get(id);buffers.delete(id);buffers.set(id,b);return Promise.resolve(b)}
     if(pending.has(id))return pending.get(id);
-    const task=fetch(base+id+'.mp3?v=56').then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
+    const task=fetch(base+id+'.mp3?v=56').then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);trimBuffers();pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
     pending.set(id,task);return task;
   }
   function volumes(){if(!context)return;const t=context.currentTime;master.gain.setTargetAtTime(prefs.muted?0:1,t,.08);musicGain.gain.setTargetAtTime(prefs.music,t,.15);effectsGain.gain.setTargetAtTime(prefs.effects,t,.04);ambientGain.gain.setTargetAtTime(prefs.ambience,t,.15);voiceGain.gain.setTargetAtTime(prefs.voice,t,.06)}

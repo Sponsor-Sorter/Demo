@@ -4,7 +4,7 @@
   const bound=new WeakSet();
   function project(shape,width,height,fit='fill',px=.5,py=.5){let w=width,h=height;if(fit==='contain'||fit==='cover'){const scale=(fit==='contain'?Math.min:Math.max)(width/shape.width,height/shape.height);w=shape.width*scale;h=shape.height*scale}const x=(width-w)*px,y=(height-h)*py;return shape.points.map(p=>[(x+p[0]*w)/width*100,(y+p[1]*h)/height*100])}
   function clip(img){const object=img.closest('.farm-object');if(!object||object.classList.contains('plot')||object.classList.contains('flowers'))return;const file=(img.currentSrc||img.src).split('/assets/generated/')[1]?.split('?')[0],shape=shapes[file],width=img.clientWidth,height=img.clientHeight;if(!shape||!width||!height||!img.naturalWidth)return;const style=getComputedStyle(img),position=style.objectPosition.split(' '),px=position[0]?.endsWith('%')?parseFloat(position[0])/100:.5,py=position[1]?.endsWith('%')?parseFloat(position[1])/100:.5;img.style.clipPath='polygon('+project(shape,width,height,style.objectFit,px,py).map(p=>p.map(n=>n.toFixed(4)+'%').join(' ')).join(',')+')'}
-  function apply(root){if(!root)return;for(const img of root.querySelectorAll('img')){if(!bound.has(img)){bound.add(img);img.addEventListener('load',()=>clip(img))}if(img.complete)clip(img)}}
-  window.addEventListener('resize',()=>document.querySelectorAll('.farm-grid').forEach(apply));
+  function apply(root){if(!root)return;for(const img of root.querySelectorAll('img')){if(!bound.has(img)){bound.add(img);img.addEventListener('load',()=>clip(img));if(img.complete)clip(img)}}}
+  window.addEventListener('resize',()=>document.querySelectorAll('.farm-grid img').forEach(clip));
   window.meadowHitShapes={shapes,project,apply};
 })();

@@ -71,3 +71,5 @@ require('./check-meadow-animal-care.cjs');
 require('./check-meadow-helper-routines.cjs').catch(error=>{console.error(error);process.exitCode=1});
 require('./check-meadow-placement.cjs');
 require('./check-meadow-social.cjs');
+
+require('./check-meadow-performance.cjs');
