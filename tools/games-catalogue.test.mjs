@@ -5,7 +5,7 @@ import {validateCatalogue,renderEntry,escape} from './build-games-catalogue.mjs'
 import {browserBuildLabel} from '../js/gamesCatalogue.mjs';
 const data=JSON.parse(readFileSync(new URL('../content/games-catalogue.json',import.meta.url),'utf8'));
 const page=readFileSync(new URL('../games.html',import.meta.url),'utf8');
-test('all products have distinct stable entries and complete instructions',()=>{assert.equal(validateCatalogue(data),data);assert.equal(data.entries.length,3);});
+test('all products have distinct stable entries and complete instructions',()=>{assert.equal(validateCatalogue(data),data);assert.equal(data.entries.length,4);});
 test('each entry renders version, actions, instructions and local QR',()=>{
  for(const entry of data.entries){const html=renderEntry(entry);assert.ok(html.includes(entry.id+'-title'));assert.ok(html.includes(escape(entry.build)));assert.ok(html.includes('Open on your phone'));assert.ok(existsSync(new URL(`../games-assets/${entry.id}-qr.svg`,import.meta.url)));}
 });

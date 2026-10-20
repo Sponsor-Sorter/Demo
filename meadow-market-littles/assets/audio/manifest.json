@@ -1,0 +1,738 @@
+{
+  "provider": "ElevenLabs",
+  "generated": "2026-10-19",
+  "musicTitle": "Sunny Harvest Walk",
+  "files": [
+    {
+      "id": "farm-theme",
+      "kind": "music",
+      "bytes": 1921402
+    },
+    {
+      "id": "plant",
+      "kind": "effect",
+      "bytes": 20106
+    },
+    {
+      "id": "water",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "harvest",
+      "kind": "effect",
+      "bytes": 28883
+    },
+    {
+      "id": "build",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "upgrade",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "coins",
+      "kind": "effect",
+      "bytes": 23449
+    },
+    {
+      "id": "tap",
+      "kind": "effect",
+      "bytes": 6731
+    },
+    {
+      "id": "chicken",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "cow",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "sheep",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "goat",
+      "kind": "effect",
+      "bytes": 29719
+    },
+    {
+      "id": "meadow-ambience",
+      "kind": "ambience",
+      "bytes": 481115
+    },
+    {
+      "id": "bridge",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "care",
+      "kind": "effect",
+      "bytes": 25121
+    },
+    {
+      "id": "till",
+      "kind": "effect",
+      "bytes": 21777
+    },
+    {
+      "id": "loom",
+      "kind": "effect",
+      "bytes": 31391
+    },
+    {
+      "id": "cook",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "bees",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "honey",
+      "kind": "effect",
+      "bytes": 31391
+    },
+    {
+      "id": "shopbell",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "jade-welcome",
+      "kind": "voice",
+      "bytes": 109759
+    },
+    {
+      "id": "jade-crops",
+      "kind": "voice",
+      "bytes": 131702
+    },
+    {
+      "id": "jade-till",
+      "kind": "voice",
+      "bytes": 139225
+    },
+    {
+      "id": "jade-plant",
+      "kind": "voice",
+      "bytes": 145181
+    },
+    {
+      "id": "jade-water",
+      "kind": "voice",
+      "bytes": 166183
+    },
+    {
+      "id": "jade-harvest",
+      "kind": "voice",
+      "bytes": 160541
+    },
+    {
+      "id": "rhys-welcome",
+      "kind": "voice",
+      "bytes": 133583
+    },
+    {
+      "id": "rhys-place",
+      "kind": "voice",
+      "bytes": 147062
+    },
+    {
+      "id": "rhys-move",
+      "kind": "voice",
+      "bytes": 174960
+    },
+    {
+      "id": "rhys-upgrade",
+      "kind": "voice",
+      "bytes": 168064
+    },
+    {
+      "id": "rhys-expand",
+      "kind": "voice",
+      "bytes": 128880
+    },
+    {
+      "id": "jay-welcome",
+      "kind": "voice",
+      "bytes": 139225
+    },
+    {
+      "id": "jay-care",
+      "kind": "voice",
+      "bytes": 146121
+    },
+    {
+      "id": "jay-sell",
+      "kind": "voice",
+      "bytes": 151764
+    },
+    {
+      "id": "jay-stock",
+      "kind": "voice",
+      "bytes": 125119
+    },
+    {
+      "id": "jay-friends",
+      "kind": "voice",
+      "bytes": 134523
+    },
+    {
+      "id": "rhys-craft",
+      "kind": "voice",
+      "bytes": 144240
+    },
+    {
+      "id": "rhys-home",
+      "kind": "voice",
+      "bytes": 155839
+    },
+    {
+      "id": "jade-honey",
+      "kind": "voice",
+      "bytes": 152704
+    },
+    {
+      "id": "jade-fruit",
+      "kind": "voice",
+      "bytes": 134523
+    },
+    {
+      "id": "place",
+      "source": "build"
+    },
+    {
+      "id": "reward",
+      "source": "upgrade"
+    },
+    {
+      "id": "alpaca",
+      "kind": "effect",
+      "bytes": 33062
+    },
+    {
+      "id": "jay-fleece",
+      "kind": "voice",
+      "bytes": 188440
+    },
+    {
+      "id": "minigame-eggs",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 138285
+    },
+    {
+      "id": "minigame-milk",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 148002
+    },
+    {
+      "id": "minigame-flowers",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 142360
+    },
+    {
+      "id": "minigame-sheep",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 127000
+    },
+    {
+      "id": "minigame-goat",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 131702
+    },
+    {
+      "id": "minigame-cow",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 140479
+    },
+    {
+      "id": "rhys-upgrade-howto",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 340159
+    },
+    {
+      "id": "rhys-new-choices",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 221981
+    },
+    {
+      "id": "minigame-milk-anywhere",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 167124
+    },
+    {
+      "id": "minigame-memory",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 173080
+    },
+    {
+      "id": "minigame-sorting",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 198784
+    },
+    {
+      "id": "market-welcome",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 307245
+    },
+    {
+      "id": "market-pack",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 214144
+    },
+    {
+      "id": "market-weigh",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 254582
+    },
+    {
+      "id": "animals-welcome",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 290004
+    },
+    {
+      "id": "game-result-win",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 197844
+    },
+    {
+      "id": "game-result-lose",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 166183
+    },
+    {
+      "id": "market-result-win",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 188440
+    },
+    {
+      "id": "care-feed",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 182484
+    },
+    {
+      "id": "care-groom",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 230445
+    },
+    {
+      "id": "care-play",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 197844
+    },
+    {
+      "id": "care-result",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 204740
+    },
+    {
+      "id": "care-feed-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 188440
+    },
+    {
+      "id": "care-groom-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 239222
+    },
+    {
+      "id": "care-play-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 206621
+    },
+    {
+      "id": "rhys-farm-routine",
+      "kind": "voice",
+      "character": "Farmer Rhys",
+      "providerVoice": "Noah - YA Audiobooks Narrator",
+      "bytes": 449560
+    },
+    {
+      "id": "rhys-move-areas",
+      "kind": "voice",
+      "character": "Farmer Rhys",
+      "providerVoice": "Noah - YA Audiobooks Narrator",
+      "bytes": 579963
+    },
+    {
+      "id": "jay-friend-visits",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 489684
+    },
+    {
+      "id": "minigame-coopmath",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 227623
+    },
+    {
+      "id": "minigame-differences",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 343920
+    },
+    {
+      "id": "minigame-memory-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 248939
+    },
+    {
+      "id": "minigame-milk-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 210069
+    },
+    {
+      "id": "minigame-flowers-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 172766
+    },
+    {
+      "id": "minigame-eggs-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 204740
+    },
+    {
+      "id": "minigame-sorting-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 233266
+    },
+    {
+      "id": "minigame-search-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 271823
+    },
+    {
+      "id": "produce-apple",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9449
+    },
+    {
+      "id": "produce-carrot",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-tomato",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-corn",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9135
+    },
+    {
+      "id": "produce-pumpkin",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-strawberry",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 12897
+    },
+    {
+      "id": "produce-pear",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 8195
+    },
+    {
+      "id": "produce-banana",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-orange",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10389
+    },
+    {
+      "id": "produce-grapes",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10389
+    },
+    {
+      "id": "produce-watermelon",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 11643
+    },
+    {
+      "id": "produce-lemon",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9135
+    },
+    {
+      "id": "produce-cucumber",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 11016
+    },
+    {
+      "id": "produce-potato",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-onion",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 8508
+    },
+    {
+      "id": "produce-broccoli",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-peas",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-pepper",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 7881
+    },
+    {
+      "id": "club-boards",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 312260
+    },
+    {
+      "id": "club-missions",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 255209
+    },
+    {
+      "id": "club-shop",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 407241
+    },
+    {
+      "id": "rhys-collections",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 482474
+    },
+    {
+      "id": "minigame-tractorrepair",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 439215
+    },
+    {
+      "id": "rhys-vip",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 342040
+    },
+    {
+      "id": "hud-tend",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 49259
+    },
+    {
+      "id": "hud-build",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 61171
+    },
+    {
+      "id": "hud-undo",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 51454
+    },
+    {
+      "id": "hud-requests",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 63052
+    },
+    {
+      "id": "hud-market",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
+    },
+    {
+      "id": "hud-animals",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 65560
+    },
+    {
+      "id": "hud-shop",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 64619
+    },
+    {
+      "id": "hud-play",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
+    },
+    {
+      "id": "hud-friends",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 62425
+    },
+    {
+      "id": "hud-journal",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 56156
+    },
+    {
+      "id": "hud-settings",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 52707
+    },
+    {
+      "id": "hud-maps",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 46751
+    },
+    {
+      "id": "hud-boards",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58350
+    },
+    {
+      "id": "hud-missions",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 57409
+    },
+    {
+      "id": "hud-emporium",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 67440
+    },
+    {
+      "id": "hud-expand",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 54902
+    },
+    {
+      "id": "hud-helpers",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
+    },
+    {
+      "id": "rhys-farmdesk",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 210696
+    },
+    {
+      "id": "rhys-village-orders",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 208502
+    },
+    {
+      "id": "minigame-drawing",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 353011
+    },
+    {
+      "id": "minigame-colourbynumber",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 387179
+    },
+    {
+      "id": "minigame-matchpainting",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 350503
+    }
+  ]
+}

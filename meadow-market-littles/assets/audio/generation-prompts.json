@@ -1,0 +1,94 @@
+{
+  "provider": "ElevenLabs",
+  "music": {
+    "title": "Sunny Harvest Walk",
+    "duration": 120,
+    "instrumental": true,
+    "prompt": "Gentle acoustic guitar, soft felt piano, warm pizzicato strings, light woodwind melody, brushed percussion. Peaceful sunny countryside, welcoming and playful, 82 BPM. Instrumental only."
+  },
+  "effects": [
+    [
+      "till",
+      "Earthy garden hoe strikes soft soil with a crumbly dirt scrape. A short close isolated farm Foley action, no music, no voices, no ambience."
+    ],
+    [
+      "plant",
+      "Dry seeds sprinkle from a paper packet into soil, small delicate rattles then a soft soil pat. Isolated planting Foley, no music, voices or ambience."
+    ],
+    [
+      "water",
+      "Watering can pours a gentle shower onto garden soil, clear soft droplets splashing and trickling. Isolated watering action, no music or voices."
+    ],
+    [
+      "harvest",
+      "Vegetables plucked from soil with crisp leafy rustling, then dropped into a wicker basket with a soft thud. Isolated harvest Foley, no music or voices."
+    ],
+    [
+      "build",
+      "Three light wooden hammer taps assembling a little farm building, ending in a gentle wooden settling thump. Isolated warm construction Foley, no music or voices."
+    ],
+    [
+      "upgrade",
+      "Three rising warm marimba notes and a delicate sparkling bell, a cheerful gentle upgrade completion chime for a cozy farm game. No voice or background."
+    ],
+    [
+      "coins",
+      "Small gold coins jingling into a wooden market till, bright gentle metallic clinks, a rewarding sale sound. Isolated, no voices or music."
+    ],
+    [
+      "tap",
+      "One very short soft wooden button tick with a small rounded pop, tactile friendly mobile game interface click. Isolated, no music, no speech or echo."
+    ],
+    [
+      "chicken",
+      "A calm domestic hen making two friendly clucks. Natural close isolated chicken sound, no rooster or other animals, no speech or music."
+    ],
+    [
+      "cow",
+      "One gentle friendly dairy cow moo. Contented natural cow voice, isolated with no other animals, no background, no speech or music."
+    ],
+    [
+      "sheep",
+      "One soft contented sheep bleat, a gentle natural baa. Isolated sheep voice, no other animals, no music or speech."
+    ],
+    [
+      "goat",
+      "One short playful dairy goat bleat, a nasal maa. Natural isolated goat voice, no sheep or other animals, no music or speech."
+    ],
+    [
+      "bridge",
+      "Four light boot footsteps across a wooden bridge with a subtle board creak. Close isolated peaceful walking Foley, no voices or music."
+    ],
+    [
+      "care",
+      "Dry animal feed sprinkled into a wooden trough, followed by a gentle grooming brush swish. Isolated feeding and brushing Foley, no animal voices or music."
+    ]
+  ],
+  "voices": {
+    "jade": "Hope - upbeat and clear",
+    "rhys": "Noah - YA Audiobooks Narrator",
+    "jay": "Mike - Animation, Explainers & Gaming"
+  },
+  "release56": {
+    "effects": {
+      "honey": "Small glass honey jar filled and gently set down",
+      "bees": "A few friendly honeybees softly buzzing",
+      "shopbell": "Tiny friendly shop door bell",
+      "cook": "Gentle farmhouse cooking with a wooden spoon and bubbling pot",
+      "loom": "Small wooden hand loom weaving yarn; isolated natural workshop Foley"
+    },
+    "lessons": [
+      "jade-honey",
+      "jade-fruit",
+      "rhys-craft",
+      "rhys-home",
+      "jay-stock",
+      "jay-friends"
+    ],
+    "updatedVoice": "jay-care"
+  },
+  "release59": {
+    "effect": "One calm friendly alpaca gives a soft short nasal humming greeting, with a tiny gentle breath. Natural isolated close animal recording, two seconds, no other animals or music.",
+    "voice": "Farmer Jay explains alpaca homes, free care, fleece collection, and three fleece plus one wool making two scarves at the craft shed."
+  }
+}

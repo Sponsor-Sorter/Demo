@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-21",
   "entries": [
     {
       "id": "meadow-markets",
@@ -32,6 +32,39 @@
         }
       ],
       "notes": "Early access. Browser and Android releases update separately; the browser build shown here is not an Android package build number. For Android, open the downloaded APK and confirm installation if your device requests it."
+    },
+    {
+      "id": "meadow-market-littles",
+      "title": "Meadow Market Littles",
+      "type": "Game",
+      "tagline": "Little adventures. Big discoveries.",
+      "description": "Play farm mini-games, care for animals, solve puzzles and create colourful pictures with Farmer Jade, Farmer Rhys and Farmer Jay. A separate game with its own progress.",
+      "image": "./meadow-market-littles/assets/icon-512.png",
+      "imageAlt": "Meadow Market Littles game icon",
+      "status": "Early access",
+      "build": "Browser build 1",
+      "releaseManifest": "./meadow-market-littles/release.json",
+      "requirements": "Modern browser on phone, tablet or computer, or the Android testing package. Works in portrait or landscape. Internet access is needed for cloud saves and updates.",
+      "instructionsTitle": "How to play and install",
+      "instructions": [
+        "Open Play in browser and choose an activity.",
+        "Follow the farmers’ spoken instructions and on-screen controls.",
+        "Explore animal games, puzzles and the art studio at your own pace.",
+        "On Android, download the APK, open the downloaded file and confirm installation if your device requests it.",
+        "For a browser app, open game settings for installation. On iPad, use Safari Share, then Add to Home Screen."
+      ],
+      "actions": [
+        {
+          "label": "Play in browser",
+          "url": "https://sponsorsorter.com/meadow-market-littles/",
+          "primary": true
+        },
+        {
+          "label": "Download Android APK",
+          "url": "https://sponsorsorter.com/meadow-market-littles/meadow-market-littles.apk"
+        }
+      ],
+      "notes": "Early access. Android testing package version 0.1.0, build 1. The browser build shown here updates separately from the Android package. Android installation requires device confirmation. Meadow Market Littles keeps its progress separate from Meadow Markets."
     },
     {
       "id": "bargain-barge",

@@ -1,0 +1,17 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+const source=fs.readFileSync(path.resolve(__dirname,'../meadow-market-littles/art-studio.js'),'utf8');
+assert(source.includes("fit:scene.id!=='blank'"),'Scenes open with the whole picture visible');
+assert(source.includes('a.ink.width=1254'),'Retain high-resolution generated linework');
+assert(source.includes("insertBefore(a.h.$('#art-finish')"),'Done stays in the header');
+let painted=0,saved=0,updated=0;
+const a={canvas:{setPointerCapture(){}},r:{paused:false},tool:'brush',touches:new Map(),undo:[],paint:new Uint8Array(4),pan:{x:0,y:0},zoom:1};
+const scope={a,point:e=>({x:e.clientX,y:e.clientY}),core:{snapshot(a){a.undo.push(a.paint.slice())},stamp(a){a.paint[0]=90;painted++},stroke(){painted++}},draw(){},update(){updated++},save(){saved++},requestAnimationFrame:()=>1};
+vm.runInNewContext(source.slice(source.indexOf('const touchInfo='),source.indexOf('a.canvas.oncontextmenu=')),scope);
+const e=(id,x,y)=>({pointerId:id,clientX:x,clientY:y,button:0,preventDefault(){}});
+a.canvas.onpointerdown(e(1,0,0));assert.equal(a.paint[0],90);
+a.canvas.onpointerdown(e(2,100,0));assert.equal(a.paint[0],0,'Second finger rolls back the tentative paint mark');
+a.canvas.onpointermove(e(2,200,0));assert.equal(a.zoom,2);assert.equal(a.pan.x,50);
+a.canvas.onpointerup(e(2,200,0));a.canvas.onpointermove(e(1,20,0));assert.equal(painted,1,'Remaining finger must not draw after a pinch');
+a.canvas.onpointerup(e(1,20,0));assert.equal(saved,1);assert.equal(updated,1);assert.equal(a.touches.size,0);
+a.canvas.onpointerdown(e(3,10,10));a.canvas.onpointercancel(e(3,10,10));assert.equal(a.touches.size,0);assert.equal(saved,2);
+console.log('Whole-scene opening, HD ink, top Done button, pinch rollback, zoom/pan and gesture cleanup passed.');

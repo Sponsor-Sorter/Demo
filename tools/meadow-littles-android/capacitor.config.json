@@ -1,0 +1,10 @@
+{
+  "appId": "com.meadowmarket.littles",
+  "appName": "Meadow Market Littles",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "url": "https://sponsorsorter.com/meadow-market-littles/"
+  }
+}
