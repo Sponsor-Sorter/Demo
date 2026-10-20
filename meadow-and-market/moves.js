@@ -14,5 +14,14 @@
     else{o.x=from.x;o.y=from.y}
     syncResidents(farm,o);state.lastMove=null;return {ok:true,object:o};
   }
-  window.meadowMoves={snapshot,remember,syncResidents,undo};
+  function transfer(source,destination,item,x,y,uid){
+    if(source===destination||!source?.objects.includes(item)||!destination?.objects)return {ok:false,message:'Choose another farm you own.'};
+    const residents=source.objects.filter(a=>[a.coopId,a.barnId,a.paddockId].includes(item.id)),group=[item,...residents],ids=new Map();
+    for(const o of group)ids.set(o.id,destination.objects.some(d=>d.id===o.id)?uid():o.id);
+    // All validation precedes mutation. The original item remains until a destination is chosen.
+    source.objects=source.objects.filter(o=>!group.includes(o));
+    const oldId=item.id;for(const o of group){o.id=ids.get(o.id);o.x=x;o.y=y;if(o===item){delete o.coopId;delete o.barnId;delete o.paddockId}else for(const key of ['coopId','barnId','paddockId'])if(o[key]===oldId)o[key]=item.id;destination.objects.push(o)}
+    syncResidents(destination,item);return {ok:true,residents:residents.length};
+  }
+  window.meadowMoves={snapshot,remember,syncResidents,undo,transfer};
 })();

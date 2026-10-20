@@ -25,7 +25,7 @@
     $('#hive-collect').onclick=()=>{const n=collect(f,h);if(!n)return;api.xp(n*4);api.event?.('honey',n);api.save();api.render();window.meadowAudio?.play('honey');api.notify('Collected '+n+' jars of meadow honey');show(h)};
     $('#hive-upgrade')?.addEventListener('click',()=>{if(t>=2||!api.spend(cost))return;settle(f,h);h.tier=t+1;h.lastHoneyAt=Date.now();api.save();api.render();window.meadowAudio?.play('upgrade');show(h)});
     $('#hive-status').dataset.hive=h.id;
-  }
+  api.moveControls?.(h);}
   function tick(){if(document.hidden)return;settleAll();const id=$('#hive-status')?.dataset.hive;if(!id)return;const h=api.current().objects.find(o=>o.id===id);if(!h)return;$('#hive-amount').textContent=(h.honey||0)+' / '+capacities[tier(h)];$('#hive-status').textContent=statusText(api.current(),h);$('#hive-collect').disabled=!h.honey}
   window.meadowApiary={settle,collect,settleAll,show,capacities,intervals,attach(adapter){api=adapter;settleAll();setInterval(tick,1000)}};
 })();

@@ -389,6 +389,13 @@
       "character": "Farmer Rhys",
       "providerVoice": "Noah - YA Audiobooks Narrator",
       "bytes": 449560
+    },
+    {
+      "id": "rhys-move-areas",
+      "kind": "voice",
+      "character": "Farmer Rhys",
+      "providerVoice": "Noah - YA Audiobooks Narrator",
+      "bytes": 579963
     }
   ]
 }

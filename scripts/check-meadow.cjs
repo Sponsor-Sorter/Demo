@@ -11,14 +11,14 @@ const plots={clamp:(n,a,b)=>Math.max(a,Math.min(b,n))};vm.createContext(plots);f
 for(let tier=0;tier<4;tier++){assert.equal(plots.plotYield({tier},false),[3,16,45,96][tier]);assert.equal(plots.plotYield({tier},true),[4,20,54,112][tier]);assert.equal(plots.footprint({type:'plot',tier}).w,tier+1)}assert.equal(plots.plotSide({}),1);
 // Exercise the actual hold handlers with a camera swipe and deliberate holds.
 const listeners={},timers=new Map(),state={mode:'tend'},camera={pointers:new Map(),suppressClick:false};let picked=0,placed=0;
-const gesture={window:{addEventListener:(n,f)=>listeners[n]=f},setTimeout:(f,ms)=>{const id=timers.size+1;timers.set(id,{f,ms});return id},clearTimeout:id=>timers.delete(id),camera,state,cameraScene:{setPointerCapture:()=>{}},render:()=>picked++,guideCollapseTray:()=>{},navigator:{vibrate:()=>{}},notify:()=>{},isoCellFromPoint:()=>({x:2,y:3}),placeAt:()=>placed++,objectClick:()=>{}};
-vm.runInNewContext(game.slice(game.indexOf('  const OBJECT_HOLD_MS='),game.indexOf('  let gridRender;'))+';window.bind=bindObjectGesture;',gesture);
+const gesture={document:{addEventListener:()=>{}},window:{addEventListener:(n,f)=>listeners[n]=f},setTimeout:(f,ms)=>{const id=timers.size+1;timers.set(id,{f,ms});return id},clearTimeout:id=>timers.delete(id),camera,state,cameraScene:{setPointerCapture:()=>{}},render:()=>picked++,guideCollapseTray:()=>{},navigator:{vibrate:()=>{}},notify:()=>{},isoCellFromPoint:()=>({x:2,y:3}),placeAt:()=>{placed++;state.moving=null},objectClick:()=>{}};
+vm.runInNewContext(game.slice(game.indexOf('  const OBJECT_HOLD_MS='),game.indexOf('  let gridRender;'))+';previewPlacement=()=>{};window.bind=bindObjectGesture;',gesture);
 function element(){const handlers={},image={draggable:true};return {handlers,image,querySelectorAll:()=>[image],dataset:{},classList:{add:()=>{},remove:()=>{}},addEventListener:(n,f)=>handlers[n]=f}}
-const el=element();gesture.window.bind(el,{id:'plot-test'});let prevented=0;const down=()=>el.handlers.pointerdown({pointerType:'touch',pointerId:1,clientX:100,clientY:100,preventDefault:()=>prevented++}),up=()=>listeners.pointerup({pointerId:1,clientX:120,clientY:100});
+const el=element();gesture.window.bind(el,{id:'plot-test',x:2,y:3});let prevented=0;const down=()=>el.handlers.pointerdown({pointerType:'touch',pointerId:1,clientX:100,clientY:100,preventDefault:()=>prevented++}),up=()=>listeners.pointerup({pointerId:1,clientX:120,clientY:100});
 assert.equal(el.image.draggable,false);el.handlers.contextmenu({preventDefault:()=>prevented++});el.handlers.dragstart({preventDefault:()=>prevented++});assert.equal(prevented,2,'Browser image menus and dragging cannot cancel game holds');
 down();assert.equal([...timers.values()][0].ms,1200);listeners.pointermove({pointerId:1,clientX:120,clientY:100});assert.equal(timers.size,0);up();assert.equal(state.mode,'tend');assert.equal(picked,0,'A camera swipe must not pick up an object');
-down();[...timers.values()][0].f();up();assert.equal(state.moving,'plot-test');assert.equal(picked,1);assert.equal(placed,0,'Holding still waits for a placement tap');
-down();[...timers.values()][0].f();listeners.pointermove({pointerId:1,clientX:120,clientY:100});up();assert.equal(placed,1,'Dragging after the hold places the object');
+down();[...timers.values()][0].f();up();assert.equal(state.moving,null);assert.equal(picked,1);assert.equal(placed,1,'Lifting after a hold drops onto its original tiles');
+down();[...timers.values()][0].f();listeners.pointermove({pointerId:1,clientX:120,clientY:100});up();assert.equal(placed,2,'Dragging after the hold places the object');
 // Production and elapsed-time shop sales, including repeat-check protection.
 let now=1000000;class Clock extends Date{static now(){return now}}const farm={objects:[],inventory:{wheat:9},shop:{unlocked:true,stock:{flour:5},earned:0,lastSaleAt:now}},production={window:{},Date:Clock,document:{querySelector:()=>null,querySelectorAll:()=>[]},setInterval:()=>0};vm.runInNewContext(read('production.js'),production);const p=production.window.meadowProduction;let coins=0;p.attach({current:()=>farm,farms:()=>({farm}),items:p.items,earn:n=>coins+=n,save:()=>{}});now+=45000;assert.equal(p.settleShop(farm),1);assert.equal(p.settleShop(farm),0);assert.equal(coins,24);const kitchen={tier:0,jobs:[]};assert(p.queue(kitchen,p.recipes[0]));assert(p.queue(kitchen,p.recipes[0]));assert(!p.queue(kitchen,p.recipes[0]));assert.equal(farm.inventory.wheat,3);assert.equal(kitchen.jobs[1].startAt,kitchen.jobs[0].finishAt);
 console.log('Meadow checks passed: release/assets, syntax, selectors, helpers, plots, hold versus pan, crafting queues and timed sales.');
@@ -69,3 +69,4 @@ require('./check-meadow-animal-room.cjs');
 require('./check-meadow-animal-care.cjs');
 
 require('./check-meadow-helper-routines.cjs').catch(error=>{console.error(error);process.exitCode=1});
+require('./check-meadow-placement.cjs');
