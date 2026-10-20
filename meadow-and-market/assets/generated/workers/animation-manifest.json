@@ -28,5 +28,17 @@
   "drinkingFramesPerDirection": 8,
   "totalFrames": 576,
   "extraction": "Explicit inspected source row boundaries; transparent connected components; fixed foot baseline and torso anchor. Seven-row drink sources mapped into eight directional output rows with mirrored side views.",
-  "sourceRowCuts": {}
+  "sourceRowCuts": {},
+  "walkingRevision": 106,
+  "walkingCyclePhases": [
+    "contact",
+    "lower",
+    "passing",
+    "lift",
+    "opposite contact",
+    "lower",
+    "passing",
+    "lift"
+  ],
+  "walkingExtraction": "Five source views expanded to eight directions with per-character fixed scale and hat registration. Left/right views mirrored. Jade approved side cycle retained. Rhys back-diagonal facing corrected."
 }
