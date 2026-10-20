@@ -12,3 +12,4 @@
 .placement-ghost>.tray-animal{width:100%;height:100%;object-fit:contain}.placement-ghost .object-label,.placement-ghost .object-footprint{display:none!important}
 .farm-grid>.farm-object.placement-ghost{z-index:8501!important;opacity:.82!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:none!important;transform:translateY(-8px)!important;filter:drop-shadow(0 -5px 4px #253c3977)}.farm-grid>.farm-object.placement-ghost *{pointer-events:none!important}.farm-grid>.farm-object.placement-ghost>.object-footprint{background:transparent!important}.placement-tile{box-shadow:inset 0 0 0 3px #74d7ff}.placement-label{z-index:8502}
 .build-tray-items .tray-item{touch-action:none!important;-webkit-user-drag:none}.placement-preview .placement-label{pointer-events:none!important}
+.build-tray-items .tray-item img{-webkit-user-drag:none;user-select:none;touch-action:none}
