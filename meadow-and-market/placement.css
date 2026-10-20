@@ -37,3 +37,5 @@
 .brand-group:has(#build-mode-pill:not([hidden])) #farm-help-slot{display:none}
 @media(max-width:700px){#build-tray{bottom:calc(111px + env(safe-area-inset-bottom));grid-template-columns:minmax(0,1fr) 54px;gap:6px}#build-tray .tray-item{flex-basis:78px;min-height:99px}#build-tray .tray-item b{font-size:9px}#build-tray.collapsed,#build-tray.collapsed .build-tray-head{width:54px!important}#build-mode-pill{margin-left:0;max-width:126px;padding:6px 9px;font-size:10px}}
 @media(orientation:landscape) and (max-height:520px){#build-tray{bottom:calc(63px + env(safe-area-inset-bottom))}#build-tray .tray-item{min-height:94px}#build-tray .tray-item>span{height:46px}#build-tray .tray-item>span>img{max-height:46px}}
+
+.building-mode .build-hint{display:none!important}
