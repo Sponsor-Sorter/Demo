@@ -396,6 +396,13 @@
       "character": "Farmer Rhys",
       "providerVoice": "Noah - YA Audiobooks Narrator",
       "bytes": 579963
+    },
+    {
+      "id": "jay-friend-visits",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 489684
     }
   ]
 }

@@ -15,3 +15,6 @@
 - Never place opaque or gradient full-width background strips behind gameplay headers, captions, or bottom tool trays. Artwork must remain visible beneath those regions. Float individual buttons and readable shadowed text directly over the artwork.
 
 - Full-screen illustrated backgrounds with floating controls are the default for every game scene. Change this only when the user explicitly requests an exception. Animal size must suit the scene; use species-specific animal sizes against the barn, keeping feet on the same ground plane. Chickens can be slightly oversized relative to real life for touch interaction.
+
+- Attention badges are red circles with actionable counts, capped visually at 99+. Preserve button names and hit areas. Resolve action badges only when the action is handled; mark visitor entries seen only after their log loads successfully.
+- Friend help is limited, non-destructive and recorded online. Apply each help event once; never water a different planting cycle or overwrite a friend’s save from the visiting device.
