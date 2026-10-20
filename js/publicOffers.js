@@ -1,5 +1,6 @@
 // ./js/publicOffers.js
 import { supabase } from './supabaseClient.js';
+import { escapeHtml, imageAttribute, createApplicantRow } from './publicOfferPresentation.mjs?v=20261020-html1';
 import { sydneyDate, publicOfferAvailability, publicOfferRequest, publicOfferMessage } from './publicOfferActions.mjs?v=20261018-public1';
 
 if (!window.sponsorOfferPage) window.sponsorOfferPage = 1;
@@ -27,7 +28,7 @@ function renderPlatformLogos(platforms = []) {
       .slice(i, i + 4)
       .map(
         (p) =>
-          `<img src="${logos[p] || ''}" alt="${p}" style="width:22px;height:22px;vertical-align:middle;margin-right:5px;border-radius:6px;" title="${p}">`,
+          `<img src="${Object.hasOwn(logos, p) ? logos[p] : ''}" alt="${escapeHtml(p)}" style="width:22px;height:22px;vertical-align:middle;margin-right:5px;border-radius:6px;" title="${escapeHtml(p)}">`,
       )
       .join('');
     html += '</div>';
@@ -83,7 +84,7 @@ async function renderSponsorOfferCard(offer) {
   const { total, accepted } = await getApplicantStats(offer.id);
   let constraintsHtml = '';
   if (offer.min_followers)
-    constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+    constraintsHtml += `<strong>Min Followers:</strong> ${escapeHtml(offer.min_followers)} <br>`;
   const platformsRow = `<div style="margin:7px 0 0 0;text-align:center;">${renderPlatformLogos(
     offer.platforms,
   )}</div>`;
@@ -177,20 +178,18 @@ async function renderSponsorOfferCard(offer) {
 
     <div style="display: flex; align-items: flex-start; gap: 24px;">
       <div style="flex-shrink: 0; text-align: center;">
-        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
+        <img src="${imageAttribute(sponsorLogo)}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
         <div style="margin-top:7px; font-size:0.99em;">
-          <div style="margin-bottom:4px;"><strong>By:</strong> ${offer.sponsor_username}</div>
-          <div style="margin-bottom:3px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
+          <div style="margin-bottom:4px;"><strong>By:</strong> ${escapeHtml(offer.sponsor_username)}</div>
+          <div style="margin-bottom:3px;"><strong>At:</strong> ${escapeHtml(sponsor_company || '-')}</div>
         </div>
         ${platformsRow}
       </div>
       <div style="flex:1; min-width:0;">
-        <div style="font-size:1.23em;font-weight:700;margin-bottom:2px;">Offer: ${
-          offer.offer_title
-        }</div>
+        <div style="font-size:1.23em;font-weight:700;margin-bottom:2px;">Offer: ${escapeHtml(offer.offer_title)}</div>
         <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
-          <div><strong>Status:</strong> ${offer.status}</div>
-          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+          <div><strong>Status:</strong> ${escapeHtml(offer.status)}</div>
+          <div><strong>Amount:</strong> $${escapeHtml(offer.offer_amount)}</div>
           <div><strong>Date:</strong> ${
             offer.creation_date
               ? new Date(offer.creation_date).toLocaleDateString()
@@ -201,17 +200,11 @@ async function renderSponsorOfferCard(offer) {
           <div><strong>Deadline:</strong> ${
             offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'
           }</div>
-          <div><strong>Payment Schedule:</strong> ${
-            offer.payment_schedule || '-'
-          }</div>
+          <div><strong>Payment Schedule:</strong> ${escapeHtml(offer.payment_schedule || '-')}</div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-          <div><strong>Audience Country:</strong> ${
-            offer.audience_country || '-'
-          }</div>
-          <div><strong>Duration:</strong> ${
-            offer.sponsorship_duration || '-'
-          }</div>
+          <div><strong>Audience Country:</strong> ${escapeHtml(offer.audience_country || '-')}</div>
+          <div><strong>Duration:</strong> ${escapeHtml(offer.sponsorship_duration || '-')}</div>
         </div>
         <div style="font-size:1.03em;margin-bottom:5px;">
           <strong>Applicants:</strong> ${total} applied / ${accepted} accepted${
@@ -230,10 +223,10 @@ async function renderSponsorOfferCard(offer) {
           <button style="flex:1 1 0;background:#c90b3e;color:#fff;font-weight:600;padding:7px 0;border-radius:7px;border:none;cursor:pointer;min-width:0;" class="remove-offer-btn" data-offerid="${offer.id}">Close Offer</button>
         </div>
         <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
-          <strong>Description:</strong> ${offer.offer_description || ''}<br>
-          <strong>Instructions:</strong> ${offer.instructions || ''}<br>
-          <strong>Job Type:</strong> ${offer.job_type || ''}<br>
-          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+          <strong>Description:</strong> ${escapeHtml(offer.offer_description || '')}<br>
+          <strong>Instructions:</strong> ${escapeHtml(offer.instructions || '')}<br>
+          <strong>Job Type:</strong> ${escapeHtml(offer.job_type || '')}<br>
+          <strong>Deliverable:</strong> ${escapeHtml(offer.deliverable_type || '')}
         </div>
         <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
           ${
@@ -241,9 +234,9 @@ async function renderSponsorOfferCard(offer) {
               ? offer.offer_images
                   .map(
                     (img) =>
-                      `<img src="${supabase.storage
+                      `<img src="${imageAttribute(supabase.storage
                         .from('offers')
-                        .getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
+                        .getPublicUrl(img).data.publicUrl)}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
                   )
                   .join('')
               : '<i>No offer images.</i>'
@@ -359,53 +352,11 @@ async function showApplicantsModal(offerId) {
         .single();
       sponseeData = data || {};
     }
-    let applicationText = a.application_text
-      ? `<div style="margin:8px 0;font-size:0.98em;"><strong>Message:</strong> ${a.application_text}</div>`
-      : '';
-    let acceptBtnHtml = '';
-    if (a.status === 'accepted') {
-      acceptBtnHtml = `<button disabled style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:not-allowed;">Accepted</button>`;
-    } else if (a.status === 'pending' && parentAvailable) {
-      acceptBtnHtml = `<button style="background:#13b257;color:#fff;padding:5px 16px;border-radius:7px;border:none;cursor:pointer;" onclick="this.disabled=true;this.innerText='Accepting...';window.acceptApplicant('${a.id}', this)">Accept</button>`;
-    }
-    let withdrawBtnHtml = `<button style="background:#c90b3e;color:#fff;padding:5px 14px;border-radius:7px;border:none;cursor:pointer;margin-left:5px;" onclick="window.deleteApplicant('${a.id}', this)" ${
-      a.status !== 'pending' || !parentAvailable ? 'disabled' : ''
-    }>Remove</button>`;
-
-    const rowId = `app-row-${a.id}`;
-    list.innerHTML += `
-      <div id="${rowId}" style="display:flex;align-items:center;gap:18px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #393963;">
-        <div style="text-align:center;">
-          <img src="${
-            sponseeData.profile_pic
-              ? `https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${sponseeData.profile_pic}`
-              : 'logos.png'
-          }" alt="Pic" style="width:54px;height:54px;border-radius:50%;border:1.5px solid #18181c;object-fit:cover;">
-          <div style="font-size:0.92em;color:#c9c9c9;margin-top:3px;">${
-            a.sponsee_username
-          }</div>
-        </div>
-        <div style="flex:1;">
-          <div style="font-weight:600;font-size:1.05em;color:${
-            a.status === 'accepted'
-              ? '#13b257'
-              : a.status === 'withdrawn'
-              ? '#c90b3e'
-              : a.status === 'pending'
-              ? '#ff9800'
-              : '#fff'
-          };margin-bottom:5px;">
-            ${a.status ? a.status.charAt(0).toUpperCase() + a.status.slice(1) : ''}
-          </div>
-          ${applicationText}
-        </div>
-        <button style="background:#4061b3;color:#fff;padding:5px 12px;border-radius:7px;border:none;cursor:pointer;margin-right:7px;" onclick="window.location.href='./viewprofile.html?username=${encodeURIComponent(
-          a.sponsee_username,
-        )}'">View Profile</button>
-        ${acceptBtnHtml}
-        ${withdrawBtnHtml}
-      </div>
-    `;
+    list.append(createApplicantRow(a, sponseeData, {
+      document, parentAvailable,
+      onAccept: (id, button) => window.acceptApplicant(id, button),
+      onRemove: (id, button) => window.deleteApplicant(id, button),
+    }));
   }
 }
 
@@ -589,7 +540,7 @@ async function renderSponseePublicOfferAppCard(app, offer) {
   const imagesId = `images-${app.id}`;
   let constraintsHtml = '';
   if (offer.min_followers)
-    constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+    constraintsHtml += `<strong>Min Followers:</strong> ${escapeHtml(offer.min_followers)} <br>`;
   const div = document.createElement('div');
   div.className = 'public-offer-card';
   div.style.background = '#232323';
@@ -605,25 +556,19 @@ async function renderSponseePublicOfferAppCard(app, offer) {
   div.innerHTML = `
     <div style="display:flex;align-items:flex-start;gap:24px;">
       <div style="flex-shrink:0;text-align:center;">
-        <img src="${sponsorLogo}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
+        <img src="${imageAttribute(sponsorLogo)}" alt="Sponsor Logo" style="width:65px;height:65px;border-radius:50%;border:2px solid #18181c;background:#222;object-fit:cover;margin-bottom:8px;">
         <div style="margin-top:7px;font-size:0.99em;">
-          <div style="margin-bottom:4px;"><strong>By:</strong> ${
-            offer.sponsor_username
-          }</div>
-          <div style="margin-bottom:3px;"><strong>At:</strong> ${
-            offer.sponsor_company || '-'
-          }</div>
+          <div style="margin-bottom:4px;"><strong>By:</strong> ${escapeHtml(offer.sponsor_username)}</div>
+          <div style="margin-bottom:3px;"><strong>At:</strong> ${escapeHtml(offer.sponsor_company || '-')}</div>
           <button class="view-profile-btn" style="margin-top:7px;background:#4061b3;color:#fff;padding:4px 15px;border-radius:7px;border:none;cursor:pointer;">View Profile</button>
         </div>
         ${platformsRow}
       </div>
       <div style="flex:1; min-width:0;">
-        <span style="font-size:1.18em;font-weight:700;">Offer: ${
-          offer.offer_title
-        }</span>
+        <span style="font-size:1.18em;font-weight:700;">Offer: ${escapeHtml(offer.offer_title)}</span>
         <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin:2px 0 5px 0;">
-          <div><strong>Status:</strong> ${app.status || 'pending'}</div>
-          <div><strong>Amount:</strong> $${offer.offer_amount}</div>
+          <div><strong>Status:</strong> ${escapeHtml(app.status || 'pending')}</div>
+          <div><strong>Amount:</strong> $${escapeHtml(offer.offer_amount)}</div>
           <div><strong>Date:</strong> ${
             offer.creation_date
               ? new Date(offer.creation_date).toLocaleDateString()
@@ -634,17 +579,11 @@ async function renderSponseePublicOfferAppCard(app, offer) {
           <div><strong>Deadline:</strong> ${
             offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'
           }</div>
-          <div><strong>Payment Schedule:</strong> ${
-            offer.payment_schedule || '-'
-          }</div>
+          <div><strong>Payment Schedule:</strong> ${escapeHtml(offer.payment_schedule || '-')}</div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:34px 46px;margin-bottom:2px;">
-          <div><strong>Audience Country:</strong> ${
-            offer.audience_country || '-'
-          }</div>
-          <div><strong>Duration:</strong> ${
-            offer.sponsorship_duration || '-'
-          }</div>
+          <div><strong>Audience Country:</strong> ${escapeHtml(offer.audience_country || '-')}</div>
+          <div><strong>Duration:</strong> ${escapeHtml(offer.sponsorship_duration || '-')}</div>
         </div>
         ${
           constraintsHtml
@@ -661,19 +600,11 @@ async function renderSponseePublicOfferAppCard(app, offer) {
           </button>
         </div>
         <div id="${detailsId}" class="public-offer-details" style="display:none;margin:10px 0 0 0;">
-          <strong>Description:</strong> ${
-            offer.offer_description || ''
-          }<br>
-          <strong>Instructions:</strong> ${
-            offer.instructions || ''
-          }<br>
-          <strong>Payment Schedule:</strong> ${
-            offer.payment_schedule || ''
-          }<br>
-          <strong>Duration:</strong> ${
-            offer.sponsorship_duration || ''
-          }<br>
-          <strong>Deliverable:</strong> ${offer.deliverable_type || ''}
+          <strong>Description:</strong> ${escapeHtml(offer.offer_description || '')}<br>
+          <strong>Instructions:</strong> ${escapeHtml(offer.instructions || '')}<br>
+          <strong>Payment Schedule:</strong> ${escapeHtml(offer.payment_schedule || '')}<br>
+          <strong>Duration:</strong> ${escapeHtml(offer.sponsorship_duration || '')}<br>
+          <strong>Deliverable:</strong> ${escapeHtml(offer.deliverable_type || '')}
         </div>
         <div id="${imagesId}" class="public-offer-images" style="display:none;margin:10px 0 0 0;">
           ${
@@ -681,9 +612,9 @@ async function renderSponseePublicOfferAppCard(app, offer) {
               ? offer.offer_images
                   .map(
                     (img) =>
-                      `<img src="${supabase.storage
+                      `<img src="${imageAttribute(supabase.storage
                         .from('offers')
-                        .getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
+                        .getPublicUrl(img).data.publicUrl)}" alt="Offer Image" style="width:90px;height:62px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
                   )
                   .join('')
               : '<i>No offer images.</i>'
@@ -799,7 +730,7 @@ window.showOfferDetailsModal = function (offer) {
   let platformsRow = renderPlatformLogos(offer.platforms);
   let constraintsHtml = '';
   if (offer.min_followers)
-    constraintsHtml += `<strong>Min Followers:</strong> ${offer.min_followers} <br>`;
+    constraintsHtml += `<strong>Min Followers:</strong> ${escapeHtml(offer.min_followers)} <br>`;
 
   let modal = document.createElement('div');
   modal.className = 'offer-details-modal';
@@ -813,14 +744,10 @@ window.showOfferDetailsModal = function (offer) {
   modal.innerHTML = `
     <div style="background:#232333;padding:28px 32px 22px 32px;max-width:540px;border-radius:18px;box-shadow:0 8px 38px #000c;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:360px;">
       <div style="display:flex;gap:20px;align-items:flex-start;">
-        <img src="${sponsorLogo}" alt="Logo" style="width:74px;height:74px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
+        <img src="${imageAttribute(sponsorLogo)}" alt="Logo" style="width:74px;height:74px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;">
         <div style="flex:1;">
-          <div style="font-size:1.2em;font-weight:700;margin-bottom:3px;">${
-            offer.offer_title || ''
-          }</div>
-          <div style="color:#bbb;margin-bottom:3px;"><b>By:</b> ${
-            offer.sponsor_username || ''
-          } <span style="color:#666;">(${offer.sponsor_company || '-'})</span></div>
+          <div style="font-size:1.2em;font-weight:700;margin-bottom:3px;">${escapeHtml(offer.offer_title || '')}</div>
+          <div style="color:#bbb;margin-bottom:3px;"><b>By:</b> ${escapeHtml(offer.sponsor_username || '')} <span style="color:#666;">(${escapeHtml(offer.sponsor_company || '-')})</span></div>
           <div style="color:#f0b246;"><b>Amount:</b> $${
             offer.offer_amount ?? '-'
           }</div>
@@ -830,24 +757,20 @@ window.showOfferDetailsModal = function (offer) {
       </div>
       <hr style="margin:12px 0 8px 0;border:0;border-bottom:1px solid #353553;">
       <div style="font-size:1.03em;margin-bottom:9px;">
-        <b>Description:</b><br>${
-          offer.offer_description || '<i>No description.</i>'
-        }
+        <b>Description:</b><br>${escapeHtml(offer.offer_description || 'No description.')}
       </div>
       <div style="font-size:0.98em;margin-bottom:6px;">
-        <b>Instructions:</b><br>${
-          offer.instructions || '<i>No instructions.</i>'
-        }
+        <b>Instructions:</b><br>${escapeHtml(offer.instructions || 'No instructions.')}
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:17px;font-size:0.96em;">
-        <div><b>Payment:</b> ${offer.payment_schedule || '-'}</div>
-        <div><b>Duration:</b> ${offer.sponsorship_duration || '-'}</div>
-        <div><b>Deliverable:</b> ${offer.deliverable_type || '-'}</div>
-        <div><b>Job Type:</b> ${offer.job_type || '-'}</div>
+        <div><b>Payment:</b> ${escapeHtml(offer.payment_schedule || '-')}</div>
+        <div><b>Duration:</b> ${escapeHtml(offer.sponsorship_duration || '-')}</div>
+        <div><b>Deliverable:</b> ${escapeHtml(offer.deliverable_type || '-')}</div>
+        <div><b>Job Type:</b> ${escapeHtml(offer.job_type || '-')}</div>
         <div><b>Deadline:</b> ${
           offer.deadline ? new Date(offer.deadline).toLocaleDateString() : '-'
         }</div>
-        <div><b>Country:</b> ${offer.audience_country || '-'}</div>
+        <div><b>Country:</b> ${escapeHtml(offer.audience_country || '-')}</div>
       </div>
       <div style="margin-top:12px;">
         ${
@@ -855,7 +778,7 @@ window.showOfferDetailsModal = function (offer) {
             ? offer.offer_images
                 .map(
                   (img) =>
-                    `<img src="https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${img}" alt="Offer Image" style="width:84px;height:64px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
+                    `<img src="${imageAttribute(`https://mqixtrnhotqqybaghgny.supabase.co/storage/v1/object/public/logos/${img}`)}" alt="Offer Image" style="width:84px;height:64px;object-fit:cover;border-radius:7px;border:1.2px solid #26263a;margin-right:7px;margin-bottom:7px;">`,
                 )
                 .join('')
             : '<i>No offer images.</i>'
@@ -888,9 +811,7 @@ window.showApplyModal = function (offer) {
 
   modal.innerHTML = `
     <div style="background:#232333;padding:32px 26px 22px 26px;max-width:430px;border-radius:16px;box-shadow:0 8px 32px #000c;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:320px;">
-      <h2 style="margin-top:0;margin-bottom:15px;">Apply for: ${
-        offer.offer_title || 'Offer'
-      }</h2>
+      <h2 style="margin-top:0;margin-bottom:15px;">Apply for: ${escapeHtml(offer.offer_title || 'Offer')}</h2>
       <form id="apply-offer-form">
         <label for="application_text" style="display:block;margin-bottom:8px;">Message to Sponsor (optional):</label>
         <textarea id="application_text" name="application_text" style="width:100%;min-height:70px;padding:7px;border-radius:7px;margin-bottom:15px;" maxlength="450"></textarea>

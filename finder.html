@@ -1029,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <img src="${escapeFinderText(sponsorLogo)}" alt="Sponsor Logo" style="width:72px;height:72px;border-radius:50%;border:2px solid #18181c;background:#fff;object-fit:cover;margin-bottom:8px;" onerror="this.src='logos.png'">
           <div style="margin-top:7px;font-size:1em;line-height:1.2;">
             <div style="margin-bottom:5px;"><strong>By:</strong> ${escapeFinderText(offer.sponsor_username)}</div>
-            <div style="margin-bottom:5px;"><strong>At:</strong> ${sponsor_company || '-'}</div>
+            <div style="margin-bottom:5px;"><strong>At:</strong> ${escapeFinderText(sponsor_company || '-')}</div>
           </div>
         </div>
         <div style="flex:1;">
@@ -1064,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div id="${imagesId}" class="public-offer-images" style="display:none;margin:12px 0;">
             ${(offer.offer_images && offer.offer_images.length)
               ? offer.offer_images.map(img =>
-                `<img src="${supabase.storage.from('offers').getPublicUrl(img).data.publicUrl}" alt="Offer Image" style="width:110px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid #222;margin-right:7px;margin-bottom:7px;">`
+                `<img src="${escapeFinderText(supabase.storage.from('offers').getPublicUrl(img).data.publicUrl)}" alt="Offer Image" style="width:110px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid #222;margin-right:7px;margin-bottom:7px;">`
               ).join('')
               : '<i>No offer images.</i>'
             }
