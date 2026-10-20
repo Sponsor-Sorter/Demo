@@ -43,3 +43,9 @@ test('changed module consumers have fresh cache aliases',()=>{
  for(const [file,names] of [['dashboardsponsee.html',['groupOffers','friendGroups']],['review.html',['reviewPage']]])
   for(const name of names) assert.match(read(file),new RegExp(name+'\\.js\\?[^"\\s]*domainnotifications=20261020-1'));
 });
+
+test('nested consumers and sponsor inline import contain cache aliases inside URL',()=>{
+ assert.match(read('dashboardsponsor.html'),/sponsorOffers\.js\?[^']*domainnotifications=20261020-1';<\/script>/);
+ assert.match(read('dashboardAdmin.html'),/adminLogic\.js\?[^" ]*domainnotifications=20261020-1"/);
+ assert.match(read('js/adminLogic.js'),/AffiliateAdmin\.js\?[^" ]*domainnotifications=20261020-1"/);
+});
