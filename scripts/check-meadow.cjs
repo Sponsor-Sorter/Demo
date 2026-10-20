@@ -73,3 +73,5 @@ require('./check-meadow-placement.cjs');
 require('./check-meadow-social.cjs');
 
 require('./check-meadow-performance.cjs');
+
+require('./check-meadow-club.cjs');

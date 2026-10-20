@@ -1,0 +1,9 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path'),root=path.resolve(__dirname,'../meadow-and-market');
+const scope={window:{},document:{getElementById(){return null}},console,setTimeout(){},clearTimeout(){},setInterval(){},clearInterval(){}};
+const source=fs.readFileSync(root+'/farm-club.js','utf8');vm.runInNewContext(source.replace('window.meadowClub={','window.clubCheck={applyReceipt,setApi:a=>api=a};window.meadowClub={'),scope);
+const club=scope.window.meadowClub,r={game:{goal:12,time:45,level:2},score:12,elapsed:30,won:true};assert.equal(club.score(r),3350);assert.equal(club.score({...r,won:false}),1200);assert.equal(club.score({...r,score:9999}),3350,'Objective points are bounded');assert.equal(club.score({...r,elapsed:50}),3200,'No negative time bonus');
+const state={coins:0},farm={inventory:{}};let saves=0,speeds=0;scope.window.clubCheck.setApi({state:()=>state,current:()=>farm,save(){saves++},render(){},speed(){speeds++}});
+const receipt={id:'same',delivery:{gold:500,items:{milk:3},speed:{target:'field',minutes:5}}};scope.window.clubCheck.applyReceipt(receipt);scope.window.clubCheck.applyReceipt(receipt);assert.equal(state.coins,500);assert.equal(farm.inventory.milk,3);assert.equal(speeds,1);assert.equal(saves,1,'Durable receipts apply once');
+for(const id of ['trophy','mission','pack','gem','ticket','crown'])assert(fs.existsSync(root+'/assets/generated/club/'+id+'.svg'));for(const id of ['boards','missions','shop'])assert(fs.statSync(root+'/assets/audio/club-'+id+'.mp3').size>1000);
+assert(source.includes('wallet.ads_enabled&&!wallet.premium'),'Premium suppresses optional interstitials');assert.equal(club.wallet().ads_enabled,false);assert(source.includes('data-pack'),'Free test packs use fixed SKUs');
+console.log('Farm club: bounded scores, loss scores, exact-once deliveries, default-off ads, Premium suppression, assets and farmer audio passed.');

@@ -559,6 +559,27 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 7881
+    },
+    {
+      "id": "club-boards",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 312260
+    },
+    {
+      "id": "club-missions",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 255209
+    },
+    {
+      "id": "club-shop",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 407241
     }
   ]
 }
