@@ -9,6 +9,11 @@
   function complete(r){return Object.entries(r.plan.tasks).every(([k,v])=>(r.count[k]||0)>=v)}
   function speak(id){window.meadowAudio?.speak(id)}
   function close(){clearInterval(clock);run=null;window.meadowAudio?.stopVoice?.();dialog?.close()}
+  function menu(options){
+    if(!options?.animal)return false;document.querySelector('#animal-care-choice')?.remove();const chooser=document.createElement('dialog'),a=options.animal;chooser.id='animal-care-choice';chooser.className='care-game';chooser.dataset.animal=a.type;chooser.style.setProperty('--care-scene','url('+art('barn')+')');
+    chooser.innerHTML='<header class="care-top"><div><small>MEADOW MARKETS · ANIMAL ADVENTURES</small><h2>'+esc(a.name||a.type)+' · Care games</h2></div><button class="small-button" id="care-choice-close">Close</button></header><main class="care-world"><div class="care-animal"><img src="assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.webp" alt="'+esc(a.name||a.type)+'"></div></main><footer class="care-bottom"><p>Choose a hands-on game. Quick Feed, Brush and Play are on your animal’s card.</p><div class="care-tools">'+[['feed','scoop','Food & water'],['brush',a.type==='chicken'?'pet':'brush','Grooming'],['play','ball','Playtime']].map(([id,tool,label])=>'<button data-care-choice="'+id+'"><img src="'+art(tool)+'" alt=""><span>'+label+'</span></button>').join('')+'</div></footer>';
+    document.body.append(chooser);chooser.showModal();const leave=()=>{chooser.close();chooser.remove()};chooser.addEventListener('click',e=>e.stopPropagation());chooser.addEventListener('cancel',e=>{e.preventDefault();leave()});chooser.querySelector('#care-choice-close').onclick=leave;chooser.querySelectorAll('[data-care-choice]').forEach(b=>b.onclick=()=>{const action=b.dataset.careChoice;leave();options.onSelect(action)});return true;
+  }
   function open(options){
     if(!options?.animal||!['feed','brush','play'].includes(options.action))return false;
     if(!dialog){dialog=document.createElement('dialog');dialog.id='animal-care-game';dialog.className='care-game';document.body.append(dialog);dialog.addEventListener('cancel',e=>{e.preventDefault();pause()});dialog.addEventListener('click',e=>e.stopPropagation())}
@@ -54,5 +59,5 @@
   function releaseDraggedTool(e,cancelled=false){const r=run;if(!r)return;if(r.dragging&&r.pointer!==e.pointerId)return;if(r.dragging&&r.pointer===e.pointerId&&!cancelled&&r.action==='play'&&hitsAnimal({x:e.clientX,y:e.clientY}))act('play');r.held=null;r.touching=false;r.dragging=false;const tool=document.querySelector('#care-hand-tool');if(tool)tool.hidden=true}
   document.addEventListener('pointermove',moveDraggedTool);document.addEventListener('pointerup',e=>releaseDraggedTool(e));document.addEventListener('pointercancel',e=>releaseDraggedTool(e,true));
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&run?.started&&!run.done&&!run.paused)pause()});window.addEventListener('resize',()=>{if(run?.started&&!run.done&&!run.paused)pause()});
-  window.meadowAnimalCare={open,plan,progress,complete,inRect};
+  window.meadowAnimalCare={open,menu,plan,progress,complete,inRect};
 })();
