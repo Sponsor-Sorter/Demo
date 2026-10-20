@@ -429,3 +429,5 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .crop-need-floating{position:absolute;display:block;pointer-events:none!important;background:none;border:0;box-shadow:none;padding:0;filter:drop-shadow(0 1px 2px #fff);animation:crop-need-bob 2.4s ease-in-out infinite}
 @keyframes crop-need-bob{0%,100%{translate:0 0}50%{translate:0 -4px}}
 @media(prefers-reduced-motion:reduce){.crop-need-floating{animation:none}}
+
+.farm-object .station-need{position:absolute;right:8%;top:0;font:18px/1.2 system-ui;filter:drop-shadow(0 1px 2px #fff);visibility:hidden;pointer-events:none}

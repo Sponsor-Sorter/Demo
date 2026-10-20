@@ -67,3 +67,5 @@ require('./check-meadow-farmers-market.cjs');
 require('./check-meadow-animal-room.cjs');
 
 require('./check-meadow-animal-care.cjs');
+
+require('./check-meadow-helper-routines.cjs').catch(error=>{console.error(error);process.exitCode=1});

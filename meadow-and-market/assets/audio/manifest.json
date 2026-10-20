@@ -382,6 +382,13 @@
       "character": "Farmer Jay",
       "providerVoice": "Mike - Animation, Explainers & Gaming",
       "bytes": 206621
+    },
+    {
+      "id": "rhys-farm-routine",
+      "kind": "voice",
+      "character": "Farmer Rhys",
+      "providerVoice": "Noah - YA Audiobooks Narrator",
+      "bytes": 449560
     }
   ]
 }

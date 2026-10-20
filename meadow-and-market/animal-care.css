@@ -9,3 +9,13 @@
 /* Chickens are smaller than livestock, retaining the same floor contact. */
 .care-game[data-animal="chicken"] .care-animal{width:min(29.4vw,301px);height:56%;top:59%}
 @media(orientation:portrait){.care-game[data-animal="chicken"] .care-animal{width:52.5vw;height:50.4%;top:50.8%}}
+
+/* Barn-relative livestock sizes; chickens remain a little oversized for touch care. */
+.care-game[data-animal="cow"] .care-animal{width:min(33vw,340px);height:64%;top:55%}
+.care-game[data-animal="sheep"] .care-animal,.care-game[data-animal="goat"] .care-animal{width:min(24vw,250px);height:46%;top:64%}
+.care-game[data-animal="alpaca"] .care-animal{width:min(27vw,285px);height:58%;top:58%}
+@media(orientation:portrait){.care-game[data-animal="cow"] .care-animal{width:60vw;height:57.6%;top:47.2%}.care-game[data-animal="sheep"] .care-animal,.care-game[data-animal="goat"] .care-animal{width:43vw;height:41.4%;top:55.3%}.care-game[data-animal="alpaca"] .care-animal{width:49vw;height:52.2%;top:49.9%}}
+
+.care-game[data-animal="chicken"] .care-animal{width:min(15vw,150px);height:28%;top:73%}
+.care-game[data-animal="chicken"] #care-hand-tool{width:clamp(55px,7vw,85px);height:clamp(55px,7vw,85px)}
+@media(orientation:portrait){.care-game[data-animal="chicken"] .care-animal{width:27vw;height:25.2%;top:63.4%}}
