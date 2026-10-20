@@ -7,3 +7,7 @@
 - Keep loss/win results compact over the frozen mini-game until the player chooses an option. Retry starts a fresh round. No thanks returns to the farm.
 - Preserve both direct playfield interaction and labelled controls where either is useful. Use touch-safe targets, prevent duplicate events and preserve timing/cooldowns.
 - Cover new layouts with portrait/landscape safe-area tests and actual browser/phone checks before release.
+
+- Full-screen gameplay is mandatory: edge-to-edge game artwork, top HUD and bottom tool tray inside the game, no constrained popup playfields.
+- Physical care tools drag from the tray and remain under the finger. Rub tools over the actual animal silhouette; pour only over the matching trough; drop the ball onto the animal. Pointer cancel, rotation and pausing stop work immediately.
+- Farmer automation calls simulation care directly, respects the well stamina/rest cycle and never opens a mini-game; manual games pause helpers to avoid conflicting updates.

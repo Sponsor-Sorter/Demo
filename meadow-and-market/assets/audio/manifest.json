@@ -361,6 +361,27 @@
       "character": "Farmer Jay",
       "providerVoice": "Mike - Animation, Explainers & Gaming",
       "bytes": 204740
+    },
+    {
+      "id": "care-feed-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 188440
+    },
+    {
+      "id": "care-groom-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 239222
+    },
+    {
+      "id": "care-play-drag",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "providerVoice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 206621
     }
   ]
 }
