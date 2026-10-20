@@ -18,3 +18,6 @@
 .mini-diff-table{position:absolute;left:1%;top:20%;width:98%;height:80%;object-fit:fill;pointer-events:none;z-index:1}.mini-diff-farmer{top:8%;bottom:auto;height:38%;width:18%;z-index:0}.mini-diff-object{height:17%;min-height:44px;min-width:44px;z-index:2}.mini-diff-label{z-index:3}
 
 .mini-diff-object{height:15%}
+
+/* Anchor the assembled coop to the cleared ground on short phone screens. */
+.mini-coop-construction{top:56%}.mini-math-question{position:fixed;top:calc(var(--mini-safe-top,90px) + 8px);left:50%;transform:translateX(-50%);z-index:6}.mini-math-controls{gap:0}@media(orientation:portrait){.mini-coop-construction{top:52%}.mini-math-question{max-width:90%;white-space:nowrap}}
