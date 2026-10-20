@@ -431,3 +431,7 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 @media(prefers-reduced-motion:reduce){.crop-need-floating{animation:none}}
 
 .farm-object .station-need{position:absolute;right:8%;top:0;font:18px/1.2 system-ui;filter:drop-shadow(0 1px 2px #fff);visibility:hidden;pointer-events:none}
+
+/* Only the three moving helpers need persistent compositor layers. */
+.farm-worker{will-change:transform}
+
