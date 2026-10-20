@@ -8,8 +8,8 @@
   <title>Meadow Markets</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=111">
-  <link rel="stylesheet" href="guides.css?v=111">
+  <link rel="stylesheet" href="style.css?v=112">
+  <link rel="stylesheet" href="guides.css?v=112">
 <link rel="stylesheet" href="minigames.css?v=8">
   <link rel="stylesheet" href="play-levels.css?v=2">
   <link rel="stylesheet" href="farmers-market.css?v=2">
@@ -17,7 +17,9 @@
   <link rel="stylesheet" href="animal-care.css?v=4">
   <link rel="stylesheet" href="placement.css?v=4">
 <link rel="stylesheet" href="social.css?v=2">
-<link rel="stylesheet" href="farm-club.css?v=2">
+<link rel="stylesheet" href="farm-club.css?v=3">
+<link rel="stylesheet" href="collections.css?v=1">
+<link rel="stylesheet" href="tractor-repair.css?v=1">
 <link rel="stylesheet" href="artwork-overlays.css?v=1">
 </head>
 <body>
@@ -34,7 +36,7 @@
           <div class="camera-map" id="camera-map"><img class="map-art" src="assets/generated/willowbrook-meadow-map.webp" alt="Willowbrook farm map with farmhouse, orchard, animal yard, creek and bridge"><div class="farm-grid" id="farm-grid"></div><div class="map-hotspots"><button class="map-hotspot homestead" data-map-view="home" aria-label="Visit farmhouse"></button><button class="map-hotspot barnyard" data-map-view="animals" aria-label="Visit barn and animal yard"></button><button class="map-hotspot orchard-area" data-map-view="market" aria-label="Visit orchard and produce market"></button><button class="map-hotspot bridge-area" data-map-view="market" aria-label="Visit village market"></button></div></div>
           <button id="cloud-save-review" class="cloud-save-review" hidden>Farm updated on another device · Review</button>
           <div class="build-hint" id="build-hint">Drag to explore · Pinch to zoom</div>
-          <div class="scene-actions"><button class="scene-action club-launch" id="leaderboards-button" aria-label="Weekly leaderboards"><img src="assets/generated/club/trophy.webp" alt=""></button><button class="scene-action club-launch" id="missions-button" aria-label="Daily and weekly missions"><img src="assets/generated/club/mission.webp" alt=""></button><button class="scene-action club-launch" id="emporium-button" aria-label="Gem shop and free test packs"><img src="assets/generated/club/pack.webp" alt=""></button><button class="scene-action" id="expand-button" aria-label="Expand farm">▢</button></div>
+          <div class="scene-actions"><button class="scene-action club-launch" id="leaderboards-button" aria-label="Weekly leaderboards"><img src="assets/generated/club/trophy.webp" alt=""></button><button class="scene-action club-launch" id="missions-button" aria-label="Daily and weekly missions"><img src="assets/generated/club/mission.webp" alt=""></button><button class="scene-action club-launch" id="emporium-button" aria-label="Gem shop and free test packs"><img src="assets/generated/club/pack.webp" alt=""></button><button class="scene-action club-launch" id="expand-button" aria-label="Expand farm"><img src="assets/generated/club/expand.webp" alt=""></button></div>
         </div>
         <div class="farm-hud"><div class="mode-switch" role="group" aria-label="Farm mode"><button class="mode-button active" data-mode="tend">🌱 <span>Tend</span></button><button class="mode-button" data-mode="build">🏡 <span>Build</span></button></div><div class="hud-actions"><button id="undo-button" class="tool-button" title="Undo last move" disabled>↶ Undo</button><button class="hud-action" data-view="requests">📋 <span>Requests</span></button><button class="hud-action" data-view="market">🧺 <span>Market</span></button><button class="hud-action" data-view="animals">🐾 <span>Animals</span></button><button class="hud-action" data-view="shop">🏪 <span>Shop</span></button></div></div>
         <div class="build-tray" id="build-tray" hidden><div class="build-tray-head"><div class="tray-head-actions"><button id="build-done" class="small-button">Done</button><button id="build-minimize" class="small-button" aria-label="Minimize build items" title="Minimize build items" aria-controls="build-tray-items" aria-expanded="true">⌄</button></div></div><div id="build-tray-items" class="build-tray-items"></div><small class="tray-help" id="tray-help">Tap or drag an item onto the grid. Drag a placed item to move it.</small></div>
@@ -80,12 +82,15 @@
   <script src="audio.js?v=4"></script>
   <script src="guides.js?v=10"></script>
   <script src="play-levels.js?v=1"></script>
-  <script src="minigames.js?v=9"></script>
+  <script src="tractor-repair.js?v=1"></script>
+<script src="minigames.js?v=10"></script>
   <script src="farmers-market.js?v=4"></script>
   <script src="social.js?v=2"></script>
 <script src="notifications.js?v=2"></script>
-<script src="farm-club.js?v=2"></script>
-<script src="game.js?v=108"></script>
+<script src="collection-catalog.js?v=1"></script>
+<script src="collections.js?v=1"></script>
+<script src="farm-club.js?v=3"></script>
+<script src="game.js?v=109"></script>
 </body>
 </html>
 

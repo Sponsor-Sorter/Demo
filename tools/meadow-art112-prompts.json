@@ -1,0 +1,455 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-10-21",
+  "expansion_icon": {"prompt":"One exquisite small HUD icon for Meadow Markets, hand-painted storybook farming game matching rich painterly gold trophy and wooden gem chest icons. A partly unrolled cream parchment FARM LAND MAP showing a tiny green meadow, blue creek and miniature red barn, a brass compass tucked at the corner, and a small polished wooden plus marker. Clearly conveys expanding farm land. Soft sunny lighting, dimensional handcrafted materials, legible at 48 pixels, no hard black outline, no writing or letters, no frame, no button, no background. Single complete object centered with generous clean alpha margin. Transparent background, square game icon.","output":"meadow-and-market/assets/generated/club/expand.webp","source_file":"exec-db1bfd5a-0e67-4e96-9d8f-0756917e97e4.png"},
+  "collection_prompts": "../meadow-and-market/collections.json",
+  "icons": [
+    {
+      "id": "trophy",
+      "prompt": "A single exquisite game HUD icon for Meadow Markets, hand painted storybook farm game style, warm polished golden trophy with tiny embossed wheat sprigs, little apple at its base, blue award ribbon and carved dark walnut foot. Rich realistic painterly dimensional materials, soft sunny highlights, no hard black cartoon outlines, elegant and legible at 48 pixels. Front three-quarter view, tightly framed centered complete object, no lettering, no tile, no background, no border. Transparent background. Square image.",
+      "output": "meadow-and-market/assets/generated/club/trophy.webp"
+    },
+    {
+      "id": "mission",
+      "prompt": "A single exquisite game HUD icon for Meadow Markets, hand painted storybook farm game style. A rolled cream parchment farm task scroll with three small hand drawn green check marks, tied with a burgundy ribbon, tiny wheat ear and feather quill tucked at side. Rich painterly dimensional materials and soft sunny highlights, no hard black cartoon outlines, elegant and legible at 48 pixels. Front three-quarter view, tightly framed centered complete object, no lettering, no tile, no background, no border. Transparent background. Square image.",
+      "output": "meadow-and-market/assets/generated/club/mission.webp"
+    },
+    {
+      "id": "pack",
+      "prompt": "A single exquisite game HUD icon for Meadow Markets, hand painted storybook farm game style. A beautiful small open honey-oak treasure chest, brass hinges, filled with faceted turquoise gemstones and warm gold farm coins, one tiny wildflower beside it. Rich painterly dimensional materials and soft sunny highlights, no hard black cartoon outlines, elegant and legible at 48 pixels. Front three-quarter view, tightly framed centered complete object, no lettering, no tile, no background, no border. Transparent background. Square image.",
+      "output": "meadow-and-market/assets/generated/club/pack.webp"
+    }
+  ],
+  "tractor": [
+    {
+      "id": "tractor-scene",
+      "prompt": "Full screen game background artwork for Meadow Markets, polished painterly storybook cozy farming game. Sunny traditional timber tractor workshop beside a red barn, open doors reveal lush orchard and rolling green farm hills, rustic tools neatly hung on walls, spare tyres and seed sacks along outer edges. Farmer Rhys, a friendly young brown-eyed boy with short brown hair, straw hat, forest green checked shirt and tan overalls, stands at far left holding a repair manual and smiling. Large empty clear work floor in CENTER and RIGHT for a tractor and gameplay controls. No tractor, no writing, no UI, no panels. Wide 3:2 HD landscape composition, beautiful coherent natural perspective, soft golden daylight."
+    },
+    {
+      "id": "tractor",
+      "prompt": "Single complete restored vintage farm tractor in meadow red with brass fittings, black rubber tyres, cream wheel rims, open brown leather seat, steering wheel, exposed little engine details, cheerful antique farm design. Polished hand-painted storybook farming game art, three-quarter side view showing front and right, slightly elevated farm camera, coherent engineering, beautiful rich materials and warm sunlight. Tractor centered fully visible, transparent background, no floor patch, no border, no text. High resolution square sprite."
+    },
+    {
+      "id": "wrench",
+      "prompt": "One beautiful chunky silver and dark wood farm mechanic wrench, hand painted storybook farming game style, realistic dimensional brushed metal, warm highlights, diagonally centered, completely visible, transparent background, no border or writing, square game tool sprite."
+    },
+    {
+      "id": "oilcan",
+      "prompt": "One beautiful antique red mechanic oil can with brass long spout and dark wood handle, hand painted storybook farming game style, warm dimensional materials, diagonally centered, completely visible, transparent background, no border or writing, square game tool sprite."
+    },
+    {
+      "id": "tyre",
+      "prompt": "One beautiful vintage tractor rear wheel with cream rim and chunky black rubber tread, hand painted storybook farming game style, warm dimensional materials, three quarter view, centered fully visible, transparent background, no border or writing, square game part sprite."
+    },
+    {
+      "id": "brush",
+      "prompt": "One beautiful farm restoration paintbrush with turquoise wood handle and red paint on soft bristles, hand painted storybook farming game style, warm dimensional materials, diagonally centered, completely visible, transparent background, no border or writing, square game tool sprite."
+    },
+    {
+      "id": "jackstand",
+      "prompt": "A single sturdy vintage red metal mechanic jack stand supporting a little brown wood axle block, hand painted polished storybook farming game art matching an antique red farm tractor. Clearly engineered stable triangular legs, adjustable center support post, dimensional scuffed painted metal, soft sunny light, slightly elevated three-quarter side view. Complete object centered fully visible, transparent background, subtle contact shadow only, no floor, no scenery, no lettering, no UI. Square high-resolution tool sprite."
+    }
+  ],
+  "collection_sources": [
+    {
+      "id": "collection_001",
+      "source_file": "exec-7a0a49aa-676e-41e8-af67-689c09e142e5.png"
+    },
+    {
+      "id": "collection_007",
+      "source_file": "exec-fd7fd27f-a458-42af-a4cb-4870db328d15.png"
+    },
+    {
+      "id": "collection_002",
+      "source_file": "exec-6eb917bb-0d9c-4127-8579-d24a849547bf.png"
+    },
+    {
+      "id": "collection_003",
+      "source_file": "exec-06f1f4d8-3b2d-424f-beb1-f1ea07d00ef9.png"
+    },
+    {
+      "id": "collection_008",
+      "source_file": "exec-253fde50-289d-4686-a559-d7af72fb5b52.png"
+    },
+    {
+      "id": "collection_004",
+      "source_file": "exec-92386043-e79f-433e-9da2-f71d33d348fe.png"
+    },
+    {
+      "id": "collection_009",
+      "source_file": "exec-31b162d1-9ac7-432c-9fcb-3c5673f24305.png"
+    },
+    {
+      "id": "collection_010",
+      "source_file": "exec-7c4a1c5b-5bcd-43e3-bcf7-afe8bfc43f87.png"
+    },
+    {
+      "id": "collection_005",
+      "source_file": "exec-ea722c34-2217-4ad4-aa4b-8a31b31c362e.png"
+    },
+    {
+      "id": "collection_011",
+      "source_file": "exec-60f42166-90d7-4934-a93c-585b33853d0a.png"
+    },
+    {
+      "id": "collection_014",
+      "source_file": "exec-fc6c7352-14dc-4c08-bc38-3c4b75e410dd.png"
+    },
+    {
+      "id": "collection_006",
+      "source_file": "exec-cce67f10-dd5e-4fb5-8595-a1de6e9e54c3.png"
+    },
+    {
+      "id": "collection_012",
+      "source_file": "exec-5602a0f2-e993-4bd2-8f3b-81d5716adf6a.png"
+    },
+    {
+      "id": "collection_013",
+      "source_file": "exec-d3ea5a72-a939-47d2-988a-f85d6f175b64.png"
+    },
+    {
+      "id": "collection_015",
+      "source_file": "exec-268eadd2-74a4-4694-be47-d8a89baed6fb.png"
+    },
+    {
+      "id": "collection_019",
+      "source_file": "exec-9fbbcac3-95f8-449b-86b7-4c5d1737d1d7.png"
+    },
+    {
+      "id": "collection_020",
+      "source_file": "exec-ca72b789-a198-45d2-8ccd-e728896b8230.png"
+    },
+    {
+      "id": "collection_016",
+      "source_file": "exec-c92837e2-df5a-4dae-8ac8-8b5027b45003.png"
+    },
+    {
+      "id": "collection_021",
+      "source_file": "exec-3634daeb-2b49-4db6-aa70-df7a3c4bff4a.png"
+    },
+    {
+      "id": "collection_023",
+      "source_file": "exec-7cdd7eca-85cb-481a-83ef-58a59d000ae0.png"
+    },
+    {
+      "id": "collection_017",
+      "source_file": "exec-74455db8-f3b2-4b2c-81be-9285483d987c.png"
+    },
+    {
+      "id": "collection_024",
+      "source_file": "exec-b84a36e0-1b53-43b1-ad81-2eac82da4f9f.png"
+    },
+    {
+      "id": "collection_022",
+      "source_file": "exec-91197698-c352-421e-bb58-ee53702fcdd6.png"
+    },
+    {
+      "id": "collection_026",
+      "source_file": "exec-ef0faebe-31ff-4809-a8bd-711ea7f3c044.png"
+    },
+    {
+      "id": "collection_018",
+      "source_file": "exec-8d3a70c4-5ebd-4314-8dfe-5449c4b95d68.png"
+    },
+    {
+      "id": "collection_025",
+      "source_file": "exec-20445459-78cd-4d3e-ad7f-9eafd407c602.png"
+    },
+    {
+      "id": "collection_027",
+      "source_file": "exec-1a044c64-1fbe-486e-a421-6a346ea6d26c.png"
+    },
+    {
+      "id": "collection_033",
+      "source_file": "exec-0fc65a8a-243e-4dd5-9e8d-2a486fac4662.png"
+    },
+    {
+      "id": "collection_028",
+      "source_file": "exec-1bb2a348-6135-4b35-8675-b65c843e8070.png"
+    },
+    {
+      "id": "collection_034",
+      "source_file": "exec-44aeee98-e0c5-47a5-ae3a-c1dc45b88f44.png"
+    },
+    {
+      "id": "collection_029",
+      "source_file": "exec-f1be2cc0-cf75-491e-9195-a120e5492fc9.png"
+    },
+    {
+      "id": "collection_030",
+      "source_file": "exec-6b088083-f313-49b2-8663-2e458c2a66de.png"
+    },
+    {
+      "id": "collection_036",
+      "source_file": "exec-2ef1a5d2-75d6-4dec-9105-f610ea8d39ae.png"
+    },
+    {
+      "id": "collection_035",
+      "source_file": "exec-f044b6a1-11af-4aca-83ac-6d020ea42032.png"
+    },
+    {
+      "id": "collection_037",
+      "source_file": "exec-551b342c-4a90-4754-9a62-c96661b53246.png"
+    },
+    {
+      "id": "collection_031",
+      "source_file": "exec-32ff179d-2041-4e69-9759-2b6b77546df7.png"
+    },
+    {
+      "id": "collection_040",
+      "source_file": "exec-b3146992-fa4c-4dc1-9ef4-609a30cc9e5d.png"
+    },
+    {
+      "id": "collection_038",
+      "source_file": "exec-9cb2d585-cb51-431a-a0c1-aaf301b19f97.png"
+    },
+    {
+      "id": "collection_032",
+      "source_file": "exec-477694c6-2e26-4d8a-b912-92f9e1f28116.png"
+    },
+    {
+      "id": "collection_039",
+      "source_file": "exec-ae0e55cb-a69f-49f7-ae3c-990d295d6bdb.png"
+    },
+    {
+      "id": "collection_041",
+      "source_file": "exec-fea74e01-99ad-4a8c-bc3b-978f1597e00d.png"
+    },
+    {
+      "id": "collection_042",
+      "source_file": "exec-127d7295-8041-469c-aca9-2105cc35c5a6.png"
+    },
+    {
+      "id": "collection_045",
+      "source_file": "exec-2671a24b-0f3e-4ecf-8a47-6ca626300f2f.png"
+    },
+    {
+      "id": "collection_046",
+      "source_file": "exec-ebfeea43-688c-417b-8f02-e80a2c9c68db.png"
+    },
+    {
+      "id": "collection_049",
+      "source_file": "exec-0fc9be75-8191-434d-bb7b-784fd87988ef.png"
+    },
+    {
+      "id": "collection_043",
+      "source_file": "exec-bfe75d7a-c751-4473-891b-9852b854dce9.png"
+    },
+    {
+      "id": "collection_050",
+      "source_file": "exec-e61ad540-53ea-418c-9e82-5304ce17bedd.png"
+    },
+    {
+      "id": "collection_047",
+      "source_file": "exec-98858d80-9799-465f-8898-7e3731f7226b.png"
+    },
+    {
+      "id": "collection_044",
+      "source_file": "exec-a68e2dbf-2152-4267-9329-f6664ce4dd09.png"
+    },
+    {
+      "id": "collection_053",
+      "source_file": "exec-4661e190-3574-44b2-a5ac-96c558193776.png"
+    },
+    {
+      "id": "collection_054",
+      "source_file": "exec-b91f74fc-3f84-4c06-a581-278ec314cc13.png"
+    },
+    {
+      "id": "collection_051",
+      "source_file": "exec-dcbad88f-edf7-4cbc-b85c-95e6f7d38e6f.png"
+    },
+    {
+      "id": "collection_048",
+      "source_file": "exec-96b0a74f-b174-4d30-b534-270deb49dd84.png"
+    },
+    {
+      "id": "collection_056",
+      "source_file": "exec-2310bbaf-20bf-4e87-81f1-7a2bce1d119d.png"
+    },
+    {
+      "id": "collection_055",
+      "source_file": "exec-304f73b5-db3e-4108-8855-faedbd2abd02.png"
+    },
+    {
+      "id": "collection_052",
+      "source_file": "exec-b9f597c5-0082-4fd6-aca1-1673721d122a.png"
+    },
+    {
+      "id": "collection_059",
+      "source_file": "exec-51bd2c98-2008-44db-8885-b8d0226f4086.png"
+    },
+    {
+      "id": "collection_057",
+      "source_file": "exec-94a20234-1950-48d5-8f5e-7ab5db8a563d.png"
+    },
+    {
+      "id": "collection_060",
+      "source_file": "exec-c130d22c-f0f4-4029-b86f-2af2ba328aae.png"
+    },
+    {
+      "id": "collection_058",
+      "source_file": "exec-82e9fef8-85d0-49aa-9ad1-f2b30e0e3b5c.png"
+    },
+    {
+      "id": "collection_061",
+      "source_file": "exec-c28e7979-93b1-415e-8e51-c5bd5f3bf2f4.png"
+    },
+    {
+      "id": "collection_065",
+      "source_file": "exec-82e793b2-1633-4e84-98fc-a2ece6ddabc0.png"
+    },
+    {
+      "id": "collection_066",
+      "source_file": "exec-577abef8-6aab-4783-8a7c-e14d26c29ebc.png"
+    },
+    {
+      "id": "collection_067",
+      "source_file": "exec-75fbd9d3-285b-4425-b9b8-e3a3307e3022.png"
+    },
+    {
+      "id": "collection_062",
+      "source_file": "exec-73e9bb42-982b-4200-807f-918bad305358.png"
+    },
+    {
+      "id": "collection_069",
+      "source_file": "exec-90cef421-6dd3-4827-ba74-555bc723eede.png"
+    },
+    {
+      "id": "collection_068",
+      "source_file": "exec-02996b5a-f01c-43ba-b2fb-e83d017cd0c0.png"
+    },
+    {
+      "id": "collection_063",
+      "source_file": "exec-278d4b21-a16f-42f7-b054-88541a4da688.png"
+    },
+    {
+      "id": "collection_070",
+      "source_file": "exec-ca753ba7-0b2d-4520-8030-db6efbd9db35.png"
+    },
+    {
+      "id": "collection_064",
+      "source_file": "exec-74bc3ecf-6dac-41c0-8728-f57ca2d0c545.png"
+    },
+    {
+      "id": "collection_074",
+      "source_file": "exec-a5f6dd1a-fa9f-4b95-ba07-ed161c6a7212.png"
+    },
+    {
+      "id": "collection_076",
+      "source_file": "exec-607439ca-5933-4bda-87db-696633f09344.png"
+    },
+    {
+      "id": "collection_071",
+      "source_file": "exec-8069b079-33f9-46ec-846f-7845b3dcc2b4.png"
+    },
+    {
+      "id": "collection_075",
+      "source_file": "exec-c72a6c4a-8a1d-4919-af14-62864c00dd5c.png"
+    },
+    {
+      "id": "collection_077",
+      "source_file": "exec-83d496c2-3f0a-41e8-b746-d6f2387b9171.png"
+    },
+    {
+      "id": "collection_072",
+      "source_file": "exec-6433bb8b-a2bb-4260-a394-e10c0dfe2140.png"
+    },
+    {
+      "id": "collection_078",
+      "source_file": "exec-48c9c9ff-e7c5-4c79-91fc-baa7f4b1396f.png"
+    },
+    {
+      "id": "collection_082",
+      "source_file": "exec-e133f7de-b3e2-4e81-993a-ff3e396f1477.png"
+    },
+    {
+      "id": "collection_073",
+      "source_file": "exec-804ea02b-13b2-4b15-ac7d-853fdefca3ac.png"
+    },
+    {
+      "id": "collection_079",
+      "source_file": "exec-91a439c5-6d87-4469-9cb7-b8580444aa99.png"
+    },
+    {
+      "id": "collection_083",
+      "source_file": "exec-86fc21c2-cf4b-4750-b5ae-04b5aa4ac2ac.png"
+    },
+    {
+      "id": "collection_080",
+      "source_file": "exec-b79ea155-5bd4-4a67-9f31-2af3aa0f3062.png"
+    },
+    {
+      "id": "collection_084",
+      "source_file": "exec-96490ff3-ef5f-4c82-b2e0-d06a7e85e8f9.png"
+    },
+    {
+      "id": "collection_086",
+      "source_file": "exec-e3a3fd0b-4ad2-40ec-a884-623d2f7cc6c4.png"
+    },
+    {
+      "id": "collection_089",
+      "source_file": "exec-8c76ba2d-6f34-4447-970c-082bf87c9dee.png"
+    },
+    {
+      "id": "collection_081",
+      "source_file": "exec-4c26b73a-9731-4253-a7e8-5e6636ccf20f.png"
+    },
+    {
+      "id": "collection_087",
+      "source_file": "exec-3ec7b668-8958-42ff-a15e-0e293741e050.png"
+    },
+    {
+      "id": "collection_088",
+      "source_file": "exec-e2135410-40c7-41f9-8513-ad893747e922.png"
+    },
+    {
+      "id": "collection_085",
+      "source_file": "exec-a61d55f2-919a-4a03-a0ed-3ec9ebf7fd5f.png"
+    },
+    {
+      "id": "collection_090",
+      "source_file": "exec-45f0515c-5661-48b6-87d7-8ab3cbbd64c3.png"
+    },
+    {
+      "id": "collection_093",
+      "source_file": "exec-b5d45184-40b6-4275-b5f0-fcbe41a9d563.png"
+    },
+    {
+      "id": "collection_094",
+      "source_file": "exec-26ff7a1a-a9aa-491e-b38b-10b5ce0290da.png"
+    },
+    {
+      "id": "collection_091",
+      "source_file": "exec-08280129-5233-4876-bcb1-3651ea4cf13a.png"
+    },
+    {
+      "id": "collection_095",
+      "source_file": "exec-e4003256-fac7-40c0-a9e3-ba28c47457f3.png"
+    },
+    {
+      "id": "collection_092",
+      "source_file": "exec-25066e2a-c086-4d1c-bb7a-c36330bf5cab.png"
+    },
+    {
+      "id": "collection_096",
+      "source_file": "exec-3fbc8aec-2035-4920-87ae-b34c4c799eab.png"
+    },
+    {
+      "id": "collection_100",
+      "source_file": "exec-f9b0ebda-16d3-42a0-af90-2213636ba012.png"
+    },
+    {
+      "id": "collection_097",
+      "source_file": "exec-7e79a297-bb52-41f2-9bd0-05003207c69c.png"
+    },
+    {
+      "id": "collection_098",
+      "source_file": "exec-ee0ea199-1d60-4dc7-82f4-696e5203fc29.png"
+    },
+    {
+      "id": "collection_099",
+      "source_file": "exec-6a516aab-add4-4c70-a5a1-0e7c1cf314ed.png"
+    }
+  ]
+}

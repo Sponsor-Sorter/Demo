@@ -580,6 +580,27 @@
       "provider": "ElevenLabs",
       "voice": "Noah - YA Audiobooks Narrator",
       "bytes": 407241
+    },
+    {
+      "id": "rhys-collections",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 482474
+    },
+    {
+      "id": "minigame-tractorrepair",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 439215
+    },
+    {
+      "id": "rhys-vip",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 342040
     }
   ]
 }

@@ -3,9 +3,10 @@ const root=path.resolve(__dirname,'../meadow-and-market'),source=fs.readFileSync
 const elements=new Map(),el=id=>{if(!elements.has(id))elements.set(id,{children:[],style:{},focus(){},classList:{add(){},remove(){},toggle(){}},append(){},remove(){},setAttribute(){},addEventListener(){},querySelector:s=>el(s),querySelectorAll:()=>[],showModal(){this.open=true},close(){this.open=false}});return elements.get(id)};
 let state={},gold=0,goods=0,saves=0,frames=0;const dialog=el('dialog'),scope={window:{addEventListener(){}},document:{hidden:false,createElement:()=>dialog,body:{append(){}},querySelector:el,addEventListener(){}},performance:{now:()=>0},requestAnimationFrame:()=>++frames,cancelAnimationFrame(){},setTimeout(){},Date,Math};
 vm.runInNewContext(fs.readFileSync(root+'/play-levels.js','utf8'),scope);
+vm.runInNewContext(fs.readFileSync(root+'/tractor-repair.js','utf8'),scope);
 vm.runInNewContext(source.replace('  window.meadowMinigames=', '  window.test={finish,tick,start,intro,pause,setRun:r=>run=r,getRun:()=>run};\n  window.meadowMinigames='),scope);
 const game=scope.window.meadowMinigames,t=scope.window.test;game.attach({state:()=>state,canPlay:()=>true,notify(){},save:()=>saves++,reward:(item,n,g)=>{goods+=n;gold+=g}});
-assert.equal(game.games.length,10);assert.equal(new Set(game.games.map(g=>g.id)).size,10);
+assert.equal(game.games.length,11);assert.equal(new Set(game.games.map(g=>g.id)).size,11);
 for(const g of game.games){assert(fs.existsSync(root+'/assets/generated/minigames/'+g.scene+'.webp'));assert(fs.statSync(root+'/assets/audio/minigame-'+g.id+'.mp3').size>1000);assert(g.text&&g.goal>0&&g.time>0)}
 const eggs=game.games[0];for(let i=0;i<5;i++){t.setRun({game:eggs,score:12,elapsed:20});t.finish(true)}assert.equal(goods,9);assert.equal(gold,75);assert.equal(state.minigames.records.eggs.wins,5);assert.equal(state.minigames.records.eggs.best,25);assert.equal(saves,5);
 t.setRun({game:eggs,score:2,misses:3,elapsed:10});t.finish(false);assert.equal(gold,75);assert(dialog.innerHTML.includes('Retry'));assert(dialog.innerHTML.includes('No thanks'));

@@ -14,7 +14,7 @@ create table public.meadow_market_wallets (
  user_id uuid primary key references public.meadow_market_profiles(user_id) on delete cascade,
  gems int not null default 0 check(gems>=0), premium boolean not null default false,
  reward_turns int not null default 0 check(reward_turns>=0), ads_enabled boolean not null default false,
- updated_at timestamptz not null default now()
+ updated_at timestamptz not null default now(), vip_xp bigint not null default 0 check(vip_xp>=0)
 );
 create table public.meadow_market_economy_receipts (
  id uuid primary key default gen_random_uuid(), user_id uuid not null references public.meadow_market_profiles(user_id) on delete cascade,
@@ -43,14 +43,14 @@ declare
  wk date:=(date_trunc('week',now() at time zone 'UTC'))::date; dy date:=(now() at time zone 'UTC')::date;
  g text; lv int; pts int; completed int; goal int; secs numeric; victory boolean;
  cost int:=0; add_gems int:=0; add_turns int:=0; delivery jsonb:='{}'; ck text; sku text;
- rows_json jsonb; missions jsonb:='[]'; m record; progress int; period_start date; rank_n int; reward_gold int;
+ rows_json jsonb; missions jsonb:='[]'; m record; progress int; period_start date; rank_n int; reward_gold int; vip_tier int;
 begin
  if u is null or not exists(select 1 from public.meadow_market_profiles where user_id=u) then raise exception 'Connect your Meadow Markets account first'; end if;
  insert into public.meadow_market_wallets(user_id) values(u) on conflict do nothing;
  select * into w from public.meadow_market_wallets where user_id=u for update;
  if p_action='score' then
   rid:=(p_data->>'id')::uuid; g:=p_data->>'game'; lv:=(p_data->>'level')::int; completed:=(p_data->>'completed')::int; goal:=(p_data->>'goal')::int; secs:=(p_data->>'remaining')::numeric; victory:=(p_data->>'won')::boolean;
-  if g not in ('eggs','milk','sheep','goat','cow','flowers','memory','sorting','coopmath','differences','market_pack','market_weigh') or lv not between 1 and 10000 or goal not between 1 and 120 or completed not between 0 and goal or secs not between 0 and 300 or (victory and completed<>goal) then raise exception 'Invalid game result'; end if;
+  if g not in ('eggs','milk','sheep','goat','cow','flowers','memory','sorting','coopmath','differences','market_pack','market_weigh','tractorrepair') or lv not between 1 and 10000 or goal not between 1 and 120 or completed not between 0 and goal or secs not between 0 and 300 or (victory and completed<>goal) then raise exception 'Invalid game result'; end if;
   pts:=completed*100+case when victory then lv*1000+floor(secs*10)::int else 0 end;
   insert into public.meadow_market_play_runs(id,user_id,game,week,level,points,won) values(rid,u,g,wk,lv,pts,victory) on conflict do nothing;
  return jsonb_build_object('wallet',to_jsonb(w));
@@ -61,15 +61,19 @@ begin
  elsif p_action='boards' then
   g:=p_data->>'game'; period_start:=case when p_data->>'period'='previous' then wk-7 else wk end;
   with best as (select r.user_id,max(r.points) points,max(r.level) filter(where r.won) level from public.meadow_market_play_runs r where r.week=period_start and r.game=g and (p_data->>'scope'<>'friends' or r.user_id=u or exists(select 1 from public.meadow_market_friendships f where f.status='accepted' and ((f.requester_id=u and f.recipient_id=r.user_id) or (f.recipient_id=u and f.requester_id=r.user_id)))) group by r.user_id),ranked as(select *,dense_rank() over(order by points desc) place from best)
-  select coalesce(jsonb_agg(to_jsonb(t) order by t.place,t.name),'[]') into rows_json from (select r.place,r.points,r.level,p.display_name name,r.user_id=u self from ranked r join public.meadow_market_profiles p on p.user_id=r.user_id order by r.place,p.display_name limit 100) t;
+  select coalesce(jsonb_agg(to_jsonb(t) order by t.place,t.name),'[]') into rows_json from (select r.place,r.points,r.level,p.display_name name,r.user_id=u self,case when coalesce(v.vip_xp,0)>=3000 then 5 when v.vip_xp>=1600 then 4 when v.vip_xp>=800 then 3 when v.vip_xp>=300 then 2 when v.vip_xp>=100 then 1 else 0 end vip from ranked r join public.meadow_market_profiles p on p.user_id=r.user_id left join public.meadow_market_wallets v on v.user_id=r.user_id order by r.place,p.display_name limit 100) t;
   return jsonb_build_object('rows',rows_json,'week',period_start,'ends',period_start+7,'test',true);
- elsif p_action in ('purchase','redeem','claim_mission','claim_week','settings','reward_turn','ad_reward') then
+ elsif p_action in ('purchase','redeem','claim_mission','claim_week','settings','reward_turn','ad_reward','claim_vip') then
   rid:=(p_data->>'id')::uuid;
   select * into receipt from public.meadow_market_economy_receipts where user_id=u and request_id=rid;
   if found then return jsonb_build_object('wallet',to_jsonb(w),'receipt',to_jsonb(receipt),'duplicate',true); end if;
   if p_action='settings' then
    update public.meadow_market_wallets set ads_enabled=coalesce((p_data->>'ads')::boolean,false),updated_at=now() where user_id=u returning * into w;
    return jsonb_build_object('wallet',to_jsonb(w));
+  elsif p_action='claim_vip' then
+   vip_tier:=case when w.vip_xp>=3000 then 5 when w.vip_xp>=1600 then 4 when w.vip_xp>=800 then 3 when w.vip_xp>=300 then 2 when w.vip_xp>=100 then 1 else 0 end;
+   if vip_tier<1 then raise exception 'Reach VIP 1 by getting or spending gems first';end if;
+   ck:='vip_daily:'||dy;add_gems:=vip_tier*2;delivery:=jsonb_build_object('gold',vip_tier*50);add_turns:=case when vip_tier>=3 then 1 else 0 end;
   elsif p_action='purchase' then
    if (select count(*) from public.meadow_market_economy_receipts where user_id=u and kind='purchase' and created_at>=dy::timestamptz)>60 then raise exception 'Test purchase limit reached today'; end if;
    sku:=p_data->>'sku';
@@ -108,7 +112,7 @@ begin
    if w.reward_turns<1 then raise exception 'Get more reward tickets in the test shop'; end if;
    select game into g from public.meadow_market_play_runs where id=(p_data->>'run')::uuid and user_id=u and won;if not found then raise exception 'Finish and sync a winning game first';end if;
    ck:='turn:'||(p_data->>'run');
-   delivery:=jsonb_build_object('gold',25,'items',case g when 'eggs' then '{"egg":3}'::jsonb when 'milk' then '{"milk":3}'::jsonb when 'sheep' then '{"wool":2}'::jsonb when 'goat' then '{"goatmilk":2}'::jsonb when 'cow' then '{"milk":2}'::jsonb when 'flowers' then '{"nectar":3}'::jsonb when 'memory' then '{"apple":3}'::jsonb else '{"carrot":5}'::jsonb end);add_turns:=-1;
+   delivery:=jsonb_build_object('gold',25,'items',case g when 'eggs' then '{"egg":3}'::jsonb when 'milk' then '{"milk":3}'::jsonb when 'sheep' then '{"wool":2}'::jsonb when 'goat' then '{"goatmilk":2}'::jsonb when 'cow' then '{"milk":2}'::jsonb when 'flowers' then '{"nectar":3}'::jsonb when 'memory' then '{"apple":3}'::jsonb when 'coopmath' then '{"egg":3}'::jsonb when 'differences' then '{"apple":3}'::jsonb when 'tractorrepair' then '{"wheat":5}'::jsonb else '{"carrot":5}'::jsonb end);add_turns:=-1;
   elsif p_action='ad_reward' then
    if (select count(*) from public.meadow_market_economy_receipts where user_id=u and kind='ad_reward' and created_at>=dy::timestamptz)>=3 then raise exception 'Three rewarded ad previews complete today'; end if;
    add_gems:=5;add_turns:=1;
@@ -134,7 +138,7 @@ begin
   end if;
   if ck is not null and exists(select 1 from public.meadow_market_economy_receipts where user_id=u and claim_key=ck) then raise exception 'Reward already collected'; end if;
   if w.gems<cost then raise exception 'Not enough gems. Free test gem packs are in the shop'; end if;
-  update public.meadow_market_wallets set gems=gems-cost+add_gems,reward_turns=reward_turns+add_turns,updated_at=now() where user_id=u returning * into w;
+  update public.meadow_market_wallets set gems=gems-cost+add_gems,reward_turns=reward_turns+add_turns,vip_xp=vip_xp+cost+case when p_action='purchase' then add_gems else 0 end,updated_at=now() where user_id=u returning * into w;
   insert into public.meadow_market_economy_receipts(user_id,request_id,kind,claim_key,delivery) values(u,rid,p_action,ck,delivery) returning * into receipt;
   return jsonb_build_object('wallet',to_jsonb(w),'receipt',to_jsonb(receipt));
  elsif p_action<>'status' then raise exception 'Unknown farm service';
