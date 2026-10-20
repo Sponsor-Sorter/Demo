@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {withdrawalDto,retainWithdrawalRequest,sendWithdrawalRequest} from '../js/walletWithdrawal.mjs';
+import {withdrawalDto,retainWithdrawalRequest,sendWithdrawalRequest,canClearWithdrawalRequest} from '../js/walletWithdrawal.mjs';
 const base={requestId:'12345678-1234-4123-8123-123456789abc',amount:'10.01',method:'paypal',destination:'test@example.com'};
 test('USD converted exactly to integer cents and canonical RPC parameter names',async()=>{
  const dto=withdrawalDto(base);assert.equal(dto.p_amount_cents,1001);assert.equal(Object.isFrozen(dto),true);
@@ -32,4 +32,30 @@ test('wallet source uses RPC, blocks stale reservations and labels manual proces
  assert.doesNotMatch(source,/\.insert\(/);assert.match(source,/throw Error\('Pending withdrawal reservations are unavailable/);
  assert.match(source,/sessionStorage.setItem\(storageKey,JSON.stringify\(pending\)\)/);
  assert.match(source,/if\(submitting\) return/);assert.match(source,/Stripe withdrawals — unavailable/);assert.doesNotMatch(source,/up to 3 days/);
+});
+
+test('exact confirmed pre-insert rejection permits clearing saved intent',async()=>{
+ const dto=withdrawalDto(base);
+ for(const code of ['PAYOUT_METHOD_UNAVAILABLE','WALLET_REVIEW_REQUIRED','ACCOUNT_ROLE_REVIEW_REQUIRED','RESERVATION_REVIEW_REQUIRED','INSUFFICIENT_AVAILABLE_WALLET']){
+  let saved=dto;
+  try{await sendWithdrawalRequest({rpc:async()=>({data:{ok:false,code}})},dto);assert.fail('must reject');}
+  catch(error){if(canClearWithdrawalRequest(error))saved=null;assert.equal(saved,null,code);assert.ok(error.message);}
+ }
+});
+test('unknown, binding conflict, malformed and transport failures retain intent',async()=>{
+ const dto=withdrawalDto(base);
+ for(const response of [
+  {data:{ok:false,code:'REQUEST_BINDING_CONFLICT'}},
+  {data:{ok:false,code:'UNKNOWN'}},
+  {data:{code:'INSUFFICIENT_AVAILABLE_WALLET'}},
+  {data:{ok:'false',code:'INSUFFICIENT_AVAILABLE_WALLET'}},
+  {data:{ok:false,code:'INSUFFICIENT_AVAILABLE_WALLET'},error:{message:'network'}},
+  {error:{message:'INSUFFICIENT_AVAILABLE_WALLET'}},
+  {data:null}
+ ]){
+  let saved=dto;
+  try{await sendWithdrawalRequest({rpc:async()=>response},dto);assert.fail('must reject');}
+  catch(error){if(canClearWithdrawalRequest(error))saved=null;assert.equal(saved,dto);}
+ }
+ await assert.rejects(sendWithdrawalRequest({rpc:async()=>{throw Error('network');}},dto),error=>!canClearWithdrawalRequest(error));
 });

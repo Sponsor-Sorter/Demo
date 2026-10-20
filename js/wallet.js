@@ -11,7 +11,7 @@
 import { supabase } from './supabaseClient.js';
 import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect5';
 
-import { withdrawalDto, retainWithdrawalRequest, sendWithdrawalRequest } from './walletWithdrawal.mjs?v=20261020-1';
+import { withdrawalDto, retainWithdrawalRequest, sendWithdrawalRequest, canClearWithdrawalRequest } from './walletWithdrawal.mjs?v=20261020-2';
 const pendingWithdrawalRequests = new Map();
 const MIN_PAYOUT = 10; // $10 minimum; adjust if needed
 
@@ -335,6 +335,15 @@ async function openWithdrawModal() {
       await updateWallet();
       // Keep success visible and prevent another request from this modal.
     } catch(error) {
+      if (canClearWithdrawalRequest(error)) {
+        try {
+          sessionStorage.removeItem(storageKey);
+          pendingWithdrawalRequests.delete(currentUser.id);pending=null;
+          error.message += ' No request was created. Edit the details and submit again.';
+        } catch {
+          error.message += ' The saved request could not be cleared. Reload before trying again.';
+        }
+      }
       msgDiv.style.color='#ffb456';msgDiv.textContent=error.message || 'Request confirmation unavailable. Retry the same request.';
       submitting=false;submit.disabled=false;
     }

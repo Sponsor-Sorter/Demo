@@ -36,11 +36,19 @@ const ERROR_MESSAGES={
  INVALID_PAYOUT_DESTINATION:'Enter a valid PayPal email.',
  REQUEST_BINDING_CONFLICT:'This request ID is already bound to different details. Contact support.'
 };
+const NO_REQUEST_CODES=new Set(['PAYOUT_METHOD_UNAVAILABLE','WALLET_REVIEW_REQUIRED','ACCOUNT_ROLE_REVIEW_REQUIRED','RESERVATION_REVIEW_REQUIRED','INSUFFICIENT_AVAILABLE_WALLET']);
+export function canClearWithdrawalRequest(error) {
+ return error?.noRequestCreated===true && NO_REQUEST_CODES.has(error.code);
+}
 export async function sendWithdrawalRequest(client,dto) {
  const {data,error}=await client.rpc('request_wallet_withdrawal',dto);
  if(error || data?.ok!==true){
   const code=data?.code || Object.keys(ERROR_MESSAGES).find(key=>String(error?.message || '').includes(key));
-  throw Error(ERROR_MESSAGES[code] || 'Confirmation unavailable. Retry the same request; do not create another withdrawal.');
+  const failure=Error(ERROR_MESSAGES[code] || 'Confirmation unavailable. Retry the same request; do not create another withdrawal.');
+  failure.code=code;
+  // Only an exact server business reply without a transport error proves no insert occurred.
+  failure.noRequestCreated=!error && data?.ok===false && typeof data.code==='string' && NO_REQUEST_CODES.has(data.code);
+  throw failure;
  }
  return validateWithdrawalReceipt(data,dto);
 }
