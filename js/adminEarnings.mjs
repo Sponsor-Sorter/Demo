@@ -26,9 +26,27 @@ export function validatePreview(data){
 }
 export const amountText=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n/100);
 export function receiptText(r){return `${r.replayed?'Existing result: ':''}${amountText(r.amount_cents)} ${r.status==='wallet_credited'?'credited to Sponsor Sorter wallet; not an external withdrawal':'transferred to Stripe balance; not a confirmed bank payout'}.`;}
+const REVIEW_MESSAGES={
+ AGREEMENT_FUNDING_MISMATCH:'Review hold: the agreement does not match its funded order. No execution is available.',
+ CURRENT_ADMIN_AAL2_REQUIRED:'A current verified Admin MFA session is required. Sign in and complete authenticator verification.',
+ EARNING_SNAPSHOT_CHANGED:'The earning changed since preview. Close and obtain a fresh preview before confirming.',
+ PAYMENT_REVIEW_REQUIRED:'Review hold: funding requires reconciliation before settlement.',
+ PAYMENT_ENVIRONMENT_MISMATCH:'Review hold: payment environments do not match.',
+ SANDBOX_WALLET_CREDIT_FORBIDDEN:'Sandbox funds cannot be credited to a real wallet.'
+};
+export function earningFailureText(error){return Object.hasOwn(REVIEW_MESSAGES,error?.code)?REVIEW_MESSAGES[error.code]:'Confirmation unavailable. Re-preview this same earning or request reconciliation.';}
 export function createEarningOperation(client,row){
  const reference=earningReference(row),endpoint=row.offer_kind==='group'?'process-group-payouts':'settle-sponsorship';let reviewed=null,busy=false;
- async function invoke(body){const {data,error}=await client.functions.invoke(endpoint,{body});if(error)throw Error('Earnings confirmation unavailable. Re-preview this same earning or request reconciliation.');return data;}
+ async function invoke(body){
+  let {data,error}=await client.functions.invoke(endpoint,{body});
+  if(error?.context){try{data=await error.context.json();}catch{/* Unknown responses remain generic. */}}
+  if(error||data?.ok===false){
+   const failure=Error('Earnings confirmation unavailable. Re-preview this same earning or request reconciliation.');
+   if(data?.ok===false&&typeof data.code==='string'&&Object.hasOwn(REVIEW_MESSAGES,data.code))failure.code=data.code;
+   throw failure;
+  }
+  return data;
+ }
  return {reference,
   async preview(){if(busy)throw Error('An operation is already in progress.');busy=true;reviewed=null;try{const result=validatePreview(await invoke({action:'preview',...reference}));if(!result.completed)reviewed=result.data;return result;}finally{busy=false;}},
   cancel(){reviewed=null;},

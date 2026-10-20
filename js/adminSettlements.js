@@ -1,5 +1,5 @@
 import {supabase} from './supabaseClient.js';
-import {validateQueue,createEarningOperation,amountText,receiptText} from './adminEarnings.mjs?v=20261021-1';
+import {validateQueue,createEarningOperation,amountText,receiptText,earningFailureText} from './adminEarnings.mjs?v=20261021-2';
 const host=document.getElementById('verified-settlements');
 const node=(tag,text)=>{const el=document.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
 let loading=false;
@@ -24,7 +24,7 @@ function reviewDialog(row,operation,result,onDone){
    if(!check.checked||confirm.disabled)return;
    confirm.disabled=true;check.disabled=true;cancel.disabled=true;status.textContent='Confirming this canonical earning…';
    try{const receipt=await operation.execute(true);status.textContent=receiptText(receipt);confirm.remove();check.disabled=true;await onDone();}
-   catch{status.textContent='Execution could not be confirmed. Close and re-preview this same earning before any further action, or request reconciliation.';confirm.remove();}
+   catch(error){status.textContent=earningFailureText(error);confirm.remove();}
    finally{cancel.disabled=false;}
   });
   dialog.append(label,confirm,cancel,status);
@@ -57,7 +57,7 @@ async function load(cursor=null){
     preview.addEventListener('click',async()=>{
      preview.disabled=true;status.textContent='Checking canonical funding, route and current eligibility…';
      try{const result=await operation.preview();status.textContent='';reviewDialog(row,operation,result,()=>load());}
-     catch{status.textContent='Preview unavailable. This same earning may require review, current Admin MFA, or reconciliation. No execution was requested.';}
+     catch(error){status.textContent=earningFailureText(error)+' No execution was requested.';}
      finally{preview.disabled=false;}
     });card.append(preview,status);
    }

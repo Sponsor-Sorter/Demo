@@ -44,3 +44,14 @@ test('concurrent execution is blocked and mismatched receipt rejected',async()=>
 test('UI has explicit MFA and confirmation, no old queue or automatic execution',()=>{
  const source=readFileSync(new URL('../js/adminSettlements.js',import.meta.url),'utf8');assert.match(source,/currentLevel!=='aal2'/);assert.match(source,/admin_creator_earnings_queue/);assert.match(source,/check.type='checkbox'/);assert.match(source,/operation.execute\(true\)/);assert.doesNotMatch(source,/innerHTML|admin_verified_settlement_queue|setInterval|setTimeout/);
 });
+
+test('only allowlisted static review reason is displayed, never raw server diagnostics',async()=>{
+ const {earningFailureText}=await import('../js/adminEarnings.mjs');
+ const f=fixture([{error:{context:{json:async()=>({ok:false,code:'AGREEMENT_FUNDING_MISMATCH',error:'private SQL text'})}}}]);
+ const op=createEarningOperation(f.client,row);
+ await assert.rejects(op.preview(),error=>{assert.match(earningFailureText(error),/agreement does not match/);assert.doesNotMatch(earningFailureText(error),/private SQL/);return true;});
+ await assert.rejects(op.execute(true));
+ assert.doesNotMatch(earningFailureText({code:'<img src=x>',message:'secret'}),/secret|img/);
+ const unknown=createEarningOperation(fixture([{data:{ok:false,code:'UNEXPECTED',error:'secret'}}]).client,row);
+ await assert.rejects(unknown.preview(),error=>!earningFailureText(error).includes('secret'));
+});
