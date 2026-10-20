@@ -3,7 +3,7 @@
 // - Shows wallet balance (users_extended_data.wallet)
 // - Deducts pending/approved/processing payout requests from display
 // - Modal to submit a payout request into `payouts`
-// - Destination dropdown: Stripe (automatic) or PayPal (up to 3 days)
+// - Withdrawal requests are processed by Admin; provider execution is separate.
 // - Stripe payout setup uses the owner-authenticated Connect contract.
 // - Return URLs trigger a fresh status check; they do not prove payout readiness.
 // - Exposes updateWallet() globally (and legacy alias updateSponseeWallet)
@@ -11,6 +11,8 @@
 import { supabase } from './supabaseClient.js';
 import { connectAccount, connectPayoutReady, connectStatusMessage, connectErrorMessage, connectStripeUrl } from './connectAccount.mjs?v=20261018-connect5';
 
+import { withdrawalDto, retainWithdrawalRequest, sendWithdrawalRequest } from './walletWithdrawal.mjs?v=20261020-1';
+const pendingWithdrawalRequests = new Map();
 const MIN_PAYOUT = 10; // $10 minimum; adjust if needed
 
 let currentWalletAmount = 0;     // Wallet amount from DB (raw)
@@ -20,6 +22,7 @@ let userRole = 'sponsee';        // 'sponsee' | 'sponsor' (resolved from users_e
 let paypalEmail = '';            // from users_extended_data
 let stripeAccountId = '';        // users_extended_data.stripe_connect_account_id
 let destinationRefresh = 0;
+let walletAvailabilityVerified = false;
 let stripeConnection = null;
 let stripeStatus = null;         // latest account status from Edge Function
 
@@ -81,6 +84,7 @@ function showToast(message, { duration = 3500 } = {}) {
 
 /* ---------------- main wallet updater ---------------- */
 export async function updateWallet() {
+  walletAvailabilityVerified = false;
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error || !session?.user) return;
@@ -93,7 +97,7 @@ export async function updateWallet() {
       .eq('user_id', currentUser.id)
       .single();
 
-    if (uedErr || !ued) return;
+    if (uedErr || !ued) throw Error('Wallet balance is unavailable.');
 
     userRole = roleFrom(ued.userType);
     currentWalletAmount = Number(ued.wallet || 0);
@@ -117,9 +121,14 @@ export async function updateWallet() {
 
     const { data: payouts = [], error: pErr } = await q;
     if (pErr) {
-      console.warn('[wallet] payouts fetch failed', pErr);
+      throw Error('Pending withdrawal reservations are unavailable.');
     }
-    pendingPayouts = payouts || [];
+    if (!Array.isArray(payouts) || !Number.isFinite(currentWalletAmount) || currentWalletAmount < 0 ||
+        payouts.some(row => !Number.isFinite(Number(row.payout_amount)) || Number(row.payout_amount) < 0)) {
+      throw Error('Wallet availability is unavailable.');
+    }
+    pendingPayouts = payouts;
+    walletAvailabilityVerified = true;
 
     const reserved = pendingPayouts.reduce((sum, row) => sum + Number(row.payout_amount || 0), 0);
     const available = Math.max(0, currentWalletAmount - reserved);
@@ -151,12 +160,20 @@ export async function updateWallet() {
       ${warningHtml}
     `;
   } catch (err) {
+    walletAvailabilityVerified = false;
+    const walletEl = document.querySelector('.wallet');
+    if (walletEl) walletEl.textContent = 'Wallet availability unavailable. Reload to retry.';
     console.warn('updateWallet failed:', err);
   }
 }
 
 /* ---------------- modal & submit ---------------- */
 async function openWithdrawModal() {
+  await updateWallet();
+  if (!walletAvailabilityVerified || !currentUser?.id) {
+    showToast('Wallet availability could not be verified. Reload before requesting a withdrawal.');
+    return;
+  }
   // remove existing modal
   document.getElementById('withdraw-modal-root')?.remove();
 
@@ -253,8 +270,8 @@ async function openWithdrawModal() {
 
       <label style="font-size:1em;display:block;margin-top:4px;">Destination:</label>
       <select id="withdraw-destination-select" style="width:100%;margin-top:10px;margin-bottom:10px;padding:10px;border-radius:8px;border:none;background:#252525;color:#fff;">
-        <option value="stripe">Stripe payout account</option>
-        <option value="paypal">PayPal (up to 3 days)</option>
+        <option value="stripe" disabled>Stripe withdrawals — unavailable</option>
+        <option value="paypal" selected>PayPal — manual Admin processing</option>
       </select>
 
       <div id="destination-panel" style="background:#202020;border:1px solid #2a2a2a;border-radius:10px;padding:12px;margin-bottom:14px;"></div>
@@ -283,79 +300,46 @@ async function openWithdrawModal() {
     refreshDestinationPanel(sel.value, destPanel, msgDiv).catch(console.warn);
   });
 
-  document.getElementById('withdraw-confirm').onclick = async () => {
-    const amt = Number(document.getElementById('withdraw-amount').value);
-    const choice = (document.getElementById('withdraw-destination-select')).value;
-
-    if (!amt || amt < MIN_PAYOUT) {
-      msgDiv.style.color = '#ffb456';
-      msgDiv.textContent = `Enter a valid amount (minimum ${fmtMoney(MIN_PAYOUT)}).`;
-      return;
+  const submit = document.getElementById('withdraw-confirm');
+  submit.textContent = 'Request manual withdrawal';
+  const storageKey = 'wallet-withdrawal-request:' + currentUser.id;
+  let pending = pendingWithdrawalRequests.get(currentUser.id);
+  try {
+    if (!pending) {
+      const saved = JSON.parse(sessionStorage.getItem(storageKey) || 'null');
+      if (saved) pending = withdrawalDto({requestId:saved.p_request_id,amount:(saved.p_amount_cents/100).toFixed(2),method:saved.p_method,destination:saved.p_destination});
     }
-    if (amt > afterPayoutWallet) {
-      msgDiv.style.color = '#ffb456';
-      msgDiv.textContent = `Unavailable funds. You only have ${fmtMoney(afterPayoutWallet)} available after pending payouts.`;
-      return;
+  } catch { msgDiv.textContent = 'A saved request needs review. Contact support before submitting.'; submit.disabled=true; }
+  if (pending) {
+    pendingWithdrawalRequests.set(currentUser.id,pending);
+    document.getElementById('withdraw-amount').value=(pending.p_amount_cents/100).toFixed(2);
+    msgDiv.textContent='A previous request needs confirmation. Retry uses the same request ID and details.';
+  }
+  let submitting=false;
+  submit.onclick = async () => {
+    if(submitting) return;
+    try {
+      if (!walletAvailabilityVerified) throw Error('Wallet availability could not be verified. Reload before submitting.');
+      const dto=pending || withdrawalDto({requestId:crypto.randomUUID(),amount:document.getElementById('withdraw-amount').value,
+        method:sel.value,destination:document.getElementById('paypal-email-input')?.value});
+      // A retry deliberately ignores edited controls and sends the original bound request.
+      pending=retainWithdrawalRequest(pending,dto);
+      if (!pendingWithdrawalRequests.has(currentUser.id) && pending.p_amount_cents>Math.round(afterPayoutWallet*100)) throw Error('Available wallet funds are insufficient.');
+      sessionStorage.setItem(storageKey,JSON.stringify(pending));
+      pendingWithdrawalRequests.set(currentUser.id,pending);
+      submitting=true;submit.disabled=true;
+      const receipt=await sendWithdrawalRequest(supabase,pending);
+      sessionStorage.removeItem(storageKey);pendingWithdrawalRequests.delete(currentUser.id);pending=null;
+      msgDiv.style.color='#41ff88';
+      msgDiv.textContent=`Withdrawal request confirmed (${receipt.status}). Admin processes PayPal manually; no funds were sent by this request.`;
+      await updateWallet();
+      // Keep success visible and prevent another request from this modal.
+    } catch(error) {
+      msgDiv.style.color='#ffb456';msgDiv.textContent=error.message || 'Request confirmation unavailable. Retry the same request.';
+      submitting=false;submit.disabled=false;
     }
-
-    // Destination checks
-    let payout_method = '';
-    let note = '';
-    if (choice === 'stripe') {
-      // require connect + (ideally) payouts enabled
-      const ready = connectPayoutReady(stripeConnection);
-      if (!stripeAccountId || !ready) {
-        msgDiv.style.color = '#ff6b6b';
-        msgDiv.textContent = 'Stripe Connect not ready. Click "Set up / Fix Stripe" first.';
-        return;
-      }
-      payout_method = 'stripe';
-      note = 'Stripe Connect payout';
-    } else {
-      // PayPal capture
-      const input = document.getElementById('paypal-email-input');
-      const email = String(input?.value || '').trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msgDiv.style.color = '#ffb456';
-        msgDiv.textContent = 'Enter a valid PayPal email.';
-        return;
-      }
-      payout_method = `paypal:${email}`;
-      note = 'PayPal withdrawal request';
-    }
-
-    // Submit payout request
-    const baseRow = {
-      payout_amount: amt,
-      payout_method,
-      status: 'pending',              // matches your current flow ("pending" visible to admin)
-      notes: note,
-      created_at: new Date().toISOString(),
-      offer_id: null
-    };
-    // Role-specific columns
-    if (userRole === 'sponsee') {
-      baseRow['sponsee_id'] = currentUser.id;
-      baseRow['sponsee_email'] = currentUser.email;
-      baseRow['payout_user_role'] = 'sponsee';
-    } else {
-      baseRow['sponsee_id'] = currentUser.id;
-      baseRow['sponsee_email'] = currentUser.email;
-      baseRow['payout_user_role'] = 'sponsor';
-    }
-
-    const { error: insertError } = await supabase.from('payouts').insert([baseRow]);
-    if (insertError) {
-      msgDiv.style.color = '#ff6b6b';
-      msgDiv.textContent = 'Error submitting request. Please try again or contact support.';
-      return;
-    }
-
-    msgDiv.style.color = '#41ff88';
-    msgDiv.textContent = 'Withdraw request submitted! Admin will process your payout.';
-    setTimeout(() => document.getElementById('withdraw-modal-root')?.remove(), 1800);
-    setTimeout(updateWallet, 1800);
   };
+
 }
 
 /* ---------- destination panel rendering ---------- */
@@ -382,7 +366,7 @@ async function refreshDestinationPanel(choice, destPanel, msgDiv) {
       return;
     }
     const note = document.createElement('p');
-    note.textContent = connectStatusMessage(state);
+    note.textContent = 'Stripe withdrawals are currently unavailable. ' + connectStatusMessage(state);
     destPanel.replaceChildren(note);
     if (state.account_id) {
       const account = document.createElement('p'); account.textContent = 'Payout account: ' + state.account_id; destPanel.append(account);
@@ -409,8 +393,8 @@ async function refreshDestinationPanel(choice, destPanel, msgDiv) {
     // PayPal panel
     destPanel.innerHTML = `
       <div>
-        <div style="font-weight:600;margin-bottom:6px;">PayPal (up to 3 days)</div>
-        <div style="font-size:.95em;color:#bbb;">Provide your PayPal email for manual payouts.</div>
+        <div style="font-weight:600;margin-bottom:6px;">PayPal — manual Admin processing</div>
+        <div style="font-size:.95em;color:#bbb;">Provide your PayPal email for an Admin-processed manual withdrawal request. This is not an integrated PayPal payout; no processing time is guaranteed.</div>
         <input id="paypal-email-input" type="email" placeholder="you@example.com"
                value="${cescape(paypalEmail)}"
                style="width:80%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:#252525;color:#fff;" />
