@@ -13,3 +13,5 @@
 - Farmer automation calls simulation care directly, respects the well stamina/rest cycle and never opens a mini-game; manual games pause helpers to avoid conflicting updates.
 
 - Never place opaque or gradient full-width background strips behind gameplay headers, captions, or bottom tool trays. Artwork must remain visible beneath those regions. Float individual buttons and readable shadowed text directly over the artwork.
+
+- Full-screen illustrated backgrounds with floating controls are the default for every game scene. Change this only when the user explicitly requests an exception. Animal size must suit the scene; chickens use 70% of the livestock display size while keeping their feet on the same ground plane.

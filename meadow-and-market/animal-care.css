@@ -5,3 +5,7 @@
 .care-tools button{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.care-tools img{pointer-events:none;-webkit-user-drag:none}.care-groom-spot{opacity:0}.care-groom-spot:focus-visible{opacity:1}#care-hand-tool{width:clamp(80px,12vw,135px);height:clamp(80px,12vw,135px)}.care-game .care-top,.care-game .care-bottom{max-width:none;box-sizing:border-box}
 
 .care-game[data-mode="play"] .care-ball{opacity:0}.care-game[data-mode="play"] .care-ball:focus-visible{opacity:1}
+
+/* Chickens are smaller than livestock, retaining the same floor contact. */
+.care-game[data-animal="chicken"] .care-animal{width:min(29.4vw,301px);height:56%;top:59%}
+@media(orientation:portrait){.care-game[data-animal="chicken"] .care-animal{width:52.5vw;height:50.4%;top:50.8%}}
