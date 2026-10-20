@@ -1,0 +1,6 @@
+.earnings-review{background:#151719;color:#eee;border:1px solid #49515c;border-radius:16px;padding:24px;width:min(620px,calc(100vw - 40px));max-height:85vh;overflow:auto;box-sizing:border-box}
+.earnings-review::backdrop{background:rgba(0,0,0,.75)}
+.earnings-review h3{margin-top:0}.earnings-review p{line-height:1.6;overflow-wrap:anywhere}
+.earnings-review label{display:flex;align-items:flex-start;gap:10px;padding:14px 0;line-height:1.5}
+.earnings-review input{flex:none;margin-top:6px}.earnings-review button,#verified-settlements>button{min-height:44px;margin:8px 8px 0 0;padding:10px 14px}
+.earnings-review button:disabled{opacity:.5;cursor:not-allowed}#verified-settlements p{overflow-wrap:anywhere}
