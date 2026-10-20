@@ -10,7 +10,6 @@
 // - No triggers. No schema changes.
 
 import { supabase } from './supabaseClient.js';
-import { notifyPayout } from './alerts.js?notifications=20261012brand6';
 
 import { affiliateRequest } from './affiliateRequest.mjs?v=20261017-affiliate2';
 
@@ -149,15 +148,6 @@ async function payApprovedToWallet() {
     toast('No approved commissions to pay.');
     return false;
   }
-  // The server already committed the settlement. Notification failure must not retry it.
-  try {
-    const { data } = await supabase.auth.getSession();
-    if (data?.session?.user?.id && typeof notifyPayout === 'function') {
-      await notifyPayout({ to_user_id: data.session.user.id, payout_amount: amountUSD.toFixed(2),
-        payout_currency: 'USD', payout_status: 'credited', offer_id: null,
-        note: 'Affiliate commission credited to wallet', email: data.session.user.email || null });
-    }
-  } catch { console.warn('Wallet credit notification could not be sent.'); }
   toast(`Paid ${fmtCurrency(amountUSD)} to your wallet.`);
   if (typeof window.updateSponseeWallet === 'function') {
     try { await window.updateSponseeWallet(); } catch { /* refresh can be retried independently */ }

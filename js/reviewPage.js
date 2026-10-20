@@ -1,6 +1,5 @@
 // ./js/reviewPage.js
 import { supabase } from './supabaseClient.js';
-import { notifyReview } from './alerts.js?notifications=20261012brand6'; // unchanged
 import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1'; // unchanged
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -227,26 +226,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Failed to submit review.");
       console.error(insertError);
       return;
-    }
-
-    // 2) Notify other party
-    let to_user_id;
-    if (reviewer_role === 'sponsor') {
-      to_user_id = sponseeData?.user_id;
-    } else {
-      to_user_id = sponsorData?.user_id;
-    }
-    const reviewer_username = await fetchReviewerUsername(userId);
-
-    try {
-      await notifyReview({
-        offer_id: offer.id,
-        to_user_id,
-        reviewer_username,
-        role: reviewer_role
-      });
-    } catch (e) {
-      console.warn('Notification insert failed (review)', e);
     }
 
     // 3) Update/close out offer as before

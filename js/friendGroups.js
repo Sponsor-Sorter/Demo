@@ -239,87 +239,8 @@ function resolveGroupImageURL(g) {
 }
 
 // ---- Notifications (group invites) ----
-// Safe, dynamic use of alerts.js if present; otherwise fallback to direct inserts.
-// Never blocks UI; group invites use in-app notifications only.
-
-async function _dynAlerts() {
-  try { return await import('./alerts.js?notifications=20261012brand6'); } catch { return null; }
-}
-
-async function _getNotifyRow(user_id) {
-  // notification_uuid + email for the in-app notification row
-  const { data, error } = await supabase
-    .from('users_extended_data')
-    .select('notification_uuid, email')
-    .eq('user_id', user_id)
-    .maybeSingle();
-  if (error) return { notification_uuid: null, email: null };
-  return {
-    notification_uuid: data?.notification_uuid || null,
-    email: data?.email || null
-  };
-}
-
-async function _insertNotif({ notification_uuid, email, type, title, message, related_offer_id = null }) {
-  if (!notification_uuid || !email) return;
-
-  // Try central alerts.js first
-  try {
-    const Alerts = await _dynAlerts();
-    if (Alerts?.insertNotification) {
-      await Alerts.insertNotification({ notification_uuid, email, type, title, message, related_offer_id });
-      return;
-    }
-  } catch {}
-
-  // Fallback direct insert
-  try {
-    await supabase.from('user_notifications').insert([{
-      notification_uuid, email, type: type || 'info',
-      title, message, read: false, related_offer_id, created_at: new Date().toISOString()
-    }]);
-  } catch (_) {}
-}
-
-/** Notify a user they were invited to a group */
-async function notifyGroupInvite({ invitee_id, groupId, inviter_id }) {
-  try {
-    const [g, inviterName] = await Promise.all([
-      getGroupById(groupId),
-      usernameForUserId(inviter_id)
-    ]);
-
-    const { notification_uuid, email } = await _getNotifyRow(invitee_id);
-    if (!notification_uuid || !email) return;
-
-    const title = `Group invite: ${g?.name || 'a group'}`;
-    const message = `@${inviterName || 'someone'} invited you to join “${g?.name || 'Group'}”. Open Groups to accept.`;
-
-    await _insertNotif({ notification_uuid, email, type: 'group_invite', title, message });
-  } catch (e) {
-    console.warn('notifyGroupInvite failed:', e?.message || e);
-  }
-}
-
-/** (Optional) Notify inviter when invite is accepted/declined */
-async function notifyInviteStatus({ inviter_id, invitee_id, groupId, status }) {
-  try {
-    const [g, inviteeName] = await Promise.all([
-      getGroupById(groupId),
-      usernameForUserId(invitee_id)
-    ]);
-
-    const { notification_uuid, email } = await _getNotifyRow(inviter_id);
-    if (!notification_uuid || !email) return;
-
-    const isAccepted = String(status).toLowerCase() === 'accepted';
-    const title   = isAccepted ? 'Group Invitation Accepted' : 'Group Invitation Declined';
-    const message = `@${inviteeName || 'user'} ${isAccepted ? 'accepted' : 'declined'} your invite to “${g?.name || 'Group'}”.`;
-
-    await _insertNotif({ notification_uuid, email, type: 'group_invite_status', title, message });
-  } catch (_) {}
-}
-
+// Inbox notifications are produced by canonical database events.
+// Group invites use inbox notifications only.
 
 /* =========================
    Groups CRUD
@@ -693,8 +614,7 @@ export async function sendInvite({ groupId, username }) {
 
     if (error) throw error;
 
-    // Post-commit: notify invitee (in-app + email)
-    notifyGroupInvite({ invitee_id: invitee, groupId, inviter_id: inviter }); // fire & forget
+    // Canonical invitation INSERT produces the inbox notification.
 
     toast('Invite sent.');
     return true;

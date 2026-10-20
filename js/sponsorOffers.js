@@ -10,7 +10,6 @@ import { mountOfferSubmissions, safeCommentElement } from './offerSubmissions.js
 import { supabase } from './supabaseClient.js';
 // Committed database events create comment and private-offer update notifications.
 import { handleRemoveOffer } from './sponsorLogic.js?v=20261011-drafts3';
-import { notifyOfferUpdate } from './alerts.js?notifications=20261012brand6';
 import './userReports.js';
 import { famBotModerateWithModal } from './FamBot.js?v=20261018-fambot1';
 
@@ -1253,14 +1252,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.target.classList.contains('delete-offer-btn')) {
       const success = await handleRemoveOffer(offerId);
       if (success) {
-        const currentSponsorUsername = await getCurrentSponsorUsername(sponsor_id);
-        await notifyOfferUpdate({
-          to_user_id: sponseeUserId,
-          offer_id: offerId,
-          type: 'offer_deleted',
-          title: "Offer Deleted",
-          message: `${currentSponsorUsername} has deleted the sponsorship offer.`
-        });
         offerCard.remove();
         allSponsorOffers = allSponsorOffers.filter(offer => String(offer.id) !== String(offerId));
       }

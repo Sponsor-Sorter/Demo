@@ -17,7 +17,6 @@ import { conversionDisplay, affiliateReferralUrl, applicationHasSnapshot, usersN
 import { affiliateRequest } from "./affiliateRequest.mjs?v=20261017-affiliate2";
 
 import { supabase } from "./supabaseClient.js";
-import { notifyOfferUpdate } from "./alerts.js?notifications=20261012brand6";
 
 /* =========================
    Utilities
@@ -920,33 +919,6 @@ async function loadPartner(partnerId) {
       });
 
       if (res?.ok) {
-        // Send a notification to each affected partner user
-        if (
-          Array.isArray(res.partner_user_ids) &&
-          res.partner_user_ids.length
-        ) {
-          await Promise.all(
-            res.partner_user_ids.map((uid) =>
-              notifyOfferUpdate({
-                to_user_id: uid,
-                offer_id: null,
-                type: "offer_update",
-                title: "Affiliate payment status updated",
-                message: `We just marked ${res.updated_count ?? 0} commission(s) as Paid.`,
-              }),
-            ),
-          );
-        } else {
-          // Fallback: notify the current partner’s user
-          await notifyOfferUpdate({
-            to_user_id: partner.user_id,
-            offer_id: null,
-            type: "offer_update",
-            title: "Affiliate payment status updated",
-            message: `We just marked ${res.updated_count ?? 0} commission(s) as Paid.`,
-          });
-        }
-
         uiToast(
           `Marked ${res.updated_count ?? 0} approved conversion(s) paid.`,
         );
@@ -1089,16 +1061,6 @@ async function approveApplication(
       await ensureReferralLink({ user_id: uid, preferred_code: preferred });
   } catch {}
 
-  if (uid) {
-    const msg = `You’ve been approved${partner_name ? ` as “${partner_name}”` : ""}${p_commission_rate != null ? ` at ${p_commission_rate.toFixed(2)}%` : ""}.`;
-    await notifyOfferUpdate({
-      to_user_id: uid,
-      offer_id: null,
-      type: "offer_update",
-      title: "Affiliate application approved",
-      message: msg,
-    });
-  }
   uiToast("Application approved.");
 }
 
@@ -1118,16 +1080,6 @@ async function rejectApplication(p_app_id) {
     return;
   }
 
-  if (uid) {
-    await notifyOfferUpdate({
-      to_user_id: uid,
-      offer_id: null,
-      type: "offer_update",
-      title: "Affiliate application rejected",
-      message:
-        "Thanks for applying. Unfortunately your application was not approved at this time.",
-    });
-  }
   uiToast("Application rejected.");
 }
 

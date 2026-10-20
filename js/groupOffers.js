@@ -4,37 +4,9 @@
 // - Group image: from storage bucket "group-logos/groups/<group_id>/<file>?cb=<ISO>"
 //   Fallback: "grouplogo.png"
 // - Accept flow only marks invite accepted AFTER membership insert OK; shows real errors
-// - Post-commit in-app notifications (email delivery is limited to verified 2FA)
+// - Inbox notifications are produced by canonical database transitions.
 
 import { supabase } from './supabaseClient.js';
-import * as Alerts from './alerts.js?notifications=20261012brand6';
-
-// ---------- Safe helpers for alerts integration (fallbacks if not exported) ----------
-const notifyOfferUpdate = Alerts?.notifyOfferUpdate || (async (payload) => {
-  try {
-    const { to_user_id, offer_id, title, message } = payload || {};
-    await supabase.from('user_notifications').insert([{
-      user_id: to_user_id,
-      title: title || 'Update',
-      message: message || '',
-      related_offer_id: offer_id || null,
-      is_read: false
-    }]);
-  } catch (_) {}
-});
-const insertNotification = Alerts?.insertNotification || (async ({ notification_uuid, email, type, title, message, related_offer_id }) => {
-  try {
-    await supabase.from('user_notifications').insert([{
-      notification_uuid: notification_uuid || null,
-      email: email || null,
-      type: type || 'info',
-      title: title || '',
-      message: message || '',
-      related_offer_id: related_offer_id || null,
-      is_read: false
-    }]);
-  } catch (_) {}
-});
 // ---------- UI helpers ----------
 const toast = (msg) => { try { console.log(msg); } catch {} };
 const ALLOWED_STATUS = new Set(['pending', 'active', 'completed', 'cancelled']);
@@ -318,16 +290,6 @@ async function acceptInvite(inv, myUser) {
   const { error } = await supabase.rpc('accept_group_invitation', { invitation_id: inv.id });
   if (error) throw error;
 
-  // Notify inviter
-  const meName = await usernameOf(myUser.id);
-  await notifyOfferUpdate({
-    to_user_id: inv.inviter_id,
-    offer_id: null,
-    type: 'group_invite',
-    title: 'Group Invitation Accepted',
-    message: `${meName ? '@'+meName : 'A user'} accepted your group invite.`
-  });
-
   // Ask groups list to update
   refreshGroupsListUI(inv.group_id);
 }
@@ -339,14 +301,6 @@ async function declineInvite(inv, myUser) {
     .eq('id', inv.id);
   if (error) throw error;
 
-  const meName = await usernameOf(myUser.id);
-  await notifyOfferUpdate({
-    to_user_id: inv.inviter_id,
-    offer_id: null,
-    type: 'group_invite',
-    title: 'Group Invitation Declined',
-    message: `${meName ? '@'+meName : 'A user'} declined your group invite.`
-  });
 }
 
 async function renderPendingInvites(panel, invites, groupsMap, usernames, onAction) {
@@ -425,35 +379,11 @@ async function acceptOfferForMember({ offer, groupId, me, usernames }) {
   const { error } = await supabase.rpc('respond_group_offer', { p_offer_id: offer.id, p_response: 'accepted' });
   if (error) throw error;
 
-  try {
-    if (offer?.sponsor_id) {
-      const uname = (await usernameOf(me.id)) || 'A member';
-      await notifyOfferUpdate({
-        to_user_id: offer.sponsor_id,
-        offer_id: offer.id,
-        type: 'group_offer_response',
-        title: 'Group Offer Accepted',
-        message: `${uname} accepted your group offer “${offer.offer_title || 'Offer'}”.`
-      });
-    }
-  } catch (nerr) { console.warn('notifyOfferUpdate (accept) failed:', nerr?.message || nerr); }
 }
 async function rejectOfferForMember({ offer, groupId, me }) {
   const { error } = await supabase.rpc('respond_group_offer', { p_offer_id: offer.id, p_response: 'rejected' });
   if (error) throw error;
 
-  try {
-    if (offer?.sponsor_id) {
-      const uname = (await usernameOf(me.id)) || 'A member';
-      await notifyOfferUpdate({
-        to_user_id: offer.sponsor_id,
-        offer_id: offer.id,
-        type: 'group_offer_response',
-        title: 'Group Offer Declined',
-        message: `${uname} declined your group offer “${offer.offer_title || 'Offer'}”.`
-      });
-    }
-  } catch (nerr) { console.warn('notifyOfferUpdate (reject) failed:', nerr?.message || nerr); }
 }
 
 // ---------- NEW: Completion reconciliation + deadline finalization ----------
@@ -807,30 +737,7 @@ async function setOfferStatus(offer, newStatus, ctx) {
 
     toast(`Offer status updated to "${s}".`);
 
-    try {
-      if (s === 'active' && Array.isArray(ctx.members)) {
-        for (const m of ctx.members) {
-          if (!m?.user_id) continue;
-          await notifyOfferUpdate({
-            to_user_id: m.user_id,
-            offer_id: offer.id,
-            type: 'group_offer_status',
-            title: 'Group Offer Active',
-            message: `“${offer.offer_title || 'Offer'}” is now active — accept if you want in.`
-          });
-        }
-      }
-      if (offer.sponsor_id) {
-        await notifyOfferUpdate({
-          to_user_id: offer.sponsor_id,
-          offer_id: offer.id,
-          type: 'group_offer_status',
-          title: `Group Offer ${s.charAt(0).toUpperCase() + s.slice(1)}`,
-          message: `Your group offer “${offer.offer_title || 'Offer'}” status is now ${s}.`
-        });
-      }
-    } catch (_) {}
-
+    // Canonical database transition produces the inbox notification.
     await ctx.onRefresh?.();
   } catch (e) { alert('Could not update status: ' + (e?.message || e)); }
 }
