@@ -601,6 +601,108 @@
       "provider": "ElevenLabs",
       "voice": "Noah - YA Audiobooks Narrator",
       "bytes": 342040
+    },
+    {
+      "id": "hud-tend",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 49259
+    },
+    {
+      "id": "hud-build",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 61171
+    },
+    {
+      "id": "hud-undo",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 51454
+    },
+    {
+      "id": "hud-requests",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 63052
+    },
+    {
+      "id": "hud-market",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
+    },
+    {
+      "id": "hud-animals",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 65560
+    },
+    {
+      "id": "hud-shop",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 64619
+    },
+    {
+      "id": "hud-play",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
+    },
+    {
+      "id": "hud-friends",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 62425
+    },
+    {
+      "id": "hud-journal",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 56156
+    },
+    {
+      "id": "hud-settings",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 52707
+    },
+    {
+      "id": "hud-maps",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 46751
+    },
+    {
+      "id": "hud-boards",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58350
+    },
+    {
+      "id": "hud-missions",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 57409
+    },
+    {
+      "id": "hud-emporium",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 67440
+    },
+    {
+      "id": "hud-expand",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 54902
+    },
+    {
+      "id": "hud-helpers",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 58036
     }
   ]
 }
