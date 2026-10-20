@@ -5,3 +5,5 @@
 .club-listen{display:block;margin:0 18px 3px auto;min-height:30px;border:1px solid #ad8d5c;border-radius:12px;padding:4px 12px;background:#fff4df;color:#5b4228;font-size:12px;font-weight:700}.club-body{height:calc(100dvh - 205px - env(safe-area-inset-top))}@media(max-height:480px) and (orientation:landscape){.club-body{height:calc(100dvh - 167px)}}
 
 .club-dialog[open]{display:flex;flex-direction:column}.club-head,.club-tabs,.club-listen,#club-status{flex-shrink:0}.club-body{flex:1;height:auto;min-height:0}.club-modal-shortcut{margin-top:14px;border-top:1px solid #d8c5a2;padding-top:10px}
+
+.scene-action.club-launch{display:grid;place-items:center;padding:6px;box-sizing:border-box}.scene-action.club-launch img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 2px 1px #49331e40)}
