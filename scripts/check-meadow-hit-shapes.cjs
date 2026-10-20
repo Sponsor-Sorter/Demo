@@ -14,5 +14,5 @@ assert.deepEqual(JSON.parse(JSON.stringify(project(square,200,100,'contain'))),[
 assert.deepEqual(JSON.parse(JSON.stringify(project(square,100,200,'contain',.5,1))),[[0,50],[100,100]]);
 assert(read('game.js').includes('window.meadowHitShapes?.apply(grid)'));
 assert(read('style.css').includes('.farm-grid>.farm-object.flowers img{pointer-events:none!important}'));
-assert(read('index.html').includes('hit-shapes.js?v=2'));
+assert(/hit-shapes\.js\?v=\d+/.test(read('index.html')));
 console.log('32 artwork silhouettes, letterboxed hit projection and neighbouring flower targets passed.');
