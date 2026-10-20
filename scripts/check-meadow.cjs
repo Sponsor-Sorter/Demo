@@ -81,3 +81,4 @@ require('./check-meadow-collections.cjs');
 require("./check-meadow-hud.cjs");
 
 require("./check-meadow-reading.cjs");
+require('./check-meadow-art-studio.cjs');

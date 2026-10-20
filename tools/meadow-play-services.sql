@@ -50,7 +50,7 @@ begin
  select * into w from public.meadow_market_wallets where user_id=u for update;
  if p_action='score' then
   rid:=(p_data->>'id')::uuid; g:=p_data->>'game'; lv:=(p_data->>'level')::int; completed:=(p_data->>'completed')::int; goal:=(p_data->>'goal')::int; secs:=(p_data->>'remaining')::numeric; victory:=(p_data->>'won')::boolean;
-  if g not in ('eggs','milk','sheep','goat','cow','flowers','memory','sorting','coopmath','differences','market_pack','market_weigh','tractorrepair') or lv not between 1 and 10000 or goal not between 1 and 120 or completed not between 0 and goal or secs not between 0 and 300 or (victory and completed<>goal) then raise exception 'Invalid game result'; end if;
+  if g not in ('eggs','milk','sheep','goat','cow','flowers','memory','sorting','coopmath','differences','market_pack','market_weigh','tractorrepair','colourbynumber','matchpainting') or lv not between 1 and 10000 or goal not between 1 and 120 or completed not between 0 and goal or secs not between 0 and 300 or (victory and completed<>goal) then raise exception 'Invalid game result'; end if;
   pts:=completed*100+case when victory then lv*1000+floor(secs*10)::int else 0 end;
   insert into public.meadow_market_play_runs(id,user_id,game,week,level,points,won) values(rid,u,g,wk,lv,pts,victory) on conflict do nothing;
  return jsonb_build_object('wallet',to_jsonb(w));
@@ -112,7 +112,7 @@ begin
    if w.reward_turns<1 then raise exception 'Get more reward tickets in the test shop'; end if;
    select game into g from public.meadow_market_play_runs where id=(p_data->>'run')::uuid and user_id=u and won;if not found then raise exception 'Finish and sync a winning game first';end if;
    ck:='turn:'||(p_data->>'run');
-   delivery:=jsonb_build_object('gold',25,'items',case g when 'eggs' then '{"egg":3}'::jsonb when 'milk' then '{"milk":3}'::jsonb when 'sheep' then '{"wool":2}'::jsonb when 'goat' then '{"goatmilk":2}'::jsonb when 'cow' then '{"milk":2}'::jsonb when 'flowers' then '{"nectar":3}'::jsonb when 'memory' then '{"apple":3}'::jsonb when 'coopmath' then '{"egg":3}'::jsonb when 'differences' then '{"apple":3}'::jsonb when 'tractorrepair' then '{"wheat":5}'::jsonb else '{"carrot":5}'::jsonb end);add_turns:=-1;
+   delivery:=jsonb_build_object('gold',25,'items',case g when 'eggs' then '{"egg":3}'::jsonb when 'milk' then '{"milk":3}'::jsonb when 'sheep' then '{"wool":2}'::jsonb when 'goat' then '{"goatmilk":2}'::jsonb when 'cow' then '{"milk":2}'::jsonb when 'flowers' then '{"nectar":3}'::jsonb when 'memory' then '{"apple":3}'::jsonb when 'coopmath' then '{"egg":3}'::jsonb when 'differences' then '{"apple":3}'::jsonb when 'colourbynumber' then '{"nectar":3}'::jsonb when 'matchpainting' then '{"apple":3}'::jsonb when 'tractorrepair' then '{"wheat":5}'::jsonb else '{"carrot":5}'::jsonb end);add_turns:=-1;
   elsif p_action='ad_reward' then
    if (select count(*) from public.meadow_market_economy_receipts where user_id=u and kind='ad_reward' and created_at>=dy::timestamptz)>=3 then raise exception 'Three rewarded ad previews complete today'; end if;
    add_gems:=5;add_turns:=1;

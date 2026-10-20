@@ -1,0 +1,215 @@
+{
+  "note": "Jade, Farmer Rhys and Farmer Jay use approved character references. The three earlier nonmatching designs are retained as explicitly labelled guest villagers; they are not alternate designs of the main farmers.",
+  "scenes": [
+    {
+      "id": "jade-garden",
+      "title": "Jade’s carrot garden",
+      "people": [
+        "jade"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-2263f55f-90fd-4318-87a1-9f81277d02b2.png",
+      "prompt": "Create a detailed Meadow Markets colouring-game illustration using the attached image as the EXACT Farmer Jade identity reference. This is OUR existing Jade, not a new farmer. Preserve her recognizable face shape, warm brown eyes, long brown side braid, straw hat with GREEN ribbon and SUNFLOWER on the side, CREAM collared rolled-sleeve shirt, and OLIVE GREEN bib overalls with brass fittings. Absolutely NO blue overalls, purple ribbon or redesigned face. Translate her existing artwork into clean outlined colouring-book art while keeping the same character likeness. Show Jade kneeling in her carrot garden beside a wooden gate, with detailed cabbages, carrots, watering can, flowers, butterflies and the Meadow Markets barn in the background. Full square composition, complete hat and hands in frame, no text or numbers. Clear smooth black CLOSED outlines around all paintable shapes, flat warm pastel fills, roughly 60 medium and large enclosed paintable regions, no crosshatching, no tiny scratchy texture. Beautiful detailed cosy farm storybook art. The attached approved Jade image is an identity reference, NOT an edit target; make a new garden scene featuring precisely that character."
+    },
+    {
+      "id": "dairy-barn",
+      "title": "Daisy’s dairy morning",
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-fb183891-fe5f-46e9-b977-32245e89964c.png"
+    },
+    {
+      "id": "sheep-meadow",
+      "title": "Sheep in the meadow",
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-90058071-48e2-42d5-a7f9-93468f10f157.png"
+    },
+    {
+      "id": "jay-coop",
+      "title": "Jay’s happy hens",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Farmer Jay collecting eggs beside a fenced chicken coop, six hens, nests and a feed bucket. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Farmer Jay has the exact face of reference Jay, warm brown eyes, short tousled brown hair, straw hat with BLUE ribbon, BLUE PLAID shirt and TAN bib overalls; cares for chickens. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jay"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-d6c6c60a-58c9-43a5-815f-5ed71e7d3a71.png"
+    },
+    {
+      "id": "rhys-tractor",
+      "title": "Rhys and the tractor",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Farmer Rhys repairing a vintage red tractor beside a tool shed, bolts, tyres and flower pots. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Farmer Rhys has the exact face of reference Rhys, warm brown eyes, short tousled brown hair, straw hat with GREEN ribbon, GREEN PLAID shirt and TAN bib overalls; carries carpentry tools. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "rhys"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-2b894ace-4074-4bf2-add0-fa5873e93603.png"
+    },
+    {
+      "id": "goat-bridge",
+      "title": "Goats by the bridge",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: three playful goats beside a timber bridge over a creek, reeds, rocks, ducks and wildflowers.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-5186299a-cc9d-410f-9e5e-b613c03e1066.png"
+    },
+    {
+      "id": "alpaca-paddock",
+      "title": "Alpaca picnic",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: two fluffy alpacas in a fenced paddock, hay rack, apple tree, picnic blanket and a basket.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-b7fce3d9-c6d7-4eb5-a4be-ff11d429af81.png"
+    },
+    {
+      "id": "apple-orchard",
+      "title": "Apple harvest",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: three apple trees, ladder, woven baskets of apples and farmhouse.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-c99fbea1-8e3b-46c1-bedb-93e0ff436822.png"
+    },
+    {
+      "id": "bee-garden",
+      "title": "Busy bee garden",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: beehives in a cottage flower garden, friendly bees, lavender, sunflowers and watering can.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-c60ba62f-5a25-48b1-b9e6-cd2d4b62ff71.png"
+    },
+    {
+      "id": "market-stall",
+      "title": "Village market day",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: produce stall under striped canopy, baskets of carrots apples pumpkins and tomatoes, crates, scales and village roofs.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-7f48a4c3-7ade-4b51-bc26-9b8e4624ac69.png"
+    },
+    {
+      "id": "bakery",
+      "title": "Farmhouse bakery",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: rustic bakery interior, bread loaves, pie, jars, flour sack, wooden kitchen counter and oven.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-167c41d0-86e2-4df7-9b3c-7bbaad12faeb.png"
+    },
+    {
+      "id": "duck-pond",
+      "title": "Duck pond afternoon",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: ducks at a farm pond with lily pads, bulrushes, stone path, wooden fence and willow tree.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-1b94543e-16ec-4130-8e83-d6c53d4c44f9.png"
+    },
+    {
+      "id": "family-well",
+      "title": "The family well",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Jade, Farmer Rhys and Farmer Jay at their stone family well, bucket, flowers, cottage window and garden tools. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Jade has the exact face of reference Jade, warm brown eyes, long brown SIDE BRAID, straw hat with GREEN ribbon and SUNFLOWER, CREAM shirt and OLIVE GREEN bib overalls. Never blue overalls or purple hat ribbon. Farmer Rhys has the exact face of reference Rhys, warm brown eyes, short tousled brown hair, straw hat with GREEN ribbon, GREEN PLAID shirt and TAN bib overalls; carries carpentry tools. Farmer Jay has the exact face of reference Jay, warm brown eyes, short tousled brown hair, straw hat with BLUE ribbon, BLUE PLAID shirt and TAN bib overalls; cares for chickens. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jade",
+        "rhys",
+        "jay"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-6e86730d-04f8-4f07-83ef-bbd46d87e1e1.png"
+    },
+    {
+      "id": "pumpkins",
+      "title": "Pumpkin patch",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: autumn pumpkin patch, friendly scarecrow, curled vines, crows, harvest basket and barn.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-dfb1ca8a-2f0e-4eb1-886b-f6191024717a.png"
+    },
+    {
+      "id": "seaside",
+      "title": "Sunpetal coast",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: seaside farm cottage, vegetable beds, fishing boat, seashells, gulls and lighthouse.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-b60cea1e-3f0b-4a97-a79a-f65bf7543a0a.png"
+    },
+    {
+      "id": "woodland",
+      "title": "Woodland mushrooms",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: woodland farm edge with baskets of mushrooms, hedgehog, squirrel, ferns, tree stump and leaves.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-21a0c963-069f-4af3-9b08-06a3d0b49d1e.png"
+    },
+    {
+      "id": "strawberries",
+      "title": "Strawberry picking",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Jade picking strawberries in raised garden beds, baskets, robin and cottage fence. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Jade has the exact face of reference Jade, warm brown eyes, long brown SIDE BRAID, straw hat with GREEN ribbon and SUNFLOWER, CREAM shirt and OLIVE GREEN bib overalls. Never blue overalls or purple hat ribbon. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jade"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-14c67212-429b-4f24-8e93-7b8426e93892.png"
+    },
+    {
+      "id": "cornfield",
+      "title": "Golden cornfield",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: cornfield with scarecrow, harvest wagon, corn cobs, sunflowers, barn and clouds.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-da17e17b-72d2-4bdf-85b9-798fff219329.png"
+    },
+    {
+      "id": "flower-cart",
+      "title": "The flower cart",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Farmer Rhys pulling a rustic cart full of flower pots and bouquets, butterfly, wooden wheel and village path. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Farmer Rhys has the exact face of reference Rhys, warm brown eyes, short tousled brown hair, straw hat with GREEN ribbon, GREEN PLAID shirt and TAN bib overalls; carries carpentry tools. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "rhys"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-2196da5c-26d0-4fa2-b006-a9bb65547d34.png"
+    },
+    {
+      "id": "pony-stable",
+      "title": "Pony at the stable",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: gentle pony in a timber stable, bridle hooks, hay net, carrots in bucket and sparrows.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-144dc70f-b8b5-423e-a61c-3731e8286ce4.png"
+    },
+    {
+      "id": "harvest-wagon",
+      "title": "Harvest wagon",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Farmer Jay beside a wagon brimming with pumpkins cabbages carrots and apples, fence and chickens. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Farmer Jay has the exact face of reference Jay, warm brown eyes, short tousled brown hair, straw hat with BLUE ribbon, BLUE PLAID shirt and TAN bib overalls; cares for chickens. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jay"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-0e996b59-57cc-46a1-96db-1f1299ea78c2.png"
+    },
+    {
+      "id": "rabbit-garden",
+      "title": "Rabbit garden visitors",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: three rabbits among lettuces and carrot tops, garden tools, fence, flowers and potting bench.  Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-0e6a6dcb-5e29-497f-aa36-9dacf8c887fa.png"
+    },
+    {
+      "id": "lavender",
+      "title": "Lavender hillside",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Jade with a basket of lavender beside lavender rows, beehive, farmhouse and windmill. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Jade has the exact face of reference Jade, warm brown eyes, long brown SIDE BRAID, straw hat with GREEN ribbon and SUNFLOWER, CREAM shirt and OLIVE GREEN bib overalls. Never blue overalls or purple hat ribbon. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jade"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-8595344b-318f-481d-9f72-be0a9c01d377.png"
+    },
+    {
+      "id": "farm-festival",
+      "title": "Harvest festival",
+      "prompt": "Use case: illustration-story. ONE beautiful detailed square interactive colouring-game scene for Meadow Markets: Jade, Farmer Rhys and Farmer Jay at a farm harvest festival with bunting, prize vegetables, stall, baskets and lanterns. ATTACHED IMAGES ARE EXACT APPROVED CHARACTER IDENTITY REFERENCES, NOT EDIT TARGETS. Use OUR existing farmers, not redesigned lookalikes. Jade has the exact face of reference Jade, warm brown eyes, long brown SIDE BRAID, straw hat with GREEN ribbon and SUNFLOWER, CREAM shirt and OLIVE GREEN bib overalls. Never blue overalls or purple hat ribbon. Farmer Rhys has the exact face of reference Rhys, warm brown eyes, short tousled brown hair, straw hat with GREEN ribbon, GREEN PLAID shirt and TAN bib overalls; carries carpentry tools. Farmer Jay has the exact face of reference Jay, warm brown eyes, short tousled brown hair, straw hat with BLUE ribbon, BLUE PLAID shirt and TAN bib overalls; cares for chickens. Preserve these recognizable faces, hairstyles, hats, clothing colours and identity while translating into outlined art. Cosy polished farm storybook illustration. Technical: smooth consistent BLACK CLOSED outlines around every paintable shape, completely FLAT solid pastel fills, around 50 to 90 medium/large enclosed paintable regions. Use cream, yellow, leafy greens, sky blue, terracotta, lavender, warm browns, skin peach. NO gradients, NO shading, NO hatching, NO tiny scribble textures, NO text, NO numbers, NO border or watermark. Full scene edge to edge, keep characters complete inside frame. Detailed foreground, middle and background. Warm familiar Meadow Markets farm world.",
+      "people": [
+        "jade",
+        "rhys",
+        "jay"
+      ],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-8591e2eb-f3b4-49a3-b4bc-f00b576ea352.png"
+    },
+    {
+      "id": "guest-gardener",
+      "title": "Guest gardener",
+      "guest": true,
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-f233fd15-72bf-4a15-9510-436196e7f2a7.png",
+      "characterLabel": "Guest villager · bonus scene"
+    },
+    {
+      "id": "visiting-hen-keeper",
+      "title": "Visiting hen keeper",
+      "guest": true,
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-bf27fab7-7420-49b7-bfb9-2a07930e6506.png",
+      "characterLabel": "Guest villager · bonus scene"
+    },
+    {
+      "id": "village-mechanic",
+      "title": "Village mechanic",
+      "guest": true,
+      "people": [],
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a14d21-2830-7df1-b07c-5a1aa0ce4e3d\\exec-4839c631-a7c1-4ddc-ba8b-1ce745b5ccb6.png",
+      "characterLabel": "Guest villager · bonus scene"
+    }
+  ]
+}

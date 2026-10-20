@@ -10,14 +10,14 @@
  ['.hud-action[data-view="shop"]','shop','Farm shop','Buy seeds, animals, buildings and supplies.'],
  ['#farm-play-button','play','Farm games','Learn new skills and earn rewards.'],
  ['#friends-button','friends','Farm friends','Find farmers, accept requests and visit their farms.'],
- ['#journal-button','journal','Farm journal','See goals, achievements and farming progress.'],
+ ['#journal-button','journal','Farm desk','See goals, achievements and farming progress.'],
  ['#settings-button','settings','Settings','Manage sound, accounts and app downloads.'],
  ['#map-switch','maps','My farms','Travel between your unlocked farm maps.'],
  ['#leaderboards-button','boards','Leaderboards','Compare game scores with friends and farmers worldwide.'],
  ['#missions-button','missions','Missions','Complete daily and weekly goals, then claim rewards.'],
  ['#emporium-button','emporium','Meadow emporium','Gem packs, VIP rewards and your collection cabinet.'],
  ['#expand-button','expand','Expand farm','Unlock more grass tiles as your farm grows.'],
- ['#guide-launcher','helpers','Farm helpers','Ask Jade, Farmer Rhys and Farmer Jay for guidance.']
+ ['#guide-launcher','helpers','Farm helpers','Ask Farmer Jade, Farmer Rhys and Farmer Jay for guidance.']
  ];
  const items=new Map();
  for(const [selector,id,title,copy] of specs){const el=document.querySelector(selector);if(!el)continue;items.set(el,{id,title,copy});el.dataset.hudHelp=id;el.setAttribute('aria-label',title+'. '+copy);el.removeAttribute('title');

@@ -4,7 +4,7 @@
   const chapters=[
     {name:'A growing homestead',person:'jade',goals:[
       {id:'beds',title:'Room to grow',text:'Till at least three tiles of crop soil. Upgraded fields count every tile.',target:3,reward:60,xp:15,measure:s=>objects(s).filter(o=>o.type==='plot'&&(o.stage||o.plantedAt)).reduce((n,o)=>n+(1+(o.tier||0))**2,0)},
-      {id:'baskets',title:'Harvest days',text:'Gather five crop or orchard harvests. Jade’s harvests count too.',target:5,reward:90,xp:20,measure:s=>stats(s).harvest||0},
+      {id:'baskets',title:'Harvest days',text:'Gather five crop or orchard harvests. Farmer Jade’s harvests count too.',target:5,reward:90,xp:20,measure:s=>stats(s).harvest||0},
       {id:'flock',title:'A happy little flock',text:'House three chickens in your coops. Upgrade a coop to make room.',target:3,reward:120,xp:25,measure:s=>objects(s).filter(o=>o.type==='chicken'&&o.coopId).length}
     ]},
     {name:'Made in the meadow',person:'jay',goals:[

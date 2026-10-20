@@ -703,6 +703,36 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 58036
+    },
+    {
+      "id": "rhys-farmdesk",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 210696
+    },
+    {
+      "id": "rhys-village-orders",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 208502
+    },
+    {
+      "id": "minigame-drawing",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 353011
+    },
+    {
+      "id": "minigame-colourbynumber",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 387179
+    },
+    {
+      "id": "minigame-matchpainting",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 350503
     }
   ]
 }
