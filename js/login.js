@@ -1,5 +1,6 @@
 // Re-use the shared Supabase client so we’re consistent with the rest of the app
 import { supabase } from './supabaseClient.js';
+import { existingAuthenticator, verifyAuthenticator } from './loginMfa.mjs?v=20261021-1';
 import { grantLoginReferralReward } from './referralRewards.mjs?v=20261018-referral1';
 import { escapeHtml, safeImageUrl } from './safePresentation.js';
 import * as OTPAuth from 'https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.4.1/otpauth.esm.min.js';
@@ -715,6 +716,48 @@ window.addEventListener('DOMContentLoaded', () => {
     setTotpStatus('Enter the 6-digit code from your authenticator app.', '');
   }
 
+  async function beginNativeAuthenticator(freshUser, extendedData, factors) {
+    if (!totpStep || !loginForm || !totpSubmitBtn) throw Error('Authenticator form unavailable. Reload before signing in.');
+    twofaContext={userId:freshUser.id,userType:extendedData.userType,nativeFactors:factors};
+    loginForm.style.display='none';if(twofaStep)twofaStep.style.display='none';totpStep.style.display='block';
+    const explanation=totpStep.querySelector('p');if(explanation)explanation.textContent='Enter the current six-digit code from your authenticator app. Email codes cannot verify this MFA session.';
+    const rememberHelp=document.getElementById('totp-remember-help');if(rememberHelp)rememberHelp.hidden=true;
+    totpMode='totp';if(totpCodeGroup)totpCodeGroup.style.display='block';if(backupCodeGroup)backupCodeGroup.style.display='none';
+    if(useBackupBtn)useBackupBtn.style.display='none';if(useTotpBtn)useTotpBtn.style.display='none';
+    if(totpRememberCheckbox){totpRememberCheckbox.checked=false;totpRememberCheckbox.closest('label')?.setAttribute('hidden','');}
+    document.getElementById('native-authenticator-select')?.remove();
+    if(factors.length>1){
+      const label=document.createElement('label');label.id='native-authenticator-select';label.textContent='Choose your authenticator';
+      const select=document.createElement('select');select.id='native-authenticator-factor';
+      for(const factor of factors){const option=document.createElement('option');option.value=factor.id;option.textContent=factor.name;select.append(option);}
+      label.append(select);totpCodeGroup.prepend(label);
+    }
+    totpSubmitBtn.disabled=false;totpCodeInput.value='';totpCodeInput.focus();
+    setTotpStatus('Use your authenticator app code. Email codes do not work here. Verification is protected by the authentication service.','');
+  }
+
+  // Resume an existing password-authenticated session without accepting legacy email OTP as MFA.
+  (async()=>{
+    try {
+      const {data,error}=await supabase.auth.getUser();if(error||!data?.user)return;
+      const user=data.user,factors=await existingAuthenticator(supabase);if(!factors.length)return;
+      const {data:profile,error:profileError}=await supabase.from('users_extended_data').select('userType').eq('user_id',user.id).single();
+      if(profileError||!profile||!loginForm)return;
+      const retry=document.createElement('button');retry.type='button';retry.id='retry-native-authenticator';retry.textContent='Retry with authenticator app';
+      retry.addEventListener('click',async()=>{
+        retry.disabled=true;
+        try{
+          const current=await supabase.auth.getUser();if(current.error||current.data?.user?.id!==user.id)throw Error('Sign in again before retrying.');
+          // This explicit retry resets only the signed-in user's legacy device-local email lock.
+          // Server MFA verification/rate limits and every other user's entry remain intact.
+          resetTwofaAttempts(user.id);
+          await beginNativeAuthenticator(user,profile,factors);
+        }catch(error){retry.disabled=false;showLoginErrorBox();}
+      });
+      loginForm.append(retry);
+    }catch{/* Normal password login remains available; no MFA fallback is inferred. */}
+  })();
+
   // -------- Toggle between authenticator and backup code modes --------
   if (useBackupBtn && backupCodeGroup && totpCodeGroup) {
     useBackupBtn.addEventListener('click', () => {
@@ -899,6 +942,21 @@ window.addEventListener('DOMContentLoaded', () => {
   if (totpSubmitBtn) {
     totpSubmitBtn.addEventListener('click', async () => {
       if (!twofaContext) return;
+
+      if (twofaContext.nativeFactors) {
+        if(totpSubmitBtn.disabled)return;
+        totpSubmitBtn.disabled=true;setTotpStatus('Verifying authenticator code…','');
+        try {
+          const factorId=document.getElementById('native-authenticator-factor')?.value || twofaContext.nativeFactors[0].id;
+          await verifyAuthenticator(supabase,factorId,totpCodeInput?.value.trim() || '');
+          // Only successful server MFA clears this user's obsolete device-local attempt record.
+          resetTwofaAttempts(twofaContext.userId);
+          setTotpStatus('Authenticator verified. Signing you in…','success');
+          redirectToDashboardByType(twofaContext.userType);
+        } catch(error){setTotpStatus(error.message || 'Authenticator verification unavailable.','error');}
+        finally{totpSubmitBtn.disabled=false;}
+        return;
+      }
 
       const lockInfo = isTwofaLocked(twofaContext.userId);
       if (lockInfo.locked) {
@@ -1145,6 +1203,12 @@ window.addEventListener('DOMContentLoaded', () => {
         const twofaEnabled = !!extendedData.twofa_enabled;
         const twofaMethod = (extendedData.twofa_method || '').toLowerCase();
 
+        const nativeFactors=await existingAuthenticator(supabase);
+        if(nativeFactors.length){
+          await beginNativeAuthenticator(freshUser,extendedData,nativeFactors);
+          return;
+        }
+
         if (twofaEnabled) {
           if (isDeviceTrustedForUser(freshUser.id)) {
             console.log('[2FA] Trusted device detected, skipping 2FA step.');
@@ -1166,8 +1230,10 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         redirectToDashboardByType(userType);
-      } catch {
+      } catch(error) {
         showLoginErrorBox();
+        const message=errorBox?.querySelector("p");
+        if(message)message.textContent=error.message || "Sign-in could not be completed. Please retry.";
       } finally {
         loginSubmitting = false;
         if (loginSubmitButton) {
