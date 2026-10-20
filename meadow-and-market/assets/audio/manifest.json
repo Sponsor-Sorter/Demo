@@ -403,6 +403,162 @@
       "character": "Farmer Jay",
       "providerVoice": "Mike - Animation, Explainers & Gaming",
       "bytes": 489684
+    },
+    {
+      "id": "minigame-coopmath",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 227623
+    },
+    {
+      "id": "minigame-differences",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 343920
+    },
+    {
+      "id": "minigame-memory-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 248939
+    },
+    {
+      "id": "minigame-milk-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 210069
+    },
+    {
+      "id": "minigame-flowers-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 172766
+    },
+    {
+      "id": "minigame-eggs-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 204740
+    },
+    {
+      "id": "minigame-sorting-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 233266
+    },
+    {
+      "id": "minigame-search-levels",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 271823
+    },
+    {
+      "id": "produce-apple",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9449
+    },
+    {
+      "id": "produce-carrot",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-tomato",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-corn",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9135
+    },
+    {
+      "id": "produce-pumpkin",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-strawberry",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 12897
+    },
+    {
+      "id": "produce-pear",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 8195
+    },
+    {
+      "id": "produce-banana",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-orange",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10389
+    },
+    {
+      "id": "produce-grapes",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10389
+    },
+    {
+      "id": "produce-watermelon",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 11643
+    },
+    {
+      "id": "produce-lemon",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9135
+    },
+    {
+      "id": "produce-cucumber",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 11016
+    },
+    {
+      "id": "produce-potato",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-onion",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 8508
+    },
+    {
+      "id": "produce-broccoli",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 9762
+    },
+    {
+      "id": "produce-peas",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 10076
+    },
+    {
+      "id": "produce-pepper",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 7881
     }
   ]
 }
