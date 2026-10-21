@@ -8,3 +8,14 @@ assert(source.includes('r.elapsed-r.lastAction<.25'));assert(source.includes('r.
 const game=fs.readFileSync(root+'/game.js','utf8');assert(game.includes("if(v==='requests')v='market'"));assert(game.includes("['packingbench','marketcart'].includes(o?.type))return {w:2,h:1}"));for(const id of ['packingbench','marketcart','farmers-market'])assert(fs.statSync(root+'/assets/generated/market/'+id+'.webp').size>1000);
 console.log('Premium prices, non-stacking build perks, two-tile footprints, failure preservation, exact-once sales, stock changes, invalid offers and pause guards passed.');
 assert(source.includes("if(e.target===dialog)e.stopPropagation()"),'Finishing a pointer-driven challenge cannot bubble a backdrop click that closes its result');
+// Artisan stalls use the same exact-once settlement and preserve unlock levels.
+const artisanScope={window:{meadowProduction:{recipes:[{id:'butter',unlock:8},{id:'berrytart',unlock:12},{id:'blanket',unlock:16},{id:'giftbasket',unlock:18}]}},Math,Date};vm.runInNewContext(source,artisanScope);const artisan=artisanScope.window.meadowFarmersMarket;
+assert.equal(artisan.stalls.length,3);assert.equal(new Set(artisan.stalls.flatMap(s=>s.goods)).size,23);
+assert.deepEqual(Array.from(artisan.available({level:8},{butter:2,berrytart:3},'pantry')),['butter']);
+assert(!artisan.available({level:8},{giftbasket:1},'handmade',true).includes('giftbasket'));
+assert(artisan.available({level:18},{},'handmade',true).includes('giftbasket'));
+for(const [id,base] of [['butter',26],['berrytart',70],['applepie',85],['blanket',155],['giftbasket',165]]){const basket={inventory:{[id]:4}},offer={...artisan.quote(built,{sell:base},3),item:id};assert.equal(artisan.settleSale(basket,offer,false),null);assert.equal(basket.inventory[id],4);assert.equal(artisan.settleSale(basket,offer,true).gold,Math.round(base*1.65)*3);assert.equal(basket.inventory[id],1);assert.equal(artisan.settleSale(basket,offer,true),null)}
+assert.equal(artisan.settleSale({inventory:{giftbasket:3}},{item:'giftbasket',amount:3,base:165,unit:999,total:2997},true),null);
+const productionScope={window:{}};vm.runInNewContext(fs.readFileSync(root+'/production.js','utf8'),productionScope);for(const stall of artisan.stalls.slice(1))for(const id of stall.goods){const art=productionScope.window.meadowProduction.items[id]?.icon||(id==='honey'?'assets/generated/apiary/honey.webp':null);assert(art&&fs.statSync(root+'/'+art).size>1000,'Market artwork exists for '+id)}
+assert(source.includes("api.event('market_'+stalls.find"));assert(source.includes('data-market-good'));assert(fs.statSync(root+'/assets/audio/jay-market-stalls127.mp3').size>10000);
+console.log('Three market stalls, 23 goods, artisan unlocks, matching assets, stock preservation, exact payouts and repeat protection passed.');

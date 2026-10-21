@@ -42,6 +42,10 @@
     {id:'artisan-pastry',title:'Tea in the orchard',text:'Collect six strawberry tarts and six orchard apple pies. Flour, butter and jam give your crops a second purpose.',target:12,reward:350,xp:55,measure:s=>Math.min(6,stats(s).made_berrytart||0)+Math.min(6,stats(s).made_applepie||0)},
     {id:'artisan-gifts',title:'Made with care',text:'Collect three wool blankets and three homestead gift baskets from your craft shed.',target:6,reward:450,xp:65,measure:s=>Math.min(3,stats(s).made_blanket||0)+Math.min(3,stats(s).made_giftbasket||0)}
   ]});
+  chapters.push({name:'A place in the village market',person:'jay',goals:[
+    {id:'market-pantry',title:'From our kitchen to your table',text:'Sell six pantry goods in the Farmers Market. Choose Kitchen pantry, then finish a packing or weighing delivery.',target:6,reward:200,xp:40,measure:s=>stats(s).market_pantry||0},
+    {id:'market-handmade',title:'Gifts made in the meadow',text:'Sell six handmade goods in the Farmers Market. Your craft shed turns farm produce into gifts for the village.',target:6,reward:300,xp:50,measure:s=>stats(s).market_handmade||0}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}

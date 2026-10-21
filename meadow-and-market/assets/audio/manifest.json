@@ -745,6 +745,14 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 349214
+    },
+    {
+      "id": "jay-market-stalls127",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 308185
     }
   ]
 }
