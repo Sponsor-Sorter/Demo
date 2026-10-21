@@ -9,16 +9,14 @@ do $$declare a jsonb;b jsonb;g int;i int;begin
  a:=public.meadow_market_play_service('purchase',jsonb_build_object('id',gen_random_uuid(),'sku','gem_chest'));
  a:=public.meadow_market_play_service('purchase',jsonb_build_object('id',gen_random_uuid(),'sku','gem_chest'));g:=(a->'wallet'->>'gems')::int;
  a:=public.meadow_market_play_service('redeem','{"id":"12000000-0000-4000-8000-000000000001","sku":"queue_slot","expectedLevel":0,"map":"willow","target":"queue-slot-check-120"}');
- assert (a->'wallet'->>'gems')::int=g-20,'First slot charges 20 gems';
+ assert (a->'wallet'->>'gems')::int=g-2,'First slot charges 2 gems';
  assert a#>>'{receipt,delivery,queue_slot,level}'='1','Receipt delivers level one';
  b:=public.meadow_market_play_service('redeem','{"id":"12000000-0000-4000-8000-000000000001","sku":"queue_slot","expectedLevel":0,"map":"willow","target":"queue-slot-check-120"}');
  assert b->>'duplicate'='true' and b->'wallet'->>'gems'=a->'wallet'->>'gems','Retry never charges twice';
- a:=public.meadow_market_play_service('redeem',jsonb_build_object('id',gen_random_uuid(),'sku','queue_slot','map','willow','target','queue-slot-check-120','expectedLevel',1,'level',1,'cost',0));
- assert (a->'wallet'->>'gems')::int=g-60 and a#>>'{receipt,delivery,queue_slot,level}'='2','Server selects next level and price';
- for i in 3..8 loop
- a:=public.meadow_market_play_service('redeem',jsonb_build_object('id',gen_random_uuid(),'sku','queue_slot','map','willow','target','queue-slot-check-120','expectedLevel',i-1));
- end loop;
- assert (a->'wallet'->>'gems')::int=g-720,'Eight slots have bounded server prices';
+ a:=public.meadow_market_play_service('redeem',jsonb_build_object('id',gen_random_uuid(),'sku','queue_slot','map','willow','target','queue-slot-check-120','expectedLevel',1,'amount',3,'level',1,'cost',0));
+ assert (a->'wallet'->>'gems')::int=g-6 and a#>>'{receipt,delivery,queue_slot,level}'='4','Server selects next level and price';
+ a:=public.meadow_market_play_service('redeem',jsonb_build_object('id',gen_random_uuid(),'sku','queue_slot','map','willow','target','queue-slot-check-120','expectedLevel',4,'amount',4));
+ assert (a->'wallet'->>'gems')::int=g-11,'Bundled slots use discounted server prices';
  begin
  perform public.meadow_market_play_service('redeem',jsonb_build_object('id',gen_random_uuid(),'sku','queue_slot','map','willow','target','queue-slot-check-120','expectedLevel',8));
  raise exception 'Ninth upgrade allowed';
