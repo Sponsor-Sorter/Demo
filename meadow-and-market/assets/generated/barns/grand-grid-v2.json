@@ -1,0 +1,127 @@
+{
+  "game": "Meadow Markets",
+  "asset": "Grand livestock barn, grid-aligned replacement",
+  "generator": "Built-in image_gen",
+  "source": "exec-db41a56a-0b75-41f0-ab82-8d35e8179920.png",
+  "width": 1254,
+  "height": 1254,
+  "footprint": {
+    "w": 4,
+    "h": 3
+  },
+  "alpha": true,
+  "prompt": "New isolated premium red wooden gambrel-roof livestock barn with cream beams, slate blue shingles, golden hay loft and double doors. Single rectangular 4 by 3 foundation, both ground axes at approximately +28.2 and -28.2 degrees, orthographic camera with vertical walls. Broad front faces lower-left, shorter side faces lower-right. Use the supplied precise ground-plane grid guide. No attached wings, silo, fences, plants, background, labels or grid lines. Transparent background. Match Meadow Markets illustrated farm style.",
+  "calibration": {
+    "w": 4,
+    "h": 3,
+    "width": 1254,
+    "height": 1254,
+    "left": [
+      148,
+      857.4208454912415
+    ],
+    "front": [
+      713.0774631356726,
+      1159.3120797113922
+    ],
+    "right": [
+      1174,
+      911.4887605061733
+    ],
+    "outline": [
+      [
+        102,
+        636
+      ],
+      [
+        105,
+        630
+      ],
+      [
+        195,
+        516
+      ],
+      [
+        219,
+        486
+      ],
+      [
+        225,
+        480
+      ],
+      [
+        684,
+        138
+      ],
+      [
+        685,
+        138
+      ],
+      [
+        896,
+        204
+      ],
+      [
+        903,
+        210
+      ],
+      [
+        997,
+        306
+      ],
+      [
+        1054,
+        366
+      ],
+      [
+        1087,
+        402
+      ],
+      [
+        1097,
+        414
+      ],
+      [
+        1103,
+        426
+      ],
+      [
+        1206,
+        636
+      ],
+      [
+        1208,
+        642
+      ],
+      [
+        1170,
+        912
+      ],
+      [
+        1164,
+        918
+      ],
+      [
+        1154,
+        924
+      ],
+      [
+        725,
+        1158
+      ],
+      [
+        708,
+        1158
+      ],
+      [
+        153,
+        864
+      ],
+      [
+        148,
+        858
+      ]
+    ]
+  },
+  "notes": "Visible foundation corners map exactly to the footprint. Shared vertical projection and separate horizontal face scales preserve vertical beams. Artwork is only format-encoded; projection occurs at render time."
+}
