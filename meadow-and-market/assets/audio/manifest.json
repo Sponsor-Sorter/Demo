@@ -753,6 +753,14 @@
       "character": "Farmer Jay",
       "voice": "Mike - Animation, Explainers & Gaming",
       "bytes": 308185
+    },
+    {
+      "id": "jade-crop-mastery128",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 372760
     }
   ]
 }

@@ -46,6 +46,10 @@
     {id:'market-pantry',title:'From our kitchen to your table',text:'Sell six pantry goods in the Farmers Market. Choose Kitchen pantry, then finish a packing or weighing delivery.',target:6,reward:200,xp:40,measure:s=>stats(s).market_pantry||0},
     {id:'market-handmade',title:'Gifts made in the meadow',text:'Sell six handmade goods in the Farmers Market. Your craft shed turns farm produce into gifts for the village.',target:6,reward:300,xp:50,measure:s=>stats(s).market_handmade||0}
   ]});
+  chapters.push({name:'A wiser way to grow',person:'jade',goals:[
+    {id:'crop-skilled',title:'Know your favourite crop',text:'Reach mastery rank 3 in one crop by harvesting 80 planted tiles. Farmer Jade’s harvests count too.',target:1,reward:200,xp:40,measure:s=>window.meadowMastery.crops.filter(id=>window.meadowMastery.status(s,id).rank>=3).length},
+    {id:'crop-variety',title:'A garden full of experience',text:'Reach mastery rank 3 in four different crops. Grow across your farm areas to discover more varieties.',target:4,reward:450,xp:65,measure:s=>window.meadowMastery.crops.filter(id=>window.meadowMastery.status(s,id).rank>=3).length}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}
