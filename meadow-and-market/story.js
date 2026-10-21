@@ -37,6 +37,11 @@
     {id:'family-comfort',title:'Comfortable homes',text:'Keep six housed animals above 75% for food, cleanliness and happiness. Open Animal Family to find anyone needing care.',target:6,reward:300,xp:50,measure:s=>objects(s).filter(o=>['chicken','cow','sheep','goat','alpaca'].includes(o.type)&&(o.coopId||o.barnId||o.paddockId)&&o.hunger>=75&&o.clean>=75&&o.happy>=75).length},
     {id:'family-bonds',title:'Everyone belongs',text:'Build friendship level 3 with five animals. Different care activities help friendships grow.',target:5,reward:400,xp:65,measure:s=>objects(s).filter(o=>['chicken','cow','sheep','goat','alpaca'].includes(o.type)&&window.meadowBonds.rank(o)>=3).length}
   ]});
+  chapters.push({name:'The village artisan kitchen',person:'jay',goals:[
+    {id:'artisan-pantry',title:'From milk to a village supper',text:'Collect six farm butter and six creamy mushroom soup from your kitchen.',target:12,reward:250,xp:45,measure:s=>Math.min(6,stats(s).made_butter||0)+Math.min(6,stats(s).made_mushroomsoup||0)},
+    {id:'artisan-pastry',title:'Tea in the orchard',text:'Collect six strawberry tarts and six orchard apple pies. Flour, butter and jam give your crops a second purpose.',target:12,reward:350,xp:55,measure:s=>Math.min(6,stats(s).made_berrytart||0)+Math.min(6,stats(s).made_applepie||0)},
+    {id:'artisan-gifts',title:'Made with care',text:'Collect three wool blankets and three homestead gift baskets from your craft shed.',target:6,reward:450,xp:65,measure:s=>Math.min(3,stats(s).made_blanket||0)+Math.min(3,stats(s).made_giftbasket||0)}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}

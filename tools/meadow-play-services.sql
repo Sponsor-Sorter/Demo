@@ -93,13 +93,13 @@ begin
    elsif sku='reward_turns' then cost:=10;add_turns:=3;
    elsif sku='item' then
     g:=p_data->>'item'; completed:=(p_data->>'amount')::int;
-    if g not in ('carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','apple','mushroom','egg','milk','goatmilk','wool','fleece','nectar','honey','flour','bread','jam','cheese','honeycake','yarn','soap','bouquet','applepreserve','goatcheese','scarf') or completed not between 1 and 100 then raise exception 'Unknown supply'; end if;
+    if g not in ('carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','apple','mushroom','egg','milk','goatmilk','wool','fleece','nectar','honey','flour','bread','jam','cheese','honeycake','yarn','soap','bouquet','applepreserve','goatcheese','scarf','butter','mushroomsoup','berrytart','applepie','blanket','giftbasket') or completed not between 1 and 100 then raise exception 'Unknown supply'; end if;
     cost:=completed*2; delivery:=jsonb_build_object('items',jsonb_build_object(g,completed));
    elsif sku='supplies' then
     if jsonb_typeof(p_data->'items')<>'object' or (select count(*) from jsonb_object_keys(p_data->'items'))>30 then raise exception 'Invalid supply basket';end if;
     for m in select key,value from jsonb_each_text(p_data->'items') loop
      completed:=m.value::int;g:=m.key;
-     if g not in ('carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','apple','mushroom','egg','milk','goatmilk','wool','fleece','nectar','honey','flour','bread','jam','cheese','honeycake','yarn','soap','bouquet','applepreserve','goatcheese','scarf') or completed not between 1 and 100 then raise exception 'Unknown supply';end if;
+     if g not in ('carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','apple','mushroom','egg','milk','goatmilk','wool','fleece','nectar','honey','flour','bread','jam','cheese','honeycake','yarn','soap','bouquet','applepreserve','goatcheese','scarf','butter','mushroomsoup','berrytart','applepie','blanket','giftbasket') or completed not between 1 and 100 then raise exception 'Unknown supply';end if;
      cost:=cost+completed*2;
     end loop;
     if cost<1 then raise exception 'Your basket is empty';end if;delivery:=jsonb_build_object('items',p_data->'items');

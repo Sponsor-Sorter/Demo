@@ -8,6 +8,9 @@
   recipes.push({id:'honeycake',input:{honey:1,flour:2,egg:1},count:2,time:65000});
   recipes.push({id:'yarn',station:'workshop',input:{wool:3},count:2,time:60000},{id:'soap',station:'workshop',input:{lavender:2,nectar:1},count:2,time:75000},{id:'bouquet',station:'workshop',input:{nectar:3,lavender:1},count:2,time:45000},{id:'applepreserve',input:{apple:5,nectar:2},count:3,time:90000},{id:'goatcheese',input:{goatmilk:3},count:2,time:80000});
   products.scarf={name:'Woven alpaca scarf',emoji:'🧣',sell:85,icon:'assets/generated/scarf.webp'};recipes.push({id:'scarf',station:'workshop',unlock:6,input:{fleece:3,wool:1},count:2,time:100000});
+  const artisanItems={butter:{name:'Churned farm butter',emoji:'🧈',sell:26},mushroomsoup:{name:'Creamy mushroom soup',emoji:'🥣',sell:50},berrytart:{name:'Strawberry tart',emoji:'🥧',sell:70},applepie:{name:'Orchard apple pie',emoji:'🥧',sell:85},blanket:{name:'Meadow wool blanket',emoji:'🧶',sell:155},giftbasket:{name:'Homestead gift basket',emoji:'🧺',sell:165}};
+  for(const [id,p] of Object.entries(artisanItems))products[id]={...p,icon:'assets/generated/artisan/'+id+'.webp'};
+  recipes.push({id:'butter',unlock:8,input:{milk:2},count:2,time:70000},{id:'mushroomsoup',unlock:10,input:{mushroom:3,milk:1},count:2,time:95000},{id:'berrytart',unlock:12,input:{jam:1,butter:1,flour:1},count:2,time:110000},{id:'applepie',unlock:14,input:{apple:4,flour:2,butter:1},count:2,time:125000},{id:'blanket',station:'workshop',unlock:16,input:{yarn:2,fleece:1},count:1,time:140000},{id:'giftbasket',station:'workshop',unlock:18,input:{bouquet:1,soap:1,applepreserve:1},count:1,time:150000});
   const shopCaps=[8,14,22,32],shopIntervals=[45000,35000,25000,18000],shopPrices=[1,1.05,1.1,1.2];
   function escapeShopName(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   let api,openKitchen=null;
@@ -49,11 +52,20 @@
   function queue(o,r){if(!r||!canMake(o,r))return false;const f=api.current();for(const[k,n]of Object.entries(r.input))f.inventory[k]-=n;o.jobs ||= [];const start=Math.max(Date.now(),o.jobs.at(-1)?.finishAt||0),duration=Math.round(r.time*[1,.8,.65][tier(o)]);o.jobs.push({id:r.id,startAt:start,finishAt:start+duration});o.lastRecipe=r.id;api.save();return true}
   function collect(o,quiet=false){const now=Date.now(),ready=(o.jobs||[]).filter(j=>j.finishAt<=now);if(!ready.length)return 0;for(const j of ready){const r=recipes.find(r=>r.id===j.id);if(r){api.current().inventory[r.id]=(api.current().inventory[r.id]||0)+r.count;api.event?.('made_'+r.id,r.count)}}o.jobs=o.jobs.filter(j=>j.finishAt>now);api.xp(ready.length*6);api.event?.('craft',ready.length);api.save();api.render();window.meadowAudio?.play('harvest');api.notify('Collected '+ready.length+' '+(o.type==='workshop'?'craft':'kitchen')+' batches');if(!quiet)showKitchen(o);return ready.length}
   function stationStatus(o,now=Date.now()){const jobs=o.jobs||[],ready=jobs.filter(j=>j.finishAt<=now).length;return {ready,working:jobs.filter(j=>j.finishAt>now).length,idle:jobs.length===0}}
+  function incoming(id){return Object.values(api.farms?.()||{here:api.current()}).flatMap(f=>f.objects||[]).flatMap(s=>s.jobs||[]).filter(j=>j.id===id).reduce((n,j)=>n+(recipes.find(r=>r.id===j.id)?.count||0),0)}
+  function prepareRecipe(o,target,seen=new Set()){
+    if(!target||seen.has(target.id)||target.unlock>(api.level?.()||1))return null;
+    seen.add(target.id);if(canMake(o,target))return target;
+    if((o.jobs||[]).length>=capacity(o))return null;
+    for(const [id,n] of Object.entries(target.input)){
+      if((api.current().inventory[id]||0)+incoming(id)>=n)continue;
+      const source=recipes.find(r=>r.id===id&&(r.station||'kitchen')===(o.type||'kitchen'));
+      const next=prepareRecipe(o,source,new Set(seen));if(next)return next;
+    }return null;
+  }
   function nextRecipe(o){
     const target=recipes.find(r=>r.id===(o.autoRecipe||o.lastRecipe||(o.type==='workshop'?'yarn':'bread'))&&(r.station||'kitchen')===(o.type||'kitchen'))||recipes.find(r=>(r.station||'kitchen')===(o.type||'kitchen'));
-    if(!target||!belowCap(o,target))return null;
-    if(target&&canMake(o,target))return target;
-    if(target&&['bread','honeycake'].includes(target.id)&&(api.current().inventory.flour||0)<(target.input.flour||0)){const flour=recipes.find(r=>r.id==='flour'),incoming=Object.values(api.farms?.()||{here:api.current()}).flatMap(f=>f.objects||[]).flatMap(s=>s.jobs||[]).filter(j=>j.id==='flour').length*flour.count;if(incoming+(api.current().inventory.flour||0)<target.input.flour&&canMake(o,flour))return flour}return null;
+    if(!target||!belowCap(o,target))return null;return prepareRecipe(o,target);
   }
   function helperTask(o){if(o.autoWork===false)return null;const status=stationStatus(o);if(status.ready)return 'collect';if(nextRecipe(o))return 'make';return null}
   function helperWork(o,action){if(o.autoWork===false)return false;if(action==='collect')return !!collect(o,true);if(action==='make'){const recipe=nextRecipe(o);if(!recipe)return false;const chosen=o.autoRecipe||o.lastRecipe||'bread';o.autoRecipe=chosen;if(!queue(o,recipe))return false;api.render();window.meadowAudio?.play('cook');api.notify('Family bakery started '+item(recipe.id).name.toLowerCase());return true}return false}
@@ -71,7 +83,7 @@
         <div class="production-actions">
         ${t<2?`<button class="small-button full-button" id="kitchen-upgrade" ${api.coins()>=cost?'':'disabled'}>Upgrade building · ${cost} gold</button><small>+1 slot · ${[20,35][t]}% faster new batches</small>`:'<small>Building fully upgraded</small>'}</div>
         <nav class="production-tabs" aria-label="Production controls"><button id="production-recipes-tab" aria-pressed="true">Recipes</button><button id="production-helpers-tab" aria-pressed="false">Automation</button></nav>
-        <div id="production-recipes"><div class="store-list">${available.map(r=>`<article class="store-item"><span class="item-icon">${icon(r.id)}</span><div class="task-main"><strong>${item(r.id).name} × ${r.count}</strong><small>${Object.entries(r.input).map(([k,n])=>n+' '+item(k).name+' · '+(api.current().inventory[k]||0)+' owned').join('<br>')}</small><small>${Math.round(r.time*[1,.8,.65][t]/1000)}s${r.unlock?' · Level '+r.unlock:''}</small></div><button class="small-button kitchen-make" data-recipe="${r.id}" ${canMake(o,r)?'':'disabled'}>Make</button></article>`).join('')}</div></div>
+        <div id="production-recipes">${api.level()>=8?'<button class="small-button full-button" id="artisan-guide">🔊 Farmer Jay: artisan recipes</button>':''}<div class="store-list">${available.map(r=>`<article class="store-item"><span class="item-icon">${icon(r.id)}</span><div class="task-main"><strong><button class="production-item-info" data-production-info="${r.id}" aria-label="How to make ${item(r.id).name}">${item(r.id).name} ›</button> × ${r.count}</strong><small>${Object.entries(r.input).map(([k,n])=>n+' '+item(k).name+' · '+(api.current().inventory[k]||0)+' owned').join('<br>')}</small><small>${Math.round(r.time*[1,.8,.65][t]/1000)}s${r.unlock?' · Level '+r.unlock:''}</small></div><button class="small-button kitchen-make" data-recipe="${r.id}" ${canMake(o,r)?'':'disabled'}>Make</button></article>`).join('')}</div></div>
         <div id="production-helpers" hidden><label class="production-toggle"><input id="kitchen-auto" type="checkbox" ${o.autoWork!==false?'checked':''}> Collect and repeat with helpers</label>
         <label for="kitchen-repeat">Repeat recipe</label><select id="kitchen-repeat">${unlocked.map(r=>`<option value="${r.id}" ${r.id===selected?'selected':''}>${item(r.id).name}</option>`).join('')}</select>
         <label for="kitchen-cap">Stop at this many items</label><input id="kitchen-cap" type="number" inputmode="numeric" min="0" max="9999" step="1" value="${Math.min(9999,Math.max(0,Math.floor(Number(o.autoCap)||0)))}"><small>0 = no limit. Includes your basket and queued output. Helpers resume after goods are used or sold.</small>
@@ -83,6 +95,8 @@
     $('#kitchen-collect').onclick=()=>collect(o);
     $('#production-guide').onclick=()=>window.meadowAudio?.speak('jay-production120');
     if(!api.current().productionGuide120){api.current().productionGuide120=true;api.save();window.meadowAudio?.speak('jay-production120')}
+    else if(api.level()>=8&&!api.current().artisanGuide126){api.current().artisanGuide126=true;api.save();window.meadowAudio?.speak('jay-artisan126')}
+    $('#artisan-guide')?.addEventListener('click',()=>window.meadowAudio?.speak('jay-artisan126'));$$('[data-production-info]').forEach(b=>b.onclick=()=>window.meadowAlmanac?.showGood(b.dataset.productionInfo));
     $('#queue-upgrade').onclick=()=>queueUpgradeDialog(o);
     $('#kitchen-help-listen').onclick=()=>window.meadowAudio?.speak('rhys-farm-routine');
     const autoStatus=()=>{$('.production-auto-status').textContent=o.autoWork===false?'Helpers paused.':belowCap(o,recipes.find(r=>r.id===($('#kitchen-repeat').value))||unlocked[0])?'Ready when ingredients and a helper are available.':'Target reached or the next batch would exceed it.'};
