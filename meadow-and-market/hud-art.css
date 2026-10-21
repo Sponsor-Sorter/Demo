@@ -34,3 +34,5 @@
 .hud-painted .hud-painted-art,.hud-painted.active .hud-painted-art,.hud-exploring>.hud-painted-art,.scene-action.club-launch img,.topbar #map-switch .hud-painted-art,.topbar #guide-launcher img,.brand-mark img,.topbar .resource img{filter:var(--hud-outline) var(--hud-glow,drop-shadow(0 1px 1px #30200f66))!important}
 .hud-painted.has-notification,.scene-action.has-notification,.topbar #map-switch.travel-walkthrough{--hud-glow:drop-shadow(0 0 7px #fffbd0dd)}
 .hud-painted:disabled .hud-painted-art{filter:var(--hud-outline)!important}
+
+@media(min-width:651px){.farm-hud .mode-switch,.farm-hud .hud-actions{gap:12px!important}}@media(max-width:650px){.farm-hud .mode-switch,.farm-hud .hud-actions{gap:5px!important}.topbar .resource-bar{gap:6px!important}}

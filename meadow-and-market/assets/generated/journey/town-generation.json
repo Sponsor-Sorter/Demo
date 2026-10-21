@@ -1,0 +1,84 @@
+{
+  "provider": "OpenAI built-in image_gen",
+  "generated": "2026-10-21",
+  "connection": {
+    "parent": "east",
+    "direction": "northeast",
+    "parentExit": [
+      0.8,
+      0.02
+    ],
+    "townEntrance": [
+      0.02,
+      0.98
+    ],
+    "nativeSize": [
+      1536,
+      1024
+    ],
+    "worldOffset": [
+      1198.08,
+      -983.04
+    ],
+    "parentSha256": "3922781cd89439f459bbaa22441d7a1aece3902f951eb8113a25ec09c1619c9c"
+  },
+  "entries": [
+    {
+      "id": "town-northeast",
+      "source": "exec-3be4be90-1d68-4d89-b67c-b8cfb6d657c4.png",
+      "prompt": "Use case: game map illustration. Create the NEXT adjoining Meadow Markets world map, northeast beyond the upper-right road of reference image 1, NOT a replacement for the farmland. Reference 1 is the existing Eastbank farm landscape and must define camera angle, texture scale, warm afternoon lighting, grass colours, stonework, hedges and road width. Reference 2 defines the painterly game style ONLY: do not copy its duplicate bridge/river/farm clearing layout. New asset: a full-bleed 1536x1024 (3:2) high definition orthographic isometric small rural English market town with NO UI, NO text, NO map grid, NO horizon. Geographic connection: the old Eastbank dirt road exits that map's top edge around x=80%; this new map is shifted northeast, so the same 50-pixel-wide sandy road MUST enter the new map through the BOTTOM edge at x=14%, with identical sandy colour, fence style and camera slope, then gently curve northeast into the town. Bottom-left border is rural meadow and matching hedge/stone-wall vegetation, not cliff or water; no entrance arch and no second bridge. Roads connect logically to every site; pedestrian cobblestone lanes branch off a central market square. Town fills the middle and upper/right portions: charming peripheral stone cottages with terracotta roofs, a few decorated market stalls, flower baskets, benches and small gardens, all at the same scale as the source farm's stone shed. Keep FIVE clearly readable EMPTY cobblestone building foundations for separate upgrade sprites: visitor post ground anchor (27%,77%), bakery ground anchor (43%,53%), cafe ground anchor (62%,45%), community hall ground anchor (79%,36%), fishing jetty ground anchor (20%,38%) at a small calm pond on the WEST side. Each foundation must be open, correctly isometric, and clear of trees/buildings in the whole sprite space above it; buildings will be composited by the game. Small pond is within this town, not a duplicate of the farm's large river. No large empty farming field, crop plots, livestock, characters, baked-in signs, floating artwork or oversized props. Natural connected landscape border, no vignette, no picture frame. A cohesive finished game environment that visually continues the existing map's road and terrain."
+    },
+    {
+      "id": "town-clear-wharf",
+      "source": "exec-0ced7896-3f97-4ef3-adc5-2b7bb87f90e5.png",
+      "prompt": "Precise game-background edit. Edit ONLY the small wooden fishing pier and its timber posts beside the pond in the LEFT-UPPER QUARTER of this approved town map (around x=9% to 19%, y=28% to 37%). Remove those wooden planks/posts and replace them with the same pond water and natural shoreline, so an upgradeable game wharf sprite can be placed there. KEEP the existing adjoining pale-stone landing/foundation completely intact. Keep EVERY other town building, empty building foundation, road, pond outline, vegetation, colour, camera angle, canvas dimensions and position unchanged. Do not add anything else. Full-bleed map, no text, no UI, no new houses."
+    },
+    {
+      "id": "wharf-stages",
+      "source": "exec-eb0f707d-67ff-4bdb-bbf9-cb9db4053b22.png",
+      "prompt": "Use case: stylized game asset sprite atlas. Reference image: the approved Meadow Markets town map. Create FOUR transparent-background isometric wharf upgrade sprites, left to right in ONE evenly spaced 4-column by 1-row atlas (wide 4:1 composition, ideally 2048x512). They MUST fit the EXISTING pond-side stone landing and short wooden dock near x=20%, y=30% of this map. Match EXACT camera, perspective, warm painterly sharpness, terracotta timber hut design and size of the map's wooden pier. The wharf is a compact stone landing on the RIGHT with a low small fishing tackle shelter at rear-right, and a short wooden jetty projecting LEFT/down-left over the pond. No full water patch or grass tile. Entire four-stage wharf footprint stays IDENTICAL: low isometric stone diamond landing with a short left-facing timber pier, approximately 2.2 times wider than its total height. Keep shelter small so it does not cover the lane behind this landing. Stage 0: neglected landing, a few broken planks and old posts, no big hut. Stage 1: repaired landing and half-restored wooden pier, simple low open shelter frame. Stage 2: finished pier with handrails and a small orange-roof tackle shelter, rope coil and one fishing rod. Stage 3: same completed footprint and roof height, upgraded with neatly hung fishing rods, a net, flower pot, small lantern and fishing baskets; clearly the most polished. Every sprite uses the same view, ground anchor, scale and pier direction. No numbered stages, letters, UI, horizon, landscape, ground discs, green border, white outlines or background. Actual transparent alpha, fully isolated cutouts, no clipped edges, no neighbouring parts spilling between cells, ample equal gutters. These are production game sprites, not four separate pictures."
+    },
+    {
+      "id": "wharf-clean-alpha",
+      "source": "exec-0f58ba0f-61b9-45fd-9f46-a28f98e585ef.png",
+      "prompt": "Technical cutout cleanup of this EXACT four-stage wharf atlas. Preserve all four sprites, their positions, dimensions, colours, perspective, props and transparent gutters. There is an ugly RED MATTE HALO and blocky opaque red contamination around the outside silhouettes. REMOVE EVERY red matte fringe pixel and any grey/checkerboard edge contamination. Produce clean natural antialiased alpha edges, actual fully transparent background. Do not add a coloured outline or stroke. Do not repaint or redesign the buildings. Keep the source canvas 2172x724 and the same four equal cells if possible. This is a production sprite transparency repair only."
+    }
+  ],
+  "files": [
+    {
+      "file": "assets/generated/journey/town-northeast.webp",
+      "width": 1536,
+      "height": 1024,
+      "alphaPreserved": false,
+      "bytes": 830012
+    },
+    {
+      "file": "assets/generated/journey/wharf-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 57100
+    },
+    {
+      "file": "assets/generated/journey/wharf-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 61914
+    },
+    {
+      "file": "assets/generated/journey/wharf-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 67196
+    },
+    {
+      "file": "assets/generated/journey/wharf-3.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 68426
+    }
+  ]
+}
