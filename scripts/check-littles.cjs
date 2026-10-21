@@ -11,3 +11,5 @@ console.log('Littles: 14 games, 38 art pages, care plans, level progression, shu
 
 require("./check-littles-art.cjs");
 
+
+require("./check-littles-together.cjs");

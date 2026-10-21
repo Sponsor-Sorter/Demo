@@ -38,11 +38,11 @@
       "title": "Meadow Market Littles",
       "type": "Game",
       "tagline": "Little adventures. Big discoveries.",
-      "description": "Play farm mini-games, care for animals, solve puzzles and create colourful pictures with Farmer Jade, Farmer Rhys and Farmer Jay. A separate game with its own progress.",
+      "description": "Explore farm adventures, animal care, puzzles and art with Farmer Jade, Farmer Rhys and Farmer Jay. Play four two-player games on one device or pair directly across home Wi-Fi.",
       "image": "./meadow-market-littles/assets/icon-512.png",
       "imageAlt": "Meadow Market Littles game icon",
       "status": "Early access",
-      "build": "Browser build 1",
+      "build": "Browser build 5",
       "releaseManifest": "./meadow-market-littles/release.json",
       "requirements": "Modern browser on phone, tablet or computer, or the Android testing package. Works in portrait or landscape. Internet access is needed for cloud saves and updates.",
       "instructionsTitle": "How to play and install",
@@ -64,7 +64,7 @@
           "url": "https://sponsorsorter.com/meadow-market-littles/meadow-market-littles.apk"
         }
       ],
-      "notes": "Early access. Android testing package version 0.1.0, build 1. The browser build shown here updates separately from the Android package. Android installation requires device confirmation. Meadow Market Littles keeps its progress separate from Meadow Markets."
+      "notes": "Early access. Android test package version 0.2.0, build 2. Local two-player games use QR pairing on the same Wi-Fi, without an internet game server. Open and cache the game before going offline. Some guest networks block device-to-device connections. Game progress remains separate from Meadow Markets."
     },
     {
       "id": "bargain-barge",

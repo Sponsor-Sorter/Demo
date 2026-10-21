@@ -1,0 +1,1 @@
+const QRCode=require('qrcode');const jsQR=require('jsqr');window.meadowLocalQR={draw:(canvas,text)=>QRCode.toCanvas(canvas,text,{width:360,margin:3,errorCorrectionLevel:'L'}),read:(bytes,w,h)=>jsQR(bytes,w,h,{inversionAttempts:'dontInvert'})?.data||null};
