@@ -1,0 +1,56 @@
+{
+  "provider": "OpenAI built-in image_gen",
+  "generated": "2026-10-21",
+  "files": [
+    {
+      "id": "milk",
+      "file": "assets/generated/shop-goods/milk.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "source": "exec-b6b676c3-4a90-4d13-9ffa-858bb5fe17e2.png",
+      "bytes": 47506,
+      "prompt": "Create ONE production-ready transparent inventory sprite for Meadow Markets, a polished cozy farm and city-builder game. Square 1024 by 1024 image, single isolated object, centered with generous 12 percent clear margin, entire silhouette visible. A squat clear glass milk bottle filled with white cow's milk, sealed with a blue gingham cloth cover and twine, accompanied by a small wooden cap. An immediately recognizable farm milk inventory item. Style: rich softly hand-painted storybook game art, appealing rounded forms, warm natural colors, visible delicate painterly texture, tasteful soft directional lighting from upper left, view slightly downward at about 30 degrees. Match a premium cozy farming game's painted wooden trays and artisan food icons. Readable silhouette at 48 pixels. The object occupies about 75 percent of the image. Genuine transparent alpha everywhere outside the object, including holes and gaps. No solid background, no checkerboard drawn into pixels, no scene, no labels, no text, no frame, no badge, no thick outline, no cast ground plane or fuzzy backdrop halo."
+    },
+    {
+      "id": "egg",
+      "file": "assets/generated/shop-goods/egg.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "source": "exec-af0b6cfe-0c04-4b44-9b49-30c196b88f2a.png",
+      "bytes": 53770,
+      "prompt": "Create ONE production-ready transparent inventory sprite for Meadow Markets, a polished cozy farm and city-builder game. Square 1024 by 1024 image, single isolated object, centered with generous 12 percent clear margin, entire silhouette visible. A small oval warm wicker basket containing five fresh eggs, cream, white and pale brown, resting in a little golden straw. An immediately recognizable farm egg inventory item. Style: rich softly hand-painted storybook game art, appealing rounded forms, warm natural colors, visible delicate painterly texture, tasteful soft directional lighting from upper left, view slightly downward at about 30 degrees. Match a premium cozy farming game's painted wooden trays and artisan food icons. Readable silhouette at 48 pixels. The object occupies about 75 percent of the image. Genuine transparent alpha everywhere outside the object, including holes and gaps. No solid background, no checkerboard drawn into pixels, no scene, no labels, no text, no frame, no badge, no thick outline, no cast ground plane or fuzzy backdrop halo."
+    },
+    {
+      "id": "wool",
+      "file": "assets/generated/shop-goods/wool.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "source": "exec-581521ab-26e2-4ecd-b278-1e425b6f1c6f.png",
+      "bytes": 62218,
+      "prompt": "Create ONE production-ready transparent inventory sprite for Meadow Markets, a polished cozy farm and city-builder game. Square 1024 by 1024 image, single isolated object, centered with generous 12 percent clear margin, entire silhouette visible. A neat soft fluffy bundle of raw cream sheep wool, unspun curly fleece gathered loosely with one piece of natural twine, with a small loose tuft beside it. Clearly raw wool, not a spun yarn ball. Style: rich softly hand-painted storybook game art, appealing rounded forms, warm natural colors, visible delicate painterly texture, tasteful soft directional lighting from upper left, view slightly downward at about 30 degrees. Match a premium cozy farming game's painted wooden trays and artisan food icons. Readable silhouette at 48 pixels. The object occupies about 75 percent of the image. Genuine transparent alpha everywhere outside the object, including holes and gaps. No solid background, no checkerboard drawn into pixels, no scene, no labels, no text, no frame, no badge, no thick outline, no cast ground plane or fuzzy backdrop halo."
+    },
+    {
+      "id": "goatmilk",
+      "file": "assets/generated/shop-goods/goatmilk.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "source": "exec-652b96a3-1b72-4186-b2f0-d70caf3b9a62.png",
+      "bytes": 44222,
+      "prompt": "Create ONE production-ready transparent inventory sprite for Meadow Markets, a polished cozy farm and city-builder game. Square 1024 by 1024 image, single isolated object, centered with generous 12 percent clear margin, entire silhouette visible. A small cream earthenware milk pitcher filled with white goat milk, with a softly embossed goat silhouette on the front and one small green leaf at its foot. Distinctive simple goat-milk inventory item, no words. Style: rich softly hand-painted storybook game art, appealing rounded forms, warm natural colors, visible delicate painterly texture, tasteful soft directional lighting from upper left, view slightly downward at about 30 degrees. Match a premium cozy farming game's painted wooden trays and artisan food icons. Readable silhouette at 48 pixels. The object occupies about 75 percent of the image. Genuine transparent alpha everywhere outside the object, including holes and gaps. No solid background, no checkerboard drawn into pixels, no scene, no labels, no text, no frame, no badge, no thick outline, no cast ground plane or fuzzy backdrop halo."
+    },
+    {
+      "id": "nectar",
+      "file": "assets/generated/shop-goods/nectar.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "source": "exec-7cc79b1a-b720-47fd-b6a2-a07b7d9fd593.png",
+      "bytes": 64606,
+      "prompt": "Create ONE production-ready transparent inventory sprite for Meadow Markets, a polished cozy farm and city-builder game. Square 1024 by 1024 image, single isolated object, centered with generous 12 percent clear margin, entire silhouette visible. A small clear rounded glass bottle filled with translucent rose-gold flower nectar, cork stopper, a little pink meadow blossom and lavender sprig tied at the neck. Clearly a gentle farm flower-nectar inventory ingredient, no honey dipper and no bee. Style: rich softly hand-painted storybook game art, appealing rounded forms, warm natural colors, visible delicate painterly texture, tasteful soft directional lighting from upper left, view slightly downward at about 30 degrees. Match a premium cozy farming game's painted wooden trays and artisan food icons. Readable silhouette at 48 pixels. The object occupies about 75 percent of the image. Genuine transparent alpha everywhere outside the object, including holes and gaps. No solid background, no checkerboard drawn into pixels, no scene, no labels, no text, no frame, no badge, no thick outline, no cast ground plane or fuzzy backdrop halo."
+    }
+  ]
+}

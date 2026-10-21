@@ -50,6 +50,10 @@
     {id:'crop-skilled',title:'Know your favourite crop',text:'Reach mastery rank 3 in one crop by harvesting 80 planted tiles. Farmer Jade’s harvests count too.',target:1,reward:200,xp:40,measure:s=>window.meadowMastery.crops.filter(id=>window.meadowMastery.status(s,id).rank>=3).length},
     {id:'crop-variety',title:'A garden full of experience',text:'Reach mastery rank 3 in four different crops. Grow across your farm areas to discover more varieties.',target:4,reward:450,xp:65,measure:s=>window.meadowMastery.crops.filter(id=>window.meadowMastery.status(s,id).rank>=3).length}
   ]});
+  chapters.push({name:'A shop that grows with you',person:'jay',goals:[
+    {id:'shop-shelf-plan',title:'A little plan for the shelves',text:'Build a market stall and enable a shelf plan with at least one good. Set a basket reserve for your recipes.',target:1,reward:120,xp:25,measure:s=>Object.values(s.farms).filter(f=>{const p=window.meadowShopPlan.plan(f);return f.objects.some(o=>o.type==='stall')&&p.enabled&&p.rules.length}).length},
+    {id:'shop-helper-supply',title:'Neighbours are always welcome',text:'Let Farmer Jay restock forty goods across your farm shops. He follows your plan while you play in each area.',target:40,reward:300,xp:50,measure:s=>Object.values(s.farms).reduce((n,f)=>n+(f.shop?.helperStocked||0),0)}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}

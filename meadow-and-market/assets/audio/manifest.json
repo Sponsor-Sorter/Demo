@@ -761,6 +761,14 @@
       "character": "Farmer Jade",
       "voice": "Hope - upbeat and clear",
       "bytes": 372760
+    },
+    {
+      "id": "jay-shop-plan130",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 370879
     }
   ]
 }
