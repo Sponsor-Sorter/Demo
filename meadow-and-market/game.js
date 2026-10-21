@@ -354,6 +354,19 @@
   function buyPlace(type){state.moving=null;state.selected=null;state.mode='build';state.view='farm';state.placing=type;setTrayCollapsed(false);render();$('#tray-help').textContent='Tap an empty grid tile to place '+(catalog.find(i=>i.id===type)?.name||'item')+'.';notify('Choose a sunny tile for it ✨')}
   function emptyCell(){for(let y=0;y<(current().expanded?12:10);y++)for(let x=0;x<14;x++)if(fitsFootprint({type:'stall'},x,y))return{x,y};return null}
   function mapDialog(){if(pendingTransfer){notify('Finish or cancel the current move first');return}const list=$('#map-list');list.innerHTML=maps.map(m=>{const open=state.level>=m.unlock,has=!!state.farms[m.id];return `<button class="map-option ${!open?'locked':''} ${state.active===m.id?'current':''}" data-map="${m.id}"><img class="map-option-preview" src="assets/generated/${m.asset||'willowbrook-meadow-map.webp'}" alt=""><span class="task-main"><strong>${m.name} ${state.active===m.id?'· You are here':''}</strong><small>${has?'Your farm is ready to visit':open?m.description:'Unlocks at level '+m.unlock}</small></span><span class="price">${has?'Visit':open?'Unlock':'🔒'}</span></button>`}).join('');$$('.map-option',list).forEach(b=>b.onclick=()=>visitMap(b.dataset.map));$('#maps-dialog').showModal()}
+  function travelGuide(){
+    const button=$('#map-switch'),available=maps.some(m=>m.id!==maps[0].id&&state.level>=m.unlock);
+    button.hidden=!available;
+    if(!available||state.travelGuide119||travelGuide.showing||activeVisit||state.mode==='build'||document.querySelector('dialog[open]')||document.hidden)return;
+    travelGuide.showing=true;button.classList.add('travel-walkthrough');
+    openModal('<div class="sheet-head"><div><small class="eyebrow">NEW PLACES TO FARM</small><h2>Your next farm is ready</h2></div></div><p class="sheet-copy">The map icon at the top opens your farms. Choose an unlocked place to start another farm, then return here whenever you like. Each farm keeps its own buildings, crops and animals. More places unlock as you level up.</p><button class="small-button full-button" id="travel-listen">Listen</button><button class="primary-button full-button" id="travel-open">Choose a farm</button><button class="small-button full-button" id="travel-later">Stay here</button>');
+    const finish=()=>{state.travelGuide119=true;travelGuide.showing=false;button.classList.remove('travel-walkthrough');save();window.meadowAudio?.stopVoice()};
+    $('#modal-dialog').addEventListener('close',finish,{once:true});
+    $('#travel-listen').onclick=()=>window.meadowAudio?.speak('hud-maps');
+    $('#travel-open').onclick=()=>{$('#modal-dialog').close();finish();mapDialog()};
+    $('#travel-later').onclick=()=>$('#modal-dialog').close();
+    window.meadowAudio?.speak('hud-maps');
+  }
   async function travelArea(id){if(pendingTransfer){notify('Finish or cancel the current move first');return}
     const m=maps.find(a=>a.id===id);if(!m)return;
     if(state.level<m.unlock){notify(m.name+' opens at level '+m.unlock+' · keep farming and filling orders');return}
@@ -537,7 +550,8 @@
     speed:d=>{const o=Object.values(state.farms).flatMap(f=>f.objects).find(o=>o.id===d.target);if(!o)return;const ms=d.minutes*60000;if(o.type==='plot'&&o.plantedAt)o.plantedAt-=ms;for(const j of o.jobs||[]){j.startAt-=ms;j.finishAt-=ms}},recipes:()=>window.meadowProduction.recipes
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
-  const currentBuild=118;
+  setInterval(travelGuide,1500);
+  const currentBuild=119;
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
     const promptForUpdate=()=>{const dialog=$('#update-dialog'),waitingBuild=Number(reg.waiting?new URL(reg.waiting.scriptURL).searchParams.get('build'):0);availableBuild=Math.max(availableBuild,waitingBuild);if(navigator.serviceWorker.controller&&isUpdateReady(currentBuild,availableBuild,waitingBuild>currentBuild)&&dialog){if(!gameUpdateCanPrompt({hidden:document.hidden,modal:$$('dialog[open]').some(d=>d.id!=='update-dialog'),build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil}))return;$('#update-title').textContent='Meadow Markets build '+availableBuild+' is ready';dialog.querySelector('.sheet-copy').textContent='You have build '+currentBuild+'. Install the latest farm improvements and keep your saved farm.';if(!dialog.open)dialog.showModal()}};
