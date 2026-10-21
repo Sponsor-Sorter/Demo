@@ -6,7 +6,7 @@
     ['listenharvest','Listen, Look, Harvest','jade','sorting','minigame-sorting','Pick the fruit or vegetable Farmer Jade asks for.','listen'],
     ['meadowpairs','Meadow Memory Pairs','jade','memory','minigame-memory','Turn two cards at a time and find three matching pairs.','memory'],
     ['spokenorder','Pack the Spoken Order','jay','sorting','minigame-sorting','Listen to Farmer Jay’s three-item market order, then pack each food in the same order. You can replay the order whenever you need.','order'],
-    ['paddockchange','What Changed in the Paddock?','rhys','differences','Compare the Before and Now pictures, then choose the farm friend who is missing.','change'],
+    ['paddockchange','What Changed in the Paddock?','rhys','differences','minigame-differences','Compare the Before and Now pictures, then choose the farm friend who is missing.','change'],
     ['farmerpattern','Copy the Farmer’s Pattern','jade','meadow','minigame-memory','Listen to the little pattern, then tap the pictures in the same order.','pattern'],
     ['animalhome','Find the Animal’s Home','jay','coop','minigame-search-levels','Help each animal find its right home.','home'],
     ['barnyardlisten','Who Made That Sound?','jade','coop','minigame-memory','Listen for a farm friend, then tap the picture of the animal who made the sound. Hear it again as often as you like.','animalSound'],
