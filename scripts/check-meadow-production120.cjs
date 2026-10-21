@@ -1,0 +1,16 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const source=fs.readFileSync('meadow-and-market/production.js','utf8');
+const objects=[],farm={inventory:{wheat:100,egg:100,flour:100},objects},scope={window:{},setInterval(){},Date,document:{querySelector(){return null},querySelectorAll(){return[]}}};
+vm.runInNewContext(source,scope);const p=scope.window.meadowProduction;
+p.attach({current:()=>farm,farms:()=>({willow:farm}),items:p.items,level:()=>8,save(){},render(){},xp(){},notify(){},earn(){},view:()=>'',event(){}});
+const kitchen={type:'kitchen',tier:0,jobs:[],autoRecipe:'bread',autoCap:6};objects.push(kitchen);
+assert.equal(p.capacity(kitchen),2);kitchen.queueSlots=3;assert.equal(p.capacity(kitchen),5);kitchen.tier=2;assert.equal(p.capacity(kitchen),7);kitchen.queueSlots=99;assert.equal(p.capacity(kitchen),12);kitchen.queueSlots=0;kitchen.tier=0;
+assert.equal(p.nextRecipe(kitchen).id,'bread');assert(p.helperWork(kitchen,'make'));assert.equal(kitchen.jobs.length,1);assert(p.helperWork(kitchen,'make'));assert.equal(kitchen.jobs.length,2);assert(!p.helperWork(kitchen,'make'),'Full queue cannot spend ingredients');
+farm.inventory.bread=4;assert.equal(p.nextRecipe(kitchen),null,'Stored plus queued output stops automation');kitchen.jobs=[];assert.equal(p.nextRecipe(kitchen).id,'bread','Using goods resumes');farm.inventory.bread=5;assert.equal(p.nextRecipe(kitchen),null,'A two-item batch cannot pass a six-item target');
+farm.inventory.bread=0;farm.inventory.flour=0;kitchen.autoCap=0;assert.equal(p.nextRecipe(kitchen).id,'flour');assert(p.helperWork(kitchen,'make'));assert.equal(p.nextRecipe(kitchen),null,'Do not fill every slot with prerequisite flour already queued');
+kitchen.jobs=[];kitchen.autoWork=false;assert.equal(p.helperTask(kitchen),null);kitchen.autoWork=true;farm.inventory.flour=2;assert.equal(p.helperTask(kitchen),'make');
+const plant={window:{}};vm.runInNewContext(fs.readFileSync('meadow-and-market/planting-policy.js','utf8'),plant);const policy=plant.window.meadowPlanting;
+assert.equal(policy.crop({},'wheat','carrot'),'wheat');assert.equal(policy.crop({helperPlantMode:'selected'},'wheat','lavender'),'lavender');assert.equal(policy.crop({},null,'carrot'),'carrot');
+assert(!policy.canPlant({helperCropCap:10},'wheat',{wheat:6},[{type:'plot',crop:'wheat',plantedAt:1}],()=>4));assert(policy.canPlant({helperCropCap:10},'wheat',{wheat:5},[],()=>4));assert(policy.canPlant({helperCropCap:0},'wheat',{wheat:9999},[],()=>4));
+const css=fs.readFileSync('meadow-and-market/production.css','utf8'),html=fs.readFileSync('meadow-and-market/index.html','utf8');assert(css.includes('--native-safe-top'));assert(css.includes('grid-template-columns'));assert(html.includes('production.css?v=2'));assert(html.includes('planting-policy.js?v=1'));
+console.log('Queue capacity, exact ingredient spending, automation caps/resume, prerequisite guard, replant policies and native safe-area wiring passed.');

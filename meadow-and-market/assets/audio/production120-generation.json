@@ -1,0 +1,11 @@
+{
+  "provider": "ElevenLabs",
+  "voice": "Mike - Animation, Explainers & Gaming",
+  "character": "Farmer Jay",
+  "model": "Eleven v4",
+  "generated": "2026-10-21",
+  "clips": [
+    "jay-production120",
+    "jay-well120"
+  ]
+}

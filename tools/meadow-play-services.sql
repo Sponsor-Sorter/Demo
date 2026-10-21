@@ -103,7 +103,22 @@ begin
      cost:=cost+completed*2;
     end loop;
     if cost<1 then raise exception 'Your basket is empty';end if;delivery:=jsonb_build_object('items',p_data->'items');
-   elsif sku='speed' then
+   elsif sku='queue_slot' then
+ g:=p_data->>'target';
+ if g is null or length(g)>120 or coalesce(p_data->>'map','') not in ('willow','coast','pine','orchard','back','east') then raise exception 'Invalid production building'; end if;
+ if not exists (
+   select 1 from public.meadow_market_saves s,
+   lateral jsonb_array_elements(coalesce(s.save_data->'farms'->(p_data->>'map')->'objects','[]'::jsonb)) o
+   where s.user_id=u and o->>'id'=g and o->>'type' in ('kitchen','workshop')
+ ) then raise exception 'Save this production building online before upgrading'; end if;
+ select coalesce(max((e.delivery->'queue_slot'->>'level')::int),0)+1 into completed
+ from public.meadow_market_economy_receipts e
+ where e.user_id=u and e.delivery->'queue_slot'->>'target'=g;
+ if completed>8 then raise exception 'All eight extra queue slots are unlocked'; end if;
+ if coalesce((p_data->>'expectedLevel')::int,-1)<>completed-1 then raise exception 'Queue upgrade changed on another device. Reload before buying'; end if;
+ cost:=20*completed;ck:='queue_slot:'||g||':'||completed;
+ delivery:=jsonb_build_object('queue_slot',jsonb_build_object('target',g,'map',p_data->>'map','level',completed));
+ elsif sku='speed' then
     g:=p_data->>'target'; completed:=(p_data->>'minutes')::int;
     if length(g)>120 or completed not between 1 and 60 then raise exception 'Invalid speed up'; end if;
     cost:=greatest(1,ceil(completed/5.0)::int);delivery:=jsonb_build_object('speed',jsonb_build_object('target',g,'map',p_data->>'map','minutes',completed));

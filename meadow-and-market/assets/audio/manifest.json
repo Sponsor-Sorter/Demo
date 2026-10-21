@@ -733,6 +733,18 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 350503
+    },
+    {
+      "id": "jay-production120",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 282341
+    },
+    {
+      "id": "jay-well120",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 349214
     }
   ]
 }

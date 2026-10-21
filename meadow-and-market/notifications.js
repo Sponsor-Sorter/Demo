@@ -3,7 +3,7 @@
  let api;
  function badge(el,count,description='needs attention'){
   if(!el)return;count=Math.max(0,Math.floor(Number(count)||0));let dot=el.querySelector(':scope > .notification-badge');
-  if(!count){if(!dot&&!el.dataset.notificationCount)return;dot?.remove();delete el.dataset.notificationCount;el.removeAttribute('aria-description');return}
+  if(!count){el.classList.remove('has-notification');if(!dot&&!el.dataset.notificationCount)return;dot?.remove();delete el.dataset.notificationCount;el.removeAttribute('aria-description');return}
   if(!dot){dot=document.createElement('span');dot.className='notification-badge';dot.setAttribute('aria-hidden','true');el.append(dot)}
   if(el.dataset.notificationCount===String(count)&&dot.textContent===(count>99?'99+':String(count))&&el.getAttribute('aria-description')===count+' '+description)return;
   dot.textContent=count>99?'99+':String(count);el.classList.add('has-notification');el.dataset.notificationCount=String(count);el.setAttribute('aria-description',count+' '+description);

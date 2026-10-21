@@ -4,7 +4,7 @@
   "description": "A little farm full of things to grow and friends to meet.",
   "start_url": "./",
   "scope": "./",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "any",
   "background_color": "#f6f5ed",
   "theme_color": "#f5f4e9",
@@ -27,5 +27,9 @@
       "type": "image/png",
       "purpose": "any"
     }
+  ],
+  "display_override": [
+    "fullscreen",
+    "standalone"
   ]
 }
