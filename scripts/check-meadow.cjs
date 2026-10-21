@@ -86,3 +86,5 @@ require('./check-meadow-art-studio.cjs');
 require("./check-meadow-production120.cjs");
 
 const familyTypes=['chicken','cow','sheep','goat','alpaca'];const familyState={farms:{willow:{objects:familyTypes.map((type,i)=>({id:'family'+i,type,barnId:'home',hunger:90,clean:90,happy:90}))}}};assert(story.claim(familyState,'family-variety'));assert.equal(story.claim(familyState,'family-variety'),null);assert.equal(story.claim(familyState,'family-comfort'),null);familyState.farms.willow.objects.push({type:'cow',barnId:'home',hunger:90,clean:90,happy:90});assert(story.claim(familyState,'family-comfort'));
+
+require('./check-meadow-wells.cjs');

@@ -1,0 +1,5 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),scope={window:{}};vm.runInNewContext(fs.readFileSync('meadow-and-market/wells.js','utf8'),scope);const w=scope.window.meadowWells;
+for(let tier=0;tier<8;tier++){const o={tier},s=w.stats(o);assert(Number.isFinite(s.jobs)&&Number.isFinite(s.drink));assert.equal(s.stage,tier+1);if(tier<7){assert(w.nextGold(o,40).allowed);if(tier>=3){assert(w.nextGold(o,40).cost>w.nextGold({tier:tier-1},40).cost);assert(!w.nextGold(o,w.nextGold(o,40).level-1).allowed)}}}
+assert.equal(w.nextGold({tier:7},40),null);assert(!w.nextGem({tier:3},40).allowed);assert(!w.nextGem({tier:7},24).allowed);
+let prev=w.stats({tier:7});for(let g=1;g<=4;g++){const s=w.stats({tier:7,wellGemTier:g});assert(s.jobs>prev.jobs&&s.drink<prev.drink);assert.equal(s.stage,8+g);assert(w.image({tier:7,wellGemTier:g}).endsWith('well-gem-'+g+'.webp'));prev=s}assert.equal(w.nextGem({tier:7,wellGemTier:4},40),null);assert.equal(w.stats({tier:0,wellGemTier:4}).gemTier,0);
+console.log('Twelve well stages, four gold extensions, level gates, four gem tiers and monotonic helper benefits passed.');
