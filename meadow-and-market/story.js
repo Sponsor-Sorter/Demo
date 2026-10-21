@@ -32,6 +32,11 @@
     {id:'animal-best-friend',title:'Best farm friends',text:'Reach friendship level 5 with an animal. Best friends add two goods to each happy collection.',target:1,reward:300,xp:50,measure:s=>objects(s).filter(o=>window.meadowBonds.rank(o)>=5).length},
     {id:'grand-barn-family',title:'A home for everyone',text:'House a cow, sheep, goat and alpaca together in one fully upgraded barn.',target:1,reward:350,xp:60,measure:s=>Object.values(s.farms).some(f=>f.objects.some(h=>h.type==='barn'&&h.tier>=3&&['cow','sheep','goat','alpaca'].every(type=>f.objects.some(o=>o.type===type&&o.barnId===h.id))))?1:0}
   ]});
+  chapters.push({name:'A thriving animal family',person:'jay',goals:[
+    {id:'family-variety',title:'Different friends, one farm family',text:'Welcome all five animal types across your farms. Coops house chickens; barns and paddocks house livestock.',target:5,reward:250,xp:45,measure:s=>new Set(objects(s).filter(o=>['chicken','cow','sheep','goat','alpaca'].includes(o.type)).map(o=>o.type)).size},
+    {id:'family-comfort',title:'Comfortable homes',text:'Keep six housed animals above 75% for food, cleanliness and happiness. Open Animal Family to find anyone needing care.',target:6,reward:300,xp:50,measure:s=>objects(s).filter(o=>['chicken','cow','sheep','goat','alpaca'].includes(o.type)&&(o.coopId||o.barnId||o.paddockId)&&o.hunger>=75&&o.clean>=75&&o.happy>=75).length},
+    {id:'family-bonds',title:'Everyone belongs',text:'Build friendship level 3 with five animals. Different care activities help friendships grow.',target:5,reward:400,xp:65,measure:s=>objects(s).filter(o=>['chicken','cow','sheep','goat','alpaca'].includes(o.type)&&window.meadowBonds.rank(o)>=3).length}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}
