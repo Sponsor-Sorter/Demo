@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="A sunny meadow stage with soft green hills and flowers">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#bce9ef"/><stop offset="1" stop-color="#fff2cf"/></linearGradient></defs>
+  <path fill="url(#sky)" d="M0 0h1600v1000H0z"/><circle cx="1290" cy="166" r="88" fill="#ffd14d"/>
+  <path fill="#fffdf5" d="M212 195c-9-39 41-61 67-34 19-59 101-48 107 12 46-5 65 49 33 75H244c-24-8-38-28-32-53z"/>
+  <path fill="#8cc86a" d="M0 503q183-163 378 3 181-203 408 7 183-168 370-1 239-186 444 24v464H0z"/>
+  <path fill="#60aa57" d="M0 629q198-178 408 1 175-157 376 0 201-172 428 0 208-153 388-3v373H0z"/>
+  <path fill="#8bbd4b" d="M0 748q200-110 389 2 180-114 366-1 195-120 397 2 215-123 448-4v253H0z"/>
+  <path fill="#d9a75e" d="M0 865q310-71 630 0t970 0v135H0z"/>
+  <path stroke="#f1cb8e" stroke-width="8" d="M0 908q310-71 630 0t970 0"/>
+  <g fill="#fffdf6"><circle cx="176" cy="774" r="27"/><circle cx="168" cy="744" r="16"/><circle cx="199" cy="765" r="16"/><circle cx="157" cy="797" r="16"/><circle cx="1320" cy="720" r="27"/><circle cx="1312" cy="690" r="16"/><circle cx="1343" cy="711" r="16"/><circle cx="1301" cy="743" r="16"/></g><g fill="#ffc92f"><circle cx="176" cy="774" r="12"/><circle cx="1320" cy="720" r="12"/></g>
+  <path fill="#43844b" d="M0 845q170-61 321 0v155H0zm1270 0q160-72 330-8v163h-330z"/>
+</svg>

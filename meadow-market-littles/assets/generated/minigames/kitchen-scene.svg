@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="A cozy farm kitchen with a bright window and wooden counter">
+  <defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#fff8df"/><stop offset="1" stop-color="#f7e9c7"/></linearGradient><linearGradient id="wood" x2="0" y2="1"><stop stop-color="#d99755"/><stop offset="1" stop-color="#a96135"/></linearGradient></defs>
+  <path fill="url(#wall)" d="M0 0h1600v1000H0z"/>
+  <path fill="#e8bd7f" d="M0 747h1600v29H0z"/>
+  <rect x="112" y="120" width="450" height="390" rx="34" fill="#fffdf1" stroke="#bd8650" stroke-width="18"/>
+  <rect x="142" y="150" width="390" height="330" rx="18" fill="#aee4ee"/>
+  <circle cx="438" cy="224" r="58" fill="#ffd34d"/>
+  <path fill="#fffdf7" d="M193 243c-3-38 46-55 71-30 17-62 106-51 111 10 45-7 68 46 38 72H222c-25-8-39-27-29-52zm119 142c5-30 45-40 62-17 18-49 82-41 90 6 38-3 54 40 28 59H329c-23-10-27-29-17-48z"/>
+  <path fill="#7bb95b" d="M142 430q87-109 191-2 85-89 199 3v49H142z"/><path fill="#4c9c52" d="M142 459q76-71 163 1 104-94 227-12v32H142z"/>
+  <path stroke="#bd8650" stroke-width="14" d="M337 153v324M148 313h382"/>
+  <rect x="720" y="139" width="220" height="250" rx="22" fill="#fffdf1" stroke="#d5ae76" stroke-width="10"/>
+  <path fill="#e76d59" d="M779 247c-31-51 32-80 51-38 18-42 81-13 51 38l-51 67z"/><path fill="#7bb95b" d="M831 213q-2-46 40-53-7 40-40 53"/>
+  <rect x="0" y="745" width="1600" height="255" fill="url(#wood)"/><path stroke="#eab77a" stroke-width="8" d="M0 794h1600M0 870h1600M0 947h1600"/>
+  <rect x="1040" y="493" width="420" height="250" rx="32" fill="#f2d9aa" stroke="#b77a45" stroke-width="14"/>
+  <path fill="#bb7850" d="M1090 680h320l35 63h-390z"/><circle cx="1145" cy="711" r="21" fill="#fff2ce"/><circle cx="1361" cy="711" r="21" fill="#fff2ce"/>
+  <path fill="#f8eccf" d="M1000 700h-81V580h81z"/><path fill="#bd5545" d="M943 675v-59q0-40 35-40t35 40v59z"/>
+  <rect x="0" y="728" width="1600" height="25" fill="#f0d7a7"/>
+</svg>
