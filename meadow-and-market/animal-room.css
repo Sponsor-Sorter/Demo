@@ -15,3 +15,16 @@
 .animal-room-totals{color:#fff9ed}.animal-room-finder small{color:#62462e;text-shadow:none}.animal-room-title>small{color:#fff9ed!important}.animal-room-head h2{color:#fff9ed}
 .animal-round-launch{display:flex;align-items:center;gap:9px;width:100%;max-width:1300px;margin:0 auto 10px;padding:6px 12px;border:1px solid #d8c5a5;border-radius:12px;background:#fff8eaf2;color:#513d2d;text-align:left;min-height:54px}.animal-round-launch img{width:42px;height:42px;object-fit:contain}.animal-round-launch span{flex:1;min-width:0}.animal-round-launch strong{display:block;font-size:13px}.animal-round-launch small{display:block;font-size:11px;margin-top:3px}.animal-round-launch b{font-size:27px}.animal-round-guide{display:flex;gap:12px;align-items:center;margin:10px 0}.animal-round-guide img{width:72px;height:85px;object-fit:contain}.animal-round-guide p{font-size:13px;line-height:1.5}.animal-round-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.animal-round-options button{display:flex;flex-direction:column;align-items:center;gap:7px;white-space:normal;min-height:100px;padding:12px 6px}.animal-round-options strong{font-size:14px}.animal-round-options span{font-size:12px}.animal-round-options small{font-size:11px}@media(max-width:380px){.animal-round-options{grid-template-columns:1fr}.animal-round-options button{min-height:65px;gap:4px}}
 .well-gem-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.well-gem-options button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;white-space:normal;min-height:100px;padding:8px}.well-gem-options strong{font-size:13px}.well-gem-options span,.well-gem-options small{font-size:11px}.well-next-benefit{display:block;margin:5px 0 9px;font-size:12px;color:#755536}.well-gem-button{flex:none}
+
+/* Keep the roster visible: three need filters, one species selector. */
+.animal-room-filters{align-items:center;overflow-x:auto;gap:6px;min-height:44px;padding:0;scrollbar-width:thin}
+.animal-room-filters button,.animal-room-filters #animal-species{min-height:44px;font-size:12px;padding:7px 10px}
+#animal-species{border:1px solid #d7c5a5;border-radius:10px;background:#fff8e9;color:#513a28;font:inherit;max-width:150px;flex:none}
+#animal-find-options{flex:none;margin:0;min-height:0}
+#animal-find-options>summary{cursor:pointer;background:#fff8eae8;color:#513a28;border-radius:8px;min-height:34px;padding:6px 10px;font-size:12px;width:fit-content;list-style-position:inside}
+#animal-find-options>summary small{font-size:11px;font-weight:400}
+#animal-find-options[open] .animal-room-finder{padding:7px 0 0}
+#animal-find-options .animal-room-finder small{display:none}
+#animal-find-options .animal-room-finder{grid-template-columns:minmax(100px,1fr) minmax(100px,1fr) auto}
+.animal-room-title>small{display:none!important}
+@media(max-width:600px){#animal-find-options .animal-room-finder{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#animal-find-options .animal-room-finder input{flex-basis:auto;width:100%}#animal-find-options .animal-room-finder select{max-width:100%}#animal-find-options .animal-room-finder #animal-clear-filters{grid-row:2;grid-column:1/-1}.animal-room-filters{gap:4px}.animal-room-filters button,.animal-room-filters #animal-species{font-size:11px;padding:7px 8px}}

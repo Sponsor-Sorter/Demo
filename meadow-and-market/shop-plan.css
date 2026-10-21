@@ -42,3 +42,13 @@
 .shop-sales-help{margin-top:8px;border-top:1px solid #dfcba4;padding-top:8px}.shop-sales-help summary{font-size:12px}
 @media(max-width:700px){#shop-room{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr);gap:7px}.shop-room-head{padding-right:104px}.shop-room-stats{grid-column:1;grid-row:2;justify-content:flex-start;padding-right:0;gap:3px}.shop-room-stats span{font-size:10px;padding:4px 6px}.shop-room-toolbar{grid-row:3}.shop-room-scroll{grid-row:4}.shop-room-toolbar button{font-size:12px;padding:7px 10px}.shop-room-stats span:last-child{background:#fff8e9e8;border:1px solid #dfcba4;color:#4f3825;text-shadow:none}}
 @media(orientation:landscape) and (max-height:550px){#shop-room{gap:6px 10px}.shop-room-head h2{font-size:21px}.shop-room-head small{font-size:8px}.shop-room-stats span{font-size:10px}.shop-room-toolbar button{min-height:40px}.shop-plan-status{padding:4px 7px;margin-bottom:6px}#shop-shelf-list .shop-empty{padding:10px 12px}#shop-shelf-list .shop-empty h3{font-size:14px}.shop-room-details{margin-top:6px}}
+
+#modal-content:has(.shop-stock-window){height:100%;overflow:hidden;padding:0}
+.shop-stock-window .shop-stock-layout{overflow:hidden}
+.shop-stock-footer{flex:none;display:flex;align-items:center;gap:10px;padding:8px 0 0;border-top:1px solid #ddcfb8}
+.shop-stock-footer #save-shelf-plan{min-height:44px;width:auto;flex:none;padding:8px 16px;font-size:13px}
+.shop-stock-footer #shelf-plan-error{font-size:11px;line-height:1.3;color:#983d29;margin:0;overflow-y:auto;max-height:56px}
+.shelf-plan-help{font-size:11px;margin:10px 0}.shelf-plan-help summary{min-height:36px;align-content:center;cursor:pointer}.shelf-plan-help p{font-size:11px;line-height:1.45}
+.shelf-rule{grid-template-columns:minmax(0,1.6fr) minmax(70px,1fr) minmax(70px,1fr);align-items:end;padding:8px 0}.shelf-rule label:first-child{grid-column:auto}
+.shop-no-goods{font-size:13px;line-height:1.5}
+@media(max-width:500px){.shelf-rule{grid-template-columns:1fr 1fr}.shelf-rule label:first-child{grid-column:1/-1}.shop-stock-footer{gap:7px}.shop-stock-footer #save-shelf-plan{font-size:12px;padding:7px 10px}}
