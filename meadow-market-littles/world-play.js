@@ -12,7 +12,7 @@
     ['sound_garden','Make a Barnyard Sound Garden','jade','meadow','Choose farm friends and make a little sound pattern.','sounds'],
     ['tractor_trail','Follow the Tractor Trail','rhys','tractor-scene','Choose a short path to help the tractor reach the orchard.','tractor'],
     ['meadow_keepsakes','Meadow Day Keepsakes','jay','meadow','Make a little page with your favourite farm pictures.','keepsake']
-  ].map(([id,name,farmer,scene,text,kind])=>({id,name,farmer,scene,text,kind,voice:({story:'rhys-farmdesk',builder:'rhys-build',hide:'minigame-search-levels',seed:'jade-plant',weather:'rhys-home',market:'market-welcome',shapes:'minigame-coopmath',sounds:'animals-welcome',tractor:'minigame-tractorrepair',keepsake:'rhys-home'})[kind],image:`${base}minigames/${scene}.webp`}));
+  ].map(([id,name,farmer,scene,text,kind])=>({id,name,farmer,scene,text,kind,voice:({story:'rhys-farmdesk',builder:'rhys-place',hide:'minigame-search-levels',seed:'jade-plant',weather:'rhys-home',market:'market-welcome',shapes:'minigame-coopmath',sounds:'animals-welcome',tractor:'minigame-tractorrepair',keepsake:'rhys-home'})[kind],image:`${base}minigames/${scene}.webp`}));
   let api,dialog,active=null,selected=null,step=0,round=0,target='',order=[],placed=[],soundSeq=[],route=[],local={},soundRun=0;
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const art=id=>id==='flower-patch'?`${base}flower-patch.webp`:id==='tractor'?`${base}tractor/tractor.webp`:animals.includes(id)?`${base}${id==='hen'?'hen':id}.webp`:`${base}minigames/produce/${id}.webp`;
