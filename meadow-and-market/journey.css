@@ -25,3 +25,7 @@
 @media(orientation:landscape) and (max-height:550px){.trip-intro img{height:65px}.trip-intro{padding:10px}.trip-intro h3{font-size:17px}.trip-intro p{font-size:12px;margin:6px 0}.trip-playfield{top:68px;bottom:70px}.trip-find{width:55px;height:55px}}
 @media(prefers-reduced-motion:reduce){.trip-float,.trip-splash{animation:none}}
 .journey-head{position:relative;z-index:4}.journey-village-map{background:url('assets/generated/journey/village.webp') center/100% 100% no-repeat;touch-action:none}.journey-building{transform:translate(-50%,-95.3%)}.journey-building>span{top:98%}.journey-village-footer{z-index:2;flex-wrap:wrap}.journey-landmark{position:absolute;width:10%;transform:translate(-50%,-95%);text-align:center;pointer-events:none}.journey-landmark img{width:100%}.journey-landmark span{display:block;background:#fff8e9e8;border-radius:6px;font-size:9px;padding:3px}.journey-project-card{z-index:5}
+
+.journey-village #journey-body{overflow:visible}.journey-world{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+.journey-building[data-project="outpost"]>span{left:50%;transform:translateX(-100%)}
