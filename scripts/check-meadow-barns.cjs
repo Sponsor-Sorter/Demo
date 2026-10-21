@@ -1,18 +1,20 @@
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.resolve(__dirname,'../meadow-and-market'),read=n=>fs.readFileSync(path.join(root,n),'utf8'),scope={window:{}};
-vm.runInNewContext(read('barns.js'),scope);const barns=scope.window.meadowBarns;
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),root=path.resolve(__dirname,'../meadow-and-market'),read=n=>fs.readFileSync(path.join(root,n),'utf8'),scope={window:{}};
+vm.runInNewContext(read('barns.js'),scope);const barns=scope.window.meadowBarns,expected=[[2,2],[3,2],[3,3],[4,3]],hashes=new Set(),point=(m,p)=>[m[0]*p[0]+m[2]*p[1]+m[4],m[1]*p[0]+m[3]*p[1]+m[5]],near=(a,b)=>a.forEach((v,i)=>assert(Math.abs(v-b[i])<1e-7));
 assert.equal(barns.stages.length,4);assert.equal(new Set(barns.stages.map(s=>s.file)).size,4);
-for(let i=0;i<4;i++){const stage=barns.stages[i];assert(stage.pad>0&&stage.pad<25);assert(fs.existsSync(root+'/'+barns.image(i)));assert.equal(barns.pad(i),stage.pad)}
-assert.equal(barns.image(99),barns.image(3));assert.equal(barns.image(-1),barns.image(0));
-const game=read('game.js');assert(game.includes('window.meadowBarns.image(barnTier(o))'));assert(game.includes('window.meadowBarns.pad(barnTier(o))'));assert(game.includes('window.meadowBarns.image(tier)'));assert(game.includes('class="barn-stage-thumb"'));assert(game.includes('Grand Livestock Barn'));assert(!game.includes('Eight cows can live here'));
-assert(read('style.css').includes('transform:translateY(var(--barn-pad-bottom,8.453%))'));
-console.log('Four distinct barn stages, authored aspect ratio, ground anchors and livestock wording passed.');
+for(let tier=0;tier<4;tier++){
+ const stage=barns.stages[tier],g=stage.grid,p=barns.groundProjection(tier),fp=barns.footprint(tier),sum=g.w+g.h;assert.deepEqual([fp.w,fp.h],expected[tier]);assert(stage.pad>0&&stage.pad<25);assert(stage.name&&stage.feature);assert(fs.statSync(root+'/'+barns.image(tier)).size>1000);hashes.add(crypto.createHash('sha256').update(fs.readFileSync(root+'/'+barns.image(tier))).digest('hex'));assert.equal(barns.pad(tier),stage.pad);
+ assert(g.left[0]<g.front[0]&&g.front[0]<g.right[0]);assert(g.front[1]>g.left[1]&&g.front[1]>g.right[1]);assert(g.outline.length>=10);near(point(p.left,g.left),[0,g.h/sum*1000]);near(point(p.left,g.front),[g.w/sum*1000,1000]);near(point(p.right,g.front),[g.w/sum*1000,1000]);near(point(p.right,g.right),[1000,g.w/sum*1000]);
+ for(const matrix of [p.left,p.right])assert.equal(matrix[2],0,'Vertical beams must stay vertical');for(const y of [0,g.height/2,g.height])near(point(p.left,[g.front[0],y]),point(p.right,[g.front[0],y]));
+ const art=barns.mapArt(tier,'farm-barn-'+tier);assert(art.includes('preserveAspectRatio="none"'));assert(art.includes('barn-grid-farm-barn-'+tier+'-outline'));assert(art.includes(barns.image(tier)));assert(read('sw.js').includes('./'+barns.image(tier)),'Every new stage is cached');
+ if(tier){const prior=barns.stages[tier-1];assert(g.w*g.h>prior.grid.w*prior.grid.h,'Each upgrade adds actual floor tiles');for(const feature of prior.features)assert(stage.features.includes(feature),'Upgrade retains '+feature)}
+}
+assert.equal(hashes.size,4);assert.equal(barns.image(99),barns.image(3));assert.equal(barns.image(-1),barns.image(0));assert.deepEqual([barns.footprint(99).w,barns.footprint(-1).w],[4,2]);
+const game=read('game.js');assert(game.includes('window.meadowBarns.footprint(barnTier(o))'),'Placement and artwork share one footprint definition');assert(game.includes('names=window.meadowBarns.stages.map'));assert(game.includes('barn:window.meadowBarns.stages[0].file'),'Build catalogue uses the new starter');assert(game.includes('window.meadowBarns.image(tier)'));assert(game.includes('class="barn-stage-thumb"'));assert(read('style.css').includes('.barn-level.barn-grid-fit'));assert(read('barn-preview.js').includes('B.mapArt(tier'));
+const housing={window:{}};vm.runInNewContext(read('housing.js'),housing);for(let tier=0;tier<4;tier++)assert.equal(housing.window.meadowHousing.capacity({type:'barn',tier}),[2,4,6,8][tier]);
+console.log('Four coordinated barn stages: distinct assets, growing 2×2→3×2→3×3→4×3 footprints, retained features, exact foundation corners, upright walls, seamless artwork, shared placement geometry, preserved capacities and app caching passed.');
 
-// Visible foundation corners map to the selected 4×3 tiles.
-const g=barns.stages[3].grid,projection=barns.groundProjection(3),point=(m,p)=>[m[0]*p[0]+m[2]*p[1]+m[4],m[1]*p[0]+m[3]*p[1]+m[5]],near=(a,b)=>a.forEach((v,i)=>assert(Math.abs(v-b[i])<1e-7));
-assert.equal(g.w,4);assert.equal(g.h,3);assert.equal(barns.groundProjection(0),null);
-near(point(projection.left,g.left),[0,3/7*1000]);near(point(projection.left,g.front),[4/7*1000,1000]);near(point(projection.right,g.front),[4/7*1000,1000]);near(point(projection.right,g.right),[1000,4/7*1000]);
-for(const matrix of [projection.left,projection.right])assert.equal(matrix[2],0,'Vertical beams must stay vertical');
-for(const y of [0,300,700,1254])near(point(projection.left,[g.front[0],y]),point(projection.right,[g.front[0],y]));
-const art=barns.mapArt(3,'farm-barn-1');assert(art.includes('preserveAspectRatio="none"'));assert(art.includes('barn-grid-farm-barn-1-outline'));assert(art.includes(barns.image(3)));assert.equal(barns.mapArt(0),'');assert(read('style.css').includes('.barn-level.barn-grid-fit'));
-assert(read('sw.js').includes('./'+barns.image(3)),'New generated barn must be cached for app updates');
-console.log('Grand barn 4×3 foundation corners, vertical walls, seamless projection, silhouette hit area and offline asset passed.');
+// Actual placement rejects newly required tiles blocked by another item.
+const fixture={objects:[]},placement={window:scope.window,plotSide:()=>1,coopTier:o=>o.tier||0,barnTier:o=>o.tier||0,gridRows:()=>20,tileUnlocked:()=>true,meadowCell:()=>true,current:()=>fixture,isHousedInFarm:()=>false};
+vm.runInNewContext(game.match(/  function footprint\([^\n]+/)[0]+'\n'+game.match(/  function fitsFootprint\([^\n]+/)[0]+';this.fits=fitsFootprint;',placement);
+for(let tier=0;tier<3;tier++){const old=barns.footprint(tier),next=barns.footprint(tier+1),home={id:'home',type:'barn',tier,x:2,y:2};fixture.objects=[home];assert(placement.fits({...home,tier:tier+1},2,2,'home'));const block={id:'block',type:'hay',x:2+next.w-1,y:2+next.h-1};assert(block.x>=2+old.w||block.y>=2+old.h);fixture.objects.push(block);assert(!placement.fits({...home,tier:tier+1},2,2,'home'),'A blocked new tile prevents the upgrade');assert(placement.fits(home,2,2,'home'),'Existing barn still fits its original space')}
+console.log('All three real barn upgrade transitions require their extra tiles and preserve the existing occupied space when blocked.');

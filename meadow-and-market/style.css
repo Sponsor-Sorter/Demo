@@ -404,7 +404,7 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 /* Barn art keeps its authored proportions; its feet meet the consumed footprint. */
 .farm-object.barn .barn-level{inset:auto 0 0!important;width:100%!important;height:auto!important;aspect-ratio:1}
 .farm-object.barn .barn-art{object-fit:contain!important;transform-origin:50% calc(100% - var(--barn-pad-bottom,8.453%));transform:translateY(var(--barn-pad-bottom,8.453%)) scale(var(--barn-art-scale,1))}
-.farm-object.barn .barn-tier-2{--barn-art-scale:.85}.farm-object.barn .barn-tier-3{--barn-art-scale:.8}
+
 .barn-stage-thumb{display:block;width:100%;height:58px;object-fit:contain;margin-bottom:5px}.barn-modal-art{height:180px}.barn-modal-art img{height:170px}
 .farm-grid>.farm-object.barn,.farm-grid>.farm-object.building,.farm-grid>.farm-object.paddock{z-index:var(--object-depth,20)!important}
 
@@ -441,4 +441,4 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 .farm-object.barn .barn-level.barn-grid-fit{inset:0!important;width:100%!important;height:100%!important;aspect-ratio:auto;--barn-art-scale:1}
 .barn-grid-art{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .farm-grid>.farm-object.barn .barn-grid-art image{pointer-events:visiblePainted;touch-action:none}
-.barn-grid-fit .barn-capacity{left:57.142857%;bottom:1%;pointer-events:none}
+.barn-grid-fit .barn-capacity{left:var(--barn-front-x,50%);bottom:1%;pointer-events:none}
