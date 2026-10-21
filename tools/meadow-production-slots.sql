@@ -23,6 +23,7 @@ elsif sku='queue_slot' then
 $branch$;
 begin
  select pg_get_functiondef('meadow_private.play_service(text,jsonb)'::regprocedure) into definition;
+ if position('elsif sku=''well_upgrade'' then' in definition)>0 then anchor:='elsif sku=''well_upgrade'' then';addition:=replace(addition,'elsif sku=''speed'' then',anchor);end if;
  if position(anchor in definition)=0 then raise exception 'Production upgrade patch anchor missing'; end if;
  if position('elsif sku=''queue_slot'' then' in definition)>0 then
   definition:=substring(definition from 1 for position('elsif sku=''queue_slot'' then' in definition)-1)||addition||substring(definition from position(anchor in definition)+length(anchor));
