@@ -1,0 +1,37 @@
+/* Content-first layouts shared by the farming game's menus. */
+#modal-dialog:not(:has(.production-window,.shop-stock-window)){box-sizing:border-box;max-height:calc(100dvh - var(--game-safe-top,0px) - var(--game-safe-bottom,0px) - 20px);padding:12px 16px}
+#modal-content>.sheet-head{gap:8px;align-items:center;margin:0 0 8px;position:sticky;top:-12px;z-index:5;padding:8px 0;background:#fff9e9}
+#modal-content>.sheet-head>div:first-child{flex:1;min-width:0}
+#modal-content>.sheet-head h2{font-size:clamp(17px,2.5vw,21px);line-height:1.2;margin:2px 0;overflow-wrap:anywhere}
+#modal-content>.sheet-head .eyebrow{font-size:9px;line-height:1.3;letter-spacing:.07em}
+#modal-content>.sheet-head>button{flex:none;min-height:44px;min-width:44px;margin:0}
+#modal-content>.sheet-head .close-button{width:44px;height:44px}
+.flow-meta{display:block;font-size:11px;line-height:1.4;color:#755b3e}
+.flow-details{font-size:12px;margin:4px 0 9px;color:#634c35}.flow-details>summary{cursor:pointer;min-height:36px;align-content:center}.flow-details p{margin:4px 0 8px}
+#modal-content>.sheet-copy{margin:6px 0 10px}
+/* Cabinet uses the same two-row header as the Emporium. */
+.club-head #collection-close{grid-column:3;grid-row:1;justify-self:end;width:44px;height:44px;padding:0}
+.club-head #collection-listen{grid-column:3;grid-row:2;margin:0;width:auto;height:44px;display:flex;gap:4px;align-items:center;padding:3px 7px;font-size:11px;border-radius:10px;text-shadow:none}
+.club-head #collection-listen img{width:24px;height:30px;object-fit:contain}
+#collection-status:empty{display:none}
+.collection-dialog .club-paper{padding:12px}.collection-summary{gap:8px}.collection-summary h3{margin:0;font-size:17px}.collection-summary p{font-size:12px;margin:5px 0}.collection-dialog .club-filter{gap:8px;margin:8px 0}.collection-dialog .club-note{padding:8px;font-size:11px}
+/* Lessons scroll independently beneath the small farmer chooser. */
+#guide-dialog[open]{display:flex;flex-direction:column;gap:7px;box-sizing:border-box;max-height:calc(100dvh - var(--game-safe-top,0px) - var(--game-safe-bottom,0px) - 20px);padding:12px 16px;overflow:hidden}
+#guide-dialog>.sheet-head{align-items:center;gap:8px;flex:none}#guide-dialog h2{font-size:21px;margin:0}#guide-dialog .guide-menu-close{width:44px;height:44px;flex:none}
+#guide-dialog .guide-team{flex:none;margin:0;gap:6px}
+#guide-dialog .guide-person{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-rows:auto auto;text-align:left;gap:0 4px;padding:4px 6px;background:#fffaf0;min-height:54px}
+#guide-dialog .guide-person img{grid-row:1/3;width:42px;height:48px;object-fit:contain}#guide-dialog .guide-person strong{font-size:11px;align-self:end}#guide-dialog .guide-person small{font-size:10px;margin:0;align-self:start}
+#guide-dialog .guide-lesson-list{flex:1;min-height:80px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;align-content:start;padding:2px}
+#guide-dialog .guide-lesson-list button{min-height:54px;padding:8px}
+.guide-help-options{flex:none;font-size:12px;max-height:35dvh;overflow:auto}.guide-help-options>summary{cursor:pointer;min-height:36px;align-content:center}.guide-help-options .guide-pause{margin:8px 0}.guide-help-options .guide-assists button{min-height:44px;background:#fff6e5}
+.animal-round-guide{margin:5px 0;gap:8px}.animal-round-guide img{width:48px;height:60px}.animal-round-guide p{font-size:12px;margin:0}
+/* Market header uses two compact rows on narrow devices. */
+@media(max-width:700px) and (orientation:portrait){.fm-header{grid-template-columns:minmax(0,1fr) auto auto}.fm-header>div:first-child{grid-column:1/3;grid-row:1}.fm-header #fm-close{grid-column:3;grid-row:1;width:44px;height:44px}.fm-header .fm-stats{grid-row:2;grid-column:1;font-size:11px;gap:6px;flex-wrap:wrap;justify-content:flex-start}.fm-header #fm-requests{grid-row:2;grid-column:2;min-height:44px;font-size:11px;padding:6px}.fm-header #fm-listen{grid-row:2;grid-column:3;min-height:44px;padding:6px}.fm-header small{display:none}.fm-header h2{font-size:19px}}
+@media(max-width:600px){#guide-dialog .guide-person{grid-template-columns:1fr;text-align:center;justify-items:center;gap:0;min-height:70px}#guide-dialog .guide-person img{grid-row:1;width:34px;height:36px}#guide-dialog .guide-person strong{font-size:10px}#guide-dialog .guide-person small{display:none}.club-head #collection-listen{font-size:10px;max-width:86px;padding:3px 5px}.club-head #collection-listen img{width:20px;height:27px}.collection-summary{flex-wrap:wrap}.collection-summary .club-action{min-height:44px;font-size:12px}}
+@media(orientation:landscape) and (max-height:550px){#modal-content>.sheet-head{padding:4px 0;margin-bottom:5px}#guide-dialog .guide-person{min-height:44px}#guide-dialog .guide-person img{height:40px}.fm-dialog{gap:7px}.fm-header{gap:7px}.fm-header h2{font-size:20px}.fm-intro{padding:9px;margin-bottom:8px}.fm-intro h3{font-size:16px;margin-bottom:4px}.fm-intro p{font-size:12px}.animal-round-options button{min-height:85px}}
+
+.settings-section{border:1px solid #e3d3b5;border-radius:12px;margin:8px 0;padding:0 10px}.settings-section>summary{cursor:pointer;min-height:48px;align-content:center;font-size:13px;font-weight:750}.settings-section[open]{padding-bottom:10px}.settings-section .audio-settings{margin:0;padding:8px;border:0;background:transparent}.settings-section .audio-settings h3{display:none}.settings-section .share-qr{width:min(180px,55vw)}.friend-social-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.friend-social-actions button{min-height:44px;font-size:10px}#modal-content>.sheet-head:has(.friend-social-actions){flex-wrap:wrap}.friend-online-status{font-size:11px;margin:5px 0}.friend-identity{margin:7px 0}.friend-identity>summary{min-height:40px;align-content:center;font-size:12px;cursor:pointer}
+
+.settings-account{padding:10px!important}.settings-account h3{font-size:15px;margin:0}.settings-account p.sheet-copy{font-size:12px;margin:5px 0}.settings-account .primary-button{margin-top:5px;min-height:44px}.friend-social-actions #friend-help-listen{font-size:16px;min-width:44px}
+
+.animal-roster-toolbar{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;flex:none;min-height:0}.animal-roster-toolbar .animal-room-filters{flex:1;min-width:min(100%,380px)}.animal-roster-toolbar #animal-find-options{padding-top:4px}.animal-roster-toolbar #animal-find-options[open]{flex:1;min-width:min(100%,260px)}.animal-roster-toolbar .animal-round-launch{width:auto;max-width:none;flex:none;margin:0;min-height:44px;height:44px;padding:3px 8px;gap:4px}.animal-roster-toolbar .animal-round-launch img{width:30px;height:36px}.animal-roster-toolbar .animal-round-launch span{font-size:12px;font-weight:700}.animal-roster-toolbar #animal-find-options summary{min-height:40px}.animal-roster-toolbar #animal-find-options:not([open]) summary small{display:none}
