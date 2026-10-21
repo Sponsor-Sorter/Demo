@@ -207,7 +207,7 @@
   function placementItem(){const item=pendingTransfer?.item||obj(state.moving)||catalog.find(i=>i.id===state.placing);return item&&!item.type?{...item,type:item.id}:item}
   function clearPlacementPreview(){window.meadowPlacement?.clear()}
   function previewPlacement(cell){const item=placementItem();if(!item)return;const fp=footprint(item),home=current().objects.find(o=>cell.x>=o.x&&cell.x<o.x+footprint(o).w&&cell.y>=o.y&&cell.y<o.y+footprint(o).h&&window.meadowHousing.supports(item.type,o)),valid=home?window.meadowHousing.choices(item).some(h=>h.id===home.id&&!h.full):fitsFootprint(item,cell.x,cell.y,pendingTransfer?null:item.id);window.meadowPlacement?.show({grid:$('#farm-grid'),item,source:pendingTransfer?.art||$('[data-id="'+item.id+'"]')||trayGhost(item),cell,fp,rows:gridRows(),valid});}
-  function trayGhost(item){const el=document.createElement('div');el.className='farm-object '+(item.kind||'building')+' '+(item.type||item.id);el.innerHTML=catalogArt({...item,id:item.type||item.id});return el}
+  function trayGhost(item){const el=document.createElement('div'),type=item.type||item.id;el.className='farm-object '+(item.kind||'building')+' '+type;if(type==='barn'){const tier=barnTier(item),fp=window.meadowBarns.footprint(tier);el.innerHTML='<span class="barn-level barn-grid-fit" style="--barn-front-x:'+(fp.w/(fp.w+fp.h)*100)+'%">'+window.meadowBarns.mapArt(tier,'tray-preview')+'</span>'}else el.innerHTML=catalogArt({...item,id:type});return el}
   function gestureCell(g,e){const c=isoCellFromPoint(e.clientX,e.clientY);return {x:c.x-(g.offsetX||0),y:c.y-(g.offsetY||0)}}
 
   function cancelObjectHold(){if(!objectGesture)return;clearTimeout(objectGesture.timer);objectGesture.el.classList.remove('hold-pending')}
@@ -559,7 +559,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=144;
+  const currentBuild=145;
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
     const promptForUpdate=()=>{const dialog=$('#update-dialog'),waitingBuild=Number(reg.waiting?new URL(reg.waiting.scriptURL).searchParams.get('build'):0);availableBuild=Math.max(availableBuild,waitingBuild);if(navigator.serviceWorker.controller&&isUpdateReady(currentBuild,availableBuild,waitingBuild>currentBuild)&&dialog){if(!gameUpdateCanPrompt({hidden:document.hidden,modal:$$('dialog[open]').some(d=>d.id!=='update-dialog'),build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil}))return;$('#update-title').textContent='Meadow Markets build '+availableBuild+' is ready';dialog.querySelector('.sheet-copy').textContent='You have build '+currentBuild+'. Install the latest farm improvements and keep your saved farm.';if(!dialog.open)dialog.showModal()}};
