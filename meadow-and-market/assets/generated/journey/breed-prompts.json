@@ -1,0 +1,27 @@
+[
+  {
+    "id": "breed-chicken",
+    "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png",
+    "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a speckled cream-and-brown hen and a golden buff hen. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only chicken. Maximum resolution so each cell can become an individual 512px sprite."
+  },
+  {
+    "id": "breed-cow",
+    "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png",
+    "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a chestnut-and-white dairy cow and a golden Guernsey cow. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only cow. Maximum resolution so each cell can become an individual 512px sprite."
+  },
+  {
+    "id": "breed-sheep",
+    "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png",
+    "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a spotted cream-and-brown wool sheep and a silver-grey fleece sheep. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only sheep. Maximum resolution so each cell can become an individual 512px sprite."
+  },
+  {
+    "id": "breed-goat",
+    "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png",
+    "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a brown alpine goat and a golden cream alpine goat. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only goat. Maximum resolution so each cell can become an individual 512px sprite."
+  },
+  {
+    "id": "breed-alpaca",
+    "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png",
+    "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a chestnut alpaca and a silver-grey alpaca. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only alpaca. Maximum resolution so each cell can become an individual 512px sprite."
+  }
+]

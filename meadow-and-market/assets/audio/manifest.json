@@ -769,6 +769,96 @@
       "character": "Farmer Jay",
       "voice": "Mike - Animation, Explainers & Gaming",
       "bytes": 370879
+    },
+    {
+      "id": "jay-journey-fair",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 295960,
+      "guide": "Weekly fair entries, scoring, ribbons and Monday reset."
+    },
+    {
+      "id": "jay-journey-nursery",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 285302,
+      "guide": "Distinct adult parents, friendship, nursery care, growing time and suitable homes."
+    },
+    {
+      "id": "jay-journey-friends",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 296900,
+      "guide": "Accepted friends, acknowledged farm help and permanent shared landmarks."
+    },
+    {
+      "id": "rhys-journey-village",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 326680,
+      "guide": "Eastbank road entrance, three restoration stages, supplies and following projects."
+    },
+    {
+      "id": "rhys-journey-customers",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 337965,
+      "guide": "Customer deliveries, ingredient sources, reputation and order cooldown."
+    },
+    {
+      "id": "rhys-journey-training",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 360221,
+      "guide": "Jade harvests, Rhys production and Jay animal skills; practice and level gates."
+    },
+    {
+      "id": "rhys-journey-fishing",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 336084,
+      "guide": "Three timed casts, accuracy, fish rarity, collection and practice retries."
+    },
+    {
+      "id": "jade-journey-explore",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 327620,
+      "guide": "Woodland, jetty and greenhouse unlocks and shared basket discoveries."
+    },
+    {
+      "id": "jade-journey-greenhouse",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 331382,
+      "guide": "Three growing benches, seed crops, gold, five minute growth and harvest output."
+    },
+    {
+      "id": "jade-journey-forage",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 320724,
+      "guide": "Named woodland targets, twelve picks, timer, wrong picks and collection."
     }
   ]
 }

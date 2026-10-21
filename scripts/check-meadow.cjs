@@ -92,3 +92,4 @@ const familyTypes=['chicken','cow','sheep','goat','alpaca'];const familyState={f
 require('./check-meadow-wells.cjs');
 
 require('./check-meadow-artisan.cjs');
+require('./check-meadow-journey.cjs');

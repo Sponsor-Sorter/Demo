@@ -11,12 +11,12 @@
 
   const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n)),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function settle(a,now=Date.now()){
-    const elapsed=Math.max(0,now-(a.needsAt||a.lastCare||now))/3600000;
+    const elapsed=Math.max(0,now-(a.needsAt||a.lastCare||now))/3600000*(api?.state&&window.meadowJourneyCore?window.meadowJourneyCore.needsFactor(api.state()):1);
     for(const [key,rate] of [['hunger',5],['clean',2],['happy',3]])a[key]=clamp((Number.isFinite(a[key])?a[key]:80)-elapsed*rate);
     a.needsAt=now;return a;
   }
   function ready(a,now=Date.now()){return a.hunger>45&&a.clean>35&&a.happy>50&&now-(a.lastProductAt||0)>=products[a.type].time}
-  function image(a){return 'assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.webp'}
+  function image(a){return window.meadowJourney?.breedImage(a.type,a.breedTier)||'assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.webp'}
   function home(a){return api.home(a)?.type==='coop'?'Chicken coop':api.home(a)?.type==='paddock'?'Livestock paddock':api.home(a)?'Farm barn':'Roaming the farm'}
   function productText(a){const p=products[a.type];return a.hunger<=45?'A little food will help production.':a.clean<=35?'A clean home will help production.':a.happy<=50?'Some attention will help production.':ready(a)?api.items[p.item].name+' ready · '+(api.yield(a)+window.meadowBonds.bonus(a)+(a.treatBonus?1:0)):Math.max(1,Math.ceil((p.time-(Date.now()-(a.lastProductAt||0)))/1000))+' seconds until the next collection'}
   function care(id,action='all',mapId,batch){

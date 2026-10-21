@@ -1,0 +1,480 @@
+{
+  "provider": "OpenAI built-in image_gen",
+  "generated": "2026-10-21",
+  "entries": [
+    {
+      "id": "village",
+      "source": "exec-b07dd821-76df-4fc7-b36f-e108416c1dda.png",
+      "prompt": "New 3:2 full-screen HD Meadow Markets environment. Style/geographic-continuity reference: eastbank-meadow.webp. Premium painterly 2.5D farm art, same elevated camera and warm natural greens. River on left, bridge entering left middle, sandy road leads diagonally to upper right, old boundary wall and woods above road. Four empty grass/cobblestone building pads below road, three middle and one lower-left riverside. Weathered stone visitor shed at upper right. No people, text, UI, grids or borders. Finished artwork fills canvas."
+    },
+    {
+      "id": "bakery",
+      "source": "exec-60593328-b52d-4b8d-b006-09761e1b6558.png",
+      "prompt": "Transparent production sprite sheet, THREE stages of THE SAME village bakery for Meadow Markets, arranged in exactly three equal square cells in one horizontal 3:1 strip, no overlap between cells, complete building in each cell with 10% transparent margin. Genuine transparent alpha background. Same elevated isometric 2.5D perspective and premium hand-painted farm game aesthetic, warm terracotta tiled roof, cream plaster and honey stone, front facade faces down-left, right side visible, same footprint, same ground anchor and same size in every cell. LEFT: abandoned bakery, missing tiles, boarded window, weeds but standing walls. MIDDLE: repairs in progress, new roof half installed, neat timber scaffold, flour sacks, no people. RIGHT: beautifully restored working bakery with bread window, striped cream/red awning, hanging bread sign, flower pots, chimney. Warm daylight upper left. No people, text, labels, panels, grass diamond, backdrop or thick shadows. Three separate clean cutout buildings aligned on the same ground baseline. Render maximum resolution suitable for splitting into three 512px sprites."
+    },
+    {
+      "id": "cafe",
+      "source": "exec-d7045790-8e77-4a2a-b469-1991600902fa.png",
+      "prompt": "Transparent production sprite sheet, THREE stages of THE SAME rural cafe for Meadow Markets, arranged in exactly three equal square cells in one horizontal 3:1 strip, no overlap between cells, complete building in each cell with 10% transparent margin. Genuine transparent alpha background. Elevated isometric 2.5D perspective and premium hand-painted farm game aesthetic, pale stone walls, teal painted timber, warm red-tile roof, front facade faces down-left, right side visible, same footprint ground anchor and scale each cell. LEFT abandoned shuttered cafe with worn roof and weeds. MIDDLE repairs underway with timber scaffold and stacked clean boards. RIGHT welcoming restored cafe, cream-and-teal awning, two tiny outdoor tables, tea cups, flower pots, hanging cup-shaped sign. No people, no text or labels, no grass diamond, no background. Soft small contact shadows only. Maximum resolution for three 512px individual building sprites."
+    },
+    {
+      "id": "hall",
+      "source": "exec-b74b559f-8765-4340-ad36-612f2b3ad958.png",
+      "prompt": "Production sprite sheet THREE upgrade stages of the SAME rural community hall, arranged exactly THREE square cells in one horizontal 3:1 strip. Genuinely transparent alpha background, equal building scale, same ground baseline and footprint in all cells, each whole building and all appendages inside its cell with generous clear margins. Meadow Markets premium warm hand-painted 2.5D isometric farm-game art, elevated camera, stone and cream timber, red tile roof, front faces down-left, right side visible. Stage left: neglected village hall, broken roof tiles, faded blue double doors, boarded windows. Centre: scaffold, repaired roof, freshly painted doors, neat construction materials. Right: fully restored attractive community hall with small clock tower, blue doors, flower pots and small bunting. No text, people, labels, background or grass tile. Soft contact shadow only. Crisp finished asset, maximum resolution for three 512px sprites."
+    },
+    {
+      "id": "jetty",
+      "source": "exec-9254b81b-30cf-4d95-97db-1ad0c97d0e54.png",
+      "prompt": "Production sprite sheet THREE upgrade stages of the SAME small rural riverside fishing jetty with little timber tackle hut, arranged THREE equal square cells horizontally in one 3:1 strip, genuine transparent alpha background. Same elevated isometric camera as premium painterly Meadow Markets farm game, warm sun, front down-left, right side visible, each entire asset in its own cell with clear margins. LEFT: broken short timber pier, old little shuttered tackle hut, loose boards and weeds. MIDDLE: matching pier with half-new planks, neat wood pile and repair trestle, hut being fixed. RIGHT: restored safe wooden jetty, low rustic railings, open neat red-roofed tackle hut, fishing rods, buckets, lifebuoy and a small rowboat tied alongside. No people or water backdrop; no words, labels, grid or grass diamond. All stages equal footprint and ground anchor, maximum resolution for splitting into three 512px sprites."
+    },
+    {
+      "id": "outpost",
+      "source": "exec-3cd3809f-7e4f-44a2-b902-de64ed60dfdc.png",
+      "prompt": "Transparent HD sprite sheet THREE stages of the SAME small stone roadside visitor shed in premium warm painterly 2.5D Meadow Markets farm game. Exactly THREE equal square cells horizontally in one 3:1 strip. Identical elevated isometric camera, building front down-left, right side visible, same footprint and scale, complete objects with generous transparent margins. LEFT: modest weathered stone shed, brown tiled roof, plain closed wooden door, weeds and old crate. MIDDLE: identical shed renovated, fresh roof tiles and timber noticeboard beside door, scaffold and neatly stacked supplies. RIGHT: welcoming stone visitor post and tiny trading counter, cream and green awning, baskets of farm goods, small flower boxes, open door, hanging lantern. Genuine transparent alpha, no ground tile or opaque background, no people, no words or labels. Soft contact shadow only. Maximum resolution for three 512px sprites."
+    },
+    {
+      "id": "finds",
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png",
+      "prompt": "Transparent inventory icon atlas for Meadow Markets premium warm painterly farm game. Exactly SIX equal square cells in a 3-column by 2-row regular grid, each separate complete object centered with 18% transparent padding. Reading order: 1 blue-green river perch fish, 2 sleek silver trout fish, 3 golden orange carp fish, 4 small basket of ripe blackberries with two leaves, 5 small wooden bowl of hazelnuts with two green leaves, 6 neat tied bundle of cooking herbs. High quality hand-painted charming 2.5D asset, distinct readable silhouettes, consistent soft upper-left light, no words or frames, no cast shadow, no backdrop, genuine transparent alpha. Maximum resolution for clean individual 384px item icons."
+    },
+    {
+      "id": "fishing",
+      "source": "exec-41df8aeb-e902-46c1-984c-3966384d2bbf.png",
+      "prompt": "Full-screen landscape HD illustrated fishing spot for premium painterly Meadow Markets farm game, warm hand-painted 2.5D style matching a rustic village across a river. Elevated near-isometric view of a restored timber fishing jetty occupying lower left foreground, small tackle hut at left edge, calm blue-green river fills central 70% with gentle reeds and visible fish silhouettes, opposite bank with willows, wildflowers and warm stone path. Clean readable water surface central play area for casting targets, gentle late afternoon light, no people, no words, no UI, no borders. Finished detailed artwork fills whole 3:2 canvas, no bars."
+    },
+    {
+      "id": "woodland",
+      "source": "exec-d0d8ff87-2e9c-44ea-8f7a-fe61f03b9f6f.png",
+      "prompt": "Full-screen HD 3:2 landscape environment for premium painterly Meadow Markets farm game, elevated 2.5D camera. A peaceful woodland foraging glade reached by a sandy path coming from lower right, old stone boundary wall and cottage garden visible in upper right distance linking to a rural village. Mossy tree trunks, ferns, bramble edges, mushroom logs, hazel shrubs around perimeter; broad clean central woodland floor with dappled sunlight where separate collectibles can be placed. Hand-painted natural warm farm-game style, crisp lovely detail with readable shapes, no people, no text or UI, no borders. Entire canvas finished artwork."
+    },
+    {
+      "id": "greenhouse",
+      "source": "exec-a685084f-8f4e-4923-a777-74746df8e329.png",
+      "prompt": "Full-screen HD 3:2 landscape background, interior of a charming rural greenhouse in Meadow Markets premium warm painterly 2.5D farm-game style. Elevated view, sunlit glass roof, terracotta pots and seed shelves around far edges, three long planting benches in the central space with EMPTY clean dark soil for separate plants to grow, watering tools and seed trays along left wall, village cottages glimpsed outside. Clean readable composition, central soil benches occupy about middle 60% below a calm upper area. No people, words, labels, UI or borders. Entire canvas detailed polished illustration."
+    },
+    {
+      "id": "breed-chicken",
+      "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png",
+      "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a speckled cream-and-brown hen and a golden buff hen. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only chicken. Maximum resolution so each cell can become an individual 512px sprite."
+    },
+    {
+      "id": "breed-cow",
+      "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png",
+      "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a chestnut-and-white dairy cow and a golden Guernsey cow. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only cow. Maximum resolution so each cell can become an individual 512px sprite."
+    },
+    {
+      "id": "breed-sheep",
+      "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png",
+      "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a spotted cream-and-brown wool sheep and a silver-grey fleece sheep. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only sheep. Maximum resolution so each cell can become an individual 512px sprite."
+    },
+    {
+      "id": "breed-goat",
+      "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png",
+      "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a brown alpine goat and a golden cream alpine goat. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only goat. Maximum resolution so each cell can become an individual 512px sprite."
+    },
+    {
+      "id": "breed-alpaca",
+      "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png",
+      "prompt": "Production sprite atlas for Meadow Markets premium warm painterly 2.5D farm game. Exactly FOUR equal square cells in a 2 by 2 regular grid with genuine transparent alpha background. Two varieties of a chestnut alpaca and a silver-grey alpaca. TOP LEFT first variety as a cute baby with baby proportions; TOP RIGHT same first variety as an adult. BOTTOM LEFT second variety as a cute baby; BOTTOM RIGHT same second variety as an adult. All subjects whole-body standing, view from elevated three-quarter farm camera facing down-left, same soft upper-left daylight, crisp painted fur or feathers, appealing and realistic farm proportions. Each subject completely inside its own cell with 15 percent clear margin, no overlap. No person, no text, frames, backdrop, grass floor or shadow. Not four different species: only alpaca. Maximum resolution so each cell can become an individual 512px sprite."
+    }
+  ],
+  "files": [
+    {
+      "id": "village",
+      "file": "assets/generated/journey/village.webp",
+      "width": 2048,
+      "height": 1365,
+      "bytes": 977478
+    },
+    {
+      "id": "bakery-0",
+      "file": "assets/generated/journey/bakery-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 87890,
+      "source": "exec-60593328-b52d-4b8d-b006-09761e1b6558.png"
+    },
+    {
+      "id": "bakery-1",
+      "file": "assets/generated/journey/bakery-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 84782,
+      "source": "exec-60593328-b52d-4b8d-b006-09761e1b6558.png"
+    },
+    {
+      "id": "bakery-2",
+      "file": "assets/generated/journey/bakery-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 88582,
+      "source": "exec-60593328-b52d-4b8d-b006-09761e1b6558.png"
+    },
+    {
+      "id": "cafe-0",
+      "file": "assets/generated/journey/cafe-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 105130,
+      "source": "exec-d7045790-8e77-4a2a-b469-1991600902fa.png"
+    },
+    {
+      "id": "cafe-1",
+      "file": "assets/generated/journey/cafe-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 104410,
+      "source": "exec-d7045790-8e77-4a2a-b469-1991600902fa.png"
+    },
+    {
+      "id": "cafe-2",
+      "file": "assets/generated/journey/cafe-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 99834,
+      "source": "exec-d7045790-8e77-4a2a-b469-1991600902fa.png"
+    },
+    {
+      "id": "hall-0",
+      "file": "assets/generated/journey/hall-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 83328,
+      "source": "exec-b74b559f-8765-4340-ad36-612f2b3ad958.png"
+    },
+    {
+      "id": "hall-1",
+      "file": "assets/generated/journey/hall-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 90690,
+      "source": "exec-b74b559f-8765-4340-ad36-612f2b3ad958.png"
+    },
+    {
+      "id": "hall-2",
+      "file": "assets/generated/journey/hall-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 82268,
+      "source": "exec-b74b559f-8765-4340-ad36-612f2b3ad958.png"
+    },
+    {
+      "id": "jetty-0",
+      "file": "assets/generated/journey/jetty-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 73866,
+      "source": "exec-9254b81b-30cf-4d95-97db-1ad0c97d0e54.png"
+    },
+    {
+      "id": "jetty-1",
+      "file": "assets/generated/journey/jetty-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 75588,
+      "source": "exec-9254b81b-30cf-4d95-97db-1ad0c97d0e54.png"
+    },
+    {
+      "id": "jetty-2",
+      "file": "assets/generated/journey/jetty-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 87050,
+      "source": "exec-9254b81b-30cf-4d95-97db-1ad0c97d0e54.png"
+    },
+    {
+      "id": "outpost-0",
+      "file": "assets/generated/journey/outpost-0.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 92408,
+      "source": "exec-3cd3809f-7e4f-44a2-b902-de64ed60dfdc.png"
+    },
+    {
+      "id": "outpost-1",
+      "file": "assets/generated/journey/outpost-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 88056,
+      "source": "exec-3cd3809f-7e4f-44a2-b902-de64ed60dfdc.png"
+    },
+    {
+      "id": "outpost-2",
+      "file": "assets/generated/journey/outpost-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 91714,
+      "source": "exec-3cd3809f-7e4f-44a2-b902-de64ed60dfdc.png"
+    },
+    {
+      "id": "riverperch",
+      "file": "assets/generated/journey/riverperch.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 52564,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "silvertrout",
+      "file": "assets/generated/journey/silvertrout.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 49436,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "goldencarp",
+      "file": "assets/generated/journey/goldencarp.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 57388,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "blackberry",
+      "file": "assets/generated/journey/blackberry.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 82070,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "hazelnut",
+      "file": "assets/generated/journey/hazelnut.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 61896,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "wildherbs",
+      "file": "assets/generated/journey/wildherbs.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 110918,
+      "source": "exec-51466c1e-0b13-4d46-9f3c-97585a3f8a9f.png"
+    },
+    {
+      "id": "fishing",
+      "file": "assets/generated/journey/fishing.webp",
+      "width": 2048,
+      "height": 1365,
+      "bytes": 752868
+    },
+    {
+      "id": "woodland",
+      "file": "assets/generated/journey/woodland.webp",
+      "width": 2048,
+      "height": 1365,
+      "bytes": 892144
+    },
+    {
+      "id": "greenhouse",
+      "file": "assets/generated/journey/greenhouse.webp",
+      "width": 2048,
+      "height": 1365,
+      "bytes": 616666
+    },
+    {
+      "id": "chicken-breed-1-baby",
+      "file": "assets/generated/journey/chicken-breed-1-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 40964,
+      "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png"
+    },
+    {
+      "id": "chicken-breed-1",
+      "file": "assets/generated/journey/chicken-breed-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 74528,
+      "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png"
+    },
+    {
+      "id": "chicken-breed-2-baby",
+      "file": "assets/generated/journey/chicken-breed-2-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 39072,
+      "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png"
+    },
+    {
+      "id": "chicken-breed-2",
+      "file": "assets/generated/journey/chicken-breed-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 67564,
+      "source": "exec-53593512-6bb0-4c4f-9874-a8f05a6c668a.png"
+    },
+    {
+      "id": "cow-breed-1-baby",
+      "file": "assets/generated/journey/cow-breed-1-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 38178,
+      "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png"
+    },
+    {
+      "id": "cow-breed-1",
+      "file": "assets/generated/journey/cow-breed-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 59202,
+      "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png"
+    },
+    {
+      "id": "cow-breed-2-baby",
+      "file": "assets/generated/journey/cow-breed-2-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 38544,
+      "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png"
+    },
+    {
+      "id": "cow-breed-2",
+      "file": "assets/generated/journey/cow-breed-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 58760,
+      "source": "exec-da0d7e1a-f11c-45c9-a2f9-6cacfd72c16c.png"
+    },
+    {
+      "id": "sheep-breed-1-baby",
+      "file": "assets/generated/journey/sheep-breed-1-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 46710,
+      "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png"
+    },
+    {
+      "id": "sheep-breed-1",
+      "file": "assets/generated/journey/sheep-breed-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 73472,
+      "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png"
+    },
+    {
+      "id": "sheep-breed-2-baby",
+      "file": "assets/generated/journey/sheep-breed-2-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 45856,
+      "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png"
+    },
+    {
+      "id": "sheep-breed-2",
+      "file": "assets/generated/journey/sheep-breed-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 71876,
+      "source": "exec-92cab191-bbaf-4213-9bbd-c616663b26d6.png"
+    },
+    {
+      "id": "goat-breed-1-baby",
+      "file": "assets/generated/journey/goat-breed-1-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 45218,
+      "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png"
+    },
+    {
+      "id": "goat-breed-1",
+      "file": "assets/generated/journey/goat-breed-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 73218,
+      "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png"
+    },
+    {
+      "id": "goat-breed-2-baby",
+      "file": "assets/generated/journey/goat-breed-2-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 52476,
+      "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png"
+    },
+    {
+      "id": "goat-breed-2",
+      "file": "assets/generated/journey/goat-breed-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 79432,
+      "source": "exec-e8645fb3-4b1c-4117-b7f6-4473b37deeff.png"
+    },
+    {
+      "id": "alpaca-breed-1-baby",
+      "file": "assets/generated/journey/alpaca-breed-1-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 34228,
+      "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png"
+    },
+    {
+      "id": "alpaca-breed-1",
+      "file": "assets/generated/journey/alpaca-breed-1.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 55578,
+      "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png"
+    },
+    {
+      "id": "alpaca-breed-2-baby",
+      "file": "assets/generated/journey/alpaca-breed-2-baby.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 34572,
+      "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png"
+    },
+    {
+      "id": "alpaca-breed-2",
+      "file": "assets/generated/journey/alpaca-breed-2.webp",
+      "width": 512,
+      "height": 512,
+      "alphaPreserved": true,
+      "bytes": 57696,
+      "source": "exec-8bed54e9-a646-4948-a9ea-3b350d253b25.png"
+    }
+  ]
+}
