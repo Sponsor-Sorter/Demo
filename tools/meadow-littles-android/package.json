@@ -1,7 +1,7 @@
 {
   "name": "meadow-market-littles-android",
   "private": true,
-  "version": "0.2.5",
+  "version": "0.2.6",
   "scripts": {
     "android:sync": "node scripts/prepare-web.cjs && cap sync android",
     "android:debug": "npm run android:sync && node scripts/build-android.cjs"
