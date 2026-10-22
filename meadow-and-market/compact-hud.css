@@ -8,10 +8,10 @@
 .compact-hud .compact-hud-panel{display:none!important}
 .compact-hud .compact-hud-button{min-width:48px!important;width:54px!important;height:54px!important;min-height:48px!important;flex:none!important}
 .compact-hud .compact-hud-button .hud-painted-art{width:48px!important;height:48px!important}
-.compact-hud .compact-hud-group.is-expanded>.compact-hud-panel{position:absolute;display:flex!important;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:6px!important;padding:6px;right:0;width:max-content;max-width:calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 16px);z-index:32;isolation:isolate;filter:drop-shadow(0 2px 3px #30200f55)}
+.compact-hud .compact-hud-group.is-expanded>.compact-hud-panel{position:absolute;display:flex!important;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:6px!important;padding:6px;right:64px;width:max-content;max-width:calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 88px);z-index:32;isolation:isolate;filter:drop-shadow(0 2px 3px #30200f55)}
 .compact-hud [data-compact-group="top"].is-expanded>.compact-hud-panel{top:calc(100% + 6px)}
 .compact-hud .farm-hud{justify-content:flex-end!important;flex-direction:row!important;min-height:64px;gap:0!important}
-.compact-hud .farm-hud.is-expanded>.compact-hud-panel{bottom:calc(100% + 5px);width:min(410px,calc(100vw - 16px));display:grid!important;grid-template-columns:repeat(auto-fit,minmax(48px,1fr))}
+.compact-hud .farm-hud.is-expanded>.compact-hud-panel{bottom:calc(100% + 5px);right:max(76px,calc(env(safe-area-inset-right) + 64px));width:min(410px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 100px));display:grid!important;grid-template-columns:repeat(auto-fit,minmax(48px,1fr))}
 .compact-hud .farm-hud .mode-switch,.compact-hud .farm-hud .hud-actions{display:contents!important}
 .compact-hud .farm-hud .hud-painted{min-width:44px!important;min-height:48px!important;width:48px!important;height:48px!important;flex:none!important}
 .compact-hud .farm-hud #farm-play-button{position:relative!important;inset:auto!important;transform:none!important;margin:0!important}
