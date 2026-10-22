@@ -8,7 +8,7 @@
 .compact-hud .compact-hud-panel{display:none!important}
 .compact-hud .compact-hud-button{min-width:48px!important;width:54px!important;height:54px!important;min-height:48px!important;flex:none!important}
 .compact-hud .compact-hud-button .hud-painted-art{width:48px!important;height:48px!important}
-.compact-hud .compact-hud-group.is-expanded>.compact-hud-panel{position:absolute;display:flex!important;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;justify-content:flex-end;align-items:center;gap:6px!important;padding:6px;right:64px;width:max-content;max-width:calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 88px);z-index:32;isolation:isolate;filter:drop-shadow(0 2px 3px #30200f55)}
+.compact-hud .compact-hud-group.is-expanded>.compact-hud-panel{position:absolute;display:flex!important;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;justify-content:flex-end;align-items:center;gap:6px!important;padding:6px;right:64px;width:max-content;max-width:min(var(--compact-panel-width,100vw),calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 88px));z-index:32;isolation:isolate;filter:drop-shadow(0 2px 3px #30200f55)}
 .compact-hud [data-compact-group="top"].is-expanded>.compact-hud-panel{top:var(--compact-control-y,27px);transform:translateY(-50%)}
 .compact-hud .farm-hud{justify-content:flex-end!important;flex-direction:row!important;min-height:64px;gap:0!important}
 .compact-hud .farm-hud.is-expanded>.compact-hud-panel{top:var(--compact-control-y,37px);bottom:auto;transform:translateY(-50%);right:max(76px,calc(env(safe-area-inset-right) + 64px));width:min(410px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 100px));display:flex!important;justify-content:flex-start}
@@ -24,3 +24,5 @@
 @media(prefers-reduced-motion:reduce){#toast{transition:none}}
 
 .compact-hud .compact-hud-panel .hud-painted{touch-action:pan-x!important;flex-shrink:0!important}.compact-hud .compact-hud-panel{scrollbar-width:none}
+
+.compact-hud.compact-top-expanded .top-hud-farm{visibility:hidden}

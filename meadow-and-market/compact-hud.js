@@ -7,8 +7,9 @@
  function swipe(dx,dy){return Math.abs(dx)>=24&&Math.abs(dx)>Math.abs(dy)*1.25?Math.sign(dx):0}
  function pick(items,previous){const usable=items.filter(b=>!b.hidden&&!b.disabled),notified=usable.filter(b=>Number(b.dataset.notificationCount)>0);return notified.includes(previous)?previous:notified.sort((a,b)=>Number(b.dataset.notificationCount)-Number(a.dataset.notificationCount))[0]||usable.find(b=>b.classList.contains('active'))||usable[0]}
  function store(value){preference=!!value;try{localStorage.setItem(KEY,value?'on':'off')}catch{}apply();document.getElementById('compact-offer')?.close();clearTimeout(promptTimer)}
- function apply(){document.body.classList.toggle('compact-hud',preference===true);for(const group of groups){group.proxy.hidden=preference!==true;group.expanded=false;group.root.classList.remove('is-expanded');group.proxy.setAttribute('aria-expanded','false')}refresh();positionToast();window.meadowClub?.layout()}
- function expand(group,value){group.root.style.setProperty("--compact-control-y",(group.proxy.offsetTop+group.proxy.offsetHeight/2)+"px");group.expanded=value;group.root.classList.toggle('is-expanded',value);group.proxy.setAttribute('aria-expanded',String(value));window.meadowAudio?.play('tap');positionToast();window.meadowClub?.layout()}
+ function apply(){document.body.classList.remove('compact-top-expanded');document.body.classList.toggle('compact-hud',preference===true);for(const group of groups){group.proxy.hidden=preference!==true;group.expanded=false;group.root.classList.remove('is-expanded');group.proxy.setAttribute('aria-expanded','false')}refresh();positionToast();window.meadowClub?.layout()}
+ function align(group){group.root.style.setProperty('--compact-control-y',(group.proxy.offsetTop+group.proxy.offsetHeight/2)+'px');if(group.root.dataset.compactGroup==='top'){const brand=document.querySelector('.brand-group');if(brand)group.root.style.setProperty('--compact-panel-width',Math.max(44,group.proxy.getBoundingClientRect().left-brand.getBoundingClientRect().right-16)+'px')}}
+ function expand(group,value){align(group);if(group.root.dataset.compactGroup==='top')document.body.classList.toggle('compact-top-expanded',value);group.expanded=value;group.root.classList.toggle('is-expanded',value);group.proxy.setAttribute('aria-expanded',String(value));window.meadowAudio?.play('tap');positionToast();window.meadowClub?.layout()}
  function make(root,items,id){
   if(!root||!items.length)return;
   const panel=document.createElement('div');panel.id='compact-'+id+'-panel';panel.className='compact-hud-panel';
@@ -34,7 +35,7 @@
  make(bottom,bottom?[...bottom.children]:[],'bottom');
  const settingsRoot=document.getElementById('modal-content');if(settingsRoot)new MutationObserver(()=>{if(settingsRoot.querySelector('#game-build'))mountSettings(settingsRoot)}).observe(settingsRoot,{childList:true});
  const header=document.querySelector('.topbar');if(header&&typeof ResizeObserver!=='undefined')new ResizeObserver(positionToast).observe(header);
- window.addEventListener('resize',()=>{for(const group of groups)if(group.expanded)group.root.style.setProperty('--compact-control-y',(group.proxy.offsetTop+group.proxy.offsetHeight/2)+'px');positionToast();if(preference===null){clearTimeout(promptTimer);promptTimer=setTimeout(offer,1500)}});
+ window.addEventListener('resize',()=>{for(const group of groups)if(group.expanded)align(group);positionToast();if(preference===null){clearTimeout(promptTimer);promptTimer=setTimeout(offer,1500)}});
  document.addEventListener('click',e=>{if(e.target.closest('dialog,#side-panel,.compact-hud-group'))return;for(const group of groups)if(group.expanded)expand(group,false)},true);
  apply();promptTimer=setTimeout(offer,1800);
  window.meadowCompactHud={set:store,enabled:()=>preference===true,small,pick,positionToast};
