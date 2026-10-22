@@ -1,0 +1,41 @@
+(() => {
+ 'use strict';
+ const KEY='meadow-compact-hud-v1',groups=[];
+ let preference=null,queued=0,promptTimer=0;
+ try{const saved=localStorage.getItem(KEY);if(saved!==null)preference=saved==='on'}catch{}
+ const small=(w,h)=>Math.min(w,h)<=600;
+ function swipe(dx,dy){return Math.abs(dx)>=24&&Math.abs(dx)>Math.abs(dy)*1.25?Math.sign(dx):0}
+ function pick(items,previous){const usable=items.filter(b=>!b.hidden&&!b.disabled),notified=usable.filter(b=>Number(b.dataset.notificationCount)>0);return notified.includes(previous)?previous:notified.sort((a,b)=>Number(b.dataset.notificationCount)-Number(a.dataset.notificationCount))[0]||usable.find(b=>b.classList.contains('active'))||usable[0]}
+ function store(value){preference=!!value;try{localStorage.setItem(KEY,value?'on':'off')}catch{}apply();document.getElementById('compact-offer')?.close();clearTimeout(promptTimer)}
+ function apply(){document.body.classList.toggle('compact-hud',preference===true);for(const group of groups){group.proxy.hidden=preference!==true;group.expanded=false;group.root.classList.remove('is-expanded');group.proxy.setAttribute('aria-expanded','false')}refresh();positionToast();window.meadowClub?.layout()}
+ function expand(group,value){group.expanded=value;group.root.classList.toggle('is-expanded',value);group.proxy.setAttribute('aria-expanded',String(value));window.meadowAudio?.play('tap');positionToast();window.meadowClub?.layout()}
+ function make(root,items,id){
+  if(!root||!items.length)return;
+  const panel=document.createElement('div');panel.id='compact-'+id+'-panel';panel.className='compact-hud-panel';
+  for(const item of items)panel.append(item);
+  root.append(panel);root.classList.add('compact-hud-group');root.dataset.compactGroup=id;
+  const proxy=document.createElement('button');proxy.type='button';proxy.hidden=true;proxy.className='compact-hud-button hud-painted';proxy.setAttribute('aria-controls',panel.id);proxy.setAttribute('aria-expanded','false');proxy.setAttribute('aria-description','Tap to open. Drag left to show all controls; drag right to fold them. Arrow keys also expand and fold.');root.append(proxy);
+  const group={root,panel,proxy,items:items.flatMap(el=>el.matches("button")?[el]:[...el.querySelectorAll("button")]),chosen:null,expanded:false,gesture:null,suppress:0,signature:''};groups.push(group);
+  proxy.addEventListener('pointerdown',e=>{if(e.button>0||group.gesture)return;e.stopPropagation();group.gesture={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};proxy.setPointerCapture(e.pointerId)});
+  proxy.addEventListener('pointermove',e=>{const g=group.gesture;if(!g||g.id!==e.pointerId)return;const dx=e.clientX-g.x,dy=e.clientY-g.y;if(Math.abs(dx)>12||Math.abs(dy)>12){g.moved=true;e.preventDefault();e.stopPropagation()}if(swipe(dx,dy)&&!g.triggered){g.triggered=true;expand(group,dx<0)}});
+  const end=e=>{const g=group.gesture;if(!g||g.id!==e.pointerId)return;if(g.moved||e.type==='pointercancel'){group.suppress=performance.now()+700;e.preventDefault();e.stopPropagation()}group.gesture=null;if(proxy.hasPointerCapture(e.pointerId))proxy.releasePointerCapture(e.pointerId);schedule()};
+  proxy.addEventListener('pointerup',end);proxy.addEventListener('pointercancel',end);proxy.addEventListener('lostpointercapture',()=>{if(group.gesture){group.gesture=null;group.suppress=performance.now()+700;schedule()}});
+  proxy.addEventListener('click',e=>{e.stopPropagation();if(performance.now()<group.suppress)return;const chosen=group.chosen;if(!chosen||chosen.disabled||chosen.hidden)return;chosen.click();if(group.expanded)expand(group,false);schedule()});
+  proxy.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'||e.key==='Escape'){e.preventDefault();expand(group,e.key==='ArrowLeft')}});
+  new MutationObserver(schedule).observe(panel,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','disabled','data-notification-count','class','src','aria-label']});
+ }
+ function schedule(){if(!queued)queued=requestAnimationFrame(()=>{queued=0;refresh()})}
+ function refresh(){for(const group of groups){if(group.gesture)continue;const chosen=pick(group.items,group.chosen);if(!chosen)continue;group.chosen=chosen;const count=group.items.filter(b=>!b.hidden).reduce((n,b)=>n+(Number(b.dataset.notificationCount)||0),0),art=chosen.querySelector('img'),label=chosen.getAttribute('aria-label')||chosen.textContent.trim(),signature=[label,art?.getAttribute('src'),count].join('|');if(signature===group.signature)continue;group.signature=signature;group.proxy.replaceChildren();if(art){const img=art.cloneNode(false);img.className='hud-painted-art';img.alt='';img.draggable=false;group.proxy.append(img)}else{const text=document.createElement('span');text.textContent=chosen.textContent.trim();group.proxy.append(text)}const arrow=document.createElement('span');arrow.className='compact-hud-arrow';arrow.textContent='‹';arrow.setAttribute('aria-hidden','true');group.proxy.append(arrow);group.proxy.setAttribute('aria-label',label);window.meadowNotifications?.badge(group.proxy,count,'notifications in this control group')}}
+ function positionToast(){const header=document.querySelector('.topbar');if(header)document.documentElement.style.setProperty('--hud-notice-top',Math.ceil(Math.max(header.getBoundingClientRect().bottom,...groups.filter(g=>g.expanded&&g.root.dataset.compactGroup==='top').map(g=>g.panel.getBoundingClientRect().bottom))+8)+'px')}
+ function offer(){if(preference!==null||!small(innerWidth,innerHeight))return;if(document.hidden||document.querySelector('dialog[open]')||document.querySelector('#side-panel.open')||!document.querySelector('#farm-grid > .farm-object')){promptTimer=setTimeout(offer,5000);return}let d=document.getElementById('compact-offer');if(!d){d=document.createElement('dialog');d.id='compact-offer';d.className='compact-offer';d.setAttribute('aria-labelledby','compact-offer-title');d.innerHTML='<div class="sheet-head"><h2 id="compact-offer-title">A little more room to farm?</h2></div><p>We noticed you’re on a small screen. Would you like to try Compact mode?</p><p>Top and bottom controls fold into one button each. Tap to open the shown action, drag left to expand, and drag right to fold.</p><button class="primary-button full-button" id="compact-try">Try Compact mode</button><button class="small-button full-button" id="compact-later">Keep the full controls</button>';document.body.append(d);d.querySelector('#compact-try').onclick=()=>store(true);d.querySelector('#compact-later').onclick=()=>store(false);d.addEventListener('cancel',()=>store(false))}d.showModal()}
+ function mountSettings(root){if(root.querySelector('#compact-hud-setting'))return;const section=document.createElement('div');section.className='settings-section compact-setting';section.innerHTML='<label for="compact-hud-setting"><strong>Compact mode</strong><input type="checkbox" id="compact-hud-setting"></label><p>Fold top and bottom controls into one button each. Drag left to expand and right to fold. Notifications choose the shown action.</p>';const box=section.querySelector('input');box.checked=preference===true;box.onchange=()=>store(box.checked);root.querySelector('.sheet-head')?.after(section)}
+ const top=document.querySelector('.topbar>.resource-bar'),bottom=document.querySelector('.farm-hud');
+ make(top,top?[...top.children]:[],'top');
+ make(bottom,bottom?[...bottom.children]:[],'bottom');
+ const settingsRoot=document.getElementById('modal-content');if(settingsRoot)new MutationObserver(()=>{if(settingsRoot.querySelector('#game-build'))mountSettings(settingsRoot)}).observe(settingsRoot,{childList:true});
+ const header=document.querySelector('.topbar');if(header&&typeof ResizeObserver!=='undefined')new ResizeObserver(positionToast).observe(header);
+ window.addEventListener('resize',()=>{positionToast();if(preference===null){clearTimeout(promptTimer);promptTimer=setTimeout(offer,1500)}});
+ document.addEventListener('click',e=>{if(e.target.closest('dialog,#side-panel,.compact-hud-group'))return;for(const group of groups)if(group.expanded)expand(group,false)},true);
+ apply();promptTimer=setTimeout(offer,1800);
+ window.meadowCompactHud={set:store,enabled:()=>preference===true,small,pick};
+})();
