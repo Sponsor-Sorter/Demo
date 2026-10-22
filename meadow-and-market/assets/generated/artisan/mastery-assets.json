@@ -1,0 +1,19 @@
+{
+  "background": {
+    "file": "workshop-hd.webp",
+    "provider": "built-in image_gen",
+    "nativeResolution": [
+      1672,
+      941
+    ],
+    "displayResolution": [
+      3344,
+      1882
+    ],
+    "processing": "Lanczos 2× resampling, WebP quality 90. Display resolution is not native generated detail.",
+    "source": "exec-4f1fd622-6bea-4a29-8aa6-8722c9c1a875.png",
+    "reference": "../journey/bakery-2.webp",
+    "prompt": "Create production game background artwork for Meadow Markets, a polished cozy farming/city builder mobile game. Native resolution 2560 x 1440 or higher, widescreen 16:9. Reference image is STYLE reference only: warm painterly farm materials, terracotta, honey-colored timber, soft lush countryside, carefully rendered game art. Scene: interior of a beautiful farmhouse artisan kitchen and craft workshop. Stone oven and bread baskets at left, shelves of jam jars, butter churn, neatly folded woven blankets and a small loom to the right, worktable in middle distance, open rear door overlooking sunny meadow. No people, no letters or numbers, no UI, no borders, no panels, no green overlay. Artwork must cover the ENTIRE image edge to edge. Keep foreground and central floor spacious and visually quiet so runtime product cards can sit over it. Perspective natural slightly elevated 3/4 indoor camera. Highly polished crisp HD textures and attractive lighting, strong coherent architecture, family friendly, match reference aesthetic. This is a full screen game environment, not an isolated sprite."
+  },
+  "feature": "Artisan mastery, build 146"
+}

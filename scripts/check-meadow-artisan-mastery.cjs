@@ -1,0 +1,32 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const root='meadow-and-market/',farm={objects:[],inventory:{wheat:1000,flour:1000,egg:1000,wool:1000}},state={level:20,coins:0,farms:{willow:farm},homestead:{stats:{made_bread:40}}};
+const scope={window:{},document:{querySelector(){return null},querySelectorAll(){return[]}},setInterval(){},Date};
+for(const file of ['production.js','artisan-mastery.js'])vm.runInNewContext(fs.readFileSync(root+file,'utf8'),scope);
+const p=scope.window.meadowProduction,m=scope.window.meadowArtisan;
+p.attach({state:()=>state,current:()=>farm,farms:()=>state.farms,items:p.items,level:()=>state.level,save(){},render(){},xp(){},notify(){},earn(){},view:()=>'',event(id,n){state.homestead.stats[id]=(state.homestead.stats[id]||0)+n;}});
+assert.equal(p.recipes.length,17);
+assert.equal(m.status(state,'bread').count,20,'Existing genuine production earns one-time credit');
+state.homestead.stats.made_bread=400;assert.equal(m.status(state,'bread').count,20,'Migration never runs twice');
+assert.equal(m.status(state,'bread').rank,3);assert.equal(m.factor(state,'bread'),.9);
+assert(m.choose(state,'bread'));assert.equal(m.output(state,'bread'),3);
+const kitchen={id:'k',type:'kitchen',tier:0,jobs:[],autoRecipe:'bread',autoCap:6};farm.objects.push(kitchen);
+assert(p.queue(kitchen,p.recipes.find(r=>r.id==='bread')));const first=kitchen.jobs[0];assert.equal(first.output,3);assert.equal(first.finishAt-first.startAt,49500);
+m.clear(state,'kitchen');assert.equal(m.output(state,'bread'),2);assert.equal(p.jobOutput(first),3,'Switching signatures preserves already queued output');
+m.record(state,'bread',30);assert.equal(m.status(state,'bread').rank,4);assert.equal(m.output(state,'bread'),3);
+m.choose(state,'bread');assert.equal(m.output(state,'bread'),4);
+assert.equal(p.belowCap(kitchen,p.recipes.find(r=>r.id==='bread')),false,'Queued actual output plus next bonus batch cannot exceed target');
+farm.inventory.bread=2;kitchen.jobs=[];assert(p.belowCap(kitchen,p.recipes.find(r=>r.id==='bread')));farm.inventory.bread=3;assert(!p.belowCap(kitchen,p.recipes.find(r=>r.id==='bread')));
+assert.equal(p.jobOutput({id:'bread'}),2,'Legacy jobs retain base recipe output');
+const old={id:'bread',startAt:1,finishAt:2};kitchen.jobs=[old,{...first,finishAt:2}];const before=m.status(state,'bread').count,bagBefore=farm.inventory.bread;
+assert.equal(p.collect(kitchen,true),2);assert.equal(farm.inventory.bread,bagBefore+5);assert.equal(m.status(state,'bread').count,before+2,'Each collected job counts once, not each bonus good');
+assert.equal(p.collect(kitchen,true),0);assert.equal(m.status(state,'bread').count,before+2);
+assert(!m.record(state,'bread',NaN));assert(!m.record(state,'bread',-1));assert(!m.record(state,'invalid',2));
+assert(!m.choose(state,'flour'),'Unskilled recipes cannot be signature');const current=state.level;state.level=7;assert(!m.choose(state,'bread'));assert(!m.signature(state,'bread'));state.level=current;
+m.record(state,'yarn',20);assert(m.choose(state,'yarn'));assert(m.signature(state,'bread'));assert(m.signature(state,'yarn'),'Kitchen and craft signatures are independent');
+assert(m.ready(state)>0);const reward=m.claim(state,'bread',2);assert.equal(reward.gold,25);assert(!m.claim(state,'bread',2),'Cannot claim twice');assert(!m.claim(state,'bread',5),'Cannot claim unreached milestone');assert(!m.claim(state,'bread',2.5));
+const restored=JSON.parse(JSON.stringify(state));assert.equal(m.status(restored,'bread').count,m.status(state,'bread').count);assert(m.signature(restored,'yarn'));assert(!m.claim(restored,'bread',2),'Save/reload retains reward receipts');
+const fresh={level:1,farms:{willow:{inventory:{}}}};assert.equal(m.ready(fresh),0);assert.equal(m.output(fresh,'bread'),2);assert(!m.choose(fresh,'bread'));
+const index=fs.readFileSync(root+'index.html','utf8'),sw=fs.readFileSync(root+'sw.js','utf8');for(const file of ['artisan-mastery.js?v=1','artisan-mastery.css?v=1']){assert(index.includes(file));assert(sw.includes(file));}
+const css=fs.readFileSync(root+'artisan-mastery.css','utf8');assert(css.includes('height:100dvh'));assert(css.includes('center/cover'));assert(css.includes('--game-safe-top'));assert(css.includes('orientation:portrait'));assert(css.includes('max-height:500px'));
+for(const path of ['assets/generated/artisan/workshop-hd.webp','assets/audio/jay-artisan-mastery146.mp3']){assert(fs.existsSync(root+path));assert(sw.includes(path));}
+console.log('17 artisan recipes: migration, ranks, signatures, real queue yields/times, caps, legacy jobs, helper collection, reward receipts, save/reload and full-screen wiring passed.');

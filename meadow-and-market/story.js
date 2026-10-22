@@ -54,6 +54,12 @@
     {id:'shop-shelf-plan',title:'A little plan for the shelves',text:'Build a market stall and enable a shelf plan with at least one good. Set a basket reserve for your recipes.',target:1,reward:120,xp:25,measure:s=>Object.values(s.farms).filter(f=>{const p=window.meadowShopPlan.plan(f);return f.objects.some(o=>o.type==='stall')&&p.enabled&&p.rules.length}).length},
     {id:'shop-helper-supply',title:'Neighbours are always welcome',text:'Let Farmer Jay restock forty goods across your farm shops. He follows your plan while you play in each area.',target:40,reward:300,xp:50,measure:s=>Object.values(s.farms).reduce((n,f)=>n+(f.shop?.helperStocked||0),0)}
   ]});
+  chapters.push({name:'The artisan’s signature',person:'jay',goals:[
+    {id:'artisan-skill-first',title:'Made with practice',text:'Reach artisan rank 2 by collecting five batches of one recipe. Helper collections count.',target:1,reward:80,xp:20,measure:s=>window.meadowProduction.recipes.filter(r=>window.meadowArtisan.status(s,r.id).rank>=2).length},
+    {id:'artisan-skill-signature',title:'Our signature creations',text:'At farm level 8, select both a kitchen and craft signature. Each recipe needs artisan rank 3.',target:2,reward:180,xp:35,measure:s=>Object.values(window.meadowArtisan.book(s).signature).filter(id=>window.meadowArtisan.signature(s,id)).length},
+    {id:'artisan-skill-variety',title:'A truly handmade village',text:'Reach artisan rank 3 in eight recipes. Your permanent skills improve every matching workspace.',target:8,reward:350,xp:60,measure:s=>window.meadowProduction.recipes.filter(r=>window.meadowArtisan.status(s,r.id).rank>=3).length},
+    {id:'artisan-skill-master',title:'A master of the craft',text:'Collect 120 batches of one recipe for artisan rank 5. Progress and unclaimed rewards never expire.',target:1,reward:450,xp:75,measure:s=>window.meadowProduction.recipes.filter(r=>window.meadowArtisan.status(s,r.id).rank>=5).length}
+  ]});
   const objects=s=>Object.values(s.farms).flatMap(f=>f.objects||[]),stats=s=>s.homestead?.stats||{};
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}

@@ -859,6 +859,15 @@
       "voice": "Hope - upbeat and clear",
       "bytes": 320724,
       "guide": "Named woodland targets, twelve picks, timer, wrong picks and collection."
+    },
+    {
+      "id": "jay-artisan-mastery146",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 347682,
+      "guide": "Genuine batch mastery, five ranks, signatures at level eight and rank three, helpers, permanent progress."
     }
   ]
 }
