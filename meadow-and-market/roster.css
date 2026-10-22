@@ -3,3 +3,5 @@
 .roster-drag{width:100px;height:100px;background-size:800% 800%;background-position:0 28.5714%;animation:roster-walk .96s steps(8) infinite}@keyframes roster-walk{from{background-position-x:0}to{background-position-x:114.2857%}}
 
 #roster-button[hidden]{display:none!important}
+
+.roster-card.is-lifting>img{opacity:.25}.roster-card.is-lifting{border-color:#c29a60}.roster-drag{background-repeat:no-repeat;will-change:left,top;filter:drop-shadow(0 3px 3px #35240c65)}

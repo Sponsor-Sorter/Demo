@@ -36,3 +36,10 @@
 .hud-painted:disabled .hud-painted-art{filter:var(--hud-outline)!important}
 
 @media(min-width:651px){.farm-hud .mode-switch,.farm-hud .hud-actions{gap:12px!important}}@media(max-width:650px){.farm-hud .mode-switch,.farm-hud .hud-actions{gap:5px!important}.topbar .resource-bar{gap:6px!important}}
+
+/* Keep navigation on the top safe-area edge rather than centring it against the tall helper column. */
+.topbar{align-items:flex-start!important;height:auto!important;min-height:0!important;padding-top:max(6px,env(safe-area-inset-top,0px))!important}
+.topbar>.resource-bar,.topbar>.top-hud-farm{align-self:flex-start!important;margin-top:0!important}
+.topbar>.resource-bar{align-items:flex-start!important}
+@media(max-width:700px){.topbar>.brand-group{width:126px!important}.topbar>.top-hud-farm{padding:0!important;gap:2px}.topbar>.top-hud-farm>div{display:none}.topbar>.resource-bar{gap:4px!important}.topbar>.resource-bar .hud-painted{min-width:34px!important;width:36px!important;height:42px!important}.topbar>.resource-bar .hud-painted-art{width:36px!important;height:36px!important}.topbar #map-switch.hud-painted{min-width:36px!important;width:38px!important;height:42px!important}.topbar #map-switch .hud-painted-art{width:36px!important;height:36px!important}}
+@media(max-width:360px){.topbar>.brand-group{width:112px!important}.topbar>.resource-bar{gap:2px!important}.topbar>.resource-bar .hud-painted{min-width:30px!important;width:32px!important}.topbar>.resource-bar .hud-painted-art{width:32px!important;height:32px!important}}

@@ -34,3 +34,11 @@
 - Actual browser flow: locked roster is hidden at level 8; insufficient gems routes to the free test shop; returning and purchasing shows “Automatic watering · owned”.
 
 Release and Samsung UI evidence are recorded in the task's `MeadowMarket/qa-154` folder.
+
+## Build 156: worker pickup and compact headers
+- Painted transparent roster HUD artwork replaces the flat icon, matching the existing farm icon style.
+- Upward movement out of a worker card picks up the animated farmer immediately. Horizontal swipes stay locked to roster scrolling; cancellations restore the original worker.
+- Top HUD controls align with the safe top edge.
+- Farm Desk keeps Rhys beside Close, limits the title/project row to 52px, and gives its body the remaining height.
+- Regression suite passed. Browser measurements: body 294/390px landscape (75%), 748/844px portrait (89%); Rhys and Close both y=4px, height44px. No portrait HUD overflow at390px.
+- Roster artwork generated with ImageGen using the existing painted friends icon as reference: wooden farm-worker noticeboard, parchment portraits, straw hat, wheat and flowers, transparent background. Delivered512px WebP.
