@@ -131,15 +131,16 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a raised 3D world board. Reinforce, roll and capture territories in solo AI, local hot-seat or online campaigns, with Capitals rules and private alliances.",
+      "description": "Command six coalitions across a raised 3D world board in solo AI, local hot-seat or online campaigns. Build 10 adds touch rule and skin pickers, closer zoom, smoother action framing and new combat, dice and interface sounds. Solo pause currently blocks controls while AI timers may continue.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.9 · Build 9",
+      "build": "Version 1.0.0-preview.10 · Build 10",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
         "Open Play browser preview, choose your game setup and launch the campaign.",
+        "Choose victory and reinforcement rules with the in-game touch pickers before launching. Adjust sound and dice finishes in Settings.",
         "Follow turn prompts to reinforce, attack and move troops. Choose solo AI, local hot-seat or online play.",
         "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
         "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
@@ -148,16 +149,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/9/",
+          "url": "https://sponsorsorter.com/frontlines/builds/10/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-9.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-10.apk"
         }
       ],
-      "notes": "Playtest preview. Android build 9 was checked on a Samsung SM-S908E; other devices and sustained performance remain under review. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop.",
-      "sha256": "C30408E06F62ED6AD94E511B763672194BA70D9E6ABD0C0F2CFACECA91CA0532"
+      "notes": "Playtest preview. Android build 10 was checked on a Samsung SM-S908E; other devices and sustained performance remain under review. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop. Known issue: in solo play, the pause menu blocks controls but AI timers can continue. A follow-up fix is being prepared.",
+      "sha256": "F28A160EEC45AD592BC3B5B629F669564AC1E602842940F7E938B0F0D61C44AA"
     }
   ]
 }

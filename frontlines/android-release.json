@@ -1,11 +1,11 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.9",
-  "versionCode": 9,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-9.apk",
-  "bytes": 67568040,
-  "sha256": "c30408e06f62ed6ad94e511b763672194ba70d9e6abd0c0f2cfaceca91ca0532",
+  "versionName": "1.0.0-preview.10",
+  "versionCode": 10,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-10.apk",
+  "bytes": 64459070,
+  "sha256": "f28a160eec45ad592bc3b5b629f669564ac1e602842940f7e938b0f0d61c44aa",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Fewer rendering submissions: merged dice pips and physical card stacks, cached ownership uploads, hidden board animation suspension, compact rules popup and safer update validation. Approved HD art and geometry retained."
+  "notes": "Touch-ready rules, dice skins and chat; closer zoom and smoothly framed action camera; new ElevenLabs combat, dice, paper and interface sounds; continuous approved music; polished unit facing and physical cards."
 }

@@ -1,0 +1,509 @@
+{
+  "release_id": "2026-10-23-preview10",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.10",
+  "build": 10,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/10/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/10/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.10",
+    "versionCode": 10,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-10.apk",
+    "bytes": 64459070,
+    "sha256": "f28a160eec45ad592bc3b5b629f669564ac1e602842940f7e938b0f0d61c44aa",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Touch-ready rules, dice skins and chat; closer zoom and smoothly framed action camera; new ElevenLabs combat, dice, paper and interface sounds; continuous approved music; polished unit facing and physical cards.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 3,
+    "engine_checks": 71,
+    "hosted": "Three-player Capitals, exponential, skins, strict same-build gate, private out-of-turn alliance and third-seat privacy passed. Test identities removed."
+  },
+  "validation": {
+    "desktop_gameplay_checks": 162,
+    "features_checks": 35,
+    "mobile_checks": 858,
+    "LAN_checks": 13,
+    "server_engine_checks": 71,
+    "touch_camera_batch_checks": 37,
+    "audio_runtime_checks": 25,
+    "audio_provenance_mix_checks": 21,
+    "unit_animation_checks": 21,
+    "failures": 0
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "No persistent campaign resume or remembered login; updates defer to empty main menu",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Physical rotation sensor acceptance and other phone models pending",
+    "18 mapped ElevenLabs SFX; sea candidate is unused and excluded. Technical decode/mixer checks pass; subjective user listening approval is separate.",
+    "Camera, clip transitions and movement timing improved; supplied original low-polygon rigs are not newly authored AAA models."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 779,
+      "sha256": "5a12ed1a688cba5290180c85182998fa953126c57b70f4e76867dff4986e605a"
+    },
+    {
+      "path": "art_manifest.json",
+      "bytes": 3675,
+      "sha256": "3539c201d590c14eec3055626e7c924455876de1320b6a9edea4900ea7d1cff1"
+    },
+    {
+      "path": "BACKEND.md",
+      "bytes": 2974,
+      "sha256": "e17ddec2de071a9d2815dbc7bfa2f2eab41fe8f7c9ddad1f4810c841af84d0df"
+    },
+    {
+      "path": "conversion_manifest.json",
+      "bytes": 2368,
+      "sha256": "c7c872537970a98f1afc1ce176083a41c106416288e998d9736888ef7981d213"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "media/alliance-popup.png",
+      "bytes": 1156225,
+      "sha256": "0fa24c0081e65fad7675d9a0ecd6d1931ee8e3ea7b9994e14aad6103fe1a52b7"
+    },
+    {
+      "path": "media/browser-dice.png",
+      "bytes": 99305,
+      "sha256": "e37f1d7373881120c17fd06d5fcb12965343ae849330f74bc2d501df98edf306"
+    },
+    {
+      "path": "media/browser-gameplay.png",
+      "bytes": 157557,
+      "sha256": "ac8f22e40e76107c0140c9e279473a1c85c7ad415797d9b05d89872388d77e8a"
+    },
+    {
+      "path": "media/browser-rules.png",
+      "bytes": 81413,
+      "sha256": "670c95bff3ea720cd8b97e2e2b2dba0f45bbb59b7695e2dda3a73e166a2e0fcd"
+    },
+    {
+      "path": "media/build10-dice-tab.png",
+      "bytes": 2525540,
+      "sha256": "7c2f2b00a6c7043a224ed613522aa7d3edfb480abdd0370518cf3c81158e9105"
+    },
+    {
+      "path": "media/build10-final-card-list.png",
+      "bytes": 1321340,
+      "sha256": "7ae6d3133a13345024152b75d72a627f1c5d48ccb80a8617af37359b312a0f60"
+    },
+    {
+      "path": "media/build10-final-settings.png",
+      "bytes": 2473558,
+      "sha256": "54f63e9318e8c1d113d28093f415e9c76efe20b6ba2e2c76e5db70da2c0341c3"
+    },
+    {
+      "path": "media/build10-menu.png",
+      "bytes": 5075476,
+      "sha256": "df04041cd2031c3a7b38a72d881ffd9b5fa39e3de4f895703ac4f895ab46d995"
+    },
+    {
+      "path": "media/build10-phone-after-chat.png",
+      "bytes": 3440920,
+      "sha256": "bc2c011b9e31ea1556b7dca4c93c2dbfe59ed4799cb59e4ec37ee552245a8d05"
+    },
+    {
+      "path": "media/build10-phone-ai-turn.png",
+      "bytes": 3033325,
+      "sha256": "2723bdde71694cdbff9f541110a8f29efae2f384adb6a740374e500e76ae4674"
+    },
+    {
+      "path": "media/build10-phone-board-live.png",
+      "bytes": 3441137,
+      "sha256": "75e0b365ac97aeea90333be56e3f87ec23f86af618df36efacbce6d8cfdf628e"
+    },
+    {
+      "path": "media/build10-phone-campaign.png",
+      "bytes": 2700676,
+      "sha256": "b42f82a7faf47f4877fee68127ca29f75ef4bd418d9bd1746fdbaa4b408165b2"
+    },
+    {
+      "path": "media/build10-phone-capitals-selected.png",
+      "bytes": 1795862,
+      "sha256": "d65ddef7b7436287454d7e5698fea5ffc4961e30d47ccdc48aa2fd56f754b48d"
+    },
+    {
+      "path": "media/build10-phone-card-choices.png",
+      "bytes": 1200688,
+      "sha256": "1cb6b8260537ade084e2234cfad88300804d5ac33824cd293e5d57fdb2370ae9"
+    },
+    {
+      "path": "media/build10-phone-chat-list.png",
+      "bytes": 1718408,
+      "sha256": "3cdd2135973593a7e3a3e282aed43a88dc7fae6609f98efa0c08f4e6628ade4b"
+    },
+    {
+      "path": "media/build10-phone-chat-open.png",
+      "bytes": 2566316,
+      "sha256": "a4f294f05c33947952734b571918e3d2a8f3e39de5a517eef8fbb3a3e5cca709"
+    },
+    {
+      "path": "media/build10-phone-chat-selected.png",
+      "bytes": 2563087,
+      "sha256": "0a3051ae36a6eeef12636b0abe94842d11e3e03327a877cc2fda9bd0bbd924cc"
+    },
+    {
+      "path": "media/build10-phone-chat.png",
+      "bytes": 2565446,
+      "sha256": "23d7a173a3298d8f4e67f8c1943cecd3393b8ef6ff9a00930414a130e641f5d6"
+    },
+    {
+      "path": "media/build10-phone-choice.png",
+      "bytes": 1168249,
+      "sha256": "8d63a88227565d56244bc64be74b1563deb1efe32688fca659c57966edcfd747"
+    },
+    {
+      "path": "media/build10-phone-current.png",
+      "bytes": 3440990,
+      "sha256": "70e9a1cf9d7951c36aa0ad856970be3dd3a4d8aea4d6d7178fdd0252c6f0cf50"
+    },
+    {
+      "path": "media/build10-phone-exponential-selected.png",
+      "bytes": 1798830,
+      "sha256": "9077650e48440e33c1fa118cb88b89e4a95d2811b00cf175fb845de9580981db"
+    },
+    {
+      "path": "media/build10-phone-obsidian-selected.png",
+      "bytes": 2533543,
+      "sha256": "62648e94724edac8f4e3feecd3fae87ec7e4a8d2aa9cf3ae4aada1c598026cff"
+    },
+    {
+      "path": "media/build10-phone-reinforce.png",
+      "bytes": 3067727,
+      "sha256": "d89d6dbfb5c9ab9fec6755ddc5339f812707e48cf068d96abf8738c5f1953010"
+    },
+    {
+      "path": "media/build10-phone-skin-list.png",
+      "bytes": 2107874,
+      "sha256": "44b46f0809e3fc7abcf24d1cc47b93df20732515bfdf7b3523c996a5b40da5a7"
+    },
+    {
+      "path": "media/build10-phone-table-chat.png",
+      "bytes": 3459792,
+      "sha256": "f507a4c23cb9a72fcf86e2a240975fea3e4ef7abf276b4d0ba834005e9e2d9ee"
+    },
+    {
+      "path": "media/build10-release-board.png",
+      "bytes": 3441880,
+      "sha256": "d5ce2dddaf2044949b22f9547d6ee83fdfbb38f221d68cac9b7caca87dce8280"
+    },
+    {
+      "path": "media/build10-release-card-picker.png",
+      "bytes": 1320341,
+      "sha256": "81005c23eba6a373658b70888f5255ac08efdb9f33887c26213a01c2994c997f"
+    },
+    {
+      "path": "media/build10-release-fixed-selected.png",
+      "bytes": 1797343,
+      "sha256": "5fc0c25ab672edbf2e76d9ecdf145e23d1b073d9ba2de28846418f8b9be5a5fb"
+    },
+    {
+      "path": "media/build10-release-launch.png",
+      "bytes": 3441665,
+      "sha256": "8eea36725751e3a88bdd3eb6939310e5a6d3f0335d89f9d51c76917535645dfc"
+    },
+    {
+      "path": "media/build10-release-rules.png",
+      "bytes": 1796776,
+      "sha256": "747016444550517d084cda74d41702583f9865fde1cdefb17ee59355b16697e9"
+    },
+    {
+      "path": "media/build10-settings.png",
+      "bytes": 2473558,
+      "sha256": "54f63e9318e8c1d113d28093f415e9c76efe20b6ba2e2c76e5db70da2c0341c3"
+    },
+    {
+      "path": "media/capital-board.png",
+      "bytes": 1337393,
+      "sha256": "e5e57b598194fb9cc8f09b472f28b24130d28cb64cac495642f376d1c7e2e025"
+    },
+    {
+      "path": "media/card-choices.png",
+      "bytes": 652931,
+      "sha256": "6d31e127b30a03480a2494dc6db074abd464f15e6d48d2a2a4edeea83b0ae9b0"
+    },
+    {
+      "path": "media/ingame-audio-mix.wav",
+      "bytes": 2723884,
+      "sha256": "d45818e3e4842307f47fbcfe5aac4ef80768c31080cb9ad9f75c9ec7d650bbf9"
+    },
+    {
+      "path": "media/ivory-in-motion.png",
+      "bytes": 1342484,
+      "sha256": "2234c1c88ff8f53a6212f4a3bae2ce75836c9e0919387d0e7762bece79cd858c"
+    },
+    {
+      "path": "media/ivory-settled.png",
+      "bytes": 1342595,
+      "sha256": "794bb788fdfbb3abfacec8eda159f9cc767811861cf22e4e35fa0e2d86bf5668"
+    },
+    {
+      "path": "media/landscape-action.png",
+      "bytes": 603419,
+      "sha256": "2877bfa2e854e8c672e980092655c839d96631a6b416e3419d4fd90c2398c0c2"
+    },
+    {
+      "path": "media/landscape-skins.png",
+      "bytes": 411263,
+      "sha256": "dcf7317c1d3eec539ea182d8686f03c72725828b2e68498cafbcbc534412ec16"
+    },
+    {
+      "path": "media/menu.png",
+      "bytes": 1741205,
+      "sha256": "1c5c9dc1d40f4fb9b3e8e30762d40440a7bc1e386f283e3cd8a5a9778051b6fc"
+    },
+    {
+      "path": "media/physical-card-draw.png",
+      "bytes": 1352187,
+      "sha256": "9c1fea8c0ffef9e16744d018f767712a395e04a38fe6338062b4ba16abda1405"
+    },
+    {
+      "path": "media/portrait-action.png",
+      "bytes": 708244,
+      "sha256": "e4abd41ed17a0bfb559d10fcbffa38616f15e5e0fad1dbaaabe281ea3fb147dd"
+    },
+    {
+      "path": "media/portrait-skins.png",
+      "bytes": 370804,
+      "sha256": "35248a6da2abc6d8116c168ae768a17d09c9ee8d06a8cfd7a91809660a1999d5"
+    },
+    {
+      "path": "media/rules.png",
+      "bytes": 939344,
+      "sha256": "16c618c3a309e1baed6cac640f19cf763259c9266ed38bfcb670bb17c560c64b"
+    },
+    {
+      "path": "media/sound-dice.png",
+      "bytes": 796215,
+      "sha256": "8a118cefd822bbbbf874c04c5a69897808e9c185c9d8a484fc2d18053f224c77"
+    },
+    {
+      "path": "media/touch-choice.png",
+      "bytes": 607088,
+      "sha256": "0e263449e8721b5c3b7624ec29fe8306102448f68b4d6e7d219827dbb005f5ea"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 18670,
+      "sha256": "3650f58bae3e6d0a79221b63677bf4ac0ea35d3b852fff61d8df31bacfbb9aa1"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 1461,
+      "sha256": "c61f2da1ca7d050ec0edc039c031f497d8d7432714a959906cfb5d9c12a12ae0"
+    },
+    {
+      "path": "release_updater.gd",
+      "bytes": 6424,
+      "sha256": "23c63e5fe3a6ba06450e7ec1d36f0891b9b583fca602b8a2a67abc643a369589"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 643,
+      "sha256": "3d276a8702c7f1e80ca9f34066c27a87f8dd8d4657710d1ff9c98e58238098d3"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.html",
+      "bytes": 5762,
+      "sha256": "1bc4374bdf1a478cd77b5e02eb94a9bbba911a2ff6270107b26c44a52d3267e3"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.pck",
+      "bytes": 35110292,
+      "sha256": "26432388b7dc5471dd953f5f77a80950c2e8cd75fb3df69ca9c1eb130d9cd84a"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/10/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/10/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/10/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/10/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/10/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/10/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/10/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-10.apk",
+      "bytes": 64459070,
+      "sha256": "f28a160eec45ad592bc3b5b629f669564ac1e602842940f7e938b0f0d61c44aa"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "a36f55c40785d5377e1cc94b71a4358f6e20ebc6122015a62f6de996e32cc7b0"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 341,
+      "sha256": "8968d6225af68c083ce5e04f375d44539ce7d325ee9228e69f49550c469ba7fc"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 195119,
+      "sha256": "721811f92429c612217a667d60e85ed503f49f2698626a958fedc7dda2ad1ab3"
+    },
+    {
+      "path": "validation/android10-publish-export.log",
+      "bytes": 6558,
+      "sha256": "caaef563cfac5e07dc305e1f26c116fac10e7354773a726ce27f9b3653d07fb6"
+    },
+    {
+      "path": "validation/audio-validation.json",
+      "bytes": 419,
+      "sha256": "e35e4a4514f5c4d93d336f7d8f21c551cc5518b10662009f31973ac97424e575"
+    },
+    {
+      "path": "validation/audio10.log",
+      "bytes": 978,
+      "sha256": "52f83752bb63bffab27433a6fe94062f92ca26a49fef41a478118fce40a46bd0"
+    },
+    {
+      "path": "validation/engine10.log",
+      "bytes": 335,
+      "sha256": "f4acc1a64048f92529158795c59661e641b2116ec8123e30d22ad0fa8a81f51b"
+    },
+    {
+      "path": "validation/features10-final.log",
+      "bytes": 1320,
+      "sha256": "0fb0667dc5df3d68d4a2b41304e17841b51cef12e742870700d2750b324e2c39"
+    },
+    {
+      "path": "validation/features10-review.log",
+      "bytes": 1002,
+      "sha256": "2d038deab026de9c562cbae1129a8cfda4fe10a3c93fa0e90b66016f2c6695a8"
+    },
+    {
+      "path": "validation/lan10.log",
+      "bytes": 587,
+      "sha256": "7adf37d82b9e4d1c164241a4278f93fcf43256efc6dcbf0bdfefe95fd788b96f"
+    },
+    {
+      "path": "validation/live10.log",
+      "bytes": 7153,
+      "sha256": "2e32e8600100b0ce4f80e4aeb45b6c2a47dbad754e3e8b942cee7d3a2f31398d"
+    },
+    {
+      "path": "validation/mobile10.log",
+      "bytes": 25975,
+      "sha256": "337aaf670b30e89dc11908f3a94599ce1ccd59481ba9635d7412feab169e0226"
+    },
+    {
+      "path": "validation/release7-desktop.log",
+      "bytes": 6973,
+      "sha256": "d90e8220863c09117a3cdef3274010702f8924fbcb22165f933616760383258a"
+    },
+    {
+      "path": "validation/release7-lan.log",
+      "bytes": 587,
+      "sha256": "7adf37d82b9e4d1c164241a4278f93fcf43256efc6dcbf0bdfefe95fd788b96f"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 3194,
+      "sha256": "2f354cb9ef9226c51634c6b1e3b8eb1c657690a7d3615393efe3bebbbaacedfe"
+    },
+    {
+      "path": "validation/touch-camera10-frozen.log",
+      "bytes": 2096,
+      "sha256": "337d77facaeef4444c30ad2dcdd0362206d514055de2a9680b627aae8cd8b97c"
+    },
+    {
+      "path": "validation/units10.log",
+      "bytes": 776,
+      "sha256": "894a43161e980542b53c5c3d3c4d02b7051f14dda651f4b0eb52847a4da0673d"
+    },
+    {
+      "path": "validation/web10-release-export.log",
+      "bytes": 19837,
+      "sha256": "4dc66845606cd1693374dfbe715752cbe1dad8de7cd195af06de5e720ba833f6"
+    }
+  ]
+}

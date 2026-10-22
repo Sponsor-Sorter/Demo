@@ -1,6 +1,6 @@
 {
-  "build": 9,
-  "version": "1.0.0-preview.9",
-  "url": "https://sponsorsorter.com/frontlines/builds/9/",
-  "notes": "Fewer rendering submissions: merged dice pips and physical card stacks, cached ownership uploads, hidden board animation suspension, compact rules popup and safer update validation. Approved HD art and geometry retained."
+  "build": 10,
+  "version": "1.0.0-preview.10",
+  "url": "https://sponsorsorter.com/frontlines/builds/10/",
+  "notes": "Touch-ready rules, dice skins and chat; closer zoom and smoothly framed action camera; new ElevenLabs combat, dice, paper and interface sounds; continuous approved music; polished unit facing and physical cards."
 }
