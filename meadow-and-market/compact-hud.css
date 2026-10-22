@@ -23,4 +23,4 @@
 .compact-hud .is-expanded>.compact-hud-button .compact-hud-arrow{transform:rotate(180deg)}
 @media(prefers-reduced-motion:reduce){#toast{transition:none}}
 
-.compact-hud .compact-hud-panel .hud-painted{touch-action:pan-x!important;flex-shrink:0!important}.compact-hud .compact-hud-panel{scrollbar-width:thin}
+.compact-hud .compact-hud-panel .hud-painted{touch-action:pan-x!important;flex-shrink:0!important}.compact-hud .compact-hud-panel{scrollbar-width:none}

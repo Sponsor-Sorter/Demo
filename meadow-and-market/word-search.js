@@ -122,10 +122,11 @@
   }
   function finishPath() {
     if (path.length < 3) { if (path.length) say('Follow the word to its last letter.'); path = []; renderCells(); return; }
-    const answer = answers.find((word) => !found.has(word.id) && (samePath(path, word.indices) || samePath(path, word.indices.slice().reverse())));
+    const letters=path.map(index=>board[index]).join('');
+    const answer = answers.find(word=>!found.has(word.id)&&(word.label===letters||word.label===[...letters].reverse().join('')));
     if (!answer) { say('That’s a good try! Look at the word list and try again.'); audio('tap'); path = []; renderCells(); return; }
     const availableColors = colorSet.filter((candidate) => ![...found.values()].some((item) => item.color === candidate));
-    const color = pick(availableColors.length ? availableColors : colorSet); found.set(answer.id, { indices: answer.indices, color }); starCount++; path = []; renderCells();
+    const color = pick(availableColors.length ? availableColors : colorSet); found.set(answer.id, { indices: path.slice(), color }); starCount++; path = []; renderCells();
     dialog.querySelector('[data-word="' + answer.id + '"]')?.classList.add('is-found');
     dialog.querySelector('[data-word="' + answer.id + '"]')?.style.setProperty('--found-bg', color[0]);
     dialog.querySelector('[data-word="' + answer.id + '"]')?.style.setProperty('--found-line', color[1]);
