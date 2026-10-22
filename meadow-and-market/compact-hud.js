@@ -34,7 +34,7 @@
  make(bottom,bottom?[...bottom.children]:[],'bottom');
  const settingsRoot=document.getElementById('modal-content');if(settingsRoot)new MutationObserver(()=>{if(settingsRoot.querySelector('#game-build'))mountSettings(settingsRoot)}).observe(settingsRoot,{childList:true});
  const header=document.querySelector('.topbar');if(header&&typeof ResizeObserver!=='undefined')new ResizeObserver(positionToast).observe(header);
- window.addEventListener('resize',()=>{positionToast();if(preference===null){clearTimeout(promptTimer);promptTimer=setTimeout(offer,1500)}});
+ window.addEventListener('resize',()=>{for(const group of groups)if(group.expanded)group.root.style.setProperty('--compact-control-y',(group.proxy.offsetTop+group.proxy.offsetHeight/2)+'px');positionToast();if(preference===null){clearTimeout(promptTimer);promptTimer=setTimeout(offer,1500)}});
  document.addEventListener('click',e=>{if(e.target.closest('dialog,#side-panel,.compact-hud-group'))return;for(const group of groups)if(group.expanded)expand(group,false)},true);
  apply();promptTimer=setTimeout(offer,1800);
  window.meadowCompactHud={set:store,enabled:()=>preference===true,small,pick};
