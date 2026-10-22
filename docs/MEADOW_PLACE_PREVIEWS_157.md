@@ -8,3 +8,5 @@
 - Opening a badged tab briefly pulses visible attention sources. Handles asynchronous friend requests, ready animal cards, deliveries, rewards and nested mission tabs. Reduced-motion users get a static outline.
 
 QA: full regression suite passed. Added explicit off-map preview and unchanged-save/handler assertions. Loaded the existing populated level20 test backup through the normal import UI. Verified 28–39 placed objects per map, five town buildings, two columns without overlap, and nine visible animal attention pulses. Tap audio reached the Web Audio playback path. Portrait HUD verified with VIP/gold/level in order; expanded brand space prevents navigation overlap.
+
+Build158 follow-up gives the narrow-screen map button a2px gap below the top-row tap targets, avoiding overlapping touch areas.
