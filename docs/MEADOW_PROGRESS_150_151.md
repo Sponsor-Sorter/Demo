@@ -1,4 +1,4 @@
-# Meadow Markets builds 150–151
+# Meadow Markets builds 150–152
 
 ## Player features
 
@@ -39,3 +39,5 @@ The `meadow-market-accounts` Edge Function remains the existing public login end
 - Existing test purchases, ad previews, Premium suppression, account entitlements and exact-once receipts remain covered. User explicitly chose to keep real payments and ads disabled. Store billing, real ad networks and production subscription operation remain deferred.
 
 Five new ElevenLabs guides use Hope/Noah/Mike for Farmer Jade/Farmer Rhys/Farmer Jay. Build 151's Jade guide supersedes the three-focus build 150 guide while keeping the older audio available for older clients.
+
+Build 152 folds focus instructions behind an expand arrow, shows the remaining focus-change wait, and keeps scroll position while claiming milestones or upgrading a focus. A 390 × 844 browser check confirmed no horizontal content overflow and 44 px header actions.
