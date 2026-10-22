@@ -7,3 +7,5 @@
 .desk-link-groups{max-width:1040px;margin:0 auto;background:#fff7eaf2;border:1px solid #d9bd96;border-radius:15px;padding:4px 16px;color:#513c29}.desk-link-groups details:first-child{border-top:0}.desk-link-groups .desk-links button{margin-bottom:8px}@media(max-width:600px){.progress-nav>button{font-size:11px;padding:8px;min-height:44px}.progress-nav{gap:5px}}
 
 .progress-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(min-width:1150px){.progress-focus-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:600px){.progress-focus-grid{grid-template-columns:1fr}}
+
+#farm-progress[data-page="specialities"] .artisan-head small{display:block;font-size:10px;letter-spacing:.03em}#progress-help{width:44px;padding:0;font-size:22px}.progress-change-status{max-width:1100px;margin:0 auto 8px;padding:5px 9px;width:fit-content;background:#fff6e9ed;border-radius:8px;font-size:12px}#progress-focus-help[hidden]{display:none}

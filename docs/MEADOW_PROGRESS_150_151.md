@@ -1,4 +1,4 @@
-# Meadow Markets builds 150–152
+# Meadow Markets builds 150–153
 
 ## Player features
 
@@ -41,3 +41,5 @@ The `meadow-market-accounts` Edge Function remains the existing public login end
 Five new ElevenLabs guides use Hope/Noah/Mike for Farmer Jade/Farmer Rhys/Farmer Jay. Build 151's Jade guide supersedes the three-focus build 150 guide while keeping the older audio available for older clients.
 
 Build 152 folds focus instructions behind an expand arrow, shows the remaining focus-change wait, and keeps scroll position while claiming milestones or upgrading a focus. A 390 × 844 browser check confirmed no horizontal content overflow and 44 px header actions.
+
+Build 153 moves the current farm into the focus header and exposes detailed rules through a 44 px help control. The permanent introductory panel is removed, so landscape phones show upgrade choices immediately. The final 390 px header and content have no horizontal overflow.
