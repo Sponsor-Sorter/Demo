@@ -117,3 +117,5 @@ require('./check-meadow-directional-assets.cjs');
 require('./check-meadow-build-sales.cjs');
 
 require('./check-meadow-compact-hud.cjs');
+
+require('./check-meadow-word-search.cjs');

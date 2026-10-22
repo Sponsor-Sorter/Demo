@@ -8,7 +8,7 @@
  function pick(items,previous){const usable=items.filter(b=>!b.hidden&&!b.disabled),notified=usable.filter(b=>Number(b.dataset.notificationCount)>0);return notified.includes(previous)?previous:notified.sort((a,b)=>Number(b.dataset.notificationCount)-Number(a.dataset.notificationCount))[0]||usable.find(b=>b.classList.contains('active'))||usable[0]}
  function store(value){preference=!!value;try{localStorage.setItem(KEY,value?'on':'off')}catch{}apply();document.getElementById('compact-offer')?.close();clearTimeout(promptTimer)}
  function apply(){document.body.classList.toggle('compact-hud',preference===true);for(const group of groups){group.proxy.hidden=preference!==true;group.expanded=false;group.root.classList.remove('is-expanded');group.proxy.setAttribute('aria-expanded','false')}refresh();positionToast();window.meadowClub?.layout()}
- function expand(group,value){group.expanded=value;group.root.classList.toggle('is-expanded',value);group.proxy.setAttribute('aria-expanded',String(value));window.meadowAudio?.play('tap');positionToast();window.meadowClub?.layout()}
+ function expand(group,value){group.root.style.setProperty("--compact-control-y",(group.proxy.offsetTop+group.proxy.offsetHeight/2)+"px");group.expanded=value;group.root.classList.toggle('is-expanded',value);group.proxy.setAttribute('aria-expanded',String(value));window.meadowAudio?.play('tap');positionToast();window.meadowClub?.layout()}
  function make(root,items,id){
   if(!root||!items.length)return;
   const panel=document.createElement('div');panel.id='compact-'+id+'-panel';panel.className='compact-hud-panel';
