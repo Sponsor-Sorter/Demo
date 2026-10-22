@@ -9,6 +9,7 @@
  ['.hud-action[data-view="animals"]','animals','Animal family','Check needs, collect produce and play care games.'],
  ['.hud-action[data-view="shop"]','shop','Farm shop','Buy seeds, animals, buildings and supplies.'],
  ['#farm-play-button','play','Farm games','Learn new skills and earn rewards.'],
+ ['#roster-button','roster','Worker roster','Hire farm workers, see their current jobs, and place them on your farms.'],
  ['#friends-button','friends','Farm friends','Find farmers, accept requests and visit their farms.'],
  ['#journal-button','journal','Farm desk','See goals, achievements and farming progress.'],
  ['#settings-button','settings','Settings','Manage sound, accounts and app downloads.'],
@@ -21,7 +22,7 @@
  ];
  const items=new Map();
  for(const [selector,id,title,copy] of specs){const el=document.querySelector(selector);if(!el)continue;items.set(el,{id,title,copy});el.dataset.hudHelp=id;el.setAttribute('aria-label',title+'. '+copy);el.removeAttribute('title');
-  if(!['boards','missions','emporium','expand','helpers'].includes(id)){el.innerHTML='<img class="hud-painted-art" src="assets/generated/hud/'+id+'.webp" alt="" draggable="false"><span class="hud-screenreader">'+title+'</span>';el.classList.add('hud-painted')}
+  if(!['boards','missions','emporium','expand','helpers','roster'].includes(id)){el.innerHTML='<img class="hud-painted-art" src="assets/generated/hud/'+id+'.webp" alt="" draggable="false"><span class="hud-screenreader">'+title+'</span>';el.classList.add('hud-painted')}
  }
  document.querySelectorAll('.resource').forEach((el,i)=>{const icon=el.querySelector('span');if(icon)icon.innerHTML='<img src="assets/generated/hud/'+(i?'level':'coin')+'.webp" alt="'+(i?'Level':'Gold')+'">'});
  const brand=document.querySelector('.brand-mark');if(brand)brand.innerHTML='<img src="assets/generated/flower-patch.webp" alt="" style="width:100%;height:100%;object-fit:contain">';

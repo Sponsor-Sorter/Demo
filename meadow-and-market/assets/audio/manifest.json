@@ -949,6 +949,15 @@
       "voice": "Hope - upbeat and clear",
       "bytes": 390000,
       "guide": "All four farm focuses, rank levels eight/twelve/eighteen, orchard and hive cycles, real practice, retained ranks and daily choice."
+    },
+    {
+      "id": "rhys-roster154",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 436080,
+      "guide": "Level-eleven roster, gold hiring, portrait-to-walking-sprite placement, live work status, other-map work, reassignment, 20-gem well watering and per-tile costs, rest and closed-game pause."
     }
   ]
 }

@@ -32,7 +32,7 @@
     }
     const stars=window.meadowBonds.record(a,action,before);if(stars)changed=true;
     a.lastCare=Date.now();a.needsAt=Date.now();
-    if(changed){if(batch){batch.xp.push(collected?4:2);batch.events++}else{api.xp(collected?4:2);api.event('care')}}
+    if(changed){if(batch){batch.xp.push(collected?4:2);batch.events++}else{api.xp(collected?4:2);api.event('care',1,owner(a)[0])}}
     if(batch){if(collected){batch.animals++;const item=products[a.type].item;batch.goods[item]=(batch.goods[item]||0)+collected}return changed}
     api.save();api.render();window.meadowAudio?.play(collected?'harvest':a.type);
     api.notify(stars?(a.name||api.name(a))+' earned '+stars+' friendship star'+(stars===1?'':'s'):collected?'Collected '+collected+' '+api.items[products[a.type].item].name.toLowerCase()+' from '+(a.name||api.name(a)):action==='treat'?'Wheat treat enjoyed · +1 on the next collection':changed?(a.name||api.name(a))+' enjoyed a little care':productText(a));return changed;

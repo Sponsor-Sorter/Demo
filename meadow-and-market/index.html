@@ -10,8 +10,8 @@
   <title>Meadow Markets</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=153">
-  <link rel="stylesheet" href="guides.css?v=153">
+  <link rel="stylesheet" href="style.css?v=154">
+  <link rel="stylesheet" href="guides.css?v=154">
 <link rel="stylesheet" href="minigames.css?v=8">
   <link rel="stylesheet" href="play-levels.css?v=2">
   <link rel="stylesheet" href="farmers-market.css?v=3">
@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="journey.css?v=4">
 <link rel="stylesheet" href="compact-flows.css?v=2">
 <link rel="stylesheet" href="farm-progress.css?v=4">
+<link rel="stylesheet" href="roster.css?v=2">
 <link rel="stylesheet" href="artwork-overlays.css?v=1">
 </head>
 <body>
@@ -42,7 +43,7 @@
     <header class="topbar">
       <div class="brand-group"><button class="brand" data-view="farm" aria-label="Go to farm"><span class="brand-mark">✿</span><span><small>YOUR LITTLE CORNER</small><strong>Meadow Markets</strong></span></button><div class="brand-resources" aria-label="Farm balance and level"><span class="resource"><span>🪙</span><b id="coins">0</b></span><span class="resource"><span>⭐</span><b id="level">Lv. 1</b></span></div><div id="build-mode-pill" hidden>Build on your farm</div><div id="farm-help-slot"></div></div>
       <div class="farm-heading top-hud-farm"><div><small class="eyebrow" id="map-eyebrow">YOUR FIRST FARM</small><h1 id="map-title">Willowbrook Meadow</h1></div><button class="map-switch" id="map-switch" hidden aria-label="Choose one of my farms">🗺 <span>My farms</span></button></div>
-      <div class="resource-bar"><button class="icon-button" id="friends-button" aria-label="Farm friends">👥</button><button class="icon-button" id="journal-button" aria-label="Farm journal">📖</button><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
+      <div class="resource-bar"><button class="icon-button hud-painted" id="roster-button" aria-label="Worker roster" hidden><img src="assets/generated/hud/roster.svg" alt=""><span class="hud-screenreader">Roster</span></button><button class="icon-button" id="friends-button" aria-label="Farm friends">👥</button><button class="icon-button" id="journal-button" aria-label="Farm journal">📖</button><button class="icon-button" id="settings-button" aria-label="Settings">⚙</button></div>
     </header>
 
     <section class="game-layout">
@@ -92,13 +93,15 @@
   <script src="animal-care.js?v=6"></script>
   <script src="journey-data.js?v=2"></script>
 <script src="journey-core.js?v=3"></script>
-<script src="animals.js?v=24"></script>
+<script src="animals.js?v=25"></script>
   <script src="story.js?v=12"></script>
   <script src="apiary.js?v=6"></script>
   <script src="shop-plan.js?v=6"></script>
-  <script src="production.js?v=21"></script>
+  <script src="production.js?v=22"></script>
 <script src="artisan-mastery.js?v=1"></script>
-  <script src="workers.js?v=12"></script>
+  <script src="workers.js?v=14"></script>
+<script src="roster.js?v=3"></script>
+<script src="farm-work.js?v=1"></script>
   <script src="audio.js?v=4"></script>
   <script src="guides.js?v=12"></script>
   <script src="play-levels.js?v=2"></script>
@@ -112,7 +115,7 @@
 <script src="notifications.js?v=5"></script>
 <script src="collection-catalog.js?v=1"></script>
 <script src="collections.js?v=2"></script>
-<script src="farm-club.js?v=11"></script>
+<script src="farm-club.js?v=12"></script>
 <script src="reading.js?v=1"></script>
 <script src="farm-progress.js?v=5"></script>
 <script src="farm-life.js?v=3"></script>
@@ -123,8 +126,8 @@
 <script src="wells.js?v=1"></script>
 <script src="journey-activities.js?v=1"></script>
 <script src="journey.js?v=7"></script>
-<script src="game.js?v=151"></script>
-<script src="hud-art.js?v=3"></script>
+<script src="game.js?v=152"></script>
+<script src="hud-art.js?v=4"></script>
 </body>
 </html>
 
