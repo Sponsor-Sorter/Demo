@@ -135,7 +135,7 @@
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.8 · Build 8",
+      "build": "Version 1.0.0-preview.9 · Build 9",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -148,16 +148,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/8/",
+          "url": "https://sponsorsorter.com/frontlines/builds/9/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-8.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-9.apk"
         }
       ],
-      "notes": "Playtest preview. Android build 8 was checked on a Samsung SM-S908E; other devices and sustained performance remain under review. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop.",
-      "sha256": "C15B95000F1FFC17FD88EE8F9B798C7185F80C424BEABE799DF6101CF4EC564C"
+      "notes": "Playtest preview. Android build 9 was checked on a Samsung SM-S908E; other devices and sustained performance remain under review. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop.",
+      "sha256": "C30408E06F62ED6AD94E511B763672194BA70D9E6ABD0C0F2CFACECA91CA0532"
     }
   ]
 }

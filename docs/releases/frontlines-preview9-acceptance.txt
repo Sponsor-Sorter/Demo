@@ -1,0 +1,4 @@
+Preview9: archive CRC and Android signature verified. Same debug certificate; build9 package retained native arm64 WebRTC library. Samsung install8 to9 succeeded. Menu, setup, launch, board and Android Back pause inspected. Native staging source hashes match current source.
+Draw calls921 versus1001 baseline on same device,1600x451 target; six live dice use12 instead of132 meshes. Idle FPS samples57,33,42 versus prior61,38,46 are not controlled thermal comparisons; no claimed FPS increase.
+Feature31 checks, mobile858, server71 checks pass. Baseline desktop162 and LAN13 tests remain documented; native in-app download and install is a separate pending acceptance test.
+Published Web8 loaded successfully from hosted immutable folder. Browser8 to9 update acceptance will occur after this release is live.

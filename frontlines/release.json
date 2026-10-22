@@ -1,6 +1,6 @@
 {
-  "build": 8,
-  "version": "1.0.0-preview.8",
-  "url": "https://sponsorsorter.com/frontlines/builds/8/",
-  "notes": "Painted geographic terrain, animated units, physical cards, physics ivory dice with six finishes, Capitals and card rules, private alliances and sound controls."
+  "build": 9,
+  "version": "1.0.0-preview.9",
+  "url": "https://sponsorsorter.com/frontlines/builds/9/",
+  "notes": "Fewer rendering submissions: merged dice pips and physical card stacks, cached ownership uploads, hidden board animation suspension, compact rules popup and safer update validation. Approved HD art and geometry retained."
 }
