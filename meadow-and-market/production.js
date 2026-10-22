@@ -67,8 +67,9 @@
     }return null;
   }
   function nextRecipe(o){
+    const planned=window.meadowPlanner?.recipeFor(o);if(planned)return planned;
     const target=recipes.find(r=>r.id===(o.autoRecipe||o.lastRecipe||(o.type==='workshop'?'yarn':'bread'))&&(r.station||'kitchen')===(o.type||'kitchen'))||recipes.find(r=>(r.station||'kitchen')===(o.type||'kitchen'));
-    if(!target||!belowCap(o,target))return null;return prepareRecipe(o,target);
+    if(!target||!belowCap(o,target))return null;const next=prepareRecipe(o,target);return next&&window.meadowPlanner?.allowedInputs(next)!==false?next:null;
   }
   function helperTask(o){if(o.autoWork===false)return null;const status=stationStatus(o);if(status.ready)return 'collect';if(nextRecipe(o))return 'make';return null}
   function helperWork(o,action){if(o.autoWork===false)return false;if(action==='collect')return !!collect(o,true);if(action==='make'){const recipe=nextRecipe(o);if(!recipe)return false;const chosen=o.autoRecipe||o.lastRecipe||'bread';o.autoRecipe=chosen;if(!queue(o,recipe))return false;api.render();window.meadowAudio?.play('cook');api.notify('Family bakery started '+item(recipe.id).name.toLowerCase());return true}return false}
@@ -110,6 +111,7 @@
     $('#kitchen-cap').onchange=e=>{const n=Number(e.target.value);o.autoCap=Number.isFinite(n)?Math.max(0,Math.min(9999,Math.floor(n))):0;e.target.value=o.autoCap;api.save();autoStatus()};autoStatus();
     $$('.kitchen-make').forEach(b=>b.onclick=()=>{if(queue(o,recipes.find(r=>r.id===b.dataset.recipe))){o.autoRecipe=b.dataset.recipe;api.save();window.meadowAudio?.play(isWorkshop?'loom':'cook');showKitchen(o)}});
     $('#kitchen-upgrade')?.addEventListener('click',()=>{if(t>=2||!api.spend(cost))return;o.tier=t+1;api.event?.('upgrade',1);api.save();window.meadowAudio?.play('upgrade');showKitchen(o)});
+    if(window.meadowPlanner){const planButton=document.createElement('button');planButton.className='small-button full-button';planButton.textContent='Plan supplies for this recipe';planButton.onclick=()=>window.meadowPlanner.pinAndShow({kind:'recipe',id:selected,amount:10});panels.helpers.prepend(planButton)}
     api.moveControls?.(o);const move=$('#modal-content .item-move-actions');if(move)panels.helpers.append(move);
     queueMicrotask(()=>{const shortcut=$('#modal-content>.club-modal-shortcut');if(shortcut)panels.recipes.append(shortcut)});
   }
@@ -136,5 +138,5 @@
     if(!api.current().wellGuide124){api.current().wellGuide124=true;api.save();window.meadowAudio?.speak('jay-well-upgrades124')}
   }
   function tick(){if(document.hidden)return;let sold=0;for(const f of Object.values(api.farms()))sold+=settleShop(f);if(sold){api.save();if(api.view()==='shop'){refreshShop();window.meadowAudio?.play('shopbell')}}const o=api.current().objects.find(o=>o.id===openKitchen);if(o&&$('#modal-dialog').open&&$('#kitchen-collect')){let ready=0;$$('.kitchen-timer').forEach(e=>{const now=Date.now(),remaining=Math.ceil((Number(e.dataset.finish)-now)/1000),wait=Math.ceil((Number(e.dataset.start)-now)/1000);e.textContent=remaining<=0?'Ready to collect':wait>0?'Queued · starts in '+wait+'s':remaining+' seconds remaining';if(remaining<=0)ready++});const b=$('#kitchen-collect');b.disabled=!ready;b.setAttribute('aria-label','Collect ready batches'+(ready?' · '+ready:''));const badge=b.querySelector('.production-action-count');if(badge){badge.textContent=ready;badge.hidden=!ready} }}
-  window.meadowProduction={items:products,recipes,attach(adapter){api=adapter;for(const f of Object.values(api.farms()))settleShop(f);api.save();setInterval(tick,1000)},renderShop,refreshShop,showKitchen,settleShop,queue,collect,stationStatus,nextRecipe,helperTask,helperWork,capacity,belowCap,jobOutput,output,duration,layoutWell};
+  window.meadowProduction={items:products,recipes,attach(adapter){api=adapter;for(const f of Object.values(api.farms()))settleShop(f);api.save();setInterval(tick,1000)},renderShop,refreshShop,showKitchen,settleShop,queue,collect,stationStatus,nextRecipe,helperTask,helperWork,capacity,canMake,belowCap,jobOutput,output,duration,layoutWell};
 })();

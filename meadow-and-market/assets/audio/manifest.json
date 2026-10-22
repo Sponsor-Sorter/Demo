@@ -868,6 +868,15 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "bytes": 347682,
       "guide": "Genuine batch mastery, five ranks, signatures at level eight and rank three, helpers, permanent progress."
+    },
+    {
+      "id": "rhys-farm-planner147",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 465860,
+      "guide": "Pinned goals, shared dependencies, real growing and queued supply, direct sources, helper priorities, reserves and manual completion."
     }
   ]
 }
