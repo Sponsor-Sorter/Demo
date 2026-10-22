@@ -940,6 +940,15 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "bytes": 292825,
       "guide": "Four weekly market themes, ten percent featured shop prices and no expiring inventory."
+    },
+    {
+      "id": "jade-specialities151",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 390000,
+      "guide": "All four farm focuses, rank levels eight/twelve/eighteen, orchard and hive cycles, real practice, retained ranks and daily choice."
     }
   ]
 }

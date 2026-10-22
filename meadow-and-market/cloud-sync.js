@@ -2,14 +2,21 @@
   'use strict';
   // Snapshot at enqueue time; slow requests cannot overtake later saves.
   function writer(write,onResult=()=>{}) {
-    let tail=Promise.resolve();
+    let tail=Promise.resolve(),running=false;const queue=[];
+    async function drain(){
+      if(running)return;running=true;
+      while(queue.length){const job=queue.shift();let result;try{result=await write(job.userId,job.snapshot)}catch(error){result={error}}
+        try{onResult(result?.error||null)}catch{}for(const resolve of job.waiters)resolve(result);
+      }running=false;
+    }
     return {
       enqueue(userId,state) {
         const snapshot=JSON.parse(JSON.stringify(state));
-        tail=tail.then(async()=>{try{const result=await write(userId,snapshot);onResult(result?.error||null);return result}catch(error){onResult(error);return {error}}});
+        tail=new Promise(resolve=>{const pending=queue.at(-1);if(pending?.userId===userId){pending.snapshot=snapshot;pending.waiters.push(resolve)}else queue.push({userId,snapshot,waiters:[resolve]});drain()});
         return tail;
       },
-      flush:()=>tail
+      flush:()=>tail,
+      status:()=>({writing:running,pending:queue.length})
     };
   }
   function profile(state,existing,userId) {
