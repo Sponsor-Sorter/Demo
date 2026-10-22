@@ -41,3 +41,9 @@ The Meadow Markets browser label reads only its same-origin `release.json` and a
 ## Initial evidence
 
 19 October 2026: Bargain Barge owner verified Android 0.4.4 / native build 19, its versioned APK and SHA-256; Sponsor Sorter Android owner verified public 1.0.0 / native build 8 and the existing install page. Meadow Markets browser snapshot is build 74 from its release manifest; its native metadata must remain separately identified.
+
+## Frontlines immutable releases
+
+Frontlines uses `/frontlines/builds/N/` for each accepted Web export, plus a versioned APK in `/frontlines/downloads/`. Preserve all previous build folders and old runtime assets. Root `release.json` selects the browser folder; `android-release.json` separately records APK package, native versionCode, bytes, SHA-256 and signing certificate. Import only a frozen owner packet with acceptance evidence and verify every byte against its manifest. Keep `frontlines/** -text` in Git attributes so export line endings remain exact.
+
+The root bootstrap retains the URL query and hash. Catalogue actions link directly to the current accepted folder, with stable entry QR codes unchanged. GitHub-hosted responses currently report max-age=600; timestamp manifest requests and immutable folders avoid mixing game assets. Do not claim server no-store headers. APK sideload acceptance and ADB upgrades do not prove the in-app updater: separately record the Android download, confirmation, installer handoff and old-to-new result.

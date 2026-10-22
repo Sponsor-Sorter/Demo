@@ -1,2 +1,5 @@
 tools/githooks/* text eol=lf
 tools/meadow-android/android/gradlew text eol=lf
+
+# Preserve accepted game export and APK bytes exactly.
+frontlines/** -text

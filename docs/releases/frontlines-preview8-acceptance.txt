@@ -1,0 +1,7 @@
+Preview8 acceptance:
+Samsung SM-S908E R5CT506674J: signed APK integrity passed, same-package ADB upgrade from7 to8 succeeded. Actual menu/version, corrected setup (count/rules no overlap), launch, gameplay, Android Back pause and Back resume captured. No Frontlines script errors found in PID log. Landscape rendering inspected. Physical rotation not accepted.
+Measured idle campaign FPS samples:61,38,46;1600x451 target,1001draw calls,782130primitives. These are three samples on one Adreno730 device, not a sustained/broad-device guarantee.
+Desktop browser menu/setup/rules/settings/dice preview/launch inspected. Nonfatal updater fetch error on localhost while release manifest was not published; production same-origin updater must be accepted after release.
+Features29, mobile858, desktop gameplay162, LAN13 and server63 checks pass. Hosted3-player new mode/privacy/build gate check passed and test accounts removed.
+Native update download/installer handoff and actual older-to-newer update remain pending and must be reported separately from ADB installation.
+Audio generation from ElevenLabs awaits sign-in; approved menu music retained, shipped new sounds are local original synthesis.

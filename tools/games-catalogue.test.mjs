@@ -35,15 +35,18 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted Web preview only, never rejected Android build',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Browser 2026.10.22-preview1');
- assert.equal(entry.actions.length,1);assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/');
- assert.doesNotMatch(entry.actions.map(a=>a.url).join(' '),/\.apk/);assert.match(entry.notes,/Android is not available/);
- assert.equal(existsSync(new URL('../frontlines/downloads',import.meta.url)),false);
+test('Frontlines publishes accepted build 8 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.8 · Build 8');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/8/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-8.apk');
+ assert.match(entry.notes,/in-app update flow is still being tested/);
+ assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
-test('Frontlines Web files match the accepted immutable release manifest',async()=>{
- const {createHash}=await import('node:crypto');const manifest=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));
- assert.equal(manifest.android_available,false);assert.equal(manifest.browser_build,'2026.10.22-preview1');
- for(const file of manifest.files){const bytes=readFileSync(new URL('../'+file.path,import.meta.url));assert.equal(bytes.length,file.bytes,file.path);assert.equal(createHash('sha256').update(bytes).digest('hex'),file.sha256,file.path);}
+test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview8.json',import.meta.url),'utf8'));
+ assert.equal(m.build,8);
+ for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,8);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,8);assert.equal(web.url,m.web.url);
 });

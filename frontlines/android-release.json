@@ -1,0 +1,11 @@
+{
+  "packageId": "com.frontlines.worldinconflict",
+  "versionName": "1.0.0-preview.8",
+  "versionCode": 8,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-8.apk",
+  "bytes": 67563944,
+  "sha256": "c15b95000f1ffc17fd88ee8f9b798c7185f80c424beabe799df6101cf4ec564c",
+  "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "minSdk": 24,
+  "notes": "Painted geographic terrain, animated units, physical cards, physics ivory dice with six finishes, Capitals and card rules, private alliances and sound controls."
+}

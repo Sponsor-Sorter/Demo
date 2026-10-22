@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "entries": [
     {
       "id": "meadow-markets",
@@ -48,7 +48,7 @@
       "instructionsTitle": "How to play and install",
       "instructions": [
         "Open Play in browser and choose an activity.",
-        "Follow the farmers\u2019 spoken instructions and on-screen controls.",
+        "Follow the farmers’ spoken instructions and on-screen controls.",
         "Explore animal games, puzzles and the art studio at your own pace.",
         "On Android, download the APK, open the downloaded file and confirm installation if your device requests it.",
         "For a browser app, open game settings for installation. On iPad, use Safari Share, then Add to Home Screen."
@@ -75,7 +75,7 @@
       "image": "./games-assets/bargain-barge.svg",
       "imageAlt": "Bargain Barge app icon",
       "status": "Android testing release",
-      "build": "Version 0.4.4 \u00b7 Build 19",
+      "build": "Version 0.4.4 · Build 19",
       "requirements": "Android 8.0 or newer. Internet connection for live feeds. Location permission is optional; you can choose a location manually.",
       "instructionsTitle": "How to get started",
       "instructions": [
@@ -103,7 +103,7 @@
       "image": "./app-assets/icon-512.png",
       "imageAlt": "Sponsor Sorter app icon",
       "status": "Android early access",
-      "build": "Version 1.0.0 \u00b7 Build 8",
+      "build": "Version 1.0.0 · Build 8",
       "requirements": "Android 7.0 or newer on a phone or tablet. Internet connection and a Sponsor Sorter account.",
       "instructionsTitle": "How to install",
       "instructions": [
@@ -131,28 +131,33 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command one of six coalitions across a raised 3D world board. Reinforce, roll and capture 42 territories in solo AI or local hot-seat conquest.",
+      "description": "Command six coalitions across a raised 3D world board. Reinforce, roll and capture territories in solo AI, local hot-seat or online campaigns, with Capitals rules and private alliances.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Browser preview",
-      "build": "Browser 2026.10.22-preview1",
-      "requirements": "Desktop browser with WebGL 2 and WebAssembly support. Network needed for first load. Android release pending.",
+      "status": "Web and Android playtest preview",
+      "build": "Version 1.0.0-preview.8 · Build 8",
+      "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Open Play browser preview, choose your game setup, then launch the campaign.",
-        "Choose solo AI or local hot-seat. Follow the turn prompts to reinforce, attack and move troops.",
-        "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. Click territories and use the on-screen controls.",
-        "Phone candidate: landscape, drag map to pan and pinch to zoom. Phone browser performance has not been accepted on a physical device.",
-        "Campaigns are not saved persistently. Do not close the game if you want to continue the current campaign."
+        "Open Play browser preview, choose your game setup and launch the campaign.",
+        "Follow turn prompts to reinforce, attack and move troops. Choose solo AI, local hot-seat or online play.",
+        "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
+        "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
+        "Campaigns are not saved persistently. Finish your campaign before closing or installing an update."
       ],
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/",
+          "url": "https://sponsorsorter.com/frontlines/builds/8/",
           "primary": true
+        },
+        {
+          "label": "Download Android preview APK",
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-8.apk"
         }
       ],
-      "notes": "Preview release. Solo AI and local hot-seat only; no online multiplayer, accounts or purchases. Campaigns are not saved persistently. Android is not available for download yet; phone browser performance remains unqualified."
+      "notes": "Playtest preview. Android build 8 was checked on a Samsung SM-S908E; other devices and sustained performance remain under review. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop.",
+      "sha256": "C15B95000F1FFC17FD88EE8F9B798C7185F80C424BEABE799DF6101CF4EC564C"
     }
   ]
 }
