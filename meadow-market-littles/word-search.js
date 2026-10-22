@@ -3,18 +3,18 @@
 
   const dialogId = '#word-search-dialog';
   const storeKey = 'meadow-littles-word-search-v1';
-  const size = 8;
+  let size = 9;
   const colorSet = [
     ['#ffe28a', '#956900'], ['#bce8a8', '#39733d'], ['#ffc5a6', '#a84b29'],
     ['#b9e4f7', '#347597'], ['#e0c7f3', '#75509a'], ['#ffc5d8', '#a44769']
   ];
   const topics = [
-    { id: 'everyday', name: 'Everyday words', icon: '☀️', scene: 'assets/generated/market/farmers-market.webp', words: [['sun', '☀️'], ['cup', '🥤'], ['bed', '🛏️'], ['hat', '👒'], ['bag', '👜'], ['pen', '🖍️'], ['bus', '🚌'], ['car', '🚗']] },
-    { id: 'animals', name: 'Animal friends', icon: '🐮', scene: 'assets/generated/minigames/meadow.webp', words: [['cat', '🐱'], ['dog', '🐶'], ['pig', '🐷'], ['hen', '🐔', 'assets/generated/hen.webp'], ['cow', '🐮', 'assets/generated/cow.webp'], ['fox', '🦊'], ['bee', '🐝'], ['owl', '🦉']] },
-    { id: 'farm', name: 'On the farm', icon: '🌾', scene: 'assets/generated/minigames/tractor-scene.webp', words: [['cow', '🐮', 'assets/generated/cow.webp'], ['pig', '🐷'], ['hen', '🐔', 'assets/generated/hen.webp'], ['egg', '🥚'], ['hay', '🌾'], ['bee', '🐝'], ['ram', '🐏'], ['pea', '🫛']] },
-    { id: 'city', name: 'Meadow Town', icon: '🚌', scene: 'assets/generated/word-search/city-scene.svg', words: [['cop', '👮'], ['bus', '🚌'], ['cab', '🚕'], ['car', '🚗'], ['van', '🚐'], ['map', '🗺️'], ['jet', '✈️'], ['zoo', '🦁']] }
+    { id: 'everyday', name: 'Everyday words', icon: '☀️', scene: 'assets/generated/market/farmers-market.webp', words: [['sun', '☀️'], ['cup', '🥤'], ['bed', '🛏️'], ['hat', '👒'], ['bag', '👜'], ['pen', '🖍️'], ['bus', '🚌'], ['car', '🚗'], ['box', '📦'], ['egg', '🥚'], ['toy', '🧸'], ['red', '🔴'], ['run', '🏃'], ['top', '🔝'], ['fun', '🎈'], ['map', '🗺️'], ['mom', '👩'], ['dad', '👨'], ['book', '📚'], ['ball', '⚽'], ['game', '🎲'], ['home', '🏠'], ['bath', '🛁'], ['milk', '🥛'], ['shoe', '👟'], ['sock', '🧦'], ['coat', '🧥'], ['play', '🛝'], ['help', '🫶'], ['hand', '✋'], ['nose', '👃'], ['eyes', '👀'], ['baby', '👶'], ['teddy', '🧸'], ['dress', '👗'], ['snack', '🍎'], ['lunch', '🥪'], ['happy', '😊'], ['school', '🏫'], ['sleep', '😴'], ['water', '💧'], ['train', '🚂']] },
+    { id: 'animals', name: 'Animal friends', icon: '🐮', scene: 'assets/generated/minigames/meadow.webp', words: [['cat', '🐱'], ['dog', '🐶'], ['pig', '🐷'], ['hen', '🐔', 'assets/generated/hen.webp'], ['cow', '🐮', 'assets/generated/cow.webp'], ['fox', '🦊'], ['bee', '🐝'], ['owl', '🦉'], ['ant', '🐜'], ['bat', '🦇'], ['bug', '🐞'], ['duck', '🦆'], ['fish', '🐟'], ['frog', '🐸'], ['goat', '🐐'], ['bear', '🐻'], ['lion', '🦁'], ['pony', '🐴'], ['lamb', '🐑'], ['calf', '🐮'], ['chick', '🐣'], ['horse', '🐴'], ['sheep', '🐑', 'assets/generated/sheep.webp'], ['mouse', '🐭'], ['bunny', '🐰'], ['puppy', '🐶'], ['kitty', '🐱'], ['tiger', '🐯'], ['zebra', '🦓'], ['whale', '🐳'], ['panda', '🐼'], ['snail', '🐌'], ['snake', '🐍'], ['camel', '🐫'], ['eagle', '🦅'], ['koala', '🐨'], ['deer', '🦌'], ['moose', '🫎'], ['swan', '🦢'], ['parrot', '🦜'], ['donkey', '🫏'], ['rabbit', '🐇']] },
+    { id: 'farm', name: 'On the farm', icon: '🌾', scene: 'assets/generated/minigames/tractor-scene.webp', words: [['cow', '🐮', 'assets/generated/cow.webp'], ['pig', '🐷'], ['hen', '🐔', 'assets/generated/hen.webp'], ['egg', '🥚'], ['hay', '🌾'], ['bee', '🐝'], ['ram', '🐏'], ['pea', '🫛'], ['barn', '🏚️'], ['farm', '🚜'], ['goat', '🐐'], ['duck', '🦆'], ['corn', '🌽'], ['seed', '🌱'], ['calf', '🐮'], ['lamb', '🐑'], ['pony', '🐴'], ['coop', '🐓'], ['milk', '🥛'], ['cart', '🛒'], ['bale', '🌾'], ['gate', '🚪'], ['roof', '🏠'], ['crop', '🌱'], ['wheat', '🌾'], ['grain', '🌾'], ['field', '🌱'], ['soil', '🪴'], ['well', '🪣'], ['pond', '🦆'], ['horse', '🐴'], ['apple', '🍎'], ['peach', '🍑'], ['plum', '🫐'], ['melon', '🍈'], ['goose', '🪿'], ['chick', '🐣'], ['sheep', '🐑', 'assets/generated/sheep.webp'], ['chore', '🧹'], ['plant', '🌱'], ['wool', '🧶']] },
+    { id: 'city', name: 'Meadow Town', icon: '🚌', scene: 'assets/generated/word-search/city-scene.svg', words: [['cop', '👮'], ['bus', '🚌'], ['cab', '🚕'], ['car', '🚗'], ['van', '🚐'], ['map', '🗺️'], ['jet', '✈️'], ['zoo', '🦁'], ['taxi', '🚕'], ['shop', '🏪'], ['stop', '🛑'], ['park', '🌳'], ['road', '🛣️'], ['sign', '🪧'], ['town', '🏘️'], ['bike', '🚲'], ['train', '🚂'], ['truck', '🚚'], ['plane', '✈️'], ['store', '🏬'], ['house', '🏠'], ['beach', '🏖️'], ['boat', '⛵'], ['ship', '🚢'], ['fire', '🚒'], ['light', '🚦'], ['school', '🏫'], ['police', '👮'], ['cross', '🚸'], ['street', '🛣️'], ['bridge', '🌉'], ['river', '🏞️'], ['hotel', '🏨'], ['cafe', '☕'], ['bread', '🥖'], ['fruit', '🍎'], ['flower', '🌼'], ['market', '🛒'], ['cinema', '🎬'], ['doctor', '🩺'], ['nurse', '🧑‍⚕️']] }
   ];
-  let api, dialog, topic = topics[2], wordCount = 6, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [];
+  let api, dialog, topic = topics[2], wordCount = 6, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], resizeHandler = null;
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const audio = (id) => window.meadowAudio?.play(id);
   const say = (text) => { const live = dialog?.querySelector('[data-live]'); if (live) live.textContent = text; };
@@ -23,19 +23,23 @@
   const image = (word) => word.asset ? '<img src="' + esc(word.asset) + '" alt="">' : '<span class="ws-object-emoji" aria-hidden="true">' + word.icon + '</span>';
   const sceneUrl = () => topic.scene;
   const appState = () => api?.state?.();
-  function praise() {
+  function speakText(text) {
     const preferences = (() => { try { return JSON.parse(localStorage.getItem('meadow-littles-audio-v1') || '{}'); } catch { return {}; } })();
     const supported = window.speechSynthesis && window.SpeechSynthesisUtterance;
     if (supported && !preferences.muted && preferences.voice !== 0) {
-      const phrases = ['Well done!', 'Great job!', 'You found it!', 'What a clever word finder!'];
-      const voice = new SpeechSynthesisUtterance(pick(phrases));
+      const voice = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices?.() || [];
       voice.voice = voices.find((item) => /^en-AU/i.test(item.lang)) || voices.find((item) => /^en-GB/i.test(item.lang)) || null;
       voice.lang = voice.voice?.lang || 'en-AU'; voice.rate = 0.88; voice.pitch = 1.12; voice.volume = Math.max(0, Math.min(1, Number(preferences.voice ?? 0.8)));
       window.speechSynthesis.cancel(); window.speechSynthesis.speak(voice);
     }
+  }
+  function praise() {
+    const phrases = ['Well done!', 'Great job!', 'You found it!', 'What a clever word finder!'];
+    speakText(pick(phrases));
     audio('reward');
   }
+  function boardSize() { return window.innerWidth >= 900 && window.innerHeight >= 600 ? 14 : Math.min(window.innerWidth, window.innerHeight) >= 600 ? 12 : 9; }
   function loadHistory() { try { const saved = JSON.parse(localStorage.getItem(storeKey) || '{}'); layoutHistory = Array.isArray(saved.layouts) ? saved.layouts.filter((item) => typeof item === 'string').slice(-250) : []; } catch { layoutHistory = []; } }
   function saveHistory(signature) { layoutHistory.push(signature); layoutHistory = layoutHistory.slice(-250); try { localStorage.setItem(storeKey, JSON.stringify({ layouts: layoutHistory })); } catch {} }
   function buildBoard(words) {
@@ -74,21 +78,25 @@
   function hasExtraWord(cells, placed) {
     const solutionPaths = new Map(placed.map((word) => [word.id, word.indices]));
     const words = new Map(placed.map((word) => [word.label, word.id]));
+    const lengths = [...new Set(placed.map((word) => word.label.length))];
     for (let row = 0; row < size; row++) for (let col = 0; col < size; col++) {
       for (const [dr, dc] of [[0, 1], [1, 0]]) {
-        const endRow = row + dr * 2, endCol = col + dc * 2;
-        if (endRow >= size || endCol >= size) continue;
-        const indices = [0, 1, 2].map((step) => (row + dr * step) * size + col + dc * step);
-        const text = indices.map((index) => cells[index]).join(''), reverse = [...text].reverse().join('');
-        const id = words.get(text) || words.get(reverse);
-        if (!id) continue;
-        const answer = solutionPaths.get(id);
-        if (!samePath(indices, answer) && !samePath(indices, answer.slice().reverse())) return true;
+        for (const length of lengths) {
+          if (row + dr * (length - 1) >= size || col + dc * (length - 1) >= size) continue;
+          const indices = Array.from({ length }, (_, step) => (row + dr * step) * size + col + dc * step);
+          const text = indices.map((index) => cells[index]).join(''), reverse = [...text].reverse().join('');
+          const id = words.get(text) || words.get(reverse);
+          if (!id) continue;
+          const answer = solutionPaths.get(id);
+          if (!samePath(indices, answer) && !samePath(indices, answer.slice().reverse())) return true;
+        }
       }
     }
     return false;
   }
   function screen(content, extra = '') {
+    if (resizeHandler) window.removeEventListener('resize', resizeHandler);
+    resizeHandler = null;
     dialog.innerHTML = '<main class="ws-screen" style="--ws-scene:url(\'' + esc(sceneUrl()) + '\')"><div class="ws-window ' + extra + '">' + content + '</div><div class="ws-star-layer" aria-hidden="true"></div></main>';
     dialog.showModal();
   }
@@ -104,12 +112,13 @@
     dialog.querySelectorAll('[data-topic]').forEach((button) => button.addEventListener('click', () => { topic = topics.find((item) => item.id === button.dataset.topic) || topics[2]; intro(); }));
     dialog.querySelectorAll('[data-count]').forEach((button) => button.addEventListener('click', () => { wordCount = Number(button.dataset.count); intro(); }));
     dialog.querySelector('[data-start]').addEventListener('click', newRound);
-    window.meadowAudio?.speak('minigame-search-levels');
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
   function newRound() {
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
     completedAt = 0;
     if (window.speechSynthesis) window.speechSynthesis.cancel();
+    size = boardSize();
     const choices = shuffle(topic.words.map(([label, icon, asset]) => ({ id: topic.id + '-' + label, label: label.toUpperCase(), icon, asset })));
     const result = buildBoard(choices.slice(0, wordCount)); board = result.cells; answers = result.answers; saveHistory(result.signature); startedAt = Date.now();
     playBoard(); clockId = setInterval(updateTimer, 1000); updateTimer();
@@ -126,7 +135,26 @@
     grid.addEventListener('pointercancel', () => { drag = null; path = []; renderCells(); });
     grid.addEventListener('click', (event) => { if (skipCellClick) { skipCellClick = false; return; } if (drag !== null) return; const cell = event.target.closest('[data-cell]'); if (!cell) return; const index = Number(cell.dataset.cell); if (!path.length) path = [index]; else if (path[0] === index) path = []; else extendPath(index); renderCells(); if (path.length > 2) finishPath(); });
     dialog.querySelector('[data-new]').addEventListener('click', newRound);
-    dialog.querySelector('[data-hear]').addEventListener('click', () => window.meadowAudio?.speak('minigame-search-levels'));
+    dialog.querySelector('[data-hear]').addEventListener('click', () => speakText('Find the words in the list. Put your finger on the first letter and slide across each letter in the word.'));
+    resizeHandler = () => requestAnimationFrame(sizeBoard);
+    window.addEventListener('resize', resizeHandler);
+    requestAnimationFrame(sizeBoard);
+    speakText('Put your finger on the first letter and slide across each letter in the word. Find the words in the list!');
+  }
+  function sizeBoard() {
+    const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
+    if (!wrap || !grid) return;
+    const landscape = window.matchMedia('(orientation: landscape) and (min-width: 620px)').matches;
+    const width = landscape ? wrap.clientWidth * .65 : wrap.clientWidth;
+    const height = landscape ? wrap.clientHeight : wrap.clientHeight - (dialog.querySelector('.ws-word-list')?.offsetHeight || 0) - (dialog.querySelector('[data-live]')?.offsetHeight || 0) - 20;
+    const gap = Math.max(2, Math.min(5, Math.floor(width / (size * 22))));
+    const padding = 20;
+    const cell = Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size));
+    if (!Number.isFinite(cell) || cell < 17) return;
+    grid.style.setProperty('--ws-cols', size);
+    grid.style.setProperty('--ws-cell', cell + 'px');
+    grid.style.setProperty('--ws-gap', gap + 'px');
+    grid.style.setProperty('--ws-board', (size * cell + (size - 1) * gap + padding) + 'px');
   }
   function extendPath(end) {
     if (!path.length || foundCells().has(end)) return;
@@ -187,10 +215,10 @@
     const formatted = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
     screen('<header class="ws-header"><div><small>MEADOW MARKET LITTLES</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' meadow stars ' + (earned ? 'earned!' : 'collected!') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
     bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', close); animateStars();
-    if (window.speechSynthesis) window.speechSynthesis.cancel(); window.meadowAudio?.speak('game-result-win'); audio('reward');
+    if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!'); audio('reward');
   }
   function bindClose() { dialog.querySelector('[data-close]').addEventListener('click', close); }
-  function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
-  function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) return; dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (window.speechSynthesis) window.speechSynthesis.cancel(); }); }
+  function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
+  function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) return; dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); }); }
   window.meadowWordSearch = { attach, open, topics };
 })();
