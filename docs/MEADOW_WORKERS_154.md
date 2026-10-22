@@ -21,7 +21,7 @@
 
 ## Art and guidance
 
-- Approved Jade/Rhys/Jay eight-direction walk/action/drink sheets are reused as worker variants, with different names and uniform hues. These are variants of approved farmer art, not nine newly generated animation sets.
+- Approved Jade/Rhys/Jay eight-direction walk/action/drink sheets are reused as worker variants, with different names; build 155 preserves the original skin and clothing colours. These are variants of approved farmer art, not nine newly generated animation sets. Whole-image hue shifts were removed after the Samsung check because they also tinted skin.
 - Roster has a transparent scalable clipboard/team icon and the same halo/help treatment as other HUD icons.
 - New ElevenLabs Farmer Rhys narration uses the established Noah voice, explains hiring, sprite placement, live status, map assignment, watering costs and pauses, and is cached with the game.
 

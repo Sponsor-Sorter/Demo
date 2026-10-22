@@ -6,7 +6,7 @@
   ['avery','Avery','jade',24,3200,35],['riley','Riley','jay',28,4500,-35],
   ['finley','Finley','rhys',32,6000,45],['quinn','Quinn','jade',36,8000,-45],
   ['robin','Robin','jay',40,10000,55]
- ].map(([id,name,skin,level,cost,hue])=>({id,name,skin,level,cost,hue}));
+ ].map(([id,name,skin,level,cost,hue])=>({id,name,skin,level,cost,hue:0}));
  let api,bar,button,selection=null,drag=null,ghost=null,lastTick=0;
  const statuses=new Map(),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const book=()=>{const s=api.state();s.workforce ||= {};return s.workforce};
