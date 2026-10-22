@@ -9,7 +9,7 @@
     ['#b9e4f7', '#347597'], ['#e0c7f3', '#75509a'], ['#ffc5d8', '#a44769']
   ];
   const topics = window.meadowWordTopics;
-  let api, dialog, topic = topics[2], wordCount = 20, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], positionHistory = {}, finished = false, resizeHandler = null;
+  let api, dialog, topic = topics[2], wordCount = 20, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, runId = null, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], positionHistory = {}, finished = false, resizeHandler = null;
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const audio = (id) => window.meadowAudio?.play(id);
   const say = (text) => { const live = dialog?.querySelector('[data-live]'); if (live) live.textContent = text; };
@@ -61,7 +61,7 @@
   }
   function newRound() {
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
-    completedAt = 0; finished = false;
+    completedAt = 0; finished = false; runId = crypto.randomUUID();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     size = boardSize();
     const choices = shuffle(topic.words.map(([label, icon, asset]) => ({ id: topic.id + '-' + label, label: label.toUpperCase(), icon, asset })));
@@ -153,17 +153,18 @@
     if (!dialog?.open || finished || found.size !== wordCount) return;
     finished = true;
     clearInterval(clockId); const elapsed = Math.max(0, Math.floor(((completedAt || Date.now()) - startedAt) / 1000));
+    const points=window.meadowClub?.result({resultId:runId,game:{id:'word_search',goal:20,time:300,level:1},score:20,elapsed},true) ?? (3000+Math.max(0,300-elapsed)*10);
     const state = appState(); let earned = false; if(state)state.minigames ||= {records:{},rewards:{}};
     if (state?.minigames) {
       state.minigames.records ||= {}; state.minigames.rewards ||= {};
       const record = state.minigames.records.word_search || { wins: 0, best: 0, bestScore: 0, level: 1 };
-      record.wins++; record.level++; record.bestScore = Math.max(record.bestScore || 0, wordCount * 100 + Math.max(0, 300 - elapsed));
+      record.wins++; record.level++; record.bestScore = Math.max(record.bestScore || 0, points);
       record.best = record.best ? Math.min(record.best, elapsed) : elapsed; state.minigames.records.word_search = record;
       const today = new Date().toISOString().slice(0, 10) + ':word_search'; state.minigames.rewards[today] ||= 0;
       if (state.minigames.rewards[today] < 3) { state.minigames.rewards[today]++; api.reward('apple', 1, starCount, 3); earned = true; } else api.save?.();
     }
     const formatted = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
-    screen('<header class="ws-header"><div><small>MEADOW MARKETS</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' words · Score ' + (wordCount*100+Math.max(0,300-elapsed)) + (earned ? ' · Reward collected!' : ' · Practice round') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
+    screen('<header class="ws-header"><div><small>MEADOW MARKETS</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' words · Score ' + points + (earned ? ' · Reward collected!' : ' · Practice round') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
     bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', () => { close(); api.menu?.(); }); animateStars();
     if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!'); audio('reward');
   }
