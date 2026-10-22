@@ -113,3 +113,5 @@ require('./check-meadow-rotations.cjs');
 require('./check-meadow-build-actions.cjs');
 
 require('./check-meadow-directional-assets.cjs');
+
+require('./check-meadow-build-sales.cjs');

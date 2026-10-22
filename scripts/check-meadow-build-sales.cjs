@@ -1,0 +1,15 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),source=fs.readFileSync('meadow-and-market/game.js','utf8');
+const barn={id:'barn',type:'barn'},farm={objects:[barn]},state={active:'willow',coins:100,lastMove:{},selected:'barn',moving:'barn'},buttons={};
+let rendered=0,saved=0;
+const ctx={state,current:()=>farm,def:o=>({name:o.type,price:220,kind:o.type==='treasure'?'collection':'building'}),isAnimal:o=>o.type==='cow',escapeHtml:s=>s,openModal:()=>{},notify:()=>{},activeVisit:null,clearPlacementPreview:()=>{},save:()=>saved++,render:()=>rendered++,window:{},$:id=>buttons[id]||=(id==='#modal-dialog'?{close:()=>{}}:{})};
+vm.createContext(ctx);vm.runInContext('let popupItemId,moveRotation;'+source.slice(source.indexOf('  function buildSaleOffer('),source.indexOf('  function rotateSelectedBuildItem('))+';this.offer=buildSaleOffer;this.sell=sellSelectedBuildItem',ctx);
+assert.equal(ctx.offer(barn).gold,110);
+farm.objects.push({id:'cow',type:'cow',barnId:'barn'});assert.match(ctx.offer(barn).reason,/animals/);farm.objects.pop();
+barn.jobs=[{}];assert.match(ctx.offer(barn).reason,/batches/);delete barn.jobs;
+assert.equal(ctx.offer({type:'cow'}).hidden,true);assert.equal(ctx.offer({id:'d',type:'treasure'}).store,true);assert.equal(ctx.offer({id:'d',type:'treasure'}).gold,0);
+ctx.sell(barn);assert.equal(farm.objects.length,1,'Opening confirmation never removes the item');buttons['#cancel-build-sale'].onclick();assert.equal(state.coins,100);
+ctx.sell(barn);farm.objects.push({type:'cow',barnId:'barn'});buttons['#confirm-build-sale'].onclick();assert.equal(farm.objects.length,2,'Residents added while the window is open protect their home');farm.objects.pop();
+buttons['#confirm-build-sale'].onclick();assert.equal(farm.objects.length,0);assert.equal(state.coins,210);assert.equal(state.lastMove,null,'Undo cannot restore a sold item for duplicate refunds');assert.equal(state.selected,null);assert.equal(saved,1);assert.equal(rendered,1);
+buttons['#confirm-build-sale'].onclick();assert.equal(state.coins,210,'Repeated confirmation cannot duplicate gold');
+farm.objects.push(barn);ctx.sell(barn);state.active='coast';buttons['#confirm-build-sale'].onclick();assert.equal(farm.objects.length,1,'Changing maps cannot sell a stale selection');
+console.log('Build sales: exact refund, confirmation/cancel, resident and queue protection, collection storage, stale-map and duplicate-sale guards passed.');
