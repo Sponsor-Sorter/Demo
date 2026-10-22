@@ -5,7 +5,7 @@ import {validateCatalogue,renderEntry,escape} from './build-games-catalogue.mjs'
 import {browserBuildLabel} from '../js/gamesCatalogue.mjs';
 const data=JSON.parse(readFileSync(new URL('../content/games-catalogue.json',import.meta.url),'utf8'));
 const page=readFileSync(new URL('../games.html',import.meta.url),'utf8');
-test('all products have distinct stable entries and complete instructions',()=>{assert.equal(validateCatalogue(data),data);assert.equal(data.entries.length,4);});
+test('all products have distinct stable entries and complete instructions',()=>{assert.equal(validateCatalogue(data),data);assert.equal(data.entries.length,5);});
 test('each entry renders version, actions, instructions and local QR',()=>{
  for(const entry of data.entries){const html=renderEntry(entry);assert.ok(html.includes(entry.id+'-title'));assert.ok(html.includes(escape(entry.build)));assert.ok(html.includes('Open on your phone'));assert.ok(existsSync(new URL(`../games-assets/${entry.id}-qr.svg`,import.meta.url)));}
 });
@@ -32,4 +32,18 @@ test('every canonical footer has a Games link, including the public profile dire
   const footer=html.match(/<footer class="site-footer"[\s\S]*?<\/footer>/)?.[0];
   if(footer)assert.match(footer,/href="(?:\.\/|\.\.\/)?games.html">Games<\/a>/,name);
  }
+});
+
+
+test('Frontlines publishes accepted Web preview only, never rejected Android build',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Browser 2026.10.22-preview1');
+ assert.equal(entry.actions.length,1);assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/');
+ assert.doesNotMatch(entry.actions.map(a=>a.url).join(' '),/\.apk/);assert.match(entry.notes,/Android is not available/);
+ assert.equal(existsSync(new URL('../frontlines/downloads',import.meta.url)),false);
+ assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
+});
+test('Frontlines Web files match the accepted immutable release manifest',async()=>{
+ const {createHash}=await import('node:crypto');const manifest=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));
+ assert.equal(manifest.android_available,false);assert.equal(manifest.browser_build,'2026.10.22-preview1');
+ for(const file of manifest.files){const bytes=readFileSync(new URL('../'+file.path,import.meta.url));assert.equal(bytes.length,file.bytes,file.path);assert.equal(createHash('sha256').update(bytes).digest('hex'),file.sha256,file.path);}
 });

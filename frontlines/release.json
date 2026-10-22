@@ -1,0 +1,77 @@
+{
+  "title": "Frontlines: World in Conflict",
+  "release_id": "2026-10-22-preview1",
+  "browser_build": "2026.10.22-preview1",
+  "status": "preview",
+  "catalogue_url": "https://sponsorsorter.com/games.html#frontlines",
+  "web_url": "https://sponsorsorter.com/frontlines/",
+  "android_available": false,
+  "persistent_saves": false,
+  "files": [
+    {
+      "path": "frontlines/FONT_CREDIT.txt",
+      "bytes": 362,
+      "sha256": "3b60087b03606554734999dc2eb638193ff20e4df3f89170dab5a8dac01b96e7"
+    },
+    {
+      "path": "frontlines/LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/media/icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "frontlines/THIRD_PARTY_NOTICES.txt",
+      "bytes": 112435,
+      "sha256": "fd37a45e4601dd68211d8cd5a198b5a47b4375a06abb8d2da83302a528b01a00"
+    },
+    {
+      "path": "frontlines/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "frontlines/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "frontlines/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "frontlines/index.html",
+      "bytes": 5461,
+      "sha256": "856a41ac31d6b05ab008b91050f781e6503526a8ee98260dd38921ad2b9d32dd"
+    },
+    {
+      "path": "frontlines/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "frontlines/index.js",
+      "bytes": 279815,
+      "sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba"
+    },
+    {
+      "path": "frontlines/index.pck",
+      "bytes": 26100540,
+      "sha256": "b022cd31a4dbd0e1ac62d3cb06d989fd8fb183227777a59699efe221e7df4b4f"
+    },
+    {
+      "path": "frontlines/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "frontlines/index.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    }
+  ]
+}
