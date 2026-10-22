@@ -6,7 +6,7 @@
  // Local tile offsets rotate clockwise. The camera and all vertical walls remain fixed.
  function turnPoint(x,y,w,h,rotation){switch(angle({rotation})){case 1:return {x:h-1-y,y:x};case 2:return {x:w-1-x,y:h-1-y};case 3:return {x:y,y:w-1-x};default:return {x,y}}}
  function rotatedFootprint(fp,rotation){return angle({rotation})%2?swap(fp):{...fp}}
- function rotate(o,step,rules){const rotation=angle({rotation:angle(o)+step}),next={...o,rotation};if(!rules.canPlace(next,o.x,o.y,o.id))return {ok:false,message:'Clear the highlighted neighbouring tiles before turning this item.'};rules.remember?.(o);o.rotation=rotation;rules.sync?.(o);rules.save?.();return {ok:true,rotation}}
+ function rotate(o,step,rules){const rotation=angle({rotation:angle(o)+step}),next={...o,rotation};if(!rules.canPlace(next,o.x,o.y,o.id))return {ok:false,message:'Clear the neighbouring tiles before turning this item.'};rules.remember?.(o);o.rotation=rotation;rules.sync?.(o);rules.save?.();return {ok:true,rotation}}
  function register(entries){Object.assign(registry,entries)}
  function entry(o){if(['plot','flowers','orchard','paddock'].includes(o.type)||o.type==='coop'&&Number(o.tier)>0)return {native:true};const special=o.type==='well'&&o.wellGemTier?'well-gem-'+o.wellGemTier:['chicken','cow','sheep','goat','alpaca'].includes(o.type)?o.type+'-breed-'+(o.breedTier||0):o.type==='tree'?'tree-'+(o.visualPhase||(o.lastFruitAt&&Date.now()-o.lastFruitAt<42000?'leaf':o.lastFruitAt&&Date.now()-o.lastFruitAt<90000?'blossom':'fruit')):null;const candidates=[special,o.type+'-'+Math.max(0,Math.floor(Number(o.tier)||0)),o.type];return candidates.map(k=>registry[k]).find(Boolean)}
  function frame(o){const e=entry(o);return e?.frames?.[angle(o)]||null}
