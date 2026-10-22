@@ -170,7 +170,7 @@
       throw error;
     }finally{if(!committed){replacingFarm=false;cloudReady=true;scheduleCloudSave()}}
   }
-  function notify(msg){const e=$('#toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2300)}
+  function notify(msg){window.meadowCompactHud?.positionToast();const e=$('#toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2300)}
   function xp(amount){state.xp+=amount;let threshold=90+(state.level-1)*50;if(state.xp>=threshold){state.xp-=threshold;state.level++;state.coins+=35;window.meadowGuides?.unlocks(state.level,{areas:maps.filter(m=>m.unlock===state.level).map(m=>m.name),items:catalog.filter(i=>(i.unlock||1)===state.level).map(i=>({id:i.id,name:i.name}))});window.meadowAudio?.play('reward');notify('Level up! Welcome to level '+state.level+' 🌟'+(state.level===5?' · Care all unlocked in Animal Family.':''))}}
   function xpNeed(){return 90+(state.level-1)*50}
   function obj(id){return current().objects.find(o=>o.id===id)}
@@ -617,7 +617,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=169;
+  const currentBuild=170;
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
     const promptForUpdate=()=>{const dialog=$('#update-dialog'),waitingBuild=Number(reg.waiting?new URL(reg.waiting.scriptURL).searchParams.get('build'):0);availableBuild=Math.max(availableBuild,waitingBuild);if(navigator.serviceWorker.controller&&isUpdateReady(currentBuild,availableBuild,waitingBuild>currentBuild)&&dialog){if(!gameUpdateCanPrompt({hidden:document.hidden,modal:$$('dialog[open]').some(d=>d.id!=='update-dialog'),build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil}))return;$('#update-title').textContent='Meadow Markets build '+availableBuild+' is ready';dialog.querySelector('.sheet-copy').textContent='You have build '+currentBuild+'. Install the latest farm improvements and keep your saved farm.';if(!dialog.open)dialog.showModal()}};

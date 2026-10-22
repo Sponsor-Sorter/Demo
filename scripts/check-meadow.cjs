@@ -3,7 +3,7 @@ const root=path.resolve(__dirname,'../meadow-and-market'),read=n=>fs.readFileSyn
 for(const n of ['game.js','guides.js','workers.js','audio.js','production.js','apiary.js','story.js','animals.js','housing.js','sw.js'])new vm.Script(read(n),{filename:n});
 assert(!/(?<!\$)\$\((?:'[^'\n]*'|"[^"\n]*")\)\.forEach/.test(game),'NodeList iteration uses $$');
 const release=JSON.parse(read('release.json')),html=read('index.html'),sw=read('sw.js');assert(game.includes('const currentBuild='+release.build));assert(html.includes(release.game));assert(html.includes(release.style));assert(sw.includes('meadow-market-v'+release.build));
-const files=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener"))+';FILES');for(const file of files){let p=file.split('?')[0];if(p==='./')p='index.html';assert(fs.existsSync(path.join(root,p)),'Missing precache asset: '+file)}
+const files=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener"))+';FILES',{importScripts:()=>{}});for(const file of files){let p=file.split('?')[0];if(p==='./')p='index.html';assert(fs.existsSync(path.join(root,p)),'Missing precache asset: '+file)}
 const workers={window:{}};vm.runInNewContext(read('workers.js').replace('window.meadowWorkers={','window.workerTest={route,direction};window.meadowWorkers={'),workers);const {route,direction}=workers.window.workerTest;
 for(const [x,y,d]of [[1,-1,6],[1,0,7],[1,1,0],[0,1,1],[-1,1,2],[-1,0,3],[-1,-1,4],[0,-1,5]])assert.equal(direction(x,y),d);
 assert.equal(route({x:0,y:0},[{x:1,y:1}],[{x:0,y:0},{x:1,y:1}]),null,'Helpers must not cut blocked corners');
@@ -119,3 +119,5 @@ require('./check-meadow-build-sales.cjs');
 require('./check-meadow-compact-hud.cjs');
 
 require('./check-meadow-word-search.cjs');
+
+require('./check-meadow-precache.cjs');
