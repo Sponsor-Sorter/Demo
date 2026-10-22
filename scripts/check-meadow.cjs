@@ -105,3 +105,5 @@ require('./check-meadow-progress.cjs');
 require('./check-meadow-polish.cjs');
 
 require('./check-meadow-roster.cjs');
+
+require('./check-meadow-mission-claims.cjs');
