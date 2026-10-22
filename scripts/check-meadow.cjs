@@ -105,3 +105,11 @@ require('./check-meadow-progress.cjs');
 require('./check-meadow-polish.cjs');
 
 require('./check-meadow-roster.cjs');
+
+require('./check-meadow-mission-claims.cjs');
+
+require('./check-meadow-rotations.cjs');
+
+require('./check-meadow-build-actions.cjs');
+
+require('./check-meadow-directional-assets.cjs');

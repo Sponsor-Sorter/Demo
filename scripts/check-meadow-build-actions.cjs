@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const game=fs.readFileSync('meadow-and-market/game.js','utf8'),source=fs.readFileSync('meadow-and-market/build-actions.js','utf8');
+let draws=0,details=0,clears=0,notices=0;const item={id:'well',type:'well'},state={mode:'build',selected:null,moving:null,placing:null},ctx={state,obj:()=>item,queueMicrotask:f=>f(),clearPlacementPreview:()=>clears++,$:()=>({textContent:''}),render:()=>draws++,notify:()=>notices++,def:()=>({kind:'building'}),showWell:()=>details++};
+vm.createContext(ctx);vm.runInContext('let popupItemId,moveRotation;'+game.slice(game.indexOf('  function objectClick('),game.indexOf('  function rotatePlacement('))+';this.select=objectClick',ctx);
+ctx.select('well');assert.equal(state.selected,'well');assert.equal(state.moving,null,'A build tap selects; it does not pick up the item');assert.equal(draws,1);assert.equal(clears,1);assert.equal(details,0);
+ctx.select('well',true);assert.equal(details,1,'Details opens the real item window while retaining build mode');assert.equal(state.mode,'build');
+state.placing='barn';ctx.select('well');assert.equal(notices,1,'A pending new placement cannot be replaced accidentally');
+for(const label of ['Details','Move','Rotate'])assert(source.includes("'"+label+"'"));assert(source.includes("setAttribute('aria-label','Selected farm item actions')"));assert(source.includes("bar.addEventListener('pointerdown',e=>e.stopPropagation())"));assert(game.includes('state.mode===\'build\'&&!details'));assert(game.includes("if(details)showPlotUpgrade(o);else plotClick(o)"),'Plot Details must not harvest or till');assert(game.includes('.object-actions'));
+console.log('Build selection: three compact actions, no automatic pickup, real Details without changing mode, plot inspection without harvest, and pending-placement protection passed.');
+assert(fs.readFileSync('meadow-and-market/rotations.css','utf8').includes('#farm-land{overflow:clip!important}'),'The actual camera viewport must reject focus scrolling');

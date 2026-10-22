@@ -1,0 +1,7 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),root='meadow-and-market/';let registry;
+vm.runInNewContext(fs.readFileSync(root+'rotation-assets.js','utf8'),{window:{meadowRotations:{register:r=>registry=r}}});
+const ctx={window:{}};vm.runInNewContext(fs.readFileSync(root+'rotations.js','utf8'),ctx);const R=ctx.window.meadowRotations;
+for(let n=1;n<=100;n++){const id='collection_'+String(n).padStart(3,'0');assert.equal(registry[id]?.frames?.length,4,id+' needs four views');}
+let count=0;for(const [id,e]of Object.entries(registry)){if(e.native){assert(/^coop-[123]$|^paddock-[0-3]$/.test(id));continue}assert.equal(e.frames.length,4);assert.equal(new Set(e.frames.map(f=>f.file)).size,4);for(const f of e.frames){const bytes=fs.readFileSync(root+f.file);assert.equal(bytes.toString('ascii',0,4),'RIFF');assert.equal(bytes.toString('ascii',8,12),'WEBP');assert(Math.max(f.width,f.height)>=320,id+' must retain detail at map resolution');assert(f.left[0]<f.front[0]&&f.front[0]<f.right[0]);for(const fp of [{w:1,h:1},{w:2,h:1},{w:1,h:2}])for(const m of Object.values(R.projection(f,fp))){assert(m.every(Number.isFinite),id+' invalid projection');assert(m[0]>0&&m[3]>0,id+' inverted artwork')}count++}}
+assert.equal(count,576);for(const side of ['1','2','3'])assert(fs.existsSync(root+'assets/generated/plots/soil-tilled-4-r'+side+'.svg'));
+console.log('576 separate directional WebP frames, all 100 collectibles, seven native grid-fitted yards, finite upright projections, retained sprite resolution and rotated soil artwork passed.');
