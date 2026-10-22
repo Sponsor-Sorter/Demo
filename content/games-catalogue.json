@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21",
+  "updated": "2026-10-22",
   "entries": [
     {
       "id": "meadow-markets",
@@ -48,7 +48,7 @@
       "instructionsTitle": "How to play and install",
       "instructions": [
         "Open Play in browser and choose an activity.",
-        "Follow the farmers’ spoken instructions and on-screen controls.",
+        "Follow the farmers\u2019 spoken instructions and on-screen controls.",
         "Explore animal games, puzzles and the art studio at your own pace.",
         "On Android, download the APK, open the downloaded file and confirm installation if your device requests it.",
         "For a browser app, open game settings for installation. On iPad, use Safari Share, then Add to Home Screen."
@@ -75,7 +75,7 @@
       "image": "./games-assets/bargain-barge.svg",
       "imageAlt": "Bargain Barge app icon",
       "status": "Android testing release",
-      "build": "Version 0.4.4 · Build 19",
+      "build": "Version 0.4.4 \u00b7 Build 19",
       "requirements": "Android 8.0 or newer. Internet connection for live feeds. Location permission is optional; you can choose a location manually.",
       "instructionsTitle": "How to get started",
       "instructions": [
@@ -103,7 +103,7 @@
       "image": "./app-assets/icon-512.png",
       "imageAlt": "Sponsor Sorter app icon",
       "status": "Android early access",
-      "build": "Version 1.0.0 · Build 8",
+      "build": "Version 1.0.0 \u00b7 Build 8",
       "requirements": "Android 7.0 or newer on a phone or tablet. Internet connection and a Sponsor Sorter account.",
       "instructionsTitle": "How to install",
       "instructions": [
@@ -125,6 +125,34 @@
       ],
       "sha256": "F29286F2AED785A16EA987EE0AA491BF81BC786414DF6312DE4AF403E8282731",
       "notes": "The public download is build 8. Later test builds are not listed until accepted for release. On iPhone or iPad, use the website."
+    },
+    {
+      "id": "frontlines",
+      "title": "Frontlines: World in Conflict",
+      "type": "Game",
+      "tagline": "Six factions. Forty-two territories. One world to conquer.",
+      "description": "Command one of six coalitions across a raised 3D world board. Reinforce, roll and capture 42 territories in solo AI or local hot-seat conquest.",
+      "image": "./frontlines/media/icon.png",
+      "imageAlt": "Frontlines: World in Conflict game artwork",
+      "status": "Browser preview",
+      "build": "Browser 2026.10.22-preview1",
+      "requirements": "Desktop browser with WebGL 2 and WebAssembly support. Network needed for first load. Android release pending.",
+      "instructionsTitle": "How to play",
+      "instructions": [
+        "Open Play browser preview, choose your game setup, then launch the campaign.",
+        "Choose solo AI or local hot-seat. Follow the turn prompts to reinforce, attack and move troops.",
+        "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. Click territories and use the on-screen controls.",
+        "Phone candidate: landscape, drag map to pan and pinch to zoom. Phone browser performance has not been accepted on a physical device.",
+        "Campaigns are not saved persistently. Do not close the game if you want to continue the current campaign."
+      ],
+      "actions": [
+        {
+          "label": "Play browser preview",
+          "url": "https://sponsorsorter.com/frontlines/",
+          "primary": true
+        }
+      ],
+      "notes": "Preview release. Solo AI and local hot-seat only; no online multiplayer, accounts or purchases. Campaigns are not saved persistently. Android is not available for download yet; phone browser performance remains unqualified."
     }
   ]
 }
