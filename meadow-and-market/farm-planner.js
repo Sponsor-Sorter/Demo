@@ -21,6 +21,7 @@
       const q=window.meadowJourneyCore?.projectStatus(s,d.id);if(!q||!Number.isInteger(d.stage)||d.stage<0||d.stage>2)return null;
       const step=q.p.stages[d.stage];return {key:descriptorKey(d),descriptor:d,name:q.p.name+' · '+step.name,ask:step.ask,gold:step.gold,art:'assets/generated/journey/'+(d.id==='jetty'?'wharf':q.p.art)+'-'+Math.min(2,d.stage)+'.webp',done:q.n>d.stage,stale:q.n<d.stage,reason:q.reason,kind:'project'};
     }
+    if(d.kind==='festival'){const f=window.meadowLife?.festival(s,now);if(!f||d.id!==f.runId)return {key:descriptorKey(d),descriptor:d,name:'Village celebration',ask:{},gold:0,stale:true,kind:'festival'};return {key:descriptorKey(d),descriptor:d,name:f.theme.name+' · Festival hamper',ask:f.ask,gold:0,art:f.theme.art,done:f.stage>1,stale:f.stage<1,kind:'festival',reason:''};}
     if(d.kind==='weekly'){
       const q=window.meadowVillageOrders?.contract(s,now);if(!q)return null;
       return {key:descriptorKey(d),descriptor:d,name:q.name,ask:q.ask,gold:0,art:'assets/generated/club/mission.webp',done:d.week===q.key&&q.stage>d.stage,stale:d.week!==q.key||q.stage<d.stage,reason:'',kind:'weekly'};
@@ -113,7 +114,7 @@
   function choices(){
     const s=state();if(tab==='projects')return (window.meadowJourneyData?.projects||[]).flatMap(p=>{const q=window.meadowJourneyCore.projectStatus(s,p.id);return q.step?[{d:{kind:'project',id:p.id,stage:q.n},name:p.name,sub:q.step.name,art:'assets/generated/journey/'+(p.id==='jetty'?'wharf':p.art)+'-'+Math.min(2,q.n)+'.webp'}]:[];});
     if(tab==='orders'){
-      const result=[];const w=window.meadowVillageOrders?.contract(s);if(w&&w.stage<3)result.push({d:{kind:'weekly',week:w.key,stage:w.stage},name:w.name,sub:'Weekly delivery '+(w.stage+1)+' / 3',art:'assets/generated/club/mission.webp'});
+      const result=[];const festival=window.meadowLife?.festival(s);if(festival?.joined&&festival.stage===1)result.push({d:{kind:'festival',id:festival.runId,stage:1},name:festival.theme.name,sub:'Festival hamper',art:festival.theme.art});const w=window.meadowVillageOrders?.contract(s);if(w&&w.stage<3)result.push({d:{kind:'weekly',week:w.key,stage:w.stage},name:w.name,sub:'Weekly delivery '+(w.stage+1)+' / 3',art:'assets/generated/club/mission.webp'});
       for(const [id,f]of Object.entries(s.farms||{}))for(const o of f.orders||[])result.push({d:{kind:'order',map:id,id:o.id},name:o.name,sub:api.mapName(id)+' · '+o.reward+' gold',art:'assets/generated/hud/requests.webp'});
       return result;
     }

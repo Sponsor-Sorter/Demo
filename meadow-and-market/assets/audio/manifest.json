@@ -877,6 +877,33 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "bytes": 465860,
       "guide": "Pinned goals, shared dependencies, real growing and queued supply, direct sources, helper priorities, reserves and manual completion."
+    },
+    {
+      "id": "jay-festivals148",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 318843,
+      "guide": "Three festival stages, exact hampers, solo or useful friend-help routes, permanent joined progress."
+    },
+    {
+      "id": "rhys-collection-milestones148",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 304423,
+      "guide": "Distinct decoration milestones, permanent ribbons and capped shop-price bonuses."
+    },
+    {
+      "id": "jade-welcome-back148",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 287183,
+      "guide": "Ready fields and batches, already credited sales and direct farm navigation."
     }
   ]
 }

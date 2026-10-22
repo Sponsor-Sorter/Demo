@@ -97,3 +97,5 @@ require('./check-meadow-journey.cjs');
 require('./check-meadow-artisan-mastery.cjs');
 
 require('./check-meadow-planner.cjs');
+
+require('./check-meadow-farm-life.cjs');

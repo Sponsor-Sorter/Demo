@@ -20,7 +20,7 @@
   function icon(id){const p=item(id);return p.icon?'<img class="product-icon" src="'+p.icon+'" alt="">':p.emoji}
   function amount(s){return Object.values(s.stock||{}).reduce((n,v)=>n+v,0)}
   function shopState(f){f.shop ||= {unlocked:false,stock:{},earned:0};f.shop.stock ||= {};if(f.objects.some(o=>o.type==='stall'))f.shop.unlocked=true;return f.shop}
-  function shopValue(id,t){return Math.round((item(id).sell||10)*shopPrices[t])}
+  function shopValue(id,t){return Math.round((item(id).sell||10)*shopPrices[t]*(api.state&&window.meadowLife?window.meadowLife.shopFactor(api.state()):1))}
   // Deterministic elapsed-time sales: checking the shop never creates extra buyers.
   function settleShop(f,now=Date.now()){
     const s=shopState(f);if(!s.unlocked)return 0;const t=shopTier(s),interval=shopIntervals[t];
