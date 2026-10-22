@@ -2,7 +2,7 @@
 const base = Deno.env.get('SUPABASE_URL')!;
 const secret = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const publicKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-const origins = new Set(['https://sponsorsorter.com','http://localhost:8767','http://localhost:8766','https://localhost','http://localhost']);
+const origins = new Set(['https://sponsorsorter.com','http://localhost:8767','http://localhost:8766','http://localhost:8771','https://localhost','http://localhost']);
 const namePattern = /^[a-z0-9_]{3,20}$/;
 async function request(path:string, method='GET', body?:unknown, bearer=secret) {
   const response = await fetch(base+path,{method,headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
@@ -20,11 +20,39 @@ Deno.serve(async req=>{
   try{
     const raw=await req.text();if(raw.length>4096)return reply(413,{error:'Request too large.'});
     const body=JSON.parse(raw),action=body.action,username=String(body.username||'').trim().toLowerCase(),password=typeof body.password==='string'?body.password:'';
-    if(!['register','login'].includes(action)||!namePattern.test(username)||password.length<(action==='login'?6:8)||new TextEncoder().encode(password).length>72)return reply(400,{error:'Use a username of 3–20 letters, numbers or underscores and a password of 8–72 bytes.'});
+    if(!['register','login','recovery_setup','recover'].includes(action)||(action!=='recovery_setup'&&!namePattern.test(username))||password.length<(['login','recovery_setup'].includes(action)?6:8)||new TextEncoder().encode(password).length>72)return reply(400,{error:'Use a username of 3–20 letters, numbers or underscores and a password of 8–72 bytes.'});
     // Only hashes are retained, for 15 minutes. Auth also applies its own sign-in limits.
     const ip=(req.headers.get('x-forwarded-for')||req.headers.get('x-real-ip')||'unknown').split(',')[0].trim();
     const bucket=await digest(secret+':'+ip),attempt=await request('/rest/v1/rpc/meadow_market_auth_attempt','POST',{p_bucket:bucket,p_max:30});
     if(!attempt.ok||attempt.data!==true)return reply(429,{error:'Too many attempts. Please try again in 15 minutes.'});
+    if(action==='recovery_setup'){
+      const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');
+      const identity=await request('/auth/v1/user','GET',undefined,bearer);
+      if(!identity.ok||!identity.data?.id||identity.data.is_anonymous)return reply(401,{error:'Sign in to your Meadow Markets account first.'});
+      const owner=await request('/rest/v1/meadow_market_accounts?user_id=eq.'+identity.data.id+'&ready=eq.true&select=username');
+      if(!owner.ok||!owner.data?.length)return reply(403,{error:'Protect this farm with a username first.'});
+      const check=await fetch(base+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:publicKey,'Content-Type':'application/json'},body:JSON.stringify({email:identity.data.email,password})});
+      if(!check.ok)return reply(401,{error:'Your current password is incorrect.'});
+      const key=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,'0')).join('');
+      const saved=await request('/rest/v1/meadow_market_accounts?user_id=eq.'+identity.data.id,'PATCH',{recovery_hash:await digest(key),recovery_set_at:new Date().toISOString()});
+      if(!saved.ok)return reply(503,{error:'Could not save recovery. Try again.'});
+      return reply(200,{username:owner.data[0].username,recovery_key:key.match(/.{1,8}/g)!.join('-')});
+    }
+    if(action==='recover'){
+      const key=String(body.recovery_key||'').replace(/[-\s]/g,'').toLowerCase();
+      if(!/^[a-f0-9]{64}$/.test(key))return reply(401,{error:'The username or recovery key is incorrect.'});
+      const gate=await request('/rest/v1/rpc/meadow_market_auth_attempt','POST',{p_bucket:await digest(secret+':recovery:'+username),p_max:8});
+      if(!gate.ok||gate.data!==true)return reply(429,{error:'Too many recovery attempts. Please try again in 15 minutes.'});
+      const hash=await digest(key),claim=await request('/rest/v1/rpc/meadow_market_claim_recovery','POST',{p_username:username,p_hash:hash});
+      const id=claim.ok&&typeof claim.data==='string'?claim.data:null;
+      if(!id)return reply(401,{error:'The username or recovery key is incorrect.'});
+      const updated=await request('/auth/v1/admin/users/'+id,'PUT',{password});
+      if(!updated.ok){await request('/rest/v1/meadow_market_accounts?user_id=eq.'+id+'&recovery_hash=is.null','PATCH',{recovery_hash:hash,recovery_set_at:new Date().toISOString()});return reply(503,{error:'Could not change the password. Your recovery key can be tried again.'});}
+      const user=await request('/auth/v1/admin/users/'+id);
+      const signed=await fetch(base+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:publicKey,'Content-Type':'application/json'},body:JSON.stringify({email:user.data.email,password})});
+      if(signed.ok){const token=await signed.json();await request('/auth/v1/logout?scope=global','POST',undefined,token.access_token);}
+      return reply(200,{recovered:true,message:'Password changed. Sign in, then save a new recovery key. This key has been used.'});
+    }
     if(action==='register'){
       const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');
       const identity=await request('/auth/v1/user','GET',undefined,bearer);

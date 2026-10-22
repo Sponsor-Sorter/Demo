@@ -20,13 +20,13 @@
   function icon(id){const p=item(id);return p.icon?'<img class="product-icon" src="'+p.icon+'" alt="">':p.emoji}
   function amount(s){return Object.values(s.stock||{}).reduce((n,v)=>n+v,0)}
   function shopState(f){f.shop ||= {unlocked:false,stock:{},earned:0};f.shop.stock ||= {};if(f.objects.some(o=>o.type==='stall'))f.shop.unlocked=true;return f.shop}
-  function shopValue(id,t){return Math.round((item(id).sell||10)*shopPrices[t]*(api.state&&window.meadowLife?window.meadowLife.shopFactor(api.state()):1))}
+  function shopValue(id,t,now=Date.now()){return Math.round((item(id).sell||10)*shopPrices[t]*(api.state&&window.meadowLife?window.meadowLife.shopFactor(api.state()):1)*(window.meadowProgress?.marketFactor(id,now)||1))}
   // Deterministic elapsed-time sales: checking the shop never creates extra buyers.
   function settleShop(f,now=Date.now()){
     const s=shopState(f);if(!s.unlocked)return 0;const t=shopTier(s),interval=shopIntervals[t];
     if(!s.lastSaleAt||!amount(s)){s.lastSaleAt=now;return 0}
     const ticks=Math.min(10000,Math.floor(Math.max(0,now-s.lastSaleAt)/interval));let earned=0,sold=0;
-    for(let i=0;i<ticks;i++){const keys=Object.keys(s.stock).filter(k=>s.stock[k]>0);if(!keys.length)break;const k=keys[(s.cursor||0)%keys.length];s.cursor=(s.cursor||0)+1;s.stock[k]--;earned+=shopValue(k,t);sold++}
+    for(let i=0;i<ticks;i++){const keys=Object.keys(s.stock).filter(k=>s.stock[k]>0);if(!keys.length)break;const k=keys[(s.cursor||0)%keys.length];s.cursor=(s.cursor||0)+1;s.stock[k]--;const saleAt=s.lastSaleAt+(i+1)*interval;if(api.state)window.meadowProgress?.sold(api.state(),k,1,saleAt);earned+=shopValue(k,t,saleAt);sold++}
     if(ticks)s.lastSaleAt=amount(s)?s.lastSaleAt+ticks*interval:now;
     if(sold){s.earned=(s.earned||0)+earned;s.sold=(s.sold||0)+sold;f.visits=(f.visits||0)+sold;api.earn(earned)}return sold;
   }
@@ -50,7 +50,7 @@
   function canMake(o,r){return !!r&&(!r.unlock||(api.level?.()||1)>=r.unlock)&&(r.station||'kitchen')===(o.type||'kitchen')&&(o.jobs||[]).length<capacity(o)&&Object.entries(r.input).every(([k,n])=>(api.current().inventory[k]||0)>=n)}
   function output(r){return api.state&&window.meadowArtisan?window.meadowArtisan.output(api.state(),r.id):r.count}
   function jobOutput(j){const r=recipes.find(r=>r.id===j.id);return Number.isInteger(j.output)&&j.output>0&&j.output<=20?j.output:r?.count||0}
-  function duration(o,r){return Math.round(r.time*[1,.8,.65][tier(o)]*(api.state&&window.meadowJourneyCore?window.meadowJourneyCore.productionFactor(api.state()):1)*(api.state&&window.meadowArtisan?window.meadowArtisan.factor(api.state(),r.id):1))}
+  function duration(o,r){return Math.round(r.time*(api.state?window.meadowProgress?.productionFactor(api.state())||1:1)*[1,.8,.65][tier(o)]*(api.state&&window.meadowJourneyCore?window.meadowJourneyCore.productionFactor(api.state()):1)*(api.state&&window.meadowArtisan?window.meadowArtisan.factor(api.state(),r.id):1))}
   function belowCap(o,r){const cap=Math.max(0,Math.floor(Number(o.autoCap)||0));if(!cap)return true;const farms=api.farms?.()||{here:api.current()},pending=Object.values(farms).flatMap(f=>f.objects||[]).flatMap(s=>s.jobs||[]).filter(j=>j.id===r.id).reduce((n,j)=>n+jobOutput(j),0);return (api.current().inventory[r.id]||0)+pending+output(r)<=cap}
   function queue(o,r){if(!r||!canMake(o,r))return false;const f=api.current();for(const[k,n]of Object.entries(r.input))f.inventory[k]-=n;o.jobs ||= [];const start=Math.max(Date.now(),o.jobs.at(-1)?.finishAt||0),time=duration(o,r),count=output(r);o.jobs.push({id:r.id,startAt:start,finishAt:start+time,output:count});o.lastRecipe=r.id;api.save();return true}
   function collect(o,quiet=false){const now=Date.now(),ready=(o.jobs||[]).filter(j=>j.finishAt<=now);if(!ready.length)return 0;for(const j of ready){const r=recipes.find(r=>r.id===j.id);if(r){const n=jobOutput(j);if(api.state)window.meadowArtisan?.record(api.state(),r.id);api.current().inventory[r.id]=(api.current().inventory[r.id]||0)+n;api.event?.('made_'+r.id,n)}}o.jobs=o.jobs.filter(j=>j.finishAt>now);api.xp(ready.length*6);api.event?.('craft',ready.length);api.save();api.render();window.meadowAudio?.play('harvest');api.notify('Collected '+ready.length+' '+(o.type==='workshop'?'craft':'kitchen')+' batches');if(!quiet)showKitchen(o);return ready.length}

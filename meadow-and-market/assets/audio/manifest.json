@@ -904,6 +904,42 @@
       "voice": "Hope - upbeat and clear",
       "bytes": 287183,
       "guide": "Ready fields and batches, already credited sales and direct farm navigation."
+    },
+    {
+      "id": "jade-specialities150",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 336084,
+      "guide": "Separate farm focus, genuine practice, paid ranks, daily changes and active-only perks."
+    },
+    {
+      "id": "rhys-progress150",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 314141,
+      "guide": "Connected farm milestones, next useful action and compact farm desk sections."
+    },
+    {
+      "id": "rhys-neighbours150",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 327620,
+      "guide": "Three, ten and twenty-five customer delivery milestones, exact-once rewards and capped relationship pay."
+    },
+    {
+      "id": "jay-season150",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 292825,
+      "guide": "Four weekly market themes, ten percent featured shop prices and no expiring inventory."
     }
   ]
 }

@@ -11,7 +11,7 @@
 
   const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n)),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function settle(a,now=Date.now()){
-    const elapsed=Math.max(0,now-(a.needsAt||a.lastCare||now))/3600000*(api?.state&&window.meadowJourneyCore?window.meadowJourneyCore.needsFactor(api.state()):1);
+    const elapsed=Math.max(0,now-(a.needsAt||a.lastCare||now))/3600000*(api?.state&&window.meadowJourneyCore?window.meadowJourneyCore.needsFactor(api.state()):1)*(api?.state?window.meadowProgress?.needsFactor(api.state(),Object.keys(api.state().farms).find(id=>api.state().farms[id].objects.includes(a)))||1:1);
     for(const [key,rate] of [['hunger',5],['clean',2],['happy',3]])a[key]=clamp((Number.isFinite(a[key])?a[key]:80)-elapsed*rate);
     a.needsAt=now;return a;
   }
