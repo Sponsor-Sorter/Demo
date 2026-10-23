@@ -5,7 +5,8 @@
   "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https",
-    "url": "https://sponsorsorter.com/meadow-and-market/"
+    "url": "https://sponsorsorter.com/meadow-and-market/",
+    "errorPath": "offline.html"
   }
 }
 

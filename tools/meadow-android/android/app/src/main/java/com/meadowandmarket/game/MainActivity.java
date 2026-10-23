@@ -13,6 +13,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle state) {
         registerPlugin(MeadowVaultPlugin.class);
+        registerPlugin(MeadowUpdatesPlugin.class);
         super.onCreate(state);
         View web = getBridge().getWebView();
         ViewCompat.setOnApplyWindowInsetsListener(web, (view, insets) -> {

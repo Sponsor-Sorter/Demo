@@ -1,0 +1,15 @@
+{
+  "commit": "389ebacaf53a6bc9a951bc44ffda856a545f4007",
+  "build": 173,
+  "deployed": true,
+  "verification": "Isolated source mocks/deferred requests; no player data used for fault injection",
+  "sha256": {
+    "meadow-and-market/game.js": "a99aed338b038d71acf2c9d438bfffdd76baf8c589f9508b32ba7670ade9482a",
+    "meadow-and-market/cloud-sync.js": "d0aeff67caa521fa5f4c80051b94b01f52e8ee0ba80f57c0cc94af06c78dcee3",
+    "scripts/check-meadow-conflict-barrier.cjs": "0a49fb2629e1e105d218c7f72b61c885ce6c1c7866702c84387371338e93ce1a",
+    "scripts/check-meadow-auth-owner.cjs": "2e80660f17d0f1d1686f15b22417b90dd4050b116f5bc337d10b09dc9d5f9862",
+    "scripts/check-meadow-backups.cjs": "9348fc04eda4a023e02db41b55694307b159380fb78d4fe3c1bb3b3817cb6479",
+    "scripts/check-meadow-cloud.cjs": "4cf4db7616378a4a76a78d2d8f1b4354cd12fc4f1bf6fd253275cdf57ec069c8",
+    "scripts/check-meadow-camera-sync.cjs": "bd4700b835e96c1cedd76f03ff1d690c5a0d006b38c22d664374f7c8b6b7f6ff"
+  }
+}

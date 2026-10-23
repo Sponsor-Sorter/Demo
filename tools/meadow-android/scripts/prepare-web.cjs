@@ -1,9 +1,8 @@
-const fs=require('fs'),path=require('path'),vm=require('vm'),root=path.resolve(__dirname,'../../../meadow-and-market'),out=path.resolve(__dirname,'../www');
-const scope={};vm.runInNewContext(fs.readFileSync(root+'/sw.js','utf8').split('\n').slice(0,2).join('\n')+';globalThis.list=FILES',scope);
-const files=new Set(['index.html','sw.js','release.json','manifest.webmanifest',...scope.list.map(u=>u.replace(/^\.\//,'').split('?')[0]).filter(Boolean)]);
-// Copy only the shipped cache manifest. Master sheets, source art and APKs are excluded.
-fs.mkdirSync(out,{recursive:true});
-for(const file of files){const source=path.resolve(root,file),target=path.resolve(out,file);if(!source.startsWith(root+path.sep)||!target.startsWith(out+path.sep))throw Error('Invalid package asset '+file);if(!fs.existsSync(source)||!fs.statSync(source).isFile())throw Error('Missing package asset '+file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(source,target)}
-// Remove obsolete generated files from the previous package after validating the target.
-function clean(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())clean(p);else if(!files.has(path.relative(out,p).split(path.sep).join('/')))fs.unlinkSync(p)}}clean(out);
-console.log('Packaged '+files.size+' runtime files, '+Math.round([...files].reduce((n,f)=>n+fs.statSync(path.join(out,f)).size,0)/1024/1024*10)/10+' MB');
+const fs=require('fs'),path=require('path'),root=path.resolve(__dirname,'..'),out=path.join(root,'www'),game=path.resolve(root,'../../meadow-and-market');
+// Live game and verified service-worker cache deliver the unchanged HD media.
+const files=new Set(['index.html','offline.html','icon.png']);fs.mkdirSync(out,{recursive:true});
+const html='<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Meadow Markets</title><style>html,body{margin:0;min-height:100%;background:#f8f2df;color:#503e2c;font:18px system-ui}body{display:grid;place-items:center;min-height:100dvh;text-align:center}main{padding:24px;max-width:380px}img{width:120px;border-radius:28px}h1{font-size:28px}p{line-height:1.5}a{display:inline-block;background:#79522e;color:white;border-radius:16px;padding:16px 26px;text-decoration:none;font-weight:700}</style><main><img src="icon.png" alt=""><h1>Meadow Markets</h1><p>Reconnect to open your farm. Your saved farm stays on this device.</p><a href="https://sponsorsorter.com/meadow-and-market/">Try again</a></main></html>';
+for(const file of ['index.html','offline.html'])fs.writeFileSync(path.join(out,file),html);
+fs.copyFileSync(path.join(game,'assets/icon-512.png'),path.join(out,'icon.png'));
+function clean(directory){if(!path.resolve(directory).startsWith(out+path.sep)&&path.resolve(directory)!==out)throw Error('Build cleanup escaped www');for(const item of fs.readdirSync(directory,{withFileTypes:true})){const file=path.join(directory,item.name);if(item.isDirectory())clean(file);else if(!files.has(path.relative(out,file).split(path.sep).join('/')))fs.unlinkSync(file);}}
+clean(out);console.log('Packaged a small reconnect screen; live HD artwork remains served at full resolution.');

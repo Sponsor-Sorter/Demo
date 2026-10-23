@@ -1,7 +1,7 @@
 {
   "name": "meadow-markets-android",
   "private": true,
-  "version": "1.5.1",
+  "version": "1.6.1",
   "scripts": {
     "android:sync": "node scripts/prepare-web.cjs && cap sync android",
     "android:debug": "npm run android:sync && node scripts/build-android.cjs"
