@@ -1,11 +1,11 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.15",
-  "versionCode": 15,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk",
-  "bytes": 71112647,
-  "sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48",
+  "versionName": "1.0.0-preview.16",
+  "versionCode": 16,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-16.apk",
+  "bytes": 71112726,
+  "sha256": "1508845726b77dc761c0a6ce399e7749a9533eb9dc18498413c6cc11d6365bdc",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Fixes stale board rendering at slow frame rates; conservatively removes hidden ocean terrain triangles without shifting geography; stitched moving ship canvas; read-only AI spectator controls; local save compatibility and safer dice camera framing."
+  "notes": "Capture occupation keeps the next attacking army selected. Fifth-card and inherited-hand compulsory trades restart the same player at placement, without duplicate turn income or card awards. Cleaner faction bases, close-terrain culling and slider endpoint touch handling."
 }

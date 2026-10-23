@@ -35,20 +35,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 15 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.15 · Build 15');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/15/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk');
+test('Frontlines publishes accepted build 16 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.16 · Build 16');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/16/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-16.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview15.json',import.meta.url),'utf8'));
- assert.equal(m.build,15);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview16.json',import.meta.url),'utf8'));
+ assert.equal(m.build,16);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,15);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,15);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,16);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,16);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -87,3 +87,6 @@ test('Frontlines removes old30 workaround only with hosted15 regression evidence
 });
 
 test('Frontlines preserves all accepted build 14 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview14.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/14/')||f.path.endsWith('build-14.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+
+test('Frontlines preserves all accepted build 15 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview15.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/15/')||f.path.endsWith('build-15.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+test('Frontlines16 describes compulsory placement without duplicate turn rewards',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.instructions.join(' '),/same commander to troop placement/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview16.json',import.meta.url),'utf8'));assert.equal(m.backend.version,4);assert.equal(m.backend.live_service_checks,undefined);assert.equal(m.validation.live_service_checks,10);assert.match(m.backend.hosted,/host_build<=15/);});

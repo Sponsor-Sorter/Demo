@@ -1,6 +1,6 @@
 {
-  "build": 15,
-  "version": "1.0.0-preview.15",
-  "url": "https://sponsorsorter.com/frontlines/builds/15/",
-  "notes": "Fixes stale board rendering at slow frame rates; conservatively removes hidden ocean terrain triangles without shifting geography; stitched moving ship canvas; read-only AI spectator controls; local save compatibility and safer dice camera framing."
+  "build": 16,
+  "version": "1.0.0-preview.16",
+  "url": "https://sponsorsorter.com/frontlines/builds/16/",
+  "notes": "Capture occupation keeps the next attacking army selected. Fifth-card and inherited-hand compulsory trades restart the same player at placement, without duplicate turn income or card awards. Cleaner faction bases, close-terrain culling and slider endpoint touch handling."
 }

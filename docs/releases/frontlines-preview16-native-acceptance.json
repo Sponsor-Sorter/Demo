@@ -1,0 +1,159 @@
+{
+  "final_build": 16,
+  "at_utc": "2026-10-23T08:32:06.197885+00:00",
+  "apk_bytes": 71112726,
+  "apk_sha256": "1508845726b77dc761c0a6ce399e7749a9533eb9dc18498413c6cc11d6365bdc",
+  "installed_apk_sha256": "1508845726b77dc761c0a6ce399e7749a9533eb9dc18498413c6cc11d6365bdc",
+  "device": "Samsung SM-S908E / Adreno730 (device identifier omitted)",
+  "installation_method": "Authorized ADB final candidate installation; subsequent in-app15-to16 updater acceptance recorded separately",
+  "checks": [
+    "Occupation moves12 from Brazil25 into NorthAfrica; destination remains selected; only tapping Egypt opens battle with Your Force12 and3/3 dice",
+    "Four cards plus captured-turn end earns fifth, opens mandatory suggested trade",
+    "Trade returns same player0 round1 to Draft, reserve4 and hand2",
+    "Raw touch deploys4 into Brazil25→29; Attack, Fortify and EndTurn advances active1 without awarding a second card",
+    "Inherited8 cards permit pending occupation before compulsory trade",
+    "Page2 trade resets page to visible first-page5-card suggestion; reserve4",
+    "Second trade leaves2 cards, same player0 round1 Draft with reserve10",
+    "Enamel unit bases visible; no app error in current PID log"
+  ],
+  "checkpoints": {
+    "fifth-traded": {
+      "at_utc": "2026-10-23T08:25:38.237973+00:00",
+      "phase": "draft",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 16,
+      "capture_pending": false,
+      "move_amount": 12,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 25
+        },
+        "NorthAfrica": {
+          "owner": 1,
+          "troops": 1
+        }
+      },
+      "hand_counts": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "no-duplicate-award": {
+      "at_utc": "2026-10-23T08:29:26.017195+00:00",
+      "phase": "draft",
+      "active": 1,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 16,
+      "capture_pending": false,
+      "move_amount": 12,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 29
+        },
+        "NorthAfrica": {
+          "owner": 1,
+          "troops": 1
+        }
+      },
+      "hand_counts": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reserve": 3,
+      "placements_left": 3,
+      "from_country": "",
+      "selected_country": "",
+      "captured_this_turn": false,
+      "pending_turn_end": false
+    },
+    "inherited-five": {
+      "at_utc": "2026-10-23T08:30:59.185243+00:00",
+      "phase": "draft",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 16,
+      "capture_pending": false,
+      "move_amount": 12,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 13
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 12
+        }
+      },
+      "hand_counts": [
+        5,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reserve": 4,
+      "placements_left": 4,
+      "from_country": "",
+      "selected_country": "",
+      "captured_this_turn": true,
+      "pending_turn_end": false
+    },
+    "inherited-two": {
+      "at_utc": "2026-10-23T08:31:28.373998+00:00",
+      "phase": "draft",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 16,
+      "capture_pending": false,
+      "move_amount": 12,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 13
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 12
+        }
+      },
+      "hand_counts": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reserve": 10,
+      "placements_left": 10,
+      "from_country": "",
+      "selected_country": "",
+      "captured_this_turn": true,
+      "pending_turn_end": false
+    }
+  },
+  "scope": "Fixture-driven native touch checks, not a full normal-start human multiplayer match. Broad camera, rotation, settings and spectator native coverage carried from exact15 receipt. No fresh physical sensor or controlled performance comparison claimed.",
+  "remaining_acceptance": [
+    "In-app15-to16 update after publication",
+    "Human account/friends flow",
+    "Two-phone optical QR and full human network match",
+    "Other phone hardware and controlled thermal testing",
+    "Subjective AAA visual and animation quality remains open"
+  ]
+}
