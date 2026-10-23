@@ -1,0 +1,554 @@
+{
+  "final_build": 17,
+  "at_utc": "2026-10-23T13:15:16.804731+00:00",
+  "apk_bytes": 74521472,
+  "apk_sha256": "c46603e0d61048346b4a405ebd8331a3d08717bb31b14c96861deee320fdda39",
+  "installed_apk_sha256": "c46603e0d61048346b4a405ebd8331a3d08717bb31b14c96861deee320fdda39",
+  "device": "Samsung SM-S908E / Adreno730 (device identifier omitted)",
+  "installation_method": "Authorized ADB install of the final candidate. Normal16-to17 in-app update gets a separate receipt after publication.",
+  "checks": [
+    "Visible menu17 and final installed hash",
+    "Native landscape mandatory5-card suggested trade uses portrait card faces; trade yields same player0 Draft/reserve4/hand2",
+    "Hand popup and physical cards west of Australia show the actual remaining2 cards with artwork and labels",
+    "WindowManager portrait/landscape/portrait fills screen and keeps campaign; portrait shows next3 living commanders plus active top pill; landscape shows all living cards",
+    "Occupation12 leaves Brazil13/NorthAfrica12 and destination selected; tapping only Egypt opens next attack with maximum3 dice",
+    "Fortification transfers24, leaves Brazil1/NorthAfrica25 and advances to player1 Draft",
+    "Capturing the last enemy territory eliminates player1; native bottom card disappears, capture log metadata true; occupation and battle-log controls usable",
+    "No app script/fatal errors in these current-PID logs"
+  ],
+  "checkpoints": {
+    "final17-traded": {
+      "at_utc": "2026-10-23T12:59:02.120551+00:00",
+      "mode": "domination",
+      "host_build": 17,
+      "phase": "draft",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 0,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 25
+        },
+        "NorthAfrica": {
+          "owner": 1,
+          "troops": 1
+        },
+        "Egypt": {
+          "owner": 0,
+          "troops": 3
+        }
+      },
+      "reserve": 4,
+      "placements_left": 4,
+      "capture_pending": false,
+      "from_country": "",
+      "selected_country": "",
+      "move_amount": 24,
+      "captured_this_turn": false,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "final17-chain-occupied": {
+      "at_utc": "2026-10-23T13:04:08.151170+00:00",
+      "mode": "domination",
+      "host_build": 17,
+      "phase": "attack",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 0,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 13
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 12
+        },
+        "Egypt": {
+          "owner": 1,
+          "troops": 2
+        }
+      },
+      "reserve": 0,
+      "placements_left": 0,
+      "capture_pending": false,
+      "from_country": "NorthAfrica",
+      "selected_country": "",
+      "move_amount": 12,
+      "captured_this_turn": true,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 21.7409374584095,
+        "focus": [
+          0.140660092234612,
+          0.215382546186447,
+          -1.06614577770233
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": []
+    },
+    "final17-chain-next-battle": {
+      "at_utc": "2026-10-23T13:04:43.697666+00:00",
+      "mode": "domination",
+      "host_build": 17,
+      "phase": "attack",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 0,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 13
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 12
+        },
+        "Egypt": {
+          "owner": 1,
+          "troops": 2
+        }
+      },
+      "reserve": 0,
+      "placements_left": 0,
+      "capture_pending": false,
+      "from_country": "NorthAfrica",
+      "selected_country": "Egypt",
+      "move_amount": 12,
+      "captured_this_turn": true,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 22.8,
+        "focus": [
+          2.05987858772278,
+          0.194038942456245,
+          -1.24748420715332
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": []
+    },
+    "final17-fortify-before": {
+      "at_utc": "2026-10-23T13:07:10.634359+00:00",
+      "mode": "capitals",
+      "host_build": 17,
+      "phase": "fortify",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 0,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 25
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 1
+        },
+        "Egypt": {
+          "owner": 0,
+          "troops": 3
+        }
+      },
+      "reserve": 0,
+      "placements_left": 0,
+      "capture_pending": false,
+      "from_country": "Brazil",
+      "selected_country": "NorthAfrica",
+      "move_amount": 24,
+      "captured_this_turn": false,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 22.8,
+        "focus": [
+          0.140660092234612,
+          0.215382546186447,
+          -1.06614577770233
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": []
+    },
+    "final17-fortify-ended": {
+      "at_utc": "2026-10-23T13:07:30.551451+00:00",
+      "mode": "capitals",
+      "host_build": 17,
+      "phase": "draft",
+      "active": 1,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 0,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 1
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 25
+        },
+        "Egypt": {
+          "owner": 0,
+          "troops": 3
+        }
+      },
+      "reserve": 3,
+      "placements_left": 3,
+      "capture_pending": false,
+      "from_country": "",
+      "selected_country": "",
+      "move_amount": 24,
+      "captured_this_turn": false,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 21.7409374584095,
+        "focus": [
+          -1.7785587310791,
+          0.650749683380127,
+          1.50363063812256
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": []
+    },
+    "final17-elimination-captured": {
+      "at_utc": "2026-10-23T13:13:30.059340+00:00",
+      "mode": "domination",
+      "host_build": 17,
+      "phase": "attack",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 2,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 99
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 1
+        },
+        "Egypt": {
+          "owner": 0,
+          "troops": 3
+        }
+      },
+      "reserve": 0,
+      "placements_left": 0,
+      "capture_pending": true,
+      "from_country": "Brazil",
+      "selected_country": "NorthAfrica",
+      "move_amount": 98,
+      "captured_this_turn": true,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 21.7409374584095,
+        "focus": [
+          -1.7785587310791,
+          0.770936131477356,
+          1.50362968444824
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": [
+        {
+          "attack": [
+            5,
+            4,
+            2
+          ],
+          "attacker_losses": 0,
+          "captured": true,
+          "defend": [
+            1
+          ],
+          "defender_losses": 1,
+          "from": "Brazil",
+          "id": 2,
+          "old": 1,
+          "player": 0,
+          "round": 1,
+          "to": "NorthAfrica"
+        }
+      ]
+    },
+    "final17-elimination-occupied": {
+      "at_utc": "2026-10-23T13:13:45.372583+00:00",
+      "mode": "domination",
+      "host_build": 17,
+      "phase": "attack",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "capitals": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "battles": 2,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 1
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 98
+        },
+        "Egypt": {
+          "owner": 0,
+          "troops": 3
+        }
+      },
+      "reserve": 0,
+      "placements_left": 0,
+      "capture_pending": false,
+      "from_country": "NorthAfrica",
+      "selected_country": "",
+      "move_amount": 98,
+      "captured_this_turn": true,
+      "pending_turn_end": false,
+      "alive": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "camera": {
+        "distance": 21.7409374584095,
+        "focus": [
+          0.140660092234612,
+          0.215382546186447,
+          -1.06614577770233
+        ],
+        "tilt": 1.08210413623648,
+        "yaw": 0.0
+      },
+      "latest_battle": [
+        {
+          "attack": [
+            5,
+            4,
+            2
+          ],
+          "attacker_losses": 0,
+          "captured": true,
+          "defend": [
+            1
+          ],
+          "defender_losses": 1,
+          "from": "Brazil",
+          "id": 2,
+          "old": 1,
+          "player": 0,
+          "round": 1,
+          "to": "NorthAfrica"
+        }
+      ]
+    }
+  },
+  "rotation": {
+    "method": "Android WindowManager-driven, not a new physical sensor acceptance",
+    "events": [
+      {
+        "orientation": "portrait",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone17\\finalrelease17-portrait.png"
+      },
+      {
+        "orientation": "landscape",
+        "width": 3088,
+        "height": 1440,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone17\\finalrelease17-landscape.png"
+      },
+      {
+        "orientation": "portrait-again",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone17\\finalrelease17-portrait-again.png"
+      }
+    ],
+    "restored": {
+      "fixed": "default",
+      "mode": "free",
+      "stored": "0"
+    }
+  },
+  "scope": "Isolated fixture-driven native touch journeys and rendered-input desktop full matches are different evidence. This is not a full normal-start human phone multiplayer match. Physical-sensor rotation approval remains the earlier owner13 acceptance; these are WM-driven transitions. Native speed/auto-roll and the hosted updater may have follow-up receipts.",
+  "remaining_acceptance": [
+    "Postpublication16-to17 real updater",
+    "Human account/friends and optical two-phone QR/full human network match",
+    "Broader devices and controlled thermal/performance trials",
+    "Further art/model/animation quality; no commercial AAA parity claim"
+  ]
+}

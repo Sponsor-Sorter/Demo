@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 16 keeps a captured attacking army selected and improves compulsory card trades: the same commander places the trade troops before continuing.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 17 introduces portrait playing cards shared with the physical hand, a compact portrait commander row, permanent capital cities, solo speed controls, ownership view, auto-roll and a fuller battle log.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.16 · Build 16",
+      "build": "Version 1.0.0-preview.17 · Build 17",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -145,21 +145,22 @@
         "After occupation, an army that can attack stays selected. A compulsory fifth-card or inherited-hand trade returns the same commander to troop placement; place the trade troops, then continue the turn.",
         "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
         "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
-        "Local campaigns autosave on this device. Use Continue Campaign to continue; clearing game or browser data can remove the save."
+        "Local campaigns autosave on this device. Use Continue Campaign to continue; clearing game or browser data can remove the save.",
+        "Use Field cards to inspect your hand and trade. Choose dice finishes in Settings; use the in-game speed controls for solo or AI spectator play."
       ],
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/16/",
+          "url": "https://sponsorsorter.com/frontlines/builds/17/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-16.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 16 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. Exact-APK native touch checks used fixtures for capture continuation, fifth-card trade, placement and inherited 8-to-5-to-2 trades; these are separate from normal hosted browser play. The Website will record hosted build 16 acceptance separately. Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned. Native pan checks are recorded separately. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11. New online card timing applies to rooms hosted on build 16; older rooms retain prior behavior. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate.",
-      "sha256": "1508845726B77DC761C0A6CE399E7749A9533EB9DC18498413C6CC11D6365BDC"
+      "notes": "Playtest preview. Final build 17 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. Exact-APK native fixtures checked portrait card faces, five-card trade to same-player placement, the real two-card physical hand, compact next-three portrait and all-living landscape commander rows, WindowManager rotation/fullscreen, chained occupation and maximum-dice attack, fortification auto-end, elimination-card removal and battle log. Native speed/auto-roll and the normal 16-to-17 updater require separate follow-up receipts. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned. Native pan checks are recorded separately. The Website will record hosted build 17 acceptance separately. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11. Older online rooms retain their build-specific card behavior. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate.",
+      "sha256": "C46603E0D61048346B4A405EBD8331A3D08717BB31B14C96861DEEE320FDDA39"
     }
   ]
 }

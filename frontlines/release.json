@@ -1,6 +1,6 @@
 {
-  "build": 16,
-  "version": "1.0.0-preview.16",
-  "url": "https://sponsorsorter.com/frontlines/builds/16/",
-  "notes": "Capture occupation keeps the next attacking army selected. Fifth-card and inherited-hand compulsory trades restart the same player at placement, without duplicate turn income or card awards. Cleaner faction bases, close-terrain culling and slider endpoint touch handling."
+  "build": 17,
+  "version": "1.0.0-preview.17",
+  "url": "https://sponsorsorter.com/frontlines/builds/17/",
+  "notes": "Portrait playing cards shared with the physical hand; compact portrait turn-order row; eliminated commander cards slide away; icon-aligned stats; terrain-following orders and synchronized gunfire; permanent capital cities and garrisons; solo/spectator1x/2x/3x;50% player-colour view; fortification ends turn; hold-to-auto-roll; compact battle feed and paginated log; larger skin-correct dice with terrain-aware throws; real local-hand cards west of Australia; death animations/cues and material/terrain detail."
 }

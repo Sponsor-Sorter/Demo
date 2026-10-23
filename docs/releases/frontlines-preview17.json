@@ -1,0 +1,704 @@
+{
+  "release_id": "2026-10-23-preview17",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.17",
+  "build": 17,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/17/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/17/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.17",
+    "versionCode": 17,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk",
+    "bytes": 74521472,
+    "sha256": "c46603e0d61048346b4a405ebd8331a3d08717bb31b14c96861deee320fdda39",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Portrait playing cards shared with the physical hand; compact portrait turn-order row; eliminated commander cards slide away; icon-aligned stats; terrain-following orders and synchronized gunfire; permanent capital cities and garrisons; solo/spectator1x/2x/3x;50% player-colour view; fortification ends turn; hold-to-auto-roll; compact battle feed and paginated log; larger skin-correct dice with terrain-aware throws; real local-hand cards west of Australia; death animations/cues and material/terrain detail.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 6,
+    "engine_checks": 121,
+    "hosted": "10 isolated live-service16 card checks; exact test identities and room removed. Rooms with host_build<=15 keep prior trade timing.",
+    "readback": "Exact v6 payload readback passed; no schema/auth-setting changes in this release. Live fortify/card fixture acceptance is carried from v5; full public battle-log member route reviewed in source, not claimed as fresh live journey."
+  },
+  "validation": {
+    "failures": 0,
+    "server_engine_checks": 121,
+    "live_service_carried_v5_checks": 12,
+    "fresh": {
+      "land_mesh15_review": 10,
+      "slow_render15_review": 11,
+      "campaign_store_review": 17,
+      "live_regression": 122,
+      "mobile_orientation_regression": 430,
+      "interaction14_review": 26,
+      "dice_frame14_review": 36,
+      "interaction13_review": 42,
+      "features_review": 35,
+      "audio12_review": 37,
+      "unit_rig_review": 23,
+      "touch_camera_review": 43,
+      "pause_review": 12,
+      "qr_layout14_review": 12,
+      "form_touch14_review": 14,
+      "quality14_review": 30,
+      "portrait17_review": 18,
+      "ownership17_review": 28,
+      "dice17_review": 43,
+      "battle17_review": 34,
+      "continuation16_review": 29,
+      "terrain_dice17_review": 16,
+      "animation_cards17_review": 32,
+      "speed17_review": 18,
+      "capital_city17_review": 31,
+      "card17": 26,
+      "lan17": 21,
+      "dice_frame17": 36
+    },
+    "fresh_total": 1353
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Local campaigns now resume from a validated atomic save. Network credentials and room state are excluded; remembered account sessions remain unfinished.",
+    "Owner confirmed physical rotation in13;14 WindowManager transitions and native acceptance are separately recorded. Broader devices and human cross-phone optical QR acceptance remain open.",
+    "18 mapped ElevenLabs SFX plus original and three actual-reference music tracks; technical checks do not establish subjective music approval.",
+    "Performance samples are PC view comparisons, not universal benchmarks. Native phone reported thermal status3 during extended testing; no broad-device60FPS claim."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 328,
+      "sha256": "4ef2f4bb2eadbde4bc790d6ecdb44d01e492b2a6c6b99af7fd5ac0ba9a62f1ee"
+    },
+    {
+      "path": "art_manifest.json",
+      "bytes": 4581,
+      "sha256": "9aefb054a91c5c341bc9ca167883de75bef19d4f9a91bfbd7868f04dcea05a89"
+    },
+    {
+      "path": "BACKEND.md",
+      "bytes": 2974,
+      "sha256": "e17ddec2de071a9d2815dbc7bfa2f2eab41fe8f7c9ddad1f4810c841af84d0df"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 19224,
+      "sha256": "285feb60af120f8fdf7479bebc09681b9961be27cf4d1ba552767a227b358dce"
+    },
+    {
+      "path": "conversion_manifest.json",
+      "bytes": 2368,
+      "sha256": "c7c872537970a98f1afc1ce176083a41c106416288e998d9736888ef7981d213"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "media/capital-city-close.png",
+      "bytes": 1489763,
+      "sha256": "771676d2f82dc048fca9b782ea3364325ac849e00ad0bd14a9903d1102fe9e8e"
+    },
+    {
+      "path": "media/capital-city-victory.png",
+      "bytes": 864008,
+      "sha256": "f889a97b89c6799ada4d40bfd5663ba99a7282681776ebadec87f46c390b8580"
+    },
+    {
+      "path": "media/cards-540.png",
+      "bytes": 401053,
+      "sha256": "01e96157d89e6765cc4ae8157e490af298a7b62152ec0f7a6eee508bb3928de8"
+    },
+    {
+      "path": "media/cards-960.png",
+      "bytes": 402764,
+      "sha256": "3985e7e94837a4517ec690311062e97520d5887ac5c7350bdd97624f73dcd01b"
+    },
+    {
+      "path": "media/final17-chain-home-overview.png",
+      "bytes": 1453890,
+      "sha256": "94c467841d1f2748a13ff8aa0390428e29da55d8470073a99baa16a0bd414d06"
+    },
+    {
+      "path": "media/final17-chain-next-battle-overview.png",
+      "bytes": 724705,
+      "sha256": "acbf43daacd002f8bb0fceba2b8094665c6c087d7e300f625f0d8acaf4a21c64"
+    },
+    {
+      "path": "media/final17-chain-occupied-overview.png",
+      "bytes": 1471027,
+      "sha256": "be0c5ad21af3f3ec9f3bff398c5e1623a82eaafe575866689f133aed55214e9b"
+    },
+    {
+      "path": "media/final17-chain-resumed-overview.png",
+      "bytes": 726050,
+      "sha256": "426530dea1ca6b63d0c98a35303deaf02ba652c6679ad619f1b27a22172f6aad"
+    },
+    {
+      "path": "media/final17-current-ready-overview.png",
+      "bytes": 1446853,
+      "sha256": "d80507731b1611529fbbc0a15666fc517e86ba0fc3352dedd6797334871f17dd"
+    },
+    {
+      "path": "media/final17-elimination-battle-log-overview.png",
+      "bytes": 1121319,
+      "sha256": "9335aa730aa2ca89e17c6726b22a4c4da77e2d2c2abd8d35b1cece489138b22a"
+    },
+    {
+      "path": "media/final17-elimination-dialog-overview.png",
+      "bytes": 744974,
+      "sha256": "6f2121d25bb72ae8d2f2e2b564c4c371a2c125e584a006e251abdb1a332a4d18"
+    },
+    {
+      "path": "media/final17-elimination-log-closed-overview.png",
+      "bytes": 1507885,
+      "sha256": "59e0e651f6cf5f851a287e4a8a7c498363c7f861fb06993a5702494b1c6bdb96"
+    },
+    {
+      "path": "media/final17-elimination-occupied-overview.png",
+      "bytes": 1508697,
+      "sha256": "3057634dce6cf46ae3f7b4e9d390198c400c7162999c3afe699b86e0217f59f9"
+    },
+    {
+      "path": "media/final17-elimination-repeat-0-overview.png",
+      "bytes": 1463369,
+      "sha256": "179656d9707457a693d66fa106ba1449c4e18644576017bcdb0601e35021d098"
+    },
+    {
+      "path": "media/final17-elimination-resumed-overview.png",
+      "bytes": 1451904,
+      "sha256": "27b1ec0009d997695c903ae109134dae1cc208797178053f5a0cacde2b047a4d"
+    },
+    {
+      "path": "media/final17-elimination-rolled-overview.png",
+      "bytes": 1470579,
+      "sha256": "b827dafb08f347ea97f38b5e8079f224d86dd32e57922cd5d35187e5016f1979"
+    },
+    {
+      "path": "media/final17-elimination-source-home-overview.png",
+      "bytes": 1453014,
+      "sha256": "4c645a8b17f59003be8d760bef816333a5bf9e19b3beff060e319a98c5678683"
+    },
+    {
+      "path": "media/final17-fortify-confirmed-overview.png",
+      "bytes": 1452897,
+      "sha256": "e950b47115382a830f9f51a9148f61917eff10b77d9a3c471784ccd05c7b98d6"
+    },
+    {
+      "path": "media/final17-fortify-dialog-overview.png",
+      "bytes": 755381,
+      "sha256": "cbfb4f5ef7aecbc0f6c3303496f6e49ea1e6e4dff6ec6f8ffaf7be0257402fd2"
+    },
+    {
+      "path": "media/final17-fortify-resumed-overview.png",
+      "bytes": 1452332,
+      "sha256": "7e8b8098bb6258168ee74445e271c28e9ee2d1f6a163953ccc244540ea6c1026"
+    },
+    {
+      "path": "media/final17-fortify-source-home-overview.png",
+      "bytes": 1452757,
+      "sha256": "a85666b58029894896002db5c390a1974cc855de032898a9d6946787a7e51b0e"
+    },
+    {
+      "path": "media/final17-hand-landscape-overview.png",
+      "bytes": 838063,
+      "sha256": "3e1246998d769e77c2d4f6bb1e16c4f288a368ac575d03350b8e61859e0411fc"
+    },
+    {
+      "path": "media/final17-mandatory-five-overview.png",
+      "bytes": 836110,
+      "sha256": "1e767e1afb1bae85db2c2b67a198e717a489a8de5ac6d3a1d3656589b3dc0bb7"
+    },
+    {
+      "path": "media/final17-menu-ready-overview.png",
+      "bytes": 1446853,
+      "sha256": "d80507731b1611529fbbc0a15666fc517e86ba0fc3352dedd6797334871f17dd"
+    },
+    {
+      "path": "media/final17-physical-hand-overview.png",
+      "bytes": 1398099,
+      "sha256": "647fa24fc3f637e86b585941a058479d5e68765f33ad99b7501ef313a6a3e267"
+    },
+    {
+      "path": "media/final17-trade-returned-overview.png",
+      "bytes": 1398312,
+      "sha256": "1b43d65ade918017368d67f03e4fce6938a10e85b2baceabcad9bfd65b7e7c17"
+    },
+    {
+      "path": "media/finalrelease17-landscape-overview.png",
+      "bytes": 1442890,
+      "sha256": "301954a3e11c9d99db5211529b5231d176bd851510b09c3aa7a2a401f7b78319"
+    },
+    {
+      "path": "media/finalrelease17-portrait-again-overview.png",
+      "bytes": 908186,
+      "sha256": "0737db5e7c9dbdc6a23395e1c2518c5d536dd19366a73fb71eed67dc635d9cd3"
+    },
+    {
+      "path": "media/finalrelease17-portrait-overview.png",
+      "bytes": 908149,
+      "sha256": "91b380f841f70ef39736fcd1d8a322439c070d546d28247c3de18eba2b0e2dd0"
+    },
+    {
+      "path": "media/portrait-three-commanders.png",
+      "bytes": 767676,
+      "sha256": "250526fcd56849e13b2d19dcf0fb4feb0ea43759dbd95abd98de5eec1f9f8dd2"
+    },
+    {
+      "path": "media/table-hand-live.png",
+      "bytes": 1562613,
+      "sha256": "958a9eebc8f4ce40674560d719b9ce72f3ed6557d782e5a4b3fec3de6fc63d07"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 18670,
+      "sha256": "3650f58bae3e6d0a79221b63677bf4ac0ea35d3b852fff61d8df31bacfbb9aa1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11961,
+      "sha256": "32259ec7371ad02d323e26c815d015ee1f49008f818f89d668486405f38cae55"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 1461,
+      "sha256": "c61f2da1ca7d050ec0edc039c031f497d8d7432714a959906cfb5d9c12a12ae0"
+    },
+    {
+      "path": "release_updater.gd",
+      "bytes": 6714,
+      "sha256": "1a0ce5314a1d34f6a447fee4e63b899183ff254b6a128a6eca8eac2c04502a41"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 942,
+      "sha256": "eaf515aba4d32d401b178140c169f0831b906ea939287917fb1ccdc764b54f5b"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.html",
+      "bytes": 5762,
+      "sha256": "44a4efe1396d377f1a6f04567e30d885e43f266c0df28ee587e2f93c4ecd86be"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.pck",
+      "bytes": 45329012,
+      "sha256": "cf93ae5804a5e721a1f1fdc7a4b2f8ebac0e918d974e18659c29eceee4a51d16"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/17/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/17/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/17/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/17/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/17/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/17/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/17/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk",
+      "bytes": 74521472,
+      "sha256": "c46603e0d61048346b4a405ebd8331a3d08717bb31b14c96861deee320fdda39"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "a14c2156187dca15d3b60e6fdb1da6ec3bd9d8e8252eab71ad9bb5744aa0f679"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 640,
+      "sha256": "b17609e13971a14acb57ee18a7112729073d9c1681f89c7a095189fd1a0a61bc"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 195119,
+      "sha256": "721811f92429c612217a667d60e85ed503f49f2698626a958fedc7dda2ad1ab3"
+    },
+    {
+      "path": "validation/android17-final-export.log",
+      "bytes": 8144,
+      "sha256": "f4be4c396e091fb469cac0a5dd64b7a8241b38d2571670c6048968322af9b4ce"
+    },
+    {
+      "path": "validation/animation_cards17_review-final17.log",
+      "bytes": 1522,
+      "sha256": "5c0d4acb7d938bdb48a5a0c0ad2211778eb58a47a8791a7a5df12105fb20f997"
+    },
+    {
+      "path": "validation/apk17-certificate.log",
+      "bytes": 311,
+      "sha256": "7bb21031532df97dbdf95c033ddf986b7fc9c45f73d73f3766b35aea9c72d428"
+    },
+    {
+      "path": "validation/audio12_review-17.log",
+      "bytes": 1540,
+      "sha256": "f7b6b519c6de4ca48717477a48d63a6ab2e544d2e0c2744072044e6e465587cc"
+    },
+    {
+      "path": "validation/BACKEND17_READBACK.json",
+      "bytes": 542,
+      "sha256": "7d67e3ca703b07487ddf0b476a6888751d4eaf6157e50a626ef2876cbc639a97"
+    },
+    {
+      "path": "validation/battle17_review-final17.log",
+      "bytes": 1635,
+      "sha256": "6cbbcc8ea3c4caa45247e6f2c334b854dcf3717f8fb8a4a5553c3b5d6508fc80"
+    },
+    {
+      "path": "validation/campaign_store_review-17.log",
+      "bytes": 850,
+      "sha256": "78c22c2b6f3dbee9493d511a7c99605038aba52f8ba72f03ab7c8370d14c879a"
+    },
+    {
+      "path": "validation/capital-city-playthrough.json",
+      "bytes": 569,
+      "sha256": "3d2b28a253ee9a2603d9b9566c3750b328264dca8fc847800099e18f645ebcc9"
+    },
+    {
+      "path": "validation/capital_city17_review-final17.log",
+      "bytes": 3092,
+      "sha256": "9ddb898679881c95cf30018f3bcfb5793106adad7d780740594aeab41cce9ef6"
+    },
+    {
+      "path": "validation/CAPITALS17_QA.md",
+      "bytes": 4548,
+      "sha256": "e9ba27a9cd89025541c913d1941ca5082f47e553aef59e777bf1aecd85b82e65"
+    },
+    {
+      "path": "validation/card16-comparison.log",
+      "bytes": 548,
+      "sha256": "6dbf3baa002f2aa9a68b2959783ef65bc12e53bb5a6d11f5dc00e9e8338173be"
+    },
+    {
+      "path": "validation/card17-final.log",
+      "bytes": 1413,
+      "sha256": "af4033b51753a18592c76bb780956251ed8ef1da67e525426df9423bedb74554"
+    },
+    {
+      "path": "validation/continuation16_review-final17.log",
+      "bytes": 1536,
+      "sha256": "79bc0e7bb748f8785802ef89a59efcbe23b34e037b9e6c1ae975a6337abf0e28"
+    },
+    {
+      "path": "validation/dice17_review-final17.log",
+      "bytes": 1456,
+      "sha256": "149b914724e49c9196844706b6fc2677f125457300542134e903381bbb46379a"
+    },
+    {
+      "path": "validation/dice_frame14_review-17.log",
+      "bytes": 2366,
+      "sha256": "0739245c4917a0604cfac6c9ffb6e00e8dbf10557e0578aff24fb298f195a24f"
+    },
+    {
+      "path": "validation/dice_frame17-final.log",
+      "bytes": 2366,
+      "sha256": "caed48cb2a6947dfa7939c19849f6352867592bbac6ce7ec1922f0ca5e4a45e4"
+    },
+    {
+      "path": "validation/engine17.log",
+      "bytes": 203,
+      "sha256": "777766411951cab03121fc2f7dff24128251c37c84551e376e920d5a623580b5"
+    },
+    {
+      "path": "validation/features_review-17.log",
+      "bytes": 1354,
+      "sha256": "de2411b9e28035af12fa2526bac339a43e77b20289fa79de75da79d99aa4ba07"
+    },
+    {
+      "path": "validation/final-release-acceptance.json",
+      "bytes": 13101,
+      "sha256": "f1c16a3ab1c280ab6892e24b8dde23f2372d0b716068fb0c69d22e1ae73c2d1e"
+    },
+    {
+      "path": "validation/final-release-rotation.json",
+      "bytes": 787,
+      "sha256": "9358508c257e919c6863f0729b8f754d6dbd8f067ce30f1fe6f9f387b93a9ace"
+    },
+    {
+      "path": "validation/final17-cards.log",
+      "bytes": 43128,
+      "sha256": "13c089c4c689c44d68d304d5da8de479de07287d45074fea651957f23eb279fd"
+    },
+    {
+      "path": "validation/final17-chain-next-battle.json",
+      "bytes": 1070,
+      "sha256": "0d6ac4d4306c5a5c2888ba1d7d7b057ef39e39070abcabcc0b5a179b1271c9c7"
+    },
+    {
+      "path": "validation/final17-chain-occupied.json",
+      "bytes": 1078,
+      "sha256": "25cc4505f04ca081a9f599b0fad159dedf4326fc82f46c56792e528b6916f16d"
+    },
+    {
+      "path": "validation/final17-chain-rotation-restored.json",
+      "bytes": 158,
+      "sha256": "2634b189a5da9b4a0094031a9274f83c27700759f3b97b0b52defdbc1286a8f5"
+    },
+    {
+      "path": "validation/final17-chain.log",
+      "bytes": 43133,
+      "sha256": "70c42e948650e9fb48d80a758e3b236235e0401c4479b75831dd78ad377f2e83"
+    },
+    {
+      "path": "validation/final17-elimination-captured.json",
+      "bytes": 1410,
+      "sha256": "21c691234d58b06a72f85d70461f7587aaa94ccca0af41b8e13da412672c694f"
+    },
+    {
+      "path": "validation/final17-elimination-first-roll.json",
+      "bytes": 1394,
+      "sha256": "413e506898af0762db3b308eba4bf68438158a7a583622a01b798a86f0a97515"
+    },
+    {
+      "path": "validation/final17-elimination-occupied.json",
+      "bytes": 1407,
+      "sha256": "ba7dcf49b504d6db646b1a67274080e31d6cff50119e356a560c12359154fc9a"
+    },
+    {
+      "path": "validation/final17-elimination-repeat.json",
+      "bytes": 1410,
+      "sha256": "4f7bcd94cc1ac59e8d2176d684a494f56494ae1dd49a104abc19ebb32f81fb3b"
+    },
+    {
+      "path": "validation/final17-elimination-rotation-restored.json",
+      "bytes": 160,
+      "sha256": "f7207d300a8b19d9c079761418dfe102ad2f4e0b58165fb6d5a0d3a2f48ff332"
+    },
+    {
+      "path": "validation/final17-elimination.log",
+      "bytes": 48662,
+      "sha256": "f9514a7018a10081ee66cc5f93390d0aaa49b694f835094e05551e4958454c67"
+    },
+    {
+      "path": "validation/final17-fortify-before.json",
+      "bytes": 1071,
+      "sha256": "a1906e0cb708c36ebfde763e1967dd28973c27d2facb737f949bcf36ce929476"
+    },
+    {
+      "path": "validation/final17-fortify-ended.json",
+      "bytes": 1062,
+      "sha256": "6fe9e1f29f5c65226d7ba1ab84cd781368a0d347f17553690400337f755b715e"
+    },
+    {
+      "path": "validation/final17-fortify-rotation-restored.json",
+      "bytes": 160,
+      "sha256": "f7207d300a8b19d9c079761418dfe102ad2f4e0b58165fb6d5a0d3a2f48ff332"
+    },
+    {
+      "path": "validation/final17-fortify.log",
+      "bytes": 44228,
+      "sha256": "0159da986a3e96900103a35cc06d8df7a5f4de53600ed92c22f5f29abeb23091"
+    },
+    {
+      "path": "validation/final17-trade-rotation-restored.json",
+      "bytes": 158,
+      "sha256": "bebfce561a7aa0e82ba5fea4d83332ef5ad87906ad40c3eaf452cafcbd61a68b"
+    },
+    {
+      "path": "validation/final17-traded.json",
+      "bytes": 838,
+      "sha256": "974498df8b3f28a59d28306a904bb9e31db2feb85099d07c5daeddfef54707f1"
+    },
+    {
+      "path": "validation/form_touch14_review-17.log",
+      "bytes": 905,
+      "sha256": "c183589b77b6baa41b4b4f769e892649d8f9848bc2d3ff5806bc818aaffce72e"
+    },
+    {
+      "path": "validation/graphics17-final.log",
+      "bytes": 912,
+      "sha256": "d69a556fa9e5cbb55649bf8a2c00e0c8f34a550e4fcee44ab866c68b12822c33"
+    },
+    {
+      "path": "validation/interaction13_review-17.log",
+      "bytes": 1787,
+      "sha256": "12ce425b85c24498a61bb6f03c73fcf58b4152e86bac778e70783aa051bc161c"
+    },
+    {
+      "path": "validation/interaction14_review-17.log",
+      "bytes": 1366,
+      "sha256": "23cdc72212dcccfe4955a3e08668862cc8017549916badd743d094be125cbfb0"
+    },
+    {
+      "path": "validation/lan17-final.log",
+      "bytes": 1041,
+      "sha256": "c14622fa428c82867723e5cd50239220065a3e34db1e9395e8c605d44b37d994"
+    },
+    {
+      "path": "validation/land_mesh15_review-17.log",
+      "bytes": 758,
+      "sha256": "088ab232579a7d575a17e892b4c4ce343834a2473e03058e01b54a70e25a5c37"
+    },
+    {
+      "path": "validation/live_regression-17.log",
+      "bytes": 5484,
+      "sha256": "10416df3c734ce01484b7f879819360f64044f63aaa459daa141b5ad0869d76b"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-17.log",
+      "bytes": 12939,
+      "sha256": "291f50c39f6fed987cfeca9fda36899a4b5fd4f53043c4c3210f9d0115b06bcc"
+    },
+    {
+      "path": "validation/ownership17_review-final17.log",
+      "bytes": 1194,
+      "sha256": "343a9dd1f769f924ab6aade34716c1ae77d9995b4baed04e2f8523b7892e651f"
+    },
+    {
+      "path": "validation/pause_review-17.log",
+      "bytes": 683,
+      "sha256": "8717b03b3769ee1f12e61a4e5e25d8d624d20eb8873e1194d4d086fb0237fba5"
+    },
+    {
+      "path": "validation/portrait17_review-final17.log",
+      "bytes": 946,
+      "sha256": "51c211addee0024b0dd8325cd0c9d6e15d62a62e3f51a60b4354bedb5a6b442e"
+    },
+    {
+      "path": "validation/qr_layout14_review-17.log",
+      "bytes": 746,
+      "sha256": "695522adb4856cde0e572cbcc4a59304d16113b6bdb34a26d20cef372a15c8c2"
+    },
+    {
+      "path": "validation/quality14_review-17.log",
+      "bytes": 1607,
+      "sha256": "07f3112856a4120a21c10da856aa87c0fdc4dba804edaeeaa6b1320d52be1036"
+    },
+    {
+      "path": "validation/release17-performance.json",
+      "bytes": 757,
+      "sha256": "74818d289614cbe9e2cd385087fd54097881d23f95225c2cbedb1e100bb9b6c2"
+    },
+    {
+      "path": "validation/release7-desktop.log",
+      "bytes": 6973,
+      "sha256": "d90e8220863c09117a3cdef3274010702f8924fbcb22165f933616760383258a"
+    },
+    {
+      "path": "validation/release7-lan.log",
+      "bytes": 587,
+      "sha256": "7adf37d82b9e4d1c164241a4278f93fcf43256efc6dcbf0bdfefe95fd788b96f"
+    },
+    {
+      "path": "validation/service17-acceptance.json",
+      "bytes": 312,
+      "sha256": "e6ef338534776d68c6cf53a4bf2517b7b6d3616d54d6a9ea0487a3c63d5d33d9"
+    },
+    {
+      "path": "validation/slow_render15_review-17.log",
+      "bytes": 847,
+      "sha256": "8110e150b01fbf0b03d6ccbbb80d1ab2e5445f173bab29db936d3214a101a070"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 13710,
+      "sha256": "092c03c73376f5e46cde4978c1f2bdd09bfba336a4a22b04c636ff22bbd5d898"
+    },
+    {
+      "path": "validation/speed17_review-final17.log",
+      "bytes": 923,
+      "sha256": "9e5b44b5efcd6180401c24cae33db601e4bf054daa067c270d0a27c28570147e"
+    },
+    {
+      "path": "validation/terrain_dice17_review-final17.log",
+      "bytes": 790,
+      "sha256": "566f9aad02fe95aaa7e747104f32a189123ec62b4f53afc5bca1bcc0ca71d314"
+    },
+    {
+      "path": "validation/touch_camera_review-17.log",
+      "bytes": 2607,
+      "sha256": "75ea004d6696b449f98b1424cc2f5bfe70cb7036e77e0d4d6d0c1cb69a4b41fe"
+    },
+    {
+      "path": "validation/unit_rig_review-17.log",
+      "bytes": 864,
+      "sha256": "90d838ac79cb9000c062aa0edd9526e5b1a07c56c3de5ab39ed5506ec645b22f"
+    },
+    {
+      "path": "validation/web17-export.log",
+      "bytes": 22411,
+      "sha256": "956b63e061f2ccc880d7ae197ed85a3d84084a8b74089a839c486e2a7414b4bf"
+    }
+  ]
+}

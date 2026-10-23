@@ -1,0 +1,1 @@
+Exact candidate17 installed via authorized ADB for native touch QA. The normal16-to17 in-app update will have its own receipt after publication. Full rendered-input desktop Capitals match is distinct from fixture-driven Android checks. No broad device, thermal, commercial AAA or full human online-match acceptance is claimed.
