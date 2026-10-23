@@ -1,0 +1,1 @@
+Candidate18 exact APK accepted with native touch QA before publication. Real17-to18 in-app updater will have a separate postpublication receipt. Frozen17 retained byte-for-byte. No new broad-device, multiplayer or AAA parity claim.

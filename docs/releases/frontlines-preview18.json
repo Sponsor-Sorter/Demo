@@ -1,0 +1,468 @@
+{
+  "release_id": "2026-10-23-preview18",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.18",
+  "build": 18,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/18/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/18/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.18",
+    "versionCode": 18,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-18.apk",
+    "bytes": 74896234,
+    "sha256": "fb3763bce8b8b6ac053770203f4da9da3c5638c4d73a140568b4d8b227afe667",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Refines soldier, cavalry and artillery meshes while retaining original animations. Adds bone-bound faces, uniform trim, horse tack/hooves, wood cannon carriages, detailed capital architecture, terrain relief shading and dark-water detail. Adds Android thermal protection, adaptive board resolution, distant idle rig sleeping and refreshed menu portrait/icon controls. Fixes repeated camera refocus after manual input, playing-card details, live local dice finishes, and card notice/feed overlap. Retains existing rules and geography.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 6,
+    "engine_checks": 121,
+    "hosted": "10 isolated live-service16 card checks; exact test identities and room removed. Rooms with host_build<=15 keep prior trade timing.",
+    "readback": "Exact v6 payload readback passed; no schema/auth-setting changes in this release. Live fortify/card fixture acceptance is carried from v5; full public battle-log member route reviewed in source, not claimed as fresh live journey."
+  },
+  "validation": {
+    "failures": 0,
+    "fresh": {
+      "idle_budget18_review": 4,
+      "thermal18_review": 30,
+      "phone_framing18_review": 31,
+      "detail_performance18_review": 4,
+      "refined18_review": 47,
+      "quality14_review": 30,
+      "camera18_review": 18,
+      "combat18_review": 83,
+      "animation_cards17_review": 32,
+      "unit_rig_review": 23,
+      "touch_camera_review": 43,
+      "dice_frame14_review": 36,
+      "pause_review": 12,
+      "card_details18_review": 301,
+      "phone_findings18_review": 20,
+      "campaign_store_review": 17,
+      "battle17_review": 34,
+      "portrait17_review": 18,
+      "card17_review": 26,
+      "mobile_orientation_regression": 429,
+      "interaction14_review": 26,
+      "live_regression": 106,
+      "lan17_review": 21
+    },
+    "fresh_total": 1391,
+    "carried_release17": {
+      "manifest_sha256": "1045f8789c6bdc02487f90b9c83f66401633e1ab56f8388e67b15fc3ba672485",
+      "checks": 1353,
+      "backend_version": 6,
+      "note": "Broader17 checks are carried evidence, not rerun18 checks. No backend/schema changes in18."
+    }
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Local campaigns now resume from a validated atomic save. Network credentials and room state are excluded; remembered account sessions remain unfinished.",
+    "Owner confirmed physical rotation in13;14 WindowManager transitions and native acceptance are separately recorded. Broader devices and human cross-phone optical QR acceptance remain open.",
+    "18 mapped ElevenLabs SFX plus original and three actual-reference music tracks; technical checks do not establish subjective music approval.",
+    "Performance samples are PC view comparisons, not universal benchmarks. Native phone reported thermal status3 during extended testing; no broad-device60FPS claim."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 233,
+      "sha256": "27c881ab44e8ca4fb512a1ebe1b78ad6eddaabf7d9c25658b80f913058aa2605"
+    },
+    {
+      "path": "art_manifest.json",
+      "bytes": 5247,
+      "sha256": "a3268019e472dc1d9627dae0c4e62623c31ff6db92a0f491adbb4c168c5efc99"
+    },
+    {
+      "path": "BACKEND.md",
+      "bytes": 2974,
+      "sha256": "e17ddec2de071a9d2815dbc7bfa2f2eab41fe8f7c9ddad1f4810c841af84d0df"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 28105,
+      "sha256": "582d8430821434f010816969f1e5fdfb8604754c35de036913d5a76f35f1e5d5"
+    },
+    {
+      "path": "COMMANDER_CREATOR_RESEARCH.md",
+      "bytes": 7107,
+      "sha256": "b0b6892fc8c6ea0bf083b6ba4ccb02dc8ca706f4bc79e1ff5a72940246b64897"
+    },
+    {
+      "path": "conversion_manifest.json",
+      "bytes": 2368,
+      "sha256": "c7c872537970a98f1afc1ce176083a41c106416288e998d9736888ef7981d213"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "media/native18-battle-overview.png",
+      "bytes": 1360041,
+      "sha256": "ed0f00a1dc5d55f38f97384a727cf01b66a775a2d158d61f23aecf87f0e3f4d0"
+    },
+    {
+      "path": "media/native18-colours-overview.png",
+      "bytes": 1409836,
+      "sha256": "59a4284b611e30193e66d8d8bd847df0c2a132eceec07296e9f8b7e0aac2cd08"
+    },
+    {
+      "path": "media/native18-final-paused-overview.png",
+      "bytes": 755102,
+      "sha256": "5efe85641b53f3e7d731625f9b9e5d668dba7c60c29ccc623210efe5b478c329"
+    },
+    {
+      "path": "media/native18-fixture-resumed-overview.png",
+      "bytes": 1450877,
+      "sha256": "654f4a9e80abafffc61b8863c5585beecad40196734db1d0a6b51fb4d76c2b6f"
+    },
+    {
+      "path": "media/native18-graphics-overview.png",
+      "bytes": 865195,
+      "sha256": "0bccd07ac682a2c8460d041167ba1bd10f84e71077daacddc20ebadf46e666f5"
+    },
+    {
+      "path": "media/native18-menu-overview.png",
+      "bytes": 1454188,
+      "sha256": "f909f702fcc6f4c2fddf609efc82e6a07f338d81f111420d129c09d29b1818f9"
+    },
+    {
+      "path": "media/native18-occupation-overview.png",
+      "bytes": 736998,
+      "sha256": "7d10e2e2f14ac841f6e1a56686ed95d4a32be7fcc2bf188eca105141c92804a7"
+    },
+    {
+      "path": "media/native18-restored-campaign-overview.png",
+      "bytes": 1445748,
+      "sha256": "f92aa7e6ff4ad99ae45c654985df8d43a306255ad57b991357cae39a683d804b"
+    },
+    {
+      "path": "media/native18-restored-menu-overview.png",
+      "bytes": 1454188,
+      "sha256": "f909f702fcc6f4c2fddf609efc82e6a07f338d81f111420d129c09d29b1818f9"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 18670,
+      "sha256": "3650f58bae3e6d0a79221b63677bf4ac0ea35d3b852fff61d8df31bacfbb9aa1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11986,
+      "sha256": "8e1fbfbad8244c113d70c0cfadf1e354fbffd7ff35b0833cf73b1da6f270fb6a"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 2013,
+      "sha256": "88d118eb68f144edfced8ddc4a877d35867c71a10b976bf7160dc436845cf711"
+    },
+    {
+      "path": "release_updater.gd",
+      "bytes": 6714,
+      "sha256": "1a0ce5314a1d34f6a447fee4e63b899183ff254b6a128a6eca8eac2c04502a41"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 1209,
+      "sha256": "dfc498def98864b584341ed3101fa897439c96d6cdb87f44f671544d43853b5c"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.html",
+      "bytes": 5762,
+      "sha256": "dbb438f9bd09816ce9cf3c3a976e353f005661dd8a0d98bb1ec547fc25f8f428"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.pck",
+      "bytes": 45704780,
+      "sha256": "0aa2b3fafed8e9fd6801ba6cfdaa12ed65a957d70a692465594ecca4da01bbce"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/18/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/18/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/18/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/18/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/18/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/18/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/18/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-18.apk",
+      "bytes": 74896234,
+      "sha256": "fb3763bce8b8b6ac053770203f4da9da3c5638c4d73a140568b4d8b227afe667"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "b29c4b9a896edfe703316e206ef51a1ce0c35afef9845b1bffb49e36afa2cd7d"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 663,
+      "sha256": "f778efd0b130b64a7b710e1b2f40224cab530f52d3639c5e6871ec09b9db1d67"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 195119,
+      "sha256": "721811f92429c612217a667d60e85ed503f49f2698626a958fedc7dda2ad1ab3"
+    },
+    {
+      "path": "validation/android18-export.log",
+      "bytes": 6909,
+      "sha256": "d8e2ebe74dec45d3f0a046909c56e7442eed7f5ad6230aff99db6eb3de55f13c"
+    },
+    {
+      "path": "validation/animation_cards17_review-18.log",
+      "bytes": 1527,
+      "sha256": "aded85967807e66ab4596f4f240667cada7c828ddc2e4ae9022c3a299e8b963d"
+    },
+    {
+      "path": "validation/battle17_review-18.log",
+      "bytes": 1635,
+      "sha256": "6cbbcc8ea3c4caa45247e6f2c334b854dcf3717f8fb8a4a5553c3b5d6508fc80"
+    },
+    {
+      "path": "validation/build18-results.json",
+      "bytes": 2431,
+      "sha256": "1ef68b8b6c74ed674adf6707b1e688e8d85a86d9b6eff362686cbc7f79575085"
+    },
+    {
+      "path": "validation/camera18_review-18.log",
+      "bytes": 984,
+      "sha256": "e32221fd847eeb9d87b41ac5992519fe561a0af3cd87ff3f5eeddc7c1dc176ba"
+    },
+    {
+      "path": "validation/campaign_store_review-18.log",
+      "bytes": 850,
+      "sha256": "78c22c2b6f3dbee9493d511a7c99605038aba52f8ba72f03ab7c8370d14c879a"
+    },
+    {
+      "path": "validation/card17_review-18.log",
+      "bytes": 1413,
+      "sha256": "af4033b51753a18592c76bb780956251ed8ef1da67e525426df9423bedb74554"
+    },
+    {
+      "path": "validation/card_details18_review-18.log",
+      "bytes": 11940,
+      "sha256": "73b5e4cf9f79fbac641e62f3176e5b7546f498b23d808b35b2ab47199c3f3262"
+    },
+    {
+      "path": "validation/combat18_review-18.log",
+      "bytes": 3972,
+      "sha256": "05d749ecc60265cdf7d72c539574aa9b666f787819f62a2b7dc4852873a59c60"
+    },
+    {
+      "path": "validation/detail_performance18_review-18.log",
+      "bytes": 470,
+      "sha256": "9c7b3086b3dffaa524a61a7c684e71b936b313894116af83a59eff126b2e52fb"
+    },
+    {
+      "path": "validation/dice_frame14_review-18.log",
+      "bytes": 2366,
+      "sha256": "34d619c0eb09498db6ebd90aa639046728b06b9cbf9f189c6bfe1f8e739fa670"
+    },
+    {
+      "path": "validation/idle_budget18_review-18.log",
+      "bytes": 267,
+      "sha256": "6ba4ea7fd0478fa68f9e2d662b841444262fe5c515c01a097a0e09d8c47f6e28"
+    },
+    {
+      "path": "validation/interaction14_review-18.log",
+      "bytes": 1367,
+      "sha256": "47f67744cd69dd70ae4b892f367bebfbee3c2bc24dc5cadbf7410d0732c24e77"
+    },
+    {
+      "path": "validation/lan17_review-18.log",
+      "bytes": 1041,
+      "sha256": "c14622fa428c82867723e5cd50239220065a3e34db1e9395e8c605d44b37d994"
+    },
+    {
+      "path": "validation/live_regression-18.log",
+      "bytes": 4758,
+      "sha256": "a88e310c88c9ac7a4d5e7f034f0d89661a15960eb1e57072ae40f6c03087a3c1"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-18.log",
+      "bytes": 12920,
+      "sha256": "83593eb221c27d8a82a0779cd36595241e94c5318b61ba54ccd98e62405268b3"
+    },
+    {
+      "path": "validation/native18-acceptance.json",
+      "bytes": 2643,
+      "sha256": "f97bfc135b97cfd439a3bf328ecd88e079cfee91d02023ae3830b670e030cd82"
+    },
+    {
+      "path": "validation/native18-final.log",
+      "bytes": 42871,
+      "sha256": "b695740654247db96cd89a18141b682c454c7c490c3ed3942873a9f97e4ebbac"
+    },
+    {
+      "path": "validation/pause_review-18.log",
+      "bytes": 683,
+      "sha256": "8717b03b3769ee1f12e61a4e5e25d8d624d20eb8873e1194d4d086fb0237fba5"
+    },
+    {
+      "path": "validation/phone_findings18_review-18.log",
+      "bytes": 1154,
+      "sha256": "1e0834494fc670d2819e83b9613cbc0ea4c8501b84890c917adeb168bd51601e"
+    },
+    {
+      "path": "validation/phone_framing18_review-18.log",
+      "bytes": 1958,
+      "sha256": "063f959504c9a5d2c4668d9722ea30ed1eedd38bec27b20484e3f9833c9c6163"
+    },
+    {
+      "path": "validation/portrait17_review-18.log",
+      "bytes": 946,
+      "sha256": "51c211addee0024b0dd8325cd0c9d6e15d62a62e3f51a60b4354bedb5a6b442e"
+    },
+    {
+      "path": "validation/quality14_review-18.log",
+      "bytes": 1607,
+      "sha256": "1bb958a7052798b606cee444d37544bc10783a52bba352ae2c19e94556b560f1"
+    },
+    {
+      "path": "validation/refined18_review-18.log",
+      "bytes": 2399,
+      "sha256": "28e0aec77d0eb2bf8f92cb2b74288dac4c4360466099a06c22cf6ab50910c126"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 15369,
+      "sha256": "45e1359588734289f2ee82cd02be75867b3976a64fdf8911cab8ff4459125e01"
+    },
+    {
+      "path": "validation/thermal18-balanced20.json",
+      "bytes": 19585,
+      "sha256": "513bc3ab6900efc057480204e246743c3c558237263ef98a1bd7fa43b07500ac"
+    },
+    {
+      "path": "validation/thermal18-balanced20.log",
+      "bytes": 26810,
+      "sha256": "8b1a31490613c61203e95f086a51e3d211b0097a90b27a6aaeea6cd2314f788e"
+    },
+    {
+      "path": "validation/thermal18-certificate.log",
+      "bytes": 311,
+      "sha256": "7bb21031532df97dbdf95c033ddf986b7fc9c45f73d73f3766b35aea9c72d428"
+    },
+    {
+      "path": "validation/thermal18-package.json",
+      "bytes": 122,
+      "sha256": "2a3ca8cf10741967410a99ccdd95ab587b964b1c310f722b104373f7de0551ee"
+    },
+    {
+      "path": "validation/thermal18-ultra5.json",
+      "bytes": 5519,
+      "sha256": "5f7012320b97a439ef26913f96395cb1e574d66012c0e2849e9032869ec12ad9"
+    },
+    {
+      "path": "validation/thermal18-ultra5.log",
+      "bytes": 36294,
+      "sha256": "81b92631a063598f4a55e6984fea1e3a885d69ca2fbe6ee1df3e75ac02a2383c"
+    },
+    {
+      "path": "validation/thermal18_review-18.log",
+      "bytes": 1608,
+      "sha256": "0f8e10eb8fbfff846667d76bd4fbd01f998b67f5742e95d3d5e36c3ea9a5bb29"
+    },
+    {
+      "path": "validation/touch_camera_review-18.log",
+      "bytes": 2607,
+      "sha256": "6933e8cca57b534f5192bd6fe8f93a18df2877036928765a88cda4c785080d8c"
+    },
+    {
+      "path": "validation/unit_rig_review-18.log",
+      "bytes": 864,
+      "sha256": "90d838ac79cb9000c062aa0edd9526e5b1a07c56c3de5ab39ed5506ec645b22f"
+    },
+    {
+      "path": "validation/web18-export.log",
+      "bytes": 25101,
+      "sha256": "37ecbc22d417f3f719cd1fb0f009fb310b0f2f75e7ff8f6f05f52972cf81f947"
+    }
+  ]
+}

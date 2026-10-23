@@ -35,20 +35,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 17 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.17 · Build 17');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/17/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk');
+test('Frontlines publishes accepted build 18 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.18 · Build 18');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/18/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-18.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17.json',import.meta.url),'utf8'));
- assert.equal(m.build,17);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18.json',import.meta.url),'utf8'));
+ assert.equal(m.build,18);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,17);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,17);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,18);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,18);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -92,4 +92,7 @@ test('Frontlines preserves all accepted build 15 immutable bytes',async()=>{cons
 test('Frontlines16 describes compulsory placement without duplicate turn rewards',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.instructions.join(' '),/same commander to troop placement/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview16.json',import.meta.url),'utf8'));assert.equal(m.backend.version,4);assert.equal(m.backend.live_service_checks,undefined);assert.equal(m.validation.live_service_checks,10);assert.match(m.backend.hosted,/host_build<=15/);});
 
 test('Frontlines preserves all accepted build 16 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview16.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/16/')||f.path.endsWith('build-16.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
-test('Frontlines17 describes portrait cards and scopes exact native acceptance',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/portrait playing cards/);assert.match(e.notes,/Native speed\/auto-roll/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17.json',import.meta.url),'utf8'));assert.equal(m.backend.version,6);assert.equal(m.validation.fresh_total,1353);const native=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17-native-acceptance.json',import.meta.url),'utf8'));assert.equal(native.final_build,17);assert.equal(native.installed_apk_sha256,m.android.sha256);assert.match(native.installation_method,/ADB/);});
+test('Frontlines17 describes portrait cards and scopes exact native acceptance',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17.json',import.meta.url),'utf8'));assert.equal(m.backend.version,6);assert.equal(m.validation.fresh_total,1353);const native=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17-native-acceptance.json',import.meta.url),'utf8'));assert.equal(native.final_build,17);assert.equal(native.installed_apk_sha256,m.android.sha256);assert.match(native.installation_method,/ADB/);});
+
+test('Frontlines preserves all accepted build 17 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/17/')||f.path.endsWith('build-17.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+test('Frontlines18 scopes exact native thermal acceptance and excludes creator claims',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/thermal protection/);assert.doesNotMatch(e.description,/character creator/i);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18.json',import.meta.url),'utf8'));assert.equal(m.validation.fresh_total,1391);const native=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18-native-acceptance.json',import.meta.url),'utf8'));assert.equal(native.build,18);assert.equal(native.status,'accepted_with_stated_limits');assert.equal(native.installed_apk_sha256,m.android.sha256);assert.match(native.method,/ADB/);assert.equal(native.thermal_observation.controlled_old_new_benchmark,false);});

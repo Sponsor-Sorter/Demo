@@ -1,11 +1,17 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.17",
-  "versionCode": 17,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk",
-  "bytes": 74521472,
-  "sha256": "c46603e0d61048346b4a405ebd8331a3d08717bb31b14c96861deee320fdda39",
+  "versionName": "1.0.0-preview.18",
+  "versionCode": 18,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-18.apk",
+  "bytes": 74896234,
+  "sha256": "fb3763bce8b8b6ac053770203f4da9da3c5638c4d73a140568b4d8b227afe667",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Portrait playing cards shared with the physical hand; compact portrait turn-order row; eliminated commander cards slide away; icon-aligned stats; terrain-following orders and synchronized gunfire; permanent capital cities and garrisons; solo/spectator1x/2x/3x;50% player-colour view; fortification ends turn; hold-to-auto-roll; compact battle feed and paginated log; larger skin-correct dice with terrain-aware throws; real local-hand cards west of Australia; death animations/cues and material/terrain detail."
+  "notes": "Refines soldier, cavalry and artillery meshes while retaining original animations. Adds bone-bound faces, uniform trim, horse tack/hooves, wood cannon carriages, detailed capital architecture, terrain relief shading and dark-water detail. Adds Android thermal protection, adaptive board resolution, distant idle rig sleeping and refreshed menu portrait/icon controls. Fixes repeated camera refocus after manual input, playing-card details, live local dice finishes, and card notice/feed overlap. Retains existing rules and geography.",
+  "targetSdk": 36,
+  "abis": [
+    "arm64-v8a"
+  ],
+  "signing": "Debug preview certificate. Sideload playtest APK.",
+  "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
 }
