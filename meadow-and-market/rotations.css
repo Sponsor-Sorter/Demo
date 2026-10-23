@@ -17,3 +17,6 @@
 #farm-land{overflow:clip!important}
 .object-actions button:focus-visible{outline:2px solid #fff8dd;outline-offset:2px}
 .painted-coop>.directional-art{z-index:0}.painted-coop>.coop-rear-residents{z-index:2}.painted-coop>.coop-house-front{z-index:3}.painted-coop>.coop-front-residents{z-index:4}.painted-coop>.paddock-front{z-index:6}.painted-coop>.directional-art,.painted-coop .yard-residents{pointer-events:none!important}
+.coop-grid177>.coop-scene{z-index:0}.coop-grid177 .yard-animal{position:static;pointer-events:none}.coop-grid177 .coop-scene image{pointer-events:none}
+
+.coop-preview:has(.coop-detail-stage){height:180px;background:transparent;border:0}.coop-detail-stage{position:absolute;left:50%;top:65px;width:min(72%,210px);aspect-ratio:1.864;transform:translateX(-50%)}

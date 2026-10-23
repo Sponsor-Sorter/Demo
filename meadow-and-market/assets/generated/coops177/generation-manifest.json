@@ -1,0 +1,478 @@
+{
+  "tool": "Built-in image_gen",
+  "method": "Separate illustrated buildings, fence panels/posts, ground and directional hens; no split-image distortion",
+  "prompts": [
+    {
+      "asset": "house-0-0",
+      "master": "house-0-0.png",
+      "prompt": "Use case: stylized-concept. Generate a NEW HD 1536x1024 transparent RGBA modular game building sprite for Meadow Markets. Reference image is MATERIAL/PAINTING STYLE ONLY; do not reproduce the yard, enclosure or ground. STARTER: one small raised square hen house on four short feet, honey-gold timber, warm dark-brown wooden shingles, front gable with one small square open hen doorway and straw inside, short wooden ramp, single small wire-mesh side window. No extra nesting extension.\nFixed orthographic isometric camera, looking down from 30 degrees above ground; ground directions slope exactly +0.5 and -0.5 on the screen, all vertical posts dead upright, parallel roof lines stay parallel, no perspective vanishing. FRONT LEFT VIEW: front gabled hen door faces lower-left (southwest); we see its front gable on left and long right side wall on right. Roof ridge runs back toward upper-right. Natural precise architecture, straight timber and roof edges.\nBUILDING ONLY: no perimeter fence, no ground patch, no separate feeder/water props, no platform/slab, no chickens or people. Whole house including ramp and feet visible, clean alpha outside it, generous 60px empty safety margin. Crisp rich hand-painted illustrated mobile farm style, carved honey-gold woodgrain, brown shingles, tiny iron bolts, warm sunlight upper-left. Match reference craftsmanship and color exactly. No black/grey/checkerboard background, no matte haze or glow, no text. This building will be anchored unwarped inside a mathematically exact tiled yard."
+    },
+    {
+      "asset": "house-0-1",
+      "master": "house-0-1.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 90degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. STARTER: one small raised square hen house on four short feet, honey-gold timber, warm dark-brown wooden shingles, front gable with one small square open hen doorway and straw inside, short wooden ramp, single small wire-mesh side window. No extra nesting extension. ROTATION90: the doorway/front gable points away toward upper-left (northwest) and MUST BE HIDDEN. We see the BACK gable facing lower-right (southeast) and the opposite long side wall facing lower-left. The roof ridge slopes from upper-left to lower-right. Back gable has a tiny closed ventilation panel; NO front hen doorway or ramp on the back wall. The entry ramp and nesting fittings rotate with the real house; do not invent a back entrance.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-0-2",
+      "master": "house-0-2.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 180degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. STARTER: one small raised square hen house on four short feet, honey-gold timber, warm dark-brown wooden shingles, front gable with one small square open hen doorway and straw inside, short wooden ramp, single small wire-mesh side window. No extra nesting extension. ROTATION180: the doorway/front gable points away toward upper-right (northeast) and MUST BE HIDDEN. We see the BACK gable facing lower-left (southwest) and the opposite long wall facing lower-right. Roof ridge slopes from upper-right to lower-left. Back gable has a tiny closed ventilation panel; NO front hen doorway or ramp on rear wall. The actual ramp is around the far side and largely hidden. Rotate ALL nesting extensions and lean-to with the house.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-0-3",
+      "master": "house-0-3.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 270degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. STARTER: one small raised square hen house on four short feet, honey-gold timber, warm dark-brown wooden shingles, front gable with one small square open hen doorway and straw inside, short wooden ramp, single small wire-mesh side window. No extra nesting extension. ROTATION270: the doorway/front gable points toward lower-right (southeast). We see front gable facing lower-right and the opposite long wall facing lower-left. Roof ridge slopes from upper-left to lower-right. Show original front open hen door and ramp on the RIGHT-facing gable, not the long wall. Nesting extensions and shelter remain on their original physical side even if partly occluded.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-1-0",
+      "master": "house-1-0.png",
+      "prompt": "Use case: stylized-concept. Generate a NEW HD 1536x1024 transparent RGBA modular game building sprite for Meadow Markets. Reference image is MATERIAL/PAINTING STYLE ONLY; do not reproduce the yard, enclosure or ground. UPGRADE TWO: retain the starter house appearance, enlarge it modestly along the ridge, attach a low nesting box with hinged lid on the visible long side, broader short ramp and stronger door trim. Two-hen capacity, still humble and compact.\nFixed orthographic isometric camera, looking down from 30 degrees above ground; ground directions slope exactly +0.5 and -0.5 on the screen, all vertical posts dead upright, parallel roof lines stay parallel, no perspective vanishing. FRONT LEFT VIEW: front gabled hen door faces lower-left (southwest); we see its front gable on left and long right side wall on right. Roof ridge runs back toward upper-right. Natural precise architecture, straight timber and roof edges.\nBUILDING ONLY: no perimeter fence, no ground patch, no separate feeder/water props, no platform/slab, no chickens or people. Whole house including ramp and feet visible, clean alpha outside it, generous 60px empty safety margin. Crisp rich hand-painted illustrated mobile farm style, carved honey-gold woodgrain, brown shingles, tiny iron bolts, warm sunlight upper-left. Match reference craftsmanship and color exactly. No black/grey/checkerboard background, no matte haze or glow, no text. This building will be anchored unwarped inside a mathematically exact tiled yard."
+    },
+    {
+      "asset": "house-1-1",
+      "master": "house-1-1.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 90degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. UPGRADE TWO: retain the starter house appearance, enlarge it modestly along the ridge, attach a low nesting box with hinged lid on the visible long side, broader short ramp and stronger door trim. Two-hen capacity, still humble and compact. ROTATION90: the doorway/front gable points away toward upper-left (northwest) and MUST BE HIDDEN. We see the BACK gable facing lower-right (southeast) and the opposite long side wall facing lower-left. The roof ridge slopes from upper-left to lower-right. Back gable has a tiny closed ventilation panel; NO front hen doorway or ramp on the back wall. The entry ramp and nesting fittings rotate with the real house; do not invent a back entrance.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-1-2",
+      "master": "house-1-2.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 180degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. This is a rear view: keep the CLOSED back gable with vent, no doorway or ramp.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "house-1-3",
+      "master": "house-1-3.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 270degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. Keep the FRONT gable with open straw hen doorway and its ramp on the RIGHT-facing gable.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "house-2-0",
+      "master": "house-2-0.png",
+      "prompt": "Use case: stylized-concept. Generate a NEW HD 1536x1024 transparent RGBA modular game building sprite for Meadow Markets. Reference image is MATERIAL/PAINTING STYLE ONLY; do not reproduce the yard, enclosure or ground. UPGRADE THREE: larger long timber hen house, same gabled dark-brown shingle roof, two attached nesting compartments with hinged sloping lids along the visible long side, a little covered feeding shelter integrated into the left side, reinforced trim and short broad entry ramp. Four-hen capacity.\nFixed orthographic isometric camera, looking down from 30 degrees above ground; ground directions slope exactly +0.5 and -0.5 on the screen, all vertical posts dead upright, parallel roof lines stay parallel, no perspective vanishing. FRONT LEFT VIEW: front gabled hen door faces lower-left (southwest); we see its front gable on left and long right side wall on right. Roof ridge runs back toward upper-right. Natural precise architecture, straight timber and roof edges.\nBUILDING ONLY: no perimeter fence, no ground patch, no separate feeder/water props, no platform/slab, no chickens or people. Whole house including ramp and feet visible, clean alpha outside it, generous 60px empty safety margin. Crisp rich hand-painted illustrated mobile farm style, carved honey-gold woodgrain, brown shingles, tiny iron bolts, warm sunlight upper-left. Match reference craftsmanship and color exactly. No black/grey/checkerboard background, no matte haze or glow, no text. This building will be anchored unwarped inside a mathematically exact tiled yard."
+    },
+    {
+      "asset": "house-2-1",
+      "master": "house-2-1.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 90degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. UPGRADE THREE: larger long timber hen house, same gabled dark-brown shingle roof, two attached nesting compartments with hinged sloping lids along the visible long side, a little covered feeding shelter integrated into the left side, reinforced trim and short broad entry ramp. Four-hen capacity. ROTATION90: the doorway/front gable points away toward upper-left (northwest) and MUST BE HIDDEN. We see the BACK gable facing lower-right (southeast) and the opposite long side wall facing lower-left. The roof ridge slopes from upper-left to lower-right. Back gable has a tiny closed ventilation panel; NO front hen doorway or ramp on the back wall. The entry ramp and nesting fittings rotate with the real house; do not invent a back entrance.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-2-2",
+      "master": "house-2-2.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 180degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. This is a rear view: keep the CLOSED back gable with vent, no doorway or ramp.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "house-2-3",
+      "master": "house-2-3.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 270degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. Keep the FRONT gable with open straw hen doorway and its ramp on the RIGHT-facing gable.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "house-3-0",
+      "master": "house-3-0.png",
+      "prompt": "Use case: stylized-concept. Generate a NEW HD 1536x1024 transparent RGBA modular game building sprite for Meadow Markets. Reference image is MATERIAL/PAINTING STYLE ONLY; do not reproduce the yard, enclosure or ground. FINAL UPGRADE FOUR: generous long premium honey-gold timber hen house, same dark-brown shingle roof, THREE clearly separate hinged-lid nest compartments along the long wall, a covered side feeding shelter with matching shingle lean-to, short broad entry ramp, iron fittings and tiny tasteful daisies in one fixed planter. Clearly the biggest and best house, eight-hen capacity.\nFixed orthographic isometric camera, looking down from 30 degrees above ground; ground directions slope exactly +0.5 and -0.5 on the screen, all vertical posts dead upright, parallel roof lines stay parallel, no perspective vanishing. FRONT LEFT VIEW: front gabled hen door faces lower-left (southwest); we see its front gable on left and long right side wall on right. Roof ridge runs back toward upper-right. Natural precise architecture, straight timber and roof edges.\nBUILDING ONLY: no perimeter fence, no ground patch, no separate feeder/water props, no platform/slab, no chickens or people. Whole house including ramp and feet visible, clean alpha outside it, generous 60px empty safety margin. Crisp rich hand-painted illustrated mobile farm style, carved honey-gold woodgrain, brown shingles, tiny iron bolts, warm sunlight upper-left. Match reference craftsmanship and color exactly. No black/grey/checkerboard background, no matte haze or glow, no text. This building will be anchored unwarped inside a mathematically exact tiled yard."
+    },
+    {
+      "asset": "house-3-1",
+      "master": "house-3-1.png",
+      "prompt": "Generate a NEW transparent HD1536x1024 game-building sprite of the EXACT same physical chicken coop in the reference, viewed after a 90degree rotation around the vertical axis. Reference is the locked identity/style/material/progression model. FINAL UPGRADE FOUR: generous long premium honey-gold timber hen house, same dark-brown shingle roof, THREE clearly separate hinged-lid nest compartments along the long wall, a covered side feeding shelter with matching shingle lean-to, short broad entry ramp, iron fittings and tiny tasteful daisies in one fixed planter. Clearly the biggest and best house, eight-hen capacity. ROTATION90: the doorway/front gable points away toward upper-left (northwest) and MUST BE HIDDEN. We see the BACK gable facing lower-right (southeast) and the opposite long side wall facing lower-left. The roof ridge slopes from upper-left to lower-right. Back gable has a tiny closed ventilation panel; NO front hen doorway or ramp on the back wall. The entry ramp and nesting fittings rotate with the real house; do not invent a back entrance.\nFixed orthographic isometric30degree elevation; ground directions at+/-0.5slope, parallel beams/roof edges remain straight and parallel, verticals upright. Camera never moves. No mirroring, no new design, same shingle color, same number of nesting compartments, same raised feet and attachments, rear view must correctly hide front-facing details. Keep the SAME world scale, centered whole building visible with60px transparent safety margin.\nBUILDING ONLY, including own feet/ramp/attached extensions: absolutely no yard, perimeter fence, dirt, platform, separate props, people or chickens. Beautiful premium hand-painted honey-gold timber with rich woodgrain, iron fittings and dark warm-brown shingles. Truly transparent RGBA outside silhouette, no black/grey/checker background, no glow or matte."
+    },
+    {
+      "asset": "house-3-2",
+      "master": "house-3-2.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 180degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. This is a rear view: keep the CLOSED back gable with vent, no doorway or ramp.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "house-3-3",
+      "master": "house-3-3.png",
+      "prompt": "EDIT this exact Meadow Markets coop sprite to CORRECT its physical 270degree view. Preserve camera, canvas, style, timber, shingles, size, feet, doorway location, ramp, gable walls and attached shelter. Change ONLY the visible long wall: this is the OPPOSITE plain wall from the nesting-box wall. REMOVE ALL nest boxes and their open lids/hinges from the visible long wall and replace that area with continuous straight honey-gold wooden planks, one modest wire-mesh window and the lower structural beam/feet. The actual nesting boxes remain on the FAR side of the physical building, fully hidden behind it. DO NOT display them on this near wall. Keep the FRONT gable with open straw hen doorway and its ramp on the RIGHT-facing gable.\nKeep the original silhouette of the principal house/roof, upright straight architecture at orthographic isometric30degree elevation. High detail transparent RGBA HD1536x1024. No floor, yard, fence, chicken, glow or matte."
+    },
+    {
+      "asset": "rail",
+      "master": "rail.png",
+      "prompt": "Generate HD hand-painted game asset for Meadow Markets. ONE isolated section of a honey-gold timber farm fence WITHOUT ANY POSTS: two parallel long straight wooden rails with lovely thick wood grain and iron bolt ends, one diagonal wooden supporting brace between them. Seen as an isometric vertical plane, rails run from upper-left to lower-right, exactly 2 horizontal pixels per 1 vertical pixel ground slope. Left and right ends cut vertically square, NO end posts, no flowers, no ground or dirt, no shadow plane. This is a modular fence panel to join separate posts. Both long rails perfectly straight and parallel. Whole panel visible with generous alpha margin. Material and painting STYLE ONLY from reference: warm golden timber, rich neat woodgrain, high quality cozy illustrated farm, soft light upper-left. Not flat vector, not photo. Transparent RGBA, fully transparent outside the object, no black/grey/checkerboard/white matte, no glow. HD1536x1024 landscape. No text or people."
+    },
+    {
+      "asset": "post",
+      "master": "post.png",
+      "prompt": "Generate HD hand-painted game asset for Meadow Markets. ONE isolated upright honey-gold square timber fence corner post with rounded beveled cap, carved wood grain and two small dark iron bolts. Orthographic isometric view from 30degrees above ground, two visible vertical faces, all vertical edges exactly vertical; feet meet a tiny neat base point at bottom center. NO rails attached, no ground patch, no plants, no shadow plane. Clean full-length post centered, generous alpha margins. Material and painting STYLE ONLY from reference: warm golden timber, rich neat woodgrain, high quality cozy illustrated farm, soft light upper-left. Not flat vector, not photo. Transparent RGBA, fully transparent outside the object, no black/grey/checkerboard/white matte, no glow. HD1536x1024 landscape. No text or people."
+    },
+    {
+      "asset": "floor",
+      "master": "floor.png",
+      "prompt": "Generate HD hand-painted game asset for Meadow Markets. A perfectly top-down orthographic square seamless game ground texture: warm packed ochre farm earth with lightly scattered finely painted golden straw pieces, a few tiny pebbles and subtle pale dry speckles. Consistent scale and rich painterly mobile game detail. No large features, no grass borders, no frame, no fences, no objects, no animals, no bevel or slab. Entire 1024x1024 square filled with flat continuous soil, exactly top-down not isometric. This texture will be projected onto the game grid. Material and painting STYLE ONLY from reference: warm golden timber, rich neat woodgrain, high quality cozy illustrated farm, soft light upper-left. Not flat vector, not photo. Opaque square texture. No text or people."
+    },
+    {
+      "asset": "water",
+      "master": "water.png",
+      "prompt": "Generate HD hand-painted game asset for Meadow Markets. ONE small freestanding low round wooden animal drinking bowl filled with clean turquoise-blue water, honey-gold barrel staves and tiny iron band, next to ONE separate shallow rectangular wooden corn tray full of golden corn grains with a little space between. Orthographic isometric camera at30degree elevation, ground lines at2:1 slopes. Only these two little care props, aligned side by side on a common ground line. NO dirt patch, fence, backdrop, text or animals. Entire objects on clean transparent alpha. Material and painting STYLE ONLY from reference: warm golden timber, rich neat woodgrain, high quality cozy illustrated farm, soft light upper-left. Not flat vector, not photo. Transparent RGBA, fully transparent outside the object, no black/grey/checkerboard/white matte, no glow. HD1536x1024 landscape. No text or people."
+    },
+    {
+      "asset": "hen-0",
+      "master": "hen-0.png",
+      "prompt": "Generate ONE full body WHITE LAYING HEN game sprite, facing lower-left (southwest), beak points left and slightly down; see its front-left breast and right side wing. Meadow Markets painterly cozy farm aesthetic, rich softly painted ivory feathers, a modest RED HEN comb and wattle, golden yellow closed beak, dark brown eyes, rounded mature hen body, small proportionate head, folded wings, short uplifted tail, TWO correctly jointed yellow legs and TWO distinct three-forward-toed feet clearly visible, both feet flat on one ground plane, no floating, no extra legs/toes. It is a HEN not a rooster. Natural calm standing pose. Camera fixed ORTHOGRAPHIC ISOMETRIC at30degrees above ground so we see the back/top of body and top of the head; do NOT use an eye-level mascot portrait. Reference identifies the white hen/color/painted detail only; reduce huge mascot head/comb and show correct top-down camera and leg anatomy. Whole bird isolated at high detail1536x1024 on CLEAN transparent RGBA, consistent scale, centered,60px empty margin, NO ground patch, shadow blob, base, grass, coop, scenery, glow or text. Premium crisp painted mobile farm sprite."
+    },
+    {
+      "asset": "hen-1",
+      "master": "hen-1.png",
+      "prompt": "Generate ONE full body WHITE LAYING HEN game sprite, facing upper-left (northwest), beak points left and away; see its BACK and tail toward lower-right. Meadow Markets painterly cozy farm aesthetic, rich softly painted ivory feathers, a modest RED HEN comb and wattle, golden yellow closed beak, dark brown eyes, rounded mature hen body, small proportionate head, folded wings, short uplifted tail, TWO correctly jointed yellow legs and TWO distinct three-forward-toed feet clearly visible, both feet flat on one ground plane, no floating, no extra legs/toes. It is a HEN not a rooster. Natural calm standing pose. Camera fixed ORTHOGRAPHIC ISOMETRIC at30degrees above ground so we see the back/top of body and top of the head; do NOT use an eye-level mascot portrait. Reference identifies the white hen/color/painted detail only; reduce huge mascot head/comb and show correct top-down camera and leg anatomy. Whole bird isolated at high detail1536x1024 on CLEAN transparent RGBA, consistent scale, centered,60px empty margin, NO ground patch, shadow blob, base, grass, coop, scenery, glow or text. Premium crisp painted mobile farm sprite."
+    },
+    {
+      "asset": "hen-2",
+      "master": "hen-2.png",
+      "prompt": "Generate ONE full body WHITE LAYING HEN game sprite, facing upper-right (northeast), beak points right and away; see its BACK and tail toward lower-left. Meadow Markets painterly cozy farm aesthetic, rich softly painted ivory feathers, a modest RED HEN comb and wattle, golden yellow closed beak, dark brown eyes, rounded mature hen body, small proportionate head, folded wings, short uplifted tail, TWO correctly jointed yellow legs and TWO distinct three-forward-toed feet clearly visible, both feet flat on one ground plane, no floating, no extra legs/toes. It is a HEN not a rooster. Natural calm standing pose. Camera fixed ORTHOGRAPHIC ISOMETRIC at30degrees above ground so we see the back/top of body and top of the head; do NOT use an eye-level mascot portrait. Reference identifies the white hen/color/painted detail only; reduce huge mascot head/comb and show correct top-down camera and leg anatomy. Whole bird isolated at high detail1536x1024 on CLEAN transparent RGBA, consistent scale, centered,60px empty margin, NO ground patch, shadow blob, base, grass, coop, scenery, glow or text. Premium crisp painted mobile farm sprite."
+    },
+    {
+      "asset": "hen-3",
+      "master": "hen-3.png",
+      "prompt": "Generate ONE full body WHITE LAYING HEN game sprite, facing lower-right (southeast), beak points right and slightly down; see its front-right breast and left side wing. Meadow Markets painterly cozy farm aesthetic, rich softly painted ivory feathers, a modest RED HEN comb and wattle, golden yellow closed beak, dark brown eyes, rounded mature hen body, small proportionate head, folded wings, short uplifted tail, TWO correctly jointed yellow legs and TWO distinct three-forward-toed feet clearly visible, both feet flat on one ground plane, no floating, no extra legs/toes. It is a HEN not a rooster. Natural calm standing pose. Camera fixed ORTHOGRAPHIC ISOMETRIC at30degrees above ground so we see the back/top of body and top of the head; do NOT use an eye-level mascot portrait. Reference identifies the white hen/color/painted detail only; reduce huge mascot head/comb and show correct top-down camera and leg anatomy. Whole bird isolated at high detail1536x1024 on CLEAN transparent RGBA, consistent scale, centered,60px empty margin, NO ground patch, shadow blob, base, grass, coop, scenery, glow or text. Premium crisp painted mobile farm sprite."
+    }
+  ],
+  "entries": {
+    "coop-0": {
+      "frames": [
+        {
+          "file": "assets/generated/coops177/house-0-0.webp",
+          "width": 860,
+          "height": 880,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-0-1.webp",
+          "width": 884,
+          "height": 967,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-0-2.webp",
+          "width": 920,
+          "height": 949,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-0-3.webp",
+          "width": 926,
+          "height": 915,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        }
+      ],
+      "processVersion": 6,
+      "gridComposed": true
+    },
+    "coop-1": {
+      "frames": [
+        {
+          "file": "assets/generated/coops177/house-1-0.webp",
+          "width": 1014,
+          "height": 879,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-1-1.webp",
+          "width": 1032,
+          "height": 941,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-1-2.webp",
+          "width": 1021,
+          "height": 945,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-1-3.webp",
+          "width": 1077,
+          "height": 966,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        }
+      ],
+      "processVersion": 6,
+      "gridComposed": true
+    },
+    "coop-2": {
+      "frames": [
+        {
+          "file": "assets/generated/coops177/house-2-0.webp",
+          "width": 1326,
+          "height": 937,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-2-1.webp",
+          "width": 1298,
+          "height": 978,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-2-2.webp",
+          "width": 1370,
+          "height": 996,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-2-3.webp",
+          "width": 1319,
+          "height": 945,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        }
+      ],
+      "processVersion": 6,
+      "gridComposed": true
+    },
+    "coop-3": {
+      "frames": [
+        {
+          "file": "assets/generated/coops177/house-3-0.webp",
+          "width": 1352,
+          "height": 861,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-3-1.webp",
+          "width": 1368,
+          "height": 934,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-3-2.webp",
+          "width": 1350,
+          "height": 863,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        },
+        {
+          "file": "assets/generated/coops177/house-3-3.webp",
+          "width": 1416,
+          "height": 923,
+          "sourceWidth": 1536,
+          "sourceHeight": 1024,
+          "alphaCorners": 0,
+          "anchor": [
+            0.5,
+            0.86
+          ],
+          "billboard": true,
+          "heightScale": 2
+        }
+      ],
+      "processVersion": 6,
+      "gridComposed": true
+    }
+  },
+  "assets": {
+    "rail": {
+      "file": "assets/generated/coops177/rail.webp",
+      "width": 1273,
+      "height": 910,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "alphaCorners": 0,
+      "bottom": [
+        327.9918377955524,
+        937.9713332573649
+      ],
+      "railSpan": 358.0001859642616,
+      "slope": 0.4791669249503634
+    },
+    "post": {
+      "file": "assets/generated/coops177/post.webp",
+      "width": 276,
+      "height": 905,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "alphaCorners": 0,
+      "anchor": [
+        0.4886607622114869,
+        1
+      ]
+    },
+    "floor": {
+      "file": "assets/generated/coops177/floor.webp",
+      "width": 1254,
+      "height": 1254,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "alphaCorners": 400,
+      "anchor": [
+        0.4996012759170654,
+        1
+      ]
+    },
+    "water": {
+      "file": "assets/generated/coops177/water.webp",
+      "width": 1371,
+      "height": 569,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "alphaCorners": 0,
+      "anchor": [
+        0.6324440613280876,
+        1
+      ]
+    },
+    "hens": [
+      {
+        "file": "assets/generated/coops177/hen-0.webp",
+        "width": 805,
+        "height": 917,
+        "sourceWidth": 1536,
+        "sourceHeight": 1024,
+        "alphaCorners": 0,
+        "anchor": [
+          0.596562184024267,
+          1
+        ]
+      },
+      {
+        "file": "assets/generated/coops177/hen-1.webp",
+        "width": 735,
+        "height": 942,
+        "sourceWidth": 1536,
+        "sourceHeight": 1024,
+        "alphaCorners": 0,
+        "anchor": [
+          0.6628953335720252,
+          1
+        ]
+      },
+      {
+        "file": "assets/generated/coops177/hen-2.webp",
+        "width": 714,
+        "height": 931,
+        "sourceWidth": 1536,
+        "sourceHeight": 1024,
+        "alphaCorners": 0,
+        "anchor": [
+          0.7309423769507802,
+          1
+        ]
+      },
+      {
+        "file": "assets/generated/coops177/hen-3.webp",
+        "width": 793,
+        "height": 931,
+        "sourceWidth": 1536,
+        "sourceHeight": 1024,
+        "alphaCorners": 0,
+        "anchor": [
+          0.514122225386107,
+          1
+        ]
+      }
+    ]
+  }
+}
