@@ -131,34 +131,34 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 13 fills the gameplay canvas without menu artwork, separates camera controls from the commander HUD, and prevents scrolling audio settings from changing volume.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 14 adds AI spectator play, local campaign autosave/resume, maximum attack dice with a slider, larger statistics, saved text sizing and selectable graphics and board motion.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.13 · Build 13",
+      "build": "Version 1.0.0-preview.14 · Build 14",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Open Play browser preview, choose your game setup and launch the campaign.",
+        "Open Play browser preview, choose your game setup, then launch. Set human commanders to zero to watch AI play.",
         "Choose victory and reinforcement rules with the in-game touch pickers before launching. Adjust sound and dice finishes in Settings.",
         "Follow turn prompts to reinforce, attack and move troops. Choose solo AI, local hot-seat or online play.",
         "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
         "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
-        "Campaigns are not saved persistently. Finish your campaign before closing or installing an update."
+        "Local campaigns autosave on this device. Use Resume local campaign to continue; clearing game or browser data can remove the save."
       ],
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/13/",
+          "url": "https://sponsorsorter.com/frontlines/builds/14/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-13.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-14.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 13 was installed on a Samsung test phone through an ADB repair; this is not an in-app updater test. Android WindowManager-driven portrait/landscape transitions and the raw-touch music slider were checked. Physical sensor rotation and other devices remain unaccepted. The 10-to-11 native update was accepted separately; it does not certify updates to 13. Android installation requires your confirmation. No persistent campaign resume or remembered login. Human email/friends and phone-to-phone optical QR remain pending. No paid cosmetic shop. Solo pause and resume were checked in hosted play on build 11. If an older game does not offer updates, finish your campaign and reopen Play in browser; closing an unsaved campaign loses it. Subjective music approval remains separate.",
-      "sha256": "3FD2AE82F06597C50FC2A138689A3E73A5A6412DE0D1A5EC376681AFF588044B"
+      "notes": "Playtest preview. Final build 14 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. WindowManager-driven rotation, dice/move controls, text sizing and local restart recovery were checked. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11, with further source checks in 14. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate.",
+      "sha256": "5378D4CBE22E94A4AA24CED2A87767A1BFC0CAA2F804EA3007FC63DB4DE376D0"
     }
   ]
 }

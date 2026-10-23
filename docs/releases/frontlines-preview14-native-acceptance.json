@@ -1,0 +1,91 @@
+{
+  "final_build": 14,
+  "apk_bytes": 68372175,
+  "apk_sha256": "5378d4cbe22e94a4aa24ced2a87767a1bfc0caa2f804ea3007fc63db4de376d0",
+  "installed_apk_sha256": "5378d4cbe22e94a4aa24ced2a87767a1bfc0caa2f804ea3007fc63db4de376d0",
+  "installation_method": "ADB replacement of preview candidate during explicitly requested test-phone repair/testing; not in-app updater acceptance",
+  "device": "Samsung SM-S908E / Adreno730 (device identifier omitted)",
+  "final_exact_apk_checks": [
+    "Menu14 and saved campaign launch; fullscreen3D with no menu artwork behind gameplay",
+    "Native Graphics and Board Motion picker changed60 then restored30; preferences read back",
+    "Native text slider100 to140 then100; labels resized and preference read back",
+    "Email raw-touch keyboard opens and focused field stays above keyboard; actual typed-character/password keyboard checks were on earlier14 candidate with unchanged touch/form code",
+    "Earned physical card fully visible: territory, approved soldier artwork and symbol; duplicate banner removed",
+    "WindowManager portrait/landscape/portrait with original free/default settings restored",
+    "Forced five-card trade restored with three suggested legal cards; native confirmation completed",
+    "Attack opens3/3; raw slider lowers1/3 then raises3/3; live authoritative roll/capture displayed",
+    "Occupation slider reaches1 and24; actual process restart restores selected1-of24; then full24 transferred",
+    "Final phone left in a paused local attack after capture; campaign saved, graphicsBalanced30 and text100"
+  ],
+  "rotation": {
+    "method": "Android WindowManager-driven, not a new physical sensor acceptance",
+    "events": [
+      {
+        "orientation": "portrait",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone14\\finalrelease14-portrait.png"
+      },
+      {
+        "orientation": "landscape",
+        "width": 3088,
+        "height": 1440,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone14\\finalrelease14-landscape.png"
+      },
+      {
+        "orientation": "portrait-again",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone14\\finalrelease14-portrait-again.png"
+      }
+    ],
+    "restored": {
+      "fixed": "default",
+      "mode": "free",
+      "stored": "0"
+    }
+  },
+  "physical_sensor_acceptance": "Owner confirmed physical rotation on13;14 tests here used WindowManager, not a new hand-sensor check.",
+  "performance": {
+    "quality": "balanced",
+    "board_motion_target": 30,
+    "engine_app_cap": 60,
+    "running_root_fps_samples": [
+      43.0,
+      44.0,
+      44.0,
+      42.0,
+      42.0,
+      43.0
+    ],
+    "thermal_status_at_end_of_running_samples": 1,
+    "scope": "One Samsung, limited observed samples, not a controlled cross-device or sustained60FPS benchmark. Earlier high-detail candidate reached thermal3 and29–38FPS."
+  },
+  "earlier_candidate_discovery_checks": [
+    "Zero-human Capitals progresses through automatic capital selection into AI play",
+    "Native capital choice and separate guard",
+    "Chat preset selection and bubble",
+    "Mode pickers and original native host QR",
+    "Typed test character and password keyboard type; no account request submitted"
+  ],
+  "native_QR": "Final exact14 host code auto-scrolled fully into view; no second-phone optical pairing claimed. Private QR screenshots excluded from public packet; pairing process stopped afterward.",
+  "source_validation": "Separate suite execution evidence and counts are in packet validation; server71/LAN13/SFX provenance21 are carried from10.",
+  "remaining_acceptance": [
+    "Human email confirmation/recovery and friends",
+    "Two-phone optical QR plus complete human multiplayer match",
+    "Other phone hardware and longer controlled thermal tests",
+    "Subjective art/animation/audio approval; AAA visual target remains unfinished"
+  ],
+  "final_saved_country_state": {
+    "Brazil": {
+      "owner": 0,
+      "troops": 1
+    },
+    "NorthAfrica": {
+      "owner": 0,
+      "troops": 24
+    },
+    "phase": "attack",
+    "active_player": 0
+  }
+}

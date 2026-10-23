@@ -1,6 +1,6 @@
 {
-  "build": 13,
-  "version": "1.0.0-preview.13",
-  "url": "https://sponsorsorter.com/frontlines/builds/13/",
-  "notes": "Edge-to-edge gameplay with no main-menu artwork behind the board; full-screen rotating mobile layouts; clean HUD placement; touch-ready audio sliders; camera glides without changing heading; closer zoom; fixed capital guard and visible card awards; original plus three reference-based music tracks."
+  "build": 14,
+  "version": "1.0.0-preview.14",
+  "url": "https://sponsorsorter.com/frontlines/builds/14/",
+  "notes": "Maximum attack dice with touch slider; AI spectator mode; larger statistics and saved text sizing; local campaign resume; finer terrain/dark water materials and cheaper geographic shadows; full-throw camera framing and HUD-safe earned cards; pause/background render savings; complete native pairing QR visibility."
 }

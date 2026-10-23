@@ -1,0 +1,1 @@
+Final native install and acceptance scope: see validation/native-acceptance.json. Earlier14 candidates were used for broad interaction discovery; candidate screenshots/QR tokens are excluded. Source suites and native actions are different evidence. ADB installation is not in-app updater acceptance. Hosted publication remains the Website agent final step.
