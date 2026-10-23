@@ -1,11 +1,11 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.11",
-  "versionCode": 11,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-11.apk",
-  "bytes": 64459070,
-  "sha256": "25a45200068916fcc64999c00b71e95d8710577bed546df8846b60c2915f84dc",
+  "versionName": "1.0.0-preview.12",
+  "versionCode": 12,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-12.apk",
+  "bytes": 67032373,
+  "sha256": "e8d67f1c16afa6b5bb4cc4cf023289bc0cd040f153002fa5a4dadc07e4bafc5d",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Solo pause now freezes AI and board animation; browser update/service HTTP decoding corrected. Touch-ready rules, dice skins and chat; closer zoom and smoothly framed action camera; new ElevenLabs combat, dice, paper and interface sounds; continuous approved music; polished unit facing and physical cards."
+  "notes": "Full-screen rotating phone layouts; touch-ready audio sliders; action camera glides without rotating; closer zoom; fixed capital flag bearer and camera-visible card awards; three new tracks based on the approved menu music with smooth transitions."
 }

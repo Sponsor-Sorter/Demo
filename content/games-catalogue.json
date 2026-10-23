@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a raised 3D world board in solo AI, local hot-seat or online campaigns. Touch rule and skin pickers, closer zoom, action framing and new combat, dice and interface sounds.",
+      "description": "Command six coalitions across a raised 3D world board in solo AI, local hot-seat or online campaigns. Build 12 adds touch audio sliders, closer zoom, camera follow that keeps its heading and tilt, and three new music tracks with smooth transitions.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.11 · Build 11",
+      "build": "Version 1.0.0-preview.12 · Build 12",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -149,16 +149,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/11/",
+          "url": "https://sponsorsorter.com/frontlines/builds/12/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-11.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-12.apk"
         }
       ],
-      "notes": "Playtest preview. No persistent campaign resume or remembered login. Android installation requires your confirmation; the in-app update flow is still being tested. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop. Solo pause and resume were checked in hosted play. If an older game does not offer updates, finish your campaign and reopen Play in browser; closing an unsaved campaign loses it.",
-      "sha256": "25A45200068916FCC64999C00B71E95D8710577BED546DF8846B60C2915F84DC"
+      "notes": "Playtest preview. Native build 12 installation, physical phone rotation/fullscreen and touch acceptance are pending the real phone update test. Android installation requires your confirmation. The 10-to-11 native update was accepted separately; it does not certify 11-to-12. No persistent campaign resume or remembered login. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop. Solo pause and resume were checked in hosted play on build 11. If an older game does not offer updates, finish your campaign and reopen Play in browser; closing an unsaved campaign loses it. Music preference is still awaiting user listening review.",
+      "sha256": "E8D67F1C16AFA6B5BB4CC4CF023289BC0CD040F153002FA5A4DADC07E4BAFC5D"
     }
   ]
 }

@@ -35,20 +35,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 11 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.11 · Build 11');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/11/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-11.apk');
- assert.match(entry.notes,/in-app update flow is still being tested/);
+test('Frontlines publishes accepted build 12 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.12 · Build 12');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/12/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-12.apk');
+ assert.match(entry.notes,/physical phone rotation\/fullscreen and touch acceptance are pending/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview11.json',import.meta.url),'utf8'));
- assert.equal(m.build,11);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview12.json',import.meta.url),'utf8'));
+ assert.equal(m.build,12);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,11);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,11);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,12);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,12);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -65,4 +65,9 @@ test('Frontlines replaces obsolete pause caution only after hosted acceptance',(
 test('Frontlines preserves all accepted build 10 immutable bytes',async()=>{
  const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview10.json',import.meta.url),'utf8'));
  for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/10/')||f.path.endsWith('build-10.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
+});
+
+test('Frontlines preserves all accepted build 11 immutable bytes',async()=>{
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview11.json',import.meta.url),'utf8'));
+ for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/11/')||f.path.endsWith('build-11.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
 });

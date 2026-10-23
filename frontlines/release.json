@@ -1,6 +1,6 @@
 {
-  "build": 11,
-  "version": "1.0.0-preview.11",
-  "url": "https://sponsorsorter.com/frontlines/builds/11/",
-  "notes": "Solo pause now freezes AI and board animation; browser update/service HTTP decoding corrected. Touch-ready rules, dice skins and chat; closer zoom and smoothly framed action camera; new ElevenLabs combat, dice, paper and interface sounds; continuous approved music; polished unit facing and physical cards."
+  "build": 12,
+  "version": "1.0.0-preview.12",
+  "url": "https://sponsorsorter.com/frontlines/builds/12/",
+  "notes": "Full-screen rotating phone layouts; touch-ready audio sliders; action camera glides without rotating; closer zoom; fixed capital flag bearer and camera-visible card awards; three new tracks based on the approved menu music with smooth transitions."
 }
