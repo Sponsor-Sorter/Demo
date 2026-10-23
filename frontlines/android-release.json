@@ -1,11 +1,11 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.14",
-  "versionCode": 14,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-14.apk",
-  "bytes": 68372175,
-  "sha256": "5378d4cbe22e94a4aa24ced2a87767a1bfc0caa2f804ea3007fc63db4de376d0",
+  "versionName": "1.0.0-preview.15",
+  "versionCode": 15,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk",
+  "bytes": 71112647,
+  "sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Maximum attack dice with touch slider; AI spectator mode; larger statistics and saved text sizing; local campaign resume; finer terrain/dark water materials and cheaper geographic shadows; full-throw camera framing and HUD-safe earned cards; pause/background render savings; complete native pairing QR visibility."
+  "notes": "Fixes stale board rendering at slow frame rates; conservatively removes hidden ocean terrain triangles without shifting geography; stitched moving ship canvas; read-only AI spectator controls; local save compatibility and safer dice camera framing."
 }

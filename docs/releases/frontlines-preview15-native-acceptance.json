@@ -1,0 +1,204 @@
+{
+  "final_build": 15,
+  "at_utc": "2026-10-23T06:47:48.007061+00:00",
+  "apk_bytes": 71112647,
+  "apk_sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48",
+  "installed_apk_sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48",
+  "device": "Samsung SM-S908E / Adreno730 (device identifier omitted)",
+  "installation_method": "Authorized ADB preview replacement; not an in-app updater acceptance",
+  "final_exact_apk_checks": [
+    "Menu15; full-canvas match; previous14 local campaign resumes and host-build metadata becomes15",
+    "Balanced30 camera pan, zoom and home remain aligned; native Ultra30 also pans correctly; restored Balanced30",
+    "WindowManager portrait/landscape/portrait fills display; original free/default OS rotation settings restored",
+    "Attack opens3/3, lowers1/3, restores3/3; actual map roll displayed and attacker loses one unit",
+    "Pending occupation fixture lowers24 to1; process restart restores1/24; max24 confirmed with Brazil1/NorthAfrica24",
+    "Forced five-card fixture suggests a legal three-card set; raw touch confirms; hand becomes2 and turn advances",
+    "Captured-turn award fixture ends turn, hand0 becomes1; full physical card title/art/symbol visible above commander strip",
+    "Music50 to20 then50; text100 to140 then100; native quality dropdown selects Ultra and restores Balanced",
+    "Human count reaches0 and clamps there; AI players advance autonomously through battles; no deploy/turn buttons",
+    "Spectator commander panel shows statistics and Close without Send/alliance controls",
+    "Final phone left paused in a saved zero-human campaign, Balanced30 and text100"
+  ],
+  "checkpoints": {
+    "transfer": {
+      "at_utc": "2026-10-23T06:29:12.469143+00:00",
+      "phase": "attack",
+      "active": 0,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 15,
+      "capture_pending": false,
+      "move_amount": 24,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 1
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 24
+        }
+      },
+      "hand_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "trade": {
+      "at_utc": "2026-10-23T06:31:32.806221+00:00",
+      "phase": "draft",
+      "active": 1,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 15,
+      "capture_pending": false,
+      "move_amount": 24,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 25
+        },
+        "NorthAfrica": {
+          "owner": 1,
+          "troops": 1
+        }
+      },
+      "hand_counts": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "award": {
+      "at_utc": "2026-10-23T06:32:41.437719+00:00",
+      "phase": "draft",
+      "active": 1,
+      "turn": 1,
+      "humans": 6,
+      "host_build": 15,
+      "capture_pending": false,
+      "move_amount": 24,
+      "countries": {
+        "Brazil": {
+          "owner": 0,
+          "troops": 25
+        },
+        "NorthAfrica": {
+          "owner": 1,
+          "troops": 1
+        }
+      },
+      "hand_counts": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "final": {
+      "at_utc": "2026-10-23T06:47:16.503731+00:00",
+      "phase": "attack",
+      "active": 0,
+      "turn": 2,
+      "humans": 0,
+      "host_build": 15,
+      "capture_pending": false,
+      "move_amount": 24,
+      "countries": {
+        "Brazil": {
+          "owner": 5,
+          "troops": 1
+        },
+        "NorthAfrica": {
+          "owner": 0,
+          "troops": 1
+        }
+      },
+      "hand_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "rotation": {
+    "method": "Android WindowManager-driven, not a new physical sensor acceptance",
+    "events": [
+      {
+        "orientation": "portrait",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone15\\finalrelease15-portrait.png"
+      },
+      {
+        "orientation": "landscape",
+        "width": 3088,
+        "height": 1440,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone15\\finalrelease15-landscape.png"
+      },
+      {
+        "orientation": "portrait-again",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone15\\finalrelease15-portrait-again.png"
+      }
+    ],
+    "restored": {
+      "fixed": "default",
+      "mode": "free",
+      "stored": "0"
+    }
+  },
+  "performance": {
+    "observed_logs": {
+      "native15-running": [
+        "FRONTLINES_PERF phase=attack fps=50.0 draws=280.0 primitives=25306.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=attack fps=54.0 draws=935.0 primitives=639460.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=attack fps=53.0 draws=280.0 primitives=25306.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=attack fps=45.0 draws=280.0 primitives=25306.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=attack fps=44.0 draws=935.0 primitives=639460.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=attack fps=47.0 draws=280.0 primitives=25306.0 board=(1280, 597) quality=balanced board_fps_target=30"
+      ],
+      "native15-ultra": [
+        "FRONTLINES_PERF phase=fortify fps=48.0 draws=935.0 primitives=639456.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=fortify fps=45.0 draws=935.0 primitives=639456.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=fortify fps=52.0 draws=935.0 primitives=639456.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=45.0 draws=934.0 primitives=639410.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=44.0 draws=279.0 primitives=25256.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=57.0 draws=934.0 primitives=639410.0 board=(1280, 597) quality=balanced board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=49.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=41.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=40.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=32.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=32.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30",
+        "FRONTLINES_PERF phase=draft fps=32.0 draws=934.0 primitives=640886.0 board=(2048, 955) quality=ultra board_fps_target=30"
+      ]
+    },
+    "thermal_status_at_receipt": 3,
+    "scope": "One Samsung, varying views and warming; not controlled phone A/B or a sustained frame-rate guarantee. PC dense/sparse paired review is separate."
+  },
+  "carried_native14_scope": [
+    "Raw-touch email keyboard and above-IME field positioning",
+    "Final host QR visibility; no second-phone optical pairing",
+    "Owner physical sensor confirmation was13;15 uses WindowManager"
+  ],
+  "remaining_acceptance": [
+    "Human email/friends workflows",
+    "Two-phone optical QR and complete human network match",
+    "Other phone hardware and controlled thermal tests",
+    "Subjective AAA art/animation quality remains open"
+  ],
+  "source_validation": "1288 fresh cycle checks; server71/LAN13/SFX provenance21 explicitly carried from10; native fixtures differ from a complete normal-start human match."
+}

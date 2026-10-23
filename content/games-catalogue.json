@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 14 adds AI spectator play, local campaign autosave/resume, maximum attack dice with a slider, larger statistics, saved text sizing and selectable graphics and board motion. Known issue: the 30 FPS board-motion setting can freeze the scene; choose the 60 FPS setting as a workaround.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 15 updates slow-motion rendering, terrain meshes, moving ship canvas and spectator controls, with local autosave/resume. The previous 30 FPS stale-board defect is awaiting hosted build 15 verification; use 60 FPS motion meanwhile.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.14 · Build 14",
+      "build": "Version 1.0.0-preview.15 · Build 15",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -149,16 +149,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/14/",
+          "url": "https://sponsorsorter.com/frontlines/builds/15/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-14.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 14 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. WindowManager-driven rotation, dice/move controls, text sizing and local restart recovery were checked. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11, with further source checks in 14. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate. Build 14 has a confirmed 30 FPS render-scheduling defect that can leave the board stale while labels move. The 60 FPS board-motion setting restored alignment in hosted testing; a follow-up fix is in preparation.",
-      "sha256": "5378D4CBE22E94A4AA24CED2A87767A1BFC0CAA2F804EA3007FC63DB4DE376D0"
+      "notes": "Playtest preview. Final build 15 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. Native Balanced30 and Ultra30 camera alignment, local save continuation from 14, dice controls and fixture-based occupation/card flows were checked. Physical sensor confirmation was on build 13; WindowManager rotation was checked in 15. Other hardware remains unaccepted. The 60 FPS board-motion setting restored alignment in hosted testing of build 14; hosted build 15 confirmation is pending. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; Ultra reached thermal status 3 in native testing and Balanced was restored. No universal60FPS claim. Subjective art, animation and music approval remain separate.",
+      "sha256": "FC59776B16FA1242E24282EDA148E2C376185F2A287AF911F649448A2E704C48"
     }
   ]
 }

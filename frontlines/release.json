@@ -1,6 +1,6 @@
 {
-  "build": 14,
-  "version": "1.0.0-preview.14",
-  "url": "https://sponsorsorter.com/frontlines/builds/14/",
-  "notes": "Maximum attack dice with touch slider; AI spectator mode; larger statistics and saved text sizing; local campaign resume; finer terrain/dark water materials and cheaper geographic shadows; full-throw camera framing and HUD-safe earned cards; pause/background render savings; complete native pairing QR visibility."
+  "build": 15,
+  "version": "1.0.0-preview.15",
+  "url": "https://sponsorsorter.com/frontlines/builds/15/",
+  "notes": "Fixes stale board rendering at slow frame rates; conservatively removes hidden ocean terrain triangles without shifting geography; stitched moving ship canvas; read-only AI spectator controls; local save compatibility and safer dice camera framing."
 }

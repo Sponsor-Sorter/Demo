@@ -1,0 +1,720 @@
+{
+  "release_id": "2026-10-23-preview15",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.15",
+  "build": 15,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/15/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/15/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.15",
+    "versionCode": 15,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk",
+    "bytes": 71112647,
+    "sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Fixes stale board rendering at slow frame rates; conservatively removes hidden ocean terrain triangles without shifting geography; stitched moving ship canvas; read-only AI spectator controls; local save compatibility and safer dice camera framing.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 3,
+    "engine_checks": 71,
+    "hosted": "Three-player Capitals, exponential, skins, strict same-build gate, private out-of-turn alliance and third-seat privacy passed. Test identities removed."
+  },
+  "validation": {
+    "failures": 0,
+    "LAN_checks": 13,
+    "server_engine_checks": 71,
+    "audio_provenance_mix_checks": 21,
+    "carried_from_preview10": [
+      "server_engine71",
+      "LAN13",
+      "SFX_provenance_mix21"
+    ],
+    "land_geometry_checks": 10,
+    "slow_render_spectator_checks": 11,
+    "save_resume_checks": 17,
+    "desktop_gameplay_checks": 104,
+    "mobile_checks": 844,
+    "new_interaction_checks": 26,
+    "complete_dice_framing_checks": 36,
+    "card_audio_capital_interaction_checks": 42,
+    "features_checks": 35,
+    "audio_runtime_checks": 37,
+    "unit_animation_checks": 21,
+    "touch_camera_checks": 37,
+    "pause_checks": 12,
+    "QR_layout_checks": 12,
+    "raw_touch_form_checks": 14,
+    "graphics_quality_checks": 30,
+    "fresh_cycle_total": 1288
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Local campaigns now resume from a validated atomic save. Network credentials and room state are excluded; remembered account sessions remain unfinished.",
+    "Owner confirmed physical rotation in13;14 WindowManager transitions and native acceptance are separately recorded. Broader devices and human cross-phone optical QR acceptance remain open.",
+    "18 mapped ElevenLabs SFX plus original and three actual-reference music tracks; technical checks do not establish subjective music approval.",
+    "Performance samples are PC view comparisons, not universal benchmarks. Native phone reported thermal status3 during extended testing; no broad-device60FPS claim."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 350,
+      "sha256": "ccdad8d1ad322c565634b7fabb5cf90dfa6b00bba32c4bde3d52141ea60c9bd1"
+    },
+    {
+      "path": "art_manifest.json",
+      "bytes": 3675,
+      "sha256": "3539c201d590c14eec3055626e7c924455876de1320b6a9edea4900ea7d1cff1"
+    },
+    {
+      "path": "BACKEND.md",
+      "bytes": 2974,
+      "sha256": "e17ddec2de071a9d2815dbc7bfa2f2eab41fe8f7c9ddad1f4810c841af84d0df"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 17733,
+      "sha256": "283240778a3d059cdebc58e388973b7da1785c2ac0904db1cfc66285ee153a67"
+    },
+    {
+      "path": "conversion_manifest.json",
+      "bytes": 2368,
+      "sha256": "c7c872537970a98f1afc1ce176083a41c106416288e998d9736888ef7981d213"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "media/finalrelease15-attack-position-overview.png",
+      "bytes": 1418349,
+      "sha256": "37353d554e1c443fc657c3bc8ad02ee9728ce11a14a21c5c3c95afd81b6a8187"
+    },
+    {
+      "path": "media/finalrelease15-attack-position.png",
+      "bytes": 4444491,
+      "sha256": "f26bdd9c64e71a55f76e19de8ad348c67d98e9564012fd1cfefd1faa0b311238"
+    },
+    {
+      "path": "media/finalrelease15-award-position-overview.png",
+      "bytes": 1418346,
+      "sha256": "f083db5188f940a3d4d8b49752d89e575cc36ba0160e6953333e57c848433753"
+    },
+    {
+      "path": "media/finalrelease15-award-position.png",
+      "bytes": 4446059,
+      "sha256": "050a2cb7f049d8649af6f61971f8ec6611c43a43d25a2190b94de8874cb40332"
+    },
+    {
+      "path": "media/finalrelease15-card-award-overview.png",
+      "bytes": 1318449,
+      "sha256": "f43e9556c926fd9f944dbc2d63273782504940a8bc4d62b7ce9dc19755234ac2"
+    },
+    {
+      "path": "media/finalrelease15-card-award.png",
+      "bytes": 4142232,
+      "sha256": "9b48f823f296188dba8ba0453a73cbe7f4f4b40566df58a12ae20f81d46459f2"
+    },
+    {
+      "path": "media/finalrelease15-final-paused-overview.png",
+      "bytes": 850607,
+      "sha256": "c6195c284995bb26b70dbff0ea44efcd80accffb3cdeec73fd4f7ee442bb94db"
+    },
+    {
+      "path": "media/finalrelease15-final-paused.png",
+      "bytes": 2689018,
+      "sha256": "7222901b371922e56f8521301d1f49cd322c5fa05af0a61fc3a765b9a8568c67"
+    },
+    {
+      "path": "media/finalrelease15-full-transfer-overview.png",
+      "bytes": 1418800,
+      "sha256": "db7724890b3ac2f941c6b38ab10f629b978e824e728b9383485894d2d508cfb0"
+    },
+    {
+      "path": "media/finalrelease15-full-transfer.png",
+      "bytes": 4444511,
+      "sha256": "78c2940e88f116b8882f679e9594c3b843d18f9aebc550afed1556fbb0026309"
+    },
+    {
+      "path": "media/finalrelease15-graphics-settings-overview.png",
+      "bytes": 584941,
+      "sha256": "5606102fbeca2a6b86675eabab4dc0d3a1d109186109018650c2ceea189c3c39"
+    },
+    {
+      "path": "media/finalrelease15-graphics-settings.png",
+      "bytes": 1663636,
+      "sha256": "88fc7307f5b544da4cf89b2729a2adffd2b82bc4547c96de99a260b4cd40cf64"
+    },
+    {
+      "path": "media/finalrelease15-landscape-overview.png",
+      "bytes": 1417841,
+      "sha256": "c0951cadac9ab3b9cf9caf5a30bea6fbaa9892a7df3eb622ba071f6898c933d1"
+    },
+    {
+      "path": "media/finalrelease15-landscape.png",
+      "bytes": 4440852,
+      "sha256": "1af8cc194604de1b8a2ea491224ce5ccadacbf5c42e09f3d3d5000c7007d6f7e"
+    },
+    {
+      "path": "media/finalrelease15-live-roll-overview.png",
+      "bytes": 1630143,
+      "sha256": "8e0549367de9dce08e785e3560e59394512fdce0c37a938c12fdc277fc78c6cc"
+    },
+    {
+      "path": "media/finalrelease15-live-roll.png",
+      "bytes": 5292730,
+      "sha256": "5a4a856df7ebb9aa1909290fa352af2ddde2d10c64b3630925cd1b55ba71c984"
+    },
+    {
+      "path": "media/finalrelease15-max-dice-overview.png",
+      "bytes": 727940,
+      "sha256": "92110c4a03547f465224b8321284dca60af9bd88750ca7f70478e2853389b1ec"
+    },
+    {
+      "path": "media/finalrelease15-max-dice.png",
+      "bytes": 2220782,
+      "sha256": "9a23a61113304d8d736b083c0b75f0302004df7f32af41e3629483566aed4e9a"
+    },
+    {
+      "path": "media/finalrelease15-menu-overview.png",
+      "bytes": 1446908,
+      "sha256": "7b1bef796aea9e388a931e53a5fbba5f2bd28397b89fe25a9229f1383c54cef0"
+    },
+    {
+      "path": "media/finalrelease15-menu.png",
+      "bytes": 5026991,
+      "sha256": "5d2bb08e645af94796c4ae9a4e3d40e93f8db1a3cd688b7fe65d3b6db63ff494"
+    },
+    {
+      "path": "media/finalrelease15-min-dice-overview.png",
+      "bytes": 727254,
+      "sha256": "f07bb4f84e46c291d916d55d23dbeaa3fc49f73231cb5ad94504254941cbcede"
+    },
+    {
+      "path": "media/finalrelease15-min-dice.png",
+      "bytes": 2220902,
+      "sha256": "0f9ff05302de3eeb86fb81fc5464b31eab5310798148fe105fbaa8e1efe36097"
+    },
+    {
+      "path": "media/finalrelease15-music20-overview.png",
+      "bytes": 503657,
+      "sha256": "27b3342fb54cbce1b18100089c2536bab13bffd437c5d2f2cbb7e818191d796c"
+    },
+    {
+      "path": "media/finalrelease15-music20.png",
+      "bytes": 1439917,
+      "sha256": "f09d5724b541b07480c53cf6602345972729f9007736fd9eae45b34d4cd019df"
+    },
+    {
+      "path": "media/finalrelease15-occupation-one-overview.png",
+      "bytes": 713101,
+      "sha256": "830586ff266347c54d12c94006a1b89b79d72a6944e6f2f4e49fa4473ae88494"
+    },
+    {
+      "path": "media/finalrelease15-occupation-one.png",
+      "bytes": 2125044,
+      "sha256": "7ee892c62877c5450403d3b92bee60d34f150b1cc6013ff44b2452b114c11abe"
+    },
+    {
+      "path": "media/finalrelease15-occupation-overview.png",
+      "bytes": 713539,
+      "sha256": "b4fdbbc03bac8ff61ae8e00da5ec028380a15a6818c3ab92ac165fd5ef69c822"
+    },
+    {
+      "path": "media/finalrelease15-occupation.png",
+      "bytes": 2123221,
+      "sha256": "2fab11a62ffe15fc8004fabe1686e81c19b4e98b8f48ea14509ac8ed02c91c7b"
+    },
+    {
+      "path": "media/finalrelease15-pan30-overview.png",
+      "bytes": 1146509,
+      "sha256": "f0bdc9924cd113d0b455f174355173af42e24cc92f86e441b2453d4a0588f221"
+    },
+    {
+      "path": "media/finalrelease15-pan30.png",
+      "bytes": 3492095,
+      "sha256": "ea4695cdb1e9f50fe0ab5667efb858638a34df8aac3fa809d7b6fbe59d8b13a5"
+    },
+    {
+      "path": "media/finalrelease15-pending-resumed-overview.png",
+      "bytes": 712477,
+      "sha256": "d8ebdd46c96d45ed9b275faeff45392bb4e8fc1607335ce377d3bc51bc7e8fd6"
+    },
+    {
+      "path": "media/finalrelease15-pending-resumed.png",
+      "bytes": 2122018,
+      "sha256": "697f03f63ba917f8fb040aeff1d76eabe8d0024c8d53020a50bb912753c29bd1"
+    },
+    {
+      "path": "media/finalrelease15-portrait-again-overview.png",
+      "bytes": 914076,
+      "sha256": "7fa795f55ed03163577616e256c2dda290918e73dbf37e01b9d48a78e816c652"
+    },
+    {
+      "path": "media/finalrelease15-portrait-again.png",
+      "bytes": 5828067,
+      "sha256": "021ba21f50aaacd68ae58455841265f929bf297d5ad8c86fc19340380125faa8"
+    },
+    {
+      "path": "media/finalrelease15-portrait-overview.png",
+      "bytes": 914470,
+      "sha256": "a472e7931031ca3774a1483116ce40027ca42c68a78027fe0675adc4a9ad2787"
+    },
+    {
+      "path": "media/finalrelease15-portrait.png",
+      "bytes": 5826450,
+      "sha256": "e486d3a6dad43fa70a93e56f18e5b3b92fc477782816f11b540c6b0b378937d6"
+    },
+    {
+      "path": "media/finalrelease15-quality-picker-overview.png",
+      "bytes": 443569,
+      "sha256": "454288dfca775c8a1cd9eabdb6c19322f335bcf81a3b016d398e45695f0c31d4"
+    },
+    {
+      "path": "media/finalrelease15-quality-picker.png",
+      "bytes": 1286758,
+      "sha256": "09658cb644bfc1f54c961f037ec6b323eeec3f01234b48a60a58cdf4ebc584bb"
+    },
+    {
+      "path": "media/finalrelease15-restart-menu-overview.png",
+      "bytes": 1446908,
+      "sha256": "7b1bef796aea9e388a931e53a5fbba5f2bd28397b89fe25a9229f1383c54cef0"
+    },
+    {
+      "path": "media/finalrelease15-restart-menu.png",
+      "bytes": 5026991,
+      "sha256": "5d2bb08e645af94796c4ae9a4e3d40e93f8db1a3cd688b7fe65d3b6db63ff494"
+    },
+    {
+      "path": "media/finalrelease15-restored-balanced-overview.png",
+      "bytes": 569102,
+      "sha256": "4b6ec0c3c1f238b9d0ed8744ab529c0bc73a345787d6c96acf9a0808656d95fe"
+    },
+    {
+      "path": "media/finalrelease15-restored-balanced.png",
+      "bytes": 1620681,
+      "sha256": "6517b4d65236c76ef94fcbbc1b0ffdd1aa0e46638dbfe239ec5d14e7f1d9871a"
+    },
+    {
+      "path": "media/finalrelease15-resumed-overview.png",
+      "bytes": 1418603,
+      "sha256": "918b3e156f20748d3fed05668fd7257b27146d9e4fbd46682bd856ad2d7154f8"
+    },
+    {
+      "path": "media/finalrelease15-resumed-settled-overview.png",
+      "bytes": 1420988,
+      "sha256": "522b5b0d44f82a5a04c5a52503fe414bfc2930ea4caf023d3ea716c82b73c44a"
+    },
+    {
+      "path": "media/finalrelease15-resumed-settled.png",
+      "bytes": 4454585,
+      "sha256": "ffcb1429e2532b8e0b2e34970c5731b48e498d1ccb9280831e90a1115fe30d6e"
+    },
+    {
+      "path": "media/finalrelease15-resumed.png",
+      "bytes": 4443520,
+      "sha256": "bdee00af8ed54ecf6eb0dae6f851eb7120b8c0229f6fd03dde55f20d6c1fa26c"
+    },
+    {
+      "path": "media/finalrelease15-roll-outcome-overview.png",
+      "bytes": 1634851,
+      "sha256": "e4549ee24e77ee5462525fd215362cb80c3d0c5dda2ab4eab6ace90fdbabd36f"
+    },
+    {
+      "path": "media/finalrelease15-roll-outcome.png",
+      "bytes": 5237318,
+      "sha256": "7610f8a89355a50c01e3bd5caa8a7555713ffc6076dade8b5b5c323d624ae60d"
+    },
+    {
+      "path": "media/finalrelease15-settings-overview.png",
+      "bytes": 503486,
+      "sha256": "8f7f94108e666264f93723457255878b1d81dfc33668afe9ca5f4a71d96afb8c"
+    },
+    {
+      "path": "media/finalrelease15-settings.png",
+      "bytes": 1439023,
+      "sha256": "0dace218439038d238dde91dede1eed04de63dc5d9e877bec8df4e62e67107f7"
+    },
+    {
+      "path": "media/finalrelease15-solo-setup-overview.png",
+      "bytes": 817060,
+      "sha256": "4e77da0bfd20ec29298b2f665d977c972693ecb0b40b32347164049255f4086d"
+    },
+    {
+      "path": "media/finalrelease15-solo-setup.png",
+      "bytes": 2662213,
+      "sha256": "1eae322cda881a8fb7b58667843c611e06636ccb60d9bde97097671b43a00607"
+    },
+    {
+      "path": "media/finalrelease15-source-selected-overview.png",
+      "bytes": 1353780,
+      "sha256": "ccf14d1d3058504d8e64835f63aefbc24b97ec55c3ff961cd7c2bfb8930a3aad"
+    },
+    {
+      "path": "media/finalrelease15-source-selected.png",
+      "bytes": 4202378,
+      "sha256": "d119a2dd0e453ed65c82923a158a36b30be9768114662e9b59e6a44bb4a467a8"
+    },
+    {
+      "path": "media/finalrelease15-spectator-overview.png",
+      "bytes": 1407866,
+      "sha256": "1ca84a235313dcfd6d0f98ba7f5ea4f2ebf41d4af4fd3a392764630fe496f327"
+    },
+    {
+      "path": "media/finalrelease15-spectator-panel-overview.png",
+      "bytes": 1408259,
+      "sha256": "deaecb0ba7fa3743152471667ffa2c4453c11e4e563f642ad71442cffa580ad6"
+    },
+    {
+      "path": "media/finalrelease15-spectator-panel.png",
+      "bytes": 4382831,
+      "sha256": "12c3380b26c737609d106dce44147ce19b689cc2224079bcfac73ce19b9aa577"
+    },
+    {
+      "path": "media/finalrelease15-spectator.png",
+      "bytes": 4411539,
+      "sha256": "1a01ad728c37ca7f6c5d2ccabb3205869efa403e13d22a7d1f6d329deadeef61"
+    },
+    {
+      "path": "media/finalrelease15-suggested-trade-overview.png",
+      "bytes": 689368,
+      "sha256": "923356525f9ad11faed45c2b718ef52b840fb87e6d455f85beb0ec1446ca5a24"
+    },
+    {
+      "path": "media/finalrelease15-suggested-trade.png",
+      "bytes": 2033332,
+      "sha256": "6f628c97ee9cd19b3988ff2e0d9d1790da5cdde3d31ee6d14a8ca7d35c5ae44a"
+    },
+    {
+      "path": "media/finalrelease15-text140-overview.png",
+      "bytes": 521695,
+      "sha256": "e4be41e82eda8c54182a61d1c7a0780da5c15965b55eb9dc2084b2941b1b5f2c"
+    },
+    {
+      "path": "media/finalrelease15-text140.png",
+      "bytes": 1473711,
+      "sha256": "1b83f37152b2b709e098165b8ab9292b5ec32374d5b533b6e44083af029179c0"
+    },
+    {
+      "path": "media/finalrelease15-trade-confirmed-overview.png",
+      "bytes": 1401793,
+      "sha256": "2747cc85d01d089764602d2d2ef680e7f9b5c9ca227b080ceff0c48f8bf81a58"
+    },
+    {
+      "path": "media/finalrelease15-trade-confirmed.png",
+      "bytes": 4400594,
+      "sha256": "9147d6eb1c0e119239cc414408f138ee81e42bbc71be13923373027fe9ce9867"
+    },
+    {
+      "path": "media/finalrelease15-ultra-board-overview.png",
+      "bytes": 1462491,
+      "sha256": "27d7779042724376318b5f8cf78857d540201d82d3ce56beb7467fa8f658ec98"
+    },
+    {
+      "path": "media/finalrelease15-ultra-board.png",
+      "bytes": 4831419,
+      "sha256": "9176e745cfa1bb0f539278ffa3cb1038d735f34534761e9329ccbec2bc7279fd"
+    },
+    {
+      "path": "media/finalrelease15-ultra-pan-overview.png",
+      "bytes": 1268549,
+      "sha256": "0a7b1a6753b4c97780a8411f524083714601c1a149dcf26d9e33eef8750af26c"
+    },
+    {
+      "path": "media/finalrelease15-ultra-pan.png",
+      "bytes": 4119055,
+      "sha256": "038854366b9bbf4c9387d3473a8f96e846e2756474c56752e3804221857d5452"
+    },
+    {
+      "path": "media/finalrelease15-zero-setup-overview.png",
+      "bytes": 816993,
+      "sha256": "51c9e79c5f2b060dfb4ab8dd3311b0e0ed46413aca86144b09e1fe659531f1a7"
+    },
+    {
+      "path": "media/finalrelease15-zero-setup.png",
+      "bytes": 2661818,
+      "sha256": "4489c4a221e97d4eea0ef4bfd104d68dac635aa96721bcac34b080ef7269726f"
+    },
+    {
+      "path": "media/finalrelease15-zoom30-overview.png",
+      "bytes": 1585330,
+      "sha256": "85e57e5b379a1eef8bdc6214c5f5f715753393d8875d2f609bf53367772c457b"
+    },
+    {
+      "path": "media/finalrelease15-zoom30.png",
+      "bytes": 5053522,
+      "sha256": "8764b52bb10a7f1a2fb815bbd56691b58dfdbe0d861fda807f93ec8b4cbaf42c"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 18670,
+      "sha256": "3650f58bae3e6d0a79221b63677bf4ac0ea35d3b852fff61d8df31bacfbb9aa1"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 1461,
+      "sha256": "c61f2da1ca7d050ec0edc039c031f497d8d7432714a959906cfb5d9c12a12ae0"
+    },
+    {
+      "path": "release_updater.gd",
+      "bytes": 6714,
+      "sha256": "1a0ce5314a1d34f6a447fee4e63b899183ff254b6a128a6eca8eac2c04502a41"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 680,
+      "sha256": "36aaa6410b5d5c8e7973a4bd1d20e2c3e71d8b9963c8863a8e153a1fe1e12267"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.html",
+      "bytes": 5762,
+      "sha256": "9ca16c955e7205dd7927f91f8d707019906f2823f834dbb6b4b0fc933c5a6ba4"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.pck",
+      "bytes": 41813192,
+      "sha256": "62f570761fcdf84030acb8aa44950020d14b059b03f551e35b1d66ea67592c01"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/15/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/15/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/15/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/15/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/15/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/15/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/15/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-15.apk",
+      "bytes": 71112647,
+      "sha256": "fc59776b16fa1242e24282eda148e2c376185f2a287af911f649448a2e704c48"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "bb558d767500786fecf0ab5cf1cd4c48355ed1438b4a074b3df2bdbd66c42f5f"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 378,
+      "sha256": "03f04902a2c0c6dc72f2b72b8df7300b3018c0739efef639c0c0f91a71aa4e7c"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 195119,
+      "sha256": "721811f92429c612217a667d60e85ed503f49f2698626a958fedc7dda2ad1ab3"
+    },
+    {
+      "path": "validation/android15-final-export.log",
+      "bytes": 6216,
+      "sha256": "938357caa5d49b5ddc5e58567e7e925fcd24ad5dfe7bc762bd56d2ddb88ec7ac"
+    },
+    {
+      "path": "validation/apk15-certificate.log",
+      "bytes": 311,
+      "sha256": "7bb21031532df97dbdf95c033ddf986b7fc9c45f73d73f3766b35aea9c72d428"
+    },
+    {
+      "path": "validation/audio12_review-15.log",
+      "bytes": 1538,
+      "sha256": "d2f6317485b896c8a561a64a977646b86eb244a0741c07486cc58e7679bceba2"
+    },
+    {
+      "path": "validation/campaign_store_review-15.log",
+      "bytes": 850,
+      "sha256": "78c22c2b6f3dbee9493d511a7c99605038aba52f8ba72f03ab7c8370d14c879a"
+    },
+    {
+      "path": "validation/dice_frame14_review-15.log",
+      "bytes": 2372,
+      "sha256": "af8d5e1433aa4637473645b76103b3c08df390d5a93a6a50a3649f68cc2525b0"
+    },
+    {
+      "path": "validation/features_review-15.log",
+      "bytes": 1354,
+      "sha256": "d09b5a059674736715e11004033b2737d38ca8dd0c6ddaaf4f2aaebcb6dc7b4a"
+    },
+    {
+      "path": "validation/form_touch14_review-15.log",
+      "bytes": 905,
+      "sha256": "c183589b77b6baa41b4b4f769e892649d8f9848bc2d3ff5806bc818aaffce72e"
+    },
+    {
+      "path": "validation/interaction13_review-15.log",
+      "bytes": 1787,
+      "sha256": "12ce425b85c24498a61bb6f03c73fcf58b4152e86bac778e70783aa051bc161c"
+    },
+    {
+      "path": "validation/interaction14_review-15.log",
+      "bytes": 1371,
+      "sha256": "9b02074f708a563a8685f700b31c486a347b1fce501e66f64c47eab30ee04907"
+    },
+    {
+      "path": "validation/land-mesh-build15-final.log",
+      "bytes": 216,
+      "sha256": "dfad34a12dc923c4be6118a4ab1a7ee6775c361b7d75bb1b3f3da44ccf1f2193"
+    },
+    {
+      "path": "validation/land_mesh15_review-15.log",
+      "bytes": 649,
+      "sha256": "7b9bbe52c002fef5c84c797652a47dccaef441093a2cb8d9e9902821a92abca7"
+    },
+    {
+      "path": "validation/live_regression-15.log",
+      "bytes": 4666,
+      "sha256": "2aad62f0cfe7ccae0be68ee6c1059b251976133523de7221fe15ec5074d5846a"
+    },
+    {
+      "path": "validation/mesh-performance15.json",
+      "bytes": 765,
+      "sha256": "9fce3b009fefeadc551240acff2840c785c40de31be5fafe869c931a835eff86"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-15.log",
+      "bytes": 25655,
+      "sha256": "1d22b0cf52ae414eb2f0ec739083903fa0044404a06671982a1ab215854498ac"
+    },
+    {
+      "path": "validation/native-acceptance.json",
+      "bytes": 8167,
+      "sha256": "ad1371cb39da2d7c92f2534ba3dae06eca43bbf4b4b6acd42b10ef11b8979d5d"
+    },
+    {
+      "path": "validation/pause_review-15.log",
+      "bytes": 683,
+      "sha256": "8717b03b3769ee1f12e61a4e5e25d8d624d20eb8873e1194d4d086fb0237fba5"
+    },
+    {
+      "path": "validation/qr_layout14_review-15.log",
+      "bytes": 746,
+      "sha256": "695522adb4856cde0e572cbcc4a59304d16113b6bdb34a26d20cef372a15c8c2"
+    },
+    {
+      "path": "validation/quality14_review-15.log",
+      "bytes": 1455,
+      "sha256": "3f9cc8670ceaf6506ecc9b39de26c544212ad73be1cbe1d2e73e6a57b110d4f3"
+    },
+    {
+      "path": "validation/release7-desktop.log",
+      "bytes": 6973,
+      "sha256": "d90e8220863c09117a3cdef3274010702f8924fbcb22165f933616760383258a"
+    },
+    {
+      "path": "validation/release7-lan.log",
+      "bytes": 587,
+      "sha256": "7adf37d82b9e4d1c164241a4278f93fcf43256efc6dcbf0bdfefe95fd788b96f"
+    },
+    {
+      "path": "validation/render-layers15.json",
+      "bytes": 799,
+      "sha256": "55b37b77c7e611d9e9c54ee5f8879da26b02a3498608dbc6dd371ab1fae5bf7e"
+    },
+    {
+      "path": "validation/slow_render15_review-15.log",
+      "bytes": 847,
+      "sha256": "f2397302a85259119ac7b10ed6f5b82f0358fbd7cb83ccdff21d66848671c429"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 4156,
+      "sha256": "9bbbb30b904d8f28f623e5ae7297bf1a77d543a1c41852ee0757e81e35c1093a"
+    },
+    {
+      "path": "validation/touch_camera_review-15.log",
+      "bytes": 2163,
+      "sha256": "16981b2ac4a76ca18559462936c03f1d6ea5ace20a41d8ff706f315a3a8b7ccb"
+    },
+    {
+      "path": "validation/unit_rig_review-15.log",
+      "bytes": 776,
+      "sha256": "894a43161e980542b53c5c3d3c4d02b7051f14dda651f4b0eb52847a4da0673d"
+    },
+    {
+      "path": "validation/web15-final-export.log",
+      "bytes": 22258,
+      "sha256": "ba3861c5dcb6b15facf25165506038ca60bfcb9debb6744bc15d0cfbb3294eee"
+    }
+  ]
+}

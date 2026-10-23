@@ -1,0 +1,1 @@
+Exact native acceptance scope and install method: validation/native-acceptance.json. Source checks differ from actual phone acceptance; carried server/LAN/provenance evidence is identified. ADB installation is not an in-app updater test. Hosted15 delivery is the Website agent final step. No commercial-quality or broad-device frame-rate guarantee.
