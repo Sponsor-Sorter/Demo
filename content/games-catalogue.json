@@ -131,7 +131,7 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 14 adds AI spectator play, local campaign autosave/resume, maximum attack dice with a slider, larger statistics, saved text sizing and selectable graphics and board motion.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 14 adds AI spectator play, local campaign autosave/resume, maximum attack dice with a slider, larger statistics, saved text sizing and selectable graphics and board motion. Known issue: the 30 FPS board-motion setting can freeze the scene; choose the 60 FPS setting as a workaround.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
@@ -144,7 +144,7 @@
         "Follow turn prompts to reinforce, attack and move troops. Choose solo AI, local hot-seat or online play.",
         "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
         "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
-        "Local campaigns autosave on this device. Use Resume local campaign to continue; clearing game or browser data can remove the save."
+        "Local campaigns autosave on this device. Use Continue Campaign to continue; clearing game or browser data can remove the save."
       ],
       "actions": [
         {
@@ -157,7 +157,7 @@
           "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-14.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 14 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. WindowManager-driven rotation, dice/move controls, text sizing and local restart recovery were checked. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11, with further source checks in 14. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate.",
+      "notes": "Playtest preview. Final build 14 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. WindowManager-driven rotation, dice/move controls, text sizing and local restart recovery were checked. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11, with further source checks in 14. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate. Build 14 has a confirmed 30 FPS render-scheduling defect that can leave the board stale while labels move. The 60 FPS board-motion setting restored alignment in hosted testing; a follow-up fix is in preparation.",
       "sha256": "5378D4CBE22E94A4AA24CED2A87767A1BFC0CAA2F804EA3007FC63DB4DE376D0"
     }
   ]
