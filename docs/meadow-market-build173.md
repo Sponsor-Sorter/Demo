@@ -1,0 +1,13 @@
+# Meadow Markets173: account and save safety
+
+Web changes: the game pins Supabase JS2.57.4, adds a game-only async auth storage adapter, and provides explicit device sign-out. Sign-out flushes the current account, saves a device backup, revokes only this device, clears only Meadow credentials, and returns to a sign-in gate. Failed pre-sign-out uploads leave the current account open. Guest credentials are retained separately. External account changes freeze saves before resetting the displayed farm; the previous farm is backed up first. Each outgoing save also checks its current session owner.
+
+Save conflict fixes: receiving another device's newer save pauses the writer, resolves/cancels queued snapshots, signals abort to an active request, and suppresses its obsolete status callback. Choosing a save explicitly resumes writes. Replacement/import/reset checks the writer's resolved error; a rejected upload restores the original local save and retains the pending conflict review. An abort cannot undo an HTTP write that the server already committed; database compare-and-set revisions remain further work.
+
+Android source: MeadowVaultPlugin stores the game's account and guest tokens using an Android Keystore AES-GCM key, with authenticated storage keys and no plaintext fallback when that vault fails. Existing WebView tokens are removed only after a successful verified migration. Vault ciphertext is excluded from Android backup/device transfer because its key is device-bound. Native calls are restricted to the game's HTTPS page and four explicit SDK storage keys. This does not protect against malicious JavaScript executing inside the trusted game itself.
+
+The native plugin compiled successfully in the canonical Android project. **Installed1.5.1 APKs do not have that plugin:** they keep browser-compatible storage until a new native APK is distributed and tested. Build173's web release does not claim to upgrade native token security by itself. Native APK verification/updating remains the next native task.
+
+Focused regressions: check-meadow-auth-storage, check-meadow-logout, check-meadow-auth-owner, check-meadow-conflict-barrier, plus existing account/backup/cloud/camera tests. These use isolated mocks and deferred requests; no player saves or live database rows were changed for the fault cases. Native compilation is not device acceptance.
+
+Remaining backlog: long-session automation/performance across maps, bounded offline helper catch-up, progression pacing, server resource/score validation, verified native APK updater, documentation reconciliation. Real purchases, ads and subscriptions remain free testing features.

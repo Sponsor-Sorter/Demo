@@ -123,3 +123,7 @@ require('./check-meadow-word-search.cjs');
 require('./check-meadow-precache.cjs');
 
 require('./check-meadow-paddock-art.cjs');
+require('./check-meadow-auth-storage.cjs');
+require('./check-meadow-logout.cjs');
+require('./check-meadow-conflict-barrier.cjs');
+require('./check-meadow-auth-owner.cjs');

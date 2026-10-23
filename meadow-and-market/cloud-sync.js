@@ -2,21 +2,24 @@
   'use strict';
   // Snapshot at enqueue time; slow requests cannot overtake later saves.
   function writer(write,onResult=()=>{}) {
-    let tail=Promise.resolve(),running=false;const queue=[];
+    let running=false,paused=false,epoch=0,active=null;const queue=[],pending=new Set();
     async function drain(){
       if(running)return;running=true;
-      while(queue.length){const job=queue.shift();let result;try{result=await write(job.userId,job.snapshot)}catch(error){result={error}}
-        try{onResult(result?.error||null)}catch{}for(const resolve of job.waiters)resolve(result);
+      while(queue.length&&!paused){const job=queue.shift();let result;active=typeof AbortController==='function'?new AbortController():{abort(){},signal:undefined};try{result=await write(job.userId,job.snapshot,active.signal)}catch(error){result={error}}
+        active=null;if(job.epoch===epoch&&!paused)try{onResult(result?.error||null)}catch{}for(const resolve of job.waiters)resolve(result);
       }running=false;
     }
     return {
       enqueue(userId,state) {
+        if(paused)return Promise.resolve({error:Error('Cloud save paused until the farm conflict is reviewed')});
         const snapshot=JSON.parse(JSON.stringify(state));
-        tail=new Promise(resolve=>{const pending=queue.at(-1);if(pending?.userId===userId){pending.snapshot=snapshot;pending.waiters.push(resolve)}else queue.push({userId,snapshot,waiters:[resolve]});drain()});
-        return tail;
+        const promise=new Promise(resolve=>{const last=queue.at(-1);if(last?.userId===userId&&last.epoch===epoch){last.snapshot=snapshot;last.waiters.push(resolve)}else queue.push({userId,snapshot,epoch,waiters:[resolve]});drain()});
+        pending.add(promise);promise.finally(()=>pending.delete(promise));return promise;
       },
-      flush:()=>tail,
-      status:()=>({writing:running,pending:queue.length})
+      flush:async()=>{while(pending.size)await Promise.all([...pending]);},
+      pause(){paused=true;epoch++;active?.abort();const result={error:Error('Cloud save paused until the farm conflict is reviewed')};for(const job of queue.splice(0))for(const resolve of job.waiters)resolve(result);},
+      resume(){paused=false;drain();},
+      status:()=>({writing:running,pending:queue.length,paused})
     };
   }
   function profile(state,existing,userId) {
