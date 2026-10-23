@@ -60,7 +60,7 @@ test('Frontlines preserves all accepted build 9 immutable bytes',async()=>{
  const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview9.json',import.meta.url),'utf8'));
  for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/9/')||f.path.endsWith('build-9.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
 });
-test('Frontlines retains pause caution pending hosted acceptance',()=>{assert.match(data.entries.find(e=>e.id==='frontlines').notes,/Solo pause verification is in progress/);});
+test('Frontlines replaces obsolete pause caution only after hosted acceptance',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.notes,/Solo pause and resume were checked in hosted play/);assert.doesNotMatch(e.description+e.notes,/verification is in progress|AI timers may continue/);const proof=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview11-hosted-acceptance.json',import.meta.url),'utf8'));assert.match(proof.initialWireLogObservedAtStartup.message,/FRONTLINES_UPDATE_CHECK served=11\.0 current=11/);assert.ok(Date.parse(proof.pauseEndUtc)-Date.parse(proof.pauseStartUtc)>=25000);});
 
 test('Frontlines preserves all accepted build 10 immutable bytes',async()=>{
  const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview10.json',import.meta.url),'utf8'));

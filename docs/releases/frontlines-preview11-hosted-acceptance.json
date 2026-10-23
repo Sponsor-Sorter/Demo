@@ -1,0 +1,15 @@
+{
+  "pauseStartUtc": "2026-10-23T00:39:18.666Z",
+  "pauseEndUtc": "2026-10-23T00:40:11.050Z",
+  "pausedVisibleState": "Round01 SolarUnion attack,7zones,army13/15/14/17/16/14 unchanged",
+  "resumedObserved": "SolarUnion army15 to14, EasternAustralia3 to2, combat resumed",
+  "wire": [],
+  "errors": [],
+  "initialWireLogObservedAtStartup": {
+    "level": "log",
+    "message": "FRONTLINES_UPDATE_CHECK served=11.0 current=11",
+    "timestamp": "2026-10-23T00:35:48.862Z",
+    "url": "https://sponsorsorter.com/frontlines/builds/11/index.js"
+  },
+  "wireReadNote": "Initial startup line was observed in the earlier browser log tool result; the later log read returned no additional matching entries."
+}
