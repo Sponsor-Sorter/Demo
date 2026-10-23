@@ -1,0 +1,74 @@
+{
+  "build": 19,
+  "at_utc": "2026-10-23T20:19:24.776423+00:00",
+  "installed_apk_sha256": "3b4bfec1a11f671af582dc29262e57d3ecaa7ea2d93d0c675ac70257b3fbe7f5",
+  "bytes": 74900330,
+  "status": "accepted_with_stated_limits",
+  "device": "Samsung SM-S908E (device identifier omitted)",
+  "android": "14",
+  "method": "Signed APK ADB upgrade and real campaign native touch input; no fixture or OS rotation changes",
+  "passed": [
+    "Exact installed APK SHA matches signed export; stage hashes and ZIP CRC checked",
+    "Existing round2/battle50 campaign preserved on upgrade",
+    "Real rolls51/52 Northwest Territory to Alberta; one attacker loss then capture",
+    "Max occupation2 saved within0.375seconds; stop requested0.469seconds after confirm",
+    "Restart/Continue restores Northwest Territory1/Alberta2,52battles,18forces,10territories,onecard",
+    "Alberta selected for next attack; direct WesternUS tap opened force2 battle",
+    "Cancel cleared pair; phone left paused",
+    "Saved Ultra60,auto-rollON,coloursON and audio values retained; Ivory campaign dice unchanged",
+    "No script errors or fatal exceptions captured"
+  ],
+  "immediate_restart": {
+    "build": 19,
+    "method": "Real native campaign; one idle-guarded confirm/read/force-stop batch; no fixture or deliberate autosave wait",
+    "confirmed_move": 2,
+    "from": "NorthwestTerritory",
+    "to": "Alberta",
+    "file_verified_seconds": 0.375,
+    "force_stop_requested_seconds": 0.4690000000409782,
+    "force_stop_returned_seconds": 0.625,
+    "revision_before": 71,
+    "revision_after": 73,
+    "battles": 52,
+    "source_troops": 1,
+    "destination_troops": 2,
+    "continued_attack_source": "Alberta"
+  },
+  "final_campaign": {
+    "round": 2,
+    "phase": "attack",
+    "battles": 52,
+    "forces": 18,
+    "territories": 10,
+    "hands": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "restored_preferences": {
+    "graphics.cfg": "[graphics]\n\nquality=\"ultra\"\nboard_fps=60\nadaptive_detail=true\n",
+    "battle_controls.cfg": "[battle]\r\n\r\nauto_roll=true\r\n",
+    "map_view.cfg": "[map]\n\nplayer_colours=true\n"
+  },
+  "preference_comparison": {
+    "audio.cfg": {
+      "normalized_text_matches_prior": true,
+      "note": "Backup was captured with CRLF; audio values equal. dice.cfg absent both before and after, default Ivory stored in campaign."
+    },
+    "dice.cfg": {
+      "normalized_text_matches_prior": true,
+      "note": "Backup was captured with CRLF; audio values equal. dice.cfg absent both before and after, default Ivory stored in campaign."
+    }
+  },
+  "carried_thermal_evidence": "Build18 20min Balanced30 and5min warmedUltra60; not a fresh19 benchmark",
+  "limitations": [
+    "No fresh18-to19 in-app updater acceptance; installed by ADB",
+    "Physical hand rotation not performed; no forced OS rotation",
+    "One phone, no new broad-device/native full-game-to-victory/multiplayer claim",
+    "Full character creator researched only; authored bust/morph/clothing assets required"
+  ]
+}

@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync, existsSync, readdirSync} from 'node:fs';
+import {readFileSync as diskReadFileSync, existsSync, readdirSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import {relative} from 'node:path';
+// Sparse checkouts read omitted historical fixtures from the committed Git tree.
+function readFileSync(path,options){try{return diskReadFileSync(path,options);}catch(error){if(error.code!=='ENOENT')throw error;const root=fileURLToPath(new URL('../',import.meta.url));const name=relative(root,path instanceof URL?fileURLToPath(path):path).replaceAll('\\','/');if(name.startsWith('..'))throw error;const bytes=execFileSync('git',['-c','safe.directory='+root.replaceAll('\\','/'),'-C',root,'show','HEAD:'+name],{maxBuffer:150*1024*1024});return options?bytes.toString(typeof options==='string'?options:options.encoding):bytes;}}
 import {validateCatalogue,renderEntry,escape} from './build-games-catalogue.mjs';
 import {browserBuildLabel} from '../js/gamesCatalogue.mjs';
 const data=JSON.parse(readFileSync(new URL('../content/games-catalogue.json',import.meta.url),'utf8'));
@@ -35,20 +40,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 18 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.18 · Build 18');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/18/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-18.apk');
+test('Frontlines publishes accepted build 19 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.19 · Build 19');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/19/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-19.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18.json',import.meta.url),'utf8'));
- assert.equal(m.build,18);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview19.json',import.meta.url),'utf8'));
+ assert.equal(m.build,19);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,18);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,18);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,19);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,19);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -96,3 +101,6 @@ test('Frontlines17 describes portrait cards and scopes exact native acceptance',
 
 test('Frontlines preserves all accepted build 17 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview17.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/17/')||f.path.endsWith('build-17.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
 test('Frontlines18 scopes exact native thermal acceptance and excludes creator claims',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/thermal protection/);assert.doesNotMatch(e.description,/character creator/i);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18.json',import.meta.url),'utf8'));assert.equal(m.validation.fresh_total,1391);const native=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18-native-acceptance.json',import.meta.url),'utf8'));assert.equal(native.build,18);assert.equal(native.status,'accepted_with_stated_limits');assert.equal(native.installed_apk_sha256,m.android.sha256);assert.match(native.method,/ADB/);assert.equal(native.thermal_observation.controlled_old_new_benchmark,false);});
+
+test('Frontlines preserves all accepted build 18 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview18.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/18/')||f.path.endsWith('build-18.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+test('Frontlines19 scopes immediate-save acceptance without updater or audio hash claims',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/saves completed actions immediately/);assert.match(e.notes,/not an in-app updater test/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview19.json',import.meta.url),'utf8'));assert.equal(m.validation.fresh_total,1426);const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview19-native-acceptance.json',import.meta.url),'utf8'));assert.equal(n.build,19);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(n.immediate_restart.source_troops,1);assert.equal(n.immediate_restart.destination_troops,2);assert.equal(n.preference_comparison['audio.cfg'].normalized_text_matches_prior,true);assert.match(n.carried_thermal_evidence,/Build18/);});
