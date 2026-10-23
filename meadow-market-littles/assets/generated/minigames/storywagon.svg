@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A quiet farm meadow for making little stories</title>
+  <desc id="desc">Soft sunshine over green hills, a little red barn, an apple tree and a small story wagon.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#fff5d8"/><stop offset="1" stop-color="#d7edeb"/></linearGradient>
+    <linearGradient id="hill" x2="0" y2="1"><stop stop-color="#a4d46e"/><stop offset="1" stop-color="#74b851"/></linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1320" cy="145" r="72" fill="#ffd453"/>
+  <g fill="#fffdf5" opacity=".95"><ellipse cx="285" cy="160" rx="115" ry="42"/><circle cx="232" cy="142" r="53"/><circle cx="304" cy="126" r="67"/><circle cx="360" cy="155" r="42"/></g>
+  <path d="M0 480 Q260 345 510 455 T1010 420 T1600 455 V900 H0Z" fill="#a7d56e"/>
+  <path d="M0 580 Q245 450 520 555 T1030 520 T1600 558 V900 H0Z" fill="url(#hill)"/>
+  <path d="M0 710 Q300 600 660 700 T1240 690 T1600 670 V900 H0Z" fill="#5ba34c"/>
+  <g transform="translate(230 360)">
+    <path d="M0 180 170 42 340 180v208H0Z" fill="#e84b37" stroke="#693d2d" stroke-width="16" stroke-linejoin="round"/>
+    <path d="M-20 184 170 26l190 158" fill="none" stroke="#fff3d7" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="115" y="255" width="110" height="133" rx="10" fill="#9e392e" stroke="#fff3d7" stroke-width="12"/>
+    <path d="M170 260v122m-50-98 100 78m-100 0 100-78" stroke="#fff3d7" stroke-width="10"/>
+    <rect x="134" y="134" width="72" height="66" rx="12" fill="#fff4dc"/>
+    <path d="m145 145 50 44m0-44-50 44" stroke="#713d2d" stroke-width="9"/>
+  </g>
+  <g transform="translate(1120 515)">
+    <path d="M0 85 Q-10 5 65 5t65 80v95H0Z" fill="#f7f0d8" stroke="#65412f" stroke-width="12"/>
+    <circle cx="34" cy="76" r="8" fill="#51382b"/><circle cx="95" cy="76" r="8" fill="#51382b"/>
+    <path d="M43 108q22 25 45 0" fill="none" stroke="#51382b" stroke-width="8" stroke-linecap="round"/>
+    <path d="M17 25q20-29 42 0m20 0q20-29 42 0" fill="none" stroke="#fffaf0" stroke-width="22" stroke-linecap="round"/>
+    <ellipse cx="31" cy="185" rx="22" ry="10" fill="#6b402d"/><ellipse cx="104" cy="185" rx="22" ry="10" fill="#6b402d"/>
+  </g>
+  <g transform="translate(790 565)">
+    <path d="M0 70h180l-22 94H27Z" fill="#c67936" stroke="#71492f" stroke-width="12" stroke-linejoin="round"/>
+    <path d="M-8 64h196M170 87l67 49" stroke="#71492f" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="62" cy="175" r="24" fill="#fff1c9" stroke="#71492f" stroke-width="10"/><circle cx="147" cy="175" r="24" fill="#fff1c9" stroke="#71492f" stroke-width="10"/>
+    <path d="M38 65q15-43 31 0m24 0q15-43 31 0m25 0q15-43 31 0" fill="#6fb64e" stroke="#4c873b" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="69" cy="47" r="13" fill="#f3c742"/><circle cx="118" cy="47" r="13" fill="#f3c742"/><circle cx="166" cy="47" r="13" fill="#f3c742"/>
+  </g>
+  <g fill="#fffdf4"><circle cx="180" cy="770" r="20"/><circle cx="240" cy="820" r="16"/><circle cx="1370" cy="775" r="19"/><circle cx="1470" cy="820" r="14"/></g>
+  <g fill="#ffc928"><circle cx="180" cy="770" r="9"/><circle cx="240" cy="820" r="8"/><circle cx="1370" cy="775" r="9"/><circle cx="1470" cy="820" r="7"/></g>
+</svg>

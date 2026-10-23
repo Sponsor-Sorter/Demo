@@ -48,7 +48,7 @@
  }
  async function choose(which){
   if(busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');await load();
-  if(which==='cloud'&&revision>0){if(remote.data.schema!==1)throw failure('LITTLES_INVALID_SAVE');options.applyState?.(clone(remote.data));latest=null;}
+  if(which==='cloud'&&revision>0){if(remote.data.schema!==1||options.applyState?.(clone(remote.data))!==true)throw failure('LITTLES_INVALID_SAVE');latest=null;}
   else if(which==='device'){latest=clone(options.getState?.());if(!latest||latest.schema!==1)throw failure('LITTLES_INVALID_SAVE');}
   else throw failure('LITTLES_INVALID_SAVE');
   write(prefix(user.id)+'pending',null);write(prefix(user.id)+'meta',{revision});ready=true;notify('ready');if(latest)return flush();return {ok:true,revision};
