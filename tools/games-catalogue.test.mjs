@@ -82,8 +82,8 @@ test('Frontlines preserves all accepted build 13 immutable bytes',async()=>{
  for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/13/')||f.path.endsWith('build-13.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
 });
 
-test('Frontlines states the confirmed30 target workaround and actual continue label',()=>{
- const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/previous 30 FPS stale-board defect/);assert.match(e.notes,/60 FPS board-motion setting restored alignment/);assert.ok(e.instructions.some(step=>step.includes('Continue Campaign')));
+test('Frontlines removes old30 workaround only with hosted15 regression evidence',()=>{
+ const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.notes,/Hosted build 15 checks passed the previous stale-board case/);assert.doesNotMatch(e.description+e.notes,/use 60 FPS motion meanwhile|confirmation is pending/);assert.ok(e.instructions.some(step=>step.includes('Continue Campaign')));const proof=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview15-hosted-acceptance.json',import.meta.url),'utf8'));assert.equal(proof.build,15);assert.ok(proof.passed.some(step=>step.includes('Balanced30')));assert.match(proof.pan_scope,/no hosted pan pass claimed/);
 });
 
 test('Frontlines preserves all accepted build 14 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview14.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/14/')||f.path.endsWith('build-14.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});

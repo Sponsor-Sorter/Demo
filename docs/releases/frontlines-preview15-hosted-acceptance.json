@@ -1,0 +1,33 @@
+{
+  "build": 15,
+  "checked_at_utc": "2026-10-23T07:24:26.923246+00:00",
+  "result": "Hosted stale-board regression not reproduced",
+  "hosted_url": "https://sponsorsorter.com/frontlines/builds/15/",
+  "passed": [
+    "Continue Campaign restored build14 save with Round1 Free Cities attack and army totals15/14/10/17/12/14",
+    "High60 zoom and Ultra60 zoom stayed aligned",
+    "Ultra preference persisted after reload",
+    "Balanced30 after High-to-Ultra and reload: zoom and Reset View changed geometry and labels together",
+    "Fresh human1 campaign after profile transitions rendered coherently at Balanced30",
+    "Fresh campaign reload/Continue and further zoom remained coherent; Balanced30 preference persisted"
+  ],
+  "pan_scope": "Hosted left drag selected/hovered a territory but did not demonstrate camera pan. Supported browser drag API has no middle-button option; no hosted pan pass claimed. Exact native receipt covers pan.",
+  "final_state": "Paused Round1 Free Cities reinforce, reserve3, army totals16/12/17/10/14/15, Balanced30/text100",
+  "screenshots": [
+    "FRONTLINES_PREVIEW15_CONTINUED14.png",
+    "FRONTLINES_PREVIEW15_ULTRA60.png",
+    "FRONTLINES_PREVIEW15_BALANCED30.png",
+    "FRONTLINES_PREVIEW15_30FPS_ZOOM.png",
+    "FRONTLINES_PREVIEW15_FRESH30_ZOOM.png",
+    "FRONTLINES_PREVIEW15_RELOADED30_ZOOM.png",
+    "FRONTLINES_PREVIEW15_PERSISTED30.png",
+    "FRONTLINES_PREVIEW15_FINAL_PAUSED.png"
+  ],
+  "limitations": [
+    "No measured actual FPS or universal performance claim",
+    "No hosted forced20FPS harness; owner source regression separately recorded",
+    "No new hosted multiplayer, account email, opticalQR, native updater or build16 acceptance",
+    "Captured final browser log query returned empty; not a release-check log acceptance",
+    "Browser focus/input timeouts were inspected before retry"
+  ]
+}
