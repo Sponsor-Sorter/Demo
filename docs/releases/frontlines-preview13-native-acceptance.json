@@ -1,0 +1,51 @@
+{
+  "build": 13,
+  "apk_bytes": 67032373,
+  "apk_sha256": "3fd2ae82f06597c50fc2a138689a3e73a5a6412de0d1a5ec376681aff588044b",
+  "installed_apk_sha256": "3fd2ae82f06597c50fc2a138689a3e73a5a6412de0d1a5ec376681aff588044b",
+  "installation_method": "ADB repair install following user explicit request to fix test phone; not in-app updater acceptance",
+  "menu_launched": true,
+  "match_launched": true,
+  "landscape_fullscreen_no_menu_art": true,
+  "camera_controls_clear_of_portraits": true,
+  "raw_touch_music_slider": "50 to18 then restored50",
+  "rotation": {
+    "method": "Android WindowManager-driven transitions, not a physical sensor acceptance",
+    "events": [
+      {
+        "orientation": "portrait",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\android-qa\\build13-final-portrait.png"
+      },
+      {
+        "orientation": "landscape",
+        "width": 3088,
+        "height": 1440,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\android-qa\\build13-final-landscape.png"
+      },
+      {
+        "orientation": "portrait-again",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\android-qa\\build13-final-portrait-again.png"
+      }
+    ],
+    "restored": "original free/default with stored user rotation restored"
+  },
+  "physical_sensor_acceptance": "Not separately established; transitions driven by Android WindowManager, then original free/default restored. Activity requests FULL_SENSOR.",
+  "source_checks": {
+    "gameplay": 111,
+    "mobile": 854,
+    "focused_interaction": 41,
+    "touch_camera": 37,
+    "audio_music": 37
+  },
+  "proofs": [
+    "build13-final-launch.png",
+    "build13-final-orientation-overview.png",
+    "build13-final-audio-before.png",
+    "build13-final-audio-drag.png",
+    "build13-final-audio-restored.png"
+  ]
+}

@@ -1,6 +1,6 @@
 {
-  "build": 12,
-  "version": "1.0.0-preview.12",
-  "url": "https://sponsorsorter.com/frontlines/builds/12/",
-  "notes": "Full-screen rotating phone layouts; touch-ready audio sliders; action camera glides without rotating; closer zoom; fixed capital flag bearer and camera-visible card awards; three new tracks based on the approved menu music with smooth transitions."
+  "build": 13,
+  "version": "1.0.0-preview.13",
+  "url": "https://sponsorsorter.com/frontlines/builds/13/",
+  "notes": "Edge-to-edge gameplay with no main-menu artwork behind the board; full-screen rotating mobile layouts; clean HUD placement; touch-ready audio sliders; camera glides without changing heading; closer zoom; fixed capital guard and visible card awards; original plus three reference-based music tracks."
 }

@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a raised 3D world board in solo AI, local hot-seat or online campaigns. Build 12 adds touch audio sliders, closer zoom, camera follow that keeps its heading and tilt, and three new music tracks with smooth transitions.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns. Build 13 fills the gameplay canvas without menu artwork, separates camera controls from the commander HUD, and prevents scrolling audio settings from changing volume.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.12 · Build 12",
+      "build": "Version 1.0.0-preview.13 · Build 13",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -149,16 +149,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/12/",
+          "url": "https://sponsorsorter.com/frontlines/builds/13/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-12.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-13.apk"
         }
       ],
-      "notes": "Playtest preview. Native build 12 installation, physical phone rotation/fullscreen and touch acceptance are pending the real phone update test. Android installation requires your confirmation. The 10-to-11 native update was accepted separately; it does not certify 11-to-12. No persistent campaign resume or remembered login. Phone-to-phone optical QR and human email/friend flows remain pending. No paid cosmetic shop. Solo pause and resume were checked in hosted play on build 11. If an older game does not offer updates, finish your campaign and reopen Play in browser; closing an unsaved campaign loses it. Music preference is still awaiting user listening review.",
-      "sha256": "E8D67F1C16AFA6B5BB4CC4CF023289BC0CD040F153002FA5A4DADC07E4BAFC5D"
+      "notes": "Playtest preview. Final build 13 was installed on a Samsung test phone through an ADB repair; this is not an in-app updater test. Android WindowManager-driven portrait/landscape transitions and the raw-touch music slider were checked. Physical sensor rotation and other devices remain unaccepted. The 10-to-11 native update was accepted separately; it does not certify updates to 13. Android installation requires your confirmation. No persistent campaign resume or remembered login. Human email/friends and phone-to-phone optical QR remain pending. No paid cosmetic shop. Solo pause and resume were checked in hosted play on build 11. If an older game does not offer updates, finish your campaign and reopen Play in browser; closing an unsaved campaign loses it. Subjective music approval remains separate.",
+      "sha256": "3FD2AE82F06597C50FC2A138689A3E73A5A6412DE0D1A5EC376681AFF588044B"
     }
   ]
 }
