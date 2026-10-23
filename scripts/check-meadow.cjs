@@ -129,3 +129,5 @@ require('./check-meadow-conflict-barrier.cjs');
 require('./check-meadow-auth-owner.cjs');
 require('./check-meadow-native.cjs');
 require('./check-meadow-notice-anchor.cjs');
+
+require('./check-meadow-coop-art.cjs');

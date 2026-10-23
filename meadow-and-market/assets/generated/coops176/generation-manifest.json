@@ -1,0 +1,497 @@
+{
+  "tool": "Built-in image_gen",
+  "runtime": "16 fully illustrated1536x1024transparent views, four upgrade footprints, physical rotational views, generated against measured footprint guides",
+  "camera": "Orthographic isometric30degree elevation with2:1ground axes",
+  "prompts": [
+    {
+      "tier": 0,
+      "rotation": 0,
+      "sourceMaster": "coop-0-r0.png",
+      "prompt": "Create a brand-new completed Meadow Markets game sprite by painting the FIRST reference's measured guide. SECOND reference is only the quality/style/house-orientation reference, not an image-edit target. Keep the guide geometry: rear,left,near,right ground corners=[[768,420],[268,670],[768,920],[1268,670]], 1x1 tiles, orthographic isometric camera with+/-0.5ground slopes. Fence feet exactly on those corners. Replace blue guide block with this illustrated coop. HOUSE at FAR/TOP corner, raised front GABLED doorway faces DOWN-RIGHT along the+u axis. The small mesh window is on the LEFT-facing long side. Match the reference house's roof-ridge/front-door orientation exactly, but simplify it to a tiny starter house with NO nesting side box, NO big canopy. Closed gate on NEAR-LEFT fence, round wooden water bowl on FAR-RIGHT inside edge, shallow open corn tray near house.\nThis is upgrade1: starter: one tiny honey-brown timber gabled hen house with dark warm brown wooden shingles, a little open hen door and short ramp, simple two-rail fully enclosed fence, tiny blue water bowl. One bird capacity. Small but complete and lovingly painted. The entire yard is enclosed by the matching timber fence, with richly detailed warm honey-gold woodgrain, brown shingle roof, metal fittings, tiny daisies/grass, golden straw on packed earth. Preserve generous usable run, no oversized house, no extra features.\nHIGH-PRIORITY ALPHA REQUIREMENT: output a clean transparent RGBA sprite, all four outer canvas corners completely alpha0. No checkerboard patterns, black/grey smudges, colored haze/glow, white matte, opaque corner triangles or remnant background pixels. Entire region outside the silhouette must be cleanly transparent. No backgroundscene, no raisedbase, no text/grid/blue guide, no animals or people. HD1536x1024 landscape with whole asset visible and safe margin."
+    },
+    {
+      "tier": 0,
+      "rotation": 1,
+      "sourceMaster": "coop-0-r1.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level1 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[768,420],[268,670],[768,920],[1268,670]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 1x1 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION90: HOUSE at RIGHT corner as blue block indicates. House door/ramp faces DOWN-LEFT into the yard. Show front gable doorway and the opposite long side compared with the reference. Gate on FAR-LEFT edge; water container near the NEAR/FRONT corner. This is a true90degree clockwise physical rotation.\nIDENTITY/UPGRADE: starter: one tiny honey-brown timber gabled hen house with dark warm brown wooden shingles, a little open hen door and short ramp, simple two-rail fully enclosed fence, tiny blue water bowl. One bird capacity. Small but complete and lovingly painted. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 0,
+      "rotation": 2,
+      "sourceMaster": "coop-0-r2.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level1 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[768,420],[268,670],[768,920],[1268,670]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 1x1 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION180: HOUSE at NEAR/FRONT corner as blue block indicates. House doorway/ramp faces UP-LEFT, away from camera, into yard, mostly hidden behind the house. Show the solid REAR gable and rear long timber wall facing the viewer; do NOT put the front doorway on the visible rear wall. Gate on FAR-RIGHT edge; water container inside LEFT corner. This is a true180degree physical rotation.\nIDENTITY/UPGRADE: starter: one tiny honey-brown timber gabled hen house with dark warm brown wooden shingles, a little open hen door and short ramp, simple two-rail fully enclosed fence, tiny blue water bowl. One bird capacity. Small but complete and lovingly painted. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 0,
+      "rotation": 3,
+      "sourceMaster": "coop-0-r3.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level1 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[768,420],[268,670],[768,920],[1268,670]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 1x1 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION270: HOUSE at LEFT corner as blue block indicates. House doorway/ramp faces UP-RIGHT, away from camera, into yard; doorway is mostly hidden. Show the other REAR gable and rear side, with the same nesting boxes wrapping logically. Gate on NEAR-RIGHT edge; water container near FAR/TOP corner. This is a true270degree clockwise physical rotation.\nIDENTITY/UPGRADE: starter: one tiny honey-brown timber gabled hen house with dark warm brown wooden shingles, a little open hen door and short ramp, simple two-rail fully enclosed fence, tiny blue water bowl. One bird capacity. Small but complete and lovingly painted. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 1,
+      "rotation": 0,
+      "sourceMaster": "coop-1-r0.png",
+      "prompt": "EDIT THE FIRST IMAGE (the measured layout guide). Paint a finished Meadow Markets chicken-coop asset ON THAT EXACT GEOMETRY. The second image is only a material/style reference. Do NOT copy the second image's layout or its roughly square footprint.\nLOCKED COORDINATES on1536x1024 canvas: rear ground corner=(601,420), left ground corner=(268,587), near ground corner=(935,920), right ground corner=(1268,753). Connect these corners for the fence. These four coordinates define a2x1 ground-grid rectangle. There is ONE long diagonal axis down-right and a shorter axis down-left. Preserve all four corner coordinates; the fence posts' feet must sit on those points. Most of the asset is LEFT-to-RIGHT slanting diagonally downward. Do not centre the near corner. Do not make a square diamond.\nThe blue box in FIRST image is a placeholder for the raised wooden hen house: replace it with the beautifully painted timber house from SECOND image, with brown shingle gable roof, tiny side nesting box and short ramp. House is near the far ground corner LEFT OF CANVAS CENTRE, not in the upper-right part of the image. Door faces down-right along the LONG diagonal into the run. Enclose all4edges in two-rail honey-gold timber fence, one closed wooden gate on the near-left long edge. Small blue water trough inside far-right short edge, one little covered corn feeder near house.\nTexture the beige ground as detailed golden straw and packed earth with tiny daisies/grass edging. Warm richly painted premium cozy farm game illustration matching second image. No grey/blue guide box, no grid, no guide outline, no text. NO chickens or people. No raised island/base/slab. Transparent RGBA outside the exact enclosure, no halo or background. HD1536x1024. Preserve layout strictly; change only surfaces and replace blue guide block with the house."
+    },
+    {
+      "tier": 1,
+      "rotation": 1,
+      "sourceMaster": "coop-1-r1.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level2 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[935,420],[268,753],[601,920],[1268,587]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 1x2 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION90: HOUSE at RIGHT corner as blue block indicates. House door/ramp faces DOWN-LEFT into the yard. Show front gable doorway and the opposite long side compared with the reference. Gate on FAR-LEFT edge; water container near the NEAR/FRONT corner. This is a true90degree clockwise physical rotation.\nIDENTITY/UPGRADE: improved: the same honey-brown timber hen house with dark warm brown shingle gable roof and short ramp; modestly enlarged, one side nesting box, two-rail fully enclosed fence, a short blue wooden water trough and small covered grain feeder. Two bird capacity. Clearly better than the starter. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 1,
+      "rotation": 2,
+      "sourceMaster": "coop-1-r2.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level2 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[601,420],[268,587],[935,920],[1268,753]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 2x1 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION180: HOUSE at NEAR/FRONT corner as blue block indicates. House doorway/ramp faces UP-LEFT, away from camera, into yard, mostly hidden behind the house. Show the solid REAR gable and rear long timber wall facing the viewer; do NOT put the front doorway on the visible rear wall. Gate on FAR-RIGHT edge; water container inside LEFT corner. This is a true180degree physical rotation.\nIDENTITY/UPGRADE: improved: the same honey-brown timber hen house with dark warm brown shingle gable roof and short ramp; modestly enlarged, one side nesting box, two-rail fully enclosed fence, a short blue wooden water trough and small covered grain feeder. Two bird capacity. Clearly better than the starter. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 1,
+      "rotation": 3,
+      "sourceMaster": "coop-1-r3.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level2 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[935,420],[268,753],[601,920],[1268,587]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 1x2 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION270: HOUSE at LEFT corner as blue block indicates. House doorway/ramp faces UP-RIGHT, away from camera, into yard; doorway is mostly hidden. Show the other REAR gable and rear side, with the same nesting boxes wrapping logically. Gate on NEAR-RIGHT edge; water container near FAR/TOP corner. This is a true270degree clockwise physical rotation.\nIDENTITY/UPGRADE: improved: the same honey-brown timber hen house with dark warm brown shingle gable roof and short ramp; modestly enlarged, one side nesting box, two-rail fully enclosed fence, a short blue wooden water trough and small covered grain feeder. Two bird capacity. Clearly better than the starter. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 2,
+      "rotation": 0,
+      "sourceMaster": "coop-2-r0.png",
+      "prompt": "EDIT FIRST IMAGE, the measured coop layout guide. Paint a finished transparent premium Meadow Markets sprite ON THAT EXACT GEOMETRY. SECOND image gives the new deluxe: expanded honey-brown timber hen house, same dark warm brown wooden shingle gable roof, two side nesting boxes, short timber ramp; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, a longer blue water trough and roofed grain feeder. Four bird capacity. Clearly better construction and more yard room. Its materials, roof/nesting details and painterly style are identity reference only; do NOT copy its old enclosure geometry.\nLOCK THE GROUND: rear,left,near,right corner coordinates respectively [[668,420],[268,620],[868,920],[1268,720]] on1536x1024. Fence-post feet on those four corners; four straight fully enclosed fence edges follow that parallelogram exactly. This is 3x2 tiles, orthographic2:1 isometric ground slopes +/-0.5. Do not turn it into a square if the guide is rectangular. Do not recenter the near corner. Blue box marks the house's ground area and height; replace it with the detailed timber coop, not a blue block.\nLAYOUT0: house at the far/top corner, door/ramp facing down-right along+u into run. Closed wooden gate on near-left perimeter, blue water container inside far-right perimeter, feeder beside house. Building fits within fence; usable open yard at least60% of ground. No animals, people, text, grid/blueprint lines. Warm honey-gold textured timber, dark warm-brown shingle gable roof, neat daisies, small greenery, detailed golden straw on packed earth. No flat placeholder geometry. No raised plinth or island. Preserve rich illustrated style of second image. True transparent RGBA outside fence, NO colored halo or glowing vignette. Whole asset visible atHD1536x1024."
+    },
+    {
+      "tier": 2,
+      "rotation": 1,
+      "sourceMaster": "coop-2-r1.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level3 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[868,420],[268,720],[668,920],[1268,620]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 2x3 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION90: HOUSE at RIGHT corner as blue block indicates. House door/ramp faces DOWN-LEFT into the yard. Show front gable doorway and the opposite long side compared with the reference. Gate on FAR-LEFT edge; water container near the NEAR/FRONT corner. This is a true90degree clockwise physical rotation.\nIDENTITY/UPGRADE: deluxe: expanded honey-brown timber hen house, same dark warm brown wooden shingle gable roof, two side nesting boxes, short timber ramp; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, a longer blue water trough and roofed grain feeder. Four bird capacity. Clearly better construction and more yard room. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 2,
+      "rotation": 2,
+      "sourceMaster": "coop-2-r2.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level3 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[668,420],[268,620],[868,920],[1268,720]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 3x2 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION180: HOUSE at NEAR/FRONT corner as blue block indicates. House doorway/ramp faces UP-LEFT, away from camera, into yard, mostly hidden behind the house. Show the solid REAR gable and rear long timber wall facing the viewer; do NOT put the front doorway on the visible rear wall. Gate on FAR-RIGHT edge; water container inside LEFT corner. This is a true180degree physical rotation.\nIDENTITY/UPGRADE: deluxe: expanded honey-brown timber hen house, same dark warm brown wooden shingle gable roof, two side nesting boxes, short timber ramp; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, a longer blue water trough and roofed grain feeder. Four bird capacity. Clearly better construction and more yard room. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 2,
+      "rotation": 3,
+      "sourceMaster": "coop-2-r3.png",
+      "prompt": "Create a brand-new completed Meadow Markets game sprite by painting the FIRST reference's measured guide. SECOND reference is only the quality/style/house-orientation reference, not an image-edit target. Keep the guide geometry: rear,left,near,right ground corners=[[868,420],[268,720],[668,920],[1268,620]], 2x3 tiles, orthographic isometric camera with+/-0.5ground slopes. Fence feet exactly on those corners. Replace blue guide block with this illustrated coop. HOUSE at LEFT corner, showing its SOLID REAR timber gable and rear long wall to the camera, as in the identity reference's rear view. Do NOT add any visible open doorway on the facing walls. The real front door/ramp faces UP-RIGHT away from camera into the yard, hidden behind the building. Keep two nesting boxes rather than the identity reference's three. Closed gate on NEAR-RIGHT fence, blue long water trough on FAR/TOP inside edge, separate covered grain feeder beside house.\nThis is upgrade3: deluxe: expanded honey-brown timber hen house, same dark warm brown wooden shingle gable roof, two side nesting boxes, short timber ramp; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, a longer blue water trough and roofed grain feeder. Four bird capacity. Clearly better construction and more yard room. The entire yard is enclosed by the matching timber fence, with richly detailed warm honey-gold woodgrain, brown shingle roof, metal fittings, tiny daisies/grass, golden straw on packed earth. Preserve generous usable run, no oversized house, no extra features.\nHIGH-PRIORITY ALPHA REQUIREMENT: output a clean transparent RGBA sprite, all four outer canvas corners completely alpha0. No checkerboard patterns, black/grey smudges, colored haze/glow, white matte, opaque corner triangles or remnant background pixels. Entire region outside the silhouette must be cleanly transparent. No backgroundscene, no raisedbase, no text/grid/blue guide, no animals or people. HD1536x1024 landscape with whole asset visible and safe margin."
+    },
+    {
+      "tier": 3,
+      "rotation": 0,
+      "sourceMaster": "coop-3-r0.png",
+      "prompt": "EDIT FIRST IMAGE, the measured coop layout guide. Paint a finished transparent premium Meadow Markets sprite ON THAT EXACT GEOMETRY. SECOND image gives the new grand: handsome large honey-brown timber hen house, same dark warm brown wooden shingle gable roof, broad side nesting wing with three nesting boxes, short timber ramp, a small adjoining covered feeding canopy; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, long blue water trough. Eight bird capacity. This is the polished final upgrade of the same family of coops. Its materials, roof/nesting details and painterly style are identity reference only; do NOT copy its old enclosure geometry.\nLOCK THE GROUND: rear,left,near,right corner coordinates respectively [[697,420],[268,634],[839,920],[1268,706]] on1536x1024. Fence-post feet on those four corners; four straight fully enclosed fence edges follow that parallelogram exactly. This is 4x3 tiles, orthographic2:1 isometric ground slopes +/-0.5. Do not turn it into a square if the guide is rectangular. Do not recenter the near corner. Blue box marks the house's ground area and height; replace it with the detailed timber coop, not a blue block.\nLAYOUT0: house at the far/top corner, door/ramp facing down-right along+u into run. Closed wooden gate on near-left perimeter, blue water container inside far-right perimeter, feeder beside house. Building fits within fence; usable open yard at least60% of ground. No animals, people, text, grid/blueprint lines. Warm honey-gold textured timber, dark warm-brown shingle gable roof, neat daisies, small greenery, detailed golden straw on packed earth. No flat placeholder geometry. No raised plinth or island. Preserve rich illustrated style of second image. True transparent RGBA outside fence, NO colored halo or glowing vignette. Whole asset visible atHD1536x1024."
+    },
+    {
+      "tier": 3,
+      "rotation": 1,
+      "sourceMaster": "coop-3-r1.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level4 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[839,420],[268,706],[697,920],[1268,634]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 3x4 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION90: HOUSE at RIGHT corner as blue block indicates. House door/ramp faces DOWN-LEFT into the yard. Show front gable doorway and the opposite long side compared with the reference. Gate on FAR-LEFT edge; water container near the NEAR/FRONT corner. This is a true90degree clockwise physical rotation.\nIDENTITY/UPGRADE: grand: handsome large honey-brown timber hen house, same dark warm brown wooden shingle gable roof, broad side nesting wing with three nesting boxes, short timber ramp, a small adjoining covered feeding canopy; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, long blue water trough. Eight bird capacity. This is the polished final upgrade of the same family of coops. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 3,
+      "rotation": 2,
+      "sourceMaster": "coop-3-r2.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level4 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[697,420],[268,634],[839,920],[1268,706]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 4x3 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION180: HOUSE at NEAR/FRONT corner as blue block indicates. House doorway/ramp faces UP-LEFT, away from camera, into yard, mostly hidden behind the house. Show the solid REAR gable and rear long timber wall facing the viewer; do NOT put the front doorway on the visible rear wall. Gate on FAR-RIGHT edge; water container inside LEFT corner. This is a true180degree physical rotation.\nIDENTITY/UPGRADE: grand: handsome large honey-brown timber hen house, same dark warm brown wooden shingle gable roof, broad side nesting wing with three nesting boxes, short timber ramp, a small adjoining covered feeding canopy; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, long blue water trough. Eight bird capacity. This is the polished final upgrade of the same family of coops. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    },
+    {
+      "tier": 3,
+      "rotation": 3,
+      "sourceMaster": "coop-3-r3.png",
+      "prompt": "EDIT FIRST IMAGE, the measured layout guide: paint a finished HD chicken-coop sprite ON THIS EXACT FOOTPRINT. SECOND image is the definitive newly illustrated level4 coop identity/material reference. Build the same physical enclosure in a different rotation, not a new design and not a mirrored/camera-rotated picture.\nLOCKED GROUND rear,left,near,right corners=[[839,420],[268,706],[697,920],[1268,634]] on1536x1024. Fence feet sit on these positions and4perimeter edges run straight between them. It is 3x4 tiles after rotation. Fixed orthographic isometric2:1 camera, ground axes slope +/-0.5, vertical posts upright. Preserve guide's long/short diagonals and asymmetric near-corner position. Do not replace rectangular footprint with a square. Blue block marks exact house position/ground size; replace with illustrated gabled house.\nROTATION270: HOUSE at LEFT corner as blue block indicates. House doorway/ramp faces UP-RIGHT, away from camera, into yard; doorway is mostly hidden. Show the other REAR gable and rear side, with the same nesting boxes wrapping logically. Gate on NEAR-RIGHT edge; water container near FAR/TOP corner. This is a true270degree clockwise physical rotation.\nIDENTITY/UPGRADE: grand: handsome large honey-brown timber hen house, same dark warm brown wooden shingle gable roof, broad side nesting wing with three nesting boxes, short timber ramp, a small adjoining covered feeding canopy; sturdy three-rail fully enclosed golden timber fence with a closed wooden gate, long blue water trough. Eight bird capacity. This is the polished final upgrade of the same family of coops. Maintain same roof, number and type of nesting boxes, gate, water bowl/trough and feeder as second image. Reorient each physical feature with the yard. All4sides enclosed even when occluded by the house. House and props stay entirely inside the fence. Leave open usable run for live chickens. No extra buildings or props.\nSTYLE: same rich warm painterly premium mobile farm game: honey-gold timber, crisp textured grain, dark warm-brown shingle gable roof, iron fittings, golden straw/earth floor, tiny neat daisies and greenery. No cheap flat procedural fence, no grey guide box, no blueprint/grid/text, no slab or raised platform.\nAbsolutely NO animals/people baked in. Truly transparent RGBA background, no background scene, no colored glow/halo. Whole enclosure visible with transparent margin; HD1536x1024 landscape canvas."
+    }
+  ],
+  "entries": {
+    "coop-0": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            99.536,
+            583.7332480025249
+          ],
+          "front": [
+            884.878280882746,
+            1009.0051738390341
+          ],
+          "right": [
+            1444.464,
+            686.5472957295797
+          ],
+          "fenceHeight": 206.7,
+          "sourceSlope": [
+            0.5415115627780691,
+            -0.5762439374223695
+          ],
+          "file": "assets/generated/coops176/coop-0-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            154.276,
+            606.331753553497
+          ],
+          "front": [
+            784.5961231083132,
+            997.5868061386872
+          ],
+          "right": [
+            1396.724,
+            635.4320629735657
+          ],
+          "fenceHeight": 190.95,
+          "sourceSlope": [
+            0.6207243561506246,
+            -0.5916324951644101
+          ],
+          "file": "assets/generated/coops176/coop-0-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            100.464,
+            623.0505130425925
+          ],
+          "front": [
+            775.5435182419211,
+            1012.7920277480621
+          ],
+          "right": [
+            1439.536,
+            619.2586330797226
+          ],
+          "fenceHeight": 205.79999999999998,
+          "sourceSlope": [
+            0.5773268247279308,
+            -0.592677485784727
+          ],
+          "file": "assets/generated/coops176/coop-0-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            133.624,
+            598.6407544573308
+          ],
+          "front": [
+            757.3661778841717,
+            963.0179116070997
+          ],
+          "right": [
+            1404.376,
+            636.0281899205086
+          ],
+          "fenceHeight": 195.29999999999998,
+          "sourceSlope": [
+            0.584179120908244,
+            -0.5053860243068352
+          ],
+          "file": "assets/generated/coops176/coop-0-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 5,
+      "illustratedEnclosure": true
+    },
+    "coop-1": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            118.30799999999999,
+            572.3175469107889
+          ],
+          "front": [
+            965.0421932395061,
+            1010.898321922726
+          ],
+          "right": [
+            1444.692,
+            743.4037450024574
+          ],
+          "fenceHeight": 203.85,
+          "sourceSlope": [
+            0.5179674784763071,
+            -0.5576872400447732
+          ],
+          "file": "assets/generated/coops176/coop-1-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            206.564,
+            701.8606109865926
+          ],
+          "front": [
+            701.1109670350136,
+            983.5413872640484
+          ],
+          "right": [
+            1472.436,
+            562.8195780785
+          ],
+          "fenceHeight": 194.54999999999998,
+          "sourceSlope": [
+            0.5695733571398343,
+            -0.5454533318700765
+          ],
+          "file": "assets/generated/coops176/coop-1-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            58.507999999999996,
+            481.7662528309894
+          ],
+          "front": [
+            949.26745860553,
+            993.5424914647512
+          ],
+          "right": [
+            1482.492,
+            711.8656485449367
+          ],
+          "fenceHeight": 218.85,
+          "sourceSlope": [
+            0.5745392133527714,
+            -0.528251835864837
+          ],
+          "file": "assets/generated/coops176/coop-1-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            69.292,
+            669.5447290073446
+          ],
+          "front": [
+            625.8559703047765,
+            972.5487765298674
+          ],
+          "right": [
+            1475.708,
+            538.302896351947
+          ],
+          "fenceHeight": 216.15,
+          "sourceSlope": [
+            0.5444190851171997,
+            -0.5109664565179082
+          ],
+          "file": "assets/generated/coops176/coop-1-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 5,
+      "illustratedEnclosure": true
+    },
+    "coop-2": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            70.328,
+            529.0569797104274
+          ],
+          "front": [
+            834.0654697230951,
+            1022.1097960729431
+          ],
+          "right": [
+            1479.672,
+            668.2702746432526
+          ],
+          "fenceHeight": 216.6,
+          "sourceSlope": [
+            0.6455789271950735,
+            -0.5480730210054202
+          ],
+          "file": "assets/generated/coops176/coop-2-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            132.56,
+            632.7001198567018
+          ],
+          "front": [
+            701.8557387574864,
+            1008.3565899787293
+          ],
+          "right": [
+            1479.44,
+            512.3035318763374
+          ],
+          "fenceHeight": 207,
+          "sourceSlope": [
+            0.6598617283556605,
+            -0.6379412275008515
+          ],
+          "file": "assets/generated/coops176/coop-2-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            91.656,
+            495.8043171760761
+          ],
+          "front": [
+            869.4644396699588,
+            1008.8857587251485
+          ],
+          "right": [
+            1446.344,
+            667.6144908263651
+          ],
+          "fenceHeight": 208.2,
+          "sourceSlope": [
+            0.659650134121435,
+            -0.591581486616612
+          ],
+          "file": "assets/generated/coops176/coop-2-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            35.024,
+            572.5302908869082
+          ],
+          "front": [
+            714.6395020682131,
+            1001.8913058778344
+          ],
+          "right": [
+            1500.976,
+            608.1704201613634
+          ],
+          "fenceHeight": 225.29999999999998,
+          "sourceSlope": [
+            0.6317704844640685,
+            -0.5007027993130564
+          ],
+          "file": "assets/generated/coops176/coop-2-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 5,
+      "illustratedEnclosure": true
+    },
+    "coop-3": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            74.436,
+            613.1167050388847
+          ],
+          "front": [
+            757.7102477182419,
+            993.1620215278579
+          ],
+          "right": [
+            1492.564,
+            605.1744311800371
+          ],
+          "fenceHeight": 217.95,
+          "sourceSlope": [
+            0.5562119716323488,
+            -0.527979328054187
+          ],
+          "file": "assets/generated/coops176/coop-3-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            62.532,
+            548.6142240989413
+          ],
+          "front": [
+            756.0039634929235,
+            976.8568436034177
+          ],
+          "right": [
+            1488.468,
+            551.7370659644081
+          ],
+          "fenceHeight": 219.15,
+          "sourceSlope": [
+            0.6175341499712212,
+            -0.580396792812233
+          ],
+          "file": "assets/generated/coops176/coop-3-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            63.448,
+            556.840296710081
+          ],
+          "front": [
+            841.4169890806749,
+            1007.7094578236786
+          ],
+          "right": [
+            1482.552,
+            652.9085072843519
+          ],
+          "fenceHeight": 218.1,
+          "sourceSlope": [
+            0.5795464439352385,
+            -0.553395064216781
+          ],
+          "file": "assets/generated/coops176/coop-3-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            121.248,
+            601.512694228535
+          ],
+          "front": [
+            723.5774401939689,
+            970.9353261155757
+          ],
+          "right": [
+            1442.752,
+            642.1642557995766
+          ],
+          "fenceHeight": 203.1,
+          "sourceSlope": [
+            0.6133232202099818,
+            -0.4571505844209393
+          ],
+          "file": "assets/generated/coops176/coop-3-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 5,
+      "illustratedEnclosure": true
+    }
+  }
+}

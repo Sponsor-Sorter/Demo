@@ -17,5 +17,5 @@
   const frame=R.frame(o);if(!frame)return '';
   return '<span class="direction-yard painted-paddock">'+R.art(o,fp,{...ctx,spriteOnly:true})+'<span class="yard-residents">'+residents(o,fp,ctx)+'</span>'+foreground(o,fp,frame)+'</span>';
  }
- Y.art=art;window.meadowPaddockArt={art,canonical,residents};
+ Y.art=art;window.meadowPaddockArt={art,canonical,residents,foreground};
 })();
