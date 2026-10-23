@@ -1,0 +1,497 @@
+{
+  "tool": "Built-in image_gen",
+  "runtime": "16 full illustrated1536x1024RGBA WebP views; four approved base views retained, twelve newly generated rotational views",
+  "camera": "Fixed30degree elevation; groundaxes plus/minus26.565degrees",
+  "prompts": [
+    {
+      "tier": 0,
+      "rotation": 0,
+      "sourceMaster": "paddock-0-r0.png",
+      "prompt": "Approved original full illustrated enclosure; preserved base view."
+    },
+    {
+      "tier": 0,
+      "rotation": 1,
+      "sourceMaster": "paddock-0-r1.png",
+      "prompt": "Identity-preserving production sprite edit: rotate the COMPLETE approved Meadow Markets tier1 paddock object to its 90degree view, FIXED camera30degrees down, ground axes slope exactly plus/minus0.5, upright fence posts. This is the SAME exact physical enclosure, same wood, features, grass, capacity, not a new design. Gate must be on the far upper-left fence edge, seen from its reverse side. Water trough must be inside the near lower-right fence interior. No shelter or hay rack. Reference image defines premium warmly painted game style, richly shaded chunky honey-brown wood, dark iron gate hinges, lush detailed grass, tiny flowers. Fully fenced on all4sides with all4corners visibly joined, one closed gate, no animal. Tier1 world rectangle 3x2tiles rotates with object: oddview rectangular footprint has swapped dimensions, rear and front edges retain SAME physical lengths. Preserve details consistently; reverse sides correctly occlude props. 1536x1024RGBA isolated game sprite with crisp alpha-zero exterior, minimal margin, entire silhouette inside canvas. NO background, NO glowing golden or green aura, NO drop shadow outside grass, NO dark floor, NO slab, NO gradient backdrop, NO text or collage. Grass tightly fills only fenced diamond. One single view."
+    },
+    {
+      "tier": 0,
+      "rotation": 2,
+      "sourceMaster": "paddock-0-r2.png",
+      "prompt": "Same original enclosure physically rotated180degrees; transparent-background extraction."
+    },
+    {
+      "tier": 0,
+      "rotation": 3,
+      "sourceMaster": "paddock-0-r3.png",
+      "prompt": "Identity-preserving production sprite edit: rotate the COMPLETE approved Meadow Markets tier1 paddock object to its 270degree view, FIXED camera30degrees down, ground axes slope exactly plus/minus0.5, upright fence posts. This is the SAME exact physical enclosure, same wood, features, grass, capacity, not a new design. Gate must be on the near lower-right fence edge, front surface visible. Water trough must be inside the far upper-left fence interior. No shelter or hay rack. Reference image defines premium warmly painted game style, richly shaded chunky honey-brown wood, dark iron gate hinges, lush detailed grass, tiny flowers. Fully fenced on all4sides with all4corners visibly joined, one closed gate, no animal. Tier1 world rectangle 3x2tiles rotates with object: oddview rectangular footprint has swapped dimensions, rear and front edges retain SAME physical lengths. Preserve details consistently; reverse sides correctly occlude props. 1536x1024RGBA isolated game sprite with crisp alpha-zero exterior, minimal margin, entire silhouette inside canvas. NO background, NO glowing golden or green aura, NO drop shadow outside grass, NO dark floor, NO slab, NO gradient backdrop, NO text or collage. Grass tightly fills only fenced diamond. One single view."
+    },
+    {
+      "tier": 1,
+      "rotation": 0,
+      "sourceMaster": "paddock-1-r0.png",
+      "prompt": "Approved original full illustrated enclosure; preserved base view."
+    },
+    {
+      "tier": 1,
+      "rotation": 1,
+      "sourceMaster": "paddock-1-r1.png",
+      "prompt": "Identity-preserving production sprite edit: rotate the COMPLETE approved Meadow Markets tier2 paddock object to its 90degree view, FIXED camera30degrees down, ground axes slope exactly plus/minus0.5, upright fence posts. This is the SAME exact physical enclosure, same wood, features, grass, capacity, not a new design. Gate must be on the far upper-left fence edge, reverse side visible. Water trough must be inside the near lower-right interior, and rotate the roofed hay rack to its corresponding near corner. Preserve the one covered hay rack, no livestock shed. Reference image defines premium warmly painted game style, richly shaded chunky honey-brown wood, dark iron gate hinges, lush detailed grass, tiny flowers. Fully fenced on all4sides with all4corners visibly joined, one closed gate, no animal. Tier2 world rectangle 4x3tiles rotates with object: oddview rectangular footprint has swapped dimensions, rear and front edges retain SAME physical lengths. Preserve details consistently; reverse sides correctly occlude props. 1536x1024RGBA isolated game sprite with crisp alpha-zero exterior, minimal margin, entire silhouette inside canvas. NO background, NO glowing golden or green aura, NO drop shadow outside grass, NO dark floor, NO slab, NO gradient backdrop, NO text or collage. Grass tightly fills only fenced diamond. One single view."
+    },
+    {
+      "tier": 1,
+      "rotation": 2,
+      "sourceMaster": "paddock-1-r2.png",
+      "prompt": "Identity-preserving production sprite edit: rotate the COMPLETE approved Meadow Markets tier2 paddock object to its 180degree view, FIXED camera30degrees down, ground axes slope exactly plus/minus0.5, upright fence posts. This is the SAME exact physical enclosure, same wood, features, grass, capacity, not a new design. Gate must be on the far upper-right fence edge, reverse side visible. Water trough must be inside the near lower-left interior, and rotate the roofed hay rack to its corresponding near corner. Preserve the one covered hay rack, no livestock shed. Reference image defines premium warmly painted game style, richly shaded chunky honey-brown wood, dark iron gate hinges, lush detailed grass, tiny flowers. Fully fenced on all4sides with all4corners visibly joined, one closed gate, no animal. Tier2 world rectangle 4x3tiles rotates with object: oddview rectangular footprint has swapped dimensions, rear and front edges retain SAME physical lengths. Preserve details consistently; reverse sides correctly occlude props. 1536x1024RGBA isolated game sprite with crisp alpha-zero exterior, minimal margin, entire silhouette inside canvas. NO background, NO glowing golden or green aura, NO drop shadow outside grass, NO dark floor, NO slab, NO gradient backdrop, NO text or collage. Grass tightly fills only fenced diamond. One single view."
+    },
+    {
+      "tier": 1,
+      "rotation": 3,
+      "sourceMaster": "paddock-1-r3.png",
+      "prompt": "Precise physical rotation correction to image1, the edit target. Image2 is original object identity/style reference. Move the roofed hay rack from the far UPPER-RIGHT edge to the far UPPER-LEFT edge, beside the existing wood trough. Their closed backs face outward. Preserve the near LOWER-RIGHT gate. Do not mirror the whole picture. Keep enclosure size and outline, fixed orthographic camera, all other fenceposts, gate, trough, grass and flower details unchanged. This must be the same physical object rotated, not features rearranged arbitrarily. Preserve rich HD painterly golden timber and farm-game style. Full enclosure is fully fenced on4joined sides. 1536x1024RGBA truealpha0 outside grassy diamond; no exterior glow/shadow/backdrop. No animals, labels, extra props or collage."
+    },
+    {
+      "tier": 2,
+      "rotation": 0,
+      "sourceMaster": "paddock-2-r0.png",
+      "prompt": "Approved original full illustrated enclosure; preserved base view."
+    },
+    {
+      "tier": 2,
+      "rotation": 1,
+      "sourceMaster": "paddock-2-r1.png",
+      "prompt": "Identity-preserving game sprite edit: SAME approved Meadow Markets livestock paddock level3, rotate its whole physical enclosure90degrees, fixed orthographic camera30degrees down. Closed gate MUST be on far upper-left fence edge (reverse of the gate); water trough on the opposite near lower-rightinterior. ALL other props rotate together in their corresponding corners. Reference supplies exact warm detailed painterly style, chunky golden-brown wood grain, hinges, leafy lush meadow grass and tiny flowers. Keep the open timber shade canopy with hay rack, stone water trough and fully enclosed sturdy fence. Do not add or remove structures, do not mirror a front picture. Correct back-facing surfaces occlude the hay/trough where necessary. Fully enclosed fence on ALL4sides, corners completely joined, oneclosedgate. Physical footprint 5x4 tiles; oddrotations swapdimensions. Fence ground axes plus/minus26.565degrees slope0.5, verticalposts stay upright. Full single cutout sprite centered on1536x1024RGBA, clear margins without clipping. Actual alpha-zero outside tight grassy footprint and fences. No backdrop, no halo/glow/exterior shadow, no opaque black, no animals, no UI, no text, no plinth, no collage. Premium HD game asset matching reference, not simplified polygon fences."
+    },
+    {
+      "tier": 2,
+      "rotation": 2,
+      "sourceMaster": "paddock-2-r2.png",
+      "prompt": "Precise physical rotation correction to image1, the edit target. Image2 is original object identity/style reference. Move the whole open timber shade canopy and its hay rack from the far UPPER-LEFT corner to the near LOWER-RIGHT corner, entirely INSIDE the fence. It is viewed from its rear: timber slatted back wall and roof must occlude hay. Keep stone trough on the near LOWER-LEFT edge and closed gate on far UPPER-RIGHT edge. Do not mirror the whole picture. Keep enclosure size and outline, fixed orthographic camera, all other fenceposts, gate, trough, grass and flower details unchanged. This must be the same physical object rotated, not features rearranged arbitrarily. Preserve rich HD painterly golden timber and farm-game style. Full enclosure is fully fenced on4joined sides. 1536x1024RGBA truealpha0 outside grassy diamond; no exterior glow/shadow/backdrop. No animals, labels, extra props or collage."
+    },
+    {
+      "tier": 2,
+      "rotation": 3,
+      "sourceMaster": "paddock-2-r3.png",
+      "prompt": "Precise physical rotation correction to image1, the edit target. Image2 is original object identity/style reference. Move the whole open timber shade canopy with hay rack to the near LOWER-LEFT corner INSIDE fence. Its rear wood wall and roof face camera, hay mostly occluded. Keep stone trough on far UPPER-LEFT edge and gate on near LOWER-RIGHT edge. Do not mirror the whole picture. Keep enclosure size and outline, fixed orthographic camera, all other fenceposts, gate, trough, grass and flower details unchanged. This must be the same physical object rotated, not features rearranged arbitrarily. Preserve rich HD painterly golden timber and farm-game style. Full enclosure is fully fenced on4joined sides. 1536x1024RGBA truealpha0 outside grassy diamond; no exterior glow/shadow/backdrop. No animals, labels, extra props or collage."
+    },
+    {
+      "tier": 3,
+      "rotation": 0,
+      "sourceMaster": "paddock-3-r0.png",
+      "prompt": "Approved original full illustrated enclosure; preserved base view."
+    },
+    {
+      "tier": 3,
+      "rotation": 1,
+      "sourceMaster": "paddock-3-r1.png",
+      "prompt": "Physical rotation consistency correction of image1 (target), with image2 as original exact design/style reference. The gate stays on far UPPER-LEFT edge. Water trough must move to near LOWER-RIGHT edge, inside enclosure. Main open timber shelter is inside far UPPER-RIGHT corner, clearly separate from the gate. Exactly one shelter, one stone trough, three small hay racks in their remaining corresponding corners, one closed double gate. Fully fenced on all4joined sides. Preserve the target enclosure footprint, camera, rich warmly shaded HD painterly timber, lush grass and flowers. Only correct specified prop positions/orientation. Reverse-facing shelter must show the proper BACK wall, not the same front. Do not mirror entire image; no additional houses. 1536x1024RGBA sprite, full object within canvas, alpha0 outside tight grass/fence silhouette, no background/glow/exterior shadow/labels/animals/UI/collage."
+    },
+    {
+      "tier": 3,
+      "rotation": 2,
+      "sourceMaster": "paddock-3-r2.png",
+      "prompt": "Physical rotation consistency correction of image1 (target), with image2 as original exact design/style reference. The gate stays on far UPPER-RIGHT edge. Water trough must be on near LOWER-LEFT edge inside fence. Main timber shelter is inside near LOWER-RIGHT corner, viewed from its closed rear slatted wall and roof, hay mostly hidden. Exactly one shelter, one stone trough, three small hay racks in their remaining corresponding corners, one closed double gate. Fully fenced on all4joined sides. Preserve the target enclosure footprint, camera, rich warmly shaded HD painterly timber, lush grass and flowers. Only correct specified prop positions/orientation. Reverse-facing shelter must show the proper BACK wall, not the same front. Do not mirror entire image; no additional houses. 1536x1024RGBA sprite, full object within canvas, alpha0 outside tight grass/fence silhouette, no background/glow/exterior shadow/labels/animals/UI/collage."
+    },
+    {
+      "tier": 3,
+      "rotation": 3,
+      "sourceMaster": "paddock-3-r3.png",
+      "prompt": "Physical rotation consistency correction of image1 (target), with image2 as original exact design/style reference. The gate stays on near LOWER-RIGHT edge. Water trough stays on far UPPER-LEFT edge. Main timber shelter moves INSIDE near LOWER-LEFT corner; its closed rear slatted wall and roof face camera, hay hidden behind rear wall. Exactly one shelter, one stone trough, three small hay racks in their remaining corresponding corners, one closed double gate. Fully fenced on all4joined sides. Preserve the target enclosure footprint, camera, rich warmly shaded HD painterly timber, lush grass and flowers. Only correct specified prop positions/orientation. Reverse-facing shelter must show the proper BACK wall, not the same front. Do not mirror entire image; no additional houses. 1536x1024RGBA sprite, full object within canvas, alpha0 outside tight grass/fence silhouette, no background/glow/exterior shadow/labels/animals/UI/collage."
+    }
+  ],
+  "entries": {
+    "paddock-0": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            77.088,
+            502.7393568723685
+          ],
+          "front": [
+            866.1200441117304,
+            960.516493169185
+          ],
+          "right": [
+            1466.912,
+            619.2508529193212
+          ],
+          "fenceHeight": 213.6,
+          "sourceSlope": [
+            0.5801755957987343,
+            -0.5680263141095209
+          ],
+          "file": "assets/generated/paddocks172/paddock-0-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            91.824,
+            528.7453403598507
+          ],
+          "front": [
+            748.3738113145487,
+            983.1619169571941
+          ],
+          "right": [
+            1460.176,
+            593.6132634511123
+          ],
+          "fenceHeight": 210.29999999999998,
+          "sourceSlope": [
+            0.6921281047777734,
+            -0.5472709408571728
+          ],
+          "file": "assets/generated/paddocks172/paddock-0-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            68.268,
+            506.50315904322775
+          ],
+          "front": [
+            819.3896921192555,
+            1001.1855353783747
+          ],
+          "right": [
+            1472.732,
+            646.6756601393412
+          ],
+          "fenceHeight": 215.85,
+          "sourceSlope": [
+            0.6585915192242993,
+            -0.5426097023916329
+          ],
+          "file": "assets/generated/paddocks172/paddock-0-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            68.244,
+            494.17003144452764
+          ],
+          "front": [
+            850.6308791505922,
+            968.713659620827
+          ],
+          "right": [
+            1470.756,
+            636.489997653832
+          ],
+          "fenceHeight": 215.54999999999998,
+          "sourceSlope": [
+            0.606533213710707,
+            -0.5357365002597153
+          ],
+          "file": "assets/generated/paddocks172/paddock-0-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 4,
+      "illustratedEnclosure": true
+    },
+    "paddock-1": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            36,
+            502.5277618156226
+          ],
+          "front": [
+            811.4818022897696,
+            946.8001511187493
+          ],
+          "right": [
+            1500,
+            555.6589158230664
+          ],
+          "fenceHeight": 225,
+          "sourceSlope": [
+            0.5728985360988756,
+            -0.5680913541522664
+          ],
+          "file": "assets/generated/paddocks172/paddock-1-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            29.12,
+            499.5731391800882
+          ],
+          "front": [
+            803.6718192859164,
+            1004.7547950514563
+          ],
+          "right": [
+            1502.88,
+            595.50573746491
+          ],
+          "fenceHeight": 226.5,
+          "sourceSlope": [
+            0.6522244778110662,
+            -0.5853035889376905
+          ],
+          "file": "assets/generated/paddocks172/paddock-1-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            39.891999999999996,
+            541.3543354385267
+          ],
+          "front": [
+            769.5929198395979,
+            978.7479190558721
+          ],
+          "right": [
+            1495.108,
+            580.6049332422997
+          ],
+          "fenceHeight": 223.65,
+          "sourceSlope": [
+            0.5994148722102375,
+            -0.5487728604146287
+          ],
+          "file": "assets/generated/paddocks172/paddock-1-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            39.903999999999996,
+            505.2221187606597
+          ],
+          "front": [
+            602.492716783909,
+            947.5004466991977
+          ],
+          "right": [
+            1496.096,
+            611.6855578460359
+          ],
+          "fenceHeight": 223.79999999999998,
+          "sourceSlope": [
+            0.7861485926466201,
+            -0.37579862916859397
+          ],
+          "file": "assets/generated/paddocks172/paddock-1-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 4,
+      "illustratedEnclosure": true
+    },
+    "paddock-2": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            33.06,
+            523.5044821916839
+          ],
+          "front": [
+            793.0939513724868,
+            986.9983764223272
+          ],
+          "right": [
+            1501.94,
+            566.2038025693213
+          ],
+          "fenceHeight": 225.75,
+          "sourceSlope": [
+            0.6098331441558043,
+            -0.5936332362545572
+          ],
+          "file": "assets/generated/paddocks172/paddock-2-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            63.556,
+            511.97082839042525
+          ],
+          "front": [
+            744.6365238673593,
+            990.7984350099487
+          ],
+          "right": [
+            1491.444,
+            575.5811229984946
+          ],
+          "fenceHeight": 219.45,
+          "sourceSlope": [
+            0.7030411087085721,
+            -0.5559897634684461
+          ],
+          "file": "assets/generated/paddocks172/paddock-2-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            28.204,
+            525.3267746696439
+          ],
+          "front": [
+            801.1622676287137,
+            999.4503245589781
+          ],
+          "right": [
+            1508.796,
+            562.3118541715949
+          ],
+          "fenceHeight": 227.54999999999998,
+          "sourceSlope": [
+            0.6133882898281862,
+            -0.6177467952559704
+          ],
+          "file": "assets/generated/paddocks172/paddock-2-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            52.616,
+            524.1491428071301
+          ],
+          "front": [
+            785.2064605691817,
+            978.8096109836977
+          ],
+          "right": [
+            1485.384,
+            560.7440781129246
+          ],
+          "fenceHeight": 220.2,
+          "sourceSlope": [
+            0.6206202409779152,
+            -0.5970850381899178
+          ],
+          "file": "assets/generated/paddocks172/paddock-2-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 4,
+      "illustratedEnclosure": true
+    },
+    "paddock-3": {
+      "frames": [
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            25.264,
+            498.7311239178553
+          ],
+          "front": [
+            885.7957941788366,
+            985.3660146640294
+          ],
+          "right": [
+            1510.736,
+            561.6369238509637
+          ],
+          "fenceHeight": 228.29999999999998,
+          "sourceSlope": [
+            0.5655048355424752,
+            -0.678031413031413
+          ],
+          "file": "assets/generated/paddocks172/paddock-3-r0.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            23.324,
+            523.7320593422025
+          ],
+          "front": [
+            815.8756184411579,
+            1023.3421941011134
+          ],
+          "right": [
+            1513.676,
+            578.2879339356318
+          ],
+          "fenceHeight": 229.04999999999998,
+          "sourceSlope": [
+            0.6303818238887413,
+            -0.6377959541541929
+          ],
+          "file": "assets/generated/paddocks172/paddock-3-r1.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            27.240000000000002,
+            506.1108293136706
+          ],
+          "front": [
+            851.1633298057257,
+            995.029093373682
+          ],
+          "right": [
+            1510.76,
+            530.8944567640417
+          ],
+          "fenceHeight": 228,
+          "sourceSlope": [
+            0.5934026217892074,
+            -0.703664311211481
+          ],
+          "file": "assets/generated/paddocks172/paddock-3-r2.webp",
+          "billboard": false
+        },
+        {
+          "width": 1536,
+          "height": 1024,
+          "left": [
+            24.276,
+            556.5534243836313
+          ],
+          "front": [
+            720.0246240802766,
+            1021.3991633344469
+          ],
+          "right": [
+            1510.724,
+            565.1853360745916
+          ],
+          "fenceHeight": 228.45,
+          "sourceSlope": [
+            0.6681231163989785,
+            -0.5769750693545167
+          ],
+          "file": "assets/generated/paddocks172/paddock-3-r3.webp",
+          "billboard": false
+        }
+      ],
+      "processVersion": 4,
+      "illustratedEnclosure": true
+    }
+  }
+}

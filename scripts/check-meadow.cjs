@@ -121,3 +121,5 @@ require('./check-meadow-compact-hud.cjs');
 require('./check-meadow-word-search.cjs');
 
 require('./check-meadow-precache.cjs');
+
+require('./check-meadow-paddock-art.cjs');
