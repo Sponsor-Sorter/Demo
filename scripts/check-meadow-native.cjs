@@ -5,5 +5,6 @@ const root='tools/meadow-android/',java=fs.readFileSync(root+'android/app/src/ma
 for(const required of ['setInstanceFollowRedirects(false)','validDownload(','sameIdentity(','canRequestPackageInstalls()','FileProvider.getUriForFile','Intent.ACTION_VIEW','getFD().sync()'])assert(java.includes(required),required);
 assert(rules.includes('expectedCode > currentCode'));assert(rules.includes('Arrays.equals(currentCerts,downloadedCerts)'));
 const scope={window:{}};vm.runInNewContext(fs.readFileSync('meadow-and-market/native-updates.js','utf8'),scope);assert.equal(scope.window.meadowNativeUpdates.available,false);scope.window.meadowNativeUpdates.attach({});
+const nativeScope={window:{Capacitor:{isNativePlatform:()=>true,isPluginAvailable:()=>true,Plugins:{MeadowUpdates:{}}}}};vm.runInNewContext(fs.readFileSync('meadow-and-market/native-updates.js','utf8'),nativeScope);assert(nativeScope.window.meadowNativeUpdates.available,'Classic native bridge does not require a module-only registerPlugin method');
 assert(fs.readFileSync('meadow-and-market/game.js','utf8').includes('meadowNativeUpdates?.attach'));
 console.log('Native release: exact APK SHA256/bytes, package/version metadata, small live-game shell, platform signature/version gates, redirect denial, installer confirmation and browser exclusion passed.');

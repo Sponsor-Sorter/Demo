@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const enabled=window.Capacitor?.isNativePlatform?.()&&window.Capacitor?.isPluginAvailable?.('MeadowUpdates');
-  const plugin=enabled?window.Capacitor.registerPlugin('MeadowUpdates'):null;
+  const plugin=enabled?(window.Capacitor.Plugins?.MeadowUpdates||window.Capacitor.registerPlugin?.('MeadowUpdates')):null;
   let api,status=null,checking=false,busy=false,snooze=0;
   const dialog=()=>document.querySelector('#native-update-dialog');
   function draw(message=''){

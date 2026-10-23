@@ -18,6 +18,9 @@
     return {storage,ready,secure:!!vault,primary,guest};
   }
   const native=window.Capacitor?.isNativePlatform?.()&&window.Capacitor?.isPluginAvailable?.('MeadowVault');
-  window.meadowAuthStorage=create(localStorage,native?window.Capacitor.registerPlugin('MeadowVault'):null);
+  // This is a classic-script web game: native JSExport supplies Plugins directly.
+  // registerPlugin exists only when @capacitor/core has also been imported.
+  const vault=native?(window.Capacitor.Plugins?.MeadowVault||window.Capacitor.registerPlugin?.('MeadowVault')):null;
+  window.meadowAuthStorage=create(localStorage,vault);
   window.meadowAuthStorage.create=create;
 })();

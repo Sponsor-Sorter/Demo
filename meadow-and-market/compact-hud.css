@@ -1,5 +1,5 @@
-/* Notices belong below the safe-area-aware header in both HUD modes. */
-#toast{top:var(--hud-notice-top,110px)!important;bottom:auto!important;height:auto!important;width:max-content;max-width:min(440px,calc(100vw - 24px));overflow:hidden;background:#6e503b;color:#fff9ec;transform:translate(-50%,-6px);z-index:1500}
+/* Brown notices sit directly below the current farm title in both HUD modes. */
+#toast{top:var(--hud-notice-top,90px)!important;left:var(--hud-notice-left,50%)!important;bottom:auto!important;height:auto!important;width:max-content;max-width:min(440px,calc(100vw - 24px));overflow:hidden;background:#6e503b;color:#fff9ec;transform:translate(-50%,-6px);z-index:1500}
 #toast.show{transform:translate(-50%,0)}
 .compact-hud-panel{display:contents}.compact-hud-button[hidden]{display:none!important}
 .compact-hud-button{background:none!important;border:0!important;box-shadow:none!important;touch-action:none!important;user-select:none;-webkit-user-select:none}
