@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "scope": "Unlisted optional assets only. Build25 remains current; map gameplay availability requires a separately accepted runtime release.",
+  "inventory_sha256": "c469454ba4a1a234cd2b21b187c0f7f5f20e912dca126af735be796d759518e2",
+  "maps": [
+    {
+      "id": "paleo_540",
+      "revision": 1,
+      "title": "Cambrian - 540 Ma",
+      "graph_hash": "51dac532181fc757c1a22ab10bb76be47d4cf3460dc9f2e2e1e06b909236efe9",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_540-r1.pck",
+      "pack_bytes": 8180080,
+      "pack_sha256": "59eb7c7c2c06f9c888f50f31b21b8e7c72d77def74bce483931441f579c7a0b9",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_540-thumbnail.png",
+      "thumbnail_sha256": "3354b19b2de5602ecaa033675afae373af11e292569ade17e0863af0bf9f21b6",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_540-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_540-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_445",
+      "revision": 1,
+      "title": "Ordovician - 445 Ma",
+      "graph_hash": "0ab7515c6ae7119552b155ecec3d883ecf2db07b7775c56e25d9e53d399d43b3",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_445-r1.pck",
+      "pack_bytes": 7746352,
+      "pack_sha256": "2e4ba814056b431ea35dec5b89644a51109fe927f144ebfb8c48b5dbe90b25d5",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_445-thumbnail.png",
+      "thumbnail_sha256": "07cdfdfbc2c9a7c06898b057d3983a20ae6a00e70e3ad5c4447169f747d613d9",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_445-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_445-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_405",
+      "revision": 1,
+      "title": "Devonian - 405 Ma",
+      "graph_hash": "0d06e51c9a6660516f66c41a74fcf8f8731a37d960c350d2a57e7b19bdb731c7",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_405-r1.pck",
+      "pack_bytes": 9639216,
+      "pack_sha256": "5ba80498b8d4431678e5de477e2128cadd145468593478641cf75df1c60f1cc9",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_405-thumbnail.png",
+      "thumbnail_sha256": "781e36291e99544672782a3b09e1c1e8d7c4eea910478a98454d7157a396b972",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_405-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_405-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_325",
+      "revision": 1,
+      "title": "Carboniferous - 325 Ma",
+      "graph_hash": "822e0ee6f87e9ba0632fdac84e5e3a4413a24cd79285bfc4d5f4667de6d7c98f",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_325-r1.pck",
+      "pack_bytes": 9699568,
+      "pack_sha256": "715c246dbaf8c574e34ac8a9583c8a1597df55ae83e522807ed0cbe29cc2c29b",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_325-thumbnail.png",
+      "thumbnail_sha256": "a76c79a383d2847abd7d010e78694c819702c359b5897402b4007060f5e29e2a",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_325-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_325-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_235",
+      "revision": 1,
+      "title": "Triassic - 235 Ma",
+      "graph_hash": "56f9051e90759b410a22c84d0932ab29f0b6fbec74eae08000b8b9ccbdfaa226",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_235-r1.pck",
+      "pack_bytes": 9998352,
+      "pack_sha256": "38540a888511fa8b088a121fff2dc50109ebb21a91693155be4213db60502236",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_235-thumbnail.png",
+      "thumbnail_sha256": "c96694dffdf6d7dbc4a0e32f5fdc401f80739538ca2e27dc67e903bae6d6aa64",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_235-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_235-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_175",
+      "revision": 1,
+      "title": "Jurassic - 175 Ma",
+      "graph_hash": "a4cdba08e479c53529e1b9bdad52384e39a6c94881a209852586fde523d92040",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_175-r1.pck",
+      "pack_bytes": 10172368,
+      "pack_sha256": "770568c7e87ed6c245eda0eebef7da63aa8ef70c9b6a5065fd1b3f2475e8a252",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_175-thumbnail.png",
+      "thumbnail_sha256": "86a30ee9752c4b6d99d77aa46ff85f41750d9b1636dfea799f472f807feda0d2",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_175-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_175-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    },
+    {
+      "id": "paleo_105",
+      "revision": 1,
+      "title": "Cretaceous - 105 Ma",
+      "graph_hash": "cda798087c2050ba4848c7047235e433d956f622d44262acc634a2db7086572b",
+      "pack_url": "https://sponsorsorter.com/frontlines/maps/paleo_105-r1.pck",
+      "pack_bytes": 10539504,
+      "pack_sha256": "9c1e4af2d9cd4fb275b3d0faf5506ff9abf33379ccc635bcb08cf5473a6bb10a",
+      "thumbnail_url": "https://sponsorsorter.com/frontlines/maps/paleo_105-thumbnail.png",
+      "thumbnail_sha256": "95ec2827064685dfca252e09c377663dca03a80bb2dc5e6b9b43ba2391492fad",
+      "credits_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_105-r1/SOURCE_CREDITS.md",
+      "project_license_url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_105-r1/PROJECT_LICENSE.txt",
+      "packed_entries": 17,
+      "png_dimensions": {
+        "thumbnail.png": [
+          512,
+          256
+        ],
+        "albedo.png": [
+          4096,
+          2048
+        ],
+        "detail_elevation.png": [
+          4096,
+          2048
+        ],
+        "territory_ids.png": [
+          4096,
+          2048
+        ],
+        "engraved_edges.png": [
+          4096,
+          2048
+        ],
+        "height_mobile.png": [
+          513,
+          257
+        ],
+        "height_desktop.png": [
+          1025,
+          513
+        ],
+        "ocean_depth.png": [
+          1024,
+          512
+        ],
+        "albedo_mobile.png": [
+          2048,
+          1024
+        ]
+      }
+    }
+  ],
+  "assets": [
+    {
+      "path": "frontlines/maps/paleo_540-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_540-r1.pck",
+      "bytes": 8180080,
+      "sha256": "59eb7c7c2c06f9c888f50f31b21b8e7c72d77def74bce483931441f579c7a0b9"
+    },
+    {
+      "path": "frontlines/maps/paleo_540-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_540-thumbnail.png",
+      "bytes": 89669,
+      "sha256": "3354b19b2de5602ecaa033675afae373af11e292569ade17e0863af0bf9f21b6"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_540-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_540-r1/SOURCE_CREDITS.md",
+      "bytes": 2831,
+      "sha256": "b3fd36999632891a1b565e1307ad30b9531239f579163e8e2701bd517aeee5fe"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_540-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_540-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_445-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_445-r1.pck",
+      "bytes": 7746352,
+      "sha256": "2e4ba814056b431ea35dec5b89644a51109fe927f144ebfb8c48b5dbe90b25d5"
+    },
+    {
+      "path": "frontlines/maps/paleo_445-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_445-thumbnail.png",
+      "bytes": 86895,
+      "sha256": "07cdfdfbc2c9a7c06898b057d3983a20ae6a00e70e3ad5c4447169f747d613d9"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_445-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_445-r1/SOURCE_CREDITS.md",
+      "bytes": 2833,
+      "sha256": "274ff13150dc5541847e286be5aadcb01f2b6dcddaa8d0ad9d16a19d700919b3"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_445-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_445-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_405-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_405-r1.pck",
+      "bytes": 9639216,
+      "sha256": "5ba80498b8d4431678e5de477e2128cadd145468593478641cf75df1c60f1cc9"
+    },
+    {
+      "path": "frontlines/maps/paleo_405-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_405-thumbnail.png",
+      "bytes": 104831,
+      "sha256": "781e36291e99544672782a3b09e1c1e8d7c4eea910478a98454d7157a396b972"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_405-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_405-r1/SOURCE_CREDITS.md",
+      "bytes": 2831,
+      "sha256": "e64b04e1dd94d0434ddb929f33365dfa02bbe76cbca6f427181076f1478cf7b6"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_405-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_405-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_325-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_325-r1.pck",
+      "bytes": 9699568,
+      "sha256": "715c246dbaf8c574e34ac8a9583c8a1597df55ae83e522807ed0cbe29cc2c29b"
+    },
+    {
+      "path": "frontlines/maps/paleo_325-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_325-thumbnail.png",
+      "bytes": 105091,
+      "sha256": "a76c79a383d2847abd7d010e78694c819702c359b5897402b4007060f5e29e2a"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_325-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_325-r1/SOURCE_CREDITS.md",
+      "bytes": 2836,
+      "sha256": "8670931e3fea9e09836280b1a877482b27f505623e0cf363642615086ebefff5"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_325-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_325-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_235-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_235-r1.pck",
+      "bytes": 9998352,
+      "sha256": "38540a888511fa8b088a121fff2dc50109ebb21a91693155be4213db60502236"
+    },
+    {
+      "path": "frontlines/maps/paleo_235-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_235-thumbnail.png",
+      "bytes": 105170,
+      "sha256": "c96694dffdf6d7dbc4a0e32f5fdc401f80739538ca2e27dc67e903bae6d6aa64"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_235-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_235-r1/SOURCE_CREDITS.md",
+      "bytes": 2830,
+      "sha256": "7ab2c93c68a8f25b6da2f1250d9114f01f78cde7d8d21b8a2f6ee34e6f10b7d7"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_235-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_235-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_175-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_175-r1.pck",
+      "bytes": 10172368,
+      "sha256": "770568c7e87ed6c245eda0eebef7da63aa8ef70c9b6a5065fd1b3f2475e8a252"
+    },
+    {
+      "path": "frontlines/maps/paleo_175-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_175-thumbnail.png",
+      "bytes": 109463,
+      "sha256": "86a30ee9752c4b6d99d77aa46ff85f41750d9b1636dfea799f472f807feda0d2"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_175-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_175-r1/SOURCE_CREDITS.md",
+      "bytes": 2830,
+      "sha256": "58c1f5a1e79bc4a132d805a5a2d8b95ad1efb83f8b127f5454b8f02ad156dc4e"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_175-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_175-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "frontlines/maps/paleo_105-r1.pck",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_105-r1.pck",
+      "bytes": 10539504,
+      "sha256": "9c1e4af2d9cd4fb275b3d0faf5506ff9abf33379ccc635bcb08cf5473a6bb10a"
+    },
+    {
+      "path": "frontlines/maps/paleo_105-thumbnail.png",
+      "url": "https://sponsorsorter.com/frontlines/maps/paleo_105-thumbnail.png",
+      "bytes": 112441,
+      "sha256": "95ec2827064685dfca252e09c377663dca03a80bb2dc5e6b9b43ba2391492fad"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_105-r1/SOURCE_CREDITS.md",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_105-r1/SOURCE_CREDITS.md",
+      "bytes": 2832,
+      "sha256": "753ccffaa11732b92db1d6f1048978cdb013b713a27542b43bfa8c0207050557"
+    },
+    {
+      "path": "frontlines/maps/credits/paleo_105-r1/PROJECT_LICENSE.txt",
+      "url": "https://sponsorsorter.com/frontlines/maps/credits/paleo_105-r1/PROJECT_LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    }
+  ],
+  "dataset_license": "https://creativecommons.org/licenses/by/4.0/",
+  "dataset_record": "https://zenodo.org/records/10346399",
+  "current_dataset_record": "https://zenodo.org/records/13635864",
+  "pack_reader_reference": "https://github.com/godotengine/godot/blob/master/core/io/file_access_pack.cpp"
+}
