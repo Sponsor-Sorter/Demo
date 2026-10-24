@@ -1,0 +1,50 @@
+{
+  "pck_sha256": "dba0f0082f950452cd7c791975d7fe1dbb2768f91e3a9fc54b3b8832957fa748",
+  "pck_bytes": 66397080,
+  "url": "http://127.0.0.1:8810/",
+  "passed": true,
+  "publication_eligible": false,
+  "scope": "Fresh local browser material review of Long01 at front/profile/rear, camera reset, canonical front save/reload and portrait/landscape creator fit.",
+  "checks": {
+    "whole_http_sha_bytes": true,
+    "candidate22_no_store": true,
+    "version22_launch": true,
+    "actual3D_creator": true,
+    "long01_front_surface_visible": true,
+    "long01_profile_surface_visible": true,
+    "long01_rear_surface_visible": true,
+    "missing_hair_surface_observed": false,
+    "reset_front_framing": true,
+    "save_front_portrait_from_rear_camera": true,
+    "saved_long_hair_portrait_reload": true,
+    "reopened_saved_recipe": true,
+    "creator_1280x720": true,
+    "creator_390x844": true,
+    "creator_844x390": true,
+    "cancel_without_new_recipe_changes": true,
+    "viewport_reset": true
+  },
+  "details": {
+    "material": "Long01 curtain/back and profile strands remained visible in the sampled views. No missing/inverted surface defect observed in this scope; dark authored hair/light response visible, no claim of subjective art parity.",
+    "save": "Changed Short02 to Long01, orbited to rear, Save produced canonical FRONT menu portrait. Reload and reopen retained Long01/front composition.",
+    "cache": "Owner states render cache4; this fresh8810origin visually proved generated portrait save/reload. Internal cache version and migration from cache3 were not inspected or proven by browser interaction."
+  },
+  "carried_baseline": {
+    "build": 21,
+    "pck_sha256": "2a24c3833943d9c0537a748bf0d7baeb36ad58469e649cbfe14d5b55bc2a9021",
+    "receipt": "Frozen21 browser/native receipts and owner automated game-wide baseline; no fresh22 full gameplay claim."
+  },
+  "console_entries": [],
+  "blockers": [],
+  "limits": [
+    "Only Long01 front/profile/rear reviewed manually; owner all-ten-hairstyle automated checks remain separate. No exhaustive face/headgear/lighting matrix.",
+    "No injected update or installer handoff: creator update-deferral behavior covered by owner synthetic checks, not fresh browser acceptance.",
+    "No browser-visible cache3-to-cache4 migration test or internal cache inspection.",
+    "No native touch/pinch/rotation, Android install/updater, real email/auth/cloud appearance or social journey tested by Website agent.",
+    "No new campaign, backend/schema/Auth-policy changes, phone use or publication. Build21 remains live unchanged.",
+    "Exact native22 acceptance and frozen packet required before publication."
+  ],
+  "http_receipt": "FRONTLINES_PREVIEW22_LOCAL_HTTP.json",
+  "evidence_prefix": "FRONTLINES_PREVIEW22_",
+  "final_state": "Build22mainmenu with savedLong01frontportrait;normal1280x720viewport."
+}

@@ -1,6 +1,6 @@
 {
-  "build": 21,
-  "version": "1.0.0-preview.21",
-  "url": "https://sponsorsorter.com/frontlines/builds/21/",
-  "notes": "Improves commander head, collar, clothing and headwear fitting; adds finger orbit, pan and pinch zoom with a canonical saved portrait; repairs finger scrolling across account, creator, settings, rules, social and option lists. Existing recipes and campaigns retained."
+  "build": 22,
+  "version": "1.0.0-preview.22",
+  "url": "https://sponsorsorter.com/frontlines/builds/22/",
+  "notes": "Preserves two-sided hair and brow surfaces when rotating the commander and defers update prompts while the creator is open. Includes the measured fitting, finger camera controls and scrolling repairs from preview21. Saved appearances and campaigns retained."
 }

@@ -1,0 +1,30 @@
+{
+  "build": 22,
+  "installed_apk_sha256": "61d236c74c61752bdfc94a3831dbf23ec92425e7faa9563d91e423a5506f8b60",
+  "bytes": 95464141,
+  "campaign_unchanged_at_launch": true,
+  "method": "ADB install-r exact package, not an in-app updater claim",
+  "passed": true,
+  "device": "Samsung SM-S908E Android14",
+  "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "pck_sha256": "dba0f0082f950452cd7c791975d7fe1dbb2768f91e3a9fc54b3b8832957fa748",
+  "fresh22": {
+    "version22_launch": true,
+    "long_hair_front_and_rear_native": true,
+    "finger_orbit": true,
+    "canonical_front_saved_from_rear": true,
+    "latest_actual_phone_campaign_byte_identical": true,
+    "saved_recipe_unchanged": true,
+    "script_or_fatal_errors_observed": false
+  },
+  "carried21": {
+    "manifest_sha256": "693357cbaf7ee6bd043b276ddac05f3d13f91484eb21828c1cb2e0a91ecb2f9c",
+    "scope": "Native field/button/slider/choice-list scrolling, horizontal edit/Undo, keyboard, orbit/reset and save/restart acceptance. Runtime input code is unchanged in22."
+  },
+  "limits": [
+    "Only the Long01 hairstyle was visually checked on this native phone; all10 styles/front/profile/rear have separate desktop render regression.",
+    "Creator update deferral has9 fresh synthetic in-engine checks; no fake future manifest was injected on phone.",
+    "Actual21-to22 in-app updater test follows publication; this pre-publication receipt is ADB exact-package acceptance.",
+    "No fresh native physical rotation/pinch, verified-account identity journey, sustained thermal benchmark, full native victory or AAA-art-parity claim."
+  ]
+}

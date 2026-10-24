@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 21 improves the 3D commander creator with fitted clothing and headwear, preview camera controls, and scrolling across menus. Saved portraits keep a front view independent of the editing camera. It retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 22 preserves two-sided hair and eyebrow surfaces in the 3D commander creator and defers update offers while the creator is open. It retains fitted clothing, camera controls and menu scrolling from build 21. Saved portraits keep a front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.21 · Build 21",
+      "build": "Version 1.0.0-preview.22 · Build 22",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -155,16 +155,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/21/",
+          "url": "https://sponsorsorter.com/frontlines/builds/22/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-21.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-22.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 21 exact APK was installed through ADB, not an in-app updater test. Native checks on one Samsung phone passed finger orbit/reset, vertical slider swipes without recipe changes, horizontal edit/Undo, account field/button scrolling without accidental focus or activation, tap-to-keyboard, Settings scrolling without audio changes, long hairstyle list selection/Undo and front-portrait save/reload. The actual native campaign stayed byte-identical during these UI checks. Local browser checks passed mouse orbit, wheel zoom/reset, front portrait saved from a rear editing view and retained after reload, responsive creator layouts and practical wheel scrolling. Physical native pinch/two-finger pan and rotation were not injected; automated engine gestures and browser responsiveness are separate evidence. Browser right/middle-button panning and authenticated social scrolling were not exercised. Real email confirmation, verified-user cloud appearance, human friends and two-phone optical QR remain unaccepted. No new sustained thermal or complete native game-to-victory claim. Build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale; build 18 endurance is carried evidence, not a fresh build 21 benchmark. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
-      "sha256": "922658F1B93568162B211A0EE5EB34E9E3648C02CDE6893C2ABF7D9A317833EA"
+      "notes": "Playtest preview. Pre-publication exact build 22 APK acceptance used ADB, not an in-app updater test; an actual 21-to-22 update is recorded separately only after it is completed. Fresh build 22 native and local browser checks reviewed Long01 hair surfaces, camera orbit and canonical front save from a rear view; local reload retained the front portrait. The latest actual native campaign and appearance were preserved. Native field/button/slider scrolling, tap-to-keyboard, horizontal edit/Undo and long hairstyle list acceptance are carried from exact build 21 because input code is unchanged. Fresh focused material, creator, update-deferral, pause and responsive checks accompany the carried full build 21 gameplay baseline; that baseline was not rerun as fresh build 22 gameplay. The focused total of 1,792 includes 1,355 Godot assertions and 437 client/server Node checks. Creator update deferral has synthetic engine coverage; no fake future offer was injected on the phone. Physical native pinch/two-finger pan and rotation were not injected; automated engine gestures and browser responsiveness are separate evidence. Browser right/middle-button panning and authenticated social scrolling were not exercised. Real email confirmation, verified-user cloud appearance, human friends and two-phone optical QR remain unaccepted. No new sustained thermal or complete native game-to-victory claim. Build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale; build 18 endurance is carried evidence. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop, art-parity or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
+      "sha256": "61D236C74C61752BDFC94A3831DBF23EC92425E7FAA9563D91E423A5506F8B60"
     }
   ]
 }
