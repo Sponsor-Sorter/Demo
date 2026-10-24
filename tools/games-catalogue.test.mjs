@@ -40,20 +40,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 22 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.22 · Build 22');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/22/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-22.apk');
+test('Frontlines publishes accepted build 23 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.23 · Build 23');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/23/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-23.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview22.json',import.meta.url),'utf8'));
- assert.equal(m.build,22);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview23.json',import.meta.url),'utf8'));
+ assert.equal(m.build,23);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,22);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,22);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,23);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,23);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -113,3 +113,6 @@ test('Frontlines21 scopes native gestures and canonical saved portraits',()=>{co
 
 test('Frontlines preserves all accepted build 21 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview21.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/21/')||f.path.endsWith('build-21.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
 test('Frontlines22 scopes hair material acceptance and mixed assertion totals',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/two-sided hair/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview22.json',import.meta.url),'utf8'));assert.equal(m.validation.fresh_total,1792);assert.equal(Object.entries(m.validation.fresh).filter(([name])=>!name.includes('node')).reduce((sum,[,count])=>sum+count,0),1355);assert.equal(m.validation.fresh['appearance22-node.log'],437);const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview22-native-acceptance.json',import.meta.url),'utf8'));assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(n.fresh22.canonical_front_saved_from_rear,true);assert.equal(n.fresh22.latest_actual_phone_campaign_byte_identical,true);const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview22-local-browser-acceptance.json',import.meta.url),'utf8'));assert.equal(b.passed,true);assert.equal(b.checks.long01_rear_surface_visible,true);assert.equal(b.pck_sha256,n.pck_sha256);});
+
+test('Frontlines preserves all accepted build 22 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview22.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/22/')||f.path.endsWith('build-22.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+test('Frontlines23 scopes final creator acceptance and separate automated counts',()=>{const e=data.entries.find(e=>e.id==='frontlines');assert.match(e.description,/64 grouped face controls/);const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview23.json',import.meta.url),'utf8'));assert.equal(m.validation.godot_counted_assertions,2884);assert.equal(m.validation.node_counted_assertions,773);assert.equal(m.validation.counted_total,3657);assert.equal(m.backend.version,8);const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview23-native-acceptance.json',import.meta.url),'utf8'));assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(n.fresh23.bow_downward_timed_native_sequence,true);assert.equal(n.fresh23.campaign_progress_unchanged,true);const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview23-local-browser-acceptance.json',import.meta.url),'utf8'));assert.equal(b.passed,true);assert.equal(b.checks.red_plume_visible_tricorn,true);assert.equal(b.pck_sha256,n.pck_sha256);});

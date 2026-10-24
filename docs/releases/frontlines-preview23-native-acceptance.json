@@ -1,0 +1,49 @@
+{
+  "build": 23,
+  "installed_apk_sha256": "d34085477bd3468770596a503c5e46417efa6e39e32034bfda433b2357ced0f0",
+  "bytes": 100590334,
+  "campaign_unchanged_at_launch": true,
+  "method": "ADB install-r exact package, not an in-app updater claim",
+  "passed": true,
+  "device": "Samsung SM-S908E Android14",
+  "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "pck_sha256": "6fd177cd4ffc00981931ab553343442591ac462bff2fdd42dc1b11b9b1290a1e",
+  "fresh23": {
+    "exact_package_version_and_sha": true,
+    "saved_draft_preserved": true,
+    "saved_recipe_unchanged_after_undo_and_save": true,
+    "jaw_height_touch_slider_and_undo": true,
+    "nose_group_picker": true,
+    "blue_plume_visible_in_hair": true,
+    "bow_downward_timed_native_sequence": true,
+    "finger_orbit": true,
+    "canonical_front_saved_from_rear": true,
+    "restart_and_reopen_recipe": true,
+    "commander_volume_touch_75_to39_and_back75": true,
+    "campaign_resume": true,
+    "in_game_emote_picker_and_victory_bubble": true,
+    "campaign_progress_unchanged": true,
+    "script_or_fatal_errors_observed": false
+  },
+  "scope": "Final exact APK manual landscape acceptance. Earlier pre-final23 native bridge-slider/vertical-scroll/gender/voice/beard checks are supplementary carried evidence; no fresh all64/all8 native interaction matrix.",
+  "limits": [
+    "No fresh physical native rotation or pinch acceptance. Responsive portrait/landscape engine tests and actual browser viewport checks are separate.",
+    "Emote bubble/send observed on native; no frame-timed in-game reaction visual acceptance. Creator Bow direction and earlier Victory motion were captured separately.",
+    "No new verified-account email/cloud-profile journey or subjective listening approval.",
+    "Campaign military state retained; local social metadata intentionally gains one QA Victory emote.",
+    "No broad-device sustained thermal or AAA art parity claim.",
+    "Pre-publication ADB candidate acceptance is not the later real22-to23 in-app update."
+  ],
+  "approved_media": [
+    "final23-jaw-slider-overview.png",
+    "final23-bow-timed1-overview.png",
+    "final23-bow-timed3-overview.png",
+    "final23-rear-before-save-overview.png",
+    "final23-canonical-saved-overview.png",
+    "final23-reopened-overview.png",
+    "final23-commander-audio-changed-overview.png",
+    "final23-commander-audio-restored-overview.png",
+    "final23-emote-picker-overview.png",
+    "final23-emote-sent-overview.png"
+  ]
+}

@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 22 preserves two-sided hair and eyebrow surfaces in the 3D commander creator and defers update offers while the creator is open. It retains fitted clothing, camera controls and menu scrolling from build 21. Saved portraits keep a front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 23 expands the 3D commander creator with 64 grouped face controls, gender selection, nine optional voices, preview poses and fitted uniform details. It retains two-sided hair surfaces and adds visible plumes and clearer portrait controls. Saved portraits keep a front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.22 · Build 22",
+      "build": "Version 1.0.0-preview.23 · Build 23",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -150,21 +150,23 @@
         "Choose Your Commander from the main menu, or Customise in Commander Account. Edit the 3D appearance, then Save Commander to use its portrait; Cancel offers a choice to discard unsaved changes.",
         "Open the card-fan button to inspect your earned hand. Local AI pauses while cards are open; Close resumes play. Shared online tables continue normally.",
         "In the creator, drag to rotate and tilt, use two fingers to pan/pinch, or use the desktop wheel to zoom and right/middle drag to pan. Reset View restores the front composition; Save Commander always captures a front portrait.",
-        "Scroll account, creator, Settings and option lists with a vertical swipe. Swipe vertically over a slider to scroll; drag horizontally to change its value. Tap a field to enter text."
+        "Scroll account, creator, Settings and option lists with a vertical swipe. Swipe vertically over a slider to scroll; drag horizontally to change its value. Tap a field to enter text.",
+        "Use the Face group menu for cheeks, jaw/chin, nose and other facial controls. Gender and Voice are in Presets; voice is independent of appearance. Preview Voice plays the selected set; adjust Commander volume in Settings.",
+        "Open Pose to choose an editor animation, or Still to stop it; Replay restarts the action. Saved portraits keep their front composition. Custom commanders can use the player-card panel for limited public or private emotes."
       ],
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/22/",
+          "url": "https://sponsorsorter.com/frontlines/builds/23/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-22.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-23.apk"
         }
       ],
-      "notes": "Playtest preview. Pre-publication exact build 22 APK acceptance used ADB, not an in-app updater test; an actual 21-to-22 update is recorded separately only after it is completed. Fresh build 22 native and local browser checks reviewed Long01 hair surfaces, camera orbit and canonical front save from a rear view; local reload retained the front portrait. The latest actual native campaign and appearance were preserved. Native field/button/slider scrolling, tap-to-keyboard, horizontal edit/Undo and long hairstyle list acceptance are carried from exact build 21 because input code is unchanged. Fresh focused material, creator, update-deferral, pause and responsive checks accompany the carried full build 21 gameplay baseline; that baseline was not rerun as fresh build 22 gameplay. The focused total of 1,792 includes 1,355 Godot assertions and 437 client/server Node checks. Creator update deferral has synthetic engine coverage; no fake future offer was injected on the phone. Physical native pinch/two-finger pan and rotation were not injected; automated engine gestures and browser responsiveness are separate evidence. Browser right/middle-button panning and authenticated social scrolling were not exercised. Real email confirmation, verified-user cloud appearance, human friends and two-phone optical QR remain unaccepted. No new sustained thermal or complete native game-to-victory claim. Build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale; build 18 endurance is carried evidence. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop, art-parity or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
-      "sha256": "61D236C74C61752BDFC94A3831DBF23EC92425E7FAA9563D91E423A5506F8B60"
+      "notes": "Playtest preview. Pre-publication exact build 23 APK acceptance used ADB, not an in-app updater test; any real 22-to-23 update is recorded separately after completion. Final native checks passed jaw touch/Undo, blue plume visibility, a timed downward Bow, orbit and front save/restart, Commander volume change/restoration, campaign resume and a Victory emote bubble. Military progress and the saved recipe were preserved; local social metadata gained the QA emote. Fresh final-hash browser checks passed portrait control readability, sampled blue/red plume visibility, layout, front save/reload and discard; broader face/voice/Victory checks are explicitly carried from the earlier 23 browser candidate. The full fresh automated count is 2,884 Godot assertions plus 773 counted Node assertions, across 33 Godot jobs, four Node jobs and two exports. Service 8 private-room QA checked bounded personas and emote audience rules, then removed the QA identities and room; no new verified-account email/cloud-profile journey is claimed. Physical native pinch/two-finger pan and rotation were not injected; responsive browser checks and engine gestures are separate evidence. Audible voice quality, all-morph/all-pose native combinations, complete native game-to-victory, broad-device thermal performance and parity with the painted artwork remain unaccepted. Existing build 18 endurance is carried evidence; build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
+      "sha256": "D34085477BD3468770596A503C5E46417EFA6E39E32034BFDA433B2357CED0F0"
     }
   ]
 }

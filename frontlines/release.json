@@ -1,6 +1,6 @@
 {
-  "build": 22,
-  "version": "1.0.0-preview.22",
-  "url": "https://sponsorsorter.com/frontlines/builds/22/",
-  "notes": "Preserves two-sided hair and brow surfaces when rotating the commander and defers update prompts while the creator is open. Includes the measured fitting, finger camera controls and scrolling repairs from preview21. Saved appearances and campaigns retained."
+  "build": 23,
+  "version": "1.0.0-preview.23",
+  "url": "https://sponsorsorter.com/frontlines/builds/23/",
+  "notes": "64 fitted face controls, selectable gender and nine voices, wider creator preview and compact pose controls, joined shoulders and upper arms, improved medals and library plumes. Custom commanders react to captures and can send limited emotes. Existing campaign and appearance formats retained."
 }

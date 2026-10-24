@@ -1,0 +1,46 @@
+{
+  "pck_sha256": "6fd177cd4ffc00981931ab553343442591ac462bff2fdd42dc1b11b9b1290a1e",
+  "pck_bytes": 72224624,
+  "url": "http://127.0.0.1:8811/",
+  "passed": true,
+  "publication_eligible": false,
+  "scope": "Fresh focused replacement23 browser acceptance: larger portrait Pose/Replay, plume visibility, layouts and canonical saved recipe persistence/discard. Original broader UI acceptance carried under51fa hash.",
+  "checks": {
+    "whole_http_sha_bytes": true,
+    "candidate23_no_store": true,
+    "version23_launch": true,
+    "prior_local_woman_court3_retained": true,
+    "portrait390x844_pose_replay_readability_improved": true,
+    "portrait_pose_picker_opens_and_all8_readable": true,
+    "normal1280x720_layout": true,
+    "landscape844x390_layout": true,
+    "blue_plume_tip_visible_with_short02": true,
+    "blue_plume_visible_hair_none": true,
+    "blue_plume_visible_tricorn": true,
+    "red_plume_visible_tricorn": true,
+    "accessory_list_reachable_by_scroll": true,
+    "canonical_front_save_from_rear": true,
+    "red_tricorn_reload_retained": true,
+    "reopened_outfit_red_tricorn": true,
+    "unsaved_blue_cancel_warning": true,
+    "discard_restores_saved_red": true,
+    "viewport_reset": true
+  },
+  "carried_checks": {
+    "pck_sha256": "51fa15e8772412f15a494bb2cc307327c8ccb16732714949fb2030a18a017b5e",
+    "receipt": "FRONTLINES_PREVIEW23_LOCAL_ACCEPTANCE_51FA.json",
+    "scope": "Grouped face/nose picker and sampled slider/reset; gender/voice selection and persistence; looping Victory visual motion; broad original layout and scroll checks. Not freshly repeated in full on6fd1. No old Bow direction acceptance carried."
+  },
+  "console_entries": [],
+  "blockers": [],
+  "limits": [
+    "Fresh plume checks establish visible tips/colour outside hair/Tricorn in sampled recipe, not exhaustive attachment quality across all hairstyles, morphs and hats.",
+    "Changed Bow downward direction not visually accepted in this focused browser pass; owner exact-source/native timed direction evidence remains required separately.",
+    "Native finger/pinch/vertical-slider gestures, Android package/install/updater, audible voice, all64morph geometry, full animation/capture/emote and beard fit matrix unverified by Website agent.",
+    "No game campaign, backend/Auth/schema changes or phone/ADB actions; other origins and historical8–22/source-onlyWebsiteQA untouched.",
+    "No publication until exact native receipt and frozen23 packet."
+  ],
+  "http_receipt": "FRONTLINES_PREVIEW23_6FD1_HTTP.json",
+  "evidence_prefix": "FRONTLINES_PREVIEW23_6FD1_",
+  "final_state": "Mainmenu, savedWoman/Court3,hairNone,Tricorn,redplume;1280x720."
+}
