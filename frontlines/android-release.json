@@ -1,13 +1,13 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.23",
-  "versionCode": 23,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-23.apk",
-  "bytes": 100590334,
-  "sha256": "d34085477bd3468770596a503c5e46417efa6e39e32034bfda433b2357ced0f0",
+  "versionName": "1.0.0-preview.24",
+  "versionCode": 24,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-24.apk",
+  "bytes": 104244759,
+  "sha256": "ff79a79b20de6393bb152bce2d1d6abb711c651910aac8d5a51718084b914132",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "64 fitted face controls, selectable gender and nine voices, wider creator preview and compact pose controls, joined shoulders and upper arms, improved medals and library plumes. Custom commanders react to captures and can send limited emotes. Existing campaign and appearance formats retained.",
+  "notes": "Expressive3D commanders:28 independent facial actions, denser head, fitted teeth/tongue, gaze and blinks, distinct victory/defeat/bow/wink/laugh/anger, voice-amplitude jaw motion, neutral saved portraits and bounded phone rendering. Existing64-control recipes and campaigns retained.",
   "targetSdk": 36,
   "abis": [
     "arm64-v8a"

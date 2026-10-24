@@ -1,6 +1,6 @@
 {
-  "build": 23,
-  "version": "1.0.0-preview.23",
-  "url": "https://sponsorsorter.com/frontlines/builds/23/",
-  "notes": "64 fitted face controls, selectable gender and nine voices, wider creator preview and compact pose controls, joined shoulders and upper arms, improved medals and library plumes. Custom commanders react to captures and can send limited emotes. Existing campaign and appearance formats retained."
+  "build": 24,
+  "version": "1.0.0-preview.24",
+  "url": "https://sponsorsorter.com/frontlines/builds/24/",
+  "notes": "Expressive3D commanders:28 independent facial actions, denser head, fitted teeth/tongue, gaze and blinks, distinct victory/defeat/bow/wink/laugh/anger, voice-amplitude jaw motion, neutral saved portraits and bounded phone rendering. Existing64-control recipes and campaigns retained."
 }

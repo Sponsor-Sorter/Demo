@@ -1,0 +1,88 @@
+{
+  "build": 24,
+  "date": "2026-10-25",
+  "timezone": "Australia/Sydney",
+  "scope": "Exact local browser acceptance only; no publication approval",
+  "passed": true,
+  "pck_sha256": "be895104f1201207123c2402947715e7fc525b34075e0b4fd0b4080983bd82b1",
+  "pck_path": "D:/Chat Gpt/workspaces/frontlines-build/web24/index.pck",
+  "origin": "http://127.0.0.1:8812/",
+  "http": {
+    "status": 200,
+    "candidate": "24",
+    "cache_control": "no-store, max-age=0"
+  },
+  "checks": [
+    {
+      "name": "launch_and_assets",
+      "passed": true,
+      "observed": "Preview24 menu, actual3D creator and campaign board rendered; no visibly missing assets."
+    },
+    {
+      "name": "balanced30",
+      "passed": true,
+      "observed": "Balanced lower power and30FPS selected and visually confirmed after reload.",
+      "evidence": "FRONTLINES_PREVIEW24_BALANCED30.png"
+    },
+    {
+      "name": "creator_expressions",
+      "passed": true,
+      "observed": "Idle eyes closed then reopened in successive observations. Laugh jaw/teeth and smile changed through replay frames. Angry inward/down brows and tightened mouth; defeat lowered head/downturned mouth; bow moved head downward; flirt asymmetric eye narrowing/wink and head tilt. Bounded screenshots only.",
+      "evidence": [
+        "FRONTLINES_PREVIEW24_LAUGH_1.png",
+        "FRONTLINES_PREVIEW24_LAUGH_4.png",
+        "FRONTLINES_PREVIEW24_ANGRY.png",
+        "FRONTLINES_PREVIEW24_DEFEAT.png",
+        "FRONTLINES_PREVIEW24_BOW_4.png",
+        "FRONTLINES_PREVIEW24_FLIRT_2.png",
+        "FRONTLINES_PREVIEW24_FLIRT_6.png"
+      ]
+    },
+    {
+      "name": "responsive_creator_controls",
+      "passed": true,
+      "observed": "1280x720 desktop;390x844 portrait stacked editor, visible pose/replay and usable picker;844x390 landscape fitted controls and portrait. Browser viewport reset.",
+      "evidence": [
+        "FRONTLINES_PREVIEW24_MOBILE_PORTRAIT.png",
+        "FRONTLINES_PREVIEW24_MOBILE_LAUGH.png",
+        "FRONTLINES_PREVIEW24_MOBILE_LANDSCAPE.png"
+      ]
+    },
+    {
+      "name": "saved_neutral_canonical_identity",
+      "passed": true,
+      "observed": "Saved while Laugh selected and portrait rotated side-on. Menu saved same man/hair/uniform neutral front-facing canonical portrait. Reload preserved same identity/portrait.",
+      "evidence": [
+        "FRONTLINES_PREVIEW24_ORBIT_LAUGH_BEFORE_SAVE.png",
+        "FRONTLINES_PREVIEW24_SAVED_NEUTRAL.png",
+        "FRONTLINES_PREVIEW24_SAVED_AFTER_RELOAD.png"
+      ]
+    },
+    {
+      "name": "in_game_custom_reaction",
+      "passed": true,
+      "observed": "New disposable8812 campaign. Custom FreeCities commander Laugh selection produced Ha!Well played bubble and visibly changed smiling/eye state over bounded frames. Painted NPC portraits remained static. Returned to menu.",
+      "evidence": [
+        "FRONTLINES_PREVIEW24_INGAME_LAUGH_0.png",
+        "FRONTLINES_PREVIEW24_INGAME_LAUGH_4.png"
+      ]
+    },
+    {
+      "name": "captured_runtime_warnings_errors",
+      "passed": true,
+      "observed": "Captured browser console warn/error entries empty after creator,reload,campaign and reaction.",
+      "entries": []
+    }
+  ],
+  "limitations": [
+    "Local browser scope only; nativeAndroid/OTA and hosted frozenpacket acceptance remain separate.",
+    "No broad-device matrix, physical rotation/touch/pinch, thermal or measuredFPS claim.",
+    "Facial expressions assessed through bounded screenshots; no phoneme lip sync or cinematic facial-quality claim. Voice remained Silent and voice motion was not tested.",
+    "Saved identity preservation is visual, not byte-level proof of all persisted fields. Existing user tabs and other origins were not changed;8812 contains disposable profile/campaign.",
+    "Browser input had two transient command delays; state observations confirmed actions completed. Optional clipped blink sequence capture timed out/reset browser tooling; recovered with visible closed then open eyes. No game runtime error was captured.",
+    "No production publishing, Auth/service/schema changes or map-pack modifications performed."
+  ],
+  "publication_eligible": false,
+  "awaiting": "Game owner frozen packet and native acceptance",
+  "evidence_directory": "D:/Chat Gpt/workspaces/website-edge-audit/docs"
+}

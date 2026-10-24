@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 23 expands the 3D commander creator with 64 grouped face controls, gender selection, nine optional voices, preview poses and fitted uniform details. It retains two-sided hair surfaces and adds visible plumes and clearer portrait controls. Saved portraits keep a front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 24 adds expressive faces to the 3D commander creator: blinks, gaze, moving jaw and teeth, and distinct victory, defeat, downward bow, flirt wink, laugh and anger poses. Keep using 64 grouped face controls, gender, optional voices, two-sided hair, plumes and fitted uniforms. Saved portraits keep a neutral front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.23 · Build 23",
+      "build": "Version 1.0.0-preview.24 · Build 24",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -157,16 +157,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/23/",
+          "url": "https://sponsorsorter.com/frontlines/builds/24/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-23.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-24.apk"
         }
       ],
-      "notes": "Playtest preview. Pre-publication exact build 23 APK acceptance used ADB, not an in-app updater test; any real 22-to-23 update is recorded separately after completion. Final native checks passed jaw touch/Undo, blue plume visibility, a timed downward Bow, orbit and front save/restart, Commander volume change/restoration, campaign resume and a Victory emote bubble. Military progress and the saved recipe were preserved; local social metadata gained the QA emote. Fresh final-hash browser checks passed portrait control readability, sampled blue/red plume visibility, layout, front save/reload and discard; broader face/voice/Victory checks are explicitly carried from the earlier 23 browser candidate. The full fresh automated count is 2,884 Godot assertions plus 773 counted Node assertions, across 33 Godot jobs, four Node jobs and two exports. Service 8 private-room QA checked bounded personas and emote audience rules, then removed the QA identities and room; no new verified-account email/cloud-profile journey is claimed. Physical native pinch/two-finger pan and rotation were not injected; responsive browser checks and engine gestures are separate evidence. Audible voice quality, all-morph/all-pose native combinations, complete native game-to-victory, broad-device thermal performance and parity with the painted artwork remain unaccepted. Existing build 18 endurance is carried evidence; build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
-      "sha256": "D34085477BD3468770596A503C5E46417EFA6E39E32034BFDA433B2357CED0F0"
+      "notes": "Playtest preview. Exact build 24 native acceptance used ADB, not an in-app updater test; actual 23-to-24 OTA acceptance is recorded separately after completion. Native checks selected all eight modes, observed distinct expressions and idle eyelids, raw touch/scroll, orbit and neutral canonical save/restart, retained recipe values and military campaign progress, and an actual table Laugh then neutral and bubble. Resume/host-build/social metadata changes are documented. Browser checks on the exact PCK passed desktop and portrait/landscape controls, bounded facial motion, side-view animated save becoming neutral/front-facing after reload, and an actual custom-commander campaign Laugh. Physical native pinch and rotation were not injected. Fresh automation: 35 Godot jobs with 16,207 counted assertions plus four Node jobs with 773 counted assertions and two exports; interruption recovery is documented and final AI/LAN/Node/export gates reran. The test phone reached thermal status 2 on Ultra60 and adapted to 30 FPS; a separate 180-second idle draft observation on Balanced30 stayed at thermal 0. This is not a broad-device battle endurance benchmark. Long Pose labels truncate in compact native landscape; the full picker is legible. Painted NPC portraits remain static. Voice jaw motion follows amplitude, not phoneme lip sync; subjective voice quality and parity with the painted artwork remain unaccepted. Service 8 evidence is carried from build 23; no backend/Auth/schema changes. Human email/recovery/friend journeys, complete native game-to-victory and broad-device coverage remain open. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: board and labels stayed aligned through High/Ultra transitions, Balanced30 zoom/reset, campaign and reload/continue. Physical sensor confirmation was on build 13; this is historical evidence. Solo pause and resume were checked in hosted play on build 11.",
+      "sha256": "FF79A79B20DE6393BB152BCE2D1D6ABB711C651910AAC8D5A51718084B914132"
     }
   ]
 }

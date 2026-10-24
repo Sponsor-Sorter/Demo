@@ -1,0 +1,60 @@
+{
+  "build": 24,
+  "installed_apk_sha256": "ff79a79b20de6393bb152bce2d1d6abb711c651910aac8d5a51718084b914132",
+  "bytes": 104244759,
+  "campaign_unchanged_at_launch": true,
+  "method": "ADB install-r exact package, not an in-app updater claim",
+  "passed": true,
+  "device": "Samsung SM-S908E Android14,3088x1440 landscape",
+  "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "pck_sha256": "be895104f1201207123c2402947715e7fc525b34075e0b4fd0b4080983bd82b1",
+  "fresh24": {
+    "pose_picker_raw_touch_and_vertical_scroll": true,
+    "all_eight_modes_selected": true,
+    "victory_laugh_anger_defeat_bow_and_wink_visually_distinct": true,
+    "bounded_native_timed_frames": true,
+    "idle_eyelid_movement_observed": true,
+    "saved_from_orbit_neutral_front": true,
+    "same_identity_after_restart": true,
+    "saved_recipe_values_unchanged": true,
+    "in_game_laugh_face_then_return_to_neutral": true,
+    "in_game_laugh_bubble": true,
+    "military_campaign_progress_retained": true,
+    "balanced30_selection_persisted": true,
+    "script_or_fatal_errors_observed": false
+  },
+  "thermal": {
+    "scope": "180-second idle draft board after switching Ultra60 to Balanced30; not a controlled old/new comparison or full battle endurance benchmark.",
+    "ultra60_reached_status": 2,
+    "protection_reduced_to_fps": 30,
+    "balanced30_samples": 7,
+    "balanced30_statuses": [
+      0
+    ],
+    "test_phone_left_on": "balanced30, adaptive detail enabled"
+  },
+  "limits": [
+    "No fresh physical native rotation/pinch acceptance; browser viewport and engine interaction checks are separately scoped.",
+    "Bounded screenshots show expressions; not high-speed capture of every facial phase.",
+    "Voice envelope/decoding checks do not claim phoneme lip sync or subjective listening approval.",
+    "Approved painted NPCs without custom3D recipes remain static.",
+    "Native QA intentionally adds one local Laugh and resume logs; host_build refreshes23 to24. Other match options and all military state remain unchanged.",
+    "A deliberate same-recipe Save increments profile revision and adds the new neutral image cache.",
+    "Compact landscape POSE label clips longer names; full picker names are legible. This minor UI polish remains open.",
+    "This pre-publication ADB candidate install is separate from the later real23-to24 in-app update."
+  ],
+  "approved_media": [
+    "creator24-victory-t1-overview.png",
+    "creator24-laugh-t1-overview.png",
+    "creator24-flirt-t0-overview.png",
+    "creator24-defeat-t0-overview.png",
+    "creator24-bow-t0-overview.png",
+    "creator24-angry-t0-overview.png",
+    "creator24-orbit-before-save-overview.png",
+    "creator24-neutral-saved-overview.png",
+    "native24-table-laugh-t1-overview.png",
+    "native24-table-laugh-t2-overview.png",
+    "native24-balanced30-game-overview.png",
+    "native24-final-menu-overview.png"
+  ]
+}
