@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-labelledby="title">
+  <title id="title">Story Wagon: make three little farm stories together</title>
+  <rect width="480" height="320" rx="32" fill="#fff2ce"/>
+  <circle cx="410" cy="70" r="35" fill="#ffd348"/>
+  <path d="M0 190 Q110 125 230 188 T480 175 V320H0Z" fill="#9fce69"/>
+  <path d="M0 230 Q145 168 275 232 T480 210 V320H0Z" fill="#66a94f"/>
+  <path d="M175 92 240 44l65 48v119H175Z" fill="#e74d37" stroke="#633d2e" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M165 96 240 36l75 60" fill="none" stroke="#fff5dc" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="220" y="148" width="40" height="63" rx="5" fill="#9b3c2f" stroke="#fff3d6" stroke-width="6"/>
+  <g transform="translate(70 145)">
+    <path d="M0 48Q0 0 43 0t43 48v64H0Z" fill="#fff4dc" stroke="#65412f" stroke-width="8"/>
+    <circle cx="25" cy="50" r="5" fill="#4d3327"/><circle cx="61" cy="50" r="5" fill="#4d3327"/><path d="M27 70q16 18 32 0" fill="none" stroke="#4d3327" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="17" cy="114" rx="15" ry="8" fill="#67432f"/><ellipse cx="68" cy="114" rx="15" ry="8" fill="#67432f"/>
+  </g>
+  <g transform="translate(344 175)">
+    <path d="M0 10h72l-9 43H10Z" fill="#c77a36" stroke="#704a30" stroke-width="6"/>
+    <circle cx="22" cy="62" r="10" fill="#fff3d4" stroke="#704a30" stroke-width="5"/><circle cx="53" cy="62" r="10" fill="#fff3d4" stroke="#704a30" stroke-width="5"/>
+    <path d="M7 6q8-25 16 0m7 0q8-25 16 0m7 0q8-25 16 0" fill="#72b64f" stroke="#4f873c" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <rect x="28" y="18" width="290" height="45" rx="22" fill="#fffaf0" opacity=".96"/>
+  <text x="47" y="49" font-family="system-ui,sans-serif" font-weight="800" font-size="24" fill="#385c3d">Story Wagon</text>
+</svg>

@@ -1,0 +1,59 @@
+{
+  "build": 18,
+  "at_utc": "2026-10-23T18:18:35.381531+00:00",
+  "installed_apk_sha256": "fb3763bce8b8b6ac053770203f4da9da3c5638c4d73a140568b4d8b227afe667",
+  "bytes": 74896234,
+  "status": "accepted_with_stated_limits",
+  "method": "Exact signed APK installed by ADB upgrade, real existing campaign and native SDK touch input; no campaign fixture and no OS rotation changes",
+  "device": "Samsung SM-S908E / Adreno730 (device identifier omitted)",
+  "android": "14",
+  "passed": [
+    "Installed package SHA matches export and17 signing certificate",
+    "Existing round2 campaign resumed;49 prior battles retained",
+    "Real roll50 Mongolia to Irkutsk captured territory; max occupation confirmed; source selected for next attack",
+    "Battle camera heading unchanged at0.2910578871; distance12.3364 instead of prior27; manual pan and Home view held",
+    "Native Settings asset icon opens panel; quality/motion picker touches work",
+    "20-minute Balanced30 observation:40 samples, all30FPS and thermal0, skin32.6 to36.3C",
+    "5-minute warmed Ultra60 observation: real thermal1/2 triggered scale reduction and30FPS cap, skin40.1 to38.4C, savedUltra60 retained",
+    "Restart/resume succeeds with originalUltra60/auto-roll/ownership colours restored; audio and dice hashes unchanged",
+    "Final phone left paused; no captured script errors or fatal exceptions"
+  ],
+  "thermal_observation": {
+    "usb_powered": true,
+    "battery_level": 100,
+    "controlled_old_new_benchmark": false,
+    "frame_time_percentiles_measured": false
+  },
+  "final_campaign": {
+    "round": 2,
+    "phase": "attack",
+    "battles": 50,
+    "selected_source": "Irkutsk",
+    "hands": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "restored_preferences": {
+    "graphics.cfg": "[graphics]\r\n\r\nquality=\"ultra\"\r\nboard_fps=60\r\nadaptive_detail=true",
+    "battle_controls.cfg": "[battle]\r\r\n\r\r\nauto_roll=true",
+    "map_view.cfg": "[map]\r\n\r\nplayer_colours=true"
+  },
+  "wm_unchanged": {
+    "fixed": "default",
+    "mode": "lock 0",
+    "stored": "0"
+  },
+  "limitations": [
+    "Physical hand rotation not performed: user unable to rotate; source orientation checks passed",
+    "No new broad-device or native full-game-to-victory claim",
+    "No new native cannon/horse motion-frame acceptance; rig/combat source checks passed",
+    "ADB upgrade is not17-to18 in-app updater acceptance",
+    "Full character creator is researched only; new portrait-quality meshes/morphs/clothing required",
+    "Broad online/auth/backend acceptance carried from17; no schema or service changes"
+  ]
+}

@@ -139,6 +139,29 @@ Create a private, local-only scrapbook of a few child-selected moments: a farm p
 9. **Follow the Tractor Trail** — adds early sequencing once the main scene builder is stable.
 10. **Meadow Day Keepsakes** — build only after local-save size, parent controls and privacy behavior have been reviewed.
 
+## Build 32: ten more farm activities
+
+These follow the existing catalogue rather than replacing it. Popular preschool collections commonly combine open-ended make-believe with short, understandable hands-on activities; NAEYC guidance also highlights cooperative and imaginative play, turn-taking, constructive play, and problem-solving. Store download and rating counts are only rough popularity signals, not evidence that a particular game loop keeps children engaged. Sources: [Toca Boca World on Google Play](https://play.google.com/store/apps/details?id=com.tocaboca.tocalifeworld), [NAEYC social-emotional guidance for ages 3–6](https://www.naeyc.org/sites/default/files/globally-shared/downloads/PDFs/our-work/global/sels_3-6.pdf).
+
+- **Kindness Meadow:** choose a kind response to three everyday friend situations. Every response is accepted; there is no “bad” choice or score.
+- **Windmill Workshop:** place the round centre, add three sails, then watch them turn in the breeze.
+- **Little Bridge Builders:** choose a plank that fits each of three stream crossings. Wrong lengths offer a gentle hint and can be retried.
+- **Haystack Tower:** build three stacks, placing big, middle and little bales in order.
+- **Nest Builder:** choose three soft materials to make a cosy nest, then welcome the bird family.
+- **Rainy-Day Clothesline:** pick two clothing pictures for rainy, sunny and windy days.
+- **Pond Balance:** match one, two and three lily pads to the ducks on the opposite side of the raft.
+- **Orchard Seasons:** help a tree through spring, summer, autumn and winter with a matching action in each.
+- **Barnyard Action Parade:** choose four action cards and watch a different farm friend animate each one.
+- **Farm Post Office:** find the right farm home, choose a stamp and deliver three picture postcards.
+
+Each activity has its own full-screen game scene using the shipped farm artwork, controls that stay inside the scene on phone layout, existing spoken guidance and sounds, a replayable finish, and no punitive timer. Local browser play completed every activity through its end screen; the test suite checks catalogue wiring, scene/audio files, service-worker cache closure and reduced-motion styling. This is local acceptance, not device or live-backend testing.
+
 ## Release gate for each activity
 
 Do not list a proposal as a finished game until it has a complete play loop, replay and exit controls, audio replay/mute support, a sensible quiet mode, responsive full-screen layout with all controls inside the scene art, a safe way back to the catalogue, and a checked asset cache entry. Keep solo play complete. Add a linked variant only after its turn/state behavior fits the existing local pairing connection without disconnecting players between games.
+
+### Build 33 browser bug bash
+
+- Fixed Meadow Memory Pairs card row shifting when fruit faces were revealed by using consistent card-row heights and contained artwork.
+- Re-ran all ten Build 32 farm activities in a browser through their result screens; phone layout and full-screen control bounds checked at 390×844.
+- Build 33 cache and release metadata now include the memory layout fix.

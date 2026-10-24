@@ -1,6 +1,6 @@
 {
-  "build": 17,
-  "version": "1.0.0-preview.17",
-  "url": "https://sponsorsorter.com/frontlines/builds/17/",
-  "notes": "Portrait playing cards shared with the physical hand; compact portrait turn-order row; eliminated commander cards slide away; icon-aligned stats; terrain-following orders and synchronized gunfire; permanent capital cities and garrisons; solo/spectator1x/2x/3x;50% player-colour view; fortification ends turn; hold-to-auto-roll; compact battle feed and paginated log; larger skin-correct dice with terrain-aware throws; real local-hand cards west of Australia; death animations/cues and material/terrain detail."
+  "build": 19,
+  "version": "1.0.0-preview.19",
+  "url": "https://sponsorsorter.com/frontlines/builds/19/",
+  "notes": "Saves completed local actions immediately and adds a synchronous validated browser recovery journal for abrupt reloads. Restores unfinished movement dialogs, clears cancelled human fortification orders, limits automatic fortification to AI, and prevents transient initialization saves during resume. Retains build18 graphics, thermal controls and menu improvements; full character creator remains researched only."
 }

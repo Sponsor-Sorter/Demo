@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 17 introduces portrait playing cards shared with the physical hand, a compact portrait commander row, permanent capital cities, solo speed controls, ownership view, auto-roll and a fuller battle log.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 19 saves completed actions immediately, adds browser recovery for abrupt reloads, restores unfinished move confirmations and prevents cancelled human fortification orders from executing. It retains build 18 terrain, units, portrait playing cards, thermal protection and camera improvements.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.17 · Build 17",
+      "build": "Version 1.0.0-preview.19 · Build 19",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,16 +151,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/17/",
+          "url": "https://sponsorsorter.com/frontlines/builds/19/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-17.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-19.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 17 was installed and checked on a Samsung test phone through ADB; this is not an in-app updater test. Exact-APK native fixtures checked portrait card faces, five-card trade to same-player placement, the real two-card physical hand, compact next-three portrait and all-living landscape commander rows, WindowManager rotation/fullscreen, chained occupation and maximum-dice attack, fortification auto-end, elimination-card removal and battle log. Native speed/auto-roll and the normal 16-to-17 updater require separate follow-up receipts. Physical sensor confirmation was on build 13; other hardware remains unaccepted. Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned. Native pan checks are recorded separately. The Website will record hosted build 17 acceptance separately. Android installation requires your confirmation. Local saves exclude online room state and credentials; remembered account sessions remain unfinished. Human email/friends and two-phone optical QR remain pending. Solo pause and resume were checked in hosted play on build 11. Older online rooms retain their build-specific card behavior. No paid cosmetic shop. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate.",
-      "sha256": "C46603E0D61048346B4A405EBD8331A3D08717BB31B14C96861DEEE320FDDA39"
+      "notes": "Playtest preview. Final build 19 exact APK was installed through ADB, not an in-app updater test. Native immediate occupation/restart retained Northwest Territory 1, Alberta 2 and the continued attack source on one Samsung phone. Save verified at 0.375 seconds; force-stop requested at 0.469 seconds and returned at 0.625 seconds. Local browser checks on the final Web export passed immediate occupation reload, chained attack selection, unfinished fortification restore and Cancel then End Turn with unchanged troop counts; hosted build 19 acceptance is recorded separately after publication. Native Ultra60, auto-roll and player colours remained selected. Audio values matched after newline normalization; dice.cfg was absent before and after, with default Ivory in the campaign. Build 18 thermal observations are carried evidence: 20 minutes Balanced30 at reported30FPS/thermal0 and a warmed Ultra60 adaptive budget observation. These are not fresh19 endurance tests or a controlled broad-device benchmark. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Native full-game victory, physical hand rotation in19, new19 updater acceptance, remembered account sessions, human email/friends and two-phone optical QR remain unaccepted. Local saves exclude online room state and credentials. No paid cosmetic shop or implemented character creator. Performance depends on device, detail and thermal conditions; no universal60FPS claim. Subjective art, animation and music approval remain separate. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
+      "sha256": "3B4BFEC1A11F671AF582DC29262E57D3ECAA7EA2D93D0C675AC70257B3FBE7F5"
     }
   ]
 }
