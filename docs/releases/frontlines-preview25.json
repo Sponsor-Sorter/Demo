@@ -1,0 +1,586 @@
+{
+  "release_id": "2026-10-25-preview25",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.25",
+  "build": 25,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/25/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/25/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.25",
+    "versionCode": 25,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-25.apk",
+    "bytes": 104339053,
+    "sha256": "50aa3db0603bb8b8387ecf7655d565e797fcc2b72e5a5a053e87b48fe2ee0f9b",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Commander preview polish: Face close-up, fitted pose captions and approved compact preview controls. Mesh-bound CPU fitting lookup avoids GPU readback while preserving exact face geometry and saved portraits. Includes24 facial reactions, gaze, teeth and voice-amplitude jaw motion. Existing identities, campaigns and military clips retained.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 8,
+    "engine_checks": 121,
+    "hosted": "Three anonymous QA personas/64 morphs roundtrip through a private relay, out-of-turn public emote and private-recipient exclusion passed. QA identities and room removed.",
+    "readback": "Authentication/transaction entrypoint and world data unchanged from service7. Added bounded appearance metadata/morphs and emote codes; no schema or Auth policy changes. No fresh verified-user cloud appearance write claimed. Service8 evidence carried from24/23, with no backend changes in25.",
+    "evidence_carried_from_build": 24
+  },
+  "validation": {
+    "failures": 0,
+    "fresh": {
+      "creator25_polish_review-25.log": 40,
+      "creator25_performance_review-25.log": 9106,
+      "commander24_voice_review-25.log": 3945,
+      "account20_review-25.log": 20,
+      "creator23_form_review-25.log": 114,
+      "creator23_review-25.log": 222,
+      "commander23_reactions_review-25.log": 13,
+      "creator22_gestures_review-25.log": 19,
+      "creator23_fit_review-25.log": 1260,
+      "creator22_hair_review-25.log": 60,
+      "creator22_update_review-25.log": 9,
+      "save_durability19_review-25.log": 26,
+      "idle_budget18_review-25.log": 4,
+      "thermal18_review-25.log": 30,
+      "phone_framing18_review-25.log": 31,
+      "detail_performance18_review-25.log": 4,
+      "refined18_review-25.log": 47,
+      "quality14_review-25.log": 30,
+      "camera18_review-25.log": 18,
+      "combat18_review-25.log": 83,
+      "animation_cards17_review-25.log": 32,
+      "unit_rig_review-25.log": 23,
+      "touch_camera_review-25.log": 43,
+      "dice_frame14_review-25.log": 36,
+      "pause_review-25.log": 17,
+      "card_details18_review-25.log": 311,
+      "phone_findings18_review-25.log": 20,
+      "campaign_store_review-25.log": 17,
+      "battle17_review-25.log": 34,
+      "portrait17_review-25.log": 18,
+      "card17_review-25.log": 26,
+      "mobile_orientation_regression-25.log": 429,
+      "interaction14_review-25.log": 26,
+      "live_regression-25.log": 110,
+      "lan17_review-25.log": 24,
+      "appearance25-node.log": 619,
+      "engine25-node.log": 121,
+      "emotes25-node.log": 33
+    },
+    "counted_total": 17020,
+    "godot_counted_assertions": 16247,
+    "node_counted_assertions": 773,
+    "godot_jobs": 36,
+    "node_jobs": 4,
+    "export_jobs": 2,
+    "scope": "Fresh complete36-job Godot game/creator suite plus four Node jobs and two exact-source exports. Counts distinguish engine and Node assertions; jobs without explicit assertion totals are not added to the counted total.",
+    "facial_performance": "Fresh25 exact fitting/preview controls and full renderer plus48-voice checks included; native/browser acceptance separately scoped.",
+    "thermal_note": "Existing build18 endurance is carried background evidence, not a new25 thermal endurance benchmark."
+  },
+  "limitations": [
+    "A thin dark neck/collar seam is visible in some Face close-up Laugh/Flirt/orbit poses; retained as cosmetic art polish.",
+    "Speech jaw movement follows amplitude, not phoneme recognition. The face is an authored morph performance, not facial motion capture.",
+    "Preview art remains below the approved painted commander reference; further wardrobe/sculpt/material work remains.",
+    "No verified fitted eating/drinking prop and hand performance was found in this pass; those emotes are not included.",
+    "Original approved static portraits without a custom3D recipe remain static; reactions animate custom commanders.",
+    "Technical voice decoding/level checks are not subjective listening approval.",
+    "Native/browser exact-artifact scopes are in the acceptance receipts; no new verified-account email/cloud-profile journey or physical native pinch/rotation claim.",
+    "Remembered sessions use Android Keystore encryption and origin-local browser storage; passwords are not stored. Human email/recovery/friend and optical cross-phone QR acceptance remain open.",
+    "No paid cosmetic storefront; supplied legacy game data retain their provenance rather than being described as MakeHuman CC0.",
+    "Broad-device graphics/thermal/endurance performance still requires measurement."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 499,
+      "sha256": "e0baafa98b43ea3221a1b903ca3f37c5425057b1dbf72c728a83c6698bbffe6a"
+    },
+    {
+      "path": "ASSET_LIBRARY_REVIEW23.md",
+      "bytes": 1470,
+      "sha256": "b56d3721cf27ab211bb0f81add3d86f5f8fb25b663d560789618b026222a225b"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 43444,
+      "sha256": "e9fd1c62a8920c43b40c1a687091c19d0215b60c89fec804e45d1a2b8a2f8e5c"
+    },
+    {
+      "path": "COMMANDER_CREATOR_RESEARCH.md",
+      "bytes": 7674,
+      "sha256": "d692b1429b4c136808b58225588e88413c9fb1e2906f75064964eebc5fc70d9c"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "LICENSE-FACEUNITS-CC0.md",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "LICENSE-MAKEHUMAN-CC0.md",
+      "bytes": 6962,
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+    },
+    {
+      "path": "media/creator25-angry-t0-overview.png",
+      "bytes": 683287,
+      "sha256": "adeb19ccf7d6d46b4237539f3f8255b8970e75e364f323c0123ce40c2d2bb4f8"
+    },
+    {
+      "path": "media/creator25-bow-t1-overview.png",
+      "bytes": 681693,
+      "sha256": "d955e0d07fa56a8ea425566c3328af7e2282bb45e20b4fa3ff859ca5ee7836e9"
+    },
+    {
+      "path": "media/creator25-defeat-overview.png",
+      "bytes": 677494,
+      "sha256": "0162d1a5116abfcc62d27ce797cf95032794f7346088181dad1a75b59c82566c"
+    },
+    {
+      "path": "media/creator25-face-closeup-overview.png",
+      "bytes": 683111,
+      "sha256": "83eac09352dd93a3271926a7c2afd12b22d91a96300c6319059592e031102b58"
+    },
+    {
+      "path": "media/creator25-laugh-t0-overview.png",
+      "bytes": 685993,
+      "sha256": "dce64b85671df63735bb4248a5cccd0044a5e2ae6ac28819875914f6096d4d2d"
+    },
+    {
+      "path": "media/creator25-neutral-saved-overview.png",
+      "bytes": 1444248,
+      "sha256": "cff44b15b7d01be9c545703110983464f30ab30bb3355d6023c44139ed4c2f9f"
+    },
+    {
+      "path": "media/creator25-orbit-before-save-overview.png",
+      "bytes": 679696,
+      "sha256": "f0a4984c79802be62021dc7ba2c56e23e2dce3dc4a6b9eec31f8e53076c718ae"
+    },
+    {
+      "path": "media/creator25-victory-t1-overview.png",
+      "bytes": 686186,
+      "sha256": "58667efe2ad2d07b627a3051e87fcc427f49f37e49c8bdf25e2c59a656851b34"
+    },
+    {
+      "path": "media/creator25-wink-t0-overview.png",
+      "bytes": 683163,
+      "sha256": "6fe954af67b8f54bd773189f9ea436972426e35a7cb69e32ab5408ce5ff23576"
+    },
+    {
+      "path": "media/native25-final-menu-overview.png",
+      "bytes": 1444311,
+      "sha256": "65c939697ceb87bc808674bc37899e8296cee5eb210dd286e9d7f036ed5e5532"
+    },
+    {
+      "path": "media/native25-table-laugh-t0-overview.png",
+      "bytes": 1415107,
+      "sha256": "ac57c245b30384e4b181ee3e475d3cfc5d919c9f10aac2ef45854d86d9862da8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13121,
+      "sha256": "e002e955afcdbe9fe3a3f9466c206807c758d8371fa3c12432cbfe81e7dc3bae"
+    },
+    {
+      "path": "RELEASE25.md",
+      "bytes": 2440,
+      "sha256": "7777be0b224bcbaa0fc8cb56218fced133ff6d85ddb507fe65dd5984f152df3b"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 1018,
+      "sha256": "888e717df667ebab2d8ac3b79cadca8e8866d7e4fff9d1848ccbe5a14ef9c3f5"
+    },
+    {
+      "path": "site/frontlines/builds/25/campaign-journal.js",
+      "bytes": 616,
+      "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.html",
+      "bytes": 5805,
+      "sha256": "8be0775059a11ca0aab72aaf450f7f238bd1ee69ab3cbdada33bc9002157d6f9"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.pck",
+      "bytes": 76361008,
+      "sha256": "25f46c2e80e5573ae23a3507bbb6b8bdb204cac565576c1e1bcbf8eed72a6c05"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/25/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/25/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/25/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/25/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/25/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/25/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/25/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-25.apk",
+      "bytes": 104339053,
+      "sha256": "50aa3db0603bb8b8387ecf7655d565e797fcc2b72e5a5a053e87b48fe2ee0f9b"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "6af2896f1b39317e96b5606cc98f202b70ec53ff8307ad0e76376761e09f2660"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 471,
+      "sha256": "786bbb7747dbc4c8ead77bba404b0ea12eeef05a3f9bdcb3901e12326b808dd5"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 201626,
+      "sha256": "547c56db4080686551c38e09a9800a1c4c699adde3a48fe6c237639bc6ea8ce2"
+    },
+    {
+      "path": "validation/account20_review-25.log",
+      "bytes": 1296,
+      "sha256": "d7616df2301867a72ff21c7fac4aa78da647e38c3f7cde10be8151170751b559"
+    },
+    {
+      "path": "validation/android25-export.log",
+      "bytes": 6558,
+      "sha256": "bcb28715ed96d7c766e923069d5cab53d9631c203f8749033045ce2314b77f68"
+    },
+    {
+      "path": "validation/animation_cards17_review-25.log",
+      "bytes": 1527,
+      "sha256": "aded85967807e66ab4596f4f240667cada7c828ddc2e4ae9022c3a299e8b963d"
+    },
+    {
+      "path": "validation/appearance25-node.log",
+      "bytes": 456,
+      "sha256": "77f5818a045352d7bf76273f3054d644dfe535c89078c79650af4600fd78aac1"
+    },
+    {
+      "path": "validation/battle17_review-25.log",
+      "bytes": 1635,
+      "sha256": "6cbbcc8ea3c4caa45247e6f2c334b854dcf3717f8fb8a4a5553c3b5d6508fc80"
+    },
+    {
+      "path": "validation/build-tools.json",
+      "bytes": 684,
+      "sha256": "e7e67ea1e653b825c4f986cf91fca138237be62ccd6e51a518c49d963583facb"
+    },
+    {
+      "path": "validation/build25-progress.json",
+      "bytes": 22604,
+      "sha256": "acca2a8c5a52c08f0ae596295dc0ee639efea68cae3eb998ebff8615e015581d"
+    },
+    {
+      "path": "validation/build25-results.json",
+      "bytes": 3784,
+      "sha256": "749a097cf5a72a287f333b920aa71b3eaba0c631ca01aeed206a484f76c03c41"
+    },
+    {
+      "path": "validation/build25-verified-artifacts.json",
+      "bytes": 411,
+      "sha256": "abb1b2f4e0f9cf1439cc65a5e4abeabfc8a29051a54fbd13abf9d173622a064f"
+    },
+    {
+      "path": "validation/camera18_review-25.log",
+      "bytes": 984,
+      "sha256": "e32221fd847eeb9d87b41ac5992519fe561a0af3cd87ff3f5eeddc7c1dc176ba"
+    },
+    {
+      "path": "validation/campaign-journal25-node.log",
+      "bytes": 1262,
+      "sha256": "0a00e1a641a4bacbd36d2c4464301ec6df905fff1e7b1e64c7b954f433ec1a2c"
+    },
+    {
+      "path": "validation/campaign_store_review-25.log",
+      "bytes": 850,
+      "sha256": "78c22c2b6f3dbee9493d511a7c99605038aba52f8ba72f03ab7c8370d14c879a"
+    },
+    {
+      "path": "validation/card17_review-25.log",
+      "bytes": 1413,
+      "sha256": "af4033b51753a18592c76bb780956251ed8ef1da67e525426df9423bedb74554"
+    },
+    {
+      "path": "validation/card_details18_review-25.log",
+      "bytes": 12470,
+      "sha256": "af2f8a1f4fd6de21e62d3533d55824b6028e9ba7104d26d6c25993d79a345cbf"
+    },
+    {
+      "path": "validation/combat18_review-25.log",
+      "bytes": 3972,
+      "sha256": "05d749ecc60265cdf7d72c539574aa9b666f787819f62a2b7dc4852873a59c60"
+    },
+    {
+      "path": "validation/commander23_reactions_review-25.log",
+      "bytes": 376,
+      "sha256": "1c98505b323086eeea948de519ebf25a208d49d08ce5b41c3da6eda5a6ff6a50"
+    },
+    {
+      "path": "validation/commander24_voice_review-25.log",
+      "bytes": 226,
+      "sha256": "047b335f81bb5faa89ee6a9f561f0a10db691ff53e8e2cf57cb42140844b2140"
+    },
+    {
+      "path": "validation/creator22_gestures_review-25.log",
+      "bytes": 1151,
+      "sha256": "698de2823ca81e97cfac0244dd484bdc1c080b2ab60d406b8e3ec0a30f0dcd48"
+    },
+    {
+      "path": "validation/creator22_hair_review-25.log",
+      "bytes": 2687,
+      "sha256": "58f871165e80340d5c5620c76067fbcfb36af32e079cc252fd36b1bb5f0eb85a"
+    },
+    {
+      "path": "validation/creator22_update_review-25.log",
+      "bytes": 652,
+      "sha256": "8fd91887ffab17a6b4238bd91957820cf6d1eb692c905a04bc8d435cf9dfcd76"
+    },
+    {
+      "path": "validation/creator23_fit_review-25.log",
+      "bytes": 328,
+      "sha256": "a89da00c5c4c47f917475edca85fe5c02acfcefb41857d9f9e7e729db875ac9a"
+    },
+    {
+      "path": "validation/creator23_form_review-25.log",
+      "bytes": 5101,
+      "sha256": "11078cecaa92248994e871d15a603b7dae1d0f03ad2b469b33e96de42497550f"
+    },
+    {
+      "path": "validation/creator23_layout-25.log",
+      "bytes": 555,
+      "sha256": "6ff464863d2ee5a81244f74abf1072f240913c2d93dd0e0a412a5c4f7470d0a8"
+    },
+    {
+      "path": "validation/creator23_review-25.log",
+      "bytes": 291,
+      "sha256": "095a8ac54a6bdaec881d41d586c53baebbddd4f2d4aba2b7b73d9fcecfa143b3"
+    },
+    {
+      "path": "validation/creator25_performance_review-25.log",
+      "bytes": 540,
+      "sha256": "e239472265fc211a0609baa9f1ec9ffc04c1550c8393bdc4fe5aed700bba4261"
+    },
+    {
+      "path": "validation/creator25_polish_review-25.log",
+      "bytes": 821,
+      "sha256": "3c942c236cc8836d592a6846f413251a542f1367c91180cfba75a261846d6663"
+    },
+    {
+      "path": "validation/detail_performance18_review-25.log",
+      "bytes": 470,
+      "sha256": "689839b4f4142e464a05043983a60d8e9799a53391ca05e4b90ab0e8c046937f"
+    },
+    {
+      "path": "validation/dice_frame14_review-25.log",
+      "bytes": 2472,
+      "sha256": "14f65b5c240676067769af642e179ea1874f690a4800badd9bc30bea9f4bc7d5"
+    },
+    {
+      "path": "validation/emotes25-node.log",
+      "bytes": 425,
+      "sha256": "925c00577f0e6de5db393a2f0cea46951366afb7fca06913a9864a66c22c8154"
+    },
+    {
+      "path": "validation/engine25-node.log",
+      "bytes": 584,
+      "sha256": "f58bbe391e5849f577ec80f30151e54ffd33d29ce51e88b92758227922f1d92a"
+    },
+    {
+      "path": "validation/face-rig24.json",
+      "bytes": 1491,
+      "sha256": "0be89023c533f128ec817f7b655887ac9d02b6f2d48da1ef31acb72eb1a5bc2f"
+    },
+    {
+      "path": "validation/FRONTLINES_PREVIEW25_FINAL_LOCAL_ACCEPTANCE.json",
+      "bytes": 3519,
+      "sha256": "59f800b3ed726310461a2cff69c90808a1b367e1193cb90e60a3a4c07abf11c9"
+    },
+    {
+      "path": "validation/idle_budget18_review-25.log",
+      "bytes": 376,
+      "sha256": "260c0d95294cb69df846e4282306cc5f12900af1e93b445ebda9ba2b8486d0ab"
+    },
+    {
+      "path": "validation/interaction14_review-25.log",
+      "bytes": 1420,
+      "sha256": "075a51bd60b3d2b5185829732145b8d25f06d77b18e608489f56f228cbcead54"
+    },
+    {
+      "path": "validation/lan17_review-25.log",
+      "bytes": 1400,
+      "sha256": "c218e92b4117289d07d5198dbe944d8c48dd4a486ea3f25dc746942bf6ccaf29"
+    },
+    {
+      "path": "validation/live_regression-25.log",
+      "bytes": 4987,
+      "sha256": "c71aa6e8b667fdfcb0732aad2bcf5f23453b469c6a38952a93008a28d639bc99"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-25.log",
+      "bytes": 13027,
+      "sha256": "7afaab2d2fe8eb0099ff054b43dc080ce8bd639a24c619b5fe5aef23d564b7ac"
+    },
+    {
+      "path": "validation/native25-acceptance.json",
+      "bytes": 2714,
+      "sha256": "2d1af2ea5d9be46a58865d114cb59b4d4f70ae8cddc60503bdbc34dc76cb211e"
+    },
+    {
+      "path": "validation/native25-campaign-preservation.json",
+      "bytes": 354,
+      "sha256": "2b79c233c637fec2be2046f814203c832cd35ce6e976726f31aeada112f58a1d"
+    },
+    {
+      "path": "validation/native25-profile-preservation.json",
+      "bytes": 154,
+      "sha256": "9238ed2e8bf2b855560ba97922c31dbe71e9a5a44f655ca2e6da136c0c7a8850"
+    },
+    {
+      "path": "validation/package25.json",
+      "bytes": 251,
+      "sha256": "fa4b19aeebff39ff643d27c636d0072b3f82780ea98b6b09908eb3fb5b7fa5cf"
+    },
+    {
+      "path": "validation/pause_review-25.log",
+      "bytes": 939,
+      "sha256": "d9148e512d9a5b0b49dc2106a5d641bacfc5fe2749b3b45fdd7bd730b12311a4"
+    },
+    {
+      "path": "validation/phone_findings18_review-25.log",
+      "bytes": 1154,
+      "sha256": "1e0834494fc670d2819e83b9613cbc0ea4c8501b84890c917adeb168bd51601e"
+    },
+    {
+      "path": "validation/phone_framing18_review-25.log",
+      "bytes": 1957,
+      "sha256": "cda92ddd2a51e27d321ccd1793efce2b1c7066031e12b332a51ccfd083ecdc9e"
+    },
+    {
+      "path": "validation/portrait17_review-25.log",
+      "bytes": 946,
+      "sha256": "51c211addee0024b0dd8325cd0c9d6e15d62a62e3f51a60b4354bedb5a6b442e"
+    },
+    {
+      "path": "validation/quality14_review-25.log",
+      "bytes": 1607,
+      "sha256": "8c024c592346c691544bd437b7df92ee178fb3cdb26e5c7a0c36682e9de8acd5"
+    },
+    {
+      "path": "validation/refined18_review-25.log",
+      "bytes": 2399,
+      "sha256": "28e0aec77d0eb2bf8f92cb2b74288dac4c4360466099a06c22cf6ab50910c126"
+    },
+    {
+      "path": "validation/save_durability19_review-25.log",
+      "bytes": 1390,
+      "sha256": "d9106d6c94293e50d46d579d6ff7ec12913c1510000bec550055dfed3414d3b4"
+    },
+    {
+      "path": "validation/service23-acceptance.json",
+      "bytes": 548,
+      "sha256": "58d6c4ab71b67e4a963455d31eabd55736b584bcb54e7275ff164978a4abedf3"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 24778,
+      "sha256": "e22300f57aab8628ae2feefd851059b717a3c20d2c995491662745e221006d49"
+    },
+    {
+      "path": "validation/thermal18_review-25.log",
+      "bytes": 1721,
+      "sha256": "33fda419ff9f1a917f63d3980b13b99befc0fcbc973a48e389aed63cb5da6065"
+    },
+    {
+      "path": "validation/touch_camera_review-25.log",
+      "bytes": 2706,
+      "sha256": "bebb17f2e08eaba55e551530c0575e3f48974311237f10119da12e784b253397"
+    },
+    {
+      "path": "validation/unit_rig_review-25.log",
+      "bytes": 864,
+      "sha256": "90d838ac79cb9000c062aa0edd9526e5b1a07c56c3de5ab39ed5506ec645b22f"
+    },
+    {
+      "path": "validation/web25-export.log",
+      "bytes": 39769,
+      "sha256": "4e00a1b1a47dcebfda8ca1a604b3519e383074bebb1a58a9b29d4cc7e1c5a2cc"
+    }
+  ]
+}

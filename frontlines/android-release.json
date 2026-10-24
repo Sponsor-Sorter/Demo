@@ -1,13 +1,13 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.24",
-  "versionCode": 24,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-24.apk",
-  "bytes": 104244759,
-  "sha256": "ff79a79b20de6393bb152bce2d1d6abb711c651910aac8d5a51718084b914132",
+  "versionName": "1.0.0-preview.25",
+  "versionCode": 25,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-25.apk",
+  "bytes": 104339053,
+  "sha256": "50aa3db0603bb8b8387ecf7655d565e797fcc2b72e5a5a053e87b48fe2ee0f9b",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Expressive3D commanders:28 independent facial actions, denser head, fitted teeth/tongue, gaze and blinks, distinct victory/defeat/bow/wink/laugh/anger, voice-amplitude jaw motion, neutral saved portraits and bounded phone rendering. Existing64-control recipes and campaigns retained.",
+  "notes": "Commander preview polish: Face close-up, fitted pose captions and approved compact preview controls. Mesh-bound CPU fitting lookup avoids GPU readback while preserving exact face geometry and saved portraits. Includes24 facial reactions, gaze, teeth and voice-amplitude jaw motion. Existing identities, campaigns and military clips retained.",
   "targetSdk": 36,
   "abis": [
     "arm64-v8a"

@@ -1,0 +1,53 @@
+{
+  "build": 25,
+  "installed_apk_sha256": "50aa3db0603bb8b8387ecf7655d565e797fcc2b72e5a5a053e87b48fe2ee0f9b",
+  "bytes": 104339053,
+  "campaign_unchanged_at_launch": true,
+  "method": "ADB install-r exact package, not an in-app updater claim",
+  "passed": true,
+  "device": "Samsung SM-S908E Android14,3088x1440 landscape",
+  "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "pck_sha256": "25f46c2e80e5573ae23a3507bbb6b8bdb204cac565576c1e1bcbf8eed72a6c05",
+  "fresh25": {
+    "all_eight_pose_modes_selected_with_raw_touch": true,
+    "pose_picker_vertical_scroll": true,
+    "compact_victory_and_defeat_captions_legible": true,
+    "approved_round_frames_continuous": true,
+    "face_closeup_same_preview_rectangle": true,
+    "reset_restores_bust": true,
+    "replay_control_touched": true,
+    "victory_defeat_bow_wink_laugh_anger_visually_distinct": true,
+    "finger_orbit_closeup_then_same_recipe_save": true,
+    "saved_front_neutral_portrait_after_restart": true,
+    "saved_recipe_values_unchanged": true,
+    "actual_in_game_laugh_face_and_bubble": true,
+    "campaign_military_state_retained": true,
+    "cached_fitting_used_on_device": true,
+    "initial_fit_measure_ms": 137.867,
+    "initial_apply_total_ms": 993.108,
+    "script_or_fatal_errors_observed": false
+  },
+  "performance_scope": "Bounded creator and idle draft UI check at persisted Balanced30, logs report30FPS/thermal0. Not a full battle endurance or controlled old/new benchmark.",
+  "limits": [
+    "Small dark collar/neck seam remains visible during some close-up moving poses.",
+    "FACE is an oval compact frame; Pose/Replay are rounder.",
+    "Bounded screenshots, not high-speed sampling of every animation phase.",
+    "No new physical rotation/pinch, verified-email/cloud-profile write or broad-device thermal acceptance.",
+    "Same-recipe Save intentionally increments profile revision; resume/emote metadata changes are separately recorded.",
+    "Pre-publication ADB candidate installation; actual24-to25 OTA remains a separate post-publication check.",
+    "Amplitude-driven speech is not phoneme lip sync; painted NPC portraits remain static."
+  ],
+  "approved_media": [
+    "creator25-face-closeup-overview.png",
+    "creator25-victory-t1-overview.png",
+    "creator25-defeat-overview.png",
+    "creator25-bow-t1-overview.png",
+    "creator25-wink-t0-overview.png",
+    "creator25-laugh-t0-overview.png",
+    "creator25-angry-t0-overview.png",
+    "creator25-orbit-before-save-overview.png",
+    "creator25-neutral-saved-overview.png",
+    "native25-table-laugh-t0-overview.png",
+    "native25-final-menu-overview.png"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "build": 25,
+  "date": "2026-10-25",
+  "timezone": "Australia/Sydney",
+  "passed": true,
+  "status": "local_browser_accepted_with_cosmetic_finding",
+  "scope": "Exactlocal8813PCK only; no publication or native acceptance",
+  "pck_sha256": "25f46c2e80e5573ae23a3507bbb6b8bdb204cac565576c1e1bcbf8eed72a6c05",
+  "pck_bytes": 76361008,
+  "origin": "http://127.0.0.1:8813/",
+  "http": {
+    "status": 200,
+    "candidate": "25",
+    "cache_control": "no-store, max-age=0"
+  },
+  "checks": {
+    "approved_runtime_theme_loaded": true,
+    "one_game_render_active": true,
+    "balanced30_persisted_after_reload_and_campaign": true,
+    "desktop1280x720_creator": true,
+    "portrait390x844_creator": true,
+    "landscape844x390_creator": true,
+    "all8_pose_names_fit_compact_captions": true,
+    "choice_picker_raw_scroll": true,
+    "continuous_metal_control_frames_without_old_joints": true,
+    "face_closeup_same_preview_rectangle": true,
+    "reset_restored_bust": true,
+    "laugh_jaw_teeth_visible": true,
+    "flirt_asymmetric_wink_visible": true,
+    "bow_downward_visible": true,
+    "anger_brows_mouth_visible": true,
+    "orbit_same_recipe_animated_face_save_neutral_front": true,
+    "reload_identity_visually_preserved": true,
+    "actual_custom3d_table_laugh_and_bubble": true,
+    "viewport_override_reset": true
+  },
+  "fitting_cache_log": {
+    "available": false,
+    "observed_entries": [],
+    "cache_true_claimed": false
+  },
+  "captured_warn_error_entries": [],
+  "evidence_prefix": "D:/Chat Gpt/workspaces/website-edge-audit/docs/FRONTLINES_PREVIEW25_",
+  "evidence": [
+    "DESKTOP_BUST.png",
+    "DESKTOP_FACE.png",
+    "RESET_BUST.png",
+    "LANDSCAPE_VICTORY.png",
+    "LANDSCAPE_DEFEAT.png",
+    "PORTRAIT_VICTORY.png",
+    "PORTRAIT_DEFEAT.png",
+    "FACE_LAUGH_2.png",
+    "FACE_WINK_2.png",
+    "FACE_BOW_3.png",
+    "FACE_ANGRY.png",
+    "ORBIT_BEFORE_SAVE.png",
+    "SAVED_NEUTRAL.png",
+    "RELOAD_IDENTITY.png",
+    "INGAME_LAUGH_0.png",
+    "INGAME_LAUGH_4.png",
+    "BALANCED30_PERSISTED.png"
+  ],
+  "open_findings": [
+    {
+      "severity": "cosmetic",
+      "finding": "Thin dark neckline/collar seam visible during some FacecloseupLaugh/Flirt and orbit frames.",
+      "evidence": [
+        "FACE_LAUGH_2.png",
+        "FACE_WINK_2.png",
+        "ORBIT_BEFORE_SAVE.png"
+      ]
+    },
+    {
+      "severity": "visual_scope",
+      "finding": "FACE frame is visibly oval at its shorter height; Pose/Replay use rounder silhouettes. Allframes continuous and free of oldjoints."
+    }
+  ],
+  "limitations": [
+    "Bounded screenshot motion observations; no highspeed fullphase capture or cinematic/AAA/fullbody parity claim.",
+    "No nativephone/physicaltouch/rotation/pinch/OTA or broaddevice thermal/FPS measurement.",
+    "Identity preservation is visual after same-recipe UI save/reload; no byteproof of every browserprofilefield.",
+    "No cache=true fittinglog available through capturedconsole, so no browsercacheperformance claim.",
+    "Voice remained Silent; no phoneme lipsync or subjective voicequality acceptance.",
+    "Some browserinput/screenshot operations delayed/timedout; subsequentobservations established currentstate. No capturedruntimewarn/error, but not a startup latency benchmark.",
+    "Freshisolated8813 origin held disposableprofile/campaign;production24saves and Website not changed.",
+    "Unreviewed maps not evaluated or published."
+  ],
+  "publication_eligible": false,
+  "awaiting": "Accepted immutable25packet and separate native acceptance"
+}

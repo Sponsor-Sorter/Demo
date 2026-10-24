@@ -1,6 +1,6 @@
 {
-  "build": 24,
-  "version": "1.0.0-preview.24",
-  "url": "https://sponsorsorter.com/frontlines/builds/24/",
-  "notes": "Expressive3D commanders:28 independent facial actions, denser head, fitted teeth/tongue, gaze and blinks, distinct victory/defeat/bow/wink/laugh/anger, voice-amplitude jaw motion, neutral saved portraits and bounded phone rendering. Existing64-control recipes and campaigns retained."
+  "build": 25,
+  "version": "1.0.0-preview.25",
+  "url": "https://sponsorsorter.com/frontlines/builds/25/",
+  "notes": "Commander preview polish: Face close-up, fitted pose captions and approved compact preview controls. Mesh-bound CPU fitting lookup avoids GPU readback while preserving exact face geometry and saved portraits. Includes24 facial reactions, gaze, teeth and voice-amplitude jaw motion. Existing identities, campaigns and military clips retained."
 }

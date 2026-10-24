@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 24 adds expressive faces to the 3D commander creator: blinks, gaze, moving jaw and teeth, and distinct victory, defeat, downward bow, flirt wink, laugh and anger poses. Keep using 64 grouped face controls, gender, optional voices, two-sided hair, plumes and fitted uniforms. Saved portraits keep a neutral front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 25 polishes the 3D commander creator with a Face close-up inside the existing preview, Reset to bust, readable compact pose captions and continuous metal controls. It retains 64 grouped face controls, gender, optional voices, two-sided hair, plumes and expressive faces: blinks, gaze, moving jaw and teeth, victory, defeat, downward bow, flirt wink, laugh and anger. Saved portraits keep a neutral front view independent of the editing camera. The game retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.24 · Build 24",
+      "build": "Version 1.0.0-preview.25 · Build 25",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -157,16 +157,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/24/",
+          "url": "https://sponsorsorter.com/frontlines/builds/25/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-24.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-25.apk"
         }
       ],
-      "notes": "Playtest preview. Exact build 24 native acceptance used ADB, not an in-app updater test; actual 23-to-24 OTA acceptance is recorded separately after completion. Native checks selected all eight modes, observed distinct expressions and idle eyelids, raw touch/scroll, orbit and neutral canonical save/restart, retained recipe values and military campaign progress, and an actual table Laugh then neutral and bubble. Resume/host-build/social metadata changes are documented. Browser checks on the exact PCK passed desktop and portrait/landscape controls, bounded facial motion, side-view animated save becoming neutral/front-facing after reload, and an actual custom-commander campaign Laugh. Physical native pinch and rotation were not injected. Fresh automation: 35 Godot jobs with 16,207 counted assertions plus four Node jobs with 773 counted assertions and two exports; interruption recovery is documented and final AI/LAN/Node/export gates reran. The test phone reached thermal status 2 on Ultra60 and adapted to 30 FPS; a separate 180-second idle draft observation on Balanced30 stayed at thermal 0. This is not a broad-device battle endurance benchmark. Long Pose labels truncate in compact native landscape; the full picker is legible. Painted NPC portraits remain static. Voice jaw motion follows amplitude, not phoneme lip sync; subjective voice quality and parity with the painted artwork remain unaccepted. Service 8 evidence is carried from build 23; no backend/Auth/schema changes. Human email/recovery/friend journeys, complete native game-to-victory and broad-device coverage remain open. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: board and labels stayed aligned through High/Ultra transitions, Balanced30 zoom/reset, campaign and reload/continue. Physical sensor confirmation was on build 13; this is historical evidence. Solo pause and resume were checked in hosted play on build 11.",
-      "sha256": "FF79A79B20DE6393BB152BCE2D1D6ABB711C651910AAC8D5A51718084B914132"
+      "notes": "Playtest preview. Exact build 25 native acceptance used ADB, not an in-app updater test; actual 24-to-25 OTA is recorded separately after completion. Native checks passed all eight modes and raw picker scroll, compact captions, Face/Reset/Replay, distinct reactions, orbit then same-recipe neutral Save/restart, and actual in-table Laugh and bubble. Recipe values and campaign military state were retained; host-build, resume and emote metadata changes are documented. Exact-PCK local browser checks passed desktop and portrait/landscape captions, close-up without a taller preview, Reset to bust, expressions, canonical save/reload and a disposable campaign reaction. Thin dark neck/collar seams remain in some close-up moving poses; FACE uses a shorter oval frame. The mesh-bound CPU fitting lookup retained exact fitting across six presets in automated checks. One native device reported cache=true with initial fitting 137.867 ms and total apply 993.108 ms; this is not a browser or controlled performance benchmark. Browser fitting logs were unavailable. Fresh automation: 36 Godot jobs with 16,247 counted assertions, four Node jobs with 773 counted assertions, two exports and 163 matching source fingerprints. Native Balanced30 idle logs reported 30 FPS and thermal 0; no battle endurance or broad-device claim. Physical native pinch and rotation were not injected. Painted NPCs remain static; voice jaw movement follows amplitude, not phoneme lip sync. Subjective voice quality and parity with painted artwork remain unaccepted. Service 8 evidence is carried from builds 24/23; no backend/schema/Auth changes. Human email/recovery/friend journeys, complete native game-to-victory and broad-device coverage remain open. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Historical evidence: Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Hosted build 15 checks passed the previous stale-board case: board and labels stayed aligned through High/Ultra, Balanced30 zoom/reset and reload/continue.",
+      "sha256": "50AA3DB0603BB8B8387ECF7655D565E797FCC2B72E5A5A053E87B48FE2EE0F9B"
     }
   ]
 }
