@@ -14,7 +14,7 @@ Last reconciled for build181. Release receipts are in meadow-market-build172 thr
 | Cross-map automation | Existing foreground loop | Long-session fairness and bounded scheduling audit |
 | Heavy-farm performance | Improved180/181 | Flower lists shared per pass; mature crop ticks skip repeat plant writes; native frame-time profile remains |
 | High-level pacing | Existing150/151 arithmetic | Check worker/upgrade/recipe paths and expose useful next work |
-| Server resource validation | Partial | Snapshot bounds exist; gold/inventory remain client authoritative |
+| Server resource validation | Bounds strengthened24Oct | All protocol2 write paths reject invalid gold/inventory; earned quantities still need a server ledger |
 | Server game scores | Partial | Move rewarded runs to server-issued sessions and bounded finish receipts |
 | Documentation | Reconciled181 | See meadow-market-maintenance.md for actual guarantees, limits and release process |
 | Real billing/ad networks | Deferred by user | Keep free test mode |
