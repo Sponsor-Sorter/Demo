@@ -1,0 +1,49 @@
+{
+  "pck_sha256": "291385f11f5fa8855ebfdeb1dbe76f2ebbd830d25719f52a42292808bf0b18e2",
+  "pck_bytes": 66381904,
+  "passed": true,
+  "publication_eligible": false,
+  "publication_gate": "Scoped Web acceptance complete; awaiting immutable packet and final native acceptance before publication.",
+  "url": "http://127.0.0.1:8808/",
+  "scope": "Local browser final card-panel repair plus fresh launch/portrait/campaign sanity. Prior creator/glyph and gameplay checks carried with explicit hashes.",
+  "fresh_checks": {
+    "whole_http_sha_and_bytes": true,
+    "no_store_headers": true,
+    "version20_menu": true,
+    "saved_tricorn_portrait_retained": true,
+    "campaign_resume": true,
+    "plain_end_turn_label": true,
+    "normal_end_turn_to_ai": true,
+    "earned_congo_horse_card": true,
+    "hand_stays_open_during_ai": true,
+    "hand_hold_elapsed_ms": 29233,
+    "visible_state_while_hand_open": "Solar Union round2 Attack,5forces; one Congo/Horse card; unchanged before/after.",
+    "close_resumes_ai": true,
+    "after_close": "SolarUnion4forces with new dice/combat log and board animation.",
+    "pause_after_check": true,
+    "viewport1280x720": true
+  },
+  "carried_checks": [
+    {
+      "pck_sha256": "7f96d8c37926993699c18bc86b29823e9ea8174dfcb45d82858b5dfad4ed8563",
+      "receipt": "FRONTLINES_PREVIEW20_LOCAL_ACCEPTANCE_7F96.json",
+      "scope": "Tricorn geometry/hair restoration; continuous coat; readable themed picker1280x720,390x844,844x390; save/reload/discard; three plain phase labels; Home camera reset; actual single earned card render."
+    },
+    {
+      "pck_sha256": "b8e83c8f00b6865a82dcfea62927947a42bfcedfef9caf0d378500af224bb86e",
+      "receipt": "FRONTLINES_PREVIEW20_LOCAL_ACCEPTANCE_B8E83.json",
+      "scope": "Account empty-action validation/responsive layout; face editing; real capture/max occupation/card earning and three viewport one-card layout."
+    }
+  ],
+  "open_issues": [],
+  "limits": [
+    "No fresh final-hash attack/capture/occupation or movement TO modal test; prior gameplay carried explicitly.",
+    "No authenticated signup/login/recovery email journey, backend changes or credentials used.",
+    "No phone use by Website agent; owner native evidence remains separate.",
+    "No eligible three-card trade, multi-card paging, exhaustive asset variants, online shared-table pause test or GPU measurement.",
+    "HOLD BEFORE held-original browser visual unverified; source evidence by owner only.",
+    "No publication until final owner packet/acceptance."
+  ],
+  "evidence_prefix": "FRONTLINES_PREVIEW20_2913_",
+  "http_receipt": "FRONTLINES_PREVIEW20_2913_HTTP.json"
+}

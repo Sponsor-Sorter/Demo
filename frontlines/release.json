@@ -1,6 +1,6 @@
 {
-  "build": 19,
-  "version": "1.0.0-preview.19",
-  "url": "https://sponsorsorter.com/frontlines/builds/19/",
-  "notes": "Saves completed local actions immediately and adds a synchronous validated browser recovery journal for abrupt reloads. Restores unfinished movement dialogs, clears cancelled human fortification orders, limits automatic fortification to AI, and prevents transient initialization saves during resume. Retains build18 graphics, thermal controls and menu improvements; full character creator remains researched only."
+  "build": 20,
+  "version": "1.0.0-preview.20",
+  "url": "https://sponsorsorter.com/frontlines/builds/20/",
+  "notes": "Repairs account touch controls and remembered sessions, adds a 3D commander creator with saved portraits, aligns hand cards with approved board artwork and replaces board-control text with matching gold icons. Responsive browser layouts and existing campaign recovery retained."
 }

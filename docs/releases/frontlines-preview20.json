@@ -1,0 +1,685 @@
+{
+  "release_id": "2026-10-24-preview20",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.20",
+  "build": 20,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/20/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/20/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.20",
+    "versionCode": 20,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-20.apk",
+    "bytes": 95447431,
+    "sha256": "e5143b899cbb090ac0a04c08e547d9481544a37220c6c86af87b30d1badfcec8",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Repairs account touch controls and remembered sessions, adds a 3D commander creator with saved portraits, aligns hand cards with approved board artwork and replaces board-control text with matching gold icons. Responsive browser layouts and existing campaign recovery retained.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 7,
+    "engine_checks": 121,
+    "hosted": "Appearance schema and owner-only CAS route deployed; anonymous write returns401. No real verified-user appearance roundtrip claimed.",
+    "readback": "Battle engine unchanged from v6; frontliners_profiles bounded JSON appearance/revision columns added. RLS and global Auth settings unchanged."
+  },
+  "validation": {
+    "failures": 0,
+    "fresh": {
+      "account20_review-20.log": 20,
+      "creator20_review-20.log": 91,
+      "thermal18_review-20.log": 30,
+      "pause_review-20.log": 17,
+      "phone_findings18_review-20.log": 20,
+      "card_details18_review-20.log": 311,
+      "card17_review-20.log": 26,
+      "interaction14_review-20.log": 26,
+      "lan17_review-20.log": 24,
+      "appearance20-node.log": 437
+    },
+    "fresh_total": 1002,
+    "node_logs": [
+      "campaign-journal20-node.log",
+      "appearance20-node.log",
+      "engine20-node.log"
+    ],
+    "carried_release19_manifest_sha256": "84e99d384f024c927d7ec859ffefbe3fb67ab59ff8d34b9f13f3d13b6cc20157",
+    "thermal_note": "Build18 endurance is carried evidence, not a new20 benchmark.",
+    "pre_creator_visual_fix_full_suite": {
+      "checks": [
+        {
+          "log": "campaign-journal20-node.log",
+          "seconds": 0.27,
+          "exit": 0
+        },
+        {
+          "log": "account20_review-20.log",
+          "seconds": 3.0,
+          "exit": 0
+        },
+        {
+          "log": "creator20_review-20.log",
+          "seconds": 11.66,
+          "exit": 0
+        },
+        {
+          "log": "save_durability19_review-20.log",
+          "seconds": 7.09,
+          "exit": 0
+        },
+        {
+          "log": "idle_budget18_review-20.log",
+          "seconds": 5.3,
+          "exit": 0
+        },
+        {
+          "log": "thermal18_review-20.log",
+          "seconds": 5.69,
+          "exit": 0
+        },
+        {
+          "log": "phone_framing18_review-20.log",
+          "seconds": 6.83,
+          "exit": 0
+        },
+        {
+          "log": "detail_performance18_review-20.log",
+          "seconds": 6.8,
+          "exit": 0
+        },
+        {
+          "log": "refined18_review-20.log",
+          "seconds": 2.77,
+          "exit": 0
+        },
+        {
+          "log": "quality14_review-20.log",
+          "seconds": 22.28,
+          "exit": 0
+        },
+        {
+          "log": "camera18_review-20.log",
+          "seconds": 6.47,
+          "exit": 0
+        },
+        {
+          "log": "combat18_review-20.log",
+          "seconds": 10.42,
+          "exit": 0
+        },
+        {
+          "log": "animation_cards17_review-20.log",
+          "seconds": 7.56,
+          "exit": 0
+        },
+        {
+          "log": "unit_rig_review-20.log",
+          "seconds": 3.67,
+          "exit": 0
+        },
+        {
+          "log": "touch_camera_review-20.log",
+          "seconds": 36.42,
+          "exit": 0
+        },
+        {
+          "log": "dice_frame14_review-20.log",
+          "seconds": 29.23,
+          "exit": 0
+        },
+        {
+          "log": "pause_review-20.log",
+          "seconds": 11.22,
+          "exit": 0
+        },
+        {
+          "log": "card_details18_review-20.log",
+          "seconds": 13.91,
+          "exit": 0
+        },
+        {
+          "log": "phone_findings18_review-20.log",
+          "seconds": 6.03,
+          "exit": 0
+        },
+        {
+          "log": "campaign_store_review-20.log",
+          "seconds": 6.22,
+          "exit": 0
+        },
+        {
+          "log": "battle17_review-20.log",
+          "seconds": 10.2,
+          "exit": 0
+        },
+        {
+          "log": "portrait17_review-20.log",
+          "seconds": 6.52,
+          "exit": 0
+        },
+        {
+          "log": "card17_review-20.log",
+          "seconds": 7.97,
+          "exit": 0
+        },
+        {
+          "log": "mobile_orientation_regression-20.log",
+          "seconds": 49.52,
+          "exit": 0
+        },
+        {
+          "log": "interaction14_review-20.log",
+          "seconds": 27.48,
+          "exit": 0
+        },
+        {
+          "log": "live_regression-20.log",
+          "seconds": 42.55,
+          "exit": 0
+        },
+        {
+          "log": "lan17_review-20.log",
+          "seconds": 12.33,
+          "exit": 0
+        },
+        {
+          "log": "appearance20-node.log",
+          "seconds": 0.34,
+          "exit": 0
+        },
+        {
+          "log": "engine20-node.log",
+          "seconds": 0.38,
+          "exit": 0
+        },
+        {
+          "log": "web20-export.log",
+          "seconds": 24.62,
+          "exit": 0
+        },
+        {
+          "log": "android20-export.log",
+          "seconds": 146.62,
+          "exit": 0
+        }
+      ],
+      "changed_runtime": [
+        "scripts/choice_picker.gd",
+        "scripts/commander_appearance.gd",
+        "scripts/commander_portrait_renderer.gd"
+      ],
+      "scope": "Full base-game suite passed before the isolated creator/picker visual repair; fresh focused checks follow.",
+      "followups": [
+        {
+          "changed_runtime": [
+            "scripts/game.gd"
+          ],
+          "reason": "Creator fit, inherited picker theme and font-independent arrow presentation"
+        },
+        {
+          "changed_runtime": [
+            "scripts/game.gd"
+          ],
+          "reason": "Creator fit, inherited picker theme and font-independent arrow presentation"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Local campaigns now resume from a validated atomic save. Network credentials and room state are excluded; remembered account sessions remain unfinished.",
+    "Owner confirmed physical rotation in13;14 WindowManager transitions and native acceptance are separately recorded. Broader devices and human cross-phone optical QR acceptance remain open.",
+    "18 mapped ElevenLabs SFX plus original and three actual-reference music tracks; technical checks do not establish subjective music approval.",
+    "Performance samples are PC view comparisons, not universal benchmarks. Native phone reported thermal status3 during extended testing; no broad-device60FPS claim."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 330,
+      "sha256": "a6a32b0885ad753bdea5bc6fe24d2de29007b9847ff9258378b2f881fe1e3e21"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 36236,
+      "sha256": "ad6867db607a466e30ddb26f9884bf89163a9d79814f6846733fc435f1931b3c"
+    },
+    {
+      "path": "COMMANDER_CREATOR_RESEARCH.md",
+      "bytes": 7674,
+      "sha256": "d692b1429b4c136808b58225588e88413c9fb1e2906f75064964eebc5fc70d9c"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "LICENSE-MAKEHUMAN-CC0.md",
+      "bytes": 6962,
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+    },
+    {
+      "path": "media/account-bottom-overview.png",
+      "bytes": 592330,
+      "sha256": "dc3987a55ffbaa544805e82d2fd24aa1dce103ecf288efd6403b32eaeb79af2c"
+    },
+    {
+      "path": "media/account-empty-create-overview.png",
+      "bytes": 600950,
+      "sha256": "8b5b32cd844a66c87ad3d3352f7f178116b085de43d78dd38c9985ca2edb2a4a"
+    },
+    {
+      "path": "media/account-empty-signin-overview.png",
+      "bytes": 601056,
+      "sha256": "6891f6269dd874b2b0c6d9c54c32d084ad844279eaef7d64c576113b3fa75271"
+    },
+    {
+      "path": "media/account-keyboard-overview.png",
+      "bytes": 366996,
+      "sha256": "0a112f6bf9b556ecfe2f4b7c4d226ed14df1d5f04107014ca24d9d90a052f926"
+    },
+    {
+      "path": "media/account-open-overview.png",
+      "bytes": 592938,
+      "sha256": "080db070e9376e56f0af9eb6fe6f6fb2b5e79dc5a5c5b2ad7bbcdab47c95f06b"
+    },
+    {
+      "path": "media/account-scrollbar-overview.png",
+      "bytes": 603681,
+      "sha256": "f1fe9500eb55f69c86686523a46b5ebee1680537a6e9cd5c4b16ecc5c50dbc81"
+    },
+    {
+      "path": "media/account-scrolled-overview.png",
+      "bytes": 592330,
+      "sha256": "dc3987a55ffbaa544805e82d2fd24aa1dce103ecf288efd6403b32eaeb79af2c"
+    },
+    {
+      "path": "media/before-update-overview.png",
+      "bytes": 1421299,
+      "sha256": "b933d8e76baea795b7025b8d31882fda2d53393132745c9ab80925b33e1c0748"
+    },
+    {
+      "path": "media/current-overview.png",
+      "bytes": 794898,
+      "sha256": "103f7410a7aa72c2888c3410d044f882e6cd11cce490855993e6bf5d8dcfe49d"
+    },
+    {
+      "path": "media/final-actually-paused-overview.png",
+      "bytes": 743059,
+      "sha256": "217413029c9f29d9ae79c3a1b99db148cfca3bff86e9ec1bac6c51ffc496c8be"
+    },
+    {
+      "path": "media/final-attack-phase-overview.png",
+      "bytes": 1410887,
+      "sha256": "ebb4eff4dc577fd99252edef5b08f1914ff2dfad7349a33d8894b8e3ce1775cc"
+    },
+    {
+      "path": "media/final-card-close-paused-overview.png",
+      "bytes": 752071,
+      "sha256": "75a42fcd3112f86821769348b1bad4f9c85ca2604d62680975e23340f2dde678"
+    },
+    {
+      "path": "media/final-earned-hand-overview.png",
+      "bytes": 797395,
+      "sha256": "e7d82a4319ff5111ab0a7517755899bd06f6120a23df010452bae5a089f82290"
+    },
+    {
+      "path": "media/final-face-reloaded-overview.png",
+      "bytes": 582151,
+      "sha256": "30c427aca74ef9f1c7c87a2b9f58bc8d9a893070dafbf145e575c4dbceb51c99"
+    },
+    {
+      "path": "media/final-game-controls-overview.png",
+      "bytes": 1430329,
+      "sha256": "5f1daaa80555aa4743de27f3130463f2e355b2488a82c8b4f0ccaab5e733444a"
+    },
+    {
+      "path": "media/final-held-hand-after-overview.png",
+      "bytes": 794898,
+      "sha256": "103f7410a7aa72c2888c3410d044f882e6cd11cce490855993e6bf5d8dcfe49d"
+    },
+    {
+      "path": "media/final-held-hand-before-overview.png",
+      "bytes": 794898,
+      "sha256": "103f7410a7aa72c2888c3410d044f882e6cd11cce490855993e6bf5d8dcfe49d"
+    },
+    {
+      "path": "media/final-home-speed-overview.png",
+      "bytes": 1413560,
+      "sha256": "40033524a5477487293110029151c438895b46753586d3e3b542ed81f27eea53"
+    },
+    {
+      "path": "media/final-menu-overview.png",
+      "bytes": 1444523,
+      "sha256": "7056b37a3017c62bb7d8dbf0a03344db1f59cd14621d1e458c423cb94f2ce887"
+    },
+    {
+      "path": "media/final-native-combat-open-overview.png",
+      "bytes": 719522,
+      "sha256": "1c946fde4501d6e197fa1192ca00df31a150f26c42f798b9541e3d9aa9867372"
+    },
+    {
+      "path": "media/final-native-india-roll-overview.png",
+      "bytes": 1437370,
+      "sha256": "fadd0b5ed9a9f63fe3ad9036dec590ee1e07a2e7a71816a319ef8fbf17c2b2ec"
+    },
+    {
+      "path": "media/final-native-india-settled-overview.png",
+      "bytes": 723762,
+      "sha256": "e6f9b737a012f86cf410021bd946bdb06fa1a070aab77069ed2bee4039ff2980"
+    },
+    {
+      "path": "media/final-native-roll-overview.png",
+      "bytes": 1436276,
+      "sha256": "72c216005eee654de2072819b9e6697f3354babab073c51568a44f8acdfad191"
+    },
+    {
+      "path": "media/final-native-roll-settled-overview.png",
+      "bytes": 1440463,
+      "sha256": "31809e780ff55017308d074db84c58c2bb4977393248bde5ce27441267999c50"
+    },
+    {
+      "path": "media/final-native-second-combat-overview.png",
+      "bytes": 729122,
+      "sha256": "f3429fa2575cf1a8cbfdab2cbb62718d6daf57b4b67737d30079b741e5cfb269"
+    },
+    {
+      "path": "media/final-paused-overview.png",
+      "bytes": 1121982,
+      "sha256": "0bfd5545ee11ff0329bc60408cd9e8724e2ecafa92e3e8fb55a12e96213de91d"
+    },
+    {
+      "path": "media/final-reinforced-overview.png",
+      "bytes": 1074201,
+      "sha256": "4bd1eddd9764439516831b7894172e217084334020814dcea85969171048131d"
+    },
+    {
+      "path": "media/final-themed-picker-overview.png",
+      "bytes": 527503,
+      "sha256": "99a85532d59c1c07b4530162f6e77a19f89a8de0a57e0fcfbaaf27534841a2a4"
+    },
+    {
+      "path": "media/keyboard-dismissed-overview.png",
+      "bytes": 594346,
+      "sha256": "2aee5d067ad43b564e5de55be36f2544f9324b5ce5da8900c88b43d80f15fefb"
+    },
+    {
+      "path": "media/native-creator-open-overview.png",
+      "bytes": 606421,
+      "sha256": "f05becb368a9102f1b0f3f5053d724f71be1c41e99aad9d610dfb20007959ffe"
+    },
+    {
+      "path": "media/native-creator-settled-overview.png",
+      "bytes": 695957,
+      "sha256": "70a41cc41bb3c2fedaa44e9c7a536eca5da8a5f32b97ab17897ba5c1dc3c208b"
+    },
+    {
+      "path": "media/native-face-controls-overview.png",
+      "bytes": 601477,
+      "sha256": "6606a6c44d5f280dfd5ab2ef61b03ccb60016e30a81904dd4f9767b2bcc56743"
+    },
+    {
+      "path": "media/native-face-width-edit-overview.png",
+      "bytes": 616354,
+      "sha256": "b70ebd6d3c59b500b8a2aa593cb84863530de9041dc3c1821e42448ba76ec8f8"
+    },
+    {
+      "path": "media/native-saved-menu-overview.png",
+      "bytes": 1445810,
+      "sha256": "8296021a63f26c935640fcb2c9f5f3777e657e2eac541c651446c4892bb75aeb"
+    },
+    {
+      "path": "media/waiting-paused-overview.png",
+      "bytes": 737647,
+      "sha256": "f1a013c9ac1a974a669328c83ef8eeb1337a9162c313e30e3402d7ef81531ea7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12915,
+      "sha256": "37c1dc81e04cc459e67a5fc85094d96069be4b9f9b1575451d90886ccce20287"
+    },
+    {
+      "path": "RELEASE20.md",
+      "bytes": 3265,
+      "sha256": "1571d74a8ab066c15669f4ba8fff47bbafde6b53d59bfa3ad08326278ae85ac2"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 953,
+      "sha256": "f1aa8f8027613d14a3269c740179ce3e23566720e8c27a3926258490e3f7f9d8"
+    },
+    {
+      "path": "site/frontlines/builds/20/campaign-journal.js",
+      "bytes": 616,
+      "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.html",
+      "bytes": 5805,
+      "sha256": "e50d7df83228d3e71ab3e7984186d205052c9fdfa580827c84241279594a7c71"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.pck",
+      "bytes": 66381904,
+      "sha256": "291385f11f5fa8855ebfdeb1dbe76f2ebbd830d25719f52a42292808bf0b18e2"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/20/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/20/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/20/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/20/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/20/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/20/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/20/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-20.apk",
+      "bytes": 95447431,
+      "sha256": "e5143b899cbb090ac0a04c08e547d9481544a37220c6c86af87b30d1badfcec8"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "5f84fab3fcf868ed940854eb3c59571326c6141a639c755e3aa04f0d9d41959a"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 407,
+      "sha256": "489175043ca1f54fa6a4613bb98d02567d2b35f4d0e5443ec52ac804dcc1a982"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 200635,
+      "sha256": "c43d0dc58051c53f1dcdbf967af249619f4daeeeea8823f08d0ce4b83880df72"
+    },
+    {
+      "path": "validation/account20-native-result.json",
+      "bytes": 195,
+      "sha256": "dfc10e588f0fed726eaeb3ff2a01b67d7a1f9973aab06217efae1c0341c0b514"
+    },
+    {
+      "path": "validation/account20_review-20.log",
+      "bytes": 1296,
+      "sha256": "d7616df2301867a72ff21c7fac4aa78da647e38c3f7cde10be8151170751b559"
+    },
+    {
+      "path": "validation/android20-export.log",
+      "bytes": 6217,
+      "sha256": "d4f2108b66987f1f52ffde19d9701e9f4932647e0bb5a8104ddabf80e9a2f48c"
+    },
+    {
+      "path": "validation/appearance20-node.log",
+      "bytes": 414,
+      "sha256": "92ca8c967334712287f9ff1fb477e60648e2eed1a017c104a3f5416944002467"
+    },
+    {
+      "path": "validation/build20-before-fit-results.json",
+      "bytes": 3733,
+      "sha256": "76ad60e1ce37c6458ac9ac195ae250a0a235925887ee2963e61c1e06ce681a73"
+    },
+    {
+      "path": "validation/build20-results.json",
+      "bytes": 1217,
+      "sha256": "140cd6bef48e953fcec88b65e943e6f1a53cbadea14b6510d8023667798021d9"
+    },
+    {
+      "path": "validation/campaign-journal20-node.log",
+      "bytes": 1263,
+      "sha256": "ec78c93bd6b65b89a59d2f3e05622be1ef3729c2d73a082dab6a3ef0ffea6da7"
+    },
+    {
+      "path": "validation/card17_review-20.log",
+      "bytes": 1413,
+      "sha256": "af4033b51753a18592c76bb780956251ed8ef1da67e525426df9423bedb74554"
+    },
+    {
+      "path": "validation/card_details18_review-20.log",
+      "bytes": 12470,
+      "sha256": "af2f8a1f4fd6de21e62d3533d55824b6028e9ba7104d26d6c25993d79a345cbf"
+    },
+    {
+      "path": "validation/creator20_review-20.log",
+      "bytes": 3962,
+      "sha256": "88ce8d6853d731e810834e7c6380376d334023a23590604789a829481b54928e"
+    },
+    {
+      "path": "validation/engine20-node.log",
+      "bytes": 584,
+      "sha256": "c4f76bbd518bdb4f4a9f1bed2039ea4d21b945a69436dfd7eed02002b81cffe4"
+    },
+    {
+      "path": "validation/FRONTLINES_PREVIEW20_FINAL_LOCAL_ACCEPTANCE.json",
+      "bytes": 2629,
+      "sha256": "b7f1927f276bc8967399fc388c65abcaaa2a2848413744aae2f589dcd01ab86d"
+    },
+    {
+      "path": "validation/interaction14_review-20.log",
+      "bytes": 1419,
+      "sha256": "c58e36608fe81e965eddaf7c4f398417b69ed68ba7418bd388ea0c06909339b9"
+    },
+    {
+      "path": "validation/lan17_review-20.log",
+      "bytes": 1179,
+      "sha256": "75f362334fe5944eab8b94e4af1265444946c84680d3e394f59d9ddfce5180e8"
+    },
+    {
+      "path": "validation/native20-acceptance.json",
+      "bytes": 2634,
+      "sha256": "81b2ab6e5e23e2da854fb48e3e21d2447a5f116bb52952fdf0e66fa496d3d5fd"
+    },
+    {
+      "path": "validation/native20-ui-before-cardhold-acceptance.json",
+      "bytes": 2909,
+      "sha256": "57fcafa089d5803f51cc9c0bed9dd290c2ec6dea41d0b96856ea635c7a6da246"
+    },
+    {
+      "path": "validation/package20.json",
+      "bytes": 251,
+      "sha256": "37f3d3f277df6d1111005d0a876712d2d8d84c6d65a30f87aaa15256ba1f5c02"
+    },
+    {
+      "path": "validation/pause_review-20.log",
+      "bytes": 939,
+      "sha256": "d9148e512d9a5b0b49dc2106a5d641bacfc5fe2749b3b45fdd7bd730b12311a4"
+    },
+    {
+      "path": "validation/phone_findings18_review-20.log",
+      "bytes": 1154,
+      "sha256": "1e0834494fc670d2819e83b9613cbc0ea4c8501b84890c917adeb168bd51601e"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 13033,
+      "sha256": "3f24fd1ac376029a4b76561bdc61f8432d4bab855491fd7f52074a6c657eb9e4"
+    },
+    {
+      "path": "validation/thermal18_review-20.log",
+      "bytes": 1721,
+      "sha256": "33fda419ff9f1a917f63d3980b13b99befc0fcbc973a48e389aed63cb5da6065"
+    },
+    {
+      "path": "validation/web20-export.log",
+      "bytes": 31400,
+      "sha256": "7ba6c0ed07514c3a1f0cc9f87f21251134e080d5881ae11b4339676286f80d3b"
+    }
+  ]
+}

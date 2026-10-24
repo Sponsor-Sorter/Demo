@@ -1,0 +1,56 @@
+{
+  "build": 20,
+  "installed_apk_sha256": "e5143b899cbb090ac0a04c08e547d9481544a37220c6c86af87b30d1badfcec8",
+  "bytes": 95447431,
+  "campaign_unchanged_at_launch": false,
+  "method": "ADB install-r exact package, not an in-app updater claim",
+  "passed": true,
+  "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "device": "Samsung SM-S908E Android14",
+  "fresh_final_package": {
+    "hand_panel_stayed_open": {
+      "state_sha256": "a4116cf48dd4d155e101dbbba15ba6e4c8b5fd74b6d89541ffcfa978182d0a49",
+      "round": 1,
+      "active": 4,
+      "phase": "attack",
+      "passed": true,
+      "minimum_wait_seconds": 15,
+      "state_unchanged": true,
+      "own_cards": 1
+    },
+    "approved_card_art_layout": "Kamchatka/Horse, brand/territory/unit/owned bonus all visibly present",
+    "close_and_pause": "hand Close and Pause returned to campaign pause screen",
+    "no_script_or_fatal_errors": true,
+    "final_pck_sha256": "291385f11f5fa8855ebfdeb1dbe76f2ebbd830d25719f52a42292808bf0b18e2"
+  },
+  "campaign_note": "Install/resume retained actual round1 armies, turn and card; only resume log text differed when compared before card hold. Byte identity false is retained honestly in package receipt. Subsequent normal UI resume may progress AI.",
+  "changed_fields_since_preinstall": [
+    "battles",
+    "campaign_stats",
+    "countries",
+    "from_country",
+    "logs",
+    "selected_country"
+  ],
+  "carried_ui_gameplay_acceptance": {
+    "file": "native20-ui-before-cardhold-acceptance.json",
+    "apk_sha256": "4a89735404cdc451126007035b655cc070a63acc899e5739bd31eedc5e7e6544",
+    "scope": "Account input/keyboard, actual3D creator editing/save/reload, normal China-to-India capture/maxmove/earnedhand, matching icons. Final runtime delta only extends local pause guard."
+  },
+  "limits": [
+    "physical rotation not performed",
+    "no fresh sustained thermal benchmark",
+    "ADB exact install is not an in-app updater acceptance",
+    "browser portrait evidence is separate from native landscape",
+    "no complete native game-to-victory or verified-account auth journey claim"
+  ],
+  "thermal_observation": {
+    "not_controlled_benchmark": true,
+    "saved_mode": "Ultra60",
+    "native_status_max": 3,
+    "adaptation": "30fps and render_scale0.65 at status3 observed",
+    "limitation": "Long USB-powered warm-device run reached status3; do not claim heat eliminated. Left paused to cool."
+  },
+  "native_swipe_scroll": "Scrollbar reaches all account controls; freeform swipe not accepted",
+  "current_own_cards": 1
+}
