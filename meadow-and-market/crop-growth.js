@@ -8,7 +8,7 @@
     const remainingMs=active.length?work/1.18:next&&work>next-now?(next-now)+(work-(next-now))/1.18:work;
     return {progress,stage:progress>=1?3:progress<.2?0:progress<.48?1:2,bonusMs,remainingMs};
   }
-  function settle(farm,items,now=Date.now()){for(const p of farm.objects.filter(o=>o.type==='plot'&&o.plantedAt)){const g=calculate(p,items[p.crop]||items.carrot,farm.objects,now);p.growthBonusMs=g.bonusMs;p.growthSettledAt=now}}
+  function settle(farm,items,now=Date.now()){const flowers=farm.objects.filter(o=>o.type==='flowers');for(const p of farm.objects.filter(o=>o.type==='plot'&&o.plantedAt)){const g=calculate(p,items[p.crop]||items.carrot,flowers,now);p.growthBonusMs=g.bonusMs;p.growthSettledAt=now}}
   function start(p,id,now=Date.now()){p.crop=id;p.plantedAt=now;p.stage=1;p.wateredUntil=0;p.growthBonusMs=0;p.growthSettledAt=now}
   window.meadowCropGrowth={calculate,settle,start,near};
 })();

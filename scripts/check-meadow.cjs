@@ -135,3 +135,5 @@ require('./check-meadow-coop-art.cjs');
 require('./check-meadow-save-revisions.cjs');
 
 require('./check-meadow-worker-return.cjs');
+
+require('./check-meadow-growth-paint.cjs');
