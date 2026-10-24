@@ -1,0 +1,570 @@
+{
+  "release_id": "2026-10-24-preview21",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.21",
+  "build": 21,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/21/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/21/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.21",
+    "versionCode": 21,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-21.apk",
+    "bytes": 95464141,
+    "sha256": "922658f1b93568162b211a0ee5eb34e9e3648c02cde6893c2abf7d9a317833ea",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Improves commander head, collar, clothing and headwear fitting; adds finger orbit, pan and pinch zoom with a canonical saved portrait; repairs finger scrolling across account, creator, settings, rules, social and option lists. Existing recipes and campaigns retained.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 7,
+    "engine_checks": 121,
+    "hosted": "Unchanged from preview20; no schema, Auth policy or service change in21.",
+    "readback": "Creator fitting, touch input and portrait rendering changes are client-side. No new verified-user cloud appearance roundtrip claimed."
+  },
+  "validation": {
+    "failures": 0,
+    "fresh": {
+      "account20_review-21.log": 20,
+      "creator21_review-21.log": 91,
+      "creator21_gestures_review-21.log": 19,
+      "creator21_fit_review-21.log": 680,
+      "save_durability19_review-21.log": 26,
+      "idle_budget18_review-21.log": 4,
+      "thermal18_review-21.log": 30,
+      "phone_framing18_review-21.log": 31,
+      "detail_performance18_review-21.log": 4,
+      "refined18_review-21.log": 47,
+      "quality14_review-21.log": 30,
+      "camera18_review-21.log": 18,
+      "combat18_review-21.log": 83,
+      "animation_cards17_review-21.log": 32,
+      "unit_rig_review-21.log": 23,
+      "touch_camera_review-21.log": 43,
+      "dice_frame14_review-21.log": 36,
+      "pause_review-21.log": 17,
+      "card_details18_review-21.log": 311,
+      "phone_findings18_review-21.log": 20,
+      "campaign_store_review-21.log": 17,
+      "battle17_review-21.log": 34,
+      "portrait17_review-21.log": 18,
+      "card17_review-21.log": 26,
+      "mobile_orientation_regression-21.log": 429,
+      "interaction14_review-21.log": 26,
+      "live_regression-21.log": 110,
+      "lan17_review-21.log": 24,
+      "appearance21-node.log": 437
+    },
+    "fresh_total": 2686,
+    "node_logs": [
+      "campaign-journal21-node.log",
+      "appearance21-node.log",
+      "engine21-node.log"
+    ],
+    "carried_release20_manifest_sha256": "21d9c43894a963f2b8d52c00b12451092cbb19c769ed6d9964fc9767bc94765d",
+    "thermal_note": "Build18 endurance is carried evidence, not a new21 benchmark."
+  },
+  "limitations": [
+    "Preview; balance and broad-device performance still being measured",
+    "APK installation requires Android confirmation; unknown-source permission may need owner action",
+    "Human email/friends and phone-to-phone optical QR acceptance pending",
+    "No cosmetic payment storefront; six finishes are free playtest previews",
+    "Supplied meshes retain original low polygon geometry; commercial redistribution rights not independently established",
+    "Painted raster1774x887 with separate5400px measured detail; UHD rendering does not make the painted bitmap native4K",
+    "Local campaigns now resume from a validated atomic save. Network credentials and room state are excluded; remembered account sessions remain unfinished.",
+    "Owner confirmed physical rotation in13;14 WindowManager transitions and native acceptance are separately recorded. Broader devices and human cross-phone optical QR acceptance remain open.",
+    "18 mapped ElevenLabs SFX plus original and three actual-reference music tracks; technical checks do not establish subjective music approval.",
+    "Performance samples are PC view comparisons, not universal benchmarks. Native phone reported thermal status3 during extended testing; no broad-device60FPS claim."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 451,
+      "sha256": "c9ce4a87225454f1209bb43488eec7bede2e6585398707dbc40c5a7ad8f8fc29"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 39399,
+      "sha256": "d2dbc9ba72f02f1167f7221cc470ebc5dee2a7e2aeaf001fdd90ccb1bcbdbd27"
+    },
+    {
+      "path": "COMMANDER_CREATOR_RESEARCH.md",
+      "bytes": 7674,
+      "sha256": "d692b1429b4c136808b58225588e88413c9fb1e2906f75064964eebc5fc70d9c"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "LICENSE-MAKEHUMAN-CC0.md",
+      "bytes": 6962,
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+    },
+    {
+      "path": "media/account21-button-swipe-bottom-overview.png",
+      "bytes": 596953,
+      "sha256": "fd1e206b3a5dca0f1de738b3e82e0ef003d7c1756dc2d120156d1eef5cf7edf1"
+    },
+    {
+      "path": "media/account21-field-swipe-overview.png",
+      "bytes": 597248,
+      "sha256": "4c04eb56b38e3dc3a891d295dbfe296efb207919e5edaad6c9d3bbce6526b8a7"
+    },
+    {
+      "path": "media/account21-keyboard-closed-overview.png",
+      "bytes": 600237,
+      "sha256": "f4a64f5a6cb04f4d9279bb534d281e0db13b151b97a48b1fe5b69a162ac52f8e"
+    },
+    {
+      "path": "media/account21-keyboard-overview.png",
+      "bytes": 357013,
+      "sha256": "8e3cc3c5f0860d08cbbad0153d09016502c49d1ccbec765f1f2b521808a26bdd"
+    },
+    {
+      "path": "media/account21-top-overview.png",
+      "bytes": 592862,
+      "sha256": "e8f3eb38b637837f5384cdc3406bf53612e078288e594ce86a94e02d21ddf363"
+    },
+    {
+      "path": "media/before21-overview.png",
+      "bytes": 571024,
+      "sha256": "5f2810965cebcda9dac9927cbde5a7a9298323732d641aa0129acc1147fc0dcf"
+    },
+    {
+      "path": "media/creator21-choice-finger-bottom-overview.png",
+      "bytes": 518918,
+      "sha256": "1a64d3df584ac6da65db6195ea0d190434a62e732772f4a51b8871a6d6f7e88f"
+    },
+    {
+      "path": "media/creator21-choice-selected-overview.png",
+      "bytes": 619215,
+      "sha256": "88265fd98ad5e04b9e1c9bb1410fff4f2f17f96f6b56c57f31ccfcc73aeb9dc5"
+    },
+    {
+      "path": "media/creator21-choice-top-overview.png",
+      "bytes": 520074,
+      "sha256": "68b1a9ffe2eb45ca578e2176ca016d95b49db8cb2001ca06e79d29df6070f36d"
+    },
+    {
+      "path": "media/creator21-choice-undo-saved-overview.png",
+      "bytes": 1444453,
+      "sha256": "7fd63438dd9422b793ca5b72bd5133a9452dc27e19d00f8344b2a0aaf38269cb"
+    },
+    {
+      "path": "media/creator21-face-finger-scroll-overview.png",
+      "bytes": 570409,
+      "sha256": "779e29ce1753d9af8f51d878397d324b9039056951031277937bb01ae42e508a"
+    },
+    {
+      "path": "media/creator21-face-top-overview.png",
+      "bytes": 596200,
+      "sha256": "2ad3ae9046a3b91f01d9b4fdf3fa1e1105a5dc1f5ff884132201f4d0e77dcda7"
+    },
+    {
+      "path": "media/creator21-finger-orbit-overview.png",
+      "bytes": 673469,
+      "sha256": "888c51612d07ad2d00f64b57d6ab765a01423aa13e8e7fb5e94b9f924f1f7910"
+    },
+    {
+      "path": "media/creator21-front-overview.png",
+      "bytes": 687732,
+      "sha256": "7a7be42e84f0104559232a9fd29ebb90a451ceafd01bee9057f6d2437e3f819d"
+    },
+    {
+      "path": "media/creator21-hair-panel-overview.png",
+      "bytes": 606145,
+      "sha256": "8d6e7eb2da7efcd8c7e3f4a8090a808b060765701df053e37ab9e852241b85b0"
+    },
+    {
+      "path": "media/creator21-horizontal-edit-overview.png",
+      "bytes": 584675,
+      "sha256": "0d5e3eebd13b7d7351cfa23a3b88e76dc18a52a1d0c52de4bca3c0d15a23ef02"
+    },
+    {
+      "path": "media/creator21-reloaded-details-overview.png",
+      "bytes": 576063,
+      "sha256": "2ad8594cb4776f67532a83948b231e86bd135dc5b98302b489040ecd90457a4c"
+    },
+    {
+      "path": "media/creator21-reset-after-overview.png",
+      "bytes": 576862,
+      "sha256": "93ca2060535172c8b33baa85a73b7f114ff49ddd0c10bbace710490254bc40b8"
+    },
+    {
+      "path": "media/creator21-reset-before-overview.png",
+      "bytes": 560686,
+      "sha256": "235d16b8155973157c7c42a2afce633a3f85937fbe0fb5da88d64f22541766fb"
+    },
+    {
+      "path": "media/creator21-saved-from-side-overview.png",
+      "bytes": 1444453,
+      "sha256": "7fd63438dd9422b793ca5b72bd5133a9452dc27e19d00f8344b2a0aaf38269cb"
+    },
+    {
+      "path": "media/creator21-undo-save-overview.png",
+      "bytes": 1444453,
+      "sha256": "7fd63438dd9422b793ca5b72bd5133a9452dc27e19d00f8344b2a0aaf38269cb"
+    },
+    {
+      "path": "media/current-overview.png",
+      "bytes": 560686,
+      "sha256": "235d16b8155973157c7c42a2afce633a3f85937fbe0fb5da88d64f22541766fb"
+    },
+    {
+      "path": "media/installed21-main-overview.png",
+      "bytes": 1444453,
+      "sha256": "7fd63438dd9422b793ca5b72bd5133a9452dc27e19d00f8344b2a0aaf38269cb"
+    },
+    {
+      "path": "media/native21-restarted-overview.png",
+      "bytes": 1444599,
+      "sha256": "f8b23794d5cdf5196a33e4ddada7b243498e0d8da8974958630fa1539d17333a"
+    },
+    {
+      "path": "media/preserved20-draft-overview.png",
+      "bytes": 1445078,
+      "sha256": "c7f2312cf7d4c99917ce2e2349c4de22c0178e9e3e469bd1e10c13d0aae96d61"
+    },
+    {
+      "path": "media/settings21-slider-swipe-bottom-overview.png",
+      "bytes": 767338,
+      "sha256": "6bfe079900f47a94b6da3cec75a146552ff8ae5ac1d1a9f3bbfbc141f44433da"
+    },
+    {
+      "path": "media/settings21-top-overview.png",
+      "bytes": 777065,
+      "sha256": "ed813c94984868acbc89c3c4d5383dbe77e8171767774a5740fa81adcbee30a0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12335,
+      "sha256": "1bf5b36a23a442120adef85c42c5f22b106c15e5f724b7830d4f3826d4f63b9d"
+    },
+    {
+      "path": "RELEASE21.md",
+      "bytes": 2292,
+      "sha256": "44bcae36205e87147e0856c4755510e6d1b00549bd5357ebafc98a2c5ecb4a8a"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 943,
+      "sha256": "ae9f5212e6225e3df1157adb8e1ea37e0223b30e51115a20a2a147af32423ed6"
+    },
+    {
+      "path": "site/frontlines/builds/21/campaign-journal.js",
+      "bytes": 616,
+      "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.html",
+      "bytes": 5805,
+      "sha256": "d4dacd078541ba2d17d01bebe521a7359b4e7323589e790f3e59b8944c6c1032"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.pck",
+      "bytes": 66396984,
+      "sha256": "2a24c3833943d9c0537a748bf0d7baeb36ad58469e649cbfe14d5b55bc2a9021"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/21/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/21/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/21/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/21/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/21/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/21/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/21/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-21.apk",
+      "bytes": 95464141,
+      "sha256": "922658f1b93568162b211a0ee5eb34e9e3648c02cde6893c2abf7d9a317833ea"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "86b9414a9d199cfe6134e2a956c2d5fa6d97930df949981ad6a43dd106bda963"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 397,
+      "sha256": "3fda187371b773f7dc6343e8da201be06376a153a77ea9e2e98842bce3c3bae6"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 200635,
+      "sha256": "c43d0dc58051c53f1dcdbf967af249619f4daeeeea8823f08d0ce4b83880df72"
+    },
+    {
+      "path": "validation/account20_review-21.log",
+      "bytes": 1296,
+      "sha256": "d7616df2301867a72ff21c7fac4aa78da647e38c3f7cde10be8151170751b559"
+    },
+    {
+      "path": "validation/android21-export.log",
+      "bytes": 7149,
+      "sha256": "3d052955ce38f54496f0ce443d03be8fe80193993eba84c009dbb72ea520c416"
+    },
+    {
+      "path": "validation/animation_cards17_review-21.log",
+      "bytes": 1527,
+      "sha256": "aded85967807e66ab4596f4f240667cada7c828ddc2e4ae9022c3a299e8b963d"
+    },
+    {
+      "path": "validation/appearance21-node.log",
+      "bytes": 413,
+      "sha256": "769a13ca097912fe5fc74b7b480c31c761bde65ccd89d39ac63f1f952c1584b6"
+    },
+    {
+      "path": "validation/battle17_review-21.log",
+      "bytes": 1635,
+      "sha256": "6cbbcc8ea3c4caa45247e6f2c334b854dcf3717f8fb8a4a5553c3b5d6508fc80"
+    },
+    {
+      "path": "validation/build21-results.json",
+      "bytes": 3038,
+      "sha256": "557568a5712431c1003f751214acc4f7166d28f192da928e6773d4c251ed70fb"
+    },
+    {
+      "path": "validation/camera18_review-21.log",
+      "bytes": 984,
+      "sha256": "e32221fd847eeb9d87b41ac5992519fe561a0af3cd87ff3f5eeddc7c1dc176ba"
+    },
+    {
+      "path": "validation/campaign-journal21-node.log",
+      "bytes": 1263,
+      "sha256": "bcf98ab3485abdb6a3d195026b99d24a33d73fc81934c2a1e815916ef7dd915b"
+    },
+    {
+      "path": "validation/campaign_store_review-21.log",
+      "bytes": 850,
+      "sha256": "78c22c2b6f3dbee9493d511a7c99605038aba52f8ba72f03ab7c8370d14c879a"
+    },
+    {
+      "path": "validation/card17_review-21.log",
+      "bytes": 1413,
+      "sha256": "af4033b51753a18592c76bb780956251ed8ef1da67e525426df9423bedb74554"
+    },
+    {
+      "path": "validation/card_details18_review-21.log",
+      "bytes": 12470,
+      "sha256": "af2f8a1f4fd6de21e62d3533d55824b6028e9ba7104d26d6c25993d79a345cbf"
+    },
+    {
+      "path": "validation/combat18_review-21.log",
+      "bytes": 3972,
+      "sha256": "05d749ecc60265cdf7d72c539574aa9b666f787819f62a2b7dc4852873a59c60"
+    },
+    {
+      "path": "validation/creator21_fit_review-21.log",
+      "bytes": 255,
+      "sha256": "220a4866d3413e931902418712582712daa55c7ca7cec6399046138c84e23194"
+    },
+    {
+      "path": "validation/creator21_gestures_review-21.log",
+      "bytes": 1077,
+      "sha256": "e1dac7ee52a47728b2c0a958c11fc137bec94a2f5756b1897d12f70102ac8a68"
+    },
+    {
+      "path": "validation/creator21_layout-21.log",
+      "bytes": 482,
+      "sha256": "fa3c0b6a82f9b78b7d5eaa3ab62d2b7a9bb5a3511495b3bd523cbdc1bf058009"
+    },
+    {
+      "path": "validation/creator21_review-21.log",
+      "bytes": 3962,
+      "sha256": "32696c6e0fdcac7465e9f99c0fd5d320ecaa9278bdffe924557d023e4b2d420d"
+    },
+    {
+      "path": "validation/detail_performance18_review-21.log",
+      "bytes": 470,
+      "sha256": "689839b4f4142e464a05043983a60d8e9799a53391ca05e4b90ab0e8c046937f"
+    },
+    {
+      "path": "validation/dice_frame14_review-21.log",
+      "bytes": 2472,
+      "sha256": "fd9d44c27b8e20417444d47e1ea422d27a84edc37aa15b089135d49da974e5be"
+    },
+    {
+      "path": "validation/engine21-node.log",
+      "bytes": 584,
+      "sha256": "6e919037202247abd8a81df8d2402e5e2d6afc252ceaca582d97677a9cbf5ffb"
+    },
+    {
+      "path": "validation/FRONTLINES_PREVIEW21_FINAL_LOCAL_ACCEPTANCE.json",
+      "bytes": 3215,
+      "sha256": "90ee4924dceccc323b321cfb2ce825fdb67acc9ef868d154a21c67a6826a251b"
+    },
+    {
+      "path": "validation/idle_budget18_review-21.log",
+      "bytes": 376,
+      "sha256": "260c0d95294cb69df846e4282306cc5f12900af1e93b445ebda9ba2b8486d0ab"
+    },
+    {
+      "path": "validation/interaction14_review-21.log",
+      "bytes": 1423,
+      "sha256": "ea8af9723467986446faf38f75a6beef9d1f1ebf6d562d356f070038ef869474"
+    },
+    {
+      "path": "validation/lan17_review-21.log",
+      "bytes": 1179,
+      "sha256": "75f362334fe5944eab8b94e4af1265444946c84680d3e394f59d9ddfce5180e8"
+    },
+    {
+      "path": "validation/live_regression-21.log",
+      "bytes": 4987,
+      "sha256": "a6fce77c91ecd9282efdee6c77d35e0327160d36a1e7eb8797317fdf63782e1d"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-21.log",
+      "bytes": 13026,
+      "sha256": "5e1f3c71304b6ad70d7cc21f20659624f5fc6ddb7d432e01e89f799f2a7cfbd1"
+    },
+    {
+      "path": "validation/native21-acceptance.json",
+      "bytes": 2994,
+      "sha256": "ecc6aa6d6b49087e6ab9b408ed83b94f6adc360ef7eb00cc6db87bdaf07f2b21"
+    },
+    {
+      "path": "validation/package21.json",
+      "bytes": 250,
+      "sha256": "3c890a8038785a97e88b9cb9fa37dba43179f700190a625c63ff9e538a34834a"
+    },
+    {
+      "path": "validation/pause_review-21.log",
+      "bytes": 939,
+      "sha256": "d9148e512d9a5b0b49dc2106a5d641bacfc5fe2749b3b45fdd7bd730b12311a4"
+    },
+    {
+      "path": "validation/phone_findings18_review-21.log",
+      "bytes": 1154,
+      "sha256": "1e0834494fc670d2819e83b9613cbc0ea4c8501b84890c917adeb168bd51601e"
+    },
+    {
+      "path": "validation/phone_framing18_review-21.log",
+      "bytes": 1958,
+      "sha256": "83e60ccba5cbd6976fc7e787996deca9d9ba3f53873e65476fa7d730f40ce7a8"
+    },
+    {
+      "path": "validation/portrait17_review-21.log",
+      "bytes": 946,
+      "sha256": "51c211addee0024b0dd8325cd0c9d6e15d62a62e3f51a60b4354bedb5a6b442e"
+    },
+    {
+      "path": "validation/quality14_review-21.log",
+      "bytes": 1607,
+      "sha256": "99877397e4e88e96768dcdc4634f529c5a3a54e22ded4ef425c6918e7dd4e4d6"
+    },
+    {
+      "path": "validation/refined18_review-21.log",
+      "bytes": 2399,
+      "sha256": "28e0aec77d0eb2bf8f92cb2b74288dac4c4360466099a06c22cf6ab50910c126"
+    },
+    {
+      "path": "validation/save_durability19_review-21.log",
+      "bytes": 1390,
+      "sha256": "d9106d6c94293e50d46d579d6ff7ec12913c1510000bec550055dfed3414d3b4"
+    },
+    {
+      "path": "validation/source-hashes.json",
+      "bytes": 13303,
+      "sha256": "a9c8054206ac3367ab4dc97ca7a87fb41972eb311d2a1ab3c786414c078a4ae8"
+    },
+    {
+      "path": "validation/thermal18_review-21.log",
+      "bytes": 1721,
+      "sha256": "33fda419ff9f1a917f63d3980b13b99befc0fcbc973a48e389aed63cb5da6065"
+    },
+    {
+      "path": "validation/touch_camera_review-21.log",
+      "bytes": 2706,
+      "sha256": "777ed78c423fb8c2693cb1709300f54ba389a9a5dead31426a778eadb29b62d8"
+    },
+    {
+      "path": "validation/unit_rig_review-21.log",
+      "bytes": 864,
+      "sha256": "90d838ac79cb9000c062aa0edd9526e5b1a07c56c3de5ab39ed5506ec645b22f"
+    },
+    {
+      "path": "validation/web21-export.log",
+      "bytes": 32896,
+      "sha256": "c005598f40baf3f99402503e43cb112707b58dc29b480cce8e870137ebb01fd0"
+    }
+  ]
+}

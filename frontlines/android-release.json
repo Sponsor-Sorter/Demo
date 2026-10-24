@@ -1,13 +1,13 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.20",
-  "versionCode": 20,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-20.apk",
-  "bytes": 95447431,
-  "sha256": "e5143b899cbb090ac0a04c08e547d9481544a37220c6c86af87b30d1badfcec8",
+  "versionName": "1.0.0-preview.21",
+  "versionCode": 21,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-21.apk",
+  "bytes": 95464141,
+  "sha256": "922658f1b93568162b211a0ee5eb34e9e3648c02cde6893c2abf7d9a317833ea",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Repairs account touch controls and remembered sessions, adds a 3D commander creator with saved portraits, aligns hand cards with approved board artwork and replaces board-control text with matching gold icons. Responsive browser layouts and existing campaign recovery retained.",
+  "notes": "Improves commander head, collar, clothing and headwear fitting; adds finger orbit, pan and pinch zoom with a canonical saved portrait; repairs finger scrolling across account, creator, settings, rules, social and option lists. Existing recipes and campaigns retained.",
   "targetSdk": 36,
   "abis": [
     "arm64-v8a"

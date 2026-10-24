@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 20 adds a 3D commander creator with saved portraits, improves account controls, matches hand-card artwork to the board and introduces themed game controls. Local AI pauses while you inspect cards or battle history. It retains thermal protection and saves completed actions immediately.",
+      "description": "Command six coalitions across a 3D world board in solo AI, local hot-seat or online campaigns, with local autosave/resume. Build 21 improves the 3D commander creator with fitted clothing and headwear, preview camera controls, and scrolling across menus. Saved portraits keep a front view independent of the editing camera. It retains thermal protection, pauses local AI while cards are open and saves completed actions immediately.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.20 · Build 20",
+      "build": "Version 1.0.0-preview.21 · Build 21",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -148,21 +148,23 @@
         "Local campaigns autosave on this device. Use Continue Campaign to continue; clearing game or browser data can remove the save.",
         "Use Field cards to inspect your hand and trade. Choose dice finishes in Settings; use the in-game speed controls for solo or AI spectator play.",
         "Choose Your Commander from the main menu, or Customise in Commander Account. Edit the 3D appearance, then Save Commander to use its portrait; Cancel offers a choice to discard unsaved changes.",
-        "Open the card-fan button to inspect your earned hand. Local AI pauses while cards are open; Close resumes play. Shared online tables continue normally."
+        "Open the card-fan button to inspect your earned hand. Local AI pauses while cards are open; Close resumes play. Shared online tables continue normally.",
+        "In the creator, drag to rotate and tilt, use two fingers to pan/pinch, or use the desktop wheel to zoom and right/middle drag to pan. Reset View restores the front composition; Save Commander always captures a front portrait.",
+        "Scroll account, creator, Settings and option lists with a vertical swipe. Swipe vertically over a slider to scroll; drag horizontally to change its value. Tap a field to enter text."
       ],
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/20/",
+          "url": "https://sponsorsorter.com/frontlines/builds/21/",
           "primary": true
         },
         {
           "label": "Download Android preview APK",
-          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-20.apk"
+          "url": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-21.apk"
         }
       ],
-      "notes": "Playtest preview. Final build 20 exact APK was installed through ADB, not an in-app updater test. Final native acceptance checked an earned Kamchatka/Horse card staying open for at least 15 seconds and Close returning to play/Pause. Final local Web acceptance checked an earned Congo/Horse panel held for 29 seconds during AI play, then Close resuming AI. Creator, readable picker, portrait save/reload and phase-label checks carry explicit earlier build 20 hashes; native touch capture and occupation were checked before the isolated card-pause repair. Synthetic encrypted-session and isolated mock-auth checks passed; real email confirmation, verified-user cloud appearance, human friends and two-phone optical QR remain unaccepted. Native account controls were reached using the scrollbar; freeform swipe scrolling needs polish. A long warm-device Ultra60 run reached Android thermal status 3 and adapted to 30 FPS/65% rendering scale; overheating is not claimed eliminated. Build 18 endurance is carried evidence, not a fresh build 20 benchmark. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop. No universal 60 FPS, broad-device or complete native game-to-victory claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
-      "sha256": "E5143B899CBB090AC0A04C08E547D9481544A37220C6C86AF87B30D1BADFCEC8"
+      "notes": "Playtest preview. Final build 21 exact APK was installed through ADB, not an in-app updater test. Native checks on one Samsung phone passed finger orbit/reset, vertical slider swipes without recipe changes, horizontal edit/Undo, account field/button scrolling without accidental focus or activation, tap-to-keyboard, Settings scrolling without audio changes, long hairstyle list selection/Undo and front-portrait save/reload. The actual native campaign stayed byte-identical during these UI checks. Local browser checks passed mouse orbit, wheel zoom/reset, front portrait saved from a rear editing view and retained after reload, responsive creator layouts and practical wheel scrolling. Physical native pinch/two-finger pan and rotation were not injected; automated engine gestures and browser responsiveness are separate evidence. Browser right/middle-button panning and authenticated social scrolling were not exercised. Real email confirmation, verified-user cloud appearance, human friends and two-phone optical QR remain unaccepted. No new sustained thermal or complete native game-to-victory claim. Build 20 had an observed warm-device Ultra60 thermal status 3 with adaptation to 30 FPS/65% rendering scale; build 18 endurance is carried evidence, not a fresh build 21 benchmark. Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11. Local saves exclude online room state and passwords. No paid cosmetic shop or universal 60 FPS claim. Carried historical evidence: Hosted build 15 checks passed the previous stale-board case: High/Ultra transitions, Balanced30 zoom/reset, fresh campaign and reload/continue kept board and labels aligned.",
+      "sha256": "922658F1B93568162B211A0EE5EB34E9E3648C02CDE6893C2ABF7D9A317833EA"
     }
   ]
 }

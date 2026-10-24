@@ -1,6 +1,6 @@
 {
-  "build": 20,
-  "version": "1.0.0-preview.20",
-  "url": "https://sponsorsorter.com/frontlines/builds/20/",
-  "notes": "Repairs account touch controls and remembered sessions, adds a 3D commander creator with saved portraits, aligns hand cards with approved board artwork and replaces board-control text with matching gold icons. Responsive browser layouts and existing campaign recovery retained."
+  "build": 21,
+  "version": "1.0.0-preview.21",
+  "url": "https://sponsorsorter.com/frontlines/builds/21/",
+  "notes": "Improves commander head, collar, clothing and headwear fitting; adds finger orbit, pan and pinch zoom with a canonical saved portrait; repairs finger scrolling across account, creator, settings, rules, social and option lists. Existing recipes and campaigns retained."
 }
