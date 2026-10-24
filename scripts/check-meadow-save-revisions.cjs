@@ -1,0 +1,18 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+module.exports=(async()=>{
+ const scope={window:{},AbortController,crypto:require('node:crypto').webcrypto};vm.runInNewContext(fs.readFileSync('meadow-and-market/cloud-sync.js','utf8'),scope);const rules=scope.window.meadowCloud;
+ assert(rules.newer({_cloudRevision:2,seen:10},{_cloudRevision:1,seen:99999}));assert(!rules.newer({_cloudRevision:1,seen:99999},{_cloudRevision:2,seen:10}));assert(!rules.newer({_cloudRevision:2,seen:99999},{_cloudRevision:2,seen:10}));
+ assert.equal(rules.acknowledgedRevision(JSON.stringify({owner:'a',seen:100,revision:4}),'a',100),4);assert.equal(rules.acknowledgedRevision(JSON.stringify({owner:'b',seen:100,revision:9}),'a',100),null);assert.equal(rules.acknowledgedRevision(JSON.stringify({owner:'a',seen:99,revision:9}),'a',100),null);
+ let stored=null,revision=0,last=null,lost=false;const calls=[],conflicts=[],acks=[];
+ const client={rpc:async(name,p)=>{assert.equal(name,'meadow_market_commit_save');calls.push(JSON.parse(JSON.stringify(p)));if(last?.id===p.p_write_id){assert.equal(last.body,JSON.stringify(p.p_save_data));return{data:{ok:true,revision,write_id:p.p_write_id,replayed:true}}}if(p.p_expected_revision!==revision)return{data:{ok:false,conflict:true,revision,save_data:stored}};stored={...p.p_save_data,_cloudRevision:++revision};last={id:p.p_write_id,body:JSON.stringify(p.p_save_data)};if(lost){lost=false;return{error:Error('Reply lost after server committed')}}return{data:{ok:true,revision,write_id:p.p_write_id}}}};
+ const a=rules.committer(0,s=>conflicts.push(s),n=>acks.push(n)),b=rules.committer(0,s=>conflicts.push(s));
+ await a.commit(client,{coins:10});const stale=await b.commit(client,{coins:999});assert(stale.error);assert.equal(stored.coins,10);assert.equal(conflicts.length,1);assert.equal(b.revision(),1);
+ await b.commit(client,{coins:20});const delayed=await a.commit(client,{coins:777});assert(delayed.error);assert.equal(stored.coins,20);assert.equal(revision,2);
+ // Lose an accepted request's response. Retry the identical receipt/body before sending newer changes.
+ const c=rules.committer(2);lost=true;const snapshot={coins:30};assert((await c.commit(client,snapshot)).error);snapshot.coins=999;const result=await c.commit(client,{coins:40});assert(!result.error);assert.equal(revision,4);assert.equal(stored.coins,40);const tail=calls.slice(-3);assert.equal(tail[0].p_write_id,tail[1].p_write_id);assert.equal(tail[1].p_save_data.coins,30);assert.equal(tail[2].p_expected_revision,3);assert.notEqual(tail[1].p_write_id,tail[2].p_write_id);
+ const controller=new AbortController();controller.abort();const before=calls.length;assert((await c.commit(client,{coins:50},controller.signal)).error);assert.equal(calls.length,before);
+ let resolve;const slow={rpc:()=>new Promise(r=>resolve=r)},d=rules.committer(4,()=>{},()=>{throw Error('Aborted acknowledgement must not apply')});const ctrl=new AbortController(),pending=d.commit(slow,{coins:60},ctrl.signal);ctrl.abort();resolve({data:{ok:true,revision:5,write_id:'late'}});assert((await pending).error);assert.equal(d.revision(),4);
+ d.observe({_cloudRevision:8});assert.equal(d.revision(),8);d.observe({_cloudRevision:7});assert.equal(d.revision(),8);
+ const game=fs.readFileSync('meadow-and-market/game.js','utf8');assert(!game.includes("client.from('meadow_market_saves').upsert"));assert(game.includes('cloudWriter.revisions=revisions'));assert(game.includes('receiveCloudSave(save,true)'));
+ console.log('Revision client: competing devices, stale delayed saves, clock skew, immutable retry receipts, lost replies, aborts, explicit remote revision and RPC-only upload passed.');
+})().catch(error=>{console.error(error);process.exitCode=1});

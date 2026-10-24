@@ -131,3 +131,5 @@ require('./check-meadow-native.cjs');
 require('./check-meadow-notice-anchor.cjs');
 
 require('./check-meadow-coop-art.cjs');
+
+require('./check-meadow-save-revisions.cjs');
