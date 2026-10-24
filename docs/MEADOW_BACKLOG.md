@@ -7,8 +7,8 @@ Last reconciled for build181. Release receipts are in meadow-market-build172 thr
 | Paddock artwork | Published172 | Preserve HDillustrated physical views |
 | Coop artwork/grid/hens | Published178 | Preserve exact ground/perimeter and directional hen tests |
 | Brown notification position | Published175 | Directly below farm title |
-| Game account logout/token isolation | Published173/175 | Native installer acceptance still outstanding |
-| Native APK updater | Implemented174/175 | Actual8→9download/permission/install/relaunch receipt on Samsung |
+| Game account logout/token isolation | Published173/175 | Existing farm/session preserved through native8→9; logout edge cases covered by fixtures |
+| Native APK updater | Accepted24Oct on Samsung | Actual8→9 in-game download, permission, Android install and saved-farm relaunch passed; see native9 acceptance note |
 | Cloud-save stale writes | Published179 | Live client confirmed; server revisions and retry receipts verified |
 | Offline helper catch-up | Implemented180 | Up to three ready jobs per assigned worker, saved cursor, real replant times |
 | Cross-map automation | Existing foreground loop | Long-session fairness and bounded scheduling audit |
