@@ -1,13 +1,13 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.29",
-  "versionCode": 29,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-29.apk",
-  "bytes": 104753806,
-  "sha256": "8f371f1a0f9b0c24796ebb11bd35b928506c410d2fcc332b73ca774249358b18",
+  "versionName": "1.0.0-preview.30",
+  "versionCode": 30,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-30.apk",
+  "bytes": 104226190,
+  "sha256": "659ef4f19e2efb3f90047cafa7c714af64a9bb2184fab661d33475b2805b047e",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Approved HD Admiral with fixed lower chest cross and black fastening cord. Separate medals, epaulettes, silk sash and draped cords. Verified cached HD accessory content. All18 existing garments, collection navigation, original animations, Earth and R1 maps retained.",
+  "notes": "Approved HD Royal Guard with independently selectable handkerchief and full gold sash, blue edge stripes and fitted buckle. New royal curls and two starting faces. All18 detailed garments, permanent collection navigation, original clips, saves and existing maps retained.",
   "targetSdk": 36,
   "abis": [
     "arm64-v8a"

@@ -1,0 +1,1 @@
+Exact30 source/browser/native acceptance. Native uses same-certificate ADB upgrade; in-app OTA is separate. Preserve29 and older releases, immutable maps and AdmiralR1. All18 garments remain selectable.

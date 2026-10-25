@@ -1,0 +1,20 @@
+{
+  "build": 30,
+  "installed_apk_sha256": "659ef4f19e2efb3f90047cafa7c714af64a9bb2184fab661d33475b2805b047e",
+  "bytes": 104226190,
+  "private_baseline": "D:\\Chat Gpt\\workspaces\\frontlines-build\\private30-before-native-install-20261026-090508",
+  "saved_owner_files_retained": 20,
+  "cached_r1_packs_retained": 7,
+  "method": "Exact candidate installed by ADB-r; not an OTA claim",
+  "passed": true,
+  "scope": "Exact signed30 APK installed by ADB. Native landscape cosmetic check: clean coat, independent handkerchief and gold/blue sash picker, full fitted sash/buckle, front and finger-rotated side, discard returns to menu. No broad gameplay, save/reload, sensor or endurance acceptance.",
+  "owner_data_retained": true,
+  "original_native_library_bytes_unchanged": true,
+  "phone_log_errors": [],
+  "approved_media": [
+    "native30-approved-overview.png",
+    "native30-side-overview.png",
+    "native30-wardrobe-overview.png"
+  ],
+  "public_update_tested": false
+}

@@ -1,0 +1,454 @@
+{
+  "release_id": "2026-10-26-preview30",
+  "title": "Frontlines: World in Conflict",
+  "version": "1.0.0-preview.30",
+  "build": 30,
+  "status": "playtest preview",
+  "web": {
+    "entry": "site/frontlines/builds/30/index.html",
+    "url": "https://sponsorsorter.com/frontlines/builds/30/",
+    "mime": {
+      ".wasm": "application/wasm",
+      ".pck": "application/octet-stream",
+      ".js": "text/javascript",
+      ".apk": "application/vnd.android.package-archive"
+    },
+    "service_worker": false,
+    "cache": "Immutable build folders. Root manifest cache-busted by timestamp. Static host sends max-age600; no false no-store header claim."
+  },
+  "android": {
+    "packageId": "com.frontlines.worldinconflict",
+    "versionName": "1.0.0-preview.30",
+    "versionCode": 30,
+    "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-30.apk",
+    "bytes": 104226190,
+    "sha256": "659ef4f19e2efb3f90047cafa7c714af64a9bb2184fab661d33475b2805b047e",
+    "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minSdk": 24,
+    "notes": "Approved HD Royal Guard with independently selectable handkerchief and full gold sash, blue edge stripes and fitted buckle. New royal curls and two starting faces. All18 detailed garments, permanent collection navigation, original clips, saves and existing maps retained.",
+    "targetSdk": 36,
+    "abis": [
+      "arm64-v8a"
+    ],
+    "signing": "Debug preview certificate. Sideload playtest APK.",
+    "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  },
+  "backend": {
+    "project": "ejavqlyozqhzqogflqzr",
+    "function": "frontliners-service",
+    "version": 12,
+    "hosted": "Service12 new bounded appearance IDs; six private disposable projection/gate checks passed and exact records cleaned.",
+    "readback": "Only appearance allowlist changed; original auth, authoritative rules, schema/RLS and maps retained.",
+    "evidence_carried_from_build": 30
+  },
+  "validation": {
+    "failures": 0,
+    "godot_jobs": 14,
+    "node_jobs": 4,
+    "export_jobs": 2,
+    "apk_packaging_jobs": 1,
+    "scope": "Approved RoyalGuard and retained Admiral,18-garment navigation, independent accessories, original reactions/gestures, saved recipes and429 orientation/input checks. Browser/native scope is documented separately."
+  },
+  "limitations": [
+    "Other15 replacement outfits remain unapproved and available for individual review.",
+    "Native installation by ADB does not establish the in-app OTA installation journey.",
+    "No new full ranked gameplay, endurance, physical-sensor rotation or broad AAA parity acceptance claim.",
+    "Publication needs a separate exact hosted receipt; older releases and packs stay immutable."
+  ],
+  "files": [
+    {
+      "path": "acceptance.txt",
+      "bytes": 204,
+      "sha256": "7dcbd976f359538d545922c0a6c777f61ee3cce79a028eb0b385c178a314cff0"
+    },
+    {
+      "path": "BACKLOG.md",
+      "bytes": 53063,
+      "sha256": "f3cde89d1aa3aed356d899fcccdc7597cd904e28ecd59511b10baf0d896a4c23"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1072,
+      "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+    },
+    {
+      "path": "media/native30-approved-overview.png",
+      "bytes": 712120,
+      "sha256": "afc2338ff5054f8a669a5d7eb4da8010f881f3c327efbb0e431809a3a9f2f428"
+    },
+    {
+      "path": "media/native30-side-overview.png",
+      "bytes": 680752,
+      "sha256": "209dabc1cf3198abd33435a51fb86f77f2a0e0b60ade7b9b5048ec06412abcb5"
+    },
+    {
+      "path": "media/native30-wardrobe-overview.png",
+      "bytes": 736393,
+      "sha256": "b2fe983c79bf524cc40060dd80a8fd1d858f0a540fd49af0233438763adcf38c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 14545,
+      "sha256": "78004a26ca97270ea3f5eb5105aabe984f9a52f7fc09123b9f274563742fc0a8"
+    },
+    {
+      "path": "RELEASE30.md",
+      "bytes": 1834,
+      "sha256": "0077da676782367944274b0e955b1f8f63c15e24e3b7e5703892c254c1ef6948"
+    },
+    {
+      "path": "site/frontlines/android-release.json",
+      "bytes": 948,
+      "sha256": "b13bbba79a80b52bf333df831d8cb78f4a027fa2830ac0c2ebb09f50716e0448"
+    },
+    {
+      "path": "site/frontlines/builds/30/campaign-journal.js",
+      "bytes": 616,
+      "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.html",
+      "bytes": 5805,
+      "sha256": "ee7570b688a2b6c8de108a25cf9ab8227a1cd7fe7bfbc812bd5661ae2275c25a"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.js",
+      "bytes": 315645,
+      "sha256": "ffc3898b59fba6f5af0c02f76e5ee526cc061e65c7d2d6f4f98186876cea15c4"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.pck",
+      "bytes": 78694536,
+      "sha256": "865bcad325043432c9b88cec3cd764265f216de2a2ec56f650c70bffcf612825"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "site/frontlines/builds/30/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "site/frontlines/builds/30/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "site/frontlines/builds/30/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "site/frontlines/builds/30/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "site/frontlines/builds/30/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "site/frontlines/builds/30/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "site/frontlines/builds/30/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "site/frontlines/downloads/frontlines-1.0.0-preview-build-30.apk",
+      "bytes": 104226190,
+      "sha256": "659ef4f19e2efb3f90047cafa7c714af64a9bb2184fab661d33475b2805b047e"
+    },
+    {
+      "path": "site/frontlines/index.html",
+      "bytes": 752,
+      "sha256": "78b8de0177dec1df1898005b585b533f197990e6f835c7317775fda698ee6acb"
+    },
+    {
+      "path": "site/frontlines/release.json",
+      "bytes": 401,
+      "sha256": "7a3c0ba0164aed64b983811b2de290a453cfa472798ac2427f81c0bba7f2494f"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 203027,
+      "sha256": "9ae491cc048786a8aace28a9865f43fca966fe340e7715ab8f185d9fe2bd605e"
+    },
+    {
+      "path": "validation/admiral29_contract_review-30.log",
+      "bytes": 299,
+      "sha256": "c47d4230b63f3d5a46f94200fba9a0d26be10d4e8d3fce27a448109452583ade"
+    },
+    {
+      "path": "validation/admiral29_parts_review-30.log",
+      "bytes": 298,
+      "sha256": "f26f57ad2b675f9e61f6216b719b3de0a1e75abafcdc6d8a585ddeb13416f991"
+    },
+    {
+      "path": "validation/admiral29_review-30.log",
+      "bytes": 290,
+      "sha256": "962b8466d20656dae092f56cc0b136c00e9e0b3b8ad8e0f1427cd1dc2780d25b"
+    },
+    {
+      "path": "validation/admiral29_ui_review-30.log",
+      "bytes": 442,
+      "sha256": "62cd477923d0f41ab7e0ec3b3a304ab8125ae6fd4698834814aa1c32dddf156a"
+    },
+    {
+      "path": "validation/android-lossless-compression.json",
+      "bytes": 405,
+      "sha256": "23d50c24d9f52fd730f456081a20c9bc6182e42aa35e4bb61b66f216a9aa09e1"
+    },
+    {
+      "path": "validation/android30-export.log",
+      "bytes": 6675,
+      "sha256": "f47b9e707abb6a37e03f6139b887418ed2f8e463b012309fb7b864a2edc36f00"
+    },
+    {
+      "path": "validation/android30-lossless-compression.log",
+      "bytes": 370,
+      "sha256": "a6dbb1cebe899171a2827245668a604d88a8be124e970c7c9da24224b0f9e62d"
+    },
+    {
+      "path": "validation/appearance23-30.log",
+      "bytes": 456,
+      "sha256": "c981def149acdee6580b1e120df63f1528b70bbe28019be9449d0bcaa28fb0da"
+    },
+    {
+      "path": "validation/appearance27-30.log",
+      "bytes": 462,
+      "sha256": "7b389a76c8eaab92e6978f0b479978c39d58a6f64e91b93b76fc27dfe8010f34"
+    },
+    {
+      "path": "validation/appearance29-30.log",
+      "bytes": 466,
+      "sha256": "f91598835b8119de1a7fcc5af369ee2844e38f3d9982698d6a0dd0adf515f2c4"
+    },
+    {
+      "path": "validation/appearance30-30.log",
+      "bytes": 451,
+      "sha256": "ac8a42911749161142b31b3bdc92a515defc61b65f180ca3a689a1f55fd9e80f"
+    },
+    {
+      "path": "validation/build30-results.json",
+      "bytes": 1929,
+      "sha256": "1e67ca9d1b4d5a4086e2c3d64e588b4c7220ffc1b44ac1bfc965d48e3a6a1807"
+    },
+    {
+      "path": "validation/build30-verified-artifacts.json",
+      "bytes": 52169,
+      "sha256": "ad6efc2e4a30cb1493bf8de19fe111cb49f18a500d080d08b4dfbe271df5391c"
+    },
+    {
+      "path": "validation/commander23_reactions_review-30.log",
+      "bytes": 372,
+      "sha256": "de34f0f9aefd14ef12321bf257ece368ccd4620e1c9fec4d5796226cdd43d071"
+    },
+    {
+      "path": "validation/contract-checks.json",
+      "bytes": 33,
+      "sha256": "8715480ced8ec06f72080addace4a92b62e6bcc95927e2955c1bf47923c6798f"
+    },
+    {
+      "path": "validation/creator22_gestures_review-30.log",
+      "bytes": 1151,
+      "sha256": "eeac7a5c58928471392a4986c6858cfffd318aabf819efa6fd9a2b211eef1e42"
+    },
+    {
+      "path": "validation/creator25_polish_review-30.log",
+      "bytes": 874,
+      "sha256": "29b10277cafe0ae9ed1f8f13428afc6f9816b8f9925bc6fa2eb3a07d4b544309"
+    },
+    {
+      "path": "validation/FRONTLINES_PREVIEW30_FINAL_LOCAL_ACCEPTANCE.json",
+      "bytes": 2099,
+      "sha256": "8492664547aa056bdb9dd514a456955f5769fb395cc9e046e6432eb1038f1961"
+    },
+    {
+      "path": "validation/human-approval.json",
+      "bytes": 1464,
+      "sha256": "5d24ba6330f3bc12fa1f0eaa6893dcff0c39c7ab3081813424b238247f6e81a3"
+    },
+    {
+      "path": "validation/layout-checks.json",
+      "bytes": 129,
+      "sha256": "32bee9e875f19a1626488477dfe560a9875db615180d4c125ebc5553dcae238a"
+    },
+    {
+      "path": "validation/lossless-atlas-crops.json",
+      "bytes": 1140,
+      "sha256": "9fcc99aef6ecafbc70bd219cf67172bab328d2c604e6e7fb1a899060abb15a4c"
+    },
+    {
+      "path": "validation/mobile_orientation_regression-30.log",
+      "bytes": 13027,
+      "sha256": "ec2e6bee6baf96002b1dfd08a6ad251382da270e2a7fc09c1e35984d823cb59b"
+    },
+    {
+      "path": "validation/native30-acceptance.json",
+      "bytes": 994,
+      "sha256": "94ba7508152ba15499372f3ebe6a9e25bb7cc90441dee7972d9021f06e22693b"
+    },
+    {
+      "path": "validation/package30.json",
+      "bytes": 395,
+      "sha256": "134efe66c571e401a01dd9ba369e19b9c3cdc484b7f06579499382ba9c91227b"
+    },
+    {
+      "path": "validation/persistence-session.json",
+      "bytes": 332,
+      "sha256": "64a7e42f881566102560752cfe1562e0e2929c422e8f9f94ca7c78296dda19b8"
+    },
+    {
+      "path": "validation/review-checks.json",
+      "bytes": 231,
+      "sha256": "f8bd02de84300ae663456caea8f36313804c5ea13593c3a904a763252cc2021a"
+    },
+    {
+      "path": "validation/royalguard30_release_contract-30.log",
+      "bytes": 228,
+      "sha256": "4959538c8511c8693a603b22b082b87ad27b0e662ca05d630b899337d4eda3f2"
+    },
+    {
+      "path": "validation/royalguard30_review-30.log",
+      "bytes": 294,
+      "sha256": "21cfa019b322432b280613c01ebbcdb89b8fdc07e6b45f3a06d93a88b7c19125"
+    },
+    {
+      "path": "validation/royalguard30_sash_review-30.log",
+      "bytes": 258,
+      "sha256": "e898f4b72ba960e1a870af3168d733ddea483c1b7b8156d134e9e0a0153eafdc"
+    },
+    {
+      "path": "validation/sash-fit-review.json",
+      "bytes": 1048,
+      "sha256": "3596153ef43ab27a95b679546dd5d6478d17b7ccd71d418563dd8a0e3c4b7c4e"
+    },
+    {
+      "path": "validation/save_durability19_review-30.log",
+      "bytes": 1390,
+      "sha256": "d9106d6c94293e50d46d579d6ff7ec12913c1510000bec550055dfed3414d3b4"
+    },
+    {
+      "path": "validation/service12-deployment.json",
+      "bytes": 270,
+      "sha256": "b7c4d2c4cda1bd83a8bb55161dc07ec6c8b33d7aff23a151f8eb232817fcd952"
+    },
+    {
+      "path": "validation/service30-acceptance.json",
+      "bytes": 318,
+      "sha256": "177e6d40d1db91cb861ee7c858ad58ad3748788879f04e44a3e17eee6cb5644a"
+    },
+    {
+      "path": "validation/wardrobe27_fit_review-30.log",
+      "bytes": 295,
+      "sha256": "c76d36dc3e30877461ffa5e616bca484988ed7f7579fc0d313d739dc87cbbb5e"
+    },
+    {
+      "path": "validation/wardrobe30_layout_review-30.log",
+      "bytes": 446,
+      "sha256": "32bb8781f77a4b984b95dcacf4c3c373f4974845377be88926b5125c6288670b"
+    },
+    {
+      "path": "validation/web30-export.log",
+      "bytes": 51128,
+      "sha256": "76900551349a8443d94ededbd0607e9dcd364a0bb6a31f40285608360c634414"
+    },
+    {
+      "path": "WARDROBE_ASSET_STANDARD.md",
+      "bytes": 3376,
+      "sha256": "8c681d0478bdfc8aa339e1bc30f928e939538de9f5d40c5ca39f842cd991c4e9"
+    },
+    {
+      "path": "WARDROBE_REVIEW27.md",
+      "bytes": 7147,
+      "sha256": "fa5a5adeff6ff850c8c46ca09fbeb2bd9cff12ea9b45f7c4190e183d34f94f68"
+    }
+  ],
+  "maps": {
+    "delivery": "https://sponsorsorter.com/frontlines/maps/delivery-r1.json",
+    "inventory": "https://sponsorsorter.com/frontlines/maps/packs-r1-manifest.json",
+    "optional": true,
+    "base_packages_exclude_maps": true,
+    "revision_policy": "R1 bytes/URLs frozen; changed data requires new revision and URLs."
+  },
+  "wardrobe": {
+    "existing_garment_choices": [
+      "marshal",
+      "admiral",
+      "royal_guard",
+      "expedition",
+      "corsair",
+      "diplomat",
+      "court_gown",
+      "lace_bodice",
+      "ballroom_rose",
+      "ballroom_azure",
+      "ballroom_ivory",
+      "ballroom_emerald",
+      "privateer",
+      "buccaneer",
+      "ducal_coat",
+      "brocade_court",
+      "castilian_court",
+      "clerical_robes"
+    ],
+    "collections": {
+      "uniforms_and_coats": 11,
+      "dresses_and_bodices": 6,
+      "robes": 1
+    },
+    "approved_replacements": [
+      "marshal",
+      "admiral",
+      "royal_guard"
+    ],
+    "fixed_clothing_details": [
+      "lower chest cross",
+      "black fastening cord"
+    ],
+    "optional_content": {
+      "url": "https://sponsorsorter.com/frontlines/wardrobe/admiral-r1.pck",
+      "sha256": "78165c9070fb7af281767ef7318405055f0824b9e978ca799e89a32ced053c3e",
+      "bytes": 2044112,
+      "native_atlas_size": 1254,
+      "removable_components": 7
+    },
+    "portrait_cache_version": 15,
+    "royal_guard": {
+      "human_approved": true,
+      "independent_accessories": [
+        "guard_handkerchief",
+        "guard_gold_sash"
+      ],
+      "atlas_storage": "Lossless crops retain native HD texels without rescaling"
+    }
+  }
+}

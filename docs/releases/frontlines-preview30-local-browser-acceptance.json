@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "pck_sha256": "865bcad325043432c9b88cec3cd764265f216de2a2ec56f650c70bffcf612825",
+  "pck_bytes": 78694536,
+  "scope": "Focused local cosmetic creator UI acceptance only; desktop 1280x720 and portrait 390x844; no publication",
+  "responsive_browser_exercised": true,
+  "release_acceptance_complete": false,
+  "checks": {
+    "menu_version_30": true,
+    "wardrobe_collection_uniforms_coats": true,
+    "royal_guard_selectable": true,
+    "clean_coat": true,
+    "handkerchief_only": true,
+    "sash_only": true,
+    "both_accessories": true,
+    "gold_sash_blue_edges_and_buckle_rendered": true,
+    "undo_redo": true,
+    "royal_curls": true,
+    "sentinel_preset": true,
+    "royal_envoy_preset": true,
+    "portrait_accessory_pickers": true,
+    "rotation": true,
+    "rotated_save_canonical_front": true,
+    "menu_portrait_survives_reload": true,
+    "creator_curls_coat_handkerchief_sash_survive_reload": true,
+    "console_warn_error_before_reload": [],
+    "console_warn_error_after_reload": [],
+    "renderer_closed": true,
+    "viewport_override_reset": true
+  },
+  "limitations": [
+    "No Android/native APK acceptance in this receipt",
+    "No gameplay, performance endurance, online, cache/network acceptance",
+    "Separate local origin, same browser profile; no production login or account mutation",
+    "One initial click timed out but visibly completed; no repeated click was needed",
+    "Portrait 390x844 and desktop only, not all device dimensions"
+  ],
+  "evidence": [
+    "FRONTLINES_PREVIEW30_CLEAN_COAT.png",
+    "FRONTLINES_PREVIEW30_HANDKERCHIEF_ONLY.png",
+    "FRONTLINES_PREVIEW30_SASH_ONLY.png",
+    "FRONTLINES_PREVIEW30_BOTH.png",
+    "FRONTLINES_PREVIEW30_CURLS.png",
+    "FRONTLINES_PREVIEW30_SENTINEL.png",
+    "FRONTLINES_PREVIEW30_ROYAL_ENVOY.png",
+    "FRONTLINES_PREVIEW30_PORTRAIT_LAYOUT.png",
+    "FRONTLINES_PREVIEW30_PORTRAIT_BOTH.png",
+    "FRONTLINES_PREVIEW30_ROTATED.png",
+    "FRONTLINES_PREVIEW30_SAVED.png",
+    "FRONTLINES_PREVIEW30_RELOAD.png"
+  ],
+  "published": false
+}
