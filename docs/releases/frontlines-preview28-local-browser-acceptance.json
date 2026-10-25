@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "desktop_checks_passed": true,
+  "acceptance_complete": false,
+  "pck_sha256": "497a0fcb87a6ab489fe92d5d83ded7a715673bd53d6fdc55edfebbd11d9b1f38",
+  "pck_bytes": 77148688,
+  "url": "http://127.0.0.1:8788/",
+  "viewport": [
+    1280,
+    720
+  ],
+  "scope": "Independent exact web28 desktop UI at 1280x720 and packaged PCK directory checks only; not full release or responsive acceptance",
+  "checks": {
+    "menu_portrait_to_wardrobe": true,
+    "collection_dropdown_all_four_options": true,
+    "category_counts_source_confirmed": {
+      "all": 18,
+      "uniforms_coats": 11,
+      "dresses_bodices": 6,
+      "robes": 1
+    },
+    "detailed_court_gown_rendered": true,
+    "detailed_clerical_robes_rendered": true,
+    "detailed_original_admiral_rendered": true,
+    "marshal_rendered": true,
+    "scroll": true,
+    "undo_restores_marshal": true,
+    "save_updates_menu_portrait": true,
+    "cancel_prompts_before_discard": true,
+    "discard_preserves_saved_admiral": true,
+    "console_warnings_errors": [],
+    "all_18_mesh_texture_mask_paths_present": true,
+    "all_18_preview_paths_present": true,
+    "admiral28_paths_absent": true,
+    "existing_neckwear_medal_controls_confirmed_in_prior_qa27_source": true,
+    "saved_portrait_persists_after_reload": true,
+    "wip_appearance_fields_absent_in_export_source": true,
+    "wip_source_matches": []
+  },
+  "limitations": [
+    "Responsive browser layouts not independently exercised: available browser capability exposes no viewport resize. Native owner responsive evidence must be assessed separately.",
+    "Counts are confirmed by source filter definitions and packaged asset inventory; not every outfit was clicked individually.",
+    "Full release acceptance requires separately assessed native/responsive evidence and frozen packet. This receipt does not cover the separately approved new Admiral candidate."
+  ],
+  "evidence": [
+    "FRONTLINES_PREVIEW28_PCK_DIRECTORY.json",
+    "FRONTLINES_PREVIEW28_LOCAL_GOWN.png",
+    "FRONTLINES_PREVIEW28_LOCAL_ADMIRAL.png",
+    "FRONTLINES_PREVIEW28_LOCAL_SAVED.png"
+  ],
+  "scoped_acceptance_complete": true,
+  "responsive_browser_exercised": false,
+  "release_acceptance_complete": false,
+  "native_responsive_evidence_assessed": false,
+  "publication_authorized_by_this_receipt": false
+}

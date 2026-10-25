@@ -1,0 +1,39 @@
+{
+  "build": 28,
+  "installed_apk_sha256": "ad17c277eb7c3629e3b10b6f46252267f7f231dd13557a1cb63a806b74f70111",
+  "bytes": 104741422,
+  "private_baseline": "D:\\Chat Gpt\\workspaces\\frontlines-build\\private28-before-native-install-20261025-222236",
+  "saved_owner_files_retained": 20,
+  "cached_r1_packs_retained": 7,
+  "method": "Exact candidate installed by ADB-r; not an OTA claim",
+  "passed": true,
+  "scope": "Exact recovery28 native wardrobe catalogue recovery; not individual art approval",
+  "checks": {
+    "real_touch_clothing_sheet": true,
+    "dresses_and_robe_and_uniform_selection": true,
+    "actual_detailed_garments_and_matching_thumbnails": true,
+    "touch_orbit_reset_and_scroll": true,
+    "victory_expression": true,
+    "portrait_landscape_portrait_layouts": true,
+    "rotation_method": "WindowManager driven; original settings restored, not physical sensor acceptance",
+    "discard_preserves_latest_owner_commander": true,
+    "latest20_owner_files_and7cached_R1_packs_unchanged": true,
+    "no_script_errors_or_crash": true
+  },
+  "thermal_observation": "PowerManager status0 during candidate run; not an endurance acceptance",
+  "limitations": [
+    "No physical-sensor rotation or browser viewport resizing acceptance claimed.",
+    "No new full game/ranked account/multiplayer/thermal endurance acceptance; unchanged engine/backend/map baseline verified separately."
+  ],
+  "approved_media": [
+    "recovery28-wardrobe-overview.png",
+    "recovery28-collections-overview.png",
+    "recovery28-gown-overview.png",
+    "recovery28-robe-overview.png",
+    "recovery28-admiral-overview.png",
+    "recovery28-victory-overview.png",
+    "recovery28-discarded-overview.png",
+    "finalrelease28-portrait-overview.png",
+    "finalrelease28-landscape-overview.png"
+  ]
+}

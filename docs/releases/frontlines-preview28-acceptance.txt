@@ -1,0 +1,1 @@
+Exact recovery28 source/browser/native acceptance only. Publish and real27-to28 OTA require separate receipts. Preserve builds8-27 and immutable R1 maps. Review must never hide existing wardrobe choices.
