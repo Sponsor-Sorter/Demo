@@ -1,0 +1,46 @@
+{
+  "build": 29,
+  "installed_apk_sha256": "8f371f1a0f9b0c24796ebb11bd35b928506c410d2fcc332b73ca774249358b18",
+  "bytes": 104753806,
+  "private_baseline": "D:\\Chat Gpt\\workspaces\\frontlines-build\\private29-before-native-install-20261025-235356",
+  "saved_owner_files_retained": 20,
+  "cached_r1_packs_retained": 7,
+  "method": "Exact candidate installed by ADB-r; not an OTA claim",
+  "passed": true,
+  "scope": "Exact final Admiral29 native creator and offline content acceptance; no ADB-to-OTA or physical rotation claim",
+  "checks": {
+    "fixed_cross_and_black_fastening_with_other_decorations_none": true,
+    "native_touch_shoulders_sash_cords_choices": true,
+    "native_ribbon_pair_and_naval_orders_choice": true,
+    "naval_orders_one_fixed_cross_only": true,
+    "native_list_swipes_and_picker_sheets": true,
+    "touch_orbit_and_canonical_save": true,
+    "saved_recipe_and_new_portrait_verified": true,
+    "fresh_process_wifi_and_mobile_data_offline_rendered_all_selected_HD_content": true,
+    "cached_pack_sha256_verified": true,
+    "portrait_landscape_portrait_creator_layouts": true,
+    "rotation_method": "WindowManager driven; original rotation settings restored",
+    "latest_owner_profile_campaign_settings20files_and7maps_restored": true,
+    "wifi_airplane_mode_override_restored_raw_wifi_on2": true,
+    "no_script_errors_or_crash": true
+  },
+  "thermal_observation": "PowerManager status0 during limited creator review; no endurance or full-game thermal claim",
+  "limitations": [
+    "No new physical-sensor/pinch acceptance.",
+    "Phone sample checks creator/garment touch, save/reopen and cache. Unchanged gameplay and server baseline retain separate evidence."
+  ],
+  "approved_media": [
+    "final29-admiral-overview.png",
+    "final29-shoulders-sheet-overview.png",
+    "final29-sash-sheet-overview.png",
+    "final29-cords-sheet-overview.png",
+    "final29-naval-orders-overview.png",
+    "final29-orbit-overview.png",
+    "final29-saved-menu-overview.png",
+    "final29-offline-reopened-overview.png",
+    "finalrelease29-portrait-overview.png",
+    "finalrelease29-landscape-overview.png",
+    "final29-owner-restored-overview.png"
+  ],
+  "checked_at": "2026-10-26T00:09:47.365835"
+}

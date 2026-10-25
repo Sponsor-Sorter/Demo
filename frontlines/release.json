@@ -1,6 +1,6 @@
 {
-  "build": 28,
-  "version": "1.0.0-preview.28",
-  "url": "https://sponsorsorter.com/frontlines/builds/28/",
-  "notes": "Restored full Wardrobe clothing collection selector and all18 detailed outfits, with matching real-garment thumbnails. Approved HDMarshal retained. Saved clothing identities, original animations, Earth textures and R1 maps preserved. New Admiral replacement remains separate for individual review."
+  "build": 29,
+  "version": "1.0.0-preview.29",
+  "url": "https://sponsorsorter.com/frontlines/builds/29/",
+  "notes": "Approved HD Admiral with fixed lower chest cross and black fastening cord. Separate medals, epaulettes, silk sash and draped cords. Verified cached HD accessory content. All18 existing garments, collection navigation, original animations, Earth and R1 maps retained."
 }

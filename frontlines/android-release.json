@@ -1,13 +1,13 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.28",
-  "versionCode": 28,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-28.apk",
-  "bytes": 104741422,
-  "sha256": "ad17c277eb7c3629e3b10b6f46252267f7f231dd13557a1cb63a806b74f70111",
+  "versionName": "1.0.0-preview.29",
+  "versionCode": 29,
+  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-29.apk",
+  "bytes": 104753806,
+  "sha256": "8f371f1a0f9b0c24796ebb11bd35b928506c410d2fcc332b73ca774249358b18",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Restored full Wardrobe clothing collection selector and all18 detailed outfits, with matching real-garment thumbnails. Approved HDMarshal retained. Saved clothing identities, original animations, Earth textures and R1 maps preserved. New Admiral replacement remains separate for individual review.",
+  "notes": "Approved HD Admiral with fixed lower chest cross and black fastening cord. Separate medals, epaulettes, silk sash and draped cords. Verified cached HD accessory content. All18 existing garments, collection navigation, original animations, Earth and R1 maps retained.",
   "targetSdk": 36,
   "abis": [
     "arm64-v8a"

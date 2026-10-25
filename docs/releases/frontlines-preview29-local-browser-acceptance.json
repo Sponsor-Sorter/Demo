@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "pck_sha256": "d0d75e66d90941fafffe91cd7e4cce7d43a5f14fa7526e93134e62829b4dfcfa",
+  "pck_bytes": 77045092,
+  "scope": "Exact final29 local desktop1280x720 UI plus packaged fixed-cross directory checks; not responsive-browser or zero-redownload acceptance",
+  "responsive_browser_exercised": false,
+  "release_acceptance_complete": false,
+  "checks": {
+    "all_optional_none_retains_fixed_cross_black_fastening": true,
+    "naval_cross_absent_from_removable_picker": true,
+    "naval_orders_four_optional_medals_one_fixed_cross": true,
+    "shoulders_sash_cords_individually_selectable_and_removable": true,
+    "undo_and_redo": true,
+    "rear_orbit": true,
+    "rear_view_save_canonical_front": true,
+    "portrait_and_rendered_slot_values_survive_reload": true,
+    "console_warn_error_entries_before_reload": [],
+    "console_warn_error_entries_after_reload": [],
+    "fixed_mesh_texture_in_base_pck": true,
+    "external_R1_payloads_absent_from_base_pck": true,
+    "renderer_closed": true
+  },
+  "download_cache_scope": {
+    "request_counts_observed": false,
+    "zero_redownload_proven": false,
+    "offline_browser_cache_reuse_exercised": false,
+    "decorations_rendered_after_reload": true,
+    "native_cache_evidence_separate": true
+  },
+  "limitations": [
+    "No viewport resizing exposed in this browser control.",
+    "No browser request trace or independent browser cache filesystem inspection; offline/native cache acceptance belongs to separate exact native receipts.",
+    "Does not claim full game, physical sensor, endurance or ranked online acceptance."
+  ],
+  "evidence": [
+    "FRONTLINES_PREVIEW29_FINAL_PCK_DIRECTORY.json",
+    "FRONTLINES_PREVIEW29_FINAL_FIXED_CROSS_NONE.png",
+    "FRONTLINES_PREVIEW29_FINAL_NAVAL_ORDERS.png",
+    "FRONTLINES_PREVIEW29_FINAL_ALL_SLOTS.png",
+    "FRONTLINES_PREVIEW29_FINAL_REAR.png",
+    "FRONTLINES_PREVIEW29_FINAL_SAVED.png",
+    "FRONTLINES_PREVIEW29_FINAL_RELOAD.png"
+  ],
+  "checked_at_utc": "2026-10-25T13:30:15.084894+00:00"
+}
