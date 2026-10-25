@@ -1,0 +1,315 @@
+{
+	"bytes": 12442796,
+	"files": [
+		{
+			"bytes": 165720,
+			"path": "res://assets/creator/age_detail31.texturedata",
+			"sha256": "1a55dcba4e7c24b946c85e7616fd0fef0119c793dde4833835ad94df65dc2a0f"
+		},
+		{
+			"bytes": 915317,
+			"path": "res://assets/creator/captain_flow31.meshdata",
+			"sha256": "ab0f8aa2c2e66ada55144f3d7be79d42fca0afc1417e1e46b7fedfdc75eada71"
+		},
+		{
+			"bytes": 164928,
+			"path": "res://assets/creator/captain_flow31.texturedata",
+			"sha256": "4eded847a10e21797e10e3e57342786a26de3302b0aa1aa1d822cdf23befd3d4"
+		},
+		{
+			"bytes": 197136,
+			"path": "res://assets/creator/captain_moustache31.meshdata",
+			"sha256": "0db1a99c495f7cd752035e603b9f36d30bcb4a91274f14135dafa44c420f2fe6"
+		},
+		{
+			"bytes": 21662,
+			"path": "res://assets/creator/captain_moustache31.texturedata",
+			"sha256": "2d15682b6d3f661b7a7d26b61e07457b48414da0c6244343fde257719cc3ac26"
+		},
+		{
+			"bytes": 1996,
+			"path": "res://assets/creator/expedition31_accessories.json",
+			"sha256": "c3452f70679b8f2efade5ec5392c1b28c71873f95bb6a01d2f333261e05734f6"
+		},
+		{
+			"bytes": 128499,
+			"path": "res://assets/creator/expedition31_bandolier.meshdata",
+			"sha256": "5b4d5b10b589333c4fc25113ce5ac7c2f2230dbd51388a8f4ecf57e525d15c0e"
+		},
+		{
+			"bytes": 23338,
+			"path": "res://assets/creator/expedition31_cravat.meshdata",
+			"sha256": "327316872655ed0e97dae88fecfe7ae2c8f884182eb02f1c60ebd62a6242f394"
+		},
+		{
+			"bytes": 907988,
+			"path": "res://assets/creator/expedition31_details.texturedata",
+			"sha256": "49b410dcf8af57065382f2c1c5e63cb87a60c054f688fc6c5b3f44da740a12e5"
+		},
+		{
+			"bytes": 1079692,
+			"path": "res://assets/creator/expedition31_leather.texturedata",
+			"sha256": "0ec02dec4a3d117d0402871ecfba37d3d7bbd895e657be52e0e541410787568b"
+		},
+		{
+			"bytes": 47594,
+			"path": "res://assets/creator/eyebrow002.meshdata",
+			"sha256": "757034c6dd94abbb3b9e2ad973d76c8466052685d58faff86f726434c8ab42a9"
+		},
+		{
+			"bytes": 45602,
+			"path": "res://assets/creator/eyebrow002.texturedata",
+			"sha256": "0197b65405743c2e3613c22f832d3599e91434ae4211416f8bfa21e0accdeab7"
+		},
+		{
+			"bytes": 47223,
+			"path": "res://assets/creator/eyebrow003.meshdata",
+			"sha256": "249fc7e7dc7d0e0eba6a46260af950e11b0f3264781e1c050067f9c7c1167c46"
+		},
+		{
+			"bytes": 42876,
+			"path": "res://assets/creator/eyebrow003.texturedata",
+			"sha256": "da9a55a96e988dc0d7cc019e6c17dd4ab94460df4f60d744817c7029052c7866"
+		},
+		{
+			"bytes": 46635,
+			"path": "res://assets/creator/eyebrow004.meshdata",
+			"sha256": "9a5ddd8c86c2495118374f68a8258ab33b5708033f8f606b8ddfdf42f7b8ae25"
+		},
+		{
+			"bytes": 43920,
+			"path": "res://assets/creator/eyebrow004.texturedata",
+			"sha256": "7764d71a20761a20f69d042fa05cb04b4ba9b419a2e098e2a1b132474a45f482"
+		},
+		{
+			"bytes": 43921,
+			"path": "res://assets/creator/eyebrow005.meshdata",
+			"sha256": "70dc688ea18c6a52cb2b736424cab1442d0a86d60fa8c5bf3661c5b4be7fc71d"
+		},
+		{
+			"bytes": 36536,
+			"path": "res://assets/creator/eyebrow005.texturedata",
+			"sha256": "601a6325299443bba9813b7e319eef01c75e43879785bc49efbc826b580dee4a"
+		},
+		{
+			"bytes": 45007,
+			"path": "res://assets/creator/eyebrow006.meshdata",
+			"sha256": "3d159dc2ccbb8a8517e96b77556e77df2a84ebe02d7292cf53c4f41414e434dc"
+		},
+		{
+			"bytes": 9636,
+			"path": "res://assets/creator/eyebrow006.texturedata",
+			"sha256": "add15aae7a8897f2fdfea8f7d47fae8cdfc365be526eb33d6a59c97c74063a63"
+		},
+		{
+			"bytes": 42982,
+			"path": "res://assets/creator/eyebrow007.meshdata",
+			"sha256": "2869ed4069447b1147854af98244e7895d010c1adcb2278e9196e00b9ba7f0f1"
+		},
+		{
+			"bytes": 11058,
+			"path": "res://assets/creator/eyebrow007.texturedata",
+			"sha256": "d44145522326b5d74308604dcf03250b204221cf3e93d70c967bb182b0eb556b"
+		},
+		{
+			"bytes": 46875,
+			"path": "res://assets/creator/eyebrow008.meshdata",
+			"sha256": "4330cb2c47c034b02669ee59ce159a1158f7f7108c86bd97793e9f8c20577f4f"
+		},
+		{
+			"bytes": 48856,
+			"path": "res://assets/creator/eyebrow008.texturedata",
+			"sha256": "b6ebf33d7f772cbbb591efb88f1daf01beb8f2f1c131613df8731fc63617b645"
+		},
+		{
+			"bytes": 47893,
+			"path": "res://assets/creator/eyebrow009.meshdata",
+			"sha256": "880215aaa91034e0ea74c519799f619c39ef763a207d8c6292c38d8f72ef9747"
+		},
+		{
+			"bytes": 99660,
+			"path": "res://assets/creator/eyebrow009.texturedata",
+			"sha256": "d502e335a283f099d7e5b10cc7f9d80eb82a7889e836517b5c5aaee6cf15fcb0"
+		},
+		{
+			"bytes": 46457,
+			"path": "res://assets/creator/eyebrow010.meshdata",
+			"sha256": "49da08224e1df79fdf7c5bd7dda866aa77005f3980df0b83553b93feafa788c2"
+		},
+		{
+			"bytes": 36136,
+			"path": "res://assets/creator/eyebrow010.texturedata",
+			"sha256": "ba93656b3ed9be20472936b13004b07ae80db6975a41d3d2475c165e939b6cab"
+		},
+		{
+			"bytes": 47098,
+			"path": "res://assets/creator/eyebrow011.meshdata",
+			"sha256": "4aeaf736711cc41e9619b0886ebeae56686adb89065f9f3664729879d1d30414"
+		},
+		{
+			"bytes": 23238,
+			"path": "res://assets/creator/eyebrow011.texturedata",
+			"sha256": "683713000aa536982da41f3431fc61c9bb9e888e8aa50aea20f729c5e803bfff"
+		},
+		{
+			"bytes": 47955,
+			"path": "res://assets/creator/eyebrow012.meshdata",
+			"sha256": "33872121e22c6db158441a11b5f6125643502d0afe3506abd7c31ba956e98e12"
+		},
+		{
+			"bytes": 50798,
+			"path": "res://assets/creator/eyebrow012.texturedata",
+			"sha256": "8a2883f4c9e78a45e997e8a597365756d6cfacb9a8586262fbcf2d985c1b3947"
+		},
+		{
+			"bytes": 61967,
+			"path": "res://assets/creator/eyelashes01.meshdata",
+			"sha256": "9e990215f9433f190cd307f21c23aca1eb75c68ff58fe61739237ebbd12c7aa8"
+		},
+		{
+			"bytes": 60160,
+			"path": "res://assets/creator/eyelashes01.texturedata",
+			"sha256": "e895cb880f6717c8cc99b651e9b5a232f18c4349d1791602b78b5d9de77df201"
+		},
+		{
+			"bytes": 65539,
+			"path": "res://assets/creator/eyelashes02.meshdata",
+			"sha256": "be3876b48103f5330ed87a476cdcc05ee88ef63d70bc3c7e4e4bb4cd3385e1e2"
+		},
+		{
+			"bytes": 76996,
+			"path": "res://assets/creator/eyelashes02.texturedata",
+			"sha256": "1244162b02487c2917f29903c815cbd1822c21210d04e0212eaffdff2fbd5b4b"
+		},
+		{
+			"bytes": 67234,
+			"path": "res://assets/creator/eyelashes03.meshdata",
+			"sha256": "21a3f5a88ca9c2b2852f8d8848638c522c981f9f5f8a1f639c2b1f0b08f99a80"
+		},
+		{
+			"bytes": 76900,
+			"path": "res://assets/creator/eyelashes03.texturedata",
+			"sha256": "8093063e6c562cab571a88e31d01e1817348d7a1b5302140836dc4c450d26403"
+		},
+		{
+			"bytes": 69302,
+			"path": "res://assets/creator/eyelashes04.meshdata",
+			"sha256": "ae8dcdd1f71ed687a2db208de6f51c0bc9be18feeb125c8574f0f6fa97b37647"
+		},
+		{
+			"bytes": 55156,
+			"path": "res://assets/creator/eyelashes04.texturedata",
+			"sha256": "e0ddabff0346790fe9fe54e55d7d91b1fbc0f4bdff10fc88445e62ed30ca1146"
+		},
+		{
+			"bytes": 214692,
+			"path": "res://assets/creator/governor_fringe31.meshdata",
+			"sha256": "fd0b8a5fd721b844aab550b6c016c7eb4d049c23feb96d0a594045708aac33c4"
+		},
+		{
+			"bytes": 187154,
+			"path": "res://assets/creator/governor_fringe31.texturedata",
+			"sha256": "683b54cb00b35ba48cfa25b14ba36ab7a6797bfa48ae74a6b827c5e31e8d8416"
+		},
+		{
+			"bytes": 279741,
+			"path": "res://assets/creator/governor_sweep31.meshdata",
+			"sha256": "743d7eb5506766795f37475a6205afaf833a805eb36672a23fa0916bf42c6e16"
+		},
+		{
+			"bytes": 1117070,
+			"path": "res://assets/creator/governor_sweep31.texturedata",
+			"sha256": "bb0e7c5cd8589000252104d3e9f803541755ab15a35b9636ee89f11b25b9d3a2"
+		},
+		{
+			"bytes": 61241,
+			"path": "res://assets/creator/headparts31.json",
+			"sha256": "770697e57f3c5405f3b38236c8fb0899e0397a86c9ecee715844e1b0254b08d2"
+		},
+		{
+			"bytes": 76348,
+			"path": "res://assets/creator/headwear27_captain_tricorn.meshdata",
+			"sha256": "7e03a186cdeeb5794768246a7a6a8eb0a0a51d8a09043a43de58da7b52f38a44"
+		},
+		{
+			"bytes": 149616,
+			"path": "res://assets/creator/headwear27_captain_tricorn.texturedata",
+			"sha256": "81e49ae332c009558dea09e085cc47ae7ac7621403f0a7ad9655b3af8865dade"
+		},
+		{
+			"bytes": 77557,
+			"path": "res://assets/creator/headwear27_castilian_brim.meshdata",
+			"sha256": "95551a0d25855c63e59e63a1d370a8492782b802ea6b16d6075a05645498391e"
+		},
+		{
+			"bytes": 15690,
+			"path": "res://assets/creator/headwear27_castilian_brim.texturedata",
+			"sha256": "d6e32fdac456ee3eb9afa1b752aa93cf6a79d1b391cfac44eeedb0e9bc20c6a1"
+		},
+		{
+			"bytes": 81378,
+			"path": "res://assets/creator/headwear27_dutch_brim.meshdata",
+			"sha256": "bed8dcd95eb1a8b19cbdf390be697e2812dfeaf63501abac0cd318659f961a1c"
+		},
+		{
+			"bytes": 130006,
+			"path": "res://assets/creator/headwear27_dutch_brim.texturedata",
+			"sha256": "b53e009be08bd4fb30bb4c80878c136e9539d481bfa532bc1d370ca9fdd3f162"
+		},
+		{
+			"bytes": 78289,
+			"path": "res://assets/creator/headwear27_guard_tricorn.meshdata",
+			"sha256": "7be35c1b60d1d41bca7f64d4d529910df395b9f746d522a4f5a76ee8625914c0"
+		},
+		{
+			"bytes": 531190,
+			"path": "res://assets/creator/headwear27_guard_tricorn.texturedata",
+			"sha256": "7c1b3ca17c0cbde26f6eb2e3b7f4f484dcba44f69c1c4928c11825bb4d7069b1"
+		},
+		{
+			"bytes": 70853,
+			"path": "res://assets/creator/headwear27_marshal_bicorne.meshdata",
+			"sha256": "e2d02b724b8fd03859309ecc42c910c3b748c9a52f607a25f2a4591785600da7"
+		},
+		{
+			"bytes": 97604,
+			"path": "res://assets/creator/headwear27_marshal_bicorne.texturedata",
+			"sha256": "b7f366ef9db0cc55db1b98b9668794950edcc94f0e91f6b5def80bd612b625b1"
+		},
+		{
+			"bytes": 1082071,
+			"path": "res://assets/creator/marshal_wig31.meshdata",
+			"sha256": "005693fa02e9ef246553d343041bf0a65b789e2a9310a3f27e24579e3e7ffb7e"
+		},
+		{
+			"bytes": 2059454,
+			"path": "res://assets/creator/marshal_wig31.texturedata",
+			"sha256": "9b8125040fa2d45442475b8f199730d58bf9b07d72a6e0cba06bda9004329be6"
+		},
+		{
+			"bytes": 209578,
+			"path": "res://assets/creator/wardrobe31_expedition.meshdata",
+			"sha256": "77cb908698f9006233c55279325659d50304cf33c2268b01b5a3d319c0ba9a8b"
+		},
+		{
+			"bytes": 108,
+			"path": "res://assets/creator/wardrobe31_expedition.skinmaskdata",
+			"sha256": "7de32f86effba2f5be571e5befa6430d3fac8ebf6f7022cc3bd2620a84515946"
+		},
+		{
+			"bytes": 814988,
+			"path": "res://assets/creator/wardrobe31_expedition.texturedata",
+			"sha256": "16c52fc67c8ad5f0635f3358c684667eed1102e2092f29509f06fd817013f834"
+		},
+		{
+			"bytes": 4554,
+			"path": "res://assets/creator/wardrobe31_expedition_preview.texturedata",
+			"sha256": "e0b467376455d41dd6183d97d9608206c68bfd32ccb6a7b26eeb47e5e660e7f7"
+		}
+	],
+	"id": "commander",
+	"minimum_build": 31,
+	"revision": 1,
+	"scope": "New HD Expedition coat and independent accessories, recovered hair/hats/moustache, fitted brows/lashes and age-detail data. No code, project configuration, base resources or game saves.",
+	"sha256": "30cecf1aed670c66508fc80c29b297017e2124bbfb4d58ac924f54ad4560678f"
+}
