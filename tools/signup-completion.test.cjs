@@ -68,3 +68,26 @@ test('failed resume reports the credential error and remains retryable', async (
   assert.equal(result.error, credentialError);
   assert.equal(result.resumed, true);
 });
+
+test('obfuscated duplicate user ID with empty identities is replaced by credentialed account ID', async () => {
+  const { createOrResumeSignupAccount } = await loadCompletionHelper();
+  let loginCalled=false;
+  const result=await createOrResumeSignupAccount({auth:{
+    signUp:async()=>({data:{user:{id:'fake-obfuscated-id',identities:[]},session:null},error:null}),
+    signInWithPassword:async()=>{loginCalled=true;return {data:{user:{id:'actual-account-id'},session:{access_token:'fixture-only'}},error:null};},
+  }},{email:'existing@example.invalid',password:'fixture-existing-password',metadata:{}});
+  assert.equal(loginCalled,true);
+  assert.equal(result.data.user.id,'actual-account-id');
+  assert.equal(result.resumed,true);
+});
+
+test('obfuscated duplicate never reaches profile completion when credentialed sign in fails', async () => {
+  const { createOrResumeSignupAccount } = await loadCompletionHelper();
+  const error={message:'Invalid login credentials'};
+  const result=await createOrResumeSignupAccount({auth:{
+    signUp:async()=>({data:{user:{id:'fake-obfuscated-id',identities:[]}},error:null}),
+    signInWithPassword:async()=>({data:{user:null},error}),
+  }},{email:'existing@example.invalid',password:'fixture-wrong-password',metadata:{}});
+  assert.equal(result.error,error);
+  assert.equal(result.data.user,null);
+});

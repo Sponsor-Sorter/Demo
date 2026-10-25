@@ -9,7 +9,11 @@ export async function createOrResumeSignupAccount(client, { email, password, met
     options: { data: metadata },
   });
 
-  if (!signup.error && signup.data?.user?.id) {
+  // Confirmed duplicate addresses may return an obfuscated user with a fake ID
+  // and no identities, rather than an error. Never use that ID for a profile.
+  const hiddenDuplicate = Array.isArray(signup.data?.user?.identities)
+    && signup.data.user.identities.length === 0;
+  if (!signup.error && signup.data?.user?.id && !hiddenDuplicate) {
     return { data: signup.data, error: null, resumed: false };
   }
 
