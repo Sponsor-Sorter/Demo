@@ -9,3 +9,15 @@ const KEY = '__SS_SUPABASE__'
 export const supabase =
   window[KEY] ||
   (window[KEY] = createClient(SUPABASE_URL, SUPABASE_ANON_KEY))
+
+// Signup must not inherit another account's persisted bearer token. Keep its
+// temporary session in memory and leave the existing dashboard session intact.
+export function createSignupClient() {
+  return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  });
+}

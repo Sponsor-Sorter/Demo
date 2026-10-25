@@ -57,7 +57,8 @@
 <script type="module">
 import { escapeHtml } from "./js/safePresentation.js";
 import { createOrResumeSignupAccount } from "./js/signupCompletion.js";
-import { supabase } from './js/supabaseClient.js';
+import { createSignupClient } from './js/supabaseClient.js?v=20261026-signup-isolation1';
+const supabase = createSignupClient();
 
 // Helper for orphan logo cleanup
 async function cleanupPendingLogo() {

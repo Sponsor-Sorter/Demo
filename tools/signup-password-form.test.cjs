@@ -26,7 +26,7 @@ for (const mode of ['free', 'paid']) test(`${mode}: password recovery form waits
     localStorage:{getItem:key=>store.get(key)??null,removeItem:key=>store.delete(key),setItem(){throw Error('unexpected credential storage');}},
     prompt(){throw Error('browser prompt must not be used');},
     createOrResumeSignupAccount:async(_,args)=>{calls.push(args);return {data:{user:{id:'fixture'},session:null},error:null};},
-    supabase:client,escapeHtml:String,setTimeout(){}
+    createSignupClient:()=>client,escapeHtml:String,setTimeout(){}
   };
   const completion = vm.runInNewContext(source+'\nfinalizeSignupAfterPayment();',context);
   assert.equal(calls.length,0);

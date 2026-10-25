@@ -21,6 +21,7 @@ async function complete(mode,heardAbout,{fail=false}={}) {
       storage:{from(){throw Error('unexpected storage call');}}
     }
   };
+  context.createSignupClient=()=>context.supabase;
   await vm.runInNewContext(moduleSource+'\nfinalizeSignupAfterPayment();',context,{timeout:1000});
   assert.equal(calls.length,1);
   const call=calls[0];
