@@ -1,0 +1,53 @@
+{
+  "build": 27,
+  "pck_sha256": "ab449422a8747639d83358520ec3c7eb7ab7fe9b95455adf7165f315f083131b",
+  "pck_bytes": 70670152,
+  "origin": "http://127.0.0.1:8817/",
+  "passed": true,
+  "functional_checks_passed": true,
+  "status": "passed_scoped_browser_acceptance_compatibility_metadata_retained",
+  "approved_art_scope": "Human-approved Field Marshal replacement only; no approval of other17 replacements",
+  "checks_passed": [
+    "Sixactualwardrobechoices:Marshal,GrandAdmiral,RoyalGuard,ExpeditionCaptain,Corsair,CourtDiplomat",
+    "No dresses/robes filter;no extra workshopchoices",
+    "LegacyGrandAdmiral sampledthenMarshalrestored",
+    "Marshalfront,near-profilebothsides,back andhairlessbackwrap/collarcaptured",
+    "No earlierprojectingskinplate/chestpatchesobservedonMarshal",
+    "Victoryexpressionvisiblychanged;Bowpicker/Replayexercisedwithoutcapturederror",
+    "Savefromprofile→neutralfrontmenuportrait",
+    "Fullreloadretainscanonicalportrait/Marshalrecipe",
+    "1280desktop,390portrait,844landscapemenus/creatorfit",
+    "Wheeloverclothingbuttonscrollstoaccessories",
+    "Prior27EarthContinue retainsChina2,reserve2,troops13andrendersterrain/borders",
+    "R1catalogueMainWorld+sevenoriginalmaps/thumbs/sizes/creditscontrolsdisplay",
+    "Capturedwarn/errorentriesempty",
+    "Viewportresetandtab15closed"
+  ],
+  "payload_inspection": {
+    "entries": 389,
+    "raw_art_source_paths": 0,
+    "replacement_geometry_and_texture_payloads": "Marshal only",
+    "preview_payloads": "Six live wardrobe choices",
+    "open_finding": "Resolved by explicit owner scope clarification: unapproved replacement geometry/textures/masks excluded; inert metadata for durable appearance IDs retained intentionally. Metadata records are not claimed absent.",
+    "evidence": "FRONTLINES_PREVIEW27_SCOPED_AB44_PCK_DIRECTORY.json"
+  },
+  "art_notes": [
+    "ApprovedMarshal source minorstraightcollar/closeupsoftnesslimitsremain;noAAAclaim.",
+    "Nootheroutfitapproval."
+  ],
+  "limits": [
+    "Source/nativeacceptanceandfrozenpacketstillrequired.",
+    "Payloaddirectory/metadatainspectionnotacompletegeometryaudit.",
+    "Noactualphysicaltouch/pinch/offline/legacy25savemigrationacceptance.",
+    "Near-profileorbitanglesnotinstrumented;longhairtemporarilyremovedviaUI/Undo for unobstructedback.",
+    "SampledVictoryexpression/posecontrols,notfulltemporalallanimationaudit.",
+    "EarthstartupCDPdelayrecoveredviascreenshot;notstartupbenchmark.",
+    "Compatibility metadata for eighteen appearance IDs remains packaged; only Marshal replacement geometry/textures/mask are active and included."
+  ],
+  "evidence_prefix": "FRONTLINES_PREVIEW27_SCOPED_AB44_",
+  "captured_warn_error_entries": [],
+  "browser_game_closed": true,
+  "publication_eligible": false,
+  "publication": "No27 publication; browser scoped acceptance passed, awaiting frozen exact packet and native receipt.26/R1unchanged.",
+  "scope_clarification_provenance": "Game owner explicitly clarified retained compatibility metadata and will correct release wording; no rebuild requested."
+}

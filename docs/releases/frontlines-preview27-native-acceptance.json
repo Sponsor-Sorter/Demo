@@ -1,0 +1,179 @@
+{
+  "passed": true,
+  "build": 27,
+  "installed_apk_sha256": "85feed706654efb094689a86c747f125588a91627414a20fffccc7fa4ab9a3ba",
+  "scope": "Exact Android candidate: Field Marshal front/profile/back, touch rotation, Victory expression, six public choices, portrait/landscape/portrait creator, discard unsaved QA draft, original Earth Continue smoke. No native save test or all-map gameplay claim.",
+  "rotation": {
+    "method": "Android WindowManager-driven, not a new physical sensor acceptance",
+    "events": [
+      {
+        "orientation": "portrait",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone27\\finalrelease27-portrait.png"
+      },
+      {
+        "orientation": "landscape",
+        "width": 3088,
+        "height": 1440,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone27\\finalrelease27-landscape.png"
+      },
+      {
+        "orientation": "portrait-again",
+        "width": 1440,
+        "height": 3088,
+        "proof": "D:\\Chat Gpt\\workspaces\\frontlines-build\\phone27\\finalrelease27-portrait-again.png"
+      }
+    ],
+    "restored": {
+      "fixed": "default",
+      "mode": "free",
+      "stored": "0"
+    }
+  },
+  "performance": "Two sampled Earth draft logs at30FPS, balanced, thermal status0; brief smoke only, not endurance acceptance.",
+  "owner_data": [
+    {
+      "file": "campaign.json",
+      "sha256": "ec877083cb07875202fb79e405aa435ba9007e0c73875e4453c8aed8ed3d72c3",
+      "retained": true
+    },
+    {
+      "file": "accessibility.cfg",
+      "sha256": "a6c47ae5f2958186f6c369be4ca947bade795c85d6f396a220e55f804b2bb10f",
+      "retained": true
+    },
+    {
+      "file": "audio.cfg",
+      "sha256": "fb0dee0aaf0fbd266b269b2ba992a5cfb324c6df15c9ed3001483d9423dcc4c6",
+      "retained": true
+    },
+    {
+      "file": "battle_controls.cfg",
+      "sha256": "32d588d3c586ba20ba194a5a0e6cfb6a5629cbc30510bd24132d521171d9a0ac",
+      "retained": true
+    },
+    {
+      "file": "dice.cfg",
+      "sha256": "47df77c5c44fddc9f30c30315851a71d3cda620b71c2a896a4dd961df8f1a226",
+      "retained": true
+    },
+    {
+      "file": "graphics.cfg",
+      "sha256": "d88cfef32ffc78edb4a26a5d451534c520dbdceda6314b1332d51bcc54f97f6b",
+      "retained": true
+    },
+    {
+      "file": "map_view.cfg",
+      "sha256": "fc252899c25fce81bd206cb202c465c3a34475b6060b48c824cc7c7da9c0e9c1",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/044db786ac021ea2e5fb600c14a8ec66.png",
+      "sha256": "5efb7c1e5681e0af12649fb005e23cd4c68f5b1b5d5168b14444230a7deba194",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/107243d0cbb410b17f87d6b564fa1277.png",
+      "sha256": "364a2eb6788dd5176444a9706ce33bfe0bb6ef263d67dd5d058885ec6d117827",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/1771967626b11e35467257d7e4370b8d.png",
+      "sha256": "82465e465b2c9796813d32f8a2840e09a0895818a3e3f7746e524d3a489f14c7",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/204474d2d1f2d3db3d1ffebe4fc09c8f.png",
+      "sha256": "cf12c768914592a992d4f3ccd719932646e62e32474048d5726f0b2144c810bc",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/2f05b251e63946ee406c293f951b4eee.png",
+      "sha256": "659e8897739ac36d9c3138c6b74f4bd380969bfecf2a9d2576ce15f18c23cad8",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/3cfbd21c20f2a6083f8f2a253154321d.png",
+      "sha256": "98b074e99cd4967f3cf35beb824109fa6297a7102af56f0ae38920cfd040300a",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/4c31be5a76b10d562f605591d1d4819a.png",
+      "sha256": "5d0d306dd2beebdfe133c7e6fe5ade566a5723c05e54b2ed9a4cc9cd1496d0d5",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/84983c60f7daadc1cb8698621f802c0d.json",
+      "sha256": "d7003938d0f5b13dff758693244bab9c59b1558a8a2c2665b8044523a3c88755",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/bc1a4bba69bab9ed4393536cf248cf0e.png",
+      "sha256": "1563b1ba8dcebfb274c09e049bd9c44b3c95b5534123d8ff2b4affa35b1a1fc2",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/c6f92cfe8b1ce2f432ad528dabe5bdcb.png",
+      "sha256": "c151a2252caf2e14f9cb2731104d14c26553be2c170b56f9fb24587470b6375b",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/dfd8fcdba88b9160c52730e5e444e79a.png",
+      "sha256": "4a9cc160e527a451b75d56695519efc5bb3218f6a006e7d89338d820e81aa217",
+      "retained": true
+    },
+    {
+      "file": "commander-portraits/e6fc5718cad58f9529852362da7430f2.png",
+      "sha256": "02bba1934a26f03f8a61fd356fb1b8ec9350259c9da4822a7196ac62c4e62a39",
+      "retained": true
+    }
+  ],
+  "cached_maps": [
+    {
+      "file": "paleo_540-r1.pck",
+      "sha256": "59eb7c7c2c06f9c888f50f31b21b8e7c72d77def74bce483931441f579c7a0b9",
+      "retained": true
+    },
+    {
+      "file": "paleo_445-r1.pck",
+      "sha256": "2e4ba814056b431ea35dec5b89644a51109fe927f144ebfb8c48b5dbe90b25d5",
+      "retained": true
+    },
+    {
+      "file": "paleo_405-r1.pck",
+      "sha256": "5ba80498b8d4431678e5de477e2128cadd145468593478641cf75df1c60f1cc9",
+      "retained": true
+    },
+    {
+      "file": "paleo_325-r1.pck",
+      "sha256": "715c246dbaf8c574e34ac8a9583c8a1597df55ae83e522807ed0cbe29cc2c29b",
+      "retained": true
+    },
+    {
+      "file": "paleo_235-r1.pck",
+      "sha256": "38540a888511fa8b088a121fff2dc50109ebb21a91693155be4213db60502236",
+      "retained": true
+    },
+    {
+      "file": "paleo_175-r1.pck",
+      "sha256": "770568c7e87ed6c245eda0eebef7da63aa8ef70c9b6a5065fd1b3f2475e8a252",
+      "retained": true
+    },
+    {
+      "file": "paleo_105-r1.pck",
+      "sha256": "9c1e4af2d9cd4fb275b3d0faf5506ff9abf33379ccc635bcb08cf5473a6bb10a",
+      "retained": true
+    }
+  ],
+  "errors_in_captured_log": false,
+  "method": "ADB-r candidate acceptance; real26-to27 in-app update remains separate.",
+  "approved_media": [
+    "marshal27-native-clean-front-overview.png",
+    "marshal27-native-clean-profile-overview.png",
+    "marshal27-native-clean-back-overview.png",
+    "marshal27-native-victory-overview.png",
+    "finalrelease27-portrait-overview.png",
+    "marshal27-native-earth-smoke-overview.png"
+  ]
+}

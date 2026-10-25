@@ -40,20 +40,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 26 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.26 · Build 26');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/26/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-26.apk');
+test('Frontlines publishes accepted build 27 Web and Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.27 · Build 27');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/27/');
+ assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-27.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
 test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
- const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview26.json',import.meta.url),'utf8'));
- assert.equal(m.build,26);
+ const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview27.json',import.meta.url),'utf8'));
+ assert.equal(m.build,27);
  for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
- const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,26);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,26);assert.equal(web.url,m.web.url);
+ const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,27);assert.equal(android.sha256,m.android.sha256);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,27);assert.equal(web.url,m.web.url);
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -125,3 +125,6 @@ test('Frontlines25 scopes preview polish, fitting and retained cosmetic limits',
 
 test('Frontlines preserves all accepted build 25 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview25.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/25/')||f.path.endsWith('build-25.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
 test('Frontlines26 release retains exact scoped native and browser acceptance',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview26.json',import.meta.url),'utf8'));const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview26-native-acceptance.json',import.meta.url),'utf8'));const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview26-local-browser-acceptance.json',import.meta.url),'utf8'));assert.equal(m.backend.version,9);assert.equal(m.validation.complete_ai_games,14);assert.equal(m.validation.home_readability_checks,336);assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(n.checks.cached235_offline_AI_battle,true);assert.equal(n.checks.legacy25_earth_actual_continue,true);assert.equal(b.passed,true);assert.equal(b.pck_sha256,'84d673cd9f7d29b2a686f6d3c58ff247cd8267e30ebc18dc4e8654f383d0cc71');assert.equal(m.maps.optional,true);});
+
+test('Frontlines preserves all accepted build 26 immutable bytes',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview26.json',import.meta.url),'utf8'));for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/26/')||f.path.endsWith('build-26.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}});
+test('Frontlines27 publishes only the approved Marshal replacement scope',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview27.json',import.meta.url),'utf8'));const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview27-native-acceptance.json',import.meta.url),'utf8'));const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview27-local-browser-acceptance.json',import.meta.url),'utf8'));assert.equal(m.backend.version,10);assert.equal(m.validation.godot_jobs,49);assert.equal(m.validation.node_jobs,6);assert.equal(m.validation.export_jobs,2);assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(b.passed,true);assert.equal(b.pck_sha256,'ab449422a8747639d83358520ec3c7eb7ab7fe9b95455adf7165f315f083131b');assert.match(data.entries.find(e=>e.id==='frontlines').description,/Field Marshal/);assert.match(data.entries.find(e=>e.id==='frontlines').notes,/compatibility metadata remains/);});

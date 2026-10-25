@@ -1,0 +1,1 @@
+Accepted source/browser/native receipts apply only to the exact package hashes. Publish and real26-to27 in-app OTA require separate receipts. Preserve builds8-26 and all immutable R1 maps. Guest linking and generalized asset caching are pending.
