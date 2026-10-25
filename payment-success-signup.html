@@ -104,14 +104,36 @@ async function finalizeSignupAfterPayment() {
     return;
   }
 
-  // Get password (from memory if available, or prompt user)
+  // Navigation clears window memory. Use an accessible form rather than a
+  // blocking browser prompt, which embedded browsers may not support.
   let password = window.__signupPassword;
   if (!password) {
-    password = prompt('Please re-enter your password to complete signup (for your security):');
-    if (!password) {
-      statusDiv.textContent = 'Enter the password you chose during signup to finish setup. Your saved signup details are still available in this browser.';
-      return;
-    }
+    statusDiv.textContent = 'Enter the password you chose during signup to finish setup. Your saved signup details are still available in this browser.';
+    const form = document.createElement('form');
+    const label = document.createElement('label');
+    label.htmlFor = 'completion-password';
+    label.textContent = 'Your signup password';
+    const input = document.createElement('input');
+    input.id = 'completion-password';
+    input.type = 'password';
+    input.autocomplete = 'new-password';
+    input.required = true;
+    const submit = document.createElement('button');
+    submit.type = 'submit';
+    submit.textContent = 'Finish account setup';
+    form.append(label, input, submit);
+    statusDiv.append(form);
+    password = await new Promise(resolve => {
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!input.value || submit.disabled) return;
+        submit.disabled = true;
+        const enteredPassword = input.value;
+        input.value = '';
+        form.remove();
+        resolve(enteredPassword);
+      });
+    });
   }
 
   if (mode === 'paid') {
