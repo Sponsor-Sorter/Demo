@@ -171,6 +171,7 @@ async function finalizeSignupAfterPayment() {
     company_name: regData.company_name,
     location: regData.location,
     about_yourself: regData['about-yourself'],
+    heard_about: typeof regData.heard_about === 'string' ? regData.heard_about.trim() || null : null,
     userType: regData.userType,
     platforms: regData.platforms,
     target_audience: regData['target-audience'],
