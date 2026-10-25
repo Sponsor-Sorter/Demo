@@ -1,0 +1,65 @@
+{
+	"bytes": 2044112,
+	"files": [
+		{
+			"bytes": 6878,
+			"path": "res://assets/creator/admiral28_accessories.json",
+			"sha256": "a0d40dd2cdc6cc0655a695d0050a7af84549fe6a7fc68ab3095ca9ae8037167b"
+		},
+		{
+			"bytes": 798658,
+			"path": "res://assets/creator/admiral28_decorations.texturedata",
+			"sha256": "ec361ab2abb6e31819125550364778cb3b4b75b7a0078265a20867c63e55711e"
+		},
+		{
+			"bytes": 1011078,
+			"path": "res://assets/creator/admiral28_sash.texturedata",
+			"sha256": "e11b58810767fcb9fc9e4754aeec45cca2278d14d9d0158274089dd012073be8"
+		},
+		{
+			"bytes": 18077,
+			"path": "res://assets/creator/admiral28_naval_star.meshdata",
+			"sha256": "ecaa534617b973d4722e6476998f51399884d0e4847d2a575c74219bb226e9ae"
+		},
+		{
+			"bytes": 25023,
+			"path": "res://assets/creator/admiral28_naval_cross.meshdata",
+			"sha256": "608c43422449faeb756019ad506e8919668231580d677889acfb390925ba5a1e"
+		},
+		{
+			"bytes": 5070,
+			"path": "res://assets/creator/admiral28_naval_medallion.meshdata",
+			"sha256": "6c3e6bb5c4a2f941403168daeb9ee70dda30e8a748fd2aec1d080499d1423f16"
+		},
+		{
+			"bytes": 2971,
+			"path": "res://assets/creator/admiral28_naval_blue_ribbon.meshdata",
+			"sha256": "cc2970f096cfc4695c2483893133d38ea6d1779ab98391ae800125c7a97cb503"
+		},
+		{
+			"bytes": 2925,
+			"path": "res://assets/creator/admiral28_naval_purple_ribbon.meshdata",
+			"sha256": "df8c0fdc197a7c9b00730a5082e24abaf3892a912c13b93884641c9f154619a9"
+		},
+		{
+			"bytes": 34075,
+			"path": "res://assets/creator/admiral28_naval_cords.meshdata",
+			"sha256": "f654f3dd53191339c21b2b6f4b9e4110c5a03452130362510d34cc17643e4230"
+		},
+		{
+			"bytes": 63376,
+			"path": "res://assets/creator/admiral28_naval_sash.meshdata",
+			"sha256": "3380a7a9f9330b3c4bae965ca92d2aab5a61818aa9586b341a2251b84f148bf9"
+		},
+		{
+			"bytes": 74727,
+			"path": "res://assets/creator/admiral28_naval_epaulettes.meshdata",
+			"sha256": "1e41ea9ad1d09134b3e9411d429592330ade3eb6d508492d1d4518e7df949938"
+		}
+	],
+	"id": "admiral",
+	"minimum_build": 29,
+	"revision": 1,
+	"scope": "Eight independent accessory meshes, two native1254px atlases and bounded catalogue only. No code, project configuration, base clothes or game saves.",
+	"sha256": "78165c9070fb7af281767ef7318405055f0824b9e978ca799e89a32ced053c3e"
+}
