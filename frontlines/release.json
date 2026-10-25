@@ -1,6 +1,6 @@
 {
-  "build": 25,
-  "version": "1.0.0-preview.25",
-  "url": "https://sponsorsorter.com/frontlines/builds/25/",
-  "notes": "Commander preview polish: Face close-up, fitted pose captions and approved compact preview controls. Mesh-bound CPU fitting lookup avoids GPU readback while preserving exact face geometry and saved portraits. Includes24 facial reactions, gaze, teeth and voice-amplitude jaw motion. Existing identities, campaigns and military clips retained."
+  "build": 26,
+  "version": "1.0.0-preview.26",
+  "url": "https://sponsorsorter.com/frontlines/builds/26/",
+  "notes": "Seven downloadable prehistoric battlefields, including Pangaea. Painted relief, precise borders, bonus outlines, ships and map-specific cards/capitals. Responsive battlefield library, measured Home framing and spaced troop counters. Includes25 commander and campaign compatibility."
 }

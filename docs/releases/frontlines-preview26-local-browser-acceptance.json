@@ -1,0 +1,59 @@
+{
+  "build": 26,
+  "status": "passed_scoped_final_browser_acceptance",
+  "passed": true,
+  "publication_eligible": false,
+  "pck_sha256": "84d673cd9f7d29b2a686f6d3c58ff247cd8267e30ebc18dc4e8654f383d0cc71",
+  "pck_bytes": 76389112,
+  "origin": "http://127.0.0.1:8816/",
+  "scope": "Actual normal browser UI acceptance of exact final artifact; excludes native-only and unsupported interaction checks.",
+  "checks_passed": [
+    "Exact PCK SHA256 and bytes independently verified",
+    "Launch displays preview26",
+    "Continue prior7740 local26 Cretaceous save: reserve0, owned4, troops13 retained",
+    "All seven cached map selections verified via resulting rules title:540,445,405,325,235,175,105",
+    "Repeated library opens: mouse-wheel scrolling reaches175/105 on first and second opens and subsequent cycles",
+    "Portrait390x844 library columns and Back fit after repeated opens",
+    "Landscape844x390 library wheel scrolling reaches final entries after rotation",
+    "105 credits wrap in portrait, rotate to landscape, scroll to end and Back returns library",
+    "235 cached campaign launch",
+    "235 owned counter placement3to4,reserve3to2,troops16to17",
+    "Actual text setting140percent:235 Home views inspected at390x844 and844x390",
+    "Full page reload then Continue235 retains reserve2,owned4,troops17 and140percent setting",
+    "Cretaceous empty cards panel opens and closes",
+    "Text restored100percent and viewport1280x720",
+    "Captured browser warn/error entries empty",
+    "Returned menu and closed tab9"
+  ],
+  "observations": [
+    {
+      "check": "mouse_drag_library",
+      "result": "Landscape drag starting on selected map button did not move list. Mouse wheel works. Native touch/emulated-drag coverage belongs to owner; no browser mouse-drag pass claim."
+    },
+    {
+      "check": "bonus_hold",
+      "result": "Timed click/concurrent capture did not expose held overlay; excluded from browser label-layout acceptance. Misnamed BONUS_DESKTOP_AFTER_CAMERA screenshot is not bonus proof."
+    },
+    {
+      "check": "battle",
+      "result": "Cretaceous attack sample produced tooltip/camera response; actual dice/loss changes not established, excluded."
+    }
+  ],
+  "not_verified": [
+    "Held bonus labels and release restoration",
+    "Actual offline network-disabled play",
+    "Original build25 Earth save migration in browser",
+    "Physical touch/orbit/pinch/hardware Back",
+    "Corrupt cache rejection",
+    "Full card trade/battle/victory",
+    "Final exact artifact all7 gameplay×3views: prior7740 functional matrix retained separately; final exact scope is seven selections plus105Continue and235launch/placement/views"
+  ],
+  "owner_coverage_required": [
+    "Final native held bonus labels",
+    "Final native offline and original25save acceptance",
+    "Frozen packet and explicit publication message"
+  ],
+  "evidence_prefix": "FRONTLINES_PREVIEW26_FINAL_84D6_",
+  "prior_candidate_receipt": "FRONTLINES_PREVIEW26_FIXED_7740_ACCEPTANCE.json",
+  "publication": "Build25/R1 unchanged. Browser pass is scoped, not publication approval."
+}

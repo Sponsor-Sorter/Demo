@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "build": 26,
+  "installed_apk_sha256": "ecd54b06b1f6d92cc56f7cf52500aec1a585ac245d0dec2cdf68c485d0c578c1",
+  "method": "Exact final candidate installed by ADB-r before acceptance; this is not the separate25-to26 in-app update acceptance. Normal native UI, no map-pack push or injected campaign fixtures.",
+  "device": "Samsung SM-S908E Android14 R5CT506674J",
+  "checks": {
+    "all7_cached_map_launches_and_own_counter_placements": true,
+    "legacy25_earth_actual_continue": true,
+    "six_capitals_native_selection": true,
+    "cached235_offline_AI_battle": true,
+    "connection_settings_restored": true,
+    "bonus_hold_release_landscape": true,
+    "native_reopened_library_button_start_drag_and_android_back": true,
+    "window_manager_portrait_landscape_portrait": true,
+    "owner_campaign_preferences_profiles_restored": true
+  },
+  "short_performance_observation": {
+    "seconds": 300.0,
+    "samples": 11,
+    "thermal_status_all_zero": true,
+    "logged_fps_min": 28.0,
+    "logged_fps_max": 31.0,
+    "scope": "Five-minute one-phone Balanced30 active AI observation, not a controlled benchmark or broad-device endurance claim."
+  },
+  "limitations": [
+    "Rotation was driven through Android WindowManager, not a new physical-sensor check.",
+    "All7 packs were originally downloaded through normal public HTTPS UI in earlier scoped26 candidates; final APK checks reused verified caches.",
+    "No fresh full ranked online match, verified-email journey or optical LAN QR pairing claim.",
+    "Complete14 new-map games were automated source games; native observation is separate and shorter.",
+    "Functional/readability checks do not establish AAA visual parity."
+  ],
+  "approved_media": [
+    "finalrelease26-portrait-overview.png",
+    "finalrelease26-landscape-overview.png",
+    "final105-bonus-held-overview.png",
+    "final105-capital-placed-overview.png",
+    "offline26-active-battle-overview.png",
+    "final26-library-offline-ready-overview.png"
+  ]
+}

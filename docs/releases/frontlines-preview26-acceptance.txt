@@ -1,0 +1,1 @@
+Exact native/browser and source checks are scoped in their receipts. Optional R1 map assets are separately frozen and hosted; this packet contains26 runtime/base APK only. Publication and real25-to26 in-app OTA must be recorded separately. Preserve builds/APKs8–25 and maps/R1.
