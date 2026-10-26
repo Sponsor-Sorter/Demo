@@ -1,0 +1,22 @@
+{
+  "build": 43,
+  "browser": {
+    "build": 43,
+    "version": "1.0.0-preview.43",
+    "url": "https://sponsorsorter.com/frontlines/builds/43/",
+    "notes": "All18 garments completed: new HD Azure, Ivory and Emerald Ballroom Gowns and Clerical Robes; measured accessory fitting, shared gown bindings and bounded portrait cache. Original head, hair and animation payloads retained. Wardrobe collections preserved; retained equipped controls remain available. World map counter/bonus placement now shares the collision-aware layout, with measured portrait reset framing. Desktop attachment review, 48 campaigns, all maps and interaction/network checks passed; focused Samsung native review passed. Backend20 and game rules unchanged. Manual signed Android APK; feed30 unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview43-manual-testing/frontlines-1.0.0-preview-build-43.apk",
+    "bytes": 167642311,
+    "sha256": "cf1155339f0898b659bad25d0fd374ce508289c8a49beeb609cf928df909c566",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "1f6797647fa407a6342d1034ef1381dc9522790ce74ecae0823cf8245dedc9c4",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true,
+  "native_acceptance": "validation/cosmetic43-acceptance.json"
+}

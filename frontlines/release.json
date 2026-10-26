@@ -1,6 +1,6 @@
 {
-  "build": 41,
-  "version": "1.0.0-preview.41",
-  "url": "https://sponsorsorter.com/frontlines/builds/41/",
-  "notes": "Approved Rose Ballroom Gown with HD floral brocade, rounded shoulders, layered ivory sleeves and gathered linen neckline. Anatomical skin fits beneath the clothing; source head, hair, hands and shoes excluded. Existing garnet clasp and pearl drops stay separate. All18 clothing choices and previous approved assets retained. Original head, hair and expression clips unchanged. Focused Samsung appearance/control review passed. Backend20 and gameplay unchanged. Manual Android APK; feed30 unchanged."
+  "build": 43,
+  "version": "1.0.0-preview.43",
+  "url": "https://sponsorsorter.com/frontlines/builds/43/",
+  "notes": "All18 garments completed: new HD Azure, Ivory and Emerald Ballroom Gowns and Clerical Robes; measured accessory fitting, shared gown bindings and bounded portrait cache. Original head, hair and animation payloads retained. Wardrobe collections preserved; retained equipped controls remain available. World map counter/bonus placement now shares the collision-aware layout, with measured portrait reset framing. Desktop attachment review, 48 campaigns, all maps and interaction/network checks passed; focused Samsung native review passed. Backend20 and game rules unchanged. Manual signed Android APK; feed30 unchanged."
 }
