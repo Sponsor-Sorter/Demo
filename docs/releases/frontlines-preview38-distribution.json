@@ -1,0 +1,20 @@
+{
+  "build": 38,
+  "browser": {
+    "build": 38,
+    "version": "1.0.0-preview.38",
+    "url": "https://sponsorsorter.com/frontlines/builds/38/",
+    "notes": "Approved Castilian Court Coat with detailed chocolate-and-gold woven fabric and fitted sleeves. Independent pleated linen collar with rolled hems and physical gold order chain. Matching wardrobe thumbnail and existing collection navigation retained. All18 original garments, previous approved payloads, original head and animation clips retained. Focused Samsung native appearance acceptance passed. Gameplay unchanged. Manual Android download; in-app feed remains30."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview38-manual-testing/frontlines-1.0.0-preview-build-38.apk",
+    "bytes": 149957406,
+    "sha256": "99d68304e1041354dde8e8d38406303e89e635dcbcc915e047553276b00de9ca",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "66690adf59458f247c3c5bc6e1747030b3ea89edebc2245d5e943cebfdab2aa6",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
