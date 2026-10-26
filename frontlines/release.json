@@ -1,6 +1,6 @@
 {
-  "build": 35,
-  "version": "1.0.0-preview.35",
-  "url": "https://sponsorsorter.com/frontlines/builds/35-r1/",
-  "notes": "Approved Buccaneer heavy coat with corrected centred torso, joined level shoulders, clean sleeve hems, solid brass buttons, matching wardrobe thumbnail and independent fitted bandolier. Existing saved selections retained. No additional pirate hats; duplicate generic hat picker entry hidden with saved ID compatibility. All 18 garments and category navigation retained. Focused native Samsung appearance check passed; original head, motion, gameplay and all prior approved art payloads unchanged. Browser packaging R1 excludes the native-only WebRTC addon; browser networking uses its built-in implementation. Android APK35 remains exact."
+  "build": 36,
+  "version": "1.0.0-preview.36",
+  "url": "https://sponsorsorter.com/frontlines/builds/36/",
+  "notes": "Approved Ducal Coat: detailed gold brocade, garnet facings and sewn brass fastenings, with independent lace cravat and fitted leather bandolier. Matching wardrobe thumbnail and category navigation retained. No new pirate hats. All previous approved garments, original head/animation clips and gameplay unchanged. Focused native Samsung appearance acceptance passed. Web export retains the native-only WebRTC exclusion verified in35-r1."
 }

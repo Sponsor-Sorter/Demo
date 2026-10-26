@@ -1,0 +1,20 @@
+{
+  "build": 36,
+  "browser": {
+    "build": 36,
+    "version": "1.0.0-preview.36",
+    "url": "https://sponsorsorter.com/frontlines/builds/36/",
+    "notes": "Approved Ducal Coat: detailed gold brocade, garnet facings and sewn brass fastenings, with independent lace cravat and fitted leather bandolier. Matching wardrobe thumbnail and category navigation retained. No new pirate hats. All previous approved garments, original head/animation clips and gameplay unchanged. Focused native Samsung appearance acceptance passed. Web export retains the native-only WebRTC exclusion verified in35-r1."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview36-manual-testing/frontlines-1.0.0-preview-build-36.apk",
+    "bytes": 145101677,
+    "sha256": "695de34227bda5de69f65a69fa256df9dc5bdc834a5fc660e5d95ac9d55e1f66",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "10245d1b02de5f5e26439e8554670fb270942fe6ffcee4eb1332a6473f522034",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
