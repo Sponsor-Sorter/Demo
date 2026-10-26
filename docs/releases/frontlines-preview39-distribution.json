@@ -1,0 +1,20 @@
+{
+  "build": 39,
+  "browser": {
+    "build": 39,
+    "version": "1.0.0-preview.39",
+    "url": "https://sponsorsorter.com/frontlines/builds/39/",
+    "notes": "Approved detailed Court Gown with sewn gold trim, fitted sleeves and neckline. Braided court hair independently selectable in Hair; editable Court Lady female face preset. Garnet clasp and pearl drops are separate. All18 original garments and previous approved payloads retained. Original head and expression clips unchanged. Focused Samsung appearance/control review passed. Gameplay unchanged. Manual Android APK; feed30 unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview39-manual-testing/frontlines-1.0.0-preview-build-39.apk",
+    "bytes": 155037611,
+    "sha256": "9046d2b5a8c6fe8e2d0841eb9df089d5b7c9d37fcc9df4f002cdb4bc85486d09",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "134c186e163d375d7da1094df14ca785441e65878f6f1b952aedfe6a227670ae",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
