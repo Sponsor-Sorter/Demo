@@ -1,0 +1,20 @@
+{
+  "build": 34,
+  "browser": {
+    "build": 34,
+    "version": "1.0.0-preview.34",
+    "url": "https://sponsorsorter.com/frontlines/builds/34/",
+    "notes": "Approved Privateer coat with clean ivory shirt, brass fastenings and separate neckerchief, bandolier, woven waist sash, tricorn, hair, earrings and preset. Efficient textures keep visible fabric detail. All 18 garments and wardrobe collections retained. Focused native Samsung phone appearance checks passed; existing saved commander and cached content retained."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview34-manual-testing/frontlines-1.0.0-preview-build-34.apk",
+    "bytes": 143363156,
+    "sha256": "ab4dafaa57f8d107e49a548c5b1ccf2b7bbd7e11f3049267e986702fcf0f2b73",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "2f99c3aad7a8d71d1be1712aeb9293a981c99841886bbe41812b4b3e1d3cf418",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
