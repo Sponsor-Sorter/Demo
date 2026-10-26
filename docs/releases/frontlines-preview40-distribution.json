@@ -1,0 +1,20 @@
+{
+  "build": 40,
+  "browser": {
+    "build": 40,
+    "version": "1.0.0-preview.40",
+    "url": "https://sponsorsorter.com/frontlines/builds/40/",
+    "notes": "Approved detailed Laced Bodice with floral jacquard, ivory gathered sleeves, burgundy sewn piping and original back lacing. Garnet clasp and pearl drops remain separate optional accessories. All18 original clothing choices and previous approved assets retained. Original head, hair and expression clips unchanged. Focused Samsung appearance/control review passed. Backend20 and gameplay unchanged. Manual Android APK; feed30 unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview40-manual-testing/frontlines-1.0.0-preview-build-40.apk",
+    "bytes": 157028681,
+    "sha256": "9f252c9fc2ea9d33f48c8937b0eef8e7cb9b16aeff1ec19af62a3a527636fa4c",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "0c0991756fdcfd483bbcb1b29b1e4ebe09ddbef3a3c5d8331480600a3d59338b",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
