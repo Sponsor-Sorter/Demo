@@ -1,0 +1,20 @@
+{
+  "build": 37,
+  "browser": {
+    "build": 37,
+    "version": "1.0.0-preview.37",
+    "url": "https://sponsorsorter.com/frontlines/builds/37/",
+    "notes": "Approved Brocade Court Coat with detailed plum fabric, ivory jacquard waistcoat, sewn trim and physical brass buttons. Independent lowered lace cravat and fitted silk sash, plus revised Court waves hairstyle. Matching clothing thumbnail and existing wardrobe navigation retained. All18 garment choices, prior approved payloads, original head and animation clips retained. Focused native Samsung visual acceptance passed. Gameplay unchanged. Manual Android download; in-app feed remains30."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview37-manual-testing/frontlines-1.0.0-preview-build-37.apk",
+    "bytes": 148846663,
+    "sha256": "6b8fdc8bdb6c72bfa78b3312afed6afd45170499bcff42c4c00bbd0a05652ed7",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "8e97371c5b1586bf2c11e8668d3a47664849bede4bcd228a72f4b741b363c05d",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
