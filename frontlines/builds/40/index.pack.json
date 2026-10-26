@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "bytes": 129590812,
+  "sha256": "e0e30519497dd7d76aef3d27d353bbc01b26508ac6a5864e22a403b4e45c40e6",
+  "chunks": [
+    {
+      "file": "index.pck.part-00",
+      "bytes": 50331648,
+      "sha256": "ba5ccb8c5ea94f296d650fb5b6dd3378dd9d955d9bf141c4d14e83cdb134d025"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 50331648,
+      "sha256": "eb6d692758cbeb53be35520ad8948f5581be6171b218e51a356a8b2d37b251c0"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 28927516,
+      "sha256": "3f2c7072d4b2fa1b0c89becc8f2f00f5336d98652b9c4e8bc0381c166e6f3b4c"
+    }
+  ]
+}
