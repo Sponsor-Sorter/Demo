@@ -1,0 +1,20 @@
+{
+  "build": 33,
+  "browser": {
+    "build": 33,
+    "version": "1.0.0-preview.33",
+    "url": "https://sponsorsorter.com/frontlines/builds/33/",
+    "notes": "New human-approved Court Diplomat outfit: tailored coat, silk lapels, ivory jacquard waistcoat, linen collar, modelled brass buttons and embroidered cuffs. Removable accessories stay independent; wardrobe thumbnail matches. All 18 garments and existing collections retained. Focused native Samsung creator checks passed, including layout rotations and sampled bow/victory poses."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview33-manual-testing/frontlines-1.0.0-preview-build-33.apk",
+    "bytes": 140850450,
+    "sha256": "ac50c26ea8a7f662c59061991d40a1de2be9474ce2a6b3fd26ef2a70ed5763dc",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "a2647db5605b630eb5f22bf274d476c863c1b67685ea9ba4a17cecc32444509a",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
