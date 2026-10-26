@@ -40,10 +40,10 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes build 34 browser and manual Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.34 · Build 34');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/34/');
- assert.equal(entry.actions[1].url,'https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview34-manual-testing/frontlines-1.0.0-preview-build-34.apk');
+test('Frontlines publishes build 35 browser and manual Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.35 · Build 35');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/35-r1/');
+ assert.equal(entry.actions[1].url,'https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview35-manual-testing/frontlines-1.0.0-preview-build-35.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
@@ -53,7 +53,7 @@ test('Frontlines retained build 30 assets and Android feed retain exact hashes',
  assert.equal(m.build,30);
  for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/30/')||f.path.endsWith('build-30.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
  const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,30);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,34);assert.equal(web.url,'https://sponsorsorter.com/frontlines/builds/34/');
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,35);assert.equal(web.url,'https://sponsorsorter.com/frontlines/builds/35-r1/');
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -139,8 +139,10 @@ test('Frontlines29 retains fixed cross and scoped exact acceptance',()=>{const m
 
 test('Frontlines30 scoped Royal Guard acceptance',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30.json',import.meta.url),'utf8'));const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30-local-browser-acceptance.json',import.meta.url),'utf8'));const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30-native-acceptance.json',import.meta.url),'utf8'));assert.equal(m.backend.version,12);assert.equal(m.android.bytes,104226190);assert.equal(b.passed,true);assert.equal(b.pck_sha256,'865bcad325043432c9b88cec3cd764265f216de2a2ec56f650c70bffcf612825');assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);});
 
-test('Frontlines34 distribution keeps manual APK separate from Android updater',()=>{const d=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview34-distribution.json',import.meta.url),'utf8'));const a=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(d.android.update_feed_build,a.versionCode);assert.equal(a.versionCode,30);assert.equal(d.android.installation,'manual');assert.equal(d.android.bytes,143363156);assert.equal(d.dns_changed,false);assert.ok(readFileSync(new URL('../frontlines/index.html',import.meta.url),'utf8').includes('builds/34/'));assert.equal(data.entries.find(e=>e.id==='frontlines').actions[1].url,d.android.url);});
+test('Frontlines35 distribution keeps manual APK separate from Android updater',()=>{const d=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview35-r1-distribution.json',import.meta.url),'utf8'));const a=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(d.android.update_feed_build,a.versionCode);assert.equal(a.versionCode,30);assert.equal(d.android.installation,'manual');assert.equal(d.android.bytes,144146363);assert.equal(d.dns_changed,false);assert.ok(readFileSync(new URL('../frontlines/index.html',import.meta.url),'utf8').includes('builds/35-r1/'));assert.equal(data.entries.find(e=>e.id==='frontlines').actions[1].url,d.android.url);});
 
 test('Frontlines33 split transport reconstructs the approved pack',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../frontlines/builds/33/index.pack.json',import.meta.url),'utf8'));const h=createHash('sha256');let bytes=0;for(const c of m.chunks){assert.ok(c.bytes<100*1024*1024);const b=readFileSync(new URL('../frontlines/builds/33/'+c.file,import.meta.url));assert.equal(b.length,c.bytes);assert.equal(createHash('sha256').update(b).digest('hex'),c.sha256);h.update(b);bytes+=b.length;}assert.equal(bytes,m.bytes);assert.equal(h.digest('hex'),'9923c84583a8b9ede85518334e236b5f350ef3cd5600c8085142db5ba6c41e83');});
 
 test('Frontlines34 split transport reconstructs the approved pack',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../frontlines/builds/34/index.pack.json',import.meta.url),'utf8'));const h=createHash('sha256');let bytes=0;for(const c of m.chunks){assert.ok(c.bytes<100*1024*1024);const b=readFileSync(new URL('../frontlines/builds/34/'+c.file,import.meta.url));assert.equal(b.length,c.bytes);assert.equal(createHash('sha256').update(b).digest('hex'),c.sha256);h.update(b);bytes+=b.length;}assert.equal(bytes,m.bytes);assert.equal(h.digest('hex'),'75d1f70ec861685d881dce91d0a91054a3e1d111b35f050a88103d6fde73998c');});
+
+test('Frontlines35 split transport reconstructs the approved pack',async()=>{const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../frontlines/builds/35-r1/index.pack.json',import.meta.url),'utf8'));const h=createHash('sha256');let bytes=0;for(const c of m.chunks){assert.ok(c.bytes<100*1024*1024);const b=readFileSync(new URL('../frontlines/builds/35-r1/'+c.file,import.meta.url));assert.equal(b.length,c.bytes);assert.equal(createHash('sha256').update(b).digest('hex'),c.sha256);h.update(b);bytes+=b.length;}assert.equal(bytes,m.bytes);assert.equal(h.digest('hex'),'15cbdd1251e7326c9a49a0cde654d46c2500d95d2d98813225f43602d90fef00');});

@@ -1,0 +1,21 @@
+{
+  "build": 35,
+  "browser_revision": "r1",
+  "browser": {
+    "build": 35,
+    "version": "1.0.0-preview.35",
+    "url": "https://sponsorsorter.com/frontlines/builds/35-r1/",
+    "notes": "Approved Buccaneer heavy coat with corrected centred torso, joined level shoulders, clean sleeve hems, solid brass buttons, matching wardrobe thumbnail and independent fitted bandolier. Existing saved selections retained. No additional pirate hats; duplicate generic hat picker entry hidden with saved ID compatibility. All 18 garments and category navigation retained. Focused native Samsung appearance check passed; original head, motion, gameplay and all prior approved art payloads unchanged. Browser packaging R1 excludes the native-only WebRTC addon; browser networking uses its built-in implementation. Android APK35 remains exact."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview35-manual-testing/frontlines-1.0.0-preview-build-35.apk",
+    "bytes": 144146363,
+    "sha256": "ebc14d7cc1aeef2d7d7d59a7445fbc866af7500023140ce1293baba6b70b0936",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "0b7a8781110878dad4f4133f641cce141de3351a30ec3e5a455d02f08d8566aa",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}

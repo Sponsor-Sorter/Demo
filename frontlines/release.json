@@ -1,6 +1,6 @@
 {
-  "build": 34,
-  "version": "1.0.0-preview.34",
-  "url": "https://sponsorsorter.com/frontlines/builds/34/",
-  "notes": "Approved Privateer coat with clean ivory shirt, brass fastenings and separate neckerchief, bandolier, woven waist sash, tricorn, hair, earrings and preset. Efficient textures keep visible fabric detail. All 18 garments and wardrobe collections retained. Focused native Samsung phone appearance checks passed; existing saved commander and cached content retained."
+  "build": 35,
+  "version": "1.0.0-preview.35",
+  "url": "https://sponsorsorter.com/frontlines/builds/35-r1/",
+  "notes": "Approved Buccaneer heavy coat with corrected centred torso, joined level shoulders, clean sleeve hems, solid brass buttons, matching wardrobe thumbnail and independent fitted bandolier. Existing saved selections retained. No additional pirate hats; duplicate generic hat picker entry hidden with saved ID compatibility. All 18 garments and category navigation retained. Focused native Samsung appearance check passed; original head, motion, gameplay and all prior approved art payloads unchanged. Browser packaging R1 excludes the native-only WebRTC addon; browser networking uses its built-in implementation. Android APK35 remains exact."
 }
