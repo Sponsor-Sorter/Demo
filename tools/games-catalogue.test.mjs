@@ -40,20 +40,20 @@ test('every canonical footer has a Games link, including the public profile dire
 });
 
 
-test('Frontlines publishes accepted build 30 Web and Android preview',()=>{
- const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.30 · Build 30');
- assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/30/');
- assert.equal(entry.actions[1].url,'https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-30.apk');
+test('Frontlines publishes build 31 browser and manual Android preview',()=>{
+ const entry=data.entries.find(e=>e.id==='frontlines');assert.equal(entry.build,'Version 1.0.0-preview.31 · Build 31');
+ assert.equal(entry.actions[0].url,'https://sponsorsorter.com/frontlines/builds/31/');
+ assert.equal(entry.actions[1].url,'https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview31-manual-testing/frontlines-1.0.0-preview-build-31.apk');
  assert.match(entry.notes,/not an in-app updater test/);assert.match(entry.notes,/Physical sensor confirmation was on build 13/);assert.match(entry.description,/autosave\/resume/);assert.doesNotMatch(entry.instructions.join(" "),/not saved persistently/);
  assert.equal(existsSync(new URL('../frontlines/downloads/frontlines-1.0.0-preview-build-7.apk',import.meta.url)),false);
  assert.ok(data.entries.some(e=>e.id==='meadow-market-littles'));
 });
-test('Frontlines accepted packet site files retain exact hashes and metadata',async()=>{
+test('Frontlines retained build 30 assets and Android feed retain exact hashes',async()=>{
  const {createHash}=await import('node:crypto');const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30.json',import.meta.url),'utf8'));
  assert.equal(m.build,30);
- for(const f of m.files.filter(f=>f.path.startsWith('site/'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
+ for(const f of m.files.filter(f=>f.path.startsWith('site/frontlines/builds/30/')||f.path.endsWith('build-30.apk'))){const b=readFileSync(new URL('../'+f.path.slice(5),import.meta.url));assert.equal(b.length,f.bytes,f.path);assert.equal(createHash('sha256').update(b).digest('hex'),f.sha256,f.path);}
  const android=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(android.versionCode,30);assert.equal(android.sha256,m.android.sha256);
- const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,30);assert.equal(web.url,m.web.url);
+ const web=JSON.parse(readFileSync(new URL('../frontlines/release.json',import.meta.url),'utf8'));assert.equal(web.build,31);assert.equal(web.url,'https://sponsorsorter.com/frontlines/builds/31/');
 });
 
 test('Frontlines preserves all accepted build 8 immutable bytes',async()=>{
@@ -138,3 +138,5 @@ test('Frontlines preserves all accepted build 28 immutable bytes',async()=>{cons
 test('Frontlines29 retains fixed cross and scoped exact acceptance',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview29.json',import.meta.url),'utf8'));const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview29-native-acceptance.json',import.meta.url),'utf8'));const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview29-local-browser-acceptance.json',import.meta.url),'utf8'));assert.equal(m.backend.version,11);assert.equal(m.validation.godot_jobs,11);assert.equal(m.validation.node_jobs,3);assert.equal(m.validation.export_jobs,2);assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);assert.equal(b.passed,true);assert.equal(b.responsive_browser_exercised,false);assert.equal(b.pck_sha256,'d0d75e66d90941fafffe91cd7e4cce7d43a5f14fa7526e93134e62829b4dfcfa');assert.equal(b.checks.all_optional_none_retains_fixed_cross_black_fastening,true);assert.equal(m.wardrobe.optional_content.removable_components,7);assert.match(data.entries.find(e=>e.id==='frontlines').notes,/four optional medal props/);});
 
 test('Frontlines30 scoped Royal Guard acceptance',()=>{const m=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30.json',import.meta.url),'utf8'));const b=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30-local-browser-acceptance.json',import.meta.url),'utf8'));const n=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview30-native-acceptance.json',import.meta.url),'utf8'));assert.equal(m.backend.version,12);assert.equal(m.android.bytes,104226190);assert.equal(b.passed,true);assert.equal(b.pck_sha256,'865bcad325043432c9b88cec3cd764265f216de2a2ec56f650c70bffcf612825');assert.equal(n.passed,true);assert.equal(n.installed_apk_sha256,m.android.sha256);});
+
+test('Frontlines31 distribution keeps manual APK separate from Android updater',()=>{const d=JSON.parse(readFileSync(new URL('../docs/releases/frontlines-preview31-distribution.json',import.meta.url),'utf8'));const a=JSON.parse(readFileSync(new URL('../frontlines/android-release.json',import.meta.url),'utf8'));assert.equal(d.android.update_feed_build,a.versionCode);assert.equal(a.versionCode,30);assert.equal(d.android.installation,'manual');assert.equal(d.android.bytes,123804133);assert.equal(d.dns_changed,false);assert.ok(readFileSync(new URL('../frontlines/index.html',import.meta.url),'utf8').includes('builds/31/'));assert.equal(data.entries.find(e=>e.id==='frontlines').actions[1].url,d.android.url);});
