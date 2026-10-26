@@ -1,0 +1,20 @@
+{
+  "build": 31,
+  "browser": {
+    "build": 31,
+    "version": "1.0.0-preview.31",
+    "url": "https://sponsorsorter.com/frontlines/builds/31/",
+    "notes": "HD Expedition Captain, independent cravat and bandolier, expanded hair, hats and face controls. Current HD cosmetics bundled in the base game; all 18 garments retained."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview31-manual-testing/frontlines-1.0.0-preview-build-31.apk",
+    "bytes": 123804133,
+    "sha256": "1fe25526dc6d4bf3a22f8470e4daa288ad5b8b5e0711ca18ac17d91c93e0a309",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "6474ac5b2fb2d8c09c1d5a1146133577e32dfad9b4894628a6f5ea815e7242c6",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
