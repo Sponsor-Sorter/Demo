@@ -1,0 +1,20 @@
+{
+  "build": 32,
+  "browser": {
+    "build": 32,
+    "version": "1.0.0-preview.32",
+    "url": "https://sponsorsorter.com/frontlines/builds/32/",
+    "notes": "Approved HD Corsair coat with clean ivory shirt, dark leather lapels, fitted neck/chest and independent optional neckerchief. Matching clothing-selector thumbnail restored. All 18 detailed garments and existing collection navigation retained. Cosmetic-only update; gameplay and original animation clips unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview32-manual-testing/frontlines-1.0.0-preview-build-32.apk",
+    "bytes": 127913191,
+    "sha256": "72cefdcf9ee10e04118406d9658d17e836b76c0037af13b7bfa149c8849fe079",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "frozen_manifest_sha256": "deb8bfcc494be3d68c1eb5c9fb6e403b8128efe267a083ef98aedc79786ec541",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true
+}
