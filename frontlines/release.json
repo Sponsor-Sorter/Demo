@@ -1,6 +1,6 @@
 {
-  "build": 46,
-  "version": "1.0.0-preview.46",
-  "url": "https://sponsorsorter.com/frontlines/builds/46/",
-  "notes": "Creator controls now use approved round blue frames and gold assets: an icon-only current-pose button opens the normal selector with icons and names for all 8 poses. Play uses a triangle asset. Bottom-right Undo/Redo and combined Face/Full Reset icons are 16-18% larger. Cumulative release includes 17 authored Male/Female/Basic presets and all 18 approved garments. Focused desktop and exact-APK Samsung checks; saved commander/campaign retained. Manual signed Android APK; feed 30 unchanged."
+  "build": 47,
+  "version": "1.0.0-preview.47",
+  "url": "https://sponsorsorter.com/frontlines/builds/47/",
+  "notes": "Full-territory land taps with comfortable touch tolerance; cyan shading and borders identify legal enemy targets from the selected army. Uniform gameplay circles aligned with Pause; Speed beside Bonuses; Deploy beside minus zoom during Draft only. Earned fifth territory card waits for next turn; inherited five or more forces trade after occupation, then same-turn deployment; never award a sixth. Focused exact-APK Samsung, desktop layouts/input, client/server rules and dual-QR LAN checks passed. Original commander/campaign/cache retained. Manual Android APK; feed30 unchanged."
 }

@@ -1,0 +1,40 @@
+{
+  "build": 47,
+  "browser": {
+    "build": 47,
+    "version": "1.0.0-preview.47",
+    "url": "https://sponsorsorter.com/frontlines/builds/47/",
+    "notes": "Full-territory land taps tolerate touch jitter; cyan shading and borders identify legal enemy targets from the selected army. Uniform gameplay circles align with Pause; Speed beside Bonuses; Deploy beside minus zoom during Draft only. Earned fifth territory card waits for next turn; inherited five or more forces trade after occupation, then same-turn deployment; never award a sixth. Focused exact-APK Samsung, desktop layouts/input, client/server rules and dual-QR LAN checks passed. Original commander/campaign/cache retained. Backend22 timing is gated to new build47 rooms; existing through46 unchanged. AI campaign results: 47 of 48 won, one legal exponential battle active at100000 actions; not a full suite pass. Manual Android APK; feed30 unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview47-manual-testing/frontlines-1.0.0-preview-build-47.apk",
+    "bytes": 168912860,
+    "sha256": "0a69d818bc42393578a82b456ae714a1e595293a2030240a5fd27ce8f0da0ca6",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "backend_version": 22,
+  "backend_scope": "rules_factory timing is gated to host build47/default for new rooms only; existing rooms through build46 retain prior timing.",
+  "ai_campaign_results": {
+    "won": 47,
+    "total": 48,
+    "unfinished": 1,
+    "unfinished_note": "One legal two-player exponential battle remained active after100000 actions; full campaign suite not passed."
+  },
+  "browser_pack": {
+    "bytes": 141537868,
+    "sha256": "21954db1cc2fd08a22a5ada6b03552900e95f304870d2fe465320b08a1b8d9be"
+  },
+  "frozen_manifest_sha256": "b6c881002da906abe4e730457722c497ad36999c5c370494881322dad7dfd575",
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true,
+  "native_acceptance": "validation/phone47-acceptance.json",
+  "hud_review": "validation/hud47-review.json",
+  "card_rules_review": "validation/card47-backend.json",
+  "lan_review": "validation/lan47-review.json",
+  "selection_review": "validation/selection47-review.json",
+  "campaign_matrix": "validation/campaign-matrix.json",
+  "campaign_diagnostic": "validation/campaign-diagnostic-47-alternate-seed.json"
+}
