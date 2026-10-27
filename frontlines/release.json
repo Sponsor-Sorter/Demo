@@ -1,6 +1,6 @@
 {
-  "build": 43,
-  "version": "1.0.0-preview.43",
-  "url": "https://sponsorsorter.com/frontlines/builds/43/",
-  "notes": "All18 garments completed: new HD Azure, Ivory and Emerald Ballroom Gowns and Clerical Robes; measured accessory fitting, shared gown bindings and bounded portrait cache. Original head, hair and animation payloads retained. Wardrobe collections preserved; retained equipped controls remain available. World map counter/bonus placement now shares the collision-aware layout, with measured portrait reset framing. Desktop attachment review, 48 campaigns, all maps and interaction/network checks passed; focused Samsung native review passed. Backend20 and game rules unchanged. Manual signed Android APK; feed30 unchanged."
+  "build": 46,
+  "version": "1.0.0-preview.46",
+  "url": "https://sponsorsorter.com/frontlines/builds/46/",
+  "notes": "Creator controls now use approved round blue frames and gold assets: an icon-only current-pose button opens the normal selector with icons and names for all 8 poses. Play uses a triangle asset. Bottom-right Undo/Redo and combined Face/Full Reset icons are 16-18% larger. Cumulative release includes 17 authored Male/Female/Basic presets and all 18 approved garments. Focused desktop and exact-APK Samsung checks; saved commander/campaign retained. Manual signed Android APK; feed 30 unchanged."
 }

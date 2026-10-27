@@ -135,12 +135,12 @@
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.43 · Build 43",
+      "build": "Version 1.0.0-preview.46 · Build 46",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
         "Android testing: download the versioned APK from GitHub Releases, open it on your Android device and allow installation if prompted. Install future testing builds manually from this page until Google Play distribution is ready.",
-        "Build 43: open Your Commander and browse all 18 clothing choices, including the new ballroom gowns and clerical robes. Use separate accessory controls, inspect fitted views and reset/discard to restore the saved commander.",
+        "Build 46: use the icon-only commander pose selector to choose any of 8 named poses with icons. Play uses a triangle icon; Undo, Redo and Face/Full Reset use larger icons. Browse 17 Basic, Male and Female presets. Cancel discards unsaved changes.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
         "Build 40: open Your Commander, choose Wardrobe and Laced Bodice. Choose the garnet clasp and pearl drops independently or select None. Undo/discard restores saved appearance.",
         "Build 39: open Your Commander, choose Presets and Court Lady, or choose Braided court hair in Hair. In Wardrobe, select Court Gown, then choose the garnet clasp and pearl drops independently. Undo or discard to restore the saved appearance.",
@@ -173,16 +173,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/43/",
+          "url": "https://sponsorsorter.com/frontlines/builds/46/",
           "primary": true
         },
         {
           "label": "Download Android APK (manual install)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview43-manual-testing/frontlines-1.0.0-preview-build-43.apk"
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview46-manual-testing/frontlines-1.0.0-preview-build-46.apk"
         }
       ],
-      "notes": "Build 43: cumulative wardrobe release completes all 18 garments. Adds HD Azure, Ivory and Emerald Ballroom Gowns and Clerical Robes; measured accessory fitting, shared gown bindings and bounded portrait cache. Map counter and bonus placement use collision-aware layout with measured portrait reset framing. PC attachment review, 48 campaigns, all maps and interaction/network checks passed. Focused Samsung checks passed for four garments, collection controls, drag/reset and discard, plus Earth fullscreen framing through WindowManager orientation changes. Original campaign restored; 144 game-owned files and 16 cached content files unchanged. Backend20 and game rules unchanged. Manual APK download is not an in-app updater test; feed30 unchanged. Historical evidence: Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11.",
-      "sha256": "CF1155339F0898B659BAD25D0FD374CE508289C8A49BEEB609CF928DF909C566"
+      "notes": "Build 46: cumulative creator release adds an icon-only pose selector with icons and names for Still, Idle, Victory, Defeat, Bow, Flirt, Laugh and Angry. Play uses a triangle icon; Undo, Redo and Face/Full Reset controls are enlarged 16–18%. Includes 17 approved Basic, Male and Female presets and retains all 18 garments, the saved commander and campaign. Focused desktop and exact signed APK Samsung creator checks passed; no full gameplay or endurance acceptance is implied. Backend21 and game rules unchanged. Manual APK only; Android update feed30 unchanged. This is not an in-app updater test and makes no OTA claim. Historical evidence: Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11.",
+      "sha256": "0EAEF8D2936A90F4ED52FA6375CBE4738853E24671CA3B12F46A86FE092F328E"
     }
   ]
 }

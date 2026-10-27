@@ -1,0 +1,29 @@
+{
+  "build": 46,
+  "browser": {
+    "build": 46,
+    "version": "1.0.0-preview.46",
+    "url": "https://sponsorsorter.com/frontlines/builds/46/",
+    "notes": "Creator controls include an icon-only current-pose button opening the normal selector with icons and names for all 8 poses. Play uses a triangle asset. Bottom-right Undo/Redo and combined Face/Full Reset icons are enlarged 16\u201318%. Cumulative release includes 17 authored Basic, Male and Female presets and all 18 approved garments. Focused desktop and exact-APK Samsung checks; saved commander/campaign retained. Manual signed Android APK; feed 30 unchanged."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview46-manual-testing/frontlines-1.0.0-preview-build-46.apk",
+    "bytes": 168912860,
+    "sha256": "0eaef8d2936a90f4ed52fa6375cbe4738853e24671ca3b12f46a86fe092f328e",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "installation": "manual",
+    "update_feed_build": 30
+  },
+  "backend_version": 21,
+  "gameplay_or_map_changes": false,
+  "frozen_manifest_sha256": "f68d6013144163d7f48ca8a46d2c4830d1670798bac1b982b6c5042598bad04d",
+  "browser_pack": {
+    "bytes": 141537052,
+    "sha256": "2625642be48021563d6bcdd5e63adb2e05f02dd812d76f69060452d257b8771c"
+  },
+  "dns_changed": false,
+  "github_platform_immutable": false,
+  "version_no_overwrite_policy": true,
+  "native_acceptance": "validation/phone46-acceptance.json",
+  "controls_review": "validation/controls46-review.json"
+}
