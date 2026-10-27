@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-10-27",
   "entries": [
     {
       "id": "meadow-markets",
@@ -131,16 +131,16 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Build the world campaign, command armies in solo, local or online play, and customise your commander. Browser and manual Android previews update separately; solo play supports autosave/resume.",
+      "description": "Build the world campaign in solo, local or online play. Browser updates are published separately; Android build 50 and newer use the in-game updater with a verified download and Android install confirmation. Builds 49 or earlier need one manual setup update to build 51. Solo play supports autosave/resume.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.47 · Build 47",
+      "build": "Version 1.0.0-preview.51 · Build 51",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Android testing: download the versioned APK from GitHub Releases, open it on your Android device and allow installation if prompted. Install future testing builds manually from this page until Google Play distribution is ready.",
-        "Build 47: gameplay controls are circular, with the left column aligned to Pause. Speed sits beside Bonuses, and Deploy appears beside minus zoom during Draft only. Territory taps accept comfortable touch jitter and show legal enemy targets in cyan. Earned fifth territory cards wait for the next turn; inherited five-card hands trade after occupation and return to same-turn Draft.",
+        "Android setup: builds 49 or earlier need one manual signed update to build 51. On build 50 or later, use the in-game updater; it verifies the official package before Android opens its installer. Review Android's confirmation and tap Install; updates are never installed silently.",
+        "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
         "Build 40: open Your Commander, choose Wardrobe and Laced Bodice. Choose the garnet clasp and pearl drops independently or select None. Undo/discard restores saved appearance.",
         "Build 39: open Your Commander, choose Presets and Court Lady, or choose Braided court hair in Hair. In Wardrobe, select Court Gown, then choose the garnet clasp and pearl drops independently. Undo or discard to restore the saved appearance.",
@@ -173,17 +173,16 @@
       "actions": [
         {
           "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/47/",
+          "url": "https://sponsorsorter.com/frontlines/builds/51/",
           "primary": true
         },
         {
-          "label": "Download Android APK (manual install)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview47-manual-testing/frontlines-1.0.0-preview-build-47.apk"
+          "label": "Download Android APK (manual setup for builds 49 and earlier)",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk"
         }
       ],
-      "notes": "Build 47: full-territory land taps tolerate touch jitter, and legal enemy targets are shaded cyan. Uniform gameplay circles align with Pause; Speed sits beside Bonuses; Deploy appears beside minus zoom only during Draft. An earned fifth territory card waits for the next turn; an inherited five-card hand trades after occupation, then returns to same-turn Draft; no sixth card is awarded. Focused exact-APK Samsung controls, rules, rotation and territory-selection checks passed; desktop HUD/input, client/server and dual-QR LAN checks passed. Original commander/campaign retained; 145 game-owned files and 16 content caches unchanged. Backend22 timing is gated to new build47 rooms; existing rooms through46 keep their earlier timing. Campaign suite result is bounded: 47 of 48 AI campaigns won, and one legal exponential battle remained active at100000 actions, so the full suite is not described as passed. Manual APK download is not an in-app updater test; Android feed30 unchanged; no OTA claim. Historical evidence: Physical sensor confirmation was on build 13. Solo pause and resume were checked in hosted play on build 11.",
-      "sha256": "0A69D818BC42393578A82B456AE714A1E595293A2030240A5FD27CE8F0DA0CA6"
+      "notes": "Build 51: correctly fitted reward-card frame/artwork/text match the cards in hand. Thirty pixel/geometry assertions compare all three symbols and two orientations with the unchanged hand print; the Japan/soldier reward was reviewed on Android 14 in landscape. The actual build 50-to-51 in-app update downloaded the official APK, verified exact size/SHA/package/version/certificate, opened Android's installer, and launched installed51 after user confirmation. Builds49 or earlier need one manual signed setup update. Focused updater checks:46; real-mixer music checks:29. No new full campaign/endurance or subjective audio-mix claim. Historical build47 AI limit remains documented in its release record. Physical sensor confirmation was on build 13.",
+      "sha256": "575665650F8A49A5B5D44E0367CFCB65BAB4C9ADF22E72FC68808943E459520B"
     }
   ]
 }
-

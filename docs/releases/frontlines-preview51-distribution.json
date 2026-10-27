@@ -1,0 +1,54 @@
+{
+  "build": 51,
+  "version": "1.0.0-preview.51",
+  "status": "Public browser, catalogue and manual setup release promoted after actual build50-to51 native acceptance.",
+  "frozen_manifest_sha256": "9a63b4a6e0655429d5b85cab474568436b89f155d92aadaabe12e86702a07722",
+  "browser": {
+    "build": 51,
+    "version": "1.0.0-preview.51",
+    "url": "https://sponsorsorter.com/frontlines/builds/51/",
+    "pack_bytes": 141544648,
+    "pack_sha256": "517b8530a175641f7ef0d75b19ab7f6e3724a024c1655785856d571c963e2509",
+    "notes": "Card rewards use the correctly fitted hand-card print, verified with 30 pixel/geometry assertions and actual Android landscape review. Music rotates through four tracks with clean transitions. The actual build50-to51 in-app update and Android installer confirmation passed. Builds49 or earlier need one manual signed setup update; Android always requires confirmation before installing. No new full campaign/endurance or subjective audio-mix claim."
+  },
+  "android": {
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk",
+    "tag": "frontlines-preview51-testing",
+    "bytes": 168921215,
+    "sha256": "575665650f8a49a5b5d44e0367cfcb65bab4c9adf22e72fc68808943e459520b",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "package_id": "com.frontlines.worldinconflict",
+    "version_name": "1.0.0-preview.51",
+    "version_code": 51,
+    "installation": "Actual build50-to51 in-app update passed; Android required and received user install confirmation. Builds49 or earlier need one manual setup update.",
+    "update_feed_url": "https://sponsorsorter.com/frontlines/android-updates.json",
+    "update_feed_build": 51,
+    "minimum_auto_update_client_build": 50,
+    "legacy_feed_build": 30,
+    "native_acceptance_passed": true,
+    "native_acceptance_sha256": "0af755f15689aad88f3100094a0b71d4173d7faef969afaafd477130e06357ee",
+    "notes": "Card rewards match the correctly fitted hand print. Four-track music rotation and verified in-app Android updates. Android always requires install confirmation."
+  },
+  "native_acceptance": {
+    "from_build": 50,
+    "to_build": 51,
+    "passed": true,
+    "sha256": "0af755f15689aad88f3100094a0b71d4173d7faef969afaafd477130e06357ee",
+    "method": "Canonical HTTPS feed -> official APK download -> exact bytes/SHA -> native package/version/certificate verification -> Android installer confirmation -> installed51 launch; no ADB install51.",
+    "card_fit_assertions": 30,
+    "updater_assertions": 46,
+    "real_mixer_music_assertions": 29,
+    "scope_limits": [
+      "No new full campaign or endurance claim.",
+      "No subjective audio-mix claim.",
+      "No physical rotation-sensor confirmation beyond the historical build13 check."
+    ]
+  },
+  "backend_version": 22,
+  "backend_scope": "Unchanged by build51 publication.",
+  "legacy_android_feed_unchanged": true,
+  "build49_versioned_release_preserved": true,
+  "dns_changed": false,
+  "platform_release_immutable": false,
+  "version_no_overwrite_policy": true
+}
