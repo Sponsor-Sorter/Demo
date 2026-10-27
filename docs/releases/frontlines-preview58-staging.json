@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "release": "Frontlines preview build 58",
+  "build": 58,
+  "status": "published_build_58",
+  "checked_at_utc": "2026-10-27T17:42:18Z",
+  "packet": {
+    "directory": "D:/Chat Gpt/workspaces/frontlines-release/2026-10-28-preview58-map-upgrades",
+    "manifest_sha256": "c0a0be614cba0adc40edf65fe10a5d1f413cad73300ddaab53a528b20989e0fc",
+    "verified_site_files": "40/40",
+    "frozen": true,
+    "modified": false,
+    "site_files": [
+      {
+        "path": "frontlines/android-updates.json",
+        "bytes": 1114,
+        "sha256": "762af257a64901116f49ee4343651b5b7de1bad8822d24be1bd15eccf629b32c"
+      },
+      {
+        "path": "frontlines/builds/58/campaign-journal.js",
+        "bytes": 616,
+        "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+      },
+      {
+        "path": "frontlines/builds/58/frontlines-pack-loader.js",
+        "bytes": 4280,
+        "sha256": "ddf159724ce4a7cd792971e6061d68de91d8bcc58172b7f6a576175f2fac7804"
+      },
+      {
+        "path": "frontlines/builds/58/index.apple-touch-icon.png",
+        "bytes": 17197,
+        "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+      },
+      {
+        "path": "frontlines/builds/58/index.audio.position.worklet.js",
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      {
+        "path": "frontlines/builds/58/index.audio.worklet.js",
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      {
+        "path": "frontlines/builds/58/index.html",
+        "bytes": 7275,
+        "sha256": "2114b4aca9f06ffc9b60406a157e2eeff340ea6b1da6eb29d586cba187e2da9b"
+      },
+      {
+        "path": "frontlines/builds/58/index.icon.png",
+        "bytes": 66463,
+        "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+      },
+      {
+        "path": "frontlines/builds/58/index.js",
+        "bytes": 316692,
+        "sha256": "778b358754dcdeb77c81a2ab823c60a5a4c5fa3347c7fda6e2bf04e7a8599324"
+      },
+      {
+        "path": "frontlines/builds/58/index.pack.json",
+        "bytes": 1104,
+        "sha256": "e3672418bf10e75b8168243dd0d8e244be918c0a524c831362834ab66e868386"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-00",
+        "bytes": 8388608,
+        "sha256": "9ecce7e74cfe68a2ed3e77001697d571081e7be84156f299207c4096814abc71"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-01",
+        "bytes": 8388608,
+        "sha256": "76f8e591e40fddca02530b6b7f08fa97b57de51bb49d6f00655f6fd5ae89a254"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-02",
+        "bytes": 8388608,
+        "sha256": "913fad7b4b7cdae69cf6245e5d04e238861dc43d1993c86d248693ee0df966d9"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-03",
+        "bytes": 8388608,
+        "sha256": "e532aa59f8a175f6665dbb30e4763bdacf9b4126b22cf07aa202afccf984d4d0"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-04",
+        "bytes": 8388608,
+        "sha256": "e07515832ec0c38233691ab1edab05aefb6615aa3d64f071fb8f399cbf7d7b64"
+      },
+      {
+        "path": "frontlines/builds/58/index.pck.part-05",
+        "bytes": 7238272,
+        "sha256": "159caad4fbed139f218ef7047ea90d7132fa5167a4f59f5387528f3a75159605"
+      },
+      {
+        "path": "frontlines/builds/58/index.png",
+        "bytes": 31590,
+        "sha256": "01d8f0a0a63caa8158ec564713ae8ad743ee6de7ca256c9ff138116ea5f0d849"
+      },
+      {
+        "path": "frontlines/builds/58/index.wasm",
+        "bytes": 37902138,
+        "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+      },
+      {
+        "path": "frontlines/builds/58/jsqr-LICENSE.txt",
+        "bytes": 11560,
+        "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+      },
+      {
+        "path": "frontlines/builds/58/local-qr.js",
+        "bytes": 155154,
+        "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+      },
+      {
+        "path": "frontlines/builds/58/qrcode-LICENSE.txt",
+        "bytes": 1086,
+        "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+      },
+      {
+        "path": "frontlines/builds/58/scanner.js",
+        "bytes": 3185,
+        "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+      },
+      {
+        "path": "frontlines/builds/58/ui-button.png",
+        "bytes": 1246554,
+        "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+      },
+      {
+        "path": "frontlines/builds/58/ui-panel.png",
+        "bytes": 1083698,
+        "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pack.json",
+        "bytes": 2100,
+        "sha256": "2e1191788ad8dd54806f6bbf581d4187eb121fb2be387d8177c4c28b1d0eb6ea"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-00",
+        "bytes": 8388608,
+        "sha256": "5b66665315fd3ca96f37a60490b37e3cefaaca722b6824b8bf05e885f99eed07"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-01",
+        "bytes": 8388608,
+        "sha256": "dca9cb1f8d37bca05e60e055be91d6f5c48cc201e590fab6d2cb20276508f901"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-02",
+        "bytes": 8388608,
+        "sha256": "d55ef5b799965a1fe11f5c77708595d042a860aa6c347dd180e8fbf18d088cb8"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-03",
+        "bytes": 8388608,
+        "sha256": "bc95748e581b2d82d86162de323f2ba3193673b4c9aec980a5a6cfd277fc7da4"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-04",
+        "bytes": 8388608,
+        "sha256": "cd26fae3ee2114d2bf7c679bcfc44986dd00b7b7fca387858c7a8768988d7c7c"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-05",
+        "bytes": 8388608,
+        "sha256": "123ab6da354f2ea229bfd6f0562b851a5adc4d1603a7fd8c6f2442fa1cf7cbff"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-06",
+        "bytes": 8388608,
+        "sha256": "840cd7c576cf5eb187b239ed87e02c0cec3b0195c1df61efd2079daca3546100"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-07",
+        "bytes": 8388608,
+        "sha256": "1056fec967e153b2809300f2210622eb9c552dc5a8803128e7e2c6a1a557e9d3"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-08",
+        "bytes": 8388608,
+        "sha256": "c6016ac5cfaaad90bc01b4c2b437408749d961ff0892315c3d489947530bb77a"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-09",
+        "bytes": 8388608,
+        "sha256": "4a4979d2388d5f69aa25a50aefae03dbebc2bf77aa23eda8c60c580cf832c9cf"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-10",
+        "bytes": 8388608,
+        "sha256": "297fcf57179e8e5bb3388ae304477271bed04627673f31e414e1ae3af6abc775"
+      },
+      {
+        "path": "frontlines/builds/58/wardrobe.pck.part-11",
+        "bytes": 7168428,
+        "sha256": "811a18e3764df748de2ad5d63c353dbf8fa2980fc6c79a474eb75787aaa38e62"
+      },
+      {
+        "path": "frontlines/index.html",
+        "bytes": 752,
+        "sha256": "f4f7f926d7257fc6c6921f4b4e4b83e86cb315949e65ede3b1858e3af03c9c6b"
+      },
+      {
+        "path": "frontlines/maps/current-manifest.json",
+        "bytes": 180,
+        "sha256": "771aae869b4cccb5912d9b69dec2c1935c2ba9d7b8b1718ddfb67a091c2c16c3"
+      },
+      {
+        "path": "frontlines/release.json",
+        "bytes": 715,
+        "sha256": "44c7851787220dde628a4ebc644c34d9880d538372b989a2bbf66a4233eb0b81"
+      }
+    ]
+  },
+  "publication": {
+    "promotion_commit": "aba059596ab1acd6c2c42d619e5f761037e070f9",
+    "final_commit": "85f1e765c211386c77f45337944e3340b35baa87",
+    "final_commit_message": "Keep Frontlines play link on latest release",
+    "pages_run_id": 40549877907,
+    "pages_run_url": "https://github.com/Sponsor-Sorter/Demo/actions/runs/40549877907",
+    "pages_run_status": "completed",
+    "pages_run_conclusion": "success",
+    "pages_deployment_id": 7365753975,
+    "pages_deployment_status": "success",
+    "pages_url": "https://sponsorsorter.com/frontlines/",
+    "release_tag": "frontlines-preview58-testing",
+    "release_url": "https://github.com/Sponsor-Sorter/Demo/releases/tag/frontlines-preview58-testing",
+    "github_release_id": 425756663,
+    "github_asset_id": 682277522
+  },
+  "android": {
+    "version_code": 58,
+    "version_name": "1.0.0-preview.58",
+    "apk_name": "frontlines-1.0.0-preview-build-58.apk",
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk",
+    "bytes": 175602892,
+    "sha256": "28e93f33565a3425f09d70cad7036cc35cb7bf76164d9e6eb2cefa3724865a31",
+    "anonymous_full_download_verified": true,
+    "apksigner_verified": true,
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minimum_auto_update_client_build": 50,
+    "older_clients_manual_setup": "Build 49 and earlier use the manual APK link.",
+    "client_behavior": "Existing Android clients 50+ check the canonical feed, verify APK byte length, SHA-256, package, version and pinned signer before opening Android installer. Android still asks the player to approve installation.",
+    "public_feed_sha256": "762af257a64901116f49ee4343651b5b7de1bad8822d24be1bd15eccf629b32c"
+  },
+  "browser": {
+    "release_manifest_url": "https://sponsorsorter.com/frontlines/release.json",
+    "release_manifest_build": 58,
+    "root_launcher_tracks_release_manifest": true,
+    "games_entry_auto_refreshes_browser_build": true,
+    "games_primary_action": "https://sponsorsorter.com/frontlines/",
+    "games_primary_action_tracks_latest_build": true,
+    "client_behavior": "The game checks the release manifest about once per minute while open and shows an update prompt at a safe menu. Browser players choose Install Update to open the published build.",
+    "browser_pack": {
+      "bytes": 49181312,
+      "sha256": "74b72f5fae2b6555b7de3714ea462f4cb62a498d7a35fbeaf1fa787ad6fc0f13",
+      "public_part_files_verified": "6/6",
+      "reconstructed_hash_verified": true
+    },
+    "deferred_wardrobe_pack": {
+      "bytes": 99443116,
+      "sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+      "public_part_files_verified": "12/12",
+      "reconstructed_hash_verified": true
+    },
+    "all_frozen_public_files_verified": "40/40"
+  },
+  "maps": {
+    "current_pointer": {
+      "visual_revision": 57,
+      "gameplay_revision": 1,
+      "packs": 7,
+      "bytes": 217907280,
+      "sha256": "771aae869b4cccb5912d9b69dec2c1935c2ba9d7b8b1718ddfb67a091c2c16c3"
+    },
+    "visual57_manifest_url": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
+    "visual57_manifest_sha256": "8206508b0738ee8648fb9259bb0c4dce27f474aef5a3ba11166ad7c4d16825d9",
+    "visual57_pcks_verified": "7/7 full public byte/hash checks",
+    "packs": [
+      {
+        "id": "paleo_540",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_540-r1-art57.pck",
+        "bytes": 23183824,
+        "sha256": "edfae8ad7d49bd58faae438ce96489ad3a1077fccf22e278141a063b91d229a0",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_445",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_445-r1-art57.pck",
+        "bytes": 25859056,
+        "sha256": "633c19cd5d9e0e40c3a28a855bc53a0f0e2a9bc6593398ffb6c1fa23af6d58bd",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_405",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_405-r1-art57.pck",
+        "bytes": 27801328,
+        "sha256": "a9b11751226c988de4bce066be51f757c65315e9f3944ea30fb155292ab27caf",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_325",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_325-r1-art57.pck",
+        "bytes": 37680528,
+        "sha256": "bd098b0775c1a15bf3494f9e883fca8e31c7f766c8ca7539ce18a7843ccd1241",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_235",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_235-r1-art57.pck",
+        "bytes": 33356848,
+        "sha256": "1c2d8d0ef7ebdec7471a487cae4a5350c4eba3bccd9da5411bb8792707e349dc",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_175",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_175-r1-art57.pck",
+        "bytes": 33882704,
+        "sha256": "71089342164397d925f2a40324dbd58ffb278960a6d414da7e18281b964d9f92",
+        "full_public_hash_verified": true
+      },
+      {
+        "id": "paleo_105",
+        "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_105-r1-art57.pck",
+        "bytes": 36142992,
+        "sha256": "bf050596ef52d4c92db679bb92819dfc2955b65332d07456b76d599c7ed4222e",
+        "full_public_hash_verified": true
+      }
+    ],
+    "legacy_r1": {
+      "manifest_url": "https://sponsorsorter.com/frontlines/maps/packs-r1-manifest.json",
+      "manifest_sha256": "c469454ba4a1a234cd2b21b187c0f7f5f20e912dca126af735be796d759518e2",
+      "preserved": true
+    },
+    "legacy_android_feed30_sha256": "b13bbba79a80b52bf333df831d8cb78f4a027fa2830ac0c2ebb09f50716e0448",
+    "preserved": true
+  },
+  "acceptance": {
+    "browser": {
+      "path": "D:/Chat Gpt/workspaces/frontlines-build/maps58/browser58-acceptance.json",
+      "sha256": "4769e3967dcc76d0af6e10a143b1ffb7c8dee4f641a23e3a2010dc3ae359fd33",
+      "status": "passed",
+      "environment": "visible IAB gameplay session on isolated localhost origin",
+      "origin": "http://127.0.0.1:18758/",
+      "tested_map": "Carboniferous - 325 Ma",
+      "menu": true,
+      "solo_match": true,
+      "zoom": true,
+      "territory_reserve_deploy": true,
+      "bonus_overlay": true,
+      "console_warnings": 0,
+      "console_errors": 0,
+      "isolated_origin_only": true
+    },
+    "hosted_menu": {
+      "status": "visibly_rendered_build58_main_menu",
+      "url": "https://sponsorsorter.com/frontlines/builds/58/",
+      "root_launcher_redirected_to_build58": true,
+      "console_warnings": 0,
+      "console_errors": 0,
+      "qa_tab_closed": true
+    },
+    "android_phone": {
+      "path": "D:/Chat Gpt/workspaces/frontlines-build/maps58/phone/phone58-acceptance.json",
+      "sha256": "80c916ee75dbff499c08c1e9c9cab8fa84c18c95ad0c36931f8d53280b609b4b",
+      "scope": "One build56 Triassic round7 old-R1-cache campaign continued after Update Art; same 42 countries/hands/deck preserved; original campaign/settings restored and verified.",
+      "not_claimed": [
+        "APK OTA acceptance",
+        "iPhone acceptance",
+        "full seven-map physical campaign",
+        "sustained thermal acceptance"
+      ]
+    }
+  },
+  "live_verification": {
+    "checked_at_utc": "2026-10-27T17:40:29.348214+00:00",
+    "public_site_files_exact": "40/40",
+    "public_visual57_packs_full_hash": "7/7",
+    "public_visual57_manifest_unchanged": true,
+    "public_legacy_r1_manifest_unchanged": true,
+    "public_legacy_android_feed30_unchanged": true,
+    "public_release58": true,
+    "public_android_feed58": true,
+    "public_current_pointer58": true,
+    "apk_size_and_sha256_verified": true,
+    "apk_certificate_verified": true,
+    "details": "Root launcher, all 40 frozen site files, exact browser/wardrobe parts and reconstructed hashes, release metadata, Android feed, current pointer, seven visual57 map payloads, legacy R1 manifest and legacy Android feed were checked anonymously after successful Pages deployment."
+  },
+  "size_ledger": {
+    "apk_bytes": 175602892,
+    "current_map_packs_bytes": 217907280,
+    "total_android_download_bytes": 393510172,
+    "threshold_bytes": 500000000,
+    "threshold_exceeded": false,
+    "proof_path": "D:/Chat Gpt/workspaces/frontlines-build/maps58/public58-verified.json",
+    "proof_sha256": "b114d2a41eaa6c7ccf146c007f53c6714f86e7418f39d23e4f1fb43ec242b219"
+  },
+  "scope": {
+    "game_source_changed": false,
+    "frozen_packet_changed": false,
+    "backend_changed": false,
+    "dns_changed": false,
+    "purchases": false,
+    "user_previews_preserved": 3
+  }
+}
