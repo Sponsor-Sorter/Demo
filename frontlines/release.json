@@ -1,8 +1,8 @@
 {
-  "build": 53,
-  "version": "1.0.0-preview.53",
-  "url": "https://sponsorsorter.com/frontlines/builds/53/",
-  "notes": "Battle logs show both territories and player colours. Northeast Asian borders and Japan sea routes agree. Troop counters stay anchored. Attack/Fortify sits beside the left camera control. Draft placement never refocuses the camera, and each held capital adds 2 draft troops. Successful fortification ends the turn. Apple browser memory improvements retained.",
+  "build": 54,
+  "version": "1.0.0-preview.54",
+  "url": "https://sponsorsorter.com/frontlines/builds/54/",
+  "notes": "New Frontlines cinematic startup: artillery recoil, cannon report, rolling smoke and gold title reveal over a detailed dawn battlefield. Branded engine/browser loading screen, skippable intro, fitted portrait/landscape layout and saved audio levels. Version53 gameplay fixes, HD wardrobe, crossplay protocol51 and Apple browser memory improvements retained.",
   "networkBuild": 51,
-  "androidBuild": 53
+  "androidBuild": 54
 }

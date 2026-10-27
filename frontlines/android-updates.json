@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.53",
-  "versionCode": 53,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview53-testing/frontlines-1.0.0-preview-build-53.apk",
-  "bytes": 169531724,
-  "sha256": "86aa7598039586af7ad6f36fce14506b90b1171c1353ad7e19d1366c9d2228c8",
+  "versionName": "1.0.0-preview.54",
+  "versionCode": 54,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk",
+  "bytes": 174379395,
+  "sha256": "f1d1edd7c71d90659efb3e0fe89edc29a1eb3b68fd86e8af206447ed400505a9",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Battle logs show both territories and player colours. Northeast Asian borders and Japan sea routes agree. Troop counters stay anchored. Attack/Fortify sits beside the left camera control. Draft placement never refocuses the camera, and each held capital adds 2 draft troops. Successful fortification ends the turn. Apple browser memory improvements retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview53-testing/frontlines-1.0.0-preview-build-53.apk"
+  "notes": "New Frontlines cinematic startup: artillery recoil, cannon report, rolling smoke and gold title reveal over a detailed dawn battlefield. Branded engine/browser loading screen, skippable intro, fitted portrait/landscape layout and saved audio levels. Version53 gameplay fixes, HD wardrobe, crossplay protocol51 and Apple browser memory improvements retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk"
 }

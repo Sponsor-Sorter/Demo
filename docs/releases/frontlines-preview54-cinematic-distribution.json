@@ -1,0 +1,89 @@
+{
+  "build": 54,
+  "version": "1.0.0-preview.54",
+  "packet_manifest_sha256": "17c235d78f581f9f11c85abf5b1511f71ea92afb58969ea8aa49982ead93a052",
+  "scope": "Cinematic startup and loading presentation only; gameplay, map, backend, authentication, networking, user data and account state are unchanged.",
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/54/",
+    "network_build": 51,
+    "initial_pack_bytes": 47704416,
+    "initial_pack_sha256": "154520771631dba842737f0efd8e3a37b2d610e18d65767b81eb59e96706d71a",
+    "initial_pack_chunks": 6,
+    "boot_files_equal_to_build53_except_release_metadata": true,
+    "deferred_wardrobe_bytes": 99443116,
+    "deferred_wardrobe_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "unique_versioned_directory": true
+  },
+  "startup": {
+    "presentation": "Dedicated 2.5D dawn battlefield with cannon recoil/flash, layered smoke and gold Cinzel title reveal; not prerecorded video or real-time 3D battlefield.",
+    "sequence_seconds": 7,
+    "skip_available_after_seconds": 0.8,
+    "requires_initial_browser_gesture": true,
+    "portrait_and_landscape_fit": true,
+    "saved_audio_settings": true,
+    "intro_fps_cap": 30,
+    "scene_owned_effects_removed_after_intro": true
+  },
+  "android": {
+    "package": "com.frontlines.worldinconflict",
+    "version_code": 54,
+    "bytes": 174379395,
+    "sha256": "f1d1edd7c71d90659efb3e0fe89edc29a1eb3b68fd86e8af206447ed400505a9",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "updater_feed_version": 54,
+    "minimum_auto_update_client_build": 50,
+    "manual_setup_url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk"
+  },
+  "native_scope": {
+    "gameplay_script_uid_files_unchanged": 149,
+    "creator_and_native_library_files_unchanged": 422,
+    "release_metadata_updated": true,
+    "physical_android54_install_or_ota_tested": false
+  },
+  "validation": {
+    "runtime": "Private Windows WebKit in fresh iPhone-UA touch contexts; emulation only, not physical Apple acceptance or sensor rotation.",
+    "portrait": {
+      "passed_to_menu": true,
+      "portrait_skip_tested": true,
+      "intro_heap_bytes": 58064896,
+      "menu_heap_bytes": 120586240,
+      "deferred_wardrobe_requested": false
+    },
+    "landscape": {
+      "passed_to_menu": true,
+      "intro_heap_bytes": 58064896,
+      "menu_heap_bytes": 120586240,
+      "deferred_wardrobe_requested": false
+    },
+    "console": {
+      "known_same_image_framebuffer_warnings": 16,
+      "gdscripts_errors": 0,
+      "wasm_errors": 0,
+      "oom_errors": 0
+    },
+    "assets": "7 startup assets and fonts have source provenance and hashes in the frozen packet; generated battlefield/cannon/smoke art is layered 2.5D.",
+    "mixed_device_match_tested": false,
+    "full_campaign_retested": false,
+    "subjective_audio_review": false,
+    "physical_apple54_acceptance": false
+  },
+  "preservation": {
+    "older_browser_builds": [
+      51,
+      52,
+      53
+    ],
+    "legacy_android_release_feed": 30,
+    "optional_map_and_wardrobe_manifests": true,
+    "backend_version": 22,
+    "backend_changed": false,
+    "dns_changed": false,
+    "network_protocol_changed": false,
+    "user_data_changed": false
+  },
+  "distribution": {
+    "hosted_file_count": 39,
+    "apk_published_as_github_prerelease": true,
+    "manifest_preserved_unchanged": true
+  }
+}
