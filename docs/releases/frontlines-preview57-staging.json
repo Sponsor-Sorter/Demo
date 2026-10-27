@@ -1,0 +1,104 @@
+{
+  "release": "Frontlines preview build 57 staged publication receipt",
+  "build": 57,
+  "status": "promoted_build_57",
+  "packet_manifest_sha256": "0b4e24bd894e3119059018107f663645e1c0a778a4756d8f5fa01413a526deb4",
+  "files": {
+    "packet_site_files_verified": "76/76",
+    "versioned_files_staged": "72/72",
+    "versioned_public_hashes": "72/72",
+    "browser_packs_verified": 2,
+    "visual57_map_pcks_verified": "7/7"
+  },
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/57/",
+    "pack_bytes": 49179840,
+    "pack_sha256": "6d49d770ccb3f15659e3d0cc1d144d572ad0febede0bd1d0190e964fc5a7a648",
+    "deferred_wardrobe_bytes": 99443116,
+    "deferred_wardrobe_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "hosted_packet_files": 72
+  },
+  "android": {
+    "version_code": 57,
+    "version_name": "1.0.0-preview.57",
+    "apk": "frontlines-1.0.0-preview-build-57.apk",
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview57-testing/frontlines-1.0.0-preview-build-57.apk",
+    "bytes": 175602892,
+    "sha256": "1923151c580e364f58bbb08db926c08d71a0306f8db752c84524dc4c31902465",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "anonymous_download_verified": true,
+    "release_id": 425653895,
+    "asset_id": 682040029
+  },
+  "maps": {
+    "path": "frontlines/maps/visual57/",
+    "ids": [
+      "paleo_540",
+      "paleo_445",
+      "paleo_405",
+      "paleo_325",
+      "paleo_235",
+      "paleo_175",
+      "paleo_105"
+    ],
+    "public_pcks_verified": "7/7",
+    "current_map_pointer_promoted": false
+  },
+  "legacy_r1": {
+    "manifest_sha256": "c469454ba4a1a234cd2b21b187c0f7f5f20e912dca126af735be796d759518e2",
+    "old_public_pcks_verified": "7/7",
+    "preserved": true
+  },
+  "publication": {
+    "commit": "787a0498e60b4e3aedee456fdf3a46c1235b07d4",
+    "commit_message": "Stage Frontlines build 57 and visual map assets",
+    "pages_run_id": "40533185144",
+    "pages_run_url": "https://github.com/Sponsor-Sorter/Demo/actions/runs/40533185144",
+    "pages_deployment_id": "7363337341",
+    "pages_deployment_status": "success",
+    "apk_prerelease_url": "https://github.com/Sponsor-Sorter/Demo/releases/tag/frontlines-preview57-testing"
+  },
+  "visible_browser_acceptance": {
+    "status": "passed_isolated_origin_match",
+    "reason": "Visible IAB opened the exact frozen build57 browser payload on isolated origin http://127.0.0.1:18757/. Screenshot pixels showed the build57 title, campaign setup, game modes, Carboniferous 325 map picker/download and solo match. Updated Carboniferous paleomap terrain rendered in gameplay. Zoom controls changed map scale; tapping Guiana Shield selected the territory and deployed one reserve (remaining reserve and faction count updated); bonus overlay displayed territory coloring. No account/commander screens or public-origin campaign storage were used.",
+    "tab_closed": true,
+    "canvas_backing": "2560x1440",
+    "canvas_display": "1280x720",
+    "main_menu_rendered": true,
+    "map_selector_accessed": true,
+    "match_rendered": true,
+    "tested_map": "Carboniferous 325 Ma (paleo_325)",
+    "map_download_bytes": 37680528,
+    "zoom": "responsive",
+    "territory": "Guiana Shield selected; reserve deployed",
+    "bonus_overlay": "rendered",
+    "console_warnings_or_errors": 0,
+    "isolated_origin": "http://127.0.0.1:18757/"
+  },
+  "defaults": {
+    "site_root_build": 57,
+    "release_metadata_build": 57,
+    "android_feed_version_code": 57,
+    "games_catalogue_build": 57,
+    "current_map_pointer_build": 57,
+    "changed": true
+  },
+  "physical_android": {
+    "status": "passed_for_recorded_scope",
+    "addendum_path": "D:\\Chat Gpt\\workspaces\\frontlines-build\\maps57\\phone\\phone57-acceptance.json",
+    "sha256": "c7fbf573dd795a15c7202e2f8b84d8c24cbb6ea17e2225689555b4069bf6a366",
+    "limits": [
+      "not OTA",
+      "iPhone not tested",
+      "all-seven-map campaigns not tested",
+      "sustained performance not claimed"
+    ]
+  },
+  "scope": {
+    "backend22_unchanged": true,
+    "dns_unchanged": true,
+    "purchases": false,
+    "packet_modified": false,
+    "untracked_user_previews_preserved": 3
+  }
+}

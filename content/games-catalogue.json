@@ -131,19 +131,21 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play the latest Frontlines preview in your browser or on Android. Build 56 adds nine commander voices with ready, victory and retreat cues and improves persistence for registered sign-in across temporary connection errors. Network protocol 51 remains compatible. Android build 50 and newer can use the in-game updater; earlier builds need a manual setup update.",
+      "description": "Play the latest Frontlines preview in your browser or on Android. Build 57 gives all seven prehistoric maps detailed updated terrain while retaining gameplay, saves and network protocol 51. Android build 50 and newer can use the in-game updater; earlier builds need a manual setup update.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Web and Android commander voice and account preview",
-      "build": "Version 1.0.0-preview.56 · Build 56 (browser + Android)",
+      "status": "Web and Android paleomap terrain preview",
+      "build": "Version 1.0.0-preview.57 · Build 57 (browser + Android)",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
+        "Build 57 updates the terrain on all seven prehistoric maps with detailed material fields, authored mountain belts and drainage, revised rock, forest and ice surfaces, dark water, corrected coast walls, antialiased borders and complete coastal bonus outlines. Gameplay, map graphs and rules, saves, protocol 51, Earth, wardrobe, music, voices and account behavior are retained.",
+        "Browser acceptance: build 57 opened and rendered in the visible browser; an isolated-origin solo Carboniferous 325 match showed updated terrain. Zoom responded, a territory tap selected Guiana Shield and deployed a reserve, and the bonus overlay displayed.",
         "Build 56 adds nine distinct commander voices, each with ready, victory and retreat cues. Preview Voice in Your Commander to hear the selected voice. The 27 new recordings use balanced mono audio and mouth timing.",
         "Registered sign-in credentials now survive temporary connection and gateway errors; explicitly invalid or revoked sessions still require reauthentication. Failed secure saves retry, including when the app backgrounds or quits normally. Token refresh uses elapsed time and resumes after deep sleep. Passwords are not stored.",
         "Build 56 retains the single-channel music and track controls from build 55, plus approved gameplay and art. New music and the remaining new voice-emote recordings are deferred; existing other cues remain available.",
         "Build 56 checks: 165 muted WASAPI commander-voice playback checks and 36 synthetic HTTP/session/vault/account-form checks passed. These are not subjective listening or physical Android playback/sign-in/restart/OTA acceptance.",
-        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual build 56 APK listed below.",
+        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual build 57 APK listed below.",
         "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
         "Build 40: open Your Commander, choose Wardrobe and Laced Bodice. Choose the garnet clasp and pearl drops independently or select None. Undo/discard restores saved appearance.",
@@ -176,17 +178,17 @@
       ],
       "actions": [
         {
-          "label": "Play Frontlines build 56",
-          "url": "https://sponsorsorter.com/frontlines/builds/56/",
+          "label": "Play Frontlines build 57",
+          "url": "https://sponsorsorter.com/frontlines/builds/57/",
           "primary": true
         },
         {
-          "label": "Download Android build 56 APK (manual setup for builds 49 and earlier)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
+          "label": "Download Android build 57 APK (manual setup for builds 49 and earlier)",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview57-testing/frontlines-1.0.0-preview-build-57.apk"
         }
       ],
-      "notes": "Build 56 changes only network_client.gd runtime behavior after build 55, plus voice cue data/catalogues/envelopes and release metadata. It adds nine distinct commander voices with 27 ready, victory and retreat recordings. Saved registered-session credentials are retained for temporary errors, secure-save failures retry, and token expiry/backoff uses elapsed time with refresh on resume. Network protocol 51, Android KeyStore path and alias, browser origin key, password-not-stored policy, music, gameplay and art are retained. The account checks used synthetic HTTP responses and a fake vault only; no real user auth writes or physical Android56 sign-in/restart/OTA was tested.",
-      "sha256": "8D16B60349FEB84E13F88EAEFD4A13E0FE2DC47281E64D5A34E990F87932382B"
+      "notes": "Build 57 is a visual-only terrain revision for the seven prehistoric maps. The isolated visible-browser match verified Carboniferous 325 terrain, zoom, territory reserve deployment and bonus overlay behavior. Map graphs, rules, canonical IDs, saves, network protocol 51, backend, Earth, wardrobe, music, voices and account behavior remain unchanged. Android build 57 passed the recorded physical-device acceptance scope; this was not an OTA, iPhone or all-seven-map campaign test.",
+      "sha256": "1923151C580E364F58BBB08DB926C08D71A0306F8DB752C84524DC4C31902465"
     }
   ]
 }

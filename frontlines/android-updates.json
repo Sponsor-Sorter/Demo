@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.56",
-  "versionCode": 56,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk",
-  "bytes": 175598796,
-  "sha256": "8d16b60349feb84e13f88eaefd4a13e0fe2dc47281e64d5a34e990f87932382b",
+  "versionName": "1.0.0-preview.57",
+  "versionCode": 57,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview57-testing/frontlines-1.0.0-preview-build-57.apk",
+  "bytes": 175602892,
+  "sha256": "1923151c580e364f58bbb08db926c08d71a0306f8db752c84524dc4c31902465",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Nine updated commander voices with27 ready, victory and retreat cues, balanced mono HD audio and mouth timing. Saved registered sign-in survives temporary connection/server errors; secure-save failures retry, including background/normal quit, and token refresh uses elapsed time to tolerate phone-clock changes. One-channel music, track selection, cinematic startup and gameplay/art from55 retained. New music and other new voice-emote recordings are deferred; existing other cues retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
+  "notes": "All seven ancient-world maps receive the detailed terrain pass:6K desktop and2K mobile material fields, authored mountain belts and drainage, rock/forest/ice surfaces, dark water and corrected coast walls. Shared antialiased borders, complete coastal bonus outlines and less repeated rock detail. Versioned optional map downloads preserve existing graph/rules, saves, protocol51 and previous map URLs. Original Earth, wardrobe, music, voices and account fixes retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview57-testing/frontlines-1.0.0-preview-build-57.apk"
 }
