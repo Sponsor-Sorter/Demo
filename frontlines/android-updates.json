@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.51",
-  "versionCode": 51,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk",
-  "bytes": 168921215,
-  "sha256": "575665650f8a49a5b5d44e0367cfcb65bab4c9adf22e72fc68808943e459520b",
+  "versionName": "1.0.0-preview.53",
+  "versionCode": 53,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview53-testing/frontlines-1.0.0-preview-build-53.apk",
+  "bytes": 169531724,
+  "sha256": "86aa7598039586af7ad6f36fce14506b90b1171c1353ad7e19d1366c9d2228c8",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
-  "notes": "Card rewards now match your hand cards, with correctly fitted frames, artwork and text. Music rotates through four tracks with clean transitions. Android updates download and verify in game; confirm installation when Android asks. Builds49 or earlier need this one setup update.",
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk"
+  "notes": "Battle logs show both territories and player colours. Northeast Asian borders and Japan sea routes agree. Troop counters stay anchored. Attack/Fortify sits beside the left camera control. Draft placement never refocuses the camera, and each held capital adds 2 draft troops. Successful fortification ends the turn. Apple browser memory improvements retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview53-testing/frontlines-1.0.0-preview-build-53.apk"
 }

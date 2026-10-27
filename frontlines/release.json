@@ -1,8 +1,8 @@
 {
-  "build": 52,
-  "version": "1.0.0-preview.52",
-  "url": "https://sponsorsorter.com/frontlines/builds/52/",
-  "notes": "Lower-memory browser startup for iPhone and iPad: smaller initial download, deferred HD wardrobe, streamed music and mobile terrain memory limits. Multiplayer remains compatible with Android51.",
+  "build": 53,
+  "version": "1.0.0-preview.53",
+  "url": "https://sponsorsorter.com/frontlines/builds/53/",
+  "notes": "Battle logs show both territories and player colours. Northeast Asian borders and Japan sea routes agree. Troop counters stay anchored. Attack/Fortify sits beside the left camera control. Draft placement never refocuses the camera, and each held capital adds 2 draft troops. Successful fortification ends the turn. Apple browser memory improvements retained.",
   "networkBuild": 51,
-  "androidBuild": 51
+  "androidBuild": 53
 }

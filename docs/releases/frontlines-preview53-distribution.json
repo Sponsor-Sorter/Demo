@@ -1,0 +1,389 @@
+{
+  "phase": "browser and Android release",
+  "build": 53,
+  "version": "1.0.0-preview.53",
+  "manifest_sha256": "4ee1e2f9974379811cdc73c7172419677c35a5f01c22c932d678f19c46f954e2",
+  "packet_file_count": 56,
+  "hosted_files": [
+    {
+      "path": "frontlines/android-updates.json",
+      "bytes": 1054,
+      "sha256": "5195a4c91bca715604686d5449c1e54a357053822a7ffc11397f141fdfddda78"
+    },
+    {
+      "path": "frontlines/builds/53/campaign-journal.js",
+      "bytes": 616,
+      "sha256": "0589e3a5338a4f207862d99a1a65056b8f3f74fd6bd1e861f479610ba997ff37"
+    },
+    {
+      "path": "frontlines/builds/53/frontlines-pack-loader.js",
+      "bytes": 4280,
+      "sha256": "ddf159724ce4a7cd792971e6061d68de91d8bcc58172b7f6a576175f2fac7804"
+    },
+    {
+      "path": "frontlines/builds/53/index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "path": "frontlines/builds/53/index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "path": "frontlines/builds/53/index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "path": "frontlines/builds/53/index.html",
+      "bytes": 5888,
+      "sha256": "6c31e545b2babe7ad18f0acb026c7ff0bcb232302e5b0e8daac41c6972663b9e"
+    },
+    {
+      "path": "frontlines/builds/53/index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "path": "frontlines/builds/53/index.js",
+      "bytes": 316692,
+      "sha256": "778b358754dcdeb77c81a2ab823c60a5a4c5fa3347c7fda6e2bf04e7a8599324"
+    },
+    {
+      "path": "frontlines/builds/53/index.pack.json",
+      "bytes": 1103,
+      "sha256": "0c3966cc61a4b859a9f54f8822550c1fc729eeee787c73d0cf2dfa2356138de3"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "14e9686aef85c867a46a1c92278f04bbf0aae2ee72d84efe7d09a712ccb46aaa"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "36113e3539a125a42518fdbcc90fa4277cc18164dbd0398bfb5a16a427e10cfc"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "096cdca0b4b591b78b4266eeecb481180aed05ab6ad00b27dbf836121eb8a832"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "c191ba6aa593fb6bd29b23393172cd78e8742f78a5b2b8e6b055c136bd36d687"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "8e8cebc826e948d5c09f076781044b9d6b4393c60999b72a02f72f3c34161736"
+    },
+    {
+      "path": "frontlines/builds/53/index.pck.part-05",
+      "bytes": 911900,
+      "sha256": "d97a2ffe06f6da70b9066af4813f088ab7aedf3f9a7b0ddb5e28a0c230a0c248"
+    },
+    {
+      "path": "frontlines/builds/53/index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e"
+    },
+    {
+      "path": "frontlines/builds/53/index.wasm",
+      "bytes": 37902138,
+      "sha256": "11ea19645368f8e73cf337b59cfd7ceeb4ebb51f7a3bbf77d1a5c3ddfedbc522"
+    },
+    {
+      "path": "frontlines/builds/53/jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "path": "frontlines/builds/53/local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "path": "frontlines/builds/53/qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "path": "frontlines/builds/53/scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "path": "frontlines/builds/53/ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "path": "frontlines/builds/53/ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pack.json",
+      "bytes": 2100,
+      "sha256": "2e1191788ad8dd54806f6bbf581d4187eb121fb2be387d8177c4c28b1d0eb6ea"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "5b66665315fd3ca96f37a60490b37e3cefaaca722b6824b8bf05e885f99eed07"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "dca9cb1f8d37bca05e60e055be91d6f5c48cc201e590fab6d2cb20276508f901"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "d55ef5b799965a1fe11f5c77708595d042a860aa6c347dd180e8fbf18d088cb8"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "bc95748e581b2d82d86162de323f2ba3193673b4c9aec980a5a6cfd277fc7da4"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "cd26fae3ee2114d2bf7c679bcfc44986dd00b7b7fca387858c7a8768988d7c7c"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "123ab6da354f2ea229bfd6f0562b851a5adc4d1603a7fd8c6f2442fa1cf7cbff"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "840cd7c576cf5eb187b239ed87e02c0cec3b0195c1df61efd2079daca3546100"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "1056fec967e153b2809300f2210622eb9c552dc5a8803128e7e2c6a1a557e9d3"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "c6016ac5cfaaad90bc01b4c2b437408749d961ff0892315c3d489947530bb77a"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "4a4979d2388d5f69aa25a50aefae03dbebc2bf77aa23eda8c60c580cf832c9cf"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "297fcf57179e8e5bb3388ae304477271bed04627673f31e414e1ae3af6abc775"
+    },
+    {
+      "path": "frontlines/builds/53/wardrobe.pck.part-11",
+      "bytes": 7168428,
+      "sha256": "811a18e3764df748de2ad5d63c353dbf8fa2980fc6c79a474eb75787aaa38e62"
+    },
+    {
+      "path": "frontlines/index.html",
+      "bytes": 752,
+      "sha256": "ca22ed81243c4b5f5bf541c169198da310032593412bc1fca0cdf09587a44858"
+    },
+    {
+      "path": "frontlines/release.json",
+      "bytes": 536,
+      "sha256": "48f4e552af8fd4c23c8c0431f02903147e6ac6440bba28f04f61793089fe6a9d"
+    }
+  ],
+  "github_release": {
+    "tag": "frontlines-preview53-testing",
+    "name": "Frontlines 53 — game fixes and world geography",
+    "asset": "frontlines-1.0.0-preview-build-53.apk",
+    "bytes": 169531724,
+    "sha256": "86aa7598039586af7ad6f36fce14506b90b1171c1353ad7e19d1366c9d2228c8",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "package": "com.frontlines.worldinconflict",
+    "version_code": 53
+  },
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/53/",
+    "base_pack_bytes": 42854940,
+    "base_pack_sha256": "b3d67effca78d7c9256408a5cb1632b582f4b7324519bea70a7df4c61feaf0c3",
+    "deferred_wardrobe_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "browser_engine_and_low_copy_loader_same_as52": true,
+    "network_build": 51
+  },
+  "android": {
+    "version_code": 53,
+    "minimum_auto_update_client_build": 50,
+    "update_feed_build": 53,
+    "apk_url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview53-testing/frontlines-1.0.0-preview-build-53.apk",
+    "manual_setup_for_build49_or_earlier": "same signed build53 APK",
+    "legacy_release_feed_build": 30,
+    "legacy_release_feed_sha256": "b13bbba79a80b52bf333df831d8cb78f4a027fa2830ac0c2ebb09f50716e0448",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "new_physical_phone_install_or_ota_acceptance": false,
+    "bytes": 169531724,
+    "sha256": "86aa7598039586af7ad6f36fce14506b90b1171c1353ad7e19d1366c9d2228c8"
+  },
+  "shared_multiplayer": "Browser53 and Android53 retain NETWORK_BUILD51, compatible with existing browser51/52 clients. No live mixed-device match was tested.",
+  "fixes": [
+    "Battle feed and log include inline player colour and both territory names.",
+    "Classic northeast Asian gameplay-region extent and coastal Japan routes corrected. This is a classic gameplay partition, not modern sovereign borders.",
+    "Troop counters remain at fixed world anchors and hide when off-view.",
+    "Attack/Fortify phase button is beside left Action Cam; draft placement never refocuses camera.",
+    "Each held capital adds two draft reserve troops in solo/LAN; army counters count actual units only.",
+    "Successful fortification ends turn in local/LAN and the existing backend22 implementation."
+  ],
+  "geography_preservation": {
+    "changed_region_pixels": 71680,
+    "exact_browser_native_ids": true,
+    "coast_segments_and_elevation_unchanged": true,
+    "territory_graph_and_all42_ids_unchanged": true
+  },
+  "controls": {
+    "compiled_script_checks": {
+      "capitals": {
+        "army_counter_counts_only_actual_units": true,
+        "captured_capital_stops_paying_former_holder": true,
+        "draft_reserve_contains_bonus": true,
+        "two_held_add_four_to_draft": true
+      },
+      "counters": {
+        "all_centred_on_world_projection": true,
+        "visible": 4
+      },
+      "draft": [
+        {
+          "action_camera": true,
+          "camera_goal_unchanged": true,
+          "one_troop_placed": true
+        },
+        {
+          "action_camera": false,
+          "camera_goal_unchanged": true,
+          "one_troop_placed": true
+        }
+      ],
+      "fortify": {
+        "troops_transferred": true,
+        "turn_ended": true
+      },
+      "phase_button": [
+        {
+          "beside_camera": true,
+          "canvas": [
+            1600.0,
+            900.0
+          ],
+          "fits_canvas": true,
+          "mobile": true
+        },
+        {
+          "beside_camera": true,
+          "canvas": [
+            900.0,
+            1600.0
+          ],
+          "fits_canvas": true,
+          "mobile": true
+        },
+        {
+          "beside_camera": true,
+          "canvas": [
+            1600.0,
+            900.0
+          ],
+          "fits_canvas": true,
+          "mobile": false
+        }
+      ],
+      "execution": {
+        "runtime": "Windows Godot4.7.2, isolated data directory; Android APK compiled GDScript loaded directly for game, world board, battle HUD and release info",
+        "apk_sha256": "86aa7598039586af7ad6f36fce14506b90b1171c1353ad7e19d1366c9d2228c8",
+        "compiled_scripts": {
+          "release_info.gdc": "b597bd029c79d46315e31228a1c939d4ba093276c76ac247171eb12723df6826",
+          "game.gdc": "1904a206ef17a6e02a50c9b93efcda1c361da772b0f0c28739f220646bc071e2",
+          "world_board_3d.gdc": "f16bc4ce28ad3198e317583e51c5d02feac2b2f9183f14f9adffad768a192bce",
+          "battle_hud.gdc": "232b64adcea59772b4c569173c86c490b56184c352d668d38acbd403474fca14"
+        },
+        "physical_android53_installation": false
+      }
+    },
+    "runtime": "Windows Godot4.7.2, isolated data; compiled APK game/world/HUD/release GDScript",
+    "physical_android_installation": false,
+    "full_match_claimed": false
+  },
+  "server": {
+    "live_supabase22_rules_verified": true,
+    "already_supports_capital_plus_2_and_auto_end_fortification": true,
+    "backend_or_schema_deployed": false
+  },
+  "webkit": {
+    "startup_to_touch_solo_match_in_fresh_landscape": true,
+    "same_image_framebuffer_warnings": 16,
+    "gdscript_wasm_or_oom_error": false,
+    "physical_apple53_acceptance": false,
+    "human_confirmed_apple52": true,
+    "no_full_campaign_or_rotation_claim": true
+  },
+  "evidence_files": [
+    {
+      "sha256": "01f4817db8857c7a886873fdd9f7424f72610f5e3079b1aed42dfed3cb11b399",
+      "file": "acceptance53.json",
+      "bytes": 1709
+    },
+    {
+      "sha256": "73c3829ad5418b33194440a285530651205f3c7ed2780d6ccdf50aab0ae1e031",
+      "file": "controls53-inspection.json",
+      "bytes": 1856
+    },
+    {
+      "sha256": "9b6733bd1248f58d1d048c9cac19308ec3f40fea27aaaa0fb919ddcfda87d8d3",
+      "file": "geography53-scope.json",
+      "bytes": 678
+    },
+    {
+      "sha256": "b35a64f62960ea6c50d20b6b080239789e112a7073fb45ebfa803f317e4a8998",
+      "file": "preview53.log",
+      "bytes": 918
+    },
+    {
+      "sha256": "aa86e4ec9895e1529f273f0dbcfc7e8c75b50722f11f09ced8127ed54ca161c4",
+      "file": "webkit53-landscape-console.json",
+      "bytes": 2553
+    },
+    {
+      "sha256": "aa4235f9fb086f85b505175e527b6f0f9581254ea3ec8564bae96ba2bdd10e88",
+      "file": "webkit53-menu-portrait.png",
+      "bytes": 3713693
+    },
+    {
+      "sha256": "22c97a392f18916be65fc96888cc03f3964c0ac75a4eaf7c4d4ef886feaae379",
+      "file": "webkit53-match-landscape-fresh.png",
+      "bytes": 3365307
+    },
+    {
+      "sha256": "115b9e2a753888d8547e92a04f444a3777581e19405ef6c560cd9bcfe0ebce67",
+      "file": "battle-log53.png",
+      "bytes": 1155640
+    },
+    {
+      "sha256": "ff175e07478643e81fcae78dcf6c35fe586549e3744adafdf4e14ea59f8e471f",
+      "file": "gameplay53-asia.png",
+      "bytes": 1752796
+    },
+    {
+      "sha256": "c7dce9048713f6545860d834fae54061cf4454c9f3afee176e04cd8f4633b007",
+      "file": "asia-before-after.png",
+      "bytes": 60744
+    }
+  ],
+  "preserved": "Builds 51 and 52, all older browser/APK versions, Android legacy feed30, optional map/wardrobe delivery manifests, account data and backend22 remain unchanged."
+}
