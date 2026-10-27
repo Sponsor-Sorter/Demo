@@ -1,0 +1,14 @@
+{
+  "packageId": "com.frontlines.worldinconflict",
+  "versionName": "1.0.0-preview.49",
+  "versionCode": 49,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview49-testing/frontlines-1.0.0-preview-build-49.apk",
+  "bytes": 168916956,
+  "sha256": "576287558225c2fbb57a8da65f956014958f5026db2a695464991f3925db8aeb",
+  "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+  "minSdk": 24,
+  "targetSdk": 36,
+  "notes": "Single music owner with retired streams cleared, four-track remembered rotation and end-of-track fallback. Card-award animation now displays the approved ornate face above its backing. Verified Android downloads from the official versioned release, with size/SHA and native package/version/signature checks. Users on47 or earlier need this one manual setup update; later updates are offered in game with Android installation confirmation.",
+  "minimumAutoUpdateClientBuild": 48,
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview49-testing/frontlines-1.0.0-preview-build-49.apk"
+}
