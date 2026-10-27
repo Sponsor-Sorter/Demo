@@ -1,0 +1,842 @@
+[
+  {
+    "bytes": 23183824,
+    "file": "paleo_540-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "599e4f7aa1cb2ac20823f512981cd0bb983dbb788181ae5190ebb9ea01e6668b"
+      },
+      {
+        "path": "world.json",
+        "sha256": "c901f6cdaebfc7ebeef6ab1eb9806b60652f3ba8d2c0b677cfcf5b2ebd2bea5e"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "420c9ac171de14261eccbf2b555a6e4899d249f7a71382fa4469ef024981161e"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "9fce787903d88b62f7273522d2ac1894176d12b56abf60bf74b4df0d893f3405"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "d3ada6aa5eff4be655edba47fb06bd42808de42c061056b7cad1e910ea7f5c11"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "b74cd60a87a85970ad0f1c86ae06e4a585c802793dfe45557a647e3ecc6731fa"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "b1aac1d4e548269c40a42b79bafa9bf415132adcbc6e115f5df60f069539c4e1"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "7747492568d63dbeaaba13171e3908d25c92b6616036b549695e4bdc2f7d42f9"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "5dacbc51f2f737ee60cb6602454b016a5382e8cae92a047dd4a19c031779bcd3"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "85d44a06162a64ed70affc1489963b53dbe597f3e9f79e32662b6cc46fa83542"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "6408984cb5d14cb43e276fb83095ea08617cd7522ee6f2ce547c300199b04256"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "5092ae9646a85a32029787cd5965865abb1fd93a9e23935102be6a4ca8d2d08f"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "3250cac5db2ac36ff1ce50afef1ad6f3bfe994d816a99d2db6009575bb33cbd3"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "860bf37ac5c10858deb2c0d9f0bb4fe60a259b5e47a6eb6c2a68971220c521fb"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "eb64b114a8db3753e6e82ca378977ab7a6083a8b22b049a18e5811daf1040ad3"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "9ffb6bcca2e35bace5a61746609f93411488004dd433b588d5bf03dfc4ca44eb"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "036cbbe5fee101d6522ff48223ba1bf2bcbab6def282556d50eec5e034aafec5"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "d203568e1ecd584992dd85f598f4093ed30249ba5375138cc4c884f18bb03e2e"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "f1e14fadddc325ff537a4b63b12faff3916bc0127c522f46c0537b8dd729de70"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "8c5e1cf6ac4a4df26e21b33598ce0d514389e63e947936de5b8b7ab040594a7d"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "08b61c2b93c891024ac2d0deb755c87a415b56dedc5057810083ab35cc5675d3"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "9f33dbc3a4d77a9a35aa0e4cbe6255abaab2e68a5ee44ba82d6fb2e4e8839a1c"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "66248fe9748fa33885617a20dae7197e5dd4efcab1cfcb8703fd1513256b8544"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "e6757d47d2bf96a84fec77b7fa201c5130a7587e56f17e83001b866100e2e9d2"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "377d7ff86f6023c9f500bd66393d68d1c18dc32ba94db9e8fd3e172d427bfd3c"
+      }
+    ],
+    "graph_hash": "51dac532181fc757c1a22ab10bb76be47d4cf3460dc9f2e2e1e06b909236efe9",
+    "id": "paleo_540",
+    "revision": 1,
+    "sha256": "edfae8ad7d49bd58faae438ce96489ad3a1077fccf22e278141a063b91d229a0",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_540-r1-art57.pck"
+  },
+  {
+    "bytes": 25859056,
+    "file": "paleo_445-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "a40cc5c4f582478ad37c024476cfae41a99e702a97581a11dd46c9dc5c1e3ea7"
+      },
+      {
+        "path": "world.json",
+        "sha256": "5d8ba79f8908f3a429af23ee0441196ac158379e2f6b8666835d2518371be8fc"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "b89b943905c1bdfecd016c9347687297979f7a5ed1d4022b5d2643d7678e406a"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "4cb568b282b3b013f0678629246ab3882766b34f5d9711fb0a62dbe596898c29"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "26e80564e693802727ce96215767f9780bd10e626f45ce84ad13f0a04fd713bf"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "6e63a84687f3a8f6de4fd8225272bbd5f3c2a636754187c6649fbb4f1bc42b09"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "5332667fa50a10d598ff43aaa1f8277c488409e54f3c297fe7df5cf8589cd0d0"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "35ad5f40d8e8d5b9f6ea50db37e658a68b28978c580f1d1f352a1ff8b59b316e"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "50befc982637bd276ffb199820c3cd1ff85220548065bc8d40fd1b1813e02c68"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "8f1f52655e297b69b59643661122843e0a007b4f66deacd0cac1144899778fa1"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "bcb3f114107eb9440b9642ee3fdc513a8e7b5a160a65322f9424426bebbb4a92"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "87b2271a66ca28945b6e94362dc30898ce7df0670f920c7921944b500f067103"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "c0705c4de8f87b6d7f5319031e83d8b6b7ab743820b9c9109a190ccb7a8b5872"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "e80b0339f49cc2b58039117c73ff94f8a1d0a4299347817d85b6854c331b4770"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "7190df86909687ef31aa01299cacb83acd002ca6656d6c66a334abbd1aa9f7ba"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "d267e699d81ed2f78675180ad5416244647664168b4d13fe773ebc3345f6e2b8"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "2c0be65367a77f61098d34baef31f6b833db60609b89de4a9746543c05cd1244"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "9482079d16d353b36c21c8f6e3a9ede098561a12819d6a17a21465c944b8b6a2"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "0079040f456bc49bb36eeb4889e744ce00b24c8fff003d23adc37d9c152a6777"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "8c5e1cf6ac4a4df26e21b33598ce0d514389e63e947936de5b8b7ab040594a7d"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "f4890bddddf7b4aff424befffd61b0f4b30412dbe5526bccbbee7cc786267ddb"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "5071c897800310584245eff3ea54d534e04404cdbc01a6e1dbf11ded6b35b061"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "4a78d249d1499e61d64636f24a6e77fb0afd19003db3bbb1437c43a33ed88755"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "4600864a0e67eec8dfdc59fd22382090a9bdbff3d4da0a103d229290a2113286"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "74a614a7001acc5ae67145d246ec72063d33a7729f2e459763a3423c51e499df"
+      }
+    ],
+    "graph_hash": "0ab7515c6ae7119552b155ecec3d883ecf2db07b7775c56e25d9e53d399d43b3",
+    "id": "paleo_445",
+    "revision": 1,
+    "sha256": "633c19cd5d9e0e40c3a28a855bc53a0f0e2a9bc6593398ffb6c1fa23af6d58bd",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_445-r1-art57.pck"
+  },
+  {
+    "bytes": 27801328,
+    "file": "paleo_405-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "352378c4ad6abe34c0f4b9ee026dd0e3a60742ccbe5a2f09fdcc61717777b589"
+      },
+      {
+        "path": "world.json",
+        "sha256": "be5456e169ffd14293a3fa3afd882408186cd32ad193282c178ffeaf5945eb92"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "7673078196d0737c87489fec8afa0a60f30265972ba7ce07ba4e8c5aeb6da15f"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "5f40f5fdd07bc09e54e0642ce9a0f8326f93656b007a7109d8c9021e8194d7ff"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "ccfa771e9affb7e57b11c6cead3b17e2a093ef3fbd848fc1c3a9cea99cff04c5"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "9988ec5995597c2f0f876a4eaec3df49304ed7a7a049fc0c6d2201300267babe"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "f3ebe1ce912d897d9390f6e32fe3520648e9286835f7444f61a459d35428b2b9"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "07499f727971b5f416e3d751a3b57db8cb1166baa0d7c975f41e5cc34f82f84b"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "c128db03215dc5e314703169ca659d7d8ea043778a921d0bb3ca4fabe4d01198"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "1d8f947cb3bb976f166794f69e19c86a0a7ef966860c5ffcaf550269959749d9"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "9abfb68bef8ed1cd7a6c060c96fd94c07c73d6b0e928f23a4ddc8b196fb324fc"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "03f57dac92d939d787d3328466e718d89b66152b9ca19a875d0a491e93678ef6"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "74d8e391a0276bf154cbc861e327b2eb175836a8a1c4598fd648714944107319"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "c7de2ea72d6cdfe8c3a52c02467baf0507c6528e87fa201eff5b7c93988c9b65"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "9e007d6d3183077be723fff50733c726cc3a0a3cb1181383232095fd3e475478"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "279859ff56b928ac84f26ff6d17104757f2b68b2f44ab42f025c90b9479fbb65"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "3718784d280b6e037963bae2704927bcee1a551c373372499ff69a7856c13172"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "e97ab008d17e4cc6567955e8b33b97d2510bead6d3a966ba6c23ecca63837a98"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "15818e6f33c4bc28d05e40967262ca8914d8196b50a450d03eff4063e0593520"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "d042e262d4d8b04519b3ea16c3fd9015345b0da009a550f205589cf22cd8c42d"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "4d0acb8545a0ca3fb1846fe7efb31050fd62c43763b9eadf3e923166fa5ca217"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "9d20e8833eded235e1208581b401ffa4383999d4c2767d896dcfa7be5dde0f32"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "deb251c8369b3d69607b4835ea9e0a86a93a1c2517b203c8413bca6b0d5aadf1"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "ef88e89bb8b5da5091c946c28d464ee972e72ae3438b246878748747c3aaa2a4"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "605f4a2e340ebe532078fdc339d8e0ca5574be7064fd50e7036b75eb58e11554"
+      }
+    ],
+    "graph_hash": "0d06e51c9a6660516f66c41a74fcf8f8731a37d960c350d2a57e7b19bdb731c7",
+    "id": "paleo_405",
+    "revision": 1,
+    "sha256": "a9b11751226c988de4bce066be51f757c65315e9f3944ea30fb155292ab27caf",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_405-r1-art57.pck"
+  },
+  {
+    "bytes": 37680528,
+    "file": "paleo_325-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "043a297d6b010b313b53555487ec941fff4634ab0e209f10ed77b1c100657fa6"
+      },
+      {
+        "path": "world.json",
+        "sha256": "6f420d9cb0f943648d29bd7992a652a9d766d44a16bd098557e302436c6e909a"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "6dad28ee66b06c59bc6cf5d33c846490a02b52e4ed350c631595130c7fdd9f4f"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "33717d1edbee5b6c84441e46123647fbe5f7eb892b5d1948b8c3074e633ebb6e"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "e323bb39bd6a190d5a6616bf4871a1ec819d87344f8f9873689f8e7e6f17026b"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "9dce9993f2a9293509d00b54d4bf4e72c0bb881a2efe1bc47fd082ac33f9a473"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "1019d94cab43876871127314e8fdea984bf7754e6732dcffecfc7a90da071aec"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "d5c974b9b1d3188825589115129e5143885f8754ef1b48e41a48d2b7653eb99a"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "2432d510f0fe5780b123ffc6a0a651dcc3e168b91ecf347612b5b932ee341d38"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "3e7a1c90e0538ab5fce31109b0b53f41d19a8b0827bf2c2a172975385457b3e3"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "8e22cefffbc3e585296bfec47350e7fb2e00385db40194572412b46bac68faa9"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "aab24de39b7043cb4a4da1dd383620ad0e8f659a0cf313ba68478b4dcba998fd"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "da252c4f29414dcd340b9b9deb77841d67416dd5c575a66c294e5f032a1a6ded"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "86a5113520dc1033d30b7005afdf9a5977aad4319194244fc926d3005b59591e"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "269d477141f2d79487132875f4f093eb14c90b6cef01d3622d9a7670fdf72fa0"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "a0b47fbf9be1a388b5d2cbeed2b5522edfe21dd1828bd2c9bba44835300c12fb"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "8ff5e8285c3403e88f9a803903dae692406abe913737a2c54e92e2e5b0028fb3"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "32c09e9d8913540feba9496b98cc253be0f6769e05cc0cd9244c8465f93c267c"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "f6c4f94e194543d93500eb286c34c568897fbe172e5ad96c957322c480505d1f"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "93939e4dd59c555e254bd3d398c39738f8d5aaa34fb71e72f39e413049567832"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "e50d43a6bc10fc0854508cc6cff0378e06c0cbb86cdcfc5a03d028ab28082e7a"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "88ff8e2a620d7bd3563b67168a6f61d3ce876d9244c38dfbe072e984c16386de"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "57a9297c4b29aaf86389aec1d0fd3165624672e1166042c4599a9d832abaa900"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "52f16756dbd48c812795fb26ee388fe748258bd415b18b10ae7165b4f9873813"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "d059813f6a3a9c65ae01fff356422e9723e8478139429c041d6ecf543083cdec"
+      }
+    ],
+    "graph_hash": "822e0ee6f87e9ba0632fdac84e5e3a4413a24cd79285bfc4d5f4667de6d7c98f",
+    "id": "paleo_325",
+    "revision": 1,
+    "sha256": "bd098b0775c1a15bf3494f9e883fca8e31c7f766c8ca7539ce18a7843ccd1241",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_325-r1-art57.pck"
+  },
+  {
+    "bytes": 33356848,
+    "file": "paleo_235-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "4f40a1c7e6a2b15612588a6f20da2e474ee1499b01f9f062fee02ba76a23f553"
+      },
+      {
+        "path": "world.json",
+        "sha256": "e81c463d2dcec8230e81a9cf85c7c1af1aa8406ed6f985a907ca8cc81f1646ae"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "7bf9ae77375d29a5ec7972a6f77eba6eee8c6b9b86872497f2a4f1ed606f6923"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "00d55df52c426aa4098bf494b0ad7dab99be81c169867682af74cdedd096eec3"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "d28c5326a08161d6e3193fe89bf1c73ff860b098900b9bb37f08bc2282b09f08"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "8dc7cbedc63ed0c8a673f3c1144402a4d39f47383dff534fcafc4bf4615a303d"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "52c730aabd56d9def5be7c24c6eaf684e7e268402a6e9402b586fb00626d822f"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "ef4a113630be2a918d503bdbb2bc3ef9d98add29adc24de4e44665475c8f51bd"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "9a2d2214690baad40f6c0ca7cd7f30dd5ffb0a891d773705fad0e0fb40061ba3"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "6e5cbe54c872692d1fdb78482d630abec4c3aec619f81ebe71081e8f44939705"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "c7b1f5f6bec71326a909494a62473d3f6b39093e762f0034912a7ff251f3a0d3"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "18c8789707adabd47a1b8b711b176223127eaa45c69969afbe85cf538fe65e92"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "bc5c835ed4e68e4997ed2867ed8e2fe1a506b025a03a01f69c0e7d64e683595b"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "c2ee2f4d8b3698f698aee0a9785fa1123df8277b269df3b525dae22c7b46b69c"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "c3f5175ba6a7a2b6175d1b63a899559226d7e103b0fd452d41a6dd4c10a4a503"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "7048a30132b74400af9579f0bfc58857c90ebaf6f107b191aba1a0ad3b6ec40b"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "4d081ac72b2d9bef5d548372704231d7446992a072460e9c978275e02572d796"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "73c319096241c3089e8b6737a7c30569bd7af89db617417e4b636dfa41533907"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "c669cb1c449a68cf8dcf5cd8505317dd63e3e59262da74de5fe9a6a58e228e97"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "752710394207892e1d57d404cda1a2305a44a8523908fd9cfc7728da4f06722d"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "ec5f4cbc53e0e5167854c0e29a05dc42a5fb49571e4a8cc040f93d2dc7d78d6d"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "f81dcbecf0a1ff2b9616d199c41c28f55883d38bd3dff382f11c373921728360"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "c26369bcaed5f6331cd771d3f7ed88630d86060e3bf1a6219365e67ca24ecb33"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "93e5aee5e1b22e1e5cfbd8e1f60754b2cf5e8fc1d3b62b3f407846ed7a991397"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "6fd360f5f917ef9a2cbeddb79d058e44a3360f9fc9395a6348f6e1bf75f5b028"
+      }
+    ],
+    "graph_hash": "56f9051e90759b410a22c84d0932ab29f0b6fbec74eae08000b8b9ccbdfaa226",
+    "id": "paleo_235",
+    "revision": 1,
+    "sha256": "1c2d8d0ef7ebdec7471a487cae4a5350c4eba3bccd9da5411bb8792707e349dc",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_235-r1-art57.pck"
+  },
+  {
+    "bytes": 33882704,
+    "file": "paleo_175-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "b59b0cacc7a2999d2dcc567fd0bc3c418a8dae25ecb5384eb12e5b894ec49ea1"
+      },
+      {
+        "path": "world.json",
+        "sha256": "6d828d5b9db0692694cbab9e60b6761326b435b72a14065f9eaf521bf1b44957"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "5fd59f1dbc66c233bdb6945b0ccf7bce86cbfb07f60479d68fc42b47c5e567a5"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "1b114f54455507104cd019412daca37006ffe37e0b7820f947b7ec4537578b57"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "876465068f2471e206b24671ddd424abaf79fc6f10df60aeb0d6b6215fe3e8ce"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "9370c251dcb0b67d4c7e6ca8da66e49d592eddbde6844fdfd58e1dfee1a967f9"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "1592a4b822fe7646ad5f65102854afc0785b275ff6e1e83a830b90aa59cadc26"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "f8db680cc289e9630ad74b015dd7168b2db0c303e2653988becb85207c14ec16"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "6600348551f200f8ac368a0efc543de938bc78fa815a091c9af417ac4eec9c5d"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "62776dc0264bedb1764016c0245fc941a7e638ead31b9f60acd4dff4f74ee383"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "7183bdc859b208c146c7aa8b23282c9138e3257dd84027e73694020196114265"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "4ee9995318446bdcb4ba45a7e17dee0a838309463688896acdfa3ef1077b3eac"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "a346c33455aa917f4ed4651655609a7b6f6906d746e6b05c12ce374ed8361042"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "e7be7f242b8b02b86bc827950aa617290ad9d480273473018c0ec6fc6d1633f4"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "39714af0b0b2fe27cbd099d9761cffac8476683d3423ad36cf49b183f9510d08"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "c9783fc73f3f11296e4770ed5ced2cae10427ce602dd14739f4b9a7b7b686bbd"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "7f3ba73f97ef51c93fe0cd494fa52fc32b7216f99a346854f1d9b654ee472e93"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "0d2fe4390627e04ed2f75c39c7473ae07cb0e5831f66bc3ec0f58768d2856567"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "3f1fcd3ead35bad063b97aeed159f026ec9d62b40fe94bcc7a0237af325d5e7b"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "4f136d446362fe69971842b66f86fadf80c81500589c123954e23f6a9758da19"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "e2d779015a3779e7472ab2f505a3af450726979e21a8ce9073224c57adcf79cc"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "427d749973a3490453311ac5d878d37208f8b0bca78f30ac1f59ed7452412fdd"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "4faa71a570e6a7a46d13881103d64df85805240987971a626b59b8fad626af20"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "ee55475aa2c5cc1e4d1ed23ea5f5bfa39b1afcae7770e24d42effaa33ce72b99"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "22be5615f4b093eb338d931618e56c42e7a3a5d4b588a3228a4918021c181825"
+      }
+    ],
+    "graph_hash": "a4cdba08e479c53529e1b9bdad52384e39a6c94881a209852586fde523d92040",
+    "id": "paleo_175",
+    "revision": 1,
+    "sha256": "71089342164397d925f2a40324dbd58ffb278960a6d414da7e18281b964d9f92",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_175-r1-art57.pck"
+  },
+  {
+    "bytes": 36142992,
+    "file": "paleo_105-r1-art57.pck",
+    "files": [
+      {
+        "path": "map.json",
+        "sha256": "231a825b7e11f6acdadb35e273c5cfd8aba362652a9e7e25227499c89f365a1a"
+      },
+      {
+        "path": "world.json",
+        "sha256": "1711234712ae2c26c4bd9409db9d1fa782edff353cb48ac61da425b7369411c5"
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "299ea0967fc60ded46a3db02c1df4ce072652d0c366b703ef1c892e98be65809"
+      },
+      {
+        "path": "SOURCE_CREDITS.md",
+        "sha256": "ae8087c342ebd4c748b0e22887908c4139e00bfc2eb9d05eb58c2f4da09b4384"
+      },
+      {
+        "path": "PROJECT_LICENSE.txt",
+        "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+      },
+      {
+        "path": "RUNTIME_MANIFEST.json",
+        "sha256": "75af740f51117932cc6d313f7bb91aec791a8c52676c3461960090ee50e5b61f"
+      },
+      {
+        "path": "painting_native_r2.png",
+        "sha256": "50a04d38a3e588cdc8ae6f1dd0f645be18123af3bc896d96e9773d36948c491b"
+      },
+      {
+        "path": "terrain_detail_6k.png",
+        "sha256": "b447b08006ee9fb95d5ae558a9169f04d0819a88acd4fc2f603d82cef84a0f27"
+      },
+      {
+        "path": "detail_elevation_r2.png",
+        "sha256": "0d22920cf1c3252a344116ef76526a6d916c08d93ce259c6ee7c1d900d1c910f"
+      },
+      {
+        "path": "territory_ids.png",
+        "sha256": "1e64029a3beb9bc1ba2845044aedaaf34e9c95c18ad09ea0b6bb571329e19c0e"
+      },
+      {
+        "path": "engraved_edges.png",
+        "sha256": "88e25ad9cfbfb5ef94264be2da9a7b7b50ca51ed061be1baa999925aeb525ae6"
+      },
+      {
+        "path": "height_mobile.png",
+        "sha256": "a55a39f0b377446510a4aba98553381a50f2d088b5b58566ca91da64edef082b"
+      },
+      {
+        "path": "height_desktop.png",
+        "sha256": "aa2d714b27f95457a1a99f61098a43567c1308807f89707cb11fcad04a66d06b"
+      },
+      {
+        "path": "ocean_depth.png",
+        "sha256": "e10406dce3a3eb970b1e540c5121a75a971adf912e00311b66d2e08afb8ee58b"
+      },
+      {
+        "path": "coast_segments.json",
+        "sha256": "50eeab02d0fb0eef682623b387377948c68b59293026d35d7ce9890f92fc0d31"
+      },
+      {
+        "path": "land_mesh_mobile.res",
+        "sha256": "fae0069ca613c6c379fcbd6a73dfda4b33d7b3ba72b1918d6375664c97f5eaea"
+      },
+      {
+        "path": "land_mesh_desktop.res",
+        "sha256": "224b7a1f004614a3cb476e3b5ed943f88b0439618ae7e25951bcd512971d6f8d"
+      },
+      {
+        "path": "terrain_detail_mobile.png",
+        "sha256": "9354f767e14d828de5b897a7c9f2de4eaa6ac88c42c5b2f400551be1834de73f"
+      },
+      {
+        "path": "detail_elevation_mobile.png",
+        "sha256": "4b0bf05f4cd22be9cdcb3ecb4423c845f59e042bc6e097fd5f3da833c7e72524"
+      },
+      {
+        "path": "surface_material_6k.png",
+        "sha256": "92515e0815e11b1a90ab7c1cdc4e9e506d752e37fd4eb107e88311cbdc6eb2f0"
+      },
+      {
+        "path": "surface_material_mobile.png",
+        "sha256": "76700ab2e2825a8a569f872545cecec3a5e0eab917c6526b13b988196d9359d5"
+      },
+      {
+        "path": "surface_normal_6k.png",
+        "sha256": "730d95fc06f3897908e31b4d47ada6373bc5465f0714bdb150617830eebf92bb"
+      },
+      {
+        "path": "surface_normal_mobile.png",
+        "sha256": "46a47b74a8ebd5be8f2ff33e7d939837cceaa13574ed0c0bff1d44b1b6165a81"
+      },
+      {
+        "path": "terrain_micro_atlas.png",
+        "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+      },
+      {
+        "path": "border_distance_6k.png",
+        "sha256": "9a25817c2f54ff2eb0118b7b41b6589cc85214eda23ef9885fe21776df820770"
+      },
+      {
+        "path": "coast_walls_r2.json",
+        "sha256": "d09a9d434702c9c568a3ce6559f30921db2371d6b404bc39d5c4d23516119d50"
+      },
+      {
+        "path": "border_distance_mobile.png",
+        "sha256": "2a02cd960fa2dede7feb3a9e9cae53694b9498c478ad6ac5254ab36967797f07"
+      }
+    ],
+    "graph_hash": "cda798087c2050ba4848c7047235e433d956f622d44262acc634a2db7086572b",
+    "id": "paleo_105",
+    "revision": 1,
+    "sha256": "bf050596ef52d4c92db679bb92819dfc2955b65332d07456b76d599c7ed4222e",
+    "visual_revision": 57,
+    "url": "https://sponsorsorter.com/frontlines/maps/visual57/paleo_105-r1-art57.pck"
+  }
+]

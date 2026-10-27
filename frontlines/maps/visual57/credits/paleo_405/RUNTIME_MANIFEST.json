@@ -1,0 +1,106 @@
+{
+  "border_distance_6k.png": {
+    "bytes": 2341584,
+    "sha256": "deb251c8369b3d69607b4835ea9e0a86a93a1c2517b203c8413bca6b0d5aadf1"
+  },
+  "border_distance_mobile.png": {
+    "bytes": 464532,
+    "sha256": "605f4a2e340ebe532078fdc339d8e0ca5574be7064fd50e7036b75eb58e11554"
+  },
+  "coast_segments.json": {
+    "bytes": 1927719,
+    "sha256": "c7de2ea72d6cdfe8c3a52c02467baf0507c6528e87fa201eff5b7c93988c9b65"
+  },
+  "coast_walls_r2.json": {
+    "bytes": 1900913,
+    "sha256": "ef88e89bb8b5da5091c946c28d464ee972e72ae3438b246878748747c3aaa2a4"
+  },
+  "detail_elevation_mobile.png": {
+    "bytes": 122812,
+    "sha256": "e97ab008d17e4cc6567955e8b33b97d2510bead6d3a966ba6c23ecca63837a98"
+  },
+  "detail_elevation_r2.png": {
+    "bytes": 574926,
+    "sha256": "07499f727971b5f416e3d751a3b57db8cb1166baa0d7c975f41e5cc34f82f84b"
+  },
+  "engraved_edges.png": {
+    "bytes": 174025,
+    "sha256": "1d8f947cb3bb976f166794f69e19c86a0a7ef966860c5ffcaf550269959749d9"
+  },
+  "height_desktop.png": {
+    "bytes": 44128,
+    "sha256": "03f57dac92d939d787d3328466e718d89b66152b9ca19a875d0a491e93678ef6"
+  },
+  "height_mobile.png": {
+    "bytes": 15855,
+    "sha256": "9abfb68bef8ed1cd7a6c060c96fd94c07c73d6b0e928f23a4ddc8b196fb324fc"
+  },
+  "land_mesh_desktop.res": {
+    "bytes": 1618576,
+    "sha256": "279859ff56b928ac84f26ff6d17104757f2b68b2f44ab42f025c90b9479fbb65"
+  },
+  "land_mesh_mobile.res": {
+    "bytes": 456522,
+    "sha256": "9e007d6d3183077be723fff50733c726cc3a0a3cb1181383232095fd3e475478"
+  },
+  "map.json": {
+    "bytes": 19041,
+    "sha256": "352378c4ad6abe34c0f4b9ee026dd0e3a60742ccbe5a2f09fdcc61717777b589"
+  },
+  "ocean_depth.png": {
+    "bytes": 60315,
+    "sha256": "74d8e391a0276bf154cbc861e327b2eb175836a8a1c4598fd648714944107319"
+  },
+  "painting_native_r2.png": {
+    "bytes": 1922209,
+    "sha256": "9988ec5995597c2f0f876a4eaec3df49304ed7a7a049fc0c6d2201300267babe"
+  },
+  "PROJECT_LICENSE.txt": {
+    "bytes": 1072,
+    "sha256": "7c5d4a497b63457497d7f0652e8fb063b751b4f9f3a35ac58b010aad0698d7eb"
+  },
+  "SOURCE_CREDITS.md": {
+    "bytes": 4138,
+    "sha256": "5f40f5fdd07bc09e54e0642ce9a0f8326f93656b007a7109d8c9021e8194d7ff"
+  },
+  "surface_material_6k.png": {
+    "bytes": 3623647,
+    "sha256": "15818e6f33c4bc28d05e40967262ca8914d8196b50a450d03eff4063e0593520"
+  },
+  "surface_material_mobile.png": {
+    "bytes": 277695,
+    "sha256": "d042e262d4d8b04519b3ea16c3fd9015345b0da009a550f205589cf22cd8c42d"
+  },
+  "surface_normal_6k.png": {
+    "bytes": 3237862,
+    "sha256": "4d0acb8545a0ca3fb1846fe7efb31050fd62c43763b9eadf3e923166fa5ca217"
+  },
+  "surface_normal_mobile.png": {
+    "bytes": 600710,
+    "sha256": "9d20e8833eded235e1208581b401ffa4383999d4c2767d896dcfa7be5dde0f32"
+  },
+  "terrain_detail_6k.png": {
+    "bytes": 2868626,
+    "sha256": "f3ebe1ce912d897d9390f6e32fe3520648e9286835f7444f61a459d35428b2b9"
+  },
+  "terrain_detail_mobile.png": {
+    "bytes": 739561,
+    "sha256": "3718784d280b6e037963bae2704927bcee1a551c373372499ff69a7856c13172"
+  },
+  "terrain_micro_atlas.png": {
+    "bytes": 4413839,
+    "sha256": "7f4663f6c678590aec55a849a2a19c4cd942d0e87530d475369dccf466fbd091"
+  },
+  "territory_ids.png": {
+    "bytes": 128069,
+    "sha256": "c128db03215dc5e314703169ca659d7d8ea043778a921d0bb3ca4fabe4d01198"
+  },
+  "thumbnail.png": {
+    "bytes": 249305,
+    "sha256": "7673078196d0737c87489fec8afa0a60f30265972ba7ce07ba4e8c5aeb6da15f"
+  },
+  "world.json": {
+    "bytes": 7212,
+    "sha256": "be5456e169ffd14293a3fa3afd882408186cd32ad193282c178ffeaf5945eb92"
+  }
+}
