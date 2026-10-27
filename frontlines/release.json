@@ -1,6 +1,8 @@
 {
-  "build": 51,
-  "version": "1.0.0-preview.51",
-  "url": "https://sponsorsorter.com/frontlines/builds/51/",
-  "notes": "Card rewards now match your hand cards, with correctly fitted frames, artwork and text. Music rotates through four tracks with clean transitions. Android updates download and verify in game; confirm installation when Android asks. Builds49 or earlier need this one setup update."
+  "build": 52,
+  "version": "1.0.0-preview.52",
+  "url": "https://sponsorsorter.com/frontlines/builds/52/",
+  "notes": "Lower-memory browser startup for iPhone and iPad: smaller initial download, deferred HD wardrobe, streamed music and mobile terrain memory limits. Multiplayer remains compatible with Android51.",
+  "networkBuild": 51,
+  "androidBuild": 51
 }

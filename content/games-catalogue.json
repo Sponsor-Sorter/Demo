@@ -131,14 +131,15 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Build the world campaign in solo, local or online play. Browser updates are published separately; Android build 50 and newer use the in-game updater with a verified download and Android install confirmation. Builds 49 or earlier need one manual setup update to build 51. Solo play supports autosave/resume.",
+      "description": "Play in the browser or on Android and join the same online game. Browser build 52 lowers startup memory for iPhone and iPad browsers with a smaller initial pack and HD wardrobe loaded only in the creator; Android remains build 51. Browser52 uses network protocol51 for online and LAN compatibility.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Web and Android playtest preview",
-      "build": "Version 1.0.0-preview.51 · Build 51",
+      "build": "Browser 1.0.0-preview.52 · Build 52 | Android 1.0.0-preview.51 · Build 51",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
+        "Browser build 52: the smaller 42.85 MB base pack lowers startup memory; the 99.44 MB HD wardrobe downloads only when you open the creator. Browser52 uses networkBuild51 for online and LAN, so browser and Android build51 players can join the same game. The Windows WebKit checks are not physical iPhone/iPad acceptance; the owner still needs to retry on her phone.",
         "Android setup: builds 49 or earlier need one manual signed update to build 51. On build 50 or later, use the in-game updater; it verifies the official package before Android opens its installer. Review Android's confirmation and tap Install; updates are never installed silently.",
         "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
@@ -172,16 +173,16 @@
       ],
       "actions": [
         {
-          "label": "Play browser preview",
-          "url": "https://sponsorsorter.com/frontlines/builds/51/",
+          "label": "Play browser build 52",
+          "url": "https://sponsorsorter.com/frontlines/builds/52/",
           "primary": true
         },
         {
-          "label": "Download Android APK (manual setup for builds 49 and earlier)",
+          "label": "Download Android build 51 APK (manual setup for builds 49 and earlier)",
           "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk"
         }
       ],
-      "notes": "Build 51: correctly fitted reward-card frame/artwork/text match the cards in hand. Thirty pixel/geometry assertions compare all three symbols and two orientations with the unchanged hand print; the Japan/soldier reward was reviewed on Android 14 in landscape. The actual build 50-to-51 in-app update downloaded the official APK, verified exact size/SHA/package/version/certificate, opened Android's installer, and launched installed51 after user confirmation. Builds49 or earlier need one manual signed setup update. Focused updater checks:46; real-mixer music checks:29. No new full campaign/endurance or subjective audio-mix claim. Historical build47 AI limit remains documented in its release record. Physical sensor confirmation was on build 13.",
+      "notes": "Browser 52 lowers startup memory: the verified initial pack is 42,850,428 bytes; the 99,443,116-byte HD wardrobe is deferred to the creator. All 164 approved HD payloads and 345 current raw files match exactly across packs. Loader checks:37 passed; streaming music and mobile terrain budgets are included. Browser52 sends networkBuild51 and was validated to join the same online/LAN game as Android51. Windows WebKit reproduced build51 out-of-memory before the menu; build52 reached menu, creator and touch Solo in fresh portrait/landscape contexts. Isolated native rendering proxy menu texture memory fell from 267,900,282 to 69,480,269 bytes; these are not iOS measurements. Windows WebKit emitted16 same-image framebuffer warnings; resizing an existing drawing buffer can yield a black composition (documented Windows WebKit issue #42885). Physical iPhone/iPad retry remains outstanding. Android APK/feed remain build51 unchanged; no Android52 APK or OTA is claimed. Historical Android build51 OTA acceptance: actual50-to51 update installed on Android14 after the user confirmed Android installer. Previous Android release note: Build 51: correctly fitted reward-card frame/artwork/text match the cards in hand. Thirty pixel/geometry assertions compare all three symbols and two orientations with the unchanged hand print; the Japan/soldier reward was reviewed on Android 14 in landscape. The actual build 50-to-51 in-app update downloaded the official APK, verified exact size/SHA/package/version/certificate, opened Android's installer, and launched installed51 after user confirmation. Builds49 or earlier need one manual signed setup update. Focused updater checks:46; real-mixer music checks:29. No new full campaign/endurance or subjective audio-mix claim. Historical build47 AI limit remains documented in its release record. Physical sensor confirmation was on build 13.",
       "sha256": "575665650F8A49A5B5D44E0367CFCB65BAB4C9ADF22E72FC68808943E459520B"
     }
   ]

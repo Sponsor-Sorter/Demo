@@ -1,0 +1,69 @@
+{
+  "phase": "browser-only memory release",
+  "build": 52,
+  "version": "1.0.0-preview.52",
+  "frozen_manifest_sha256": "90adca4cc0a88eada52804de418b907ee8c9cd022b13c6c6bdf034b9270ecfdd",
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/52/",
+    "index_html_bytes": 5888,
+    "index_html_sha256": "eb32ad7073c55135375003574bc601dc02727a11bad24e60897fb3852ade4a71",
+    "network_build": 51,
+    "initial_pack_bytes": 42850428,
+    "initial_pack_sha256": "8072db1423b5dfdd8c02400dee081ceebd22ef41d02378b41fd0aec741892063",
+    "wardrobe_pack_bytes": 99443116,
+    "wardrobe_pack_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "loader_checks": 37,
+    "approved_hd_payloads": 164,
+    "exact_raw_files": 345
+  },
+  "shared_multiplayer": "Browser52 sends networkBuild51 for online and LAN, preserving compatibility with Android51 so both platforms join the same game.",
+  "android": {
+    "build": 51,
+    "apk_url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview51-testing/frontlines-1.0.0-preview-build-51.apk",
+    "apk_sha256": "575665650f8a49a5b5d44e0367cfcb65bab4c9adf22e72fc68808943e459520b",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "canonical_update_feed_build": 51,
+    "canonical_update_feed_sha256": "bd33f4b12c8e0c0ce52ec588d4dd77a8fad1fc41846e13cd540d9aae52bb371e",
+    "legacy_feed_build": 30,
+    "legacy_feed_sha256": "b13bbba79a80b52bf333df831d8cb78f4a027fa2830ac0c2ebb09f50716e0448",
+    "new_apk_or_ota": false
+  },
+  "memory_proxy": {
+    "menu_texture_before_bytes": 267900282,
+    "menu_texture_after_bytes": 69480269,
+    "static_bytes_before": 116637431,
+    "static_bytes_after": 62548243,
+    "interpretation": "isolated native rendering proxy, not iOS physical-device measurements"
+  },
+  "validation": {
+    "build51_webkit": "RangeError: Out of memory before menu",
+    "build52": "menu, creator and touch Solo board rendered in fresh portrait and landscape Windows WebKit contexts",
+    "windows_webkit_framebuffer_warnings": 16,
+    "window_resize": "documented black composition bug on Windows WebKit after drawing-buffer resize; fresh orientation contexts render; no app rotation hacks",
+    "runtime_errors": "No GDScript, WASM runtime or OOM error on build52 flows",
+    "physical_iphone_ipad": "not tested; owner retry remains outstanding",
+    "evidence": {
+      "startup_reproduced": "Actual prior51 pack fails in this WebKit runtime with RangeError: Out of memory before menu.",
+      "new_startup": "Exact52 boot reaches menu; no wardrobe part requested.",
+      "creator": "Exact approved164 HD payloads retained across packs;345 original current raw files mount; actual creator renders.",
+      "layouts": "Actual touch Solo→Launch on portrait and on fresh landscape WebKit context render the board.",
+      "memory_proxy": "Native isolated rendering of identical startup path: menu texture bytes267900282→69480269; static116637431→62548243. Not iOS physical-device measurements.",
+      "windows_webkit_limit": "Resizing an already created WebGL drawing buffer causes black Windows WebKit composition. Confirmed upstream Windows-port bug https://github.com/microsoft/playwright/issues/42885 . Fresh orientation contexts render. No app rotation hacks added; no physical iPhone rotation claim.",
+      "console_limit": "Windows WebKit emits16 same-image framebuffer blit validation warnings (menu and game remain visible in fresh contexts). No GDScript, WASM runtime or OOM error on52 flows. Do not claim zero console errors.",
+      "native": "Android51 APK/feed untouched; no new APK or OTA test needed for this web-only release.",
+      "protocol": "Browser52 explicitly sends networkBuild51 in online and LAN handshake; gameplay/rules/backend unchanged.",
+      "remaining": "Physical iPhone/iPad retry needed; WebKit on Windows is not a physical Apple device."
+    }
+  },
+  "preservation": "Android51 APK and both feeds remain byte-identical; build51 and older browser releases, map/wardrobe delivery manifests, backend22 and account data are untouched.",
+  "crossplay_acceptance": {
+    "path": "D:\\Chat Gpt\\workspaces\\frontlines-build\\apple52\\crossplay52-acceptance.json",
+    "sha256": "fb8d8801a5d49f180b9b27c4158ce4343bcc74bb5e8b1dfc473a71a5c58718a3",
+    "browser_online_request_client_build": 51,
+    "browser_local_qr_build": 51,
+    "android_native_build": 51,
+    "protocol_matches": true,
+    "live_mixed_device_rtc_session_claimed": false,
+    "claim": "Compiled request serialization and LAN QR generation/decode prove protocol build compatibility only; no live mixed-device RTC session was tested."
+  }
+}
