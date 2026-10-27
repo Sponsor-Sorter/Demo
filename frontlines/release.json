@@ -1,8 +1,8 @@
 {
-  "build": 54,
-  "version": "1.0.0-preview.54",
-  "url": "https://sponsorsorter.com/frontlines/builds/54/",
-  "notes": "New Frontlines cinematic startup: artillery recoil, cannon report, rolling smoke and gold title reveal over a detailed dawn battlefield. Branded engine/browser loading screen, skippable intro, fitted portrait/landscape layout and saved audio levels. Version53 gameplay fixes, HD wardrobe, crossplay protocol51 and Apple browser memory improvements retained.",
+  "build": 55,
+  "version": "1.0.0-preview.55",
+  "url": "https://sponsorsorter.com/frontlines/builds/55/",
+  "notes": "Music now uses one playback channel with stop/release before changing tracks. Sound settings include a track selector and saved Auto Advance control for hearing any of the four tracks individually. Menu/game transitions preserve the current song. Cinematic54, gameplay53, HD wardrobe and Apple memory improvements retained.",
   "networkBuild": 51,
-  "androidBuild": 54
+  "androidBuild": 55
 }

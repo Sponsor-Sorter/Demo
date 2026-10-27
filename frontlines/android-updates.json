@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.54",
-  "versionCode": 54,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk",
+  "versionName": "1.0.0-preview.55",
+  "versionCode": 55,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk",
   "bytes": 174379395,
-  "sha256": "f1d1edd7c71d90659efb3e0fe89edc29a1eb3b68fd86e8af206447ed400505a9",
+  "sha256": "2eeff53c2536bad8bb5f7835565d63c47679d55a3a8ce2b181f2562b603842ed",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "New Frontlines cinematic startup: artillery recoil, cannon report, rolling smoke and gold title reveal over a detailed dawn battlefield. Branded engine/browser loading screen, skippable intro, fitted portrait/landscape layout and saved audio levels. Version53 gameplay fixes, HD wardrobe, crossplay protocol51 and Apple browser memory improvements retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk"
+  "notes": "Music now uses one playback channel with stop/release before changing tracks. Sound settings include a track selector and saved Auto Advance control for hearing any of the four tracks individually. Menu/game transitions preserve the current song. Cinematic54, gameplay53, HD wardrobe and Apple memory improvements retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk"
 }

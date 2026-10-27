@@ -1,0 +1,83 @@
+{
+  "build": 55,
+  "version": "1.0.0-preview.55",
+  "packet_manifest_sha256": "38523d4580db2587497367d729c444a11a0fb58ba5acb7eea080ae130c75dcf2",
+  "scope": "Music playback sequencing and audio settings only. No gameplay, map, backend, authentication, networking or user-data changes.",
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/55/",
+    "network_build": 51,
+    "initial_pack_bytes": 47705360,
+    "initial_pack_sha256": "b1688078349fe9c05fac7ea8193740f7e488702285270a5c632172cdb12172e0",
+    "initial_pack_chunks": 6,
+    "deferred_wardrobe_bytes": 99443116,
+    "deferred_wardrobe_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "engine_js_wasm_and_loader_unchanged_from54": true
+  },
+  "android": {
+    "package": "com.frontlines.worldinconflict",
+    "version_code": 55,
+    "bytes": 174379395,
+    "sha256": "2eeff53c2536bad8bb5f7835565d63c47679d55a3a8ce2b181f2562b603842ed",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
+    "minimum_auto_update_client_build": 50,
+    "manual_setup_url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk"
+  },
+  "music": {
+    "changed_runtime_scripts": [
+      "audio_director.gd",
+      "audio_settings.gd"
+    ],
+    "strict_single_music_node": true,
+    "stop_and_clear_old_stream_before_new": true,
+    "short_serial_fades": true,
+    "phase_continuity_across_menu_and_game": true,
+    "track_picker": true,
+    "saved_auto_advance_preference": true,
+    "original_music_files_retained": 4,
+    "overlap_reproduced_in_phone_logs": false,
+    "phone_log_observation": "music0 muted all; supplied phone logs showed playlist rotation but did not reproduce overlapping playback. The distinct tracks share similar instrumentation/tempo.",
+    "subjective_listening_review": false
+  },
+  "validation": {
+    "music_fixture": {
+      "driver": "WASAPI",
+      "master_muted": true,
+      "checks": 26,
+      "failures": 0,
+      "max_music_nodes": 1,
+      "max_playing_music": 1,
+      "passed": true,
+      "scope": "Track selection, rapid skipping, natural end/fallback, repeat, phase continuity, volume and saved preferences. Not device audio review."
+    },
+    "native_creator_startup_audio_libraries_unchanged": 454,
+    "physical_android55_install_or_ota": false,
+    "browser": "Private fresh Windows WebKit portrait/landscape touch startup-to-menu; not physical Apple acceptance.",
+    "deferred_wardrobe_requested": false,
+    "known_windows_framebuffer_warnings": 16,
+    "gdscripts_errors": 0,
+    "wasm_errors": 0,
+    "oom_errors": 0,
+    "physical_apple55_acceptance": false
+  },
+  "preservation": {
+    "older_browser_builds": [
+      51,
+      52,
+      53,
+      54
+    ],
+    "legacy_android_release_feed": 30,
+    "optional_map_manifests": true,
+    "wardrobe_manifests": true,
+    "backend_version": 22,
+    "backend_changed": false,
+    "network_protocol_changed": false,
+    "user_data_changed": false,
+    "dns_changed": false
+  },
+  "distribution": {
+    "hosted_file_count": 39,
+    "apk_published_as_github_prerelease": true,
+    "manifest_preserved_unchanged": true
+  }
+}

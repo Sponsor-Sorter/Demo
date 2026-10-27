@@ -131,18 +131,18 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play the latest Frontlines preview in your browser or on Android. Browser and Android build 54 share online/LAN network protocol 51. Android build 50 and newer can use the in-game updater with verified downloads and Android install confirmation; builds 49 and earlier need one manual signed setup update to build 54.",
+      "description": "Play the latest Frontlines preview in your browser or on Android. Build 55 adds a music track picker and saved Auto Advance preference while keeping browser/Android online and LAN protocol 51. Android build 50 and newer can use the in-game updater with verified downloads and Android install confirmation; builds 49 and earlier need one manual signed setup update to build 55.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Web and Android cinematic playtest preview",
-      "build": "Version 1.0.0-preview.54 · Build 54 (browser + Android)",
+      "status": "Web and Android music playtest preview",
+      "build": "Version 1.0.0-preview.55 · Build 55 (browser + Android)",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Build 54 cinematic startup: tap or click TAP TO BEGIN, then watch the seven-second dawn battlefield intro. Skip Intro appears after 0.8 seconds. The intro fits portrait and landscape; open Settings to change audio levels, which are saved on this device.",
-        "Build 54 keeps the browser and Android game on network protocol 51. The original HD wardrobe stays deferred. Browser and Android releases update separately.",
-        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual signed build 54 APK listed below.",
-        "Build 54 validation: Windows WebKit reached the menu in portrait and landscape, including portrait skip. Intro heap was 58 MB and menu heap 120,586,240 bytes; the HD wardrobe stayed idle. No physical Android54/iOS54 install, OTA or mixed-device match was tested.",
+        "Build 55 music controls: open Settings > Sound, choose a track from the Music Track picker and turn Auto Advance on to rotate songs or off to repeat the selected track while auditioning. The selection and Auto Advance preference are saved on this device.",
+        "Build 55 playback uses one music node. It stops and clears the previous stream before starting another, uses short serial fades and preserves the current music phase when changing menus or entering a game. All four original music files are retained.",
+        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual signed build 55 APK listed below.",
+        "Build 55 validation: the isolated WASAPI mixer fixture passed 26 checks with at most one music node and one playing track. This is not a physical Android55 install, OTA acceptance or subjective listening review. Available phone logs did not reproduce overlapping playback.",
         "Android setup: builds 49 or earlier need one manual signed update to build 51. On build 50 or later, use the in-game updater; it verifies the official package before Android opens its installer. Review Android's confirmation and tap Install; updates are never installed silently.",
         "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
@@ -176,17 +176,17 @@
       ],
       "actions": [
         {
-          "label": "Play Frontlines build 54",
-          "url": "https://sponsorsorter.com/frontlines/builds/54/",
+          "label": "Play Frontlines build 55",
+          "url": "https://sponsorsorter.com/frontlines/builds/55/",
           "primary": true
         },
         {
-          "label": "Download Android build 54 APK (manual setup for builds 49 and earlier)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview54-testing/frontlines-1.0.0-preview-build-54.apk"
+          "label": "Download Android build 55 APK (manual setup for builds 49 and earlier)",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk"
         }
       ],
-      "notes": "Build 54 is a presentation-only cinematic startup: a custom engine/browser loading screen, dawn battlefield art, artillery recoil, flash, smoke, gold title reveal and a seven-second skippable intro. It adds portrait/landscape fit and saved audio settings while preserving build 53 gameplay, map, Android updater rules, HD wardrobe, user data and network protocol 51. No gameplay, map, backend, authentication or networking changes. Validated Windows WebKit portrait and landscape sessions reached the menu; known Windows framebuffer warnings remain. No physical Android54/iOS54 install, OTA or mixed-device acceptance is claimed.",
-      "sha256": "F1D1EDD7C71D90659EFB3E0FE89EDC29A1EB3B68FD86E8AF206447ED400505A9"
+      "notes": "Build 55 changes only audio_director and audio_settings plus release metadata. The music player now stops/releases the old stream before starting the next track, keeps one music node active, uses short serial fades and preserves phase across menu/game transitions. Settings > Sound offers a four-track picker and saved Auto Advance toggle for replaying or rotating tracks; all four existing music files remain unchanged. The earlier phone report said music0 muted all; the supplied logs did not reproduce overlap, and waveform comparison found the existing tracks distinct but similar in instrumentation and tempo. A muted Windows WASAPI fixture passed 26 sequencing, selection, repeat, preference, transition and volume checks. No physical Android55 install/OTA or subjective sound review is claimed. Browser and Android remain on network protocol 51; no gameplay, map, backend, authentication or networking changes.",
+      "sha256": "2EEFF53C2536BAD8BB5F7835565D63C47679D55A3A8CE2B181F2562B603842ED"
     }
   ]
 }
