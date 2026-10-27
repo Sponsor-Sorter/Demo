@@ -146,8 +146,8 @@
       ],
       "actions": [
         {
-          "label": "Play Frontlines build 58",
-          "url": "https://sponsorsorter.com/frontlines/builds/58/",
+          "label": "Play latest browser build",
+          "url": "https://sponsorsorter.com/frontlines/",
           "primary": true
         },
         {
