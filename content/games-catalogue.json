@@ -131,62 +131,33 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play the latest Frontlines preview in your browser or on Android. Build 56 adds nine commander voices with ready, victory and retreat cues and improves persistence for registered sign-in across temporary connection errors. Network protocol 51 remains compatible. Android build 50 and newer can use the in-game updater; earlier builds need a manual setup update.",
+      "description": "Play the latest Frontlines preview in your browser or on Android. Build 58 makes the prehistoric map art upgrade compatible with existing R1 campaigns and saved games. Network protocol 51 remains compatible; Android build 50 and newer can use the in-game updater.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Web and Android commander voice and account preview",
-      "build": "Version 1.0.0-preview.56 · Build 56 (browser + Android)",
+      "status": "Web and Android map upgrade preview",
+      "build": "Version 1.0.0-preview.58 · Build 58 (browser + Android)",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Build 56 adds nine distinct commander voices, each with ready, victory and retreat cues. Preview Voice in Your Commander to hear the selected voice. The 27 new recordings use balanced mono audio and mouth timing.",
-        "Registered sign-in credentials now survive temporary connection and gateway errors; explicitly invalid or revoked sessions still require reauthentication. Failed secure saves retry, including when the app backgrounds or quits normally. Token refresh uses elapsed time and resumes after deep sleep. Passwords are not stored.",
-        "Build 56 retains the single-channel music and track controls from build 55, plus approved gameplay and art. New music and the remaining new voice-emote recordings are deferred; existing other cues remain available.",
-        "Build 56 checks: 165 muted WASAPI commander-voice playback checks and 36 synthetic HTTP/session/vault/account-form checks passed. These are not subjective listening or physical Android playback/sign-in/restart/OTA acceptance.",
-        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual build 56 APK listed below.",
-        "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
-        "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
-        "Build 40: open Your Commander, choose Wardrobe and Laced Bodice. Choose the garnet clasp and pearl drops independently or select None. Undo/discard restores saved appearance.",
-        "Build 39: open Your Commander, choose Presets and Court Lady, or choose Braided court hair in Hair. In Wardrobe, select Court Gown, then choose the garnet clasp and pearl drops independently. Undo or discard to restore the saved appearance.",
-        "Build 39: open Your Commander, choose Presets and Court Lady, or choose Braided court hair in Hair. In Wardrobe, select Court Gown, then choose the garnet clasp and pearl drops independently. Undo or discard to restore the saved appearance.",
-        "Build 37: open Your Commander, choose Wardrobe and Brocade Court Coat. The matching clothing thumbnail is included. Choose Brocade Cravat and Brocade Silk Sash independently, or None, and find Court waves in Hair. Existing outfit collections and previous selections are retained.",
-        "Build 36: open Your Commander, choose Wardrobe and Ducal Coat. The matching clothing thumbnail is included. Choose Ducal Cravat under Neckwear and Ducal Bandolier independently, or None. The existing outfit collections and previous selections are retained.",
-        "Build 35: open Your Commander, choose Wardrobe and Buccaneer. The matching clothing thumbnail is included. Select Buccaneer Bandolier independently, or choose None. Privateer bandolier and sash also have their own selectors. No additional pirate hats are included.",
-        "Build 34: open Your Commander, choose Wardrobe and Privateer. The matching clothing thumbnail is included. Neckwear, bandolier and waist sash remain separate optional pieces; choose None to remove them.",
-        "Build 33: open Your Commander, choose Wardrobe and Court Diplomat. The matching clothing tile is included. Neckwear and medals remain independently selectable; choose None to remove optional accessories.",
-        "Build 32: open Your Commander, choose Wardrobe and Corsair. Its matching clothing tile is included. Select Corsair Neckerchief under Neckwear, or None, independently from the coat. Current HD cosmetics are bundled in the base game.",
-        "Open Your Commander, choose Wardrobe, Uniforms & coats and Royal Guard. Choose Guard Handkerchief under Neckwear and Guard Gold Sash under Sash independently, or select None. Royal Curls is under Hair; Sentinel and Royal Envoy are under Presets. Save Commander applies your portrait.",
-        "Open Your Commander, choose Wardrobe and Grand Admiral. The lower cross and black fastening belong to the coat. Select or remove shoulders, sash, cords and naval medals separately; current HD accessories are bundled in the base game; then save your commander.",
-        "Open Your Commander, choose Wardrobe, then select a clothing collection. Browse all 18 outfits, rotate the preview, and save your commander.",
-        "In Game Modes & Rules, choose Main World or one of seven prehistoric maps. Download an optional map once (about 7.7–10.6 MB); after verification, choose Use Map. Map Credits lists its sources. Home reframes the battlefield around the controls.",
-        "Open Play browser preview, choose your game setup, then launch. Set human commanders to zero to watch AI play.",
-        "Choose victory and reinforcement rules with the in-game touch pickers before launching. Adjust sound and dice finishes in Settings.",
-        "Follow turn prompts to reinforce, attack and move troops. Choose solo AI, local hot-seat or online play.",
-        "After occupation, an army that can attack stays selected. A compulsory fifth-card or inherited-hand trade returns the same commander to troop placement; place the trade troops, then continue the turn.",
-        "Desktop: wheel to zoom, middle drag to pan, right drag to orbit. On phone, use landscape, drag to pan and pinch to zoom.",
-        "Android: download the preview APK, open the downloaded file and confirm installation if Android asks. Android Back pauses or resumes the campaign.",
-        "Local campaigns autosave on this device. Use Continue Campaign to continue; clearing game or browser data can remove the save.",
-        "Use Field cards to inspect your hand and trade. Choose dice finishes in Settings; use the in-game speed controls for solo or AI spectator play.",
-        "Choose Your Commander from the main menu, or Customise in Commander Account. Edit the 3D appearance, then Save Commander to use its portrait; Cancel offers a choice to discard unsaved changes.",
-        "Open the card-fan button to inspect your earned hand. Local AI pauses while cards are open; Close resumes play. Shared online tables continue normally.",
-        "In the creator, drag to rotate and tilt, use two fingers to pan/pinch, or use the desktop wheel to zoom and right/middle drag to pan. Reset View restores the front composition; Save Commander always captures a front portrait.",
-        "Scroll account, creator, Settings and option lists with a vertical swipe. Swipe vertically over a slider to scroll; drag horizontally to change its value. Tap a field to enter text.",
-        "Use the Face group menu for cheeks, jaw/chin, nose and other facial controls. Gender and Voice are in Presets; voice is independent of appearance. Preview Voice plays the selected set; adjust Commander volume in Settings.",
-        "Open Pose to choose an editor animation, or Still to stop it; Replay restarts the action. Saved portraits keep their front composition. Custom commanders can use the player-card panel for limited public or private emotes."
+        "Build 58 keeps existing prehistoric-map campaigns playable from their checksum-pinned R1 map cache. Choose Update Art to download the improved terrain from the existing visual57 map pack. Art updates preserve the map identity, campaign state, troops, cards and gameplay rules.",
+        "The game checks for newer builds while open. Browser players can choose Install Update to open the current build. On Android build 50 and newer, the game downloads and verifies the update, then Android asks you to approve installation. Builds 49 and earlier need a manual APK setup update.",
+        "Browser acceptance: visible build 58 menu and isolated-origin Carboniferous 325 match passed. Terrain rendered; zoom, territory reserve deployment and bonus overlay responded.",
+        "Android acceptance: one build56 Triassic round7 campaign continued from its legacy R1 cache, downloaded the public visual57 art pack with verified SHA-256, then continued with the original countries, hands and deck. Original campaign/settings files were restored and hash-verified. This is not APK OTA or a full seven-map campaign test."
       ],
       "actions": [
         {
-          "label": "Play Frontlines build 56",
-          "url": "https://sponsorsorter.com/frontlines/builds/56/",
+          "label": "Play Frontlines build 58",
+          "url": "https://sponsorsorter.com/frontlines/builds/58/",
           "primary": true
         },
         {
-          "label": "Download Android build 56 APK (manual setup for builds 49 and earlier)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
+          "label": "Download Android build 58 APK (manual setup for builds 49 and earlier)",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk"
         }
       ],
-      "notes": "Build 56 changes only network_client.gd runtime behavior after build 55, plus voice cue data/catalogues/envelopes and release metadata. It adds nine distinct commander voices with 27 ready, victory and retreat recordings. Saved registered-session credentials are retained for temporary errors, secure-save failures retry, and token expiry/backoff uses elapsed time with refresh on resume. Network protocol 51, Android KeyStore path and alias, browser origin key, password-not-stored policy, music, gameplay and art are retained. The account checks used synthetic HTTP responses and a fake vault only; no real user auth writes or physical Android56 sign-in/restart/OTA was tested.",
-      "sha256": "8D16B60349FEB84E13F88EAEFD4A13E0FE2DC47281E64D5A34E990F87932382B"
+      "notes": "Build 58 adds an Update Art flow for seven prehistoric maps. Old R1 cache and saved campaigns remain playable offline; the new visual57 map packs are checksum-pinned and reused unchanged. 147 native upgrade checks passed. The actual browser test used an isolated origin; the phone acceptance covers one old-cache campaign update and continue. No APK OTA, iPhone or full seven-map physical campaign acceptance is claimed. Network protocol 51, backend 22, Earth, accounts, wardrobe and approved audio are retained.",
+      "sha256": "28E93F33565A3425F09D70CAD7036CC35CB7BF76164D9E6EB2CEFA3724865A31",
+      "releaseManifest": "./frontlines/release.json"
     }
   ]
 }

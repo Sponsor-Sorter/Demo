@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.56",
-  "versionCode": 56,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk",
-  "bytes": 175598796,
-  "sha256": "8d16b60349feb84e13f88eaefd4a13e0fe2dc47281e64d5a34e990f87932382b",
+  "versionName": "1.0.0-preview.58",
+  "versionCode": 58,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk",
+  "bytes": 175602892,
+  "sha256": "28e93f33565a3425f09d70cad7036cc35cb7bf76164d9e6eb2cefa3724865a31",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Nine updated commander voices with27 ready, victory and retreat cues, balanced mono HD audio and mouth timing. Saved registered sign-in survives temporary connection/server errors; secure-save failures retry, including background/normal quit, and token refresh uses elapsed time to tolerate phone-clock changes. One-channel music, track selection, cinematic startup and gameplay/art from55 retained. New music and other new voice-emote recordings are deferred; existing other cues retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
+  "notes": "Seven ancient-world maps gain detailed mountains, drainage, rock/forest/ice surfaces, dark water, smooth shared borders and coastal bonus outlines. 6K desktop and 2K mobile material fields. Existing R1 map saves remain playable offline; a separate Update Art button installs improved terrain without changing campaign troops/cards or gameplay identity. Earth, accounts, approved wardrobe/audio and protocol51 retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk"
 }
