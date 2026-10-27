@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "entries": [
     {
       "id": "meadow-markets",
@@ -131,19 +131,19 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play the latest Frontlines preview in your browser or on Android. Build 55 adds a music track picker and saved Auto Advance preference while keeping browser/Android online and LAN protocol 51. Android build 50 and newer can use the in-game updater with verified downloads and Android install confirmation; builds 49 and earlier need one manual signed setup update to build 55.",
+      "description": "Play the latest Frontlines preview in your browser or on Android. Build 56 adds nine commander voices with ready, victory and retreat cues and improves persistence for registered sign-in across temporary connection errors. Network protocol 51 remains compatible. Android build 50 and newer can use the in-game updater; earlier builds need a manual setup update.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Web and Android music playtest preview",
-      "build": "Version 1.0.0-preview.55 · Build 55 (browser + Android)",
+      "status": "Web and Android commander voice and account preview",
+      "build": "Version 1.0.0-preview.56 · Build 56 (browser + Android)",
       "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Build 55 music controls: open Settings > Sound, choose a track from the Music Track picker and turn Auto Advance on to rotate songs or off to repeat the selected track while auditioning. The selection and Auto Advance preference are saved on this device.",
-        "Build 55 playback uses one music node. It stops and clears the previous stream before starting another, uses short serial fades and preserves the current music phase when changing menus or entering a game. All four original music files are retained.",
-        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual signed build 55 APK listed below.",
-        "Build 55 validation: the isolated WASAPI mixer fixture passed 26 checks with at most one music node and one playing track. This is not a physical Android55 install, OTA acceptance or subjective listening review. Available phone logs did not reproduce overlapping playback.",
-        "Android setup: builds 49 or earlier need one manual signed update to build 51. On build 50 or later, use the in-game updater; it verifies the official package before Android opens its installer. Review Android's confirmation and tap Install; updates are never installed silently.",
+        "Build 56 adds nine distinct commander voices, each with ready, victory and retreat cues. Preview Voice in Your Commander to hear the selected voice. The 27 new recordings use balanced mono audio and mouth timing.",
+        "Registered sign-in credentials now survive temporary connection and gateway errors; explicitly invalid or revoked sessions still require reauthentication. Failed secure saves retry, including when the app backgrounds or quits normally. Token refresh uses elapsed time and resumes after deep sleep. Passwords are not stored.",
+        "Build 56 retains the single-channel music and track controls from build 55, plus approved gameplay and art. New music and the remaining new voice-emote recordings are deferred; existing other cues remain available.",
+        "Build 56 checks: 165 muted WASAPI commander-voice playback checks and 36 synthetic HTTP/session/vault/account-form checks passed. These are not subjective listening or physical Android playback/sign-in/restart/OTA acceptance.",
+        "Android updates: builds 50 and newer can use the in-game updater, which verifies the official package before Android opens its installer. Review the Android confirmation and tap Install. Builds 49 or earlier need the manual build 56 APK listed below.",
         "Build 51: card rewards use the correctly fitted 2:3 face shown in your hand. The four-track music rotation has clean transitions. The real build 50-to-51 in-app update, Android install confirmation and launch passed on Android 14. The updater verifies package, version and signing certificate.",
         "Build 41: open Your Commander, choose Wardrobe and Rose Ballroom Gown. Check the fitted neckline, sleeves and lacing. The garnet clasp and pearl drops remain independent options. Reset, undo or discard returns to the saved commander.",
         "Build 40: open Your Commander, choose Wardrobe and Laced Bodice. Choose the garnet clasp and pearl drops independently or select None. Undo/discard restores saved appearance.",
@@ -176,17 +176,17 @@
       ],
       "actions": [
         {
-          "label": "Play Frontlines build 55",
-          "url": "https://sponsorsorter.com/frontlines/builds/55/",
+          "label": "Play Frontlines build 56",
+          "url": "https://sponsorsorter.com/frontlines/builds/56/",
           "primary": true
         },
         {
-          "label": "Download Android build 55 APK (manual setup for builds 49 and earlier)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk"
+          "label": "Download Android build 56 APK (manual setup for builds 49 and earlier)",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
         }
       ],
-      "notes": "Build 55 changes only audio_director and audio_settings plus release metadata. The music player now stops/releases the old stream before starting the next track, keeps one music node active, uses short serial fades and preserves phase across menu/game transitions. Settings > Sound offers a four-track picker and saved Auto Advance toggle for replaying or rotating tracks; all four existing music files remain unchanged. The earlier phone report said music0 muted all; the supplied logs did not reproduce overlap, and waveform comparison found the existing tracks distinct but similar in instrumentation and tempo. A muted Windows WASAPI fixture passed 26 sequencing, selection, repeat, preference, transition and volume checks. No physical Android55 install/OTA or subjective sound review is claimed. Browser and Android remain on network protocol 51; no gameplay, map, backend, authentication or networking changes.",
-      "sha256": "2EEFF53C2536BAD8BB5F7835565D63C47679D55A3A8CE2B181F2562B603842ED"
+      "notes": "Build 56 changes only network_client.gd runtime behavior after build 55, plus voice cue data/catalogues/envelopes and release metadata. It adds nine distinct commander voices with 27 ready, victory and retreat recordings. Saved registered-session credentials are retained for temporary errors, secure-save failures retry, and token expiry/backoff uses elapsed time with refresh on resume. Network protocol 51, Android KeyStore path and alias, browser origin key, password-not-stored policy, music, gameplay and art are retained. The account checks used synthetic HTTP responses and a fake vault only; no real user auth writes or physical Android56 sign-in/restart/OTA was tested.",
+      "sha256": "8D16B60349FEB84E13F88EAEFD4A13E0FE2DC47281E64D5A34E990F87932382B"
     }
   ]
 }

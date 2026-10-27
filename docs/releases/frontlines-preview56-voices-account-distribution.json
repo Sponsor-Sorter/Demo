@@ -1,0 +1,81 @@
+{
+  "release": "Frontlines preview build 56",
+  "build": 56,
+  "network_build": 51,
+  "android_build": 56,
+  "min_auto_update_client": 50,
+  "packet_manifest_sha256": "d35f7d7b31158c3d30e96f82260edf30e61461643192814adf069307e4d323db",
+  "browser": {
+    "url": "https://sponsorsorter.com/frontlines/builds/56/",
+    "pack_bytes": 49174576,
+    "pack_sha256": "533bb5264f220a9f54e8633ac7b6ce4b50cdc6e42ed7d385c8670077e4926d46",
+    "deferred_wardrobe_bytes": 99443116,
+    "deferred_wardrobe_sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "hosted_packet_files": 39
+  },
+  "android": {
+    "version_code": 56,
+    "version_name": "1.0.0-preview.56",
+    "apk": "frontlines-1.0.0-preview-build-56.apk",
+    "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk",
+    "bytes": 175598796,
+    "sha256": "8d16b60349feb84e13f88eaefd4a13e0fe2dc47281e64d5a34e990f87932382b",
+    "certificate_sha256": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b",
+    "manual_older_client_url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
+  },
+  "voices": {
+    "new_voices": 9,
+    "new_clips": 27,
+    "events": [
+      "ready/hello",
+      "victory",
+      "retreat/defeat"
+    ],
+    "encoding": "PCM16 mono 44.1 kHz",
+    "jaw_timing": "amplitude data",
+    "playback_checks": 165,
+    "playback_failures": 0,
+    "listener_claim": "Muted Windows WASAPI mixer verification only; no subjective or physical Android playback claim.",
+    "credits_used": 261,
+    "credits_remaining": 18,
+    "deferred": "New music and the remaining four new emote recordings per voice; existing other cues retained."
+  },
+  "account": {
+    "synthetic_checks": 36,
+    "failures": 0,
+    "scope": "Synthetic HTTP, fake vault, session/restart behavior and raw-touch account form; no real user authentication writes.",
+    "behavior": "Transient and gateway errors retain saved credentials; explicitly invalid/revoked sessions require reauthentication; secure saves retry and flush on background/normal quit; elapsed-time token TTL/backoff and resume refresh tolerate deep sleep/clock changes.",
+    "passwords_stored": false,
+    "android_keystore_path_and_alias_unchanged": true,
+    "browser_origin_key_unchanged": true,
+    "physical_android_signin_restart_ota": "not tested"
+  },
+  "native": {
+    "network_client_sha256": "befe145fa146a9c00b4a7ed0babf53897a11edc689a470def016a318810b6e2b",
+    "network_build": 51,
+    "new_voice_assets_in_apk_verified": true,
+    "retained_common_entries_unchanged": 452,
+    "voice_catalogue_and_envelopes_updated": true
+  },
+  "validation": {
+    "private_windows_webkit_touch_portrait_landscape_startup_to_menu": true,
+    "heap_intro_bytes": 58064896,
+    "heap_menu_bytes": 120586240,
+    "wardrobe_idle": true,
+    "known_framebuffer_warnings": 16,
+    "physical_apple_acceptance": "not tested",
+    "full_campaign_retest": "not claimed"
+  },
+  "scope": {
+    "backend_version": 22,
+    "backend_changed": false,
+    "schema_changed": false,
+    "dns_changed": false,
+    "purchases": false,
+    "build55_and_earlier_preserved": true,
+    "legacy_android_release_build": 30,
+    "optional_map_and_wardrobe_manifests_changed": false,
+    "new_music": false,
+    "account_mutations_to_real_users": 0
+  }
+}

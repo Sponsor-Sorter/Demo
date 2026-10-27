@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.55",
-  "versionCode": 55,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk",
-  "bytes": 174379395,
-  "sha256": "2eeff53c2536bad8bb5f7835565d63c47679d55a3a8ce2b181f2562b603842ed",
+  "versionName": "1.0.0-preview.56",
+  "versionCode": 56,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk",
+  "bytes": 175598796,
+  "sha256": "8d16b60349feb84e13f88eaefd4a13e0fe2dc47281e64d5a34e990f87932382b",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Music now uses one playback channel with stop/release before changing tracks. Sound settings include a track selector and saved Auto Advance control for hearing any of the four tracks individually. Menu/game transitions preserve the current song. Cinematic54, gameplay53, HD wardrobe and Apple memory improvements retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview55-testing/frontlines-1.0.0-preview-build-55.apk"
+  "notes": "Nine updated commander voices with27 ready, victory and retreat cues, balanced mono HD audio and mouth timing. Saved registered sign-in survives temporary connection/server errors; secure-save failures retry, including background/normal quit, and token refresh uses elapsed time to tolerate phone-clock changes. One-channel music, track selection, cinematic startup and gameplay/art from55 retained. New music and other new voice-emote recordings are deferred; existing other cues retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview56-testing/frontlines-1.0.0-preview-build-56.apk"
 }
