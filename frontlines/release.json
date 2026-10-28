@@ -1,10 +1,10 @@
 {
-  "build": 59,
-  "version": "1.0.0-preview.59",
-  "url": "https://sponsorsorter.com/frontlines/builds/59/",
-  "notes": "Lower idle CPU work with immediate input wake, unchanged full terrain detail, bounded reuse of original fighting rigs and death clips, exact dice physics prepared over short slices, and duplicate occupation confirmation prevention. Original music files and gains retained; smooth bounded handovers restored with track selection, repeat, AutoAdvance and volume controls. Spaced top-right dice, hold Cards to highlight own card territories, tap Cards to open the hand, and stronger full bonus outer contours in held view. Approved art, accounts, saves, map57 content and protocol51 retained.",
+  "build": 61,
+  "version": "1.0.0-preview.61",
+  "url": "https://sponsorsorter.com/frontlines/builds/61/",
+  "notes": "Six-seat online and local command lobbies: up to six people or mixed AI seats, host battlefield/rules/difficulty/speed controls, short online invitations and player colours. Fair strategy AI plans bonuses, capitals, choke points and alliances without hidden cards or rigged dice. Strategy hints explain difficulty changes as you slide. Settings now offers confirmed Forfeit: your army is marked dead, its cards discarded and its garrisons remain defensible. Approved HD assets, map packs, music and low-memory browser delivery retained.",
   "networkBuild": 51,
-  "androidBuild": 59,
+  "androidBuild": 61,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }

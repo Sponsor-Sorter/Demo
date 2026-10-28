@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.59",
-  "versionCode": 59,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview59-testing/frontlines-1.0.0-preview-build-59.apk",
-  "bytes": 175615180,
-  "sha256": "7bb42005d39231e3683dc4ab65dd682281e0ac57efc1dd7b696443edb9ff47bf",
+  "versionName": "1.0.0-preview.61",
+  "versionCode": 61,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview61-testing/frontlines-1.0.0-preview-build-61.apk",
+  "bytes": 175656768,
+  "sha256": "c55eaaee64362b5ec91a69ca6cde7c3dc1e0820464519ae30c0daded671295f4",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Lower idle CPU work with immediate input wake, unchanged full terrain detail, bounded reuse of original fighting rigs and death clips, exact dice physics prepared over short slices, and duplicate occupation confirmation prevention. Original music files and gains retained; smooth bounded handovers restored with track selection, repeat, AutoAdvance and volume controls. Spaced top-right dice, hold Cards to highlight own card territories, tap Cards to open the hand, and stronger full bonus outer contours in held view. Approved art, accounts, saves, map57 content and protocol51 retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview59-testing/frontlines-1.0.0-preview-build-59.apk"
+  "notes": "Six-seat online and local command lobbies: up to six people or mixed AI seats, host battlefield/rules/difficulty/speed controls, short online invitations and player colours. Fair strategy AI plans bonuses, capitals, choke points and alliances without hidden cards or rigged dice. Strategy hints explain difficulty changes as you slide. Settings now offers confirmed Forfeit: your army is marked dead, its cards discarded and its garrisons remain defensible. Approved HD assets, map packs, music and low-memory browser delivery retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview61-testing/frontlines-1.0.0-preview-build-61.apk"
 }
