@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.58",
-  "versionCode": 58,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk",
-  "bytes": 175602892,
-  "sha256": "28e93f33565a3425f09d70cad7036cc35cb7bf76164d9e6eb2cefa3724865a31",
+  "versionName": "1.0.0-preview.59",
+  "versionCode": 59,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview59-testing/frontlines-1.0.0-preview-build-59.apk",
+  "bytes": 175615180,
+  "sha256": "7bb42005d39231e3683dc4ab65dd682281e0ac57efc1dd7b696443edb9ff47bf",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Seven ancient-world maps gain detailed mountains, drainage, rock/forest/ice surfaces, dark water, smooth shared borders and coastal bonus outlines. 6K desktop and 2K mobile material fields. Existing R1 map saves remain playable offline; a separate Update Art button installs improved terrain without changing campaign troops/cards or gameplay identity. Earth, accounts, approved wardrobe/audio and protocol51 retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk"
+  "notes": "Lower idle CPU work with immediate input wake, unchanged full terrain detail, bounded reuse of original fighting rigs and death clips, exact dice physics prepared over short slices, and duplicate occupation confirmation prevention. Original music files and gains retained; smooth bounded handovers restored with track selection, repeat, AutoAdvance and volume controls. Spaced top-right dice, hold Cards to highlight own card territories, tap Cards to open the hand, and stronger full bonus outer contours in held view. Approved art, accounts, saves, map57 content and protocol51 retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview59-testing/frontlines-1.0.0-preview-build-59.apk"
 }

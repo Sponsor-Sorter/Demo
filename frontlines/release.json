@@ -1,10 +1,10 @@
 {
-  "build": 58,
-  "version": "1.0.0-preview.58",
-  "url": "https://sponsorsorter.com/frontlines/builds/58/",
-  "notes": "Seven ancient-world maps gain detailed mountains, drainage, rock/forest/ice surfaces, dark water, smooth shared borders and coastal bonus outlines. 6K desktop and 2K mobile material fields. Existing R1 map saves remain playable offline; a separate Update Art button installs improved terrain without changing campaign troops/cards or gameplay identity. Earth, accounts, approved wardrobe/audio and protocol51 retained.",
+  "build": 59,
+  "version": "1.0.0-preview.59",
+  "url": "https://sponsorsorter.com/frontlines/builds/59/",
+  "notes": "Lower idle CPU work with immediate input wake, unchanged full terrain detail, bounded reuse of original fighting rigs and death clips, exact dice physics prepared over short slices, and duplicate occupation confirmation prevention. Original music files and gains retained; smooth bounded handovers restored with track selection, repeat, AutoAdvance and volume controls. Spaced top-right dice, hold Cards to highlight own card territories, tap Cards to open the hand, and stronger full bonus outer contours in held view. Approved art, accounts, saves, map57 content and protocol51 retained.",
   "networkBuild": 51,
-  "androidBuild": 58,
+  "androidBuild": 59,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }
