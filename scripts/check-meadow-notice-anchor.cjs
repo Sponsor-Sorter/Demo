@@ -3,3 +3,5 @@ for(const width of [320,390,844,1200,2048]){const rect={left:width*.45,right:wid
 assert(source.includes("getElementById('map-title')"));assert(source.includes('notices.observe(mapTitle)'));
 const css=fs.readFileSync('meadow-and-market/compact-hud.css','utf8');assert(css.includes('left:var(--hud-notice-left,50%)!important'));assert(css.includes('background:#6e503b;color:#fff9ec;'));
 console.log('Brown notices: six pixels beneath farm-title bounds, title-centred on wide screens, safe phone edges and reactive title/viewport changes passed.');
+
+assert(!fs.readFileSync('meadow-and-market/game.js','utf8').includes("Explore this part of your farm"),'Navigation must not cover destination animal controls with a redundant notice');

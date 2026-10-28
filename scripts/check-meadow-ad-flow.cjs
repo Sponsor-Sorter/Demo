@@ -1,0 +1,18 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const source=fs.readFileSync('meadow-and-market/farm-club.js','utf8');
+const state={queue:[]},timers=[];let saves=0,ads=0,modal=false;
+const context={local:()=>state,wallet:{ads_enabled:true,premium:false},api:{save(){saves++}},crypto:{randomUUID:()=>{throw Error('Runs in this fixture have stable IDs')}},score:()=>100,scheduleFlush(){},document:{hidden:false,querySelector:()=>modal?{}:null},setTimeout:fn=>timers.push(fn),adPreview:()=>ads++};
+vm.createContext(context);
+for(const name of ['result','finished'])vm.runInContext(source.match(new RegExp(' function '+name+'\\([^\\n]+'))[0],context);
+const run=id=>({resultId:id,game:{id:'eggs',level:1,goal:2,time:30},score:2,elapsed:5});
+context.result(run('one'),true);context.result(run('one'),true);
+assert.equal(state.queue.length,1);assert.equal(state.adGames,1,'Duplicate result retries do not advance advertising');
+context.result(run('two'),false);context.result(run('three'),true);
+assert(state.adPending);modal=true;context.finished();timers.shift()();assert.equal(ads,0,'Results, purchases and other open panels are never interrupted');assert(state.adPending);
+modal=false;context.document.hidden=true;context.finished();timers.shift()();assert.equal(ads,0,'No ad opens while the game is hidden');
+context.document.hidden=false;context.finished();timers.shift()();assert.equal(ads,1);assert(!state.adPending);context.finished();timers.shift()();assert.equal(ads,1,'Closing twice cannot show duplicate ads');
+state.adPending=true;context.wallet.premium=true;context.finished();timers.shift()();assert.equal(ads,1);assert(!state.adPending,'Premium cancels outstanding popup breaks');
+state.adPending=true;context.wallet.premium=false;context.wallet.ads_enabled=false;context.finished();timers.shift()();assert.equal(ads,1);assert(!state.adPending,'Turning ads off cancels pending breaks');
+for(let i=0;i<120;i++)context.result(run('bounded-'+i),true);assert.equal(state.adResults.length,100,'Local result tracking remains bounded');
+for(const file of ['minigames.js','word-search.js','farmers-market.js'])assert(fs.readFileSync('meadow-and-market/'+file,'utf8').includes('window.meadowClub?.finished()'),file+' returns to the shared ad gate');
+console.log('Ad flow: every finished game counts once; safe farm return, retries, hidden screens, Premium, opt-out and bounded history passed.');

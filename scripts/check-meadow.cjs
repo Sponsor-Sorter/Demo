@@ -138,3 +138,6 @@ require('./check-meadow-save-revisions.cjs');
 require('./check-meadow-worker-return.cjs');
 
 require('./check-meadow-growth-paint.cjs');
+
+require('./check-meadow-ad-flow.cjs');
+require('./check-meadow-storage-full.cjs');

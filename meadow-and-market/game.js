@@ -117,7 +117,8 @@
   for(const f of Object.values(state.farms))for(const h of f.objects)window.meadowMoves.syncResidents(f,h);
   let farmRenderOverride=null;
   function current(){return farmRenderOverride||state.farms[state.active]}
-  function save(){if(replacingFarm)return;window.meadowPlanner?.invalidate();state.seen=Date.now();localStorage.setItem(SAVE_KEY,JSON.stringify(state));$('#save-status').textContent=cloudReady?'Saved here · syncing…':'Saved on this device';$('#coins').textContent=state.coins.toLocaleString();$('#level').textContent='Lv. '+state.level;scheduleCloudSave()}
+  let storageWarningShown=false;
+  function save(){if(replacingFarm)return;window.meadowPlanner?.invalidate();state.seen=Date.now();let stored=true;try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));storageWarningShown=false}catch{stored=false;if(!storageWarningShown){storageWarningShown=true;notify('This device could not save your farm. Keep the game open and export a backup in Settings.')}}$('#save-status').textContent=stored?(cloudReady?'Saved here · syncing…':'Saved on this device'):(cloudReady?'Device save unavailable · syncing online…':'Device save unavailable · export a backup');$('#coins').textContent=state.coins.toLocaleString();$('#level').textContent='Lv. '+state.level;scheduleCloudSave()}
   function scheduleCloudSave(){if(!cloudReady||!cloudWriter||!cloudUser)return;clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(()=>{if(cloudReady&&cloudUser)cloudWriter.enqueue(cloudUser.id,state)},700)}
   function chooseCloudSave(remote){return new Promise(resolve=>{openModal('<div class="sheet-head"><div><small class="eyebrow">YOUR ONLINE FARM</small><h2>A newer farm is saved online</h2></div></div><p class="sheet-copy">Choose which farm to keep. The other version will be backed up on this device before anything changes.</p><button id="load-cloud-farm" class="primary-button full-button">Load the newer online farm</button><button id="keep-local-farm" class="small-button full-button" style="margin-top:9px">Keep this device’s farm</button>');$('#load-cloud-farm').onclick=()=>{$('#modal-dialog').close();resolve(true)};$('#keep-local-farm').onclick=()=>{$('#modal-dialog').close();resolve(false)}})}
   function watchCloudAccount(client,owner){
@@ -534,7 +535,7 @@
   // reliable after the game redraws its dynamic map and panels.
   document.addEventListener('click',e=>{
     const hotspot=e.target.closest('.map-hotspot[data-map-view]');
-    if(hotspot?.classList.contains('bridge-area')){e.preventDefault();e.stopImmediatePropagation();travelArea('east');return}if(hotspot){e.preventDefault();e.stopImmediatePropagation();if(state.mode==='build')mode('tend');setView(hotspot.dataset.mapView);notify(hotspot.getAttribute('aria-label')+' · Explore this part of your farm');return}
+    if(hotspot?.classList.contains('bridge-area')){e.preventDefault();e.stopImmediatePropagation();travelArea('east');return}if(hotspot){e.preventDefault();e.stopImmediatePropagation();if(state.mode==='build')mode('tend');setView(hotspot.dataset.mapView);return}
     const nav=e.target.closest('[data-view]');
     if(nav){e.preventDefault();e.stopImmediatePropagation();setView(nav.dataset.view)}
   },true);
@@ -667,7 +668,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=182;
+  const currentBuild=183;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
