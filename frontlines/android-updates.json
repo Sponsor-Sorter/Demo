@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.62",
-  "versionCode": 62,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview62-testing/frontlines-1.0.0-preview-build-62.apk",
-  "bytes": 175660864,
-  "sha256": "eaebf585169c5089615d1ec55b83845e7d1bed57af2ba998220090475dde85d4",
+  "versionName": "1.0.0-preview.63",
+  "versionCode": 63,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview63-testing/frontlines-1.0.0-preview-build-63.apk",
+  "bytes": 175533972,
+  "sha256": "6828f630890c7ffc41c548deef325e79c4c91f93078571f1f32bb532f03f6307",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Stronger fair AI: useful optional card trades during Draft, alternate elimination routes, bounded planning of two captures at 60% and three at 75%, and final-capital victory recognition. Difficulty hints and the guide covering 22 strategies explain the changes. Classic and lower difficulty behaviour, approved HD assets, music, map packs, human rules and multiplayer protocol retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview62-testing/frontlines-1.0.0-preview-build-62.apk"
+  "notes": "Graphics-preserving performance improvements: cached exact HUD text fitting and territory anchor projections, less repeated visibility work, and physical hand cards retained across awards/trades. Main-menu war-table artwork now uses the approved soldier, horse and cannon cards. Existing terrain, water, unit detail, animations, graphics preferences, music, maps, wardrobe, fair AI and multiplayer rules retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview63-testing/frontlines-1.0.0-preview-build-63.apk"
 }

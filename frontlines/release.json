@@ -1,10 +1,10 @@
 {
-  "build": 62,
-  "version": "1.0.0-preview.62",
-  "url": "https://sponsorsorter.com/frontlines/builds/62/",
-  "notes": "Stronger fair AI: useful optional card trades during Draft, alternate elimination routes, bounded planning of two captures at 60% and three at 75%, and final-capital victory recognition. Difficulty hints and the guide covering 22 strategies explain the changes. Classic and lower difficulty behaviour, approved HD assets, music, map packs, human rules and multiplayer protocol retained.",
+  "build": 63,
+  "version": "1.0.0-preview.63",
+  "url": "https://sponsorsorter.com/frontlines/builds/63/",
+  "notes": "Graphics-preserving performance improvements: cached exact HUD text fitting and territory anchor projections, less repeated visibility work, and physical hand cards retained across awards/trades. Main-menu war-table artwork now uses the approved soldier, horse and cannon cards. Existing terrain, water, unit detail, animations, graphics preferences, music, maps, wardrobe, fair AI and multiplayer rules retained.",
   "networkBuild": 51,
-  "androidBuild": 62,
+  "androidBuild": 63,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }

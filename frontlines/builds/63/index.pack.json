@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "bytes": 49110212,
+  "sha256": "fe4d75b718bcadbedc59f88161189db3813cd6b383e00764c2ac4ab2dbfb3b19",
+  "chunks": [
+    {
+      "file": "index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "d97dde6d8d610662025bc0c4aaaccf938ee2414f8a35195845b76bfff3b211fd"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "76f8e591e40fddca02530b6b7f08fa97b57de51bb49d6f00655f6fd5ae89a254"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "913fad7b4b7cdae69cf6245e5d04e238861dc43d1993c86d248693ee0df966d9"
+    },
+    {
+      "file": "index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "30e6e086c9dd400046b8c75ffdff24d13679a4a1c585b54542a5e9c00bfbea98"
+    },
+    {
+      "file": "index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "a1ec08005dab734c34fd26ab67939c98178bdddba649d353dc576c0e05ced3ba"
+    },
+    {
+      "file": "index.pck.part-05",
+      "bytes": 7167172,
+      "sha256": "f3724484187bdfdcbef2dfe1d482032e7477dbfe2cb72b68b1b002e55efccae0"
+    }
+  ]
+}
