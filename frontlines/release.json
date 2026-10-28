@@ -1,10 +1,10 @@
 {
-  "build": 61,
-  "version": "1.0.0-preview.61",
-  "url": "https://sponsorsorter.com/frontlines/builds/61/",
-  "notes": "Six-seat online and local command lobbies: up to six people or mixed AI seats, host battlefield/rules/difficulty/speed controls, short online invitations and player colours. Fair strategy AI plans bonuses, capitals, choke points and alliances without hidden cards or rigged dice. Strategy hints explain difficulty changes as you slide. Settings now offers confirmed Forfeit: your army is marked dead, its cards discarded and its garrisons remain defensible. Approved HD assets, map packs, music and low-memory browser delivery retained.",
+  "build": 62,
+  "version": "1.0.0-preview.62",
+  "url": "https://sponsorsorter.com/frontlines/builds/62/",
+  "notes": "Stronger fair AI: useful optional card trades during Draft, alternate elimination routes, bounded planning of two captures at 60% and three at 75%, and final-capital victory recognition. Difficulty hints and the guide covering 22 strategies explain the changes. Classic and lower difficulty behaviour, approved HD assets, music, map packs, human rules and multiplayer protocol retained.",
   "networkBuild": 51,
-  "androidBuild": 61,
+  "androidBuild": 62,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }

@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.61",
-  "versionCode": 61,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview61-testing/frontlines-1.0.0-preview-build-61.apk",
-  "bytes": 175656768,
-  "sha256": "c55eaaee64362b5ec91a69ca6cde7c3dc1e0820464519ae30c0daded671295f4",
+  "versionName": "1.0.0-preview.62",
+  "versionCode": 62,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview62-testing/frontlines-1.0.0-preview-build-62.apk",
+  "bytes": 175660864,
+  "sha256": "eaebf585169c5089615d1ec55b83845e7d1bed57af2ba998220090475dde85d4",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Six-seat online and local command lobbies: up to six people or mixed AI seats, host battlefield/rules/difficulty/speed controls, short online invitations and player colours. Fair strategy AI plans bonuses, capitals, choke points and alliances without hidden cards or rigged dice. Strategy hints explain difficulty changes as you slide. Settings now offers confirmed Forfeit: your army is marked dead, its cards discarded and its garrisons remain defensible. Approved HD assets, map packs, music and low-memory browser delivery retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview61-testing/frontlines-1.0.0-preview-build-61.apk"
+  "notes": "Stronger fair AI: useful optional card trades during Draft, alternate elimination routes, bounded planning of two captures at 60% and three at 75%, and final-capital victory recognition. Difficulty hints and the guide covering 22 strategies explain the changes. Classic and lower difficulty behaviour, approved HD assets, music, map packs, human rules and multiplayer protocol retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview62-testing/frontlines-1.0.0-preview-build-62.apk"
 }

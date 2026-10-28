@@ -14,11 +14,12 @@ Most planning weights increase continuously. A few safeguards and behaviours hav
 | **35–39** | Adds a hard attack veto when an attack would leave the source capital below its planned garrison. | Stops a promising attack from exposing an important capital. |
 | **40** | Checks affordable connected elimination routes against opponents with at most five remaining territories. | Allows it to hunt a small rival and inherit that rival’s cards. |
 | **41–49** | Also penalizes exposure to other enemy armies beside the attacking source. | Considers the counterattack after the current battle. |
-| **50–74 — Veteran** | Increases the relative weight of completing bonuses, breaking enemy income and defending important borders. | Makes the bot more deliberate about the reinforcement economy. |
-| **75–99 — Expert** | Further strengthens capital pressure, garrison targets and loss discipline. | Makes expansion more selective and fronts better supplied. |
+| **50–59 — Veteran** | Increases the relative weight of completing bonuses, breaking enemy income and defending important borders. | Makes the bot more deliberate about the reinforcement economy. |
+| **60–74 — Veteran planner** | Checks plans of up to two captures, explores alternate elimination routes, and can cash a useful legal set during Draft before a forced trade. | Connects the current action to what can be achieved afterwards. |
+| **75–99 — Expert** | Checks plans of up to three captures and recognises an affordable attack that takes the final enemy capital. Capital pressure, garrisons and loss discipline also strengthen. | Can prepare an objective through a cheap intermediate territory and commit to a winning attack. |
 | **100 — Expert, maximum** | Uses the maximum configured planning weights. | This is the strongest setting of this policy, not a guarantee of perfect play. |
 
-The 50 and 75 bands describe stronger weighting, rather than suddenly unlocking every strategy listed there. Bots can already consider bonus completion, bonus denial and capitals at lower positive settings. Safe alliance replies and accepted allied plans are also available before the proactive-offer threshold. At every setting, an accepted pact prevents attacks on that ally until the pact is ended.
+The 50 band describes stronger weighting. The additional planning checks start at 60 and expand at 75. Bots can already consider bonus completion, bonus denial and capitals at lower positive settings. Safe alliance replies and accepted allied plans are also available before the proactive-offer threshold. At every setting, an accepted pact prevents attacks on that ally until the pact is ended.
 
 ## What the bot can know
 
@@ -96,7 +97,7 @@ The policy receives no deck order, future dice, random-generator state or other 
 
 **Why:** Capturing elsewhere can be a bad exchange if it loses a capital immediately afterwards.
 
-**How:** An exposed capital has a stronger garrison target, with a target of at least four troops before difficulty interpolation. At 35 and above, an attack from that capital is rejected if its estimated cost would leave fewer than the planned guard. An entirely interior capital can be left with the compulsory one unit: the bot does not treat a capital surrounded by friendly territories as immediately exposed.
+**How:** An exposed capital has a stronger garrison target, with a target of at least four troops before difficulty interpolation. At 35 and above, an attack from that capital is normally rejected if its estimated cost would leave fewer than the planned guard. At 75 and above, an affordable final-capital winning attack has the exception described in strategy 22. An entirely interior capital can be left with the compulsory one unit: the bot does not treat a capital surrounded by friendly territories as immediately exposed.
 
 ### 9. Supply choke points and bonus entrances
 
@@ -120,7 +121,7 @@ The policy receives no deck order, future dice, random-generator state or other 
 
 **Why:** An elimination removes a rival and transfers that rival’s cards to the attacker.
 
-**How:** It checks the visible cost of all that rival’s remaining territories and requires spare troops beyond that estimate. It then looks for a connected chain beginning at the proposed target. The reward includes the publicly visible number of cards and the current trade value. It does not inspect those cards’ identities. A rival scattered behind unrelated enemies or allies will not be treated as a simple connected elimination. The bounded greedy check can miss a more complicated valid route.
+**How:** It checks the visible cost of all that rival’s remaining territories and requires spare troops beyond that estimate. It then looks for a connected chain beginning at the proposed target. The reward includes the publicly visible number of cards and the current trade value. It does not inspect those cards’ identities. A rival scattered behind unrelated enemies or allies will not be treated as a simple connected elimination. Below 60 it uses a greedy route. At 60 and above it tries alternative routes through those at most five territories, so one cheap dead end does not hide a valid elimination.
 
 ### 12. Move enough troops forward while keeping a guard
 
@@ -145,6 +146,8 @@ The policy receives no deck order, future dice, random-generator state or other 
 **Why:** Cards become troops, but the bot must obey the same hand limits and trade rules as players.
 
 **How:** It chooses a legal three-of-a-kind or one-of-each set. It uses the selected Fixed, Progressive or Exponential reinforcement rules. A fifth card earned by the end-turn capture award waits for the next turn’s trade; an award cannot take an untraded five-card hand to six. It does not secretly turn in an invalid set or receive a special AI award.
+
+At 60 and above, optional Draft trades are also considered as described below. Compulsory trades continue to use the normal rules at every difficulty.
 
 ### 15. Evaluate alliance offers
 
@@ -184,7 +187,31 @@ The policy receives no deck order, future dice, random-generator state or other 
 
 **Why:** Each held capital provides +2 Draft troops, and controlling every chosen capital wins the match. Taking a capital also removes that income from its previous holder.
 
-**How:** Capital targets receive a reward that grows with difficulty. A graph-distance bonus can favour a legal attack that shortens the route toward an enemy capital. Routes exclude accepted allies. The capital's stronger defence is included in estimated cost, and the army still has to retain its required guard and pass the attack safety checks. It does not blindly march through an unaffordable opponent just because a capital is behind them.
+**How:** Capital targets receive a reward that grows with difficulty. A graph-distance bonus can favour a legal attack that shortens the route toward an enemy capital. Routes exclude accepted allies. The capital's stronger defence is included in estimated cost, and the army normally has to retain its required guard and pass the attack safety checks. The final-capital exception is described in strategy 22. It does not blindly march through an unaffordable opponent just because a capital is behind them.
+
+### 20. Plan an affordable sequence of captures
+
+**When:** At difficulty 60 or above, when choosing an attack. It checks up to two captures at 60–74 and up to three at 75–100.
+
+**Why:** A cheap territory can open a route to a bonus, elimination or capital even when it has little immediate value itself.
+
+**How:** It evaluates follow-on captures from the best six legal initial candidates. Each step must be adjacent to the previous capture, use the remaining estimated army, leave an occupying troop, and avoid owned or allied territory. It values completing a bonus, denying income, completing an elimination and taking capitals, then charges for additional expected losses. There is one shared limit of 96 route expansions per decision. This is a short tactical estimate using visible armies; it neither simulates future dice nor assumes troops can teleport. The plan is re-evaluated after each actual roll and capture.
+
+### 21. Cash a useful set before it becomes compulsory
+
+**When:** Difficulty 60 or above, during Draft, with a legal set in a three- or four-card hand.
+
+**Why:** Waiting for a fifth card can lose a capital or miss an opportunity to use reinforcements immediately.
+
+**How:** It compares the legal sets in its own hand using the selected card rules and the normal territory reinforcement awards. It considers spending when a capital or small surviving empire is threatened, when the award is substantial relative to its army, with a four-card hand, or with a valuable Fixed set. A small, unhelpful set can be retained. Optional trading happens during Draft so the normal award can be placed immediately. The choice never uses another player’s card identities or a prediction of the deck.
+
+### 22. Recognise a final-capital winning attack
+
+**When:** At difficulty 75 or above, when the bot already holds every chosen capital except one adjacent enemy capital and has an affordable attacking army.
+
+**Why:** Capturing that last capital wins immediately, so leaving a large guard against a later counterattack would waste the winning opportunity.
+
+**How:** It adds a strong victory reward and releases the source-capital garrison veto for this particular attack. The attack still needs legal adjacency, normal dice and the usual visible troop-cost margin. A failed roll can still make it reassess or stop. This exception does not apply to an ordinary capital capture that would leave the match running.
 
 ## What stronger difficulty does not mean
 
