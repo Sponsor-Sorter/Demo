@@ -7,25 +7,27 @@ vm.runInNewContext(fs.readFileSync(root+'/tractor-repair.js','utf8'),scope);
 vm.runInNewContext(fs.readFileSync(root+'/art-core.js','utf8'),scope);vm.runInNewContext(fs.readFileSync(root+'/art-studio.js','utf8'),scope);
 vm.runInNewContext(source.replace('  window.meadowMinigames=', '  window.test={finish,tick,start,intro,pause,setRun:r=>run=r,getRun:()=>run};\n  window.meadowMinigames='),scope);
 const game=scope.window.meadowMinigames,t=scope.window.test;game.attach({state:()=>state,canPlay:()=>true,notify(){},save:()=>saves++,reward:(item,n,g)=>{goods+=n;gold+=g}});
-assert.equal(game.games.length,14);assert.equal(new Set(game.games.map(g=>g.id)).size,14);
+assert.equal(game.games.length,9);assert.equal(new Set(game.games.map(g=>g.id)).size,9);
+for(const id of ['sheep','goat','cow','flowers','tractorrepair'])assert(!game.games.some(g=>g.id===id),'Retired game stays out of selectable catalogues: '+id);
+assert.deepEqual(Array.from(game.menuGames(),g=>g.id),['eggs','milk']);
 for(const g of game.games){assert(fs.existsSync(root+'/assets/generated/minigames/'+g.scene+'.webp'));assert(fs.statSync(root+'/assets/audio/minigame-'+g.id+'.mp3').size>1000);assert(g.text&&g.goal>0&&(g.time>0||g.relaxed))}
 const eggs=game.games[0];for(let i=0;i<5;i++){t.setRun({game:eggs,score:12,elapsed:20});t.finish(true)}assert.equal(goods,9);assert.equal(gold,75);assert.equal(state.minigames.records.eggs.wins,5);assert.equal(state.minigames.records.eggs.best,25);assert.equal(saves,5);
 t.setRun({game:eggs,score:2,misses:3,elapsed:10});t.finish(false);assert.equal(gold,75);assert(dialog.innerHTML.includes('Retry'));assert(dialog.innerHTML.includes('No thanks'));
 const paused={game:eggs,score:0,elapsed:5,last:0,spawn:0,paused:true,actors:[]};t.setRun(paused);t.tick(500);assert.equal(paused.elapsed,5,'Pause does not consume time');scope.document.hidden=true;paused.paused=false;t.tick(1000);assert.equal(paused.elapsed,5,'Background does not consume time');scope.document.hidden=false;
 const failure={game:eggs,score:0,misses:2,elapsed:4,last:0,spawn:0,paused:false,actors:[{dead:false,y:92,velocity:1,x:20,el:el('egg')}]};t.setRun(failure);t.tick(50);assert.equal(t.getRun(),null);assert(dialog.innerHTML.includes('Retry'));assert.equal(gold,75);
 assert(source.includes("if(a.found)return"),'Found animals cannot be counted twice');assert(source.includes('r.elapsed-r.lastMilk<.45'),'Milking rejects rapid repeated squeezes');assert(source.includes("dialog.addEventListener('close',cleanup)"));
-console.log('Six mini-games: assets, reward cap, wins, loss/retry, pause/background timing, egg break limit and cleanup passed.');
+console.log('Farm mini-game catalogue: retired entries excluded, assets, reward cap, wins, loss/retry, pause/background timing, egg break limit and cleanup passed.');
 
 
 
 for(const [w,h] of [[1280,720],[3088,1440],[1440,3088],[390,844]]){const l=game.coverLayout(w,h);assert(l.rw>=w&&l.rh>=h,'Cover fills every viewport edge');const nests=[14,28,42,57,71,85].map(x=>game.project({x,y:31},l)).filter(p=>p.x>=7&&p.x<=93);assert(nests.length>=2,'At least two visible laying beds in either orientation');for(const p of nests)assert(p.y>10&&p.y<70,'Eggs begin at visible nesting beds');const dairy=game.coverLayout(w,h,.26,.8),bucket=game.project({x:43,y:72},dairy);assert(bucket.x>0&&bucket.x<100&&bucket.y>20&&bucket.y<95,'Dairy bucket stays visible')}
 console.log('Full-viewport cover projection keeps nests and dairy buckets visible in portrait and landscape.');
 
-assert.equal(new Set(game.games.filter(g=>['sheep','goat','cow'].includes(g.id)).map(g=>g.scene)).size,3,'Each animal search uses a distinct map');
+assert.equal(new Set(game.games.filter(g=>['sheep','goat','cow'].includes(g.id)).map(g=>g.scene)).size,0,'Retired searches are no longer offered');
 for(const [w,h,hud] of [[390,844,115],[844,390,64],[3088,1440,85],[1440,3088,130],[768,1024,80],[1024,768,80]]){for(let seed=1;seed<=80;seed++){let n=seed;const rand=()=>((n=Math.imul(n,1664525)+1013904223>>>0)/4294967296),r=Math.max(22,w*.04),spots=game.safePositions(w,h,hud,h-45,rand);assert.equal(spots.length,6);for(const p of spots){const x=p.x*w/100,y=p.y*h/100;assert(x-r>=0&&x+r<=w);assert(y-r>hud&&y+r<h-45,'Targets remain clear of HUD and captions')}for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)assert(Math.hypot((spots[i].x-spots[j].x)*w/100,(spots[i].y-spots[j].y)*h/100)>=2*r,'Targets do not overlap')}}
 assert(source.includes("bindTap($('#mini-milk'),milkAction);bindTap($('.mini-stage'),milkAction)"));
-console.log('Three distinct search maps, 480 seeded safe-area layouts and both milking controls passed.');
-assert(source.includes('id="mini-next"'),'Results offer a next adventure');assert(source.includes('games[(games.findIndex(x=>x.id===g.id)+1)%games.length]'),'Next adventure wraps through the catalogue without auto-starting');
+console.log('Retired search entries excluded; 480 legacy safe-area layouts and both milking controls passed.');
+assert(source.includes('id="mini-next"'),'Results offer a next adventure');assert(source.includes('choices[(choices.findIndex(x=>x.id===g.id)+1)%choices.length]'),'Next adventure wraps through active games without auto-starting retired ones');
 const css=fs.readFileSync(root+'/minigames.css','utf8');assert(css.includes('grid-auto-rows:max-content'));assert(css.includes('flex:0 0 auto;gap:5px;min-height:72px'),'Card labels cannot shrink below their readable area');
 
 for(let seed=1;seed<=60;seed++){let x=seed;const rand=()=>((x=Math.imul(x,1664525)+1013904223>>>0)/4294967296),deck=game.memoryDeck(rand),q=game.sortingQueue(rand);assert.equal(deck.length,16);for(const id of new Set(deck))assert.equal(deck.filter(x=>x===id).length,2);assert.equal(new Set(deck).size,8);assert.equal(q.length,18);for(const id of ['apple','carrot','tomato'])assert.equal(q.filter(x=>x===id).length,6)}
