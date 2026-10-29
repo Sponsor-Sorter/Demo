@@ -18,19 +18,19 @@ commerce_config switches defaultfalse; store_products rows disabled. test_access
 
 Receipt delivery is idempotent; retries reuse the same request/token. Never manually credit local state after Billing success. Check canonical receipt and settled state. A refunded account with a review hold must be reviewed before a further store delivery.
 
-## Store catalogue (draft productIDs)
+## Store catalogue (all seven created as inactive drafts)
 
-| Product ID | Delivery | Type |
-|---|---|---|
-| mm_pocket_gems |100gems|Consumable|
-| mm_gem_chest |550gems|Consumable|
-| mm_starter_pack |150gems,1000gold and fixed supplies|Consumable|
-| mm_builders_pack |300gems,3000gold|Consumable|
-| mm_reward_tickets |5reward tickets|Consumable|
-| mm_pantry_pack |Fixed pantry supplies|Consumable|
-| mm_premium |Lifetime optional popup-ad removal|Non-consumable|
+| Product ID | Delivery | Type | Draft AUD reference price |
+|---|---|---|---|
+| mm_pocket_gems |100gems|Consumable|2.99|
+| mm_gem_chest |550gems|Consumable|12.99|
+| mm_starter_pack |150gems,1000gold and fixed supplies|Consumable|4.99|
+| mm_builders_pack |300gems,3000gold|Consumable|9.99|
+| mm_reward_tickets |5reward tickets|Consumable|1.99|
+| mm_pantry_pack |Fixed pantry supplies|Consumable|3.99|
+| mm_premium |Lifetime optional popup-ad removal|Non-consumable|9.99|
 
-Use localized prices returned from Billing; never hardcode an AUD amount in player UI. Prices and tax/region availability still need Console setup. Premium is a lifetime product, not a subscription. Purchasable random rewards are not offered; earned collection draws disclose their odds.
+All seven fixed IDs and backwards-compatible buy options were verified in Console, with zero active options. Google converted the AUD reference prices across174regions. These are draft prices for review and balancing, not an activated offer. Review tax/region availability before activation. Use localized prices returned from Billing; never hardcode an AUD amount in player UI. Premium is a lifetime product, not a subscription. Purchasable random rewards are not offered; earned collection draws disclose their odds. The game's published privacy URL is saved in Play as a change ready for review.
 
 ## Provider secrets
 

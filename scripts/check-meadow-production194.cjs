@@ -12,6 +12,7 @@ const game=read(root+'game.js');assert(!game.includes('test-gold-grant'));assert
 assert(game.includes('https://play.google.com/apps/internaltest/4701019499198110666'),'The website links the actual internal Play test');
 assert.equal(JSON.parse(read('tools/meadow-android/capacitor.config.json')).server.url,'https://sponsorsorter.com/meadow-and-market/','Website and Play app load the same live game');
 const accounts=read(root+'accounts.js');assert(accounts.includes('Already have a farm? Sign in'));assert(accounts.includes('New farmer? Create an account'));assert(accounts.includes('autocomplete="username"'));assert(accounts.includes('current-password'));assert(accounts.includes('new-password'));assert(accounts.includes('enterkeyhint="go"'));assert(!accounts.includes('type="email"'));
+assert(accounts.includes("if(registered&&mode==='login')"),'Registered farms do not offer duplicate registration');assert(accounts.includes("action==='create'&&info?.username"),'Known account identity guards creation even during a UI transition');
 const privacy=read(root+'account-privacy.js');assert(privacy.indexOf("root.showModal()")<privacy.indexOf('await client.auth.getUser()'),'Privacy opens before waiting on the network');assert(privacy.includes("getElementById('account-privacy-dialog')"));assert(!privacy.includes("document.addEventListener('click'"),'Only one privacy handler');
 assert(read(root+'delete-account.js').includes('persistSession:false'),'Deletion website never replaces the farm session');
 assert(read(root+'delete-account.js').includes("scope:'local'"));
