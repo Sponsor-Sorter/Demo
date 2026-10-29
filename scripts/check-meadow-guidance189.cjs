@@ -3,7 +3,7 @@ const root='meadow-and-market/',read=f=>fs.readFileSync(root+f,'utf8');
 const state={level:1,tutorial:{version:1,completed:[],rewarded:[],seenContexts:[],paused:true}},scope={window:{addEventListener(){}},document:{querySelectorAll:()=>[]},Date};
 vm.runInNewContext(read('guides.js').replace('  window.meadowGuides={','  window.setGuidanceLesson=(l,until)=>{currentLesson=l;lessonUntil=until;reserveCropLesson()};window.setGuidanceTestApi=a=>api=a;window.meadowGuides={'),scope);
 scope.window.setGuidanceTestApi({state:()=>state});const guides=scope.window.meadowGuides;
-const early=guides.tourSteps();assert(early.some(s=>s.id==='kitchen'));assert(!early.some(s=>s.id==='roster'));assert(!early.some(s=>s.id==='travel'));
+const early=guides.tourSteps();assert(!early.some(s=>s.id==='kitchen'),'Kitchen guide waits until its level-two unlock');assert(!early.some(s=>s.id==='roster'));assert(!early.some(s=>s.id==='travel'));
 state.level=11;const steps=guides.tourSteps();assert.equal(steps.length,18);assert(steps.some(s=>s.id==='roster'));assert(steps.some(s=>s.id==='travel'));
 assert.equal(guides.resumeTour({index:17,active:false,paused:false},18).index,0,'A finished tour starts at the beginning');assert.equal(guides.resumeTour({index:7,active:false,paused:true},18).index,7,'Paused tours resume at the same topic');assert.equal(guides.resumeTour({index:90,active:true},15).index,14,'Resume respects currently unlocked topics');assert(read('guides.js').includes('||t.tour?.active||'));assert(read('guides.js').includes('||get().tour?.active||'));
 state.active='willow';state.farms={willow:{objects:[{id:'plot',type:'plot'},{id:'well',type:'well'}]}};
