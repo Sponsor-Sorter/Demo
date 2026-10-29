@@ -9,7 +9,7 @@
     ['#b9e4f7', '#347597'], ['#e0c7f3', '#75509a'], ['#ffc5d8', '#a44769']
   ];
   const topics = window.meadowWordTopics;
-  let api, dialog, topic = topics[2], wordCount = 20, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, runId = null, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], positionHistory = {}, finished = false, resizeHandler = null;
+  let ticket=null, roundSerial=0;let api, dialog, topic = topics[2], wordCount = 20, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, runId = null, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], positionHistory = {}, finished = false, resizeHandler = null;
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const audio = (id) => window.meadowAudio?.play(id);
   const say = (text) => { const live = dialog?.querySelector('[data-live]'); if (live) live.textContent = text; };
@@ -49,6 +49,7 @@
     topic = topics.find((item) => item.id === topic.id) || topics[2]; wordCount = 20; loadHistory(); intro();
   }
   function intro() {
+    roundSerial++;
     clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0;
     const topicCards = topics.map((item) => '<button class="ws-topic ' + (topic.id === item.id ? 'selected' : '') + '" data-topic="' + item.id + '" aria-pressed="' + (topic.id === item.id) + '"><span aria-hidden="true">' + item.icon + '</span><strong>' + item.name + '</strong></button>').join('');
     const countButtons = [20].map((count) => '<button class="ws-count ' + (wordCount === count ? 'selected' : '') + '" data-count="' + count + '" aria-pressed="' + (wordCount === count) + '">' + count + ' words</button>').join('');
@@ -59,13 +60,14 @@
     dialog.querySelector('[data-start]').addEventListener('click', newRound);
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
-  function newRound() {
+  async function newRound() {
+    const serial=++roundSerial,button=dialog.querySelector('[data-start],[data-again],[data-new]');if(button?.disabled)return;if(button)button.disabled=true;ticket=null;
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
-    completedAt = 0; finished = false; runId = crypto.randomUUID();
+    completedAt = 0; finished = false; runId = ticket?.id||crypto.randomUUID();
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     size = boardSize();
     const choices = shuffle(topic.words.map(([label, icon, asset]) => ({ id: topic.id + '-' + label, label: label.toUpperCase(), icon, asset })));
-    let result; try { result = buildBoard(choices.slice(0, wordCount)); } catch(error) { say(error.message); return; } board = result.cells; answers = result.answers; for(const answer of answers){const history=positionHistory[answer.id] ||= []; history.push(answer.indices.join('.'));positionHistory[answer.id]=history.slice(-64);} saveHistory(result.signature); startedAt = Date.now();
+    let result; try { result = buildBoard(choices.slice(0, wordCount)); } catch(error) { say(error.message); return; } board = result.cells; answers = result.answers; for(const answer of answers){const history=positionHistory[answer.id] ||= []; history.push(answer.indices.join('.'));positionHistory[answer.id]=history.slice(-64);} saveHistory(result.signature);ticket=await window.meadowClub?.beginRound({id:'word_search'},{theme:topic.id,board:board.join('')});if(serial!==roundSerial||!dialog.open)return;runId=ticket?.id||runId;startedAt = Date.now();
     playBoard(); clockId = setInterval(updateTimer, 1000); updateTimer();
   }
   function playBoard() {
@@ -161,15 +163,15 @@
       record.wins++; record.level++; record.bestScore = Math.max(record.bestScore || 0, points);
       record.best = record.best ? Math.min(record.best, elapsed) : elapsed; state.minigames.records.word_search = record;
       const today = new Date().toISOString().slice(0, 10) + ':word_search'; state.minigames.rewards[today] ||= 0;
-      if (state.minigames.rewards[today] < 3) { state.minigames.rewards[today]++; api.reward('apple', 1, starCount, 3); earned = true; } else api.save?.();
+      api.save?.();
     }
     const formatted = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
     screen('<header class="ws-header"><div><small>MEADOW MARKETS</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' words · Score ' + points + (earned ? ' · Reward collected!' : ' · Practice round') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
-    bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', () => { close(); api.menu?.(); }); animateStars();
+    const resultNode=dialog.querySelector('.ws-earned');resultNode.textContent=ticket?'Verifying your word search…':'Practice round · connect before starting for rewards.';window.meadowClub?.finishRound(ticket,{completed:20,elapsed,won:true,paths:[...found.entries()].map(([id,value])=>({word:answers.find(a=>a.id===id).label,indices:value.indices}))}).then(result=>{if(resultNode.isConnected)resultNode.textContent='20 words · '+(result.verified?'Score '+result.points+' · ':'')+window.meadowClub.rewardText(result)});bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', () => { close(); api.menu?.(); }); animateStars();
     if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!'); audio('reward');
   }
   function bindClose() { dialog.querySelector('[data-close]').addEventListener('click', () => { close();api.menu?.(); }); }
-  function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
+  function close() { roundSerial++;clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
   function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) { dialog=document.createElement("dialog");dialog.id="word-search-dialog";dialog.className="word-search-dialog";dialog.setAttribute("aria-label","Meadow Word Search");document.body.append(dialog); } dialog.addEventListener('close', () => window.meadowClub?.finished()); dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); }); }
   window.meadowWordSearch = { attach, open, topics };
 })();

@@ -14,6 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno test --allow-env scripts/check-meadow-recovery184.ts
       - run: node scripts/check-meadow.cjs
       - run: node scripts/check-meadow-versions.cjs --committed
   android-build:

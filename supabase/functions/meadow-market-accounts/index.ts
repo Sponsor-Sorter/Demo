@@ -5,7 +5,7 @@ const publicKey = Deno.env.get('SUPABASE_ANON_KEY')!;
 const origins = new Set(['https://sponsorsorter.com','http://localhost:8767','http://localhost:8766','http://localhost:8771','https://localhost','http://localhost']);
 const namePattern = /^[a-z0-9_]{3,20}$/;
 async function request(path:string, method='GET', body?:unknown, bearer=secret) {
-  const response = await fetch(base+path,{method,headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+  const response = await fetch(base+path,{method,signal:AbortSignal.timeout(12000),headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
   let data;try{data=await response.json()}catch{data=null}
   return {ok:response.ok,status:response.status,data};
 }
@@ -34,8 +34,8 @@ Deno.serve(async req=>{
       const check=await fetch(base+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:publicKey,'Content-Type':'application/json'},body:JSON.stringify({email:identity.data.email,password})});
       if(!check.ok)return reply(401,{error:'Your current password is incorrect.'});
       const key=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,'0')).join('');
-      const saved=await request('/rest/v1/meadow_market_accounts?user_id=eq.'+identity.data.id,'PATCH',{recovery_hash:await digest(key),recovery_set_at:new Date().toISOString()});
-      if(!saved.ok)return reply(503,{error:'Could not save recovery. Try again.'});
+      const saved=await request('/rest/v1/rpc/meadow_market_set_recovery','POST',{p_user:identity.data.id,p_hash:await digest(key)});
+      if(!saved.ok||saved.data!==true)return reply(503,{error:'Recovery is busy. Wait two minutes and try again.'});
       return reply(200,{username:owner.data[0].username,recovery_key:key.match(/.{1,8}/g)!.join('-')});
     }
     if(action==='recover'){
@@ -43,15 +43,22 @@ Deno.serve(async req=>{
       if(!/^[a-f0-9]{64}$/.test(key))return reply(401,{error:'The username or recovery key is incorrect.'});
       const gate=await request('/rest/v1/rpc/meadow_market_auth_attempt','POST',{p_bucket:await digest(secret+':recovery:'+username),p_max:8});
       if(!gate.ok||gate.data!==true)return reply(429,{error:'Too many recovery attempts. Please try again in 15 minutes.'});
-      const hash=await digest(key),claim=await request('/rest/v1/rpc/meadow_market_claim_recovery','POST',{p_username:username,p_hash:hash});
+      const hash=await digest(key),lease=crypto.randomUUID(),claim=await request('/rest/v1/rpc/meadow_market_reserve_recovery','POST',{p_username:username,p_hash:hash,p_token:lease});
       const id=claim.ok&&typeof claim.data==='string'?claim.data:null;
-      if(!id)return reply(401,{error:'The username or recovery key is incorrect.'});
+      if(!id)return reply(401,{error:'The username or key is incorrect, or recovery is already running. Wait two minutes before retrying.'});
       const updated=await request('/auth/v1/admin/users/'+id,'PUT',{password});
-      if(!updated.ok){await request('/rest/v1/meadow_market_accounts?user_id=eq.'+id+'&recovery_hash=is.null','PATCH',{recovery_hash:hash,recovery_set_at:new Date().toISOString()});return reply(503,{error:'Could not change the password. Your recovery key can be tried again.'});}
-      const user=await request('/auth/v1/admin/users/'+id);
-      const signed=await fetch(base+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:publicKey,'Content-Type':'application/json'},body:JSON.stringify({email:user.data.email,password})});
-      if(signed.ok){const token=await signed.json();await request('/auth/v1/logout?scope=global','POST',undefined,token.access_token);}
-      return reply(200,{recovered:true,message:'Password changed. Sign in, then save a new recovery key. This key has been used.'});
+      if(!updated.ok){await request('/rest/v1/rpc/meadow_market_finish_recovery','POST',{p_user:id,p_token:lease,p_success:false});return reply(503,{error:'Could not change the password. Your recovery key can be tried again.'});}
+      const consumed=await request('/rest/v1/rpc/meadow_market_finish_recovery','POST',{p_user:id,p_token:lease,p_success:true});
+      if(!consumed.ok||consumed.data!==true)return reply(503,{error:'Your password may have changed. Try signing in with the new password. If needed, retry recovery after two minutes.'});
+      let sessionsRevoked=false;
+      try{
+        const user=await request('/auth/v1/admin/users/'+id);
+        if(user.ok&&user.data?.email){
+          const signed=await fetch(base+'/auth/v1/token?grant_type=password',{method:'POST',signal:AbortSignal.timeout(12000),headers:{apikey:publicKey,'Content-Type':'application/json'},body:JSON.stringify({email:user.data.email,password})});
+          if(signed.ok){const token=await signed.json();const revoked=await request('/auth/v1/logout?scope=global','POST',undefined,token.access_token);sessionsRevoked=revoked.ok;}
+        }
+      }catch{/* Password is already changed and the key consumed. Report revocation truthfully. */}
+      return reply(200,{recovered:true,sessions_revoked:sessionsRevoked,message:'Password changed. Sign in, then save a new recovery key. This key has been used.'});
     }
     if(action==='register'){
       const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');

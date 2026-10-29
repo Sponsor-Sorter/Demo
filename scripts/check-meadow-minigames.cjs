@@ -11,10 +11,10 @@ assert.equal(game.games.length,9);assert.equal(new Set(game.games.map(g=>g.id)).
 for(const id of ['sheep','goat','cow','flowers','tractorrepair'])assert(!game.games.some(g=>g.id===id),'Retired game stays out of selectable catalogues: '+id);
 assert.deepEqual(Array.from(game.menuGames(),g=>g.id),['eggs','milk']);
 for(const g of game.games){assert(fs.existsSync(root+'/assets/generated/minigames/'+g.scene+'.webp'));assert(fs.statSync(root+'/assets/audio/minigame-'+g.id+'.mp3').size>1000);assert(g.text&&g.goal>0&&(g.time>0||g.relaxed))}
-const eggs=game.games[0];for(let i=0;i<5;i++){t.setRun({game:eggs,score:12,elapsed:20});t.finish(true)}assert.equal(goods,9);assert.equal(gold,75);assert.equal(state.minigames.records.eggs.wins,5);assert.equal(state.minigames.records.eggs.best,25);assert.equal(saves,5);
-t.setRun({game:eggs,score:2,misses:3,elapsed:10});t.finish(false);assert.equal(gold,75);assert(dialog.innerHTML.includes('Retry'));assert(dialog.innerHTML.includes('No thanks'));
+const eggs=game.games[0];for(let i=0;i<5;i++){t.setRun({game:eggs,score:12,elapsed:20});t.finish(true)}assert.equal(goods,0,'Offline practice never mints goods');assert.equal(gold,0);assert.equal(state.minigames.records.eggs.wins,5);assert.equal(state.minigames.records.eggs.best,25);assert.equal(saves,5);
+t.setRun({game:eggs,score:2,misses:3,elapsed:10});t.finish(false);assert.equal(gold,0);assert(dialog.innerHTML.includes('Retry'));assert(dialog.innerHTML.includes('No thanks'));
 const paused={game:eggs,score:0,elapsed:5,last:0,spawn:0,paused:true,actors:[]};t.setRun(paused);t.tick(500);assert.equal(paused.elapsed,5,'Pause does not consume time');scope.document.hidden=true;paused.paused=false;t.tick(1000);assert.equal(paused.elapsed,5,'Background does not consume time');scope.document.hidden=false;
-const failure={game:eggs,score:0,misses:2,elapsed:4,last:0,spawn:0,paused:false,actors:[{dead:false,y:92,velocity:1,x:20,el:el('egg')}]};t.setRun(failure);t.tick(50);assert.equal(t.getRun(),null);assert(dialog.innerHTML.includes('Retry'));assert.equal(gold,75);
+const failure={game:eggs,score:0,misses:2,elapsed:4,last:0,spawn:0,paused:false,actors:[{dead:false,y:92,velocity:1,x:20,el:el('egg')}]};t.setRun(failure);t.tick(50);assert.equal(t.getRun(),null);assert(dialog.innerHTML.includes('Retry'));assert.equal(gold,0);
 assert(source.includes("if(a.found)return"),'Found animals cannot be counted twice');assert(source.includes('r.elapsed-r.lastMilk<.45'),'Milking rejects rapid repeated squeezes');assert(source.includes("dialog.addEventListener('close',cleanup)"));
 console.log('Farm mini-game catalogue: retired entries excluded, assets, reward cap, wins, loss/retry, pause/background timing, egg break limit and cleanup passed.');
 

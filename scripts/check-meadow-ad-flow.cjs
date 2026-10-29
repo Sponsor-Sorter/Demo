@@ -6,7 +6,7 @@ vm.createContext(context);
 for(const name of ['result','finished'])vm.runInContext(source.match(new RegExp(' function '+name+'\\([^\\n]+'))[0],context);
 const run=id=>({resultId:id,game:{id:'eggs',level:1,goal:2,time:30},score:2,elapsed:5});
 context.result(run('one'),true);context.result(run('one'),true);
-assert.equal(state.queue.length,1);assert.equal(state.adGames,1,'Duplicate result retries do not advance advertising');
+assert.equal(state.queue.length,0,'Finished results cannot enqueue unissued leaderboard scores');assert.equal(state.adGames,1,'Duplicate result retries do not advance advertising');
 context.result(run('two'),false);context.result(run('three'),true);
 assert(state.adPending);modal=true;context.finished();timers.shift()();assert.equal(ads,0,'Results, purchases and other open panels are never interrupted');assert(state.adPending);
 modal=false;context.document.hidden=true;context.finished();timers.shift()();assert.equal(ads,0,'No ad opens while the game is hidden');

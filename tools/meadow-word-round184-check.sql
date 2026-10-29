@@ -1,0 +1,18 @@
+begin;
+select set_config('request.jwt.claim.sub',(select user_id::text from public.meadow_market_profiles where friend_code='MEADOW-CX1Y5'),true);
+do $$ declare a jsonb; b jsonb; ticket uuid; good jsonb:='[{"word":"CAULIFLOWER","indices":[198,182,166,150,134,118,102,86,70,54,38]},{"word":"AUBERGINE","indices":[228,229,230,231,232,233,234,235,236]},{"word":"ZUCCHINI","indices":[20,21,22,23,24,25,26,27]},{"word":"BEETROOT","indices":[35,51,67,83,99,115,131,147]},{"word":"BROCCOLI","indices":[12,11,10,9,8,7,6,5]},{"word":"CUCUMBER","indices":[1,17,33,49,65,81,97,113]},{"word":"CABBAGE","indices":[160,144,128,112,96,80,64]},{"word":"LETTUCE","indices":[247,248,249,250,251,252,253]},{"word":"PARSNIP","indices":[104,89,74,59,44,29,14]},{"word":"PUMPKIN","indices":[120,136,152,168,184,200,216]},{"word":"SPINACH","indices":[62,78,94,110,126,142,158]},{"word":"TOMATO","indices":[95,79,63,47,31,15]},{"word":"TURNIP","indices":[207,206,205,204,203,202]},{"word":"GARLIC","indices":[196,180,164,148,132,116]},{"word":"PEPPER","indices":[218,219,220,221,222,223]},{"word":"POTATO","indices":[120,105,90,75,60,45]},{"word":"CELERY","indices":[71,87,103,119,135,151]},{"word":"CARROT","indices":[245,244,243,242,241,240]},{"word":"RADISH","indices":[181,165,149,133,117,101]},{"word":"ONION","indices":[174,157,140,123,106]}]'::jsonb; bad jsonb; owner_id text:=auth.uid()::text; begin
+ a:=public.meadow_market_reward_round('start','{"id":"21000000-0000-4000-8000-000000000001","game":"word_search","theme":"farm-0","board":"LCCOOILOCCORBVPOOUWIZUCCHINIGIFTYCLBHVREBXJHNOGAAUHEKQESSHUSTVSMEMMESBWCOKRAVQPOGBMTDIOEFATMCYITAEARVHLLPONFUGNVBRHOCSFEPRROUBAHBRWOIIIRULYUIECPAAUTLDLYMVRTENHOCTOVRAUNPTXTQYOHRIGQARANKILDNAAWRMQKGICZIZPINRUTHMUNIIXNNXPEPPERZVYDAUBERGINEJGOTORRACALETTUCEXG","map":"willow"}'::jsonb);ticket:=(a->'round'->>'id')::uuid;
+ b:=public.meadow_market_reward_round('start','{"id":"21000000-0000-4000-8000-000000000001","game":"word_search","theme":"farm-0","board":"LCCOOILOCCORBVPOOUWIZUCCHINIGIFTYCLBHVREBXJHNOGAAUHEKQESSHUSTVSMEMMESBWCOKRAVQPOGBMTDIOEFATMCYITAEARVHLLPONFUGNVBRHOCSFEPRROUBAHBRWOIIIRULYUIECPAAUTLDLYMVRTENHOCTOVRAUNPTXTQYOHRIGQARANKILDNAAWRMQKGICZIZPINRUTHMUNIIXNNXPEPPERZVYDAUBERGINEJGOTORRACALETTUCEXG","map":"willow"}'::jsonb);assert ticket=(b->'round'->>'id')::uuid,'Start retry reuses issued round';
+ update meadow_private.reward_rounds set started_at=clock_timestamp()-interval '10 seconds' where id=ticket;
+ bad:=jsonb_set(good,'{0,indices,1}',good->0->'indices'->0);
+ begin
+  perform public.meadow_market_reward_round('finish',jsonb_build_object('id',ticket,'won',true,'completed',20,'elapsed',10,'paths',bad));raise exception 'Broken word path accepted';
+ exception when raise_exception then assert sqlerrm='Words must follow a straight line','Repeated/non-straight cell rejected'; end;
+ perform set_config('request.jwt.claim.sub',(select user_id::text from public.meadow_market_profiles where friend_code='MEADOW-KBWYZ'),true);
+ begin
+  perform public.meadow_market_reward_round('finish',jsonb_build_object('id',ticket,'won',true,'completed',20,'elapsed',10,'paths',good));raise exception 'Foreign round accepted';
+ exception when raise_exception then assert sqlerrm='Round not found on this account','Foreign account cannot settle';end;
+ perform set_config('request.jwt.claim.sub',owner_id,true);
+ a:=public.meadow_market_reward_round('finish',jsonb_build_object('id',ticket,'won',true,'completed',20,'elapsed',10,'paths',good));assert a->>'verified'='true' and a->'receipt'->'delivery'->'items'='{"apple":1}'::jsonb,'All twenty actual paths accepted';
+end $$;
+rollback;

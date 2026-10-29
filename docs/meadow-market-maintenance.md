@@ -11,7 +11,7 @@
 
 Build179 introduced server revisions and immutable write receipts. The commit RPC prevents stale snapshots overwriting a newer revision and retries the same write without applying it twice. Once an account opts into protocol2, an older cached writer cannot silently downgrade it. Ownership policies isolate accounts.
 
-This does not make gold, inventory, mission events or game scores server authoritative. Bounded snapshot/result fields are input checks, not proof of gameplay. Server-issued game sessions and economic action receipts are still backlog work. Free test purchases and placeholder ads must remain in test mode.
+Build184 issues one-use online rounds for eggs, milk, Word Search and market rankings, validates action timing or selected word paths, fixes payout amounts/daily limits on the server, and retries the same receipt after lost replies. Rewarded test previews require a server-timed session. Legacy scores cannot claim ranked prizes. Personal records remain. This still does not make farm gold, inventory, non-game mission events or story rewards server authoritative; client action transcripts also cannot prove human input. Free test purchases and placeholder ads remain in test mode.
 
 ## Workers
 

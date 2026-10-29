@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build183. Release receipts are in meadow-market-build172 through183.md.
+Last reconciled for build184. Release receipts are in meadow-market-build172 through183.md.
 
 | Area | Status | Next concrete action |
 |---|---|---|
@@ -15,8 +15,9 @@ Last reconciled for build183. Release receipts are in meadow-market-build172 thr
 | Heavy-farm performance | Improved180/181 | Flower lists shared per pass; mature crop ticks skip repeat plant writes; native frame-time profile remains |
 | High-level pacing | Existing150/151 arithmetic | Check worker/upgrade/recipe paths and expose useful next work |
 | Server resource validation | Bounds strengthened24Oct | All protocol2 write paths reject invalid gold/inventory; earned quantities still need a server ledger |
-| Server game scores | Partial | Move rewarded runs to server-issued sessions and bounded finish receipts |
-| Documentation | Reconciled183 | See meadow-market-maintenance.md for actual guarantees, limits and release process |
+| Server game scores | Issued/validated184 | One-use rounds, action/path checks, server clock, verified-only ranked prizes; human input/bot resistance and farm ledger remain |
+| Story and recovery | Updated184 | Eleven compact chapters retain 35 goals; recovery reservation prevents races and consumes keys after successful Auth writes |
+| Documentation | Reconciled184 | See meadow-market-maintenance.md for actual guarantees, limits and release process |
 | Free purchases/ad previews | Audited183 | Seven pack checkouts, Premium, rewarded preview, receipt replay protection and opt-in passed; keep free while testing |
 | Play Billing/AdMob | Not integrated | Configure products, server purchase verification, licence testers and test ad units before real monetization |
 | Local storage failures | Fixed183 | Cloud scheduling and responsive controls survive a failed device save; physical storage-pressure test remains |
