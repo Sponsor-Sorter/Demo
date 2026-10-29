@@ -1,10 +1,10 @@
 {
-  "build": 68,
-  "version": "1.0.0.68",
-  "url": "https://sponsorsorter.com/frontlines/builds/68/",
-  "notes": "V1.0.0.68: Rebuilt commander reactions with two nonverbal takes per emote. Six male and three female voice packs, HD audio and refreshed mouth timing.",
-  "networkBuild": 66,
-  "androidBuild": 68,
+  "build": 69,
+  "version": "1.0.0.69",
+  "url": "https://sponsorsorter.com/frontlines/builds/69/",
+  "notes": "V1.0.0.69: New guided training and solo campaign with scores, rewards and public standings. Skirmish rename, Pause forfeit and correct capture troop minimum.",
+  "networkBuild": 69,
+  "androidBuild": 69,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }
