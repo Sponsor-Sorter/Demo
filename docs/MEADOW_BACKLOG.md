@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build184. Release receipts are in meadow-market-build172 through183.md.
+Last reconciled for build186. Release receipts are in meadow-market-build172 through186.md.
 
 | Area | Status | Next concrete action |
 |---|---|---|
@@ -14,7 +14,7 @@ Last reconciled for build184. Release receipts are in meadow-market-build172 thr
 | Cross-map automation | Existing foreground loop | Long-session fairness and bounded scheduling audit |
 | Heavy-farm performance | Improved180/181 | Flower lists shared per pass; mature crop ticks skip repeat plant writes; native frame-time profile remains |
 | High-level pacing | Existing150/151 arithmetic | Check worker/upgrade/recipe paths and expose useful next work |
-| Server resource validation | Bounds strengthened24Oct | All protocol2 write paths reject invalid gold/inventory; earned quantities still need a server ledger |
+| Server resource validation | Journal + atomic receipt delivery186 | Protocol3 journals gold/basket/shelves and delivers account receipts once on the server; legacy farm action earnings still require command validation. See build186's migration sequence |
 | Server game scores | Issued/validated184 | One-use rounds, action/path checks, server clock, verified-only ranked prizes; human input/bot resistance and farm ledger remain |
 | Story and recovery | Updated184 | Eleven compact chapters retain 35 goals; recovery reservation prevents races and consumes keys after successful Auth writes |
 | Documentation | Reconciled184 | See meadow-market-maintenance.md for actual guarantees, limits and release process |

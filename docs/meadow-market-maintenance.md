@@ -15,6 +15,8 @@ Build184 issues one-use online rounds for eggs, milk, Word Search and market ran
 
 ## Workers
 
+Build186 adds protocol3: server-owned account receipts are delivered atomically with the saved farm and journalled separately from legacy farm activity. The client only projects an accepted response, rebasing snapshots queued during an uncertain response. The private journal records shared baskets once and tracks shop shelves separately. Old writers cannot downgrade an enrolled account. This remains an incremental migration: normal farm action deltas are labelled legacy and are not server-validated earnings. See `meadow-market-build186.md` before changing the economy or claiming paid-production readiness.
+
 Visible helpers animate in the viewed farm. Assigned hired workers also service other farms while the game is open, respecting walking space and their own well. Build180 adds a bounded return pass of up to three ready actions per assigned worker. Replanted crops use the real return time. It is not a closed-app background service or unlimited offline production.
 
 ## Release procedure

@@ -30,11 +30,12 @@
   const newer=(remote,loaded)=>{if(!remote)return false;const a=remote._cloudRevision,b=loaded?._cloudRevision;if(Number.isSafeInteger(a)&&Number.isSafeInteger(b))return a>b;return Number(remote.seen||0)>Number(typeof loaded==='object'?loaded?.seen||0:loaded||0)};
   function committer(initialRevision=0,onConflict=()=>{},onAck=()=>{}) {
     let revision=Number(initialRevision)||0,pending=null;
+    const economy=window.meadowEconomy,patches=[];
     const id=()=>typeof crypto==='object'&&crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const n=Math.floor(Math.random()*16);return(c==='x'?n:n&3|8).toString(16)});
     const interrupted=()=>({error:Error('Farm save interrupted; its receipt will be checked when reconnecting')});
     async function send(client,job,signal){
       if(signal?.aborted)return interrupted();
-      let request=client.rpc('meadow_market_commit_save',{p_expected_revision:job.revision,p_save_data:job.snapshot,p_write_id:job.id});
+      let request=client.rpc(economy?'meadow_market_commit_economy_save':'meadow_market_commit_save',{p_expected_revision:job.revision,p_save_data:job.snapshot,p_write_id:job.id});
       if(signal&&request.abortSignal)request=request.abortSignal(signal);
       let result;try{result=await request}catch(error){return{error}}
       if(signal?.aborted)return interrupted();
@@ -42,14 +43,18 @@
       const reply=result?.data;
       if(reply?.conflict){pending=null;revision=Number(reply.revision)||0;onConflict(reply.save_data);return{error:Object.assign(Error('Another farm revision is ready to review'),{code:'MEADOW_SAVE_CONFLICT'})}}
       if(!reply?.ok||!Number.isSafeInteger(reply.revision)||reply.revision<job.revision+1||reply.write_id!==job.id)return{error:Error('Invalid farm-save receipt')};
-      revision=reply.revision;pending=null;onAck(revision);return{data:reply,error:null};
+      if(economy&&(!reply.economy||reply.economy.version!==1||!Array.isArray(reply.economy.receipts)))return{error:Error('Invalid farm reward receipt')};
+      try{onAck(reply.revision,reply.economy)}catch(error){return{error}}
+      if(economy&&(!patches.length||reply.economy.to!==patches.at(-1).to))patches.push(reply.economy);
+      revision=reply.revision;pending=null;return{data:reply,error:null};
     }
     return {
       async commit(client,snapshot,signal){
         // An uncertain response keeps the same request ID and immutable body. Resolve it before a newer snapshot.
         if(pending){const result=await send(client,pending,signal);if(result.error)return result}
         if(signal?.aborted)return interrupted();
-        const job={id:id(),revision,snapshot:JSON.parse(JSON.stringify({...snapshot,_cloudRevision:revision}))};pending=job;
+        const rebased=economy?economy.rebase(snapshot,patches):snapshot;
+        const job={id:id(),revision,snapshot:JSON.parse(JSON.stringify({...rebased,_cloudRevision:revision}))};pending=job;
         return send(client,job,signal);
       },
       observe(remote){if(Number.isSafeInteger(remote?._cloudRevision)&&remote._cloudRevision>=revision){revision=remote._cloudRevision;pending=null}},

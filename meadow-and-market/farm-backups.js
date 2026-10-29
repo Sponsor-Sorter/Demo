@@ -18,7 +18,13 @@
     if(!next.farms[next.active])next.active='willow';return next;
   }
   function prepare(next,current,now=Date.now()){
-    const copy=JSON.parse(JSON.stringify(next));copy.friendCode=current.friendCode;copy.farmerName=current.farmerName;copy.seen=now;copy.view='farm';copy.mode='tend';delete copy.previous;delete copy.lastMove;delete copy.selected;delete copy.moving;delete copy.placing;return copy;
+    const copy=JSON.parse(JSON.stringify(next));copy.friendCode=current.friendCode;copy.farmerName=current.farmerName;copy.seen=now;copy.view='farm';copy.mode='tend';
+    // A scenery/progress restore cannot roll back the server delivery cursor or
+    // remove permanent gem upgrades from the matching existing building.
+    if(current._farmEconomy)copy._farmEconomy=JSON.parse(JSON.stringify(current._farmEconomy));
+    if(current.club?.applied){copy.club ||= {};copy.club.applied=[...new Set([...(copy.club.applied||[]),...current.club.applied])];}
+    for(const [id,f]of Object.entries(copy.farms||{}))for(const o of f.objects||[]){const existing=current.farms?.[id]?.objects?.find(e=>e.id===o.id&&e.type===o.type);if(!existing)continue;for(const key of ['wellGemTier','queueSlots'])if(existing[key])o[key]=Math.max(Number(o[key])||0,existing[key]);if(existing.autoWater)o.autoWater=true;}
+    delete copy.previous;delete copy.lastMove;delete copy.selected;delete copy.moving;delete copy.placing;return copy;
   }
   window.meadowBackups={validate,prepare};
 })();
