@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.67",
-  "versionCode": 67,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview67-testing/frontlines-1.0.0-preview-build-67.apk",
-  "bytes": 198987420,
-  "sha256": "ad151f4d16639d4327f21bd46eff77b26684e5e50972c4193440dbcbc539f7d4",
+  "versionName": "1.0.0.68",
+  "versionCode": 68,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview68-testing/frontlines-1.0.0-preview-build-68.apk",
+  "bytes": 212091888,
+  "sha256": "096b7dca25729f9fd7c5acfd4f96bb5e266bf5d238cebdf0b93f74a78491224b",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "V1.0.0.67: New orchestral rock soundtrack, including Ashes Before Dawn and Spearwall. Original theme retained as Last Push. Music level reduced to 60%.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview67-testing/frontlines-1.0.0-preview-build-67.apk"
+  "notes": "V1.0.0.68: Rebuilt commander reactions with two nonverbal takes per emote. Six male and three female voice packs, HD audio and refreshed mouth timing.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview68-testing/frontlines-1.0.0-preview-build-68.apk"
 }

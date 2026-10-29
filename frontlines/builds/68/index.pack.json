@@ -1,0 +1,67 @@
+{
+  "format": 1,
+  "bytes": 92539660,
+  "sha256": "3185eb66e67d02bbd71d6d3b0e63e4d3ba108db0bf9b4811e8d5ed38926a9103",
+  "chunks": [
+    {
+      "file": "index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "5b39891615417ff458f1dad3d201a0693a922744b274f8db1b084232feca82f3"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "09c825b2023e4677d5f316085d2f1426b4a1a6c5ce4dfea67b51a0ab16259243"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "f2308a0a6f501b600a12a73d4844e55e3e2ee3dffc2f87b4c01e2265e9528942"
+    },
+    {
+      "file": "index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "68d5b684d10635e1da2929f779bc5ddf62f65b72a7357e5b9422e296ba9d34a4"
+    },
+    {
+      "file": "index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "e19473ad34c168257aee5263f9a79cea30c12b127488c5fe3b9368898949e708"
+    },
+    {
+      "file": "index.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "cd14918a7830d126d05cb429c863ed7edcffaad198cdcc1c3f1e719bb2765736"
+    },
+    {
+      "file": "index.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "781f844f3bb3ec7544a174c2e935ea6ff82192674910410da6cfacc17783ff7e"
+    },
+    {
+      "file": "index.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "73b7d2a68611c8cb0b14e7122ccd2b15a0cc09969dc1cbdfc9af159c197f854b"
+    },
+    {
+      "file": "index.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "5746b9f4db6fd8785a662dbb9717d4cd89d7fba380095aa339801ffa8abb92ed"
+    },
+    {
+      "file": "index.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "7ad304ecd2bffa201503981b69d08d43f263423ef8acfdeea194aa9d36022bde"
+    },
+    {
+      "file": "index.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "1e585b7861a51826052ede900bc48b7b9aed2ed29c2a5a04b205b49529a9c789"
+    },
+    {
+      "file": "index.pck.part-11",
+      "bytes": 264972,
+      "sha256": "f8f03c1b7ffa3862ac2ae4bdc051d19fc8fb8b8b26c8fcc5495aadd1a6dacef6"
+    }
+  ]
+}
