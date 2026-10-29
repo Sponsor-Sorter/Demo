@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.64",
-  "versionCode": 64,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview64-testing/frontlines-1.0.0-preview-build-64.apk",
-  "bytes": 175554929,
-  "sha256": "b2cfca34b1bb7f96311bd555089a351e767335e9028478b84d04f9293c9cd3fa",
+  "versionName": "1.0.0.65",
+  "versionCode": 65,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview65-testing/frontlines-1.0.0-preview-build-65.apk",
+  "bytes": 175634083,
+  "sha256": "f569d5909abf67acddee162c54f55033821c96c0ecbdcfe3709669ce4254d799",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "V1.0.0.64: optional 30/60/90/120/180-second turn timers, whole-match time limits and round limits for solo and hosted lobbies. Limits default off; most territories wins at the match limit, with shared victories on ties. Faster first-capture interaction through prepared commander reactions and occupation rigs, coalesced native saves and cached battle-history snapshots. Rapid phase controls cannot skip the next human turn. Approved terrain, water, unit detail, animations, portraits, music, maps and wardrobe assets retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview64-testing/frontlines-1.0.0-preview-build-64.apk"
+  "notes": "V1.0.0.65: Same-Time Turn. All commanders plan privately from the same board, commit trades, deploy troops and assign attacks, then Ready together. Departures, border clashes, battles, capitals and card settlement follow explicit simultaneous rules. Includes solo AI, hot-seat, local Wi-Fi and online adapters. Shared planning timer and complete-round match limits. Compact bottom-right planning dock, four rotating pending commander cards, touch slider/scroll handoff fixed and pending orders require confirmation. Online-only pairwise Elo ladders with separate duel/FFA and Classic/Same-Time pools, provisional placements, public career views and separate unranked local/bot wins/losses in account career. Intentional planning idle cadence no longer lowers render resolution. Approved terrain, water, rigs, animation clips, portraits, cards, audio and wardrobe assets retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview65-testing/frontlines-1.0.0-preview-build-65.apk"
 }
