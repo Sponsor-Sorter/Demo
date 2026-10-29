@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.65",
-  "versionCode": 65,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview65-testing/frontlines-1.0.0-preview-build-65.apk",
-  "bytes": 175634083,
-  "sha256": "f569d5909abf67acddee162c54f55033821c96c0ecbdcfe3709669ce4254d799",
+  "versionName": "1.0.0.66",
+  "versionCode": 66,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview66-testing/frontlines-1.0.0-preview-build-66.apk",
+  "bytes": 175642480,
+  "sha256": "2e0806a0d57153697c92135329cda26345e6cbdde99e2a5bfbf2420e0a60ffbc",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Same-Time Turn, compact planning controls and online ratings. Career now separates online, local and bot records. Touch and idle-rendering fixes; approved graphics retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview65-testing/frontlines-1.0.0-preview-build-65.apk"
+  "notes": "V1.0.0.66: Five turns without a capture card eliminate a player. Garrisons remain as defenders. Settings adds a surrender flag and card-block counter.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview66-testing/frontlines-1.0.0-preview-build-66.apk"
 }

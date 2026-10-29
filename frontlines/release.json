@@ -1,10 +1,10 @@
 {
-  "build": 65,
-  "version": "1.0.0.65",
-  "url": "https://sponsorsorter.com/frontlines/builds/65/",
-  "notes": "Same-Time Turn, compact planning controls and online ratings. Career now separates online, local and bot records. Touch and idle-rendering fixes; approved graphics retained.",
-  "networkBuild": 65,
-  "androidBuild": 65,
+  "build": 66,
+  "version": "1.0.0.66",
+  "url": "https://sponsorsorter.com/frontlines/builds/66/",
+  "notes": "V1.0.0.66: Five turns without a capture card eliminate a player. Garrisons remain as defenders. Settings adds a surrender flag and card-block counter.",
+  "networkBuild": 66,
+  "androidBuild": 66,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }
