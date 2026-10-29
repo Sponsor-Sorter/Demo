@@ -2,7 +2,7 @@
   "build": 65,
   "version": "1.0.0.65",
   "url": "https://sponsorsorter.com/frontlines/builds/65/",
-  "notes": "V1.0.0.65: Same-Time Turn. All commanders plan privately from the same board, commit trades, deploy troops and assign attacks, then Ready together. Departures, border clashes, battles, capitals and card settlement follow explicit simultaneous rules. Includes solo AI, hot-seat, local Wi-Fi and online adapters. Shared planning timer and complete-round match limits. Compact bottom-right planning dock, four rotating pending commander cards, touch slider/scroll handoff fixed and pending orders require confirmation. Online-only pairwise Elo ladders with separate duel/FFA and Classic/Same-Time pools, provisional placements, public career views and separate unranked local/bot wins/losses in account career. Intentional planning idle cadence no longer lowers render resolution. Approved terrain, water, rigs, animation clips, portraits, cards, audio and wardrobe assets retained.",
+  "notes": "Same-Time Turn, compact planning controls and online ratings. Career now separates online, local and bot records. Touch and idle-rendering fixes; approved graphics retained.",
   "networkBuild": 65,
   "androidBuild": 65,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
