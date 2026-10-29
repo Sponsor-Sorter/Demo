@@ -428,15 +428,15 @@
   function travelGuide(){
     const button=$('#map-switch'),available=maps.some(m=>m.id!==maps[0].id&&state.level>=m.unlock);
     button.hidden=!available;
-    if(!available||state.travelGuide119||travelGuide.showing||activeVisit||state.mode==='build'||document.querySelector('dialog[open]')||document.hidden)return;
+    if(state.tutorial?.tour?.active||document.querySelector('#guide-panel:not([hidden]),#farm-guide-ring:not([hidden])')||!available||state.travelGuide119||travelGuide.showing||activeVisit||state.mode==='build'||document.querySelector('dialog[open]')||document.hidden)return;
     travelGuide.showing=true;button.classList.add('travel-walkthrough');
     openModal('<div class="sheet-head"><div><small class="eyebrow">NEW PLACES TO FARM</small><h2>Your next farm is ready</h2></div></div><p class="sheet-copy">The map icon at the top opens your farms. Choose an unlocked place to start another farm, then return here whenever you like. Each farm keeps its own buildings, crops and animals. More places unlock as you level up.</p><button class="small-button full-button" id="travel-listen">Listen</button><button class="primary-button full-button" id="travel-open">Choose a farm</button><button class="small-button full-button" id="travel-later">Stay here</button>');
     const finish=()=>{state.travelGuide119=true;travelGuide.showing=false;button.classList.remove('travel-walkthrough');save();window.meadowAudio?.stopVoice()};
     $('#modal-dialog').addEventListener('close',finish,{once:true});
-    $('#travel-listen').onclick=()=>window.meadowAudio?.speak('hud-maps');
+    $('#travel-listen').onclick=()=>window.meadowAudio?.speak('rhys-travel189');
     $('#travel-open').onclick=()=>{$('#modal-dialog').close();finish();mapDialog()};
     $('#travel-later').onclick=()=>$('#modal-dialog').close();
-    window.meadowAudio?.speak('hud-maps');
+    window.meadowAudio?.speak('rhys-travel189');
   }
   async function travelArea(id){if(pendingTransfer){notify('Finish or cancel the current move first');return}
     const m=maps.find(a=>a.id===id);if(!m)return;
@@ -675,7 +675,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=191;
+  const currentBuild=192;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
