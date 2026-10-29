@@ -116,27 +116,42 @@
     {
       "id": "jade-crops",
       "kind": "voice",
-      "bytes": 131702
+      "bytes": 131702,
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jade-till",
       "kind": "voice",
-      "bytes": 139225
+      "bytes": 139225,
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jade-plant",
       "kind": "voice",
-      "bytes": 145181
+      "bytes": 145181,
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jade-water",
       "kind": "voice",
-      "bytes": 166183
+      "bytes": 166183,
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jade-harvest",
       "kind": "voice",
-      "bytes": 160541
+      "bytes": 160541,
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "provider": "ElevenLabs"
     },
     {
       "id": "rhys-welcome",
@@ -146,7 +161,10 @@
     {
       "id": "rhys-place",
       "kind": "voice",
-      "bytes": 147062
+      "bytes": 147062,
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs"
     },
     {
       "id": "rhys-move",
@@ -171,12 +189,18 @@
     {
       "id": "jay-care",
       "kind": "voice",
-      "bytes": 146121
+      "bytes": 146121,
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jay-sell",
       "kind": "voice",
-      "bytes": 151764
+      "bytes": 151764,
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jay-stock",
@@ -191,12 +215,18 @@
     {
       "id": "rhys-craft",
       "kind": "voice",
-      "bytes": 144240
+      "bytes": 144240,
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs"
     },
     {
       "id": "rhys-home",
       "kind": "voice",
-      "bytes": 155839
+      "bytes": 155839,
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jade-honey",
@@ -224,7 +254,10 @@
     {
       "id": "jay-fleece",
       "kind": "voice",
-      "bytes": 188440
+      "bytes": 188440,
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "provider": "ElevenLabs"
     },
     {
       "id": "minigame-eggs",
@@ -266,7 +299,9 @@
       "id": "rhys-upgrade-howto",
       "kind": "voice",
       "provider": "ElevenLabs",
-      "bytes": 340159
+      "bytes": 340159,
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator"
     },
     {
       "id": "rhys-new-choices",
@@ -395,14 +430,18 @@
       "kind": "voice",
       "character": "Farmer Rhys",
       "providerVoice": "Noah - YA Audiobooks Narrator",
-      "bytes": 579963
+      "bytes": 579963,
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs"
     },
     {
       "id": "jay-friend-visits",
       "kind": "voice",
       "character": "Farmer Jay",
       "providerVoice": "Mike - Animation, Explainers & Gaming",
-      "bytes": 489684
+      "bytes": 489684,
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "provider": "ElevenLabs"
     },
     {
       "id": "minigame-coopmath",
@@ -738,13 +777,17 @@
       "id": "jay-production120",
       "kind": "voice",
       "provider": "ElevenLabs",
-      "bytes": 282341
+      "bytes": 282341,
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming"
     },
     {
       "id": "jay-well120",
       "kind": "voice",
       "provider": "ElevenLabs",
-      "bytes": 349214
+      "bytes": 349214,
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming"
     },
     {
       "id": "jay-market-stalls127",
@@ -958,6 +1001,66 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "bytes": 436080,
       "guide": "Level-eleven roster, gold hiring, portrait-to-walking-sprite placement, live work status, other-map work, reassignment, 20-gem well watering and per-tile costs, rest and closed-game pause."
+    },
+    {
+      "id": "jade-recovery189",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 342040,
+      "script": "I’m Farmer Jade. Protect your meadow with a private recovery key. Open Settings, choose Account and switch farm, then Save or replace recovery key. Enter your current password and save the key somewhere safe outside this device. Never share it. If you forget your password, choose Sign in, then Recover my farm. Use your username and saved key to set a new password. Each key works once, so save a fresh one after recovery."
+    },
+    {
+      "id": "rhys-history189",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 365863,
+      "script": "I’m Farmer Rhys. Gold and basket history shows your latest saved farm changes. Open a row to see the goods, gold or experience that changed. Opening balance is where the record begins. Farm activity follows your saved farming, and account rewards are deliveries recorded online. If two devices save different farms, choose carefully. Keeping this device’s farm also brings in missing account rewards once. Your other farm is backed up before switching."
+    },
+    {
+      "id": "rhys-travel189",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 342040,
+      "script": "I’m Farmer Rhys. My farms is your way to explore. When another place unlocks, tap the map icon near the top of your farm, then choose a place to visit. Your older farms stay yours. At level four, tap the wooden bridge to open Eastbank Meadow. The family comes with you. From level eleven, hire workers through the roster and drag them onto a farm to keep working there. Tap Farm helpers whenever you want us to show you the next step."
+    },
+    {
+      "id": "jay-artisan126",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 516816
+    },
+    {
+      "id": "jay-care-round123",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 332496
+    },
+    {
+      "id": "jay-well-upgrades124",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 326226
+    },
+    {
+      "id": "rhys-word-search189",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "script": "I’m Farmer Rhys. Find the twenty words in your list. They can run across, down or diagonally, forwards or backwards. Drag from the first letter to the last in one straight line. Found words stay marked. Take your time, and try another farm theme when you finish.",
+      "kind": "voice",
+      "provider": "ElevenLabs",
+      "bytes": 210383
     }
   ]
 }

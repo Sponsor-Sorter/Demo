@@ -68,10 +68,11 @@
       if(r.error)throw Error(r.error.message);
       const data=r.data,amount=n=>(n>0?'+':'')+Number(n).toLocaleString();
       const label=k=>k==='gold'?'gold':k==='xp'?'XP':k==='level'?'level':(k.startsWith('shelves:')?'On shelves · ':'')+(api.items[k.split(':').at(-1)]?.name||k.split(':').at(-1));
-      api.modal('<div class="sheet-head"><div><small class="eyebrow">YOUR SAVED FARM</small><h2>Gold & basket history</h2></div><button class="close-button" data-close="modal-dialog" aria-label="Return to farm">×</button></div><p class="sheet-copy">'+Number(data.balances?.gold||0).toLocaleString()+' gold · latest 25 changes</p>'+data.entries.map(e=>{
+      api.modal('<div class="sheet-head"><div><small class="eyebrow">YOUR SAVED FARM</small><h2>Gold & basket history</h2></div><button class="small-button" id="farm-history-listen" aria-label="Farmer Rhys: saved farm activity">🔊</button><button class="close-button" data-close="modal-dialog" aria-label="Return to farm">×</button></div><p class="sheet-copy">'+Number(data.balances?.gold||0).toLocaleString()+' gold · latest 25 changes</p>'+data.entries.map(e=>{
         const entries=Object.entries(e.changes),gold=e.changes.gold;
-        return '<details class="settings-section"><summary>'+({'legacy_baseline':'Opening balance','legacy_snapshot':'Farm activity','server_receipt':'Account reward'})[e.lane]+' · '+(gold===undefined?entries.length+' changes':amount(gold)+' gold')+'</summary><small>'+esc(new Date(e.created_at).toLocaleString())+'</small>'+entries.map(([k,n])=>'<div class="task-row"><span>'+esc(label(k))+'</span><strong>'+esc(amount(n))+'</strong></div>').join('')+'</details>';
+        return '<details class="settings-section"><summary>'+({'legacy_baseline':'Opening balance','legacy_snapshot':'Farm activity','server_receipt':'Account reward'})[e.lane]+' · '+(gold===undefined?entries.length+(entries.length===1?' change':' changes'):amount(gold)+' gold')+'</summary><small>'+esc(new Date(e.created_at).toLocaleString())+'</small>'+entries.map(([k,n])=>'<div class="task-row"><span>'+esc(label(k))+'</span><strong>'+esc(amount(n))+'</strong></div>').join('')+'</details>';
       }).join('')+(data.entries.length?'':'<p>Your next saved farm action will appear here.</p>'));
+      document.querySelector('#farm-history-listen').onclick=()=>window.meadowAudio?.speak('rhys-history189');
     }catch(e){if(owner===api.user()?.id)api.notify('Farm history is unavailable: '+e.message);}
   }
   window.meadowEconomy={apply,rebase,cursor,show,reconcile,attach:a=>{api=a}};

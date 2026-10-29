@@ -1,0 +1,26 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),crypto=require('crypto');
+const root='meadow-and-market/',read=f=>fs.readFileSync(root+f,'utf8');
+const state={level:1,tutorial:{version:1,completed:[],rewarded:[],seenContexts:[],paused:true}},scope={window:{addEventListener(){}},document:{querySelectorAll:()=>[]},Date};
+vm.runInNewContext(read('guides.js').replace('  window.meadowGuides={','  window.setGuidanceLesson=(l,until)=>{currentLesson=l;lessonUntil=until;reserveCropLesson()};window.setGuidanceTestApi=a=>api=a;window.meadowGuides={'),scope);
+scope.window.setGuidanceTestApi({state:()=>state});const guides=scope.window.meadowGuides;
+const early=guides.tourSteps();assert(early.some(s=>s.id==='kitchen'));assert(!early.some(s=>s.id==='roster'));assert(!early.some(s=>s.id==='travel'));
+state.level=11;const steps=guides.tourSteps();assert.equal(steps.length,18);assert(steps.some(s=>s.id==='roster'));assert(steps.some(s=>s.id==='travel'));
+state.active='willow';state.farms={willow:{objects:[{id:'plot',type:'plot'},{id:'well',type:'well'}]}};
+guides.protect('well');assert(guides.protects('well'));assert(!guides.protects('well','east'));guides.protect(null);
+state.tutorial.tour={active:true,index:0};scope.window.setGuidanceLesson({id:'plant'},Date.now()+120000);assert(guides.protects('plot'),'Helpers leave lesson crops for the player');assert(!guides.protects('well'));assert(!guides.protects('plot','east'));scope.window.setGuidanceLesson({id:'plant'},0);assert(!guides.protects('plot'),'Lesson reservation expires');
+vm.runInNewContext(read('story.js'),scope);const story=scope.window.meadowStory;assert.equal(story.chapterGuides.length,story.chapters.length);assert.equal(story.chapters.flatMap(c=>c.goals).length,35);
+assert.equal(story.chapterGuides[2][0],'rhys-travel189');assert.equal(story.chapterGuides[8][0],'jade-crop-mastery128');assert.equal(story.chapterGuides[9][0],'jay-shop-plan130');assert.equal(story.chapterGuides[10][0],'jay-artisan-mastery146');
+const sw=read('sw.js'),manifest=JSON.parse(read('assets/audio/manifest.json'));
+for(const id of new Set([...steps.map(guides.guideVoice),...story.chapterGuides.map(g=>g[0]),'jade-recovery189','rhys-history189'])){assert(fs.existsSync(root+'assets/audio/'+id+'.mp3'),id);assert(sw.includes('./assets/audio/'+id+'.mp3'),id+' cached');assert(manifest.files.some(f=>f.id===id),id+' has provenance')}
+const cast={'jade':'Hope - upbeat and clear','rhys':'Noah - YA Audiobooks Narrator','jay':'Mike - Animation, Explainers & Gaming'};
+for(const id of ['jade-recovery189','rhys-history189','rhys-travel189','rhys-word-search189']){const clip=manifest.files.find(f=>f.id===id);assert.equal(clip.voice,cast[id.split('-')[0]]);assert.equal(clip.bytes,fs.statSync(root+'assets/audio/'+id+'.mp3').size);assert(clip.script.length>100);assert(sw.includes(crypto.createHash('sha256').update(fs.readFileSync(root+'assets/audio/'+id+'.mp3')).digest('hex')))}
+for(const l of steps)assert.equal(manifest.files.find(f=>f.id===guides.guideVoice(l)).voice,cast[l.person],'Tour uses the actual farmer cast: '+l.id);
+const wordSearch=read('word-search.js');assert(wordSearch.includes('function hearGuide()'));assert(wordSearch.includes("speak('rhys-word-search189')"));assert(!wordSearch.includes('speakText(pick(phrases))'));assert(!wordSearch.includes("speakText('Find twenty"));
+vm.runInNewContext(read('map-regions.js'),scope);const {regions,contains,bounds}=scope.window.meadowMapRegions;
+assert.equal(scope.window.meadowMapRegions.artSha256,crypto.createHash('sha256').update(fs.readFileSync(root+'assets/generated/willowbrook-meadow-map.webp')).digest('hex'),'Retrace regions when map artwork changes');
+for(const r of Object.values(regions)){assert(r.points.length>=6);assert(r.points.flat().every(n=>Number.isFinite(n)&&n>=0&&n<=100));const b=bounds(r.points);assert(b.w>0&&b.h>0)}
+for(const [id,x,y] of [['homestead',18,20],['barnyard',29,10],['coop-yard',40,21],['orchard-area',58,8],['bridge-area',87,33]])assert(contains(regions[id].points,x,y),id+' covers painted feature');
+for(const [x,y] of [[55,52],[93,56],[56,26],[75,24]])assert(!Object.values(regions).some(r=>contains(r.points,x,y)),'Grass, river and roads are not building hitboxes: '+x+','+y);
+const css=read('style.css');assert(css.includes('-webkit-tap-highlight-color:transparent'));assert(css.includes('button:focus-visible{outline:2px solid #ffd56b'));assert(read('guide-ring.js').includes('pointer-events')===false);assert(read('guides.css').includes('pointer-events:none!important'));assert(read('guides.css').includes('@media(prefers-reduced-motion:reduce)'));
+assert(read('game.js').includes('meadowMapRegions?.mount'));assert(read('game.js').includes('meadowGuides?.surface'));assert(read('compact-hud.js').includes('reveal(el)'));
+console.log('Guidance189: 18 level-gated tour topics, 11 relevant story replays, original farmer cast, normalized clip provenance/cache, five artwork-traced map regions and non-blocking gold targets passed.');

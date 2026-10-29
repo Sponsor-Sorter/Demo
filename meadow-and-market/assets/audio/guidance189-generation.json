@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "generated": "2026-10-29",
+  "creditsUsed": 1571,
+  "normalization": {
+    "integratedLufs": -18,
+    "truePeakDb": -2.5,
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "clips": [
+    {
+      "id": "jade-recovery189",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "source": "ElevenLabs_2026-10-29T03_48_52_Hope - upbeat and clear_pvc_sp96_s50_sb75_v4.mp3",
+      "script": "I’m Farmer Jade. Protect your meadow with a private recovery key. Open Settings, choose Account and switch farm, then Save or replace recovery key. Enter your current password and save the key somewhere safe outside this device. Never share it. If you forget your password, choose Sign in, then Recover my farm. Use your username and saved key to set a new password. Each key works once, so save a fresh one after recovery.",
+      "measured": {
+        "integratedLufs": -18.87,
+        "truePeakDb": -2.63
+      }
+    },
+    {
+      "id": "rhys-history189",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "source": "ElevenLabs_2026-10-29T03_51_33_Noah - YA Audiobooks Narrator_pvc_sp100_s50_sb75_v4.mp3",
+      "script": "I’m Farmer Rhys. Gold and basket history shows your latest saved farm changes. Open a row to see the goods, gold or experience that changed. Opening balance is where the record begins. Farm activity follows your saved farming, and account rewards are deliveries recorded online. If two devices save different farms, choose carefully. Keeping this device’s farm also brings in missing account rewards once. Your other farm is backed up before switching.",
+      "measured": {
+        "integratedLufs": -19.69,
+        "truePeakDb": -2.62
+      }
+    },
+    {
+      "id": "rhys-travel189",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "source": "ElevenLabs_2026-10-29T04_02_16_Noah - YA Audiobooks Narrator_pvc_sp100_s50_sb75_v4.mp3",
+      "script": "I’m Farmer Rhys. My farms is your way to explore. When another place unlocks, tap the map icon near the top of your farm, then choose a place to visit. Your older farms stay yours. At level four, tap the wooden bridge to open Eastbank Meadow. The family comes with you. From level eleven, hire workers through the roster and drag them onto a farm to keep working there. Tap Farm helpers whenever you want us to show you the next step.",
+      "measured": {
+        "integratedLufs": -19.43,
+        "truePeakDb": -2.76
+      }
+    },
+    {
+      "id": "rhys-word-search189",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "source": "ElevenLabs_2026-10-29T04_25_24_Noah - YA Audiobooks Narrator_pvc_sp100_s50_sb75_v4.mp3",
+      "script": "I’m Farmer Rhys. Find the twenty words in your list. They can run across, down or diagonally, forwards or backwards. Drag from the first letter to the last in one straight line. Found words stay marked. Take your time, and try another farm theme when you finish."
+    }
+  ]
+}

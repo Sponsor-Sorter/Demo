@@ -145,3 +145,5 @@ require('./check-meadow-storage-full.cjs');
 require('./check-meadow-rounds184.cjs');
 
 require('./check-meadow-economy186.cjs');
+
+require('./check-meadow-guidance189.cjs');

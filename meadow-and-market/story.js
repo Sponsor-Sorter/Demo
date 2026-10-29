@@ -78,6 +78,21 @@
     'A busy shop needs a little planning. Keep recipe ingredients in reserve while Farmer Jay stocks goods for your customers.',
     'Your farm has a style of its own. Practise recipes, choose your signatures and become an artisan the village remembers.'
   ];
+  // Each replay explains the chapter's actual activity, using the original cast.
+  // Reuse an existing specific lesson rather than an unrelated generic tutorial.
+  const chapterGuides=[
+    ['jade-crops','Farmer Jade: crop care'],
+    ['jay-production120','Farmer Jay: kitchen & craft batches'],
+    ['rhys-travel189','Farmer Rhys: travelling between farms'],
+    ['jay-fleece','Farmer Jay: alpacas & fleece'],
+    ['jay-care','Farmer Jay: everyday animal care'],
+    ['jay-care-round123','Farmer Jay: care across your farms'],
+    ['jay-artisan126','Farmer Jay: artisan recipes'],
+    ['jay-market-stalls127','Farmer Jay: market deliveries'],
+    ['jade-crop-mastery128','Farmer Jade: crop mastery'],
+    ['jay-shop-plan130','Farmer Jay: shelf plans'],
+    ['jay-artisan-mastery146','Farmer Jay: artisan mastery']
+  ];
   let selectedChapter=null;
   function nextChapter(s){const claimed=journal(s).claimed;return Math.max(0,chapters.findIndex(c=>c.goals.some(g=>!claimed.includes(g.id))))}
   function goalRoute(id){if(['beds','kitchen','flock','grand-field','grove','alpaca-friends','grand-barn-family'].includes(id))return ['build','Open Build'];if(id==='visit')return ['friends','Find farm friends'];if(id==='parcels')return ['places','Choose a place'];if(['market-pantry','market-handmade'].includes(id))return ['market','Go to Farmers Market'];if(['customers','country-shop','shop-shelf-plan','shop-helper-supply'].includes(id))return ['shop','Open my farm shop'];if(id==='vendors')return ['requests','See market requests'];if(id.startsWith('animal-')||id.startsWith('family-'))return ['animals','Care for my animals'];return ['farm','Back to my farm']}
@@ -88,11 +103,12 @@
     const card=g=>{const n=progress(s,g),done=j.claimed.includes(g.id);return '<article class="story-goal '+(done?'story-complete':'')+'"><div><h3>'+g.title+'</h3><p>'+g.text+'</p><small>'+n+' / '+g.target+' · '+g.reward+' gold · '+g.xp+' XP</small><progress value="'+n+'" max="'+g.target+'" aria-label="'+g.title+' progress"></progress></div><button class="small-button story-claim" data-goal="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Collected':'Collect')+'</button></article>'};
     api.modal('<section class="story-reader"><header class="story-toolbar"><div><small class="eyebrow">YOUR HOMESTEAD STORY · '+j.claimed.length+'/'+total+'</small><h2>Growing together</h2></div><button class="small-button" id="story-daily">Daily jobs</button><button class="close-button" data-close="modal-dialog" aria-label="Return to farm">×</button><label class="story-selector">Chapter<select id="story-chapter-select">'+chapters.map((ch,i)=>'<option value="'+i+'" '+(i===selectedChapter?'selected':'')+'>'+ (i+1)+'. '+ch.name+' · '+ch.goals.filter(g=>j.claimed.includes(g.id)).length+'/'+ch.goals.length+'</option>').join('')+'</select></label></header><main class="story-pages"><div class="story-narrative"><img src="assets/generated/guides/'+c.person+'.webp" alt="Farmer '+c.person[0].toUpperCase()+c.person.slice(1)+'"><div><small>CHAPTER '+(selectedChapter+1)+' · '+completed+'/'+c.goals.length+' COLLECTED</small><h3>'+c.name+'</h3><p>'+openings[selectedChapter]+'</p><button class="small-button" id="story-listen">🔊 '+(c.person==='jade'?'Jade: growing tips':c.person==='rhys'?'Rhys: building tips':'Jay: market tips')+'</button></div></div>'+(next?'<div class="story-next"><div><small>YOUR NEXT STEP</small><strong>'+next.title+'</strong></div><button class="primary-button" id="story-go">'+route[1]+'</button></div>':'<div class="story-next"><strong>Chapter complete. Your meadow is growing!</strong>'+(selectedChapter<chapters.length-1?'<button class="primary-button" id="story-next-chapter">Next chapter →</button>':'')+'</div>')+c.goals.filter(g=>!j.claimed.includes(g.id)).map(card).join('')+(completed?'<details class="story-collected"><summary>'+completed+' collected '+(completed===1?'goal':'goals')+'</summary>'+c.goals.filter(g=>j.claimed.includes(g.id)).map(card).join('')+'</details>':'')+'</main></section>');
     document.querySelector('#story-daily').onclick=()=>{document.querySelector('#modal-dialog').close();api.daily()};
-    document.querySelector('#story-chapter-select').onchange=e=>show(Number(e.target.value));
-    document.querySelector('#story-listen').onclick=()=>window.meadowAudio?.speak(c.person==='jade'?'jade-crops':c.person==='rhys'?'rhys-move':'jay-market-stalls127');
+    document.querySelector('#story-chapter-select').onchange=e=>{window.meadowAudio?.stopVoice();show(Number(e.target.value))};
+    const guide=chapterGuides[selectedChapter],listen=document.querySelector('#story-listen');
+    listen.textContent='🔊 '+guide[1];listen.onclick=()=>window.meadowAudio?.speak(guide[0]);
     document.querySelector('#story-go')?.addEventListener('click',()=>{if(route[0]==='claim'){document.querySelector('[data-goal="'+next.id+'"]').click();return}document.querySelector('#modal-dialog').close();api.go?.(route[0])});
     document.querySelector('#story-next-chapter')?.addEventListener('click',()=>show(selectedChapter+1));
     document.querySelectorAll('.story-claim').forEach(b=>b.onclick=()=>{const g=claim(api.state(),b.dataset.goal);if(!g)return;api.earn(g.reward);api.xp(g.xp);api.save();window.meadowAudio?.play('reward');show(selectedChapter)});
   }
-  window.meadowStory={chapters,progress,claim,event,show,attach(adapter){api=adapter;journal(api.state())}};
+  window.meadowStory={chapters,chapterGuides,progress,claim,event,show,attach(adapter){api=adapter;journal(api.state())}};
 })();

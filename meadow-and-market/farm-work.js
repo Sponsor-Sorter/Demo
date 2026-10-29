@@ -2,7 +2,7 @@
  'use strict';let api;
  function task(role,skip=new Set(),map=api.state().active){
   const s=api.state(),f=s.farms[map];if(!f)return null;const well=api.well(f),tasks=[],flowers=f.objects.filter(o=>o.type==='flowers');
-  for(const o of f.objects){if(skip.has(o.id))continue;let action,label,seed;
+  for(const o of f.objects){if(skip.has(o.id)||window.meadowGuides?.protects(o.id,map))continue;let action,label,seed;
    if(o.type==='plot'){
     if(o.plantedAt){const g=window.meadowCropGrowth.calculate(o,api.crops[o.crop]||api.crops.carrot,flowers);if(g.stage>=3){action='harvest';label='Harvesting '+api.crops[o.crop].name}else if(well?.autoWater&&!o.wateredUntil&&s.coins>=api.area(o)){action='water';label='Watering '+api.crops[o.crop].name}}
     else if(!o.stage){action='till';label='Tilling a field'}else{seed=api.seed(o,well,map);const cost=api.seedCost(o,seed,map);if(api.canPlant(o,well,seed,f)&&s.coins>=cost&&window.meadowPlanner?.seedAllowed(cost)!==false){action='plant';label='Planting '+api.crops[seed].name}}

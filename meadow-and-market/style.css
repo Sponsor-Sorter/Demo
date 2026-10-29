@@ -471,3 +471,9 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
  .story-pages{padding:10px 14px}.story-narrative{gap:10px}.story-narrative img{width:48px;height:65px}.story-narrative h3{font-size:17px;margin:2px 0}.story-narrative small{font-size:9px}.story-narrative p{font-size:12px;line-height:1.35;margin:4px 0}.story-narrative .small-button{font-size:10px;padding:5px 8px}
  .story-next{margin:10px 0;padding:8px 10px}.story-next strong{font-size:13px}.story-next button{font-size:11px;padding:8px 10px}.story-goal{padding:10px 0}.story-goal h3{font-size:14px}.story-goal p{font-size:12px}
 }
+
+/* Map taps select game targets, never the browser selection/tap tint. */
+#farm-land,#camera-map,#camera-map *,#farm-guide-ring{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+#camera-map button:focus:not(:focus-visible){outline:none}
+#camera-map button:focus-visible{outline:2px solid #ffd56b!important;outline-offset:3px}
+#camera-map img{-webkit-user-drag:none}

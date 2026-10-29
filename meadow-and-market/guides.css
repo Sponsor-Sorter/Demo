@@ -15,3 +15,14 @@ body:has(#side-panel.open) #guide-launcher,body:has(.build-tray:not([hidden]):no
 
 /* A compact, readable helper pill beneath the game name. */
 .brand-group #guide-launcher{min-height:36px;max-width:185px;gap:6px;padding:2px 10px 2px 2px;border:1px solid #dfd8b7;border-radius:24px;background:#fff9e9f2;color:#355941;font-size:12px;box-shadow:0 2px 7px #173f3126;text-shadow:none}.brand-group #guide-launcher img{width:30px;height:30px}.brand-group #guide-launcher span{max-width:140px}.brand-group #farm-help-slot{padding-top:2px}@media(max-width:700px){.topbar .brand-group{width:126px}.brand-group #guide-launcher{min-height:32px;max-width:126px;font-size:11px;gap:4px;padding:1px 7px 1px 1px}.brand-group #guide-launcher img{width:28px;height:28px}.brand-group #guide-launcher span{max-width:84px}}
+
+/* One non-blocking gold target, above the artwork and inside modal top layers. */
+.guide-target{outline:none!important;filter:none!important}
+#farm-guide-ring{position:fixed!important;z-index:2147483000!important;pointer-events:none!important;box-sizing:border-box!important;border:3px solid #ffd56b!important;border-radius:50%!important;background:transparent!important;box-shadow:0 0 0 2px #714418aa,0 0 12px #ffe6a5!important;transform:translate(-50%,-50%);animation:guide-ring-breathe 1.5s ease-in-out infinite;margin:0!important;padding:0!important}
+#farm-guide-ring[hidden]{display:none!important}
+@keyframes guide-ring-breathe{0%,100%{transform:translate(-50%,-50%) scale(.94)}50%{transform:translate(-50%,-50%) scale(1.07)}}
+.guide-tour-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}.guide-tour-nav button{min-height:36px;border:1px solid #dbceb5;border-radius:10px;background:#fff8e9;color:#624b33;padding:5px 10px}.guide-tour-nav small{font-size:10px;color:#735c40}
+.guide-menu>.sheet-head{position:sticky;top:-1px;background:#fff9ec;z-index:2;padding-block:8px}.guide-menu #start-farm-tour{margin-block:4px 10px}
+@media(prefers-reduced-motion:reduce){#farm-guide-ring{animation:none}}
+
+#guide-panel{background:#fff8e9}

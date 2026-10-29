@@ -19,6 +19,7 @@
   const sceneUrl = () => topic.scene;
   const appState = () => api?.state?.();
   function speakText(text) {
+    window.meadowAudio?.stopVoice();
     const preferences = (() => { try { return JSON.parse(localStorage.getItem('meadow-market-audio-v1') || '{}'); } catch { return {}; } })();
     const supported = window.speechSynthesis && window.SpeechSynthesisUtterance;
     if (supported && !preferences.muted && preferences.voice !== 0) {
@@ -30,10 +31,9 @@
     }
   }
   function praise() {
-    const phrases = ['Well done!', 'Nice find!', 'You found it!', 'Another word in the basket!'];
-    speakText(pick(phrases));
     audio('reward');
   }
+  function hearGuide(){window.speechSynthesis?.cancel();window.meadowAudio?.speak('rhys-word-search189')}
   function boardSize() { return 16; }
   function loadHistory() { try { const saved = JSON.parse(localStorage.getItem(storeKey) || '{}'); positionHistory = saved.positions || {}; layoutHistory = Array.isArray(saved.layouts) ? saved.layouts.filter((item) => typeof item === 'string').slice(-250) : []; } catch { layoutHistory = []; } }
   function saveHistory(signature) { layoutHistory.push(signature); layoutHistory = layoutHistory.slice(-250); try { localStorage.setItem(storeKey, JSON.stringify({ layouts: layoutHistory, positions: positionHistory })); } catch {} }
@@ -71,7 +71,7 @@
     playBoard(); clockId = setInterval(updateTimer, 1000); updateTimer();
   }
   function playBoard() {
-    const words = answers.map((answer) => '<button class="ws-word" data-word="' + answer.id + '"><span>' + answer.label + '</span></button>').join('');
+    const words = answers.map((answer) => '<button class="ws-word" title="Read word with device pronunciation" data-word="' + answer.id + '"><span>' + answer.label + '</span></button>').join('');
     const cells = board.map((letter, index) => '<button class="ws-cell" role="gridcell" aria-rowindex="' + (Math.floor(index / size) + 1) + '" aria-colindex="' + ((index % size) + 1) + '" data-cell="' + index + '" aria-label="Letter ' + letter + '">' + letter + '</button>').join('');
     screen('<header class="ws-header"><div><small>' + esc(topic.name.toUpperCase()) + ' · ' + wordCount + ' WORDS</small><h1>Find the words</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><div class="ws-status"><span class="ws-progress" data-progress>0 of ' + wordCount + ' found</span><span class="ws-timer" data-timer aria-label="Time">00:00</span></div><section class="ws-board-wrap"><div class="ws-grid" role="grid" aria-label="Word search letters">' + cells + '</div><div class="ws-word-list" aria-label="Words to find">' + words + '</div><div class="ws-live" data-live role="status" aria-live="polite">Put your finger on the first letter and follow the word.</div></section><footer class="ws-controls"><button class="ws-help" data-hear>🔊 Hear the directions</button><button class="ws-help" data-new>New puzzle</button><button class="ws-help" data-theme>Change theme</button></footer>');
     bindClose();
@@ -84,11 +84,11 @@
     grid.addEventListener('click', (event) => { if (skipCellClick) { skipCellClick = false; return; } if (drag !== null) return; const cell = event.target.closest('[data-cell]'); if (!cell) return; const index = Number(cell.dataset.cell); if (!path.length) path = [index]; else if (path[0] === index) path = []; else extendPath(index); renderCells(); if (path.length > 2) finishPath(); });
     dialog.querySelector('[data-new]').addEventListener('click', newRound);
     dialog.querySelector('[data-theme]').addEventListener('click',intro);
-    dialog.querySelector('[data-hear]').addEventListener('click', () => speakText('Find twenty words in the list. Words can run horizontally, vertically or diagonally, forwards or backwards. Drag from the first letter to the last.'));
+    dialog.querySelector('[data-hear]').setAttribute('aria-label','Farmer Rhys: word search guide');dialog.querySelector('[data-hear]').addEventListener('click',hearGuide);
     resizeHandler = () => requestAnimationFrame(sizeBoard);
     window.addEventListener('resize', resizeHandler);
     requestAnimationFrame(sizeBoard);
-    speakText('Find twenty farm words. Slide across letters in any straight direction, forwards or backwards. Select a word in the list to hear it.');
+    hearGuide();
   }
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
@@ -168,10 +168,10 @@
     const formatted = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
     screen('<header class="ws-header"><div><small>MEADOW MARKETS</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' words · Score ' + points + (earned ? ' · Reward collected!' : ' · Practice round') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
     const resultNode=dialog.querySelector('.ws-earned');resultNode.textContent=ticket?'Verifying your word search…':'Practice round · connect before starting for rewards.';window.meadowClub?.finishRound(ticket,{completed:20,elapsed,won:true,paths:[...found.entries()].map(([id,value])=>({word:answers.find(a=>a.id===id).label,indices:value.indices}))}).then(result=>{if(resultNode.isConnected)resultNode.textContent='20 words · '+(result.verified?'Score '+result.points+' · ':'')+window.meadowClub.rewardText(result)});bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', () => { close(); api.menu?.(); }); animateStars();
-    if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!'); audio('reward');
+    if (window.speechSynthesis) window.speechSynthesis.cancel(); window.meadowAudio?.speak('game-result-win'); audio('reward');
   }
   function bindClose() { dialog.querySelector('[data-close]').addEventListener('click', () => { close();api.menu?.(); }); }
-  function close() { roundSerial++;clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
+  function close() { window.meadowAudio?.stopVoice();roundSerial++;clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
   function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) { dialog=document.createElement("dialog");dialog.id="word-search-dialog";dialog.className="word-search-dialog";dialog.setAttribute("aria-label","Meadow Word Search");document.body.append(dialog); } dialog.addEventListener('close', () => window.meadowClub?.finished()); dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); }); }
   window.meadowWordSearch = { attach, open, topics };
 })();
