@@ -1,0 +1,52 @@
+{
+  "format": 1,
+  "bytes": 72954596,
+  "sha256": "eea02a3147364d53d93d742adaa9da87071ba3f196fd41e8728de2aa0bdbe834",
+  "chunks": [
+    {
+      "file": "index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "a5608fa82d6ee630f24c27f207d1e480b77976f32e2c3258ef01ed316e02bca3"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "09c825b2023e4677d5f316085d2f1426b4a1a6c5ce4dfea67b51a0ab16259243"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "f2308a0a6f501b600a12a73d4844e55e3e2ee3dffc2f87b4c01e2265e9528942"
+    },
+    {
+      "file": "index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "fed02fc89b06b0e196d9e20226084a0e385535fe1f9f93aec1b309134eb89c76"
+    },
+    {
+      "file": "index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "a76352cc70245d30f9b0ccacd68e504e8aea64a9aaad9231a137afcb1cc33641"
+    },
+    {
+      "file": "index.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "619aa550e51514a932e6d1d32001825470343b75aeb789209f2b97db4d51c399"
+    },
+    {
+      "file": "index.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "6e466c565512ef14d3f2a5a530295a4e832d0d2dbe77d747b93ff85f59c70c43"
+    },
+    {
+      "file": "index.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "d1dc6a9b4998b251230de6e559cf4589ca96fbf078ab1e24551219568c38bae0"
+    },
+    {
+      "file": "index.pck.part-08",
+      "bytes": 5845732,
+      "sha256": "71fbd2a9b37be33235923a6543402c2e8c3df78b108475965055fbe5ebe6343e"
+    }
+  ]
+}

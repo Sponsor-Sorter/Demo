@@ -1,10 +1,10 @@
 {
-  "build": 66,
-  "version": "1.0.0.66",
-  "url": "https://sponsorsorter.com/frontlines/builds/66/",
-  "notes": "V1.0.0.66: Five turns without a capture card eliminate a player. Garrisons remain as defenders. Settings adds a surrender flag and card-block counter.",
+  "build": 67,
+  "version": "1.0.0.67",
+  "url": "https://sponsorsorter.com/frontlines/builds/67/",
+  "notes": "V1.0.0.67: New orchestral rock soundtrack, including Ashes Before Dawn and Spearwall. Original theme retained as Last Push. Music level reduced to 60%.",
   "networkBuild": 66,
-  "androidBuild": 66,
+  "androidBuild": 67,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }
