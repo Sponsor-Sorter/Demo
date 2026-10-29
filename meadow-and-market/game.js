@@ -154,7 +154,7 @@
         if(useRemote){const merged={...remote.save_data,friendCode:profile.friend_code,farmerName:profile.display_name};if(!forceAccountLoad&&state.testGoldGranted&&!merged.testGoldGranted){merged.coins=(Number(merged.coins)||0)+8000;merged.testGoldGranted=true}localStorage.setItem(SAVE_KEY+'-before-cloud-load',JSON.stringify(state));localStorage.setItem(SAVE_KEY,JSON.stringify(merged));localStorage.setItem(SAVE_KEY+'-owner',cloudUser.id);localStorage.removeItem(SAVE_KEY+'-load-account');replacingFarm=true;location.reload();return}
         localStorage.setItem(SAVE_KEY+'-other-cloud-version',JSON.stringify(remote.save_data));
       }
-      const saveOwner=cloudUser.id,revisions=window.meadowCloud.committer(remote?.revision||0,save=>{if(save)receiveCloudSave(save,true);else{cloudReady=false;cloudWriter?.pause();notify('Your farm is saved here. Reload to reconnect to the online farm.')}},(revision,economyPatch)=>{if(cloudUser?.id===saveOwner&&!replacingFarm){state._cloudRevision=revision;if(window.meadowEconomy?.apply(state,economyPatch)){save();render()}try{localStorage.setItem(SAVE_KEY+'-cloud-ack',JSON.stringify({owner:saveOwner,seen:state.seen,revision}))}catch{}}});
+      const saveOwner=cloudUser.id,revisions=window.meadowCloud.committer(remote?.revision||0,save=>{if(save)receiveCloudSave(save,true);else{cloudReady=false;cloudWriter?.pause();notify('Your farm is saved here. Reload to reconnect to the online farm.')}},(revision,economyPatch)=>{if(cloudUser?.id===saveOwner&&!replacingFarm){state._cloudRevision=revision;const levelBefore=state.level;if(window.meadowEconomy?.apply(state,economyPatch)){for(let level=levelBefore+1;level<=state.level;level++)announceLevel(level);save();render()}try{localStorage.setItem(SAVE_KEY+'-cloud-ack',JSON.stringify({owner:saveOwner,seen:state.seen,revision}))}catch{}}});
       cloudWriter=window.meadowCloud.writer(async(userId,snapshot,signal)=>{const session=await client.auth.getSession();if(session.error||session.data?.session?.user?.id!==userId||signal?.aborted)return {error:Error('Farm account changed before this save could be sent')};return revisions.commit(client,{...snapshot,_syncDevice:cloudDevice},signal)},error=>{const status=$('#save-status');if(status)status.textContent=pendingCloudSave?'Saved here · review other device':error?'Saved here · cloud sync paused':cloudWriter?.status?.()?.pending?'Saved here · syncing…':'Synced online';if(error)console.warn('Meadow Markets cloud save failed',error.message)});
       cloudWriter.revisions=revisions;
       localStorage.setItem(SAVE_KEY+'-owner',cloudUser.id);localStorage.removeItem(SAVE_KEY+'-load-account');cloudReady=true;if(reviewPending&&remote?.save_data)receiveCloudSave(remote.save_data,true);else scheduleCloudSave();
@@ -221,7 +221,8 @@
     localStorage.setItem(SAVE_KEY+'-load-account',target.user_id);localStorage.removeItem('meadow-markets-login-required');location.reload();
   }
   function notify(msg){window.meadowCompactHud?.positionToast();const e=$('#toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2300)}
-  function xp(amount){state.xp+=amount;let threshold=90+(state.level-1)*50;if(state.xp>=threshold){state.xp-=threshold;state.level++;state.coins+=35;window.meadowGuides?.unlocks(state.level,{areas:maps.filter(m=>m.unlock===state.level).map(m=>m.name),items:catalog.filter(i=>(i.unlock||1)===state.level).map(i=>({id:i.id,name:i.name}))});window.meadowAudio?.play('reward');notify('Level up! Welcome to level '+state.level+' 🌟'+(state.level===5?' · Care all unlocked in Animal Family.':''))}}
+  function announceLevel(level){window.meadowGuides?.unlocks(level,{areas:maps.filter(m=>m.unlock===level).map(m=>m.name),items:catalog.filter(i=>(i.unlock||1)===level).map(i=>({id:i.id,name:i.name}))});window.meadowAudio?.play('reward');notify('Level up! Welcome to level '+level+' 🌟'+(level===5?' · Care all unlocked in Animal Family.':''))}
+  function xp(amount){state.xp+=amount;let threshold=90+(state.level-1)*50;if(state.xp>=threshold){state.xp-=threshold;state.level++;state.coins+=35;announceLevel(state.level)}}
   function xpNeed(){return 90+(state.level-1)*50}
   function obj(id){return current().objects.find(o=>o.id===id)}
   function def(o){return catalog.find(c=>c.id===o.type)||{name:o.type,emoji:'🌱',kind:o.type}}
@@ -669,7 +670,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=186;
+  const currentBuild=187;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

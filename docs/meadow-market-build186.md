@@ -28,4 +28,4 @@ Next implementation sequence:
 4. Make story and mission progress derive from accepted commands, then migrate rewards. Preserve a one-time, explicitly legacy opening balance instead of claiming old progress was verified.
 5. Enforce the ledger balance on every save/backup path only after all normal gameplay sources are represented. Test concurrent devices, offline reconciliation and restore safety before enabling real payments.
 
-The real owner-entered recovery round trip is a separate pending check. The user must enter/generate the recovery credential and submit the new password. Do not log the recovery key, screenshot it, or claim the round trip passed based only on mocks.
+The owner completed the real recovery steps privately in the live browser. A subsequent normal sign-in with the owner-selected new test password restored the same level5/VIP1 test_browser farm; a metadata-only check showed no active recovery key. The agent did not read the key or perform the credential-change submission. No credentials are stored in the release notes. A fresh recovery key must be saved after a successful reset because each key is single use.

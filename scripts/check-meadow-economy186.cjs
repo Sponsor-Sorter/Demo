@@ -29,6 +29,12 @@ module.exports=(async()=>{
  assert((await committer.commit(client,live)).error);assert.equal(live.coins,100,'No local reward before acknowledgement');
  live.coins-=3;const queued=clone(live);assert(!(await committer.commit(client,queued)).error);assert.equal(stored.coins,157);assert.equal(stored.farms.willow.inventory.egg,4);assert.equal(live.coins,157);assert.equal(calls[0].p_write_id,calls[1].p_write_id);assert.equal(calls[2].p_save_data._farmEconomy.cursor,1);
  const again=clone(live);assert(!(await committer.commit(client,again)).error);assert.equal(stored.coins,157);
+ const source=fs.readFileSync('meadow-and-market/game.js','utf8'),levels=[],notices=[];
+ const levelContext={window:{meadowGuides:{unlocks:(n,what)=>levels.push({n,what})},meadowAudio:{play(){}}},maps:[{name:'Coast',unlock:3}],catalog:[{id:'kitchen',name:'Kitchen',unlock:2}],notify:n=>notices.push(n),state:{xp:85,level:1,coins:0}};
+ for(const name of ['announceLevel','xp'])vm.runInNewContext(source.match(new RegExp('  function '+name+'\\([^\\n]+'))[0],levelContext);
+ levelContext.xp(8);assert.equal(levelContext.state.level,2);assert.equal(levels[0].what.items[0].id,'kitchen');assert.equal(levelContext.state.coins,35);
+ levelContext.announceLevel(3);assert.equal(levels[1].what.areas[0],'Coast');assert.equal(notices.length,2);
+ assert(source.includes('for(let level=levelBefore+1;level<=state.level;level++)announceLevel(level)'),'Server deliveries preserve every intermediate unlock guide');
  const sql=fs.readFileSync('supabase/migrations/20261029022000_meadow_farm_economy_journal.sql','utf8');
  assert(sql.includes('saved.save_data->\'club\'->\'applied\''));assert(!sql.includes("p_save_data->'club'->'applied'"));
  for(const t of ['farm_economy_journal','farm_reward_deliveries','farm_save_receipts'])assert(sql.includes('alter table meadow_private.'+t+' enable row level security'));
