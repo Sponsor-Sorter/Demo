@@ -1,0 +1,17 @@
+# Build 67 reuses byte-identical engine and wardrobe assets from build 66.
+# Keep the frozen export in Git while avoiding duplicate Pages payload bytes.
+exclude:
+  - frontlines/builds/67/index.wasm
+  - frontlines/builds/67/wardrobe.pack.json
+  - frontlines/builds/67/wardrobe.pck.part-00
+  - frontlines/builds/67/wardrobe.pck.part-01
+  - frontlines/builds/67/wardrobe.pck.part-02
+  - frontlines/builds/67/wardrobe.pck.part-03
+  - frontlines/builds/67/wardrobe.pck.part-04
+  - frontlines/builds/67/wardrobe.pck.part-05
+  - frontlines/builds/67/wardrobe.pck.part-06
+  - frontlines/builds/67/wardrobe.pck.part-07
+  - frontlines/builds/67/wardrobe.pck.part-08
+  - frontlines/builds/67/wardrobe.pck.part-09
+  - frontlines/builds/67/wardrobe.pck.part-10
+  - frontlines/builds/67/wardrobe.pck.part-11

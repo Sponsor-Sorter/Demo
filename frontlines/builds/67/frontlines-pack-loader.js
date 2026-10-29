@@ -15,7 +15,7 @@
       if (!new RegExp('^' + (manifestPath === 'index.pack.json' ? 'index' : 'wardrobe') + '\\.pck\\.part-\\d{2}$').test(chunk.file) || !Number.isSafeInteger(chunk.bytes) || chunk.bytes < 1 || offset + chunk.bytes > pack.length || !/^[a-f0-9]{64}$/.test(chunk.sha256)) {
         throw new Error('Invalid game download part.');
       }
-      const downloaded = await fetch(chunk.file);
+      const downloaded = await fetch(new URL(chunk.file, new URL(manifestPath, location.href)));
       if (!downloaded.ok || !downloaded.body) throw new Error('A game download part failed. Please reload to retry.');
       const reader = downloaded.body.getReader();
       let used = 0;
@@ -46,7 +46,7 @@
   window.frontlinesStartGame = async function (engine, config, options) {
     const progress = options.onProgress || function () {};
     let engineError = null;
-    const initialized = engine.init(config.executable).catch(function (error) { engineError = error; });
+    const initialized = engine.init('../66/index').catch(function (error) { engineError = error; });
     let buffer = await downloadPack('index.pack.json', progress);
     await initialized;
     if (engineError) throw engineError;
@@ -62,7 +62,7 @@
         if (self.state === 'ready' || self.state === 'loading') return;
         self.state = 'loading'; self.error = ''; self.progress = 0;
         (async function () {
-          let content = await downloadPack('wardrobe.pack.json', function (used, total) { self.progress = used / total; });
+          let content = await downloadPack('../66/wardrobe.pack.json', function (used, total) { self.progress = used / total; });
           engine.copyToFS('/frontlines-wardrobe.pck', content, true);
           content = null;
           self.state = 'ready';
