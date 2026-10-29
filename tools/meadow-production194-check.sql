@@ -4,7 +4,7 @@ do $$
 declare u uuid:=gen_random_uuid(); request_id uuid:=gen_random_uuid(); rid uuid; result jsonb;
  n int; blocked boolean; nonce uuid; account text; username text:='qa_'||substr(replace(gen_random_uuid()::text,'-',''),1,12);
 begin
- insert into auth.users(id,instance_id,email,role,aud,is_anonymous) values(u,'00000000-0000-0000-0000-000000000000','qa-'||u::text||'@players.sponsorsorter.com','authenticated','authenticated',true);
+ insert into auth.users(id,instance_id,email,role,aud,is_anonymous) values(u,'00000000-0000-0000-0000-000000000000','qa-'||u::text||'@players.sponsorsorter.com','authenticated','authenticated',false);
  insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'QA-'||substr(u::text,1,8),'Rollback-only QA');
  insert into public.meadow_market_accounts(username,user_id,ready) values(username,u,true);
  perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
@@ -23,6 +23,19 @@ begin
  if not blocked then raise exception 'Closed store accepted payment';end if;
  update meadow_private.commerce_config set payments_enabled=true,production_ready=true,ads_enabled=true where id;
  update meadow_private.store_products set enabled=true;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ if not (public.meadow_market_commerce_status()->>'purchase_account_ready')::boolean then raise exception 'Protected farm cannot shop';end if;
+ update auth.users set is_anonymous=true where id=u;
+ if (public.meadow_market_commerce_status()->>'purchase_account_ready')::boolean then raise exception 'Guest can shop';end if;
+ perform set_config('request.jwt.claims','{"role":"service_role"}',true);
+ blocked:=false;begin perform public.meadow_market_deliver_store_purchase(u,'mm_pocket_gems',repeat('f',64),'guest-test',true);exception when insufficient_privilege then blocked:=true;end;
+ if not blocked then raise exception 'Guest received purchase';end if;
+ update auth.users set is_anonymous=false where id=u;
+ update public.meadow_market_accounts set ready=false where user_id=u;
+ blocked:=false;begin perform public.meadow_market_deliver_store_purchase(u,'mm_pocket_gems',repeat('f',64),'incomplete-test',true);exception when insufficient_privilege then blocked:=true;end;
+ if not blocked then raise exception 'Incomplete account received purchase';end if;
+ update public.meadow_market_accounts set ready=true where user_id=u;
+ insert into meadow194_checks values('protected-account checkout; guest and incomplete account denied',true);
  result:=public.meadow_market_deliver_store_purchase(u,'mm_pocket_gems',repeat('a',64),'test',true);
  result:=public.meadow_market_deliver_store_purchase(u,'mm_pocket_gems',repeat('a',64),'test',true);
  select gems into n from public.meadow_market_wallets where user_id=u;

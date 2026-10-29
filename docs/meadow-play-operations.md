@@ -53,3 +53,9 @@ For Play, native updates use Play Store. Remote farm content follows the existin
 ## Recovery and incidents
 
 Keep the previous deployed commit and private upload vault. Disable commerce flags server-side if verification or reward delivery degrades; preserve purchases for idempotent retries. Do not roll back the database to undo a content bug. Maintenance backs up bounded batches and prunes30-day backups. Any restore must respect account identity, farm revision and immutable purchase/reward receipts. Preserve shared app identities during game-only deletion. See docs/MEADOW_BACKLOG.md for unresolved production gates.
+
+## Build200 payment safety and AdMob review
+
+AdMob accepted the owner-completed payment profile and now says the account is being verified (usually24hours, rarely up to2weeks). App-store linking/app review remains separate. Actual store/ads switches remainfalse and all products inactive.
+
+Checkout and Restore now fail closed unless the backend confirms a ready Meadow Markets username account attached to a non-anonymous Auth identity. The Edge verifier checks the owner before Google lookup; SQL independently refuses new guest/incomplete-account deliveries. The approved free-test cohort remains separate. Browser fixtures and rollback-only database tests cover guest/incomplete/registered states. Real reinstall/new-device purchase recovery and license-test provider acceptance remain pending.

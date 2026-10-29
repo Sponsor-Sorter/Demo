@@ -23,14 +23,14 @@ Object.defineProperties(storage,{getItem:{value:k=>storage[k]},removeItem:{value
 privacyScope.window.meadowAccountPrivacy.clearDeviceFarm(storage,'farm','a','A');
 assert.equal(storage.farm,undefined);assert.equal(storage['farm-account-a'],undefined);assert.equal(storage['farm-before-cloud-load'],undefined);assert(storage['farm-account-b']);assert.equal(storage['littles-save'],'keep');assert.equal(storage['bargain-barge-save'],'keep');
 async function storeFixture(native){
- let current='owner',config={test_access:false,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,popupHook;
+ let current='owner',config={test_access:false,purchase_account_ready:true,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,checkouts=0,restores=0,popupHook;
  const notices=[],state={coins:250};
- const billing={products:async()=>({products:[{id:'mm_pocket_gems',price:'A$2.99'}]}),purchase:async()=>{popupHook?.();return purchase},restore:async()=>purchase,addListener(){}};
+ const billing={products:async()=>({products:[{id:'mm_pocket_gems',price:'A$2.99'}]}),purchase:async()=>{checkouts++;popupHook?.();return purchase},restore:async()=>{restores++;return purchase},addListener(){}};
  const scope={window:{addEventListener(){},Capacitor:native?{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowStore',Plugins:{MeadowStore:billing}}:undefined},document:{querySelectorAll:()=>[],querySelector:()=>null},setInterval,clearInterval};
  vm.runInNewContext(read(root+'store.js'),scope);const store=scope.window.meadowStore;
  const api={ready:()=>true,user:()=>({id:current}),client:()=>({rpc:async()=>({data:config}),functions:{invoke:async()=>{verifications++;return{data:{verified:true}}}}}),notify:t=>notices.push(t),save(){},flush:async()=>flushes++,state:()=>state};
  scope.window.meadowClub={refresh:async()=>{}};store.attach(api);
- return {store,state,notices,counts:()=>({verifications,flushes}),config:c=>config=c,purchase:p=>purchase=p,switchDuringPopup:()=>popupHook=()=>current='other'};
+ return {store,state,notices,counts:()=>({verifications,flushes,checkouts,restores}),config:c=>config=c,purchase:p=>purchase=p,switchDuringPopup:()=>popupHook=()=>current='other'};
 }
 module.exports=(async()=>{
  const web=await storeFixture(false);assert.notEqual(web.store.label('pocket_gems'),'Free test purchase');await web.store.refresh();await assert.rejects(()=>web.store.purchase('pocket_gems'),/Google Play app/);assert.equal(web.counts().verifications,0);
@@ -39,5 +39,6 @@ module.exports=(async()=>{
  native.purchase({cancelled:true});assert((await native.store.purchase('pocket_gems')).cancelled);assert.equal(native.counts().verifications,1);
  const switched=await storeFixture(true);await switched.store.refresh();switched.switchDuringPopup();await assert.rejects(()=>switched.store.purchase('pocket_gems'),/purchasing account/);assert.equal(switched.counts().verifications,0);
  const tester=await storeFixture(false);tester.config({test_access:true,payments_enabled:false,products:[]});assert((await tester.store.purchase('pocket_gems')).test);assert.equal(tester.counts().verifications,0,'Test mode never opens real checkout');
+ for(const protectedFlag of [false,undefined]){const guest=await storeFixture(true);guest.config({test_access:false,purchase_account_ready:protectedFlag,payments_enabled:true,products:[]});await assert.rejects(()=>guest.store.purchase('pocket_gems'),/Protect your farm/);await assert.rejects(()=>guest.store.restore(),/Protect your farm/);assert.equal(guest.counts().checkouts,0);assert.equal(guest.counts().restores,0);assert.equal(guest.counts().verifications,0);}
  console.log('Production distribution: no Play APK installer; localized prices; pending/cancel/account guards; no client credits; private tester path; deletion preserves other accounts/apps passed.');
 })().catch(e=>{console.error(e);process.exitCode=1;});

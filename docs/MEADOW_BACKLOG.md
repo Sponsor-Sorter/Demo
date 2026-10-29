@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build199. See build183 and build186–189 release notes and their actual acceptance receipts.
+Last reconciled for build200. See build183 and build186–189 release notes and their actual acceptance receipts.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -21,7 +21,7 @@ Last reconciled for build199. See build183 and build186–189 release notes and 
 | UI layouts | Browser183/188/189; Samsung188 accepted | Core animals, desk, story, build scrolling and activity history exercised.189 tour portrait/landscape checked. Physical iPad acceptance remains |
 | Purchases/tester grants | Native/server scaffold194–197 | Only approved named testers retain free packs. Real products disabled; license purchase/restore/refund acceptance remains |
 | Play Billing/AdMob | Play internal10 active; SSV transport verified | Store verifier, pending/account/idempotency/refund guards and consent bridge implemented. All7products have inactive priced drafts; IAM/PubSub, provider review, real license/SSV/device tests and full farm authority still gate activation |
-| Paid guest protection | Required before enabling real payments | Require a protected Meadow Markets account before opening paid checkout; cover reinstall/new-device restore for a guest who has not registered. Current real-payment switches remain off |
+| Paid guest protection | Client, Edge and SQL guards shipped200 | Ready username account and non-anonymous Auth identity required for paid checkout/restore; registered/guest/incomplete fixtures passed. Real reinstall/new-device provider acceptance remains. Real-payment switches remain off |
 | Local storage failures | Fixtures183 passed | Physical storage-pressure acceptance remains |
 | Friend visits/help | Two actual farms accepted183 | Invitation, acceptance, visit, help and visitor log passed; continue account-isolation checks |
 

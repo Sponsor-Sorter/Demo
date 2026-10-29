@@ -18,6 +18,7 @@
   try{await loading}finally{loading=null}
  }
  function label(sku){if(configuration.test_access)return 'Free test purchase';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku);return prices.get(product?.product_id)?.price||'Currently unavailable';}
+ function requirePurchaseAccount(){if(configuration.purchase_account_ready!==true)throw Error('Protect your farm with a username and password before buying or restoring purchases. Open Settings → Account & switch farm.');}
  async function verify(rows,who){
   let completed=0;
   for(const purchase of rows||[]){
@@ -37,6 +38,7 @@
    await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');
    if(configuration.test_access)return {test:true};
    if(!billing||!configuration.payments_enabled)throw Error(label(sku));
+   requirePurchaseAccount();
    const product=configuration.products.find(p=>p.sku===sku);
    if(!product||!prices.has(product.product_id))throw Error('This product is currently unavailable.');
    await api.flush();
@@ -47,7 +49,7 @@
  }
  async function restore(){
   if(busy||!billing)return;busy=true;const who=api.user()?.id;
-  try{await refresh();const result=await billing.restore();const n=await verify(result.purchases,who);api.notify(n?'Purchases checked and restored.':'No unfinished purchases on this Play account.');}
+  try{await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');requirePurchaseAccount();const result=await billing.restore();const n=await verify(result.purchases,who);api.notify(n?'Purchases checked and restored.':'No unfinished purchases on this Play account.');}
   finally{busy=false}
  }
  async function advertisement(rewarded=false){

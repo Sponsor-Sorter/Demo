@@ -92,6 +92,7 @@ begin
  select * into c from meadow_private.commerce_config where id;
  tester:=exists(select 1 from meadow_private.test_access where user_id=u and expires_at>now());
  return jsonb_build_object('test_access',tester,'payments_enabled',c.payments_enabled and c.production_ready,'ads_enabled',c.ads_enabled and c.production_ready,
+ 'purchase_account_ready',exists(select 1 from public.meadow_market_accounts a join auth.users au on au.id=a.user_id where a.user_id=u and a.ready and au.is_anonymous is false),
  'account_id',encode(sha256(convert_to('meadow-markets:'||u::text,'UTF8')),'hex'),
  'products',(select coalesce(jsonb_agg(jsonb_build_object('sku',sku,'product_id',product_id,'consumable',consumable)),'[]') from meadow_private.store_products where enabled));
 end $$;
@@ -195,6 +196,7 @@ begin
  end if;
  select * into c from meadow_private.commerce_config where id;
  if not c.payments_enabled or not c.production_ready then raise exception 'Store not open';end if;
+ if not exists(select 1 from public.meadow_market_accounts a join auth.users au on au.id=a.user_id where a.user_id=p_user and a.ready and au.is_anonymous is false) then raise exception 'Protect your farm before purchasing' using errcode='42501';end if;
  if exists(select 1 from meadow_private.store_review_holds where user_id=p_user) then raise exception 'Purchases need a support review after a refund';end if;
  select * into p from meadow_private.store_products where product_id=p_product and enabled;
  if not found then raise exception 'Product unavailable';end if;
