@@ -32,6 +32,8 @@ Receipt delivery is idempotent; retries reuse the same request/token. Never manu
 
 All seven fixed IDs and backwards-compatible buy options were verified in Console, with zero active options. Google converted the AUD reference prices across174regions. These are draft prices for review and balancing, not an activated offer. Review tax/region availability before activation. Use localized prices returned from Billing; never hardcode an AUD amount in player UI. Premium is a lifetime product, not a subscription. Purchasable random rewards are not offered; earned collection draws disclose their odds. The game's published privacy URL is saved in Play as a change ready for review.
 
+Before enabling checkout, require a protected game account. Guest farms cannot be recovered on a new installation solely from the game username because they have not registered one, and receipt ownership is intentionally bound to the original game account. Do not turn real payments on until this entry guard and guest/reinstall acceptance are implemented and tested. Prepare a dedicated protected reviewer account for store access, without sharing an owner's farm or credentials.
+
 ## Provider secrets
 
 Store verifier requires GOOGLE_PLAY_SERVICE_ACCOUNT, with only app-specific order/product access. RTDN requires GOOGLE_PLAY_RTDN_AUDIENCE and GOOGLE_PLAY_PUBSUB_EMAIL. Ad SSV requires MEADOW_REWARDED_SSV_UNIT (6866630905 is configured). Store these only in Supabase Edge secrets. Configure Google IAM/API roles narrowly and record the grant.
