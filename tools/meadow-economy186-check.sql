@@ -49,6 +49,10 @@ begin
  if n<>1 then raise exception 'Reward journal duplicated';end if;
  if not exists(select 1 from meadow_private.farm_economy_journal where user_id=u and lane='legacy_snapshot' and changes->>'gold'='-3') then raise exception 'Farm spend not journalled';end if;
  if (public.meadow_market_farm_ledger()->>'pending')::int<>0 then raise exception 'Undelivered receipts remain';end if;
+ answer:=public.meadow_market_rebase_farm_rewards(0);
+ if answer->>'cursor'<>'1' or jsonb_array_length(answer->'patches')<>1 then raise exception 'Conflict reward rebase missing';end if;
+ if jsonb_array_length(public.meadow_market_rebase_farm_rewards(1)->'patches')<>0 then raise exception 'Rebase repeated a delivered cursor';end if;
+ begin perform public.meadow_market_rebase_farm_rewards(2);raise exception 'Future cursor accepted';exception when raise_exception then if sqlerrm='Future cursor accepted' then raise;end if;end;
  select save_data into actual from public.meadow_market_saves where user_id=u;
  select jsonb_object_agg(key,total) into answer from (
   select key,sum((value::text)::numeric) total from meadow_private.farm_economy_journal j,lateral jsonb_each(j.changes)

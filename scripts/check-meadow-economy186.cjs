@@ -29,6 +29,11 @@ module.exports=(async()=>{
  assert((await committer.commit(client,live)).error);assert.equal(live.coins,100,'No local reward before acknowledgement');
  live.coins-=3;const queued=clone(live);assert(!(await committer.commit(client,queued)).error);assert.equal(stored.coins,157);assert.equal(stored.farms.willow.inventory.egg,4);assert.equal(live.coins,157);assert.equal(calls[0].p_write_id,calls[1].p_write_id);assert.equal(calls[2].p_save_data._farmEconomy.cursor,1);
  const again=clone(live);assert(!(await committer.commit(client,again)).error);assert.equal(stored.coins,157);
+ const offline=initial();offline.coins-=3;let owner='one',reply={revision:9,cursor:1,patches:[patch]};
+ economy.attach({state:()=>offline,user:()=>({id:owner}),canReconcile:()=>true,client:()=>({rpc:async(name,p)=>{assert.equal(name,'meadow_market_rebase_farm_rewards');assert.equal(p.p_from_cursor,economy.cursor(offline));return{data:reply}}})});
+ assert.equal(await economy.reconcile(),9);assert.equal(offline.coins,157,'Keep-local review preserves a local seed purchase and includes the other device reward');assert.equal(economy.cursor(offline),1);
+ await economy.reconcile();assert.equal(offline.coins,157,'Repeated review cannot duplicate the other device reward');
+ reply={revision:10,cursor:3,patches:[]};const intact=JSON.stringify(offline);await assert.rejects(economy.reconcile(),/Load the online/);assert.equal(JSON.stringify(offline),intact);
  const source=fs.readFileSync('meadow-and-market/game.js','utf8'),levels=[],notices=[];
  const levelContext={window:{meadowGuides:{unlocks:(n,what)=>levels.push({n,what})},meadowAudio:{play(){}}},maps:[{name:'Coast',unlock:3}],catalog:[{id:'kitchen',name:'Kitchen',unlock:2}],notify:n=>notices.push(n),state:{xp:85,level:1,coins:0}};
  for(const name of ['announceLevel','xp'])vm.runInNewContext(source.match(new RegExp('  function '+name+'\\([^\\n]+'))[0],levelContext);

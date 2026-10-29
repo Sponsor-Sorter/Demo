@@ -45,6 +45,18 @@
   }
   function rebase(snapshot,patches){const next=clone(snapshot);for(const p of patches)if(cursor(next)===p.from&&!(next._farmEconomy?.version===1&&p.from===p.to))apply(next,p);return next;}
   let api;
+  async function reconcile(){
+    const owner=api.user()?.id,basis=cursor(api.state());
+    if(!owner)throw Error('Sign in before reviewing farm rewards.');
+    const r=await api.client().rpc('meadow_market_rebase_farm_rewards',{p_from_cursor:basis});
+    if(owner!==api.user()?.id||api.canReconcile?.()===false)throw Error('Farm account changed during review.');
+    if(r.error)throw Error(r.error.message);
+    const next=rebase(api.state(),r.data.patches);
+    if(cursor(next)!==r.data.cursor)throw Error('Load the online farm to recover its newer rewards.');
+    for(const patch of r.data.patches)apply(api.state(),patch);
+    api.state()._farmEconomy={version:1,cursor:r.data.cursor};
+    return r.data.revision;
+  }
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   async function show(){
     if(!api?.ready())return api?.notify('Connect online to see your saved farm activity.');
@@ -62,5 +74,5 @@
       }).join('')+(data.entries.length?'':'<p>Your next saved farm action will appear here.</p>'));
     }catch(e){if(owner===api.user()?.id)api.notify('Farm history is unavailable: '+e.message);}
   }
-  window.meadowEconomy={apply,rebase,cursor,show,attach:a=>{api=a}};
+  window.meadowEconomy={apply,rebase,cursor,show,reconcile,attach:a=>{api=a}};
 })();
