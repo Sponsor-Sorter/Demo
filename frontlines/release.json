@@ -1,10 +1,10 @@
 {
-  "build": 63,
-  "version": "1.0.0-preview.63",
-  "url": "https://sponsorsorter.com/frontlines/builds/63/",
-  "notes": "Graphics-preserving performance improvements: cached exact HUD text fitting and territory anchor projections, less repeated visibility work, and physical hand cards retained across awards/trades. Main-menu war-table artwork now uses the approved soldier, horse and cannon cards. Existing terrain, water, unit detail, animations, graphics preferences, music, maps, wardrobe, fair AI and multiplayer rules retained.",
-  "networkBuild": 51,
-  "androidBuild": 63,
+  "build": 64,
+  "version": "1.0.0.64",
+  "url": "https://sponsorsorter.com/frontlines/builds/64/",
+  "notes": "V1.0.0.64: optional 30/60/90/120/180-second turn timers, whole-match time limits and round limits for solo and hosted lobbies. Limits default off; most territories wins at the match limit, with shared victories on ties. Faster first-capture interaction through prepared commander reactions and occupation rigs, coalesced native saves and cached battle-history snapshots. Rapid phase controls cannot skip the next human turn. Approved terrain, water, unit detail, animations, portraits, music, maps and wardrobe assets retained.",
+  "networkBuild": 64,
+  "androidBuild": 64,
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }

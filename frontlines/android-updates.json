@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.63",
-  "versionCode": 63,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview63-testing/frontlines-1.0.0-preview-build-63.apk",
-  "bytes": 175533972,
-  "sha256": "6828f630890c7ffc41c548deef325e79c4c91f93078571f1f32bb532f03f6307",
+  "versionName": "1.0.0.64",
+  "versionCode": 64,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview64-testing/frontlines-1.0.0-preview-build-64.apk",
+  "bytes": 175554929,
+  "sha256": "b2cfca34b1bb7f96311bd555089a351e767335e9028478b84d04f9293c9cd3fa",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "Graphics-preserving performance improvements: cached exact HUD text fitting and territory anchor projections, less repeated visibility work, and physical hand cards retained across awards/trades. Main-menu war-table artwork now uses the approved soldier, horse and cannon cards. Existing terrain, water, unit detail, animations, graphics preferences, music, maps, wardrobe, fair AI and multiplayer rules retained.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview63-testing/frontlines-1.0.0-preview-build-63.apk"
+  "notes": "V1.0.0.64: optional 30/60/90/120/180-second turn timers, whole-match time limits and round limits for solo and hosted lobbies. Limits default off; most territories wins at the match limit, with shared victories on ties. Faster first-capture interaction through prepared commander reactions and occupation rigs, coalesced native saves and cached battle-history snapshots. Rapid phase controls cannot skip the next human turn. Approved terrain, water, unit detail, animations, portraits, music, maps and wardrobe assets retained.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview64-testing/frontlines-1.0.0-preview-build-64.apk"
 }
