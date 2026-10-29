@@ -340,9 +340,9 @@
     if(el.closest('#farm-grid')){const r=el.getBoundingClientRect(),s=cameraScene.getBoundingClientRect();camera.x+=s.left+s.width*.46-(r.left+r.width/2);camera.y+=s.top+s.height*.48-(r.top+r.height/2);cameraApply()}
     else el.scrollIntoView({block:'nearest',inline:'nearest'});
     el.classList.add('guide-target');
-    const id=el.dataset.id,elementId=el.id;
+    const id=el.dataset.id,elementId=el.id,targetMap=state.active;
     if(id&&el.closest('#farm-grid'))window.meadowGuides?.protect(id);
-    window.meadowGuideRing?.point(el,()=>id?[...document.querySelectorAll('#farm-grid>.farm-object')].find(x=>x.dataset.id===id):elementId?document.getElementById(elementId):null);
+    window.meadowGuideRing?.point(el,()=>id&&state.active===targetMap?[...document.querySelectorAll('#farm-grid>.farm-object')].find(x=>x.dataset.id===id):elementId?document.getElementById(elementId):null);
   }
   function setTrayCollapsed(collapsed){const tray=$('#build-tray'),button=$('#build-minimize');tray.classList.toggle('collapsed',collapsed);button.textContent=collapsed?'⌃':'⌄';button.setAttribute('aria-expanded',String(!collapsed));button.setAttribute('aria-label',collapsed?'Expand build items':'Minimize build items');button.title=collapsed?'Expand build items':'Minimize build items'}
   function guideCollapseTray(){setTrayCollapsed(true)}
@@ -675,7 +675,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=190;
+  const currentBuild=191;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

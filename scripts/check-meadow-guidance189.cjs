@@ -5,6 +5,7 @@ vm.runInNewContext(read('guides.js').replace('  window.meadowGuides={','  window
 scope.window.setGuidanceTestApi({state:()=>state});const guides=scope.window.meadowGuides;
 const early=guides.tourSteps();assert(early.some(s=>s.id==='kitchen'));assert(!early.some(s=>s.id==='roster'));assert(!early.some(s=>s.id==='travel'));
 state.level=11;const steps=guides.tourSteps();assert.equal(steps.length,18);assert(steps.some(s=>s.id==='roster'));assert(steps.some(s=>s.id==='travel'));
+assert.equal(guides.resumeTour({index:17,active:false,paused:false},18).index,0,'A finished tour starts at the beginning');assert.equal(guides.resumeTour({index:7,active:false,paused:true},18).index,7,'Paused tours resume at the same topic');assert.equal(guides.resumeTour({index:90,active:true},15).index,14,'Resume respects currently unlocked topics');assert(read('guides.js').includes('||t.tour?.active||'));assert(read('guides.js').includes('||get().tour?.active||'));
 state.active='willow';state.farms={willow:{objects:[{id:'plot',type:'plot'},{id:'well',type:'well'}]}};
 guides.protect('well');assert(guides.protects('well'));assert(!guides.protects('well','east'));guides.protect(null);
 state.tutorial.tour={active:true,index:0};scope.window.setGuidanceLesson({id:'plant'},Date.now()+120000);assert(guides.protects('plot'),'Helpers leave lesson crops for the player');assert(!guides.protects('well'));assert(!guides.protects('plot','east'));scope.window.setGuidanceLesson({id:'plant'},0);assert(!guides.protects('plot'),'Lesson reservation expires');
