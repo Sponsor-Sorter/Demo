@@ -1,17 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0-preview.30",
-  "versionCode": 30,
-  "apkUrl": "https://sponsorsorter.com/frontlines/downloads/frontlines-1.0.0-preview-build-30.apk",
-  "bytes": 104226190,
-  "sha256": "659ef4f19e2efb3f90047cafa7c714af64a9bb2184fab661d33475b2805b047e",
+  "versionName": "1.0.0.67",
+  "versionCode": 67,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview67-testing/frontlines-1.0.0-preview-build-67.apk",
+  "bytes": 198987420,
+  "sha256": "ad151f4d16639d4327f21bd46eff77b26684e5e50972c4193440dbcbc539f7d4",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
-  "notes": "Approved HD Royal Guard with independently selectable handkerchief and full gold sash, blue edge stripes and fitted buckle. New royal curls and two starting faces. All18 detailed garments, permanent collection navigation, original clips, saves and existing maps retained.",
   "targetSdk": 36,
-  "abis": [
-    "arm64-v8a"
-  ],
-  "signing": "Debug preview certificate. Sideload playtest APK.",
-  "acceptance": "See acceptance.txt and actual Samsung media; ADB upgrade does not prove in-app updater installation."
+  "minimumAutoUpdateClientBuild": 50,
+  "notes": "V1.0.0.67: New orchestral rock soundtrack, including Ashes Before Dawn and Spearwall. Original theme retained as Last Push. Music level reduced to 60%.",
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview67-testing/frontlines-1.0.0-preview-build-67.apk"
 }
