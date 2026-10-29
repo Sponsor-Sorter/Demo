@@ -370,8 +370,5 @@ create or replace function public.meadow_market_diagnostic_event(p_build int,p_m
 revoke all on function public.meadow_market_diagnostic_event(int,text,int,text) from public,anon;
 grant execute on function public.meadow_market_diagnostic_event(int,text,int,text) to authenticated;
 
--- Named legacy test accounts keep test access. New accounts never inherit it.
-insert into meadow_private.test_access(user_id,reason,expires_at)
- select user_id,'Owner-approved browser and Samsung playtest',now()+interval '180 days'
- from public.meadow_market_accounts where username in ('test_browser','test_phone')
- on conflict(user_id) do nothing;
+-- Test access is granted explicitly by an administrator to verified account IDs.
+-- Migrations must never approve a publicly chosen or later-reclaimed username.
