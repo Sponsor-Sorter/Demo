@@ -1,0 +1,41 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const read=p=>fs.readFileSync(p,'utf8'),root='meadow-and-market/';
+const android='tools/meadow-android/android/app/src/';
+assert(!read(android+'main/AndroidManifest.xml').includes('REQUEST_INSTALL_PACKAGES'));
+assert(read(android+'direct/AndroidManifest.xml').includes('REQUEST_INSTALL_PACKAGES'));
+assert(read(android+'play/AndroidManifest.xml').includes('tools:node="remove"'));
+const playUpdater=read(android+'play/java/com/meadowandmarket/game/MeadowUpdatesPlugin.java');
+for(const text of ['FileOutputStream','HttpURLConnection','FileProvider','ACTION_MANAGE_UNKNOWN_APP_SOURCES'])assert(!playUpdater.includes(text),'Play updater cannot install APKs');
+assert(playUpdater.includes('market://details?id='));
+assert(/play\s*\{\s*dimension 'distribution'\s*versionCode 10\s*versionName '1.7.0'/.test(read('tools/meadow-android/android/app/build.gradle')),'The Play build has its own release version');
+const game=read(root+'game.js');assert(!game.includes('test-gold-grant'));assert(!game.includes('testgold'));assert(!game.includes('state.coins+=10000'));assert(!game.includes('merged.coins=(Number(merged.coins)||0)+8000'));
+assert(game.includes('https://play.google.com/apps/internaltest/4701019499198110666'),'The website links the actual internal Play test');
+assert.equal(JSON.parse(read('tools/meadow-android/capacitor.config.json')).server.url,'https://sponsorsorter.com/meadow-and-market/','Website and Play app load the same live game');
+const accounts=read(root+'accounts.js');assert(accounts.includes('Already have a farm? Sign in'));assert(accounts.includes('New farmer? Create an account'));assert(accounts.includes('autocomplete="username"'));assert(accounts.includes('current-password'));assert(accounts.includes('new-password'));assert(accounts.includes('enterkeyhint="go"'));assert(!accounts.includes('type="email"'));
+const privacy=read(root+'account-privacy.js');assert(privacy.indexOf("root.showModal()")<privacy.indexOf('await client.auth.getUser()'),'Privacy opens before waiting on the network');assert(privacy.includes("getElementById('account-privacy-dialog')"));assert(!privacy.includes("document.addEventListener('click'"),'Only one privacy handler');
+assert(read(root+'delete-account.js').includes('persistSession:false'),'Deletion website never replaces the farm session');
+assert(read(root+'delete-account.js').includes("scope:'local'"));
+const privacyScope={window:{},document:{addEventListener(){}}};vm.runInNewContext(read(root+'account-privacy.js'),privacyScope);
+const storage={'farm':JSON.stringify({friendCode:'A'}),'farm-owner':'a','farm-account-a':JSON.stringify({friendCode:'A'}),'farm-account-b':JSON.stringify({friendCode:'B'}),'farm-before-cloud-load':JSON.stringify({friendCode:'A'}),'littles-save':'keep','bargain-barge-save':'keep'};
+Object.defineProperties(storage,{getItem:{value:k=>storage[k]},removeItem:{value:k=>delete storage[k]}});
+privacyScope.window.meadowAccountPrivacy.clearDeviceFarm(storage,'farm','a','A');
+assert.equal(storage.farm,undefined);assert.equal(storage['farm-account-a'],undefined);assert.equal(storage['farm-before-cloud-load'],undefined);assert(storage['farm-account-b']);assert.equal(storage['littles-save'],'keep');assert.equal(storage['bargain-barge-save'],'keep');
+async function storeFixture(native){
+ let current='owner',config={test_access:false,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,popupHook;
+ const notices=[],state={coins:250};
+ const billing={products:async()=>({products:[{id:'mm_pocket_gems',price:'A$2.99'}]}),purchase:async()=>{popupHook?.();return purchase},restore:async()=>purchase,addListener(){}};
+ const scope={window:{addEventListener(){},Capacitor:native?{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowStore',Plugins:{MeadowStore:billing}}:undefined},document:{querySelectorAll:()=>[],querySelector:()=>null},setInterval,clearInterval};
+ vm.runInNewContext(read(root+'store.js'),scope);const store=scope.window.meadowStore;
+ const api={ready:()=>true,user:()=>({id:current}),client:()=>({rpc:async()=>({data:config}),functions:{invoke:async()=>{verifications++;return{data:{verified:true}}}}}),notify:t=>notices.push(t),save(){},flush:async()=>flushes++,state:()=>state};
+ scope.window.meadowClub={refresh:async()=>{}};store.attach(api);
+ return {store,state,notices,counts:()=>({verifications,flushes}),config:c=>config=c,purchase:p=>purchase=p,switchDuringPopup:()=>popupHook=()=>current='other'};
+}
+module.exports=(async()=>{
+ const web=await storeFixture(false);assert.notEqual(web.store.label('pocket_gems'),'Free test purchase');await web.store.refresh();await assert.rejects(()=>web.store.purchase('pocket_gems'),/Google Play app/);assert.equal(web.counts().verifications,0);
+ const native=await storeFixture(true);await native.store.refresh();assert.equal(native.store.label('pocket_gems'),'A$2.99');assert((await native.store.purchase('pocket_gems')).delivered);assert.equal(native.counts().verifications,1);assert.equal(native.state.coins,250,'Native success never credits client-side gold');
+ native.purchase({purchases:[{products:['mm_pocket_gems'],token:'pending',pending:true}]});await native.store.purchase('pocket_gems');assert.equal(native.counts().verifications,1,'Pending purchase never reaches delivery');
+ native.purchase({cancelled:true});assert((await native.store.purchase('pocket_gems')).cancelled);assert.equal(native.counts().verifications,1);
+ const switched=await storeFixture(true);await switched.store.refresh();switched.switchDuringPopup();await assert.rejects(()=>switched.store.purchase('pocket_gems'),/purchasing account/);assert.equal(switched.counts().verifications,0);
+ const tester=await storeFixture(false);tester.config({test_access:true,payments_enabled:false,products:[]});assert((await tester.store.purchase('pocket_gems')).test);assert.equal(tester.counts().verifications,0,'Test mode never opens real checkout');
+ console.log('Production distribution: no Play APK installer; localized prices; pending/cancel/account guards; no client credits; private tester path; deletion preserves other accounts/apps passed.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

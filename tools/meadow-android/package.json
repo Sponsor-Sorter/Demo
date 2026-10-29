@@ -4,7 +4,9 @@
   "version": "1.6.1",
   "scripts": {
     "android:sync": "node scripts/prepare-web.cjs && cap sync android",
-    "android:debug": "npm run android:sync && node scripts/build-android.cjs"
+    "android:debug": "npm run android:sync && node scripts/build-android.cjs",
+    "android:play": "npm run android:sync && node scripts/build-android.cjs --play",
+    "android:bundle": "npm run android:sync && node scripts/build-android.cjs --play-release"
   },
   "dependencies": {
     "@capacitor/android": "7.6.9",

@@ -477,3 +477,8 @@ body:has(.build-tray:not([hidden]):not(.collapsed)) #guide-launcher{display:none
 #camera-map button:focus:not(:focus-visible){outline:none}
 #camera-map button:focus-visible{outline:2px solid #ffd56b!important;outline-offset:3px}
 #camera-map img{-webkit-user-drag:none}
+
+/* Account management: readable on small phones, without duplicating dialogs. */
+.account-privacy-dialog{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto}.account-privacy-dialog p{line-height:1.45}.account-privacy-dialog label{display:grid;gap:8px;margin:16px 0;font-weight:700}.account-privacy-dialog input{min-height:44px;width:100%;box-sizing:border-box;border:1px solid #a68a61;border-radius:10px;padding:10px 12px;font:inherit;background:#fffaf0;color:#463626}.account-privacy-dialog #account-delete-body>button{min-height:46px;font-size:16px;margin-top:8px}
+.account-form-panel .full-button{font-size:16px;min-height:48px}.account-form-panel .account-note{display:block}.direct-app-download{margin-top:12px}.direct-app-download summary{cursor:pointer;padding:8px 0}
+@media(max-width:620px){.account-art{min-height:110px;padding:18px 24px}.account-art h1{font-size:30px;margin:6px 0}.account-form-panel{padding:20px 24px}.account-form-panel h2{font-size:24px}.account-note{line-height:1.4}}

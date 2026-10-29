@@ -1,9 +1,9 @@
 name: Meadow Markets regression checks
 on:
   push:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-accounts/**', 'supabase/meadow-accounts.sql', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
   pull_request:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-accounts/**', 'supabase/meadow-accounts.sql', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
 jobs:
   game-checks:
     runs-on: ubuntu-latest
@@ -18,6 +18,8 @@ jobs:
         with:
           deno-version: v2.x
       - run: deno test --allow-env scripts/check-meadow-recovery184.ts
+      - run: deno test --no-config --node-modules-dir=none scripts/check-meadow-store194.ts
+      - run: deno check --no-config --node-modules-dir=none supabase/functions/meadow-market-store/index.ts supabase/functions/meadow-market-ad-reward/index.ts supabase/functions/meadow-market-play-notifications/index.ts
       - run: node scripts/check-meadow.cjs
       - run: node scripts/check-meadow-versions.cjs --committed
   android-build:
@@ -40,3 +42,4 @@ jobs:
           cache: gradle
       - run: npm ci --ignore-scripts
       - run: npm run android:debug
+      - run: npm run android:play

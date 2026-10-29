@@ -18,7 +18,9 @@ if(win){
   if(fs.existsSync(path.join(bundledJdk,'bin','javac.exe'))){env.JAVA_HOME=bundledJdk;env.PATH=path.join(bundledJdk,'bin')+';'+env.PATH;}
 }
 const command=win?path.join(process.env.SystemRoot||'C:\\Windows','System32','WindowsPowerShell','v1.0','powershell.exe'):gradle;
-const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' assembleDebug`]:['assembleDebug'];
+const task=process.argv.includes('--play-release')?'bundlePlayRelease':process.argv.includes('--play')?'assemblePlayDebug':'assembleDirectDebug';
+if(task==='bundlePlayRelease'&&!env.MEADOW_UPLOAD_KEYSTORE)throw Error('Configure the private upload signing key before building the Play release.');
+const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' ${task}`]:[task];
 const result=spawnSync(command,args,{cwd:android,env,stdio:'inherit',shell:false});
 if(result.error)throw result.error;
 process.exitCode=result.status??1;

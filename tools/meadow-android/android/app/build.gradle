@@ -9,6 +9,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 9
         versionName "1.6.1"
+        manifestPlaceholders = [admobAppId: System.getenv('MEADOW_ADMOB_APP_ID') ?: 'ca-app-pub-3940256099942544~3347511713']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +17,31 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    buildFeatures { buildConfig true }
+    flavorDimensions += 'distribution'
+    productFlavors {
+        direct { dimension 'distribution' }
+        play {
+            dimension 'distribution'
+            versionCode 10
+            versionName '1.7.0'
+            buildConfigField 'String', 'MEADOW_REWARDED_AD_UNIT', '"' + (System.getenv('MEADOW_REWARDED_AD_UNIT') ?: 'ca-app-pub-3940256099942544/5224354917') + '"'
+            buildConfigField 'String', 'MEADOW_INTERSTITIAL_AD_UNIT', '"' + (System.getenv('MEADOW_INTERSTITIAL_AD_UNIT') ?: 'ca-app-pub-3940256099942544/1033173712') + '"'
+        }
+    }
+    signingConfigs {
+        upload {
+            if (System.getenv('MEADOW_UPLOAD_KEYSTORE')) {
+                storeFile file(System.getenv('MEADOW_UPLOAD_KEYSTORE'))
+                storePassword System.getenv('MEADOW_UPLOAD_STORE_PASSWORD')
+                keyAlias System.getenv('MEADOW_UPLOAD_KEY_ALIAS') ?: 'meadow-upload'
+                keyPassword System.getenv('MEADOW_UPLOAD_KEY_PASSWORD')
+            }
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.upload
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -40,6 +64,10 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+    playImplementation 'com.android.billingclient:billing:8.3.0'
+    playImplementation 'com.google.android.gms:play-services-ads:24.8.0'
+    playImplementation 'com.google.android.ump:user-messaging-platform:4.0.0'
+    playImplementation 'com.google.android.play:app-update:2.1.0'
 }
 
 apply from: 'capacitor.build.gradle'

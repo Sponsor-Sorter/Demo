@@ -14,6 +14,12 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle state) {
         registerPlugin(MeadowVaultPlugin.class);
         registerPlugin(MeadowUpdatesPlugin.class);
+        if ("play".equals(BuildConfig.FLAVOR)) {
+            try {
+                registerPlugin((Class<? extends com.getcapacitor.Plugin>) Class.forName("com.meadowandmarket.game.MeadowStorePlugin"));
+                registerPlugin((Class<? extends com.getcapacitor.Plugin>) Class.forName("com.meadowandmarket.game.MeadowAdsPlugin"));
+            } catch (ClassNotFoundException e) { throw new IllegalStateException("Missing Play integration", e); }
+        }
         super.onCreate(state);
         View web = getBridge().getWebView();
         ViewCompat.setOnApplyWindowInsetsListener(web, (view, insets) -> {

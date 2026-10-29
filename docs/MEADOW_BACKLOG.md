@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build193. See build183 and build186–189 release notes and their actual acceptance receipts.
+Last reconciled for build197. See build183 and build186–189 release notes and their actual acceptance receipts.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -19,9 +19,11 @@ Last reconciled for build193. See build183 and build186–189 release notes and 
 | Voice coverage | Corrected189 | Main-loop clips reused by actual topic; four missing guides generated with original Hope/Noah voices. Smaller instructions need no new narration |
 | Story/recovery | Published184/187–189 | Eleven compact chapters/35 goals retained. Real browser recovery privately completed and new-password sign-in passed187. New opt-in recovery narration189 |
 | UI layouts | Browser183/188/189; Samsung188 accepted | Core animals, desk, story, build scrolling and activity history exercised.189 tour portrait/landscape checked. Physical iPad acceptance remains |
-| Free test purchases/ad previews | Browser accepted183/186 | Seven packs, Premium, reward preview, receipt replay and opt-in tested. Keep free test mode |
-| Play Billing/AdMob | Not integrated, by instruction | Configure products/testers, server verification and test ad units before any real charges or real ads |
+| Purchases/tester grants | Native/server scaffold194–197 | Only approved named testers retain free packs. Real products disabled; license purchase/restore/refund acceptance remains |
+| Play Billing/AdMob | Play internal10 active; SSV transport verified | Store verifier, pending/account/idempotency/refund guards and consent bridge implemented. Products, IAM/PubSub, provider review, real license/SSV/device tests and full farm authority still gate activation |
 | Local storage failures | Fixtures183 passed | Physical storage-pressure acceptance remains |
 | Friend visits/help | Two actual farms accepted183 | Invitation, acceptance, visit, help and visitor log passed; continue account-isolation checks |
 
 Phone use: test only while idle. A successful APK compile or a browser viewport is not physical-device acceptance. Full authoritative farming, native performance/storage and real-store integration are still production gates.
+
+Build197 also links the website install option to the actual Play internal test, clarifies username-only account/signup/guest/recovery flows, removes public test-gold controls, and adds game-only privacy/deletion, private backups/maintenance and opt-in diagnostics. See meadow-market-build197.md and meadow-play-operations.md for the exact completed work and outstanding gates. The Samsung remains reserved for Frontlines until released by the user.
