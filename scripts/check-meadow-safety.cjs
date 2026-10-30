@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+const root=path.resolve(__dirname,'../meadow-and-market'),read=n=>fs.readFileSync(path.join(root,n),'utf8'),scope={window:{}};
+vm.runInNewContext(read('safety.js'),scope);const s=scope.window.meadowSafety;
+assert.equal(s.escape('<img src=x onerror="bad">'), '&lt;img src=x onerror=&quot;bad&quot;&gt;');
+for(const name of ['show','manage','mount','ensureRules','attach'])assert.equal(typeof s[name],'function');
+const code=read('safety.js'),game=read('game.js'),social=read('social.js');
+assert(code.includes('who!==owner()'),'Actions reject stale accounts');assert(code.includes('p_request:reportId'),'Report retries use a stable request ID');assert(code.includes('if(payload!==reportText)'),'Changing report input creates a new request');
+assert(game.includes('data-safety-user="${other}"'));assert(game.includes('data-safety-user="${p.user_id}"'));assert(social.includes('data-safety-user='));
+assert(game.includes("$('#visit-safety').onclick="));assert(game.includes("$('#community-settings').onclick="));
+assert(game.includes("b.dataset.answer==='accepted'&&!await window.meadowSafety.ensureRules()"));assert(code.includes("request('accept_rules')"));
+console.log('Community controls: escaped names, account isolation, report replay IDs, rules gate and Friends/visits/log/Settings wiring passed.');
