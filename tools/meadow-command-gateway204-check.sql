@@ -30,29 +30,29 @@ begin
  answer:=public.meadow_market_read_farm_command(outsider,request,b);
  if answer->>'enabled'<>'false' then raise exception 'Other owner leaked into cohort';end if;
  rejected:=false;begin
-  perform public.meadow_market_commit_farm_command(u,gen_random_uuid(),b,jsonb_set(s,'{farms,willow,objects,0,autoWater}','true'),'{}');
+  perform public.meadow_market_commit_farm_command(u,gen_random_uuid(),b,jsonb_set(s,'{farms,willow,objects,0,autoWater}','true'),'{"events":[]}');
  exception when sqlstate '22023' then rejected:=true;end;
  if not rejected then raise exception 'Command gateway bypassed paid-entitlement protection';end if;
  s:=jsonb_set(s,'{farms,willow,objects,0,stage}','1');
- answer:=public.meadow_market_commit_farm_command(u,request,b,s,'{"results":[{"type":"plot.till"}],"rules":"fixture"}');
+ answer:=public.meadow_market_commit_farm_command(u,request,b,s,'{"results":[{"type":"plot.till"}],"events":[],"rules":"fixture"}');
  if answer->>'ok'<>'true' or (answer->>'revision')::bigint<>r+1 then raise exception 'Command did not commit';end if;
  if (select save_protocol from public.meadow_market_saves where user_id=u)<>4 then raise exception 'Protocol downgraded';end if;
  if auth.jwt()->>'role'<>'service_role' or auth.uid() is not null then raise exception 'Owner claims leaked after commit';end if;
- answer:=public.meadow_market_commit_farm_command(u,request,b,s||'{"coins":999999}','{}');
+ answer:=public.meadow_market_commit_farm_command(u,request,b,s||'{"coins":999999}','{"events":[]}');
  if answer->>'replayed'<>'true' or answer->'save_data'->>'coins'<>'250' then raise exception 'Retry reapplied forged candidate';end if;
  rejected:=false;begin
-  perform public.meadow_market_commit_farm_command(u,request,b||'{"commands":[{"type":"shop.check"}]}',s,'{}');
+  perform public.meadow_market_commit_farm_command(u,request,b||'{"commands":[{"type":"shop.check"}]}',s,'{"events":[]}');
  exception when sqlstate '22023' then rejected:=true;end;
  if not rejected then raise exception 'Request id reused for different commands';end if;
- answer:=public.meadow_market_commit_farm_command(u,gen_random_uuid(),b,s,'{}');
+ answer:=public.meadow_market_commit_farm_command(u,gen_random_uuid(),b,s,'{"events":[]}');
  if answer->>'conflict'<>'true' then raise exception 'Stale revision not rejected';end if;
  if (select count(*) from meadow_private.farm_command_receipts where user_id=u)<>1 then raise exception 'Duplicate command receipt';end if;
  -- A pending verified reward is applied in the SAME transaction as an action.
  select save_data into s from public.meadow_market_saves where user_id=u;
  insert into public.meadow_market_economy_receipts(user_id,request_id,kind,delivery) values(u,gen_random_uuid(),'game_reward','{"gold":25}');
- answer:=public.meadow_market_commit_farm_command(u,gen_random_uuid(),jsonb_build_object('expected_revision',r+1,'commands','[{"type":"shop.check"}]'::jsonb),s,'{}');
+ answer:=public.meadow_market_commit_farm_command(u,gen_random_uuid(),jsonb_build_object('expected_revision',r+1,'commands','[{"type":"shop.check"}]'::jsonb),s,'{"events":[]}');
  if answer->'save_data'->>'coins'<>'275' or answer->'save_data'->'_farmEconomy'->>'cursor'<>'1' then raise exception 'Verified reward did not join command commit';end if;
- answer:=public.meadow_market_commit_farm_command(u,request,b,s,'{}');
+ answer:=public.meadow_market_commit_farm_command(u,request,b,s,'{"events":[]}');
  if answer->>'replayed'<>'true' or (answer->>'accepted_revision')::bigint<>r+1 or (answer->>'revision')::bigint<>r+2 or answer->'save_data'->>'coins'<>'275' then raise exception 'Old accepted retry overwrote newer farm';end if;
  if (select count(*) from meadow_private.farm_reward_deliveries where user_id=u)<>1 then raise exception 'Reward delivered twice';end if;
  if has_function_privilege('authenticated','public.meadow_market_commit_farm_command(uuid,uuid,jsonb,jsonb,jsonb)','EXECUTE')

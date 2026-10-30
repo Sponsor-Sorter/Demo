@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for backend204 / web202. See meadow-market-backend204.md for staged commands, consent publication and remaining gates.
+Last reconciled for backend205 / web205. See meadow-market-build205.md for the extended server commands, worker leases, atomic mission progress and explicit remaining gates.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -12,7 +12,7 @@ Last reconciled for backend204 / web202. See meadow-market-backend204.md for sta
 | Cross-map foreground helpers | Task fairness already implemented | Long-session fairness/load acceptance still required; do not infer a native soak from fixtures |
 | Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Native frame-time profile remains |
 | High-level pacing | Paths150–154 implemented | Worker, village, recipe and upgrade arithmetic tested; extended human pacing/play balance remains |
-| Server resources | Protocol3 receipts186–188; paid-perk guard203; staged commands204 | Crop/animal/build/shop/craft reducer and private gateway deployed/tested204, including isolated live Auth/Edge/DB acceptance. No real players enrolled. Client wiring, workers, travel and remaining progression/reward mutations still need migration; journal entries are not proof that legacy earnings are valid. Raw/legacy client writes are retired; paid well/queue state cannot be minted or cloned in snapshots |
+| Server resources | Protocol3 receipts186–188; paid-perk guard203; staged commands204–205 | Core farming, workers, travel and most progression reducers deployed/tested, including isolated live Auth/Edge/DB acceptance. No real players enrolled. Account-bound durable client transport is staged/unattached; all UI wiring, server-owned initialization/legacy conversion, remaining expedition/market rewards, shared projects and friend-help delivery still need completion. Journal entries do not prove legacy earnings valid. Raw/direct client writes retired; paid well/queue state cannot be minted/cloned in snapshots |
 | Server game rewards/scores | Issued rounds/verified scores184 | One-use rounds, server time and verified ranked rewards tested. Further bot/human-input resistance remains |
 | Onboarding/help | Guided farm loops189 | Resumable level-gated tour, specific original-cast replays, gold targets and brief lesson-crop reservation. Follow future UI changes with hit-target checks |
 | Map interaction | Artwork-traced regions189 | Five polygons cover painted features; map hash and grass/road/river exclusion samples guard regressions. Preserve pan/zoom coordinate system |
