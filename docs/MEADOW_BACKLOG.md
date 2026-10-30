@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build200. See build183 and build186–189 release notes and their actual acceptance receipts.
+Last reconciled for build201. See build183 and build186–189 release notes and their actual acceptance receipts.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -24,7 +24,12 @@ Last reconciled for build200. See build183 and build186–189 release notes and 
 | Paid guest protection | Client, Edge and SQL guards shipped200 | Ready username account and non-anonymous Auth identity required for paid checkout/restore; registered/guest/incomplete fixtures passed. Real reinstall/new-device provider acceptance remains. Real-payment switches remain off |
 | Local storage failures | Fixtures183 passed | Physical storage-pressure acceptance remains |
 | Friend visits/help | Two actual farms accepted183 | Invitation, acceptance, visit, help and visitor log passed; continue account-isolation checks |
+| Community safety | Published201 | Report/block controls in Friends, visits and visitor log; Settings unblocking; rules acceptance, bilateral server enforcement, private staff report queue and 180-day retention. Rollback fixtures and browser entry points passed. Staff must review reports daily |
+| Play public beta | Submitted30Oct | Early-access track4699801153255070807, native1.7.0/code10, game201, Australia, unlimited open invites. Console shows Changes in review; automated checks pending at submission. Approval and public installation/link acceptance remain |
+| Store declarations/artwork | Completed30Oct | Audience13+, IARC including block/report, data safety (ten data subtypes), advertising-ID/SDK purposes, reviewer access, listing feature and four gameplay screenshots saved/submitted. Revisit when SDK/data behaviour changes |
 
 Phone use: test only while idle. A successful APK compile or a browser viewport is not physical-device acceptance. Full authoritative farming, native performance/storage and real-store integration are still production gates.
 
-Build197 also links the website install option to the actual Play internal test, clarifies username-only account/signup/guest/recovery flows, removes public test-gold controls, and adds game-only privacy/deletion, private backups/maintenance and opt-in diagnostics. See meadow-market-build197.md and meadow-play-operations.md for the exact completed work and outstanding gates. The Samsung remains reserved for Frontlines until released by the user.
+Build197 also links the website install option to the actual Play internal test, clarifies username-only account/signup/guest/recovery flows, removes public test-gold controls, and adds game-only privacy/deletion, private backups/maintenance and opt-in diagnostics. See meadow-market-build197.md and meadow-play-operations.md for the exact completed work and outstanding gates. The user released the Samsung for idle testing on30Oct. It is connected and idle, but still has direct1.6.1/code9; no Play installation or touch acceptance was completed this session. Do not uninstall it without preserving farm access.
+
+AdMob account approval is confirmed. App-store linking/app review and the draft European privacy message still need completion before live ads. Real commerce remains disabled; service-account/PubSub credentials, license purchase/restore/refund, SSV/consent/no-fill and physical acceptance remain. Exclusive-game Auth-principal cleanup/retention still needs review; game-only data purge must preserve other apps.

@@ -8,6 +8,12 @@ Play Console app: https://play.google.com/console/u/0/developers/910049929017067
 
 Internal test join: https://play.google.com/apps/internaltest/4701019499198110666
 
+Public beta prepared30October2026: Early access track4699801153255070807, Meadow Markets public beta, native1.7.0/code10 and live game201. Australia only initially, unlimited open invites, feedback meadowmarkets@sponsorsorter.com. Submitted16 changes; Console displayed Changes in review while automated checks were still running. Approval/public installation is not yet accepted. Keep the internal invitation link for existing authorized testers until the public beta is approved; then update the website download option and verify the public store entry before sharing it.
+
+The reviewer account fairplay_review is ready and has a scoped audited demo grant (Premium,10,000gems,100,000gold,100tickets), without free-purchase tester access or purchased VIP XP. Its existing credential is stored in the Play app-access form only, not this repository. Normal gameplay progression remains. Do not reset it or delete its farm while review is pending.
+
+All ten app-content declarations are actioned. IARC: AustralianGeneral, ESRBEveryone, PEGI3; intended audience remains13+. Data safety declares ten concrete data subtypes and includes report content for functionality/security. New fixed AI listing artwork is labelled as AI-created/edited. Public feature1024×500 and four real gameplay screenshots were saved. Signed-in review requires no email/OTP/location gate.
+
 The upload key vault is C:/Users/jrbwi/.codex/private/meadow-markets-play/. It is outside Git with a user/machine-bound DPAPI password. Keep a secure recoverable backup. Never publish the key, its password file, Google service-account JSON or private tokens. Google holds the app-signing key; this local key is for uploads. The old direct APK signing key is different. Export/save farm access before switching distributions.
 
 ## Backend switches
@@ -56,6 +62,6 @@ Keep the previous deployed commit and private upload vault. Disable commerce fla
 
 ## Build200 payment safety and AdMob review
 
-AdMob accepted the owner-completed payment profile and now says the account is being verified (usually24hours, rarely up to2weeks). App-store linking/app review remains separate. Actual store/ads switches remainfalse and all products inactive.
+AdMob account approval was confirmed30October. App-store linking/app review remains separate. Actual store/ads switches remainfalse and all products inactive. A European privacy message is saved as a draft with visible refusal/close options. Do not publish it until its default provider/purpose list is reviewed and narrowed to the actual SDK setup; actual consent/SSV/no-fill device acceptance remains pending.
 
 Checkout and Restore now fail closed unless the backend confirms a ready Meadow Markets username account attached to a non-anonymous Auth identity. The Edge verifier checks the owner before Google lookup; SQL independently refuses new guest/incomplete-account deliveries. The approved free-test cohort remains separate. Browser fixtures and rollback-only database tests cover guest/incomplete/registered states. Real reinstall/new-device purchase recovery and license-test provider acceptance remain pending.
