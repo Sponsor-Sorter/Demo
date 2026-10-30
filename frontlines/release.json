@@ -1,11 +1,11 @@
 {
-  "build": 74,
-  "version": "1.0.0.74",
-  "url": "https://sponsorsorter.com/frontlines/builds/74/",
-  "notes": "V1.0.0.74: Fix Pause-to-Settings input blocking; Done, sliders and tabs remain responsive in training. Correct compact briefing button frames. Retains the Australian training general.",
+  "build": 75,
+  "version": "1.0.0.75",
+  "url": "https://sponsorsorter.com/frontlines/builds/75/",
+  "notes": "V1.0.0.75: Capital training now starts with city selection and uses capital income, defence and victory rules. Previously blocked saved lessons reopen at capital selection; completed campaign progress is kept.",
   "networkBuild": 69,
-  "androidBuild": 74,
-  "windowsBuild": 74,
+  "androidBuild": 75,
+  "windowsBuild": 75,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
