@@ -1,11 +1,11 @@
 {
-  "build": 70,
-  "version": "1.0.0.70",
-  "url": "https://sponsorsorter.com/frontlines/builds/70/",
-  "notes": "V1.0.0.70: Clean release-mode Android package and Windows installer with verified updates and encrypted saved sign-in. Current graphics and gameplay retained.",
+  "build": 71,
+  "version": "1.0.0.71",
+  "url": "https://sponsorsorter.com/frontlines/builds/71/",
+  "notes": "V1.0.0.71: Flag and spectate; retained army cards; winning captures finish immediately; improved online lobby search and Leave.",
   "networkBuild": 69,
-  "androidBuild": 70,
-  "windowsBuild": 70,
+  "androidBuild": 71,
+  "windowsBuild": 71,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57

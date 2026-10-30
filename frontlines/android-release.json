@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.70",
-  "versionCode": 70,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview70-testing/frontlines-1.0.0-preview-build-70.apk",
+  "versionName": "1.0.0.71",
+  "versionCode": 71,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview71-testing/frontlines-1.0.0-preview-build-71.apk",
   "bytes": 210313690,
-  "sha256": "29c5854a5a07ca5a8e235d9deff1ce119c84b99fcec16c160a83f7138ebe9be4",
+  "sha256": "88cd449a1857b8491a4144d7d55fa08263d76b9ca314f0d56fcd0e00784b9ca6",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public70/frontlines-1.0.0.70-android.apk",
-  "notes": "V1.0.0.70: Clean release-mode Android package and Windows installer with verified updates and encrypted saved sign-in. Current graphics and gameplay retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public71/frontlines-1.0.0.71-android.apk",
+  "notes": "V1.0.0.71: Flag and spectate; retained army cards; winning captures finish immediately; improved online lobby search and Leave."
 }
