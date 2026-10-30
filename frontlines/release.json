@@ -1,11 +1,11 @@
 {
-  "build": 71,
-  "version": "1.0.0.71",
-  "url": "https://sponsorsorter.com/frontlines/builds/71/",
-  "notes": "V1.0.0.71: Flag and spectate; retained army cards; winning captures finish immediately; improved online lobby search and Leave.",
+  "build": 73,
+  "version": "1.0.0.73",
+  "url": "https://sponsorsorter.com/frontlines/builds/73/",
+  "notes": "V1.0.0.73: Australian training general, action-linked spoken lessons, subtitles, replay, mute and separate General volume.",
   "networkBuild": 69,
-  "androidBuild": 72,
-  "windowsBuild": 71,
+  "androidBuild": 73,
+  "windowsBuild": 73,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
