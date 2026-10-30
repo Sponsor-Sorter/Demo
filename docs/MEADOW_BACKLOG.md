@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for backend209 / web205. See meadow-market-backend209.md, meadow-market-backend208.md and meadow-market-build205.md for staged commands, direct sales/tutorial balances, verified rewards, worker leases and remaining production gates.
+Last reconciled for build210. See meadow-market-build210.md for the protected client canary, verified browser crop/build/market checks, offline launch fix and remaining rollout gates. Existing player farms remain on protocol3; the command cohort is empty after disposable-test cleanup.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -12,7 +12,8 @@ Last reconciled for backend209 / web205. See meadow-market-backend209.md, meadow
 | Cross-map foreground helpers | Task fairness already implemented | Long-session fairness/load acceptance still required; do not infer a native soak from fixtures |
 | Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Native frame-time profile remains |
 | High-level pacing | Paths150–154 implemented | Worker, village, recipe and upgrade arithmetic tested; extended human pacing/play balance remains |
-| Server resources | Protocol3 receipts186–188; paid-perk guard203; staged commands204–208 | Core farming, workers, travel, most progression, atomic friend-help delivery and verified market/expedition rewards deployed/tested, including isolated live Auth/Edge/DB acceptance. No real players enrolled. Account-bound durable client transport is staged/unattached; all UI wiring, server-owned initialization/legacy conversion and shared-landmark metadata still need completion. Journal entries do not prove legacy earnings valid. Raw/direct client writes retired; paid well/queue state cannot be minted/cloned in snapshots |
+| Server resources | Protocol3 receipts186–188; paid-perk guard203; command canary210 | The command client is loaded but activates only for enrolled protocol4 farms. A disposable browser farm passed crop costs/rewards, placement/rotation/tap move and one verified premium sale. Worker path/rest fixes, most progression routes and safe preferences are wired. Finish the mutation inventory, shared-landmark metadata, cross-map callbacks, backup/reset presentation and server-owned initialization/reviewed legacy conversion before real-player rollout. Historical beta wealth is not verified acquisition history. Paid well/queue state cannot be minted/cloned in snapshots |
+| Offline launch | Fixed210 | Installed cache now contains the exact build-specific start document used by the navigation fallback; current-device offline acceptance remains |
 | Server game rewards/scores | Issued rounds/verified scores184 | One-use rounds, server time and verified ranked rewards tested. Further bot/human-input resistance remains |
 | Onboarding/help | Guided farm loops189 | Resumable level-gated tour, specific original-cast replays, gold targets and brief lesson-crop reservation. Follow future UI changes with hit-target checks |
 | Map interaction | Artwork-traced regions189 | Five polygons cover painted features; map hash and grass/road/river exclusion samples guard regressions. Preserve pan/zoom coordinate system |
