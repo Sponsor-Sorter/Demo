@@ -4,7 +4,7 @@ import {createWorkerController} from './meadow-workers205.ts';
 import {tripCommand} from './meadow-trips208.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];sharedLandmarks?:string[];visitedFriend?:boolean};
+export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];sharedLandmarks?:string[];visitedFriend?:boolean;initializing?:boolean};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -57,7 +57,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  W.meadowStory.attach(api);
  // Read-only UI books must not invent domain state when first opened.
  for(const name of ['meadowAlmanac','meadowLife','meadowProgress','meadowArtisan'])W[name].book(s);
- W.meadowJourneyCore.get(s);s.workforce||={};s.cropMastery||={tiles:{}};s.minigames||={records:{},rewards:{}};s.club||={queue:[],applied:[],pending:{}};
+ W.meadowJourneyCore.get(s);W.meadowJourneyCore.fair(s,now);s.workforce||={};s.cropMastery||={tiles:{}};s.minigames||={records:{},rewards:{}};s.club||={queue:[],applied:[],pending:{}};
  if(context.sharedLandmarks!==undefined){if(!Array.isArray(context.sharedLandmarks)||context.sharedLandmarks.length>3||context.sharedLandmarks.some(id=>!['garden','river','hall'].includes(id)))fail('Shared landmarks need review.');s.journey.sharedLandmarks=[...new Set(context.sharedLandmarks)].sort();}
  s.minigames.records||={};
  if(!Array.isArray(context.roundRecords||[])||(context.roundRecords||[]).length>5)fail('Game records need review.');
@@ -123,6 +123,13 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
   settle();
   const eventStart=events.length,fleeceBefore=Number(farms().willow.inventory.fleece)||0;
   switch(command.type){
+   case 'farm.initialize':{
+    fields(d,[]);if(!context.initializing||commands.length!==1||Object.keys(farms()).length!==1||f.objects.length||s.level!==1||s.coins!==250)fail('This farm has already started.');
+    const defs:Data[]=[{id:'p1',type:'plot',x:4,y:3,crop:'carrot',stage:0,plantedAt:0},{id:'p2',type:'plot',x:5,y:3,crop:'wheat',stage:0,plantedAt:0},{id:'p3',type:'plot',x:4,y:4,crop:'strawberry',stage:0,plantedAt:0},{id:'orchard-main',type:'orchard',x:9,y:2,tier:0,lastFruitAt:now},{id:'b1',type:'coop',x:3,y:1,tier:0},{id:'t1',type:'tree',x:1,y:2,lastFruitAt:now},{id:'f1',type:'flowers',x:6,y:2,plantedAt:now},{id:'w1',type:'well',x:1,y:5,tier:0}];
+    for(const def of defs){const cells:Data[]=[];for(let x=-12;x<=24;x++)for(let y=-12;y<7;y++)if(fits(def,x,y,'willow',null))cells.push({x,y});const spot=cells.sort((a,b)=>Math.hypot(a.x-def.x,a.y-def.y)-Math.hypot(b.x-def.x,b.y-def.y))[0];if(!spot)fail('The starter layout needs review.');f.objects.push({...def,...spot});}
+    const coop=f.objects.find((o:Data)=>o.id==='b1');f.objects.push({id:'a1',type:'chicken',x:coop.x,y:coop.y,name:'Pip',coopId:coop.id,hunger:79,clean:84,happy:81,lastCare:now,needsAt:now,lastProductAt:now});result.initialized=true;break;
+   }
+
    case 'plot.till':
     fields(d,[]);o=requireObject(command.target,'plot');if(o.plantedAt||o.stage)fail('This plot is already tilled.');o.stage=1;event('till');break;
    case 'plot.plant':

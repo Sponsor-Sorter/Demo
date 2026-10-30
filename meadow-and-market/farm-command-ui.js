@@ -46,7 +46,7 @@
  function create(a){
   if(typeof a.send!=='function'||typeof a.persist!=='function'||typeof a.apply!=='function')throw Error('The online farm connection is incomplete.');
   const account=a.owner(),key='meadow-ui-v1:'+account;
-  let canonical=clone(a.canonical),canonicalHash=fingerprint(canonical),busy=false,inFlight=null,refreshPromise=null,maintenancePromise=null,stopped=false,storageWarning=false;
+  let canonical=clone(a.canonical),canonicalHash=fingerprint(canonical),busy=false,inFlight=null,refreshPromise=null,maintenancePromise=null,stopped=false,storageWarning=false,background=false,quietConflict=null;
   const same=()=>!stopped&&a.owner()===account;
   function writeUI(s){const p=preferences(s);for(const k of ['selected','moving','placing','view','mode'])delete p.root[k];a.storage.setItem(key,JSON.stringify({version:1,owner:account,preferences:p}));return p;}
   function apply(save,revision,summary){
@@ -56,15 +56,21 @@
    writeUI(next);a.persist(next,revision,account); // Synchronous, before display or receipt removal.
    canonical=clone(save);canonical._cloudRevision=revision;canonicalHash=fingerprint(canonical);a.apply(next,revision,account);a.onResult?.(summary);a.render();
   }
-  const transport=window.meadowFarmCommands.create({owner:a.owner,revision:a.revision,storage:a.storage,uuid:a.uuid,send:a.send,apply,onConflict:a.onConflict});
+  const transport=window.meadowFarmCommands.create({owner:a.owner,revision:a.revision,storage:a.storage,uuid:a.uuid,send:a.send,apply,onConflict:data=>{if(background)quietConflict=data;else a.onConflict?.(data);}});
   async function execute(commands,options={}){
    if(!same())throw Object.assign(Error('Farm account changed.'),{code:'ACCOUNT_CHANGED'});
    if(busy)throw Object.assign(Error('Wait for your saved farm action.'),{code:'ACTION_BUSY'});
-   busy=true;a.pending?.(true);const screen=a.screen?.();
+   busy=true;background=options.quiet===true&&commands.every(c=>['workers.tick','workers.return','shop.check'].includes(c.type));quietConflict=null;a.pending?.(true);const screen=a.screen?.();
    try{const reply=await transport.run(commands);if(same()){
     if(options.after&&(!a.screen||a.screen()===screen))options.after(reply);
     if(!options.quiet&&reply?.summary?.messages?.length)a.notify(reply.summary.messages.at(-1));
-   }return reply;}finally{busy=false;a.pending?.(false);}
+    }return reply;}catch(error){
+    if(error.code==='FARM_CONFLICT'&&background&&same()){
+     if(!a.screen||a.screen()===screen){await transport.useRemote();return{ok:true,refreshed:true,revision:transport.status().revision,summary:{results:[]}};}
+     if(quietConflict)a.onConflict?.(quietConflict);
+    }
+    throw error;
+   }finally{background=false;quietConflict=null;busy=false;a.pending?.(false);}
   }
   function launch(fn){const promise=fn();inFlight=promise;promise.catch(e=>{if(same()){a.onProblem?.(e,transport.status());a.notify(e.name==='QuotaExceededError'?'This device cannot save your farm. Free space or export a backup, then retry.':e.message||'Your saved action is waiting for a connection.');}}).finally(()=>{if(inFlight===promise)inFlight=null;});return promise;}
   function restoreUI(){

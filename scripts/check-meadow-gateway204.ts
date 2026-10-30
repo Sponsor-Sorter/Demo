@@ -45,3 +45,7 @@ Deno.test('Invalid reducer batches and unavailable services never commit or disc
  f.services.rpc=async()=>{throw Error('private-secret-and-save-body');};const r=await f.handler(req());assert(r.status===503);assert(!(await r.text()).includes('private-secret'));
  f.services.rpc=async()=>{throw farmDatabaseError('22023');};const invalid=await f.handler(req());assert(invalid.status===422,'Permanent request errors must not become endless network retries');
 });
+
+Deno.test('New farms use only issued server baseline and cannot accept a supplied snapshot',async()=>{
+ const f=fixture({ok:true,enabled:true,initializing:true,server_time:now,profile:{friend_code:'MEADOW-START',display_name:'Temporary starter'}});const request={request_id:id,expected_revision:0,commands:[{type:'farm.initialize'}]};const response=await f.handler(req(request));assert(response.status===200);const save=f.calls[1].data.p_save_data;assert(save.coins===250&&save.level===1&&save.farms.willow.objects.length===9);assert((await f.handler(req({...request,save_data:{coins:999999}}))).status===422);
+});

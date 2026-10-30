@@ -1,3 +1,4 @@
+import {createFarmBaseline} from '../_shared/meadow-farm-origin212.ts';
 import {applyFarmCommands,FarmActionError} from '../_shared/meadow-farm-actions204.ts';
 type Data=Record<string,any>;
 export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>};
@@ -28,8 +29,9 @@ export function farmHandler(services:Services){return async(req:Request)=>{
   if(context.enabled===false)return reply(409,{error:'COMMAND_ROLLOUT_PENDING'});
   if(context.replayed)return reply(200,context);
   if(context.conflict)return reply(409,context);
-  if(!context.ok||!Number.isSafeInteger(context.server_time)||context.server_time<1||!context.save_data)throw Error('FARM_UNAVAILABLE');
-  const applied=applyFarmCommands(context.save_data,body.commands,context.server_time,{ownedCollections:context.owned_collections||[],pendingHelp:context.pending_help||[],marketRounds:context.market_rounds||[],roundRecords:context.round_records||[],sharedLandmarks:context.shared_landmarks||[],visitedFriend:context.visited_friend===true});
+  if(!context.ok||!Number.isSafeInteger(context.server_time)||context.server_time<1||(!context.initializing&&!context.save_data))throw Error('FARM_UNAVAILABLE');
+  if(context.initializing&&(body.expected_revision!==0||JSON.stringify(body.commands)!=='[{"type":"farm.initialize"}]'))throw Error('FARM_UNAVAILABLE');
+  const applied=context.initializing?createFarmBaseline(context.server_time,context.profile):applyFarmCommands(context.save_data,body.commands,context.server_time,{ownedCollections:context.owned_collections||[],pendingHelp:context.pending_help||[],marketRounds:context.market_rounds||[],roundRecords:context.round_records||[],sharedLandmarks:context.shared_landmarks||[],visitedFriend:context.visited_friend===true});
   const answer=await services.rpc('meadow_market_commit_farm_command',{...args,p_save_data:applied.save,p_summary:{results:applied.results,events:applied.events,help:applied.help,market_sales:applied.marketSales,messages:applied.messages,rules:applied.rules}});
   if(answer.enabled===false)return reply(409,{error:'COMMAND_ROLLOUT_PENDING'});
   return reply(answer.conflict?409:200,answer);

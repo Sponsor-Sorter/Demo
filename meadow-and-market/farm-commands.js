@@ -5,7 +5,7 @@
  const clone=v=>JSON.parse(JSON.stringify(v)),safe=n=>Number.isSafeInteger(n)&&n>=0;
  function create(a){
   const account=a.owner(),storageKey='meadow-farm-command-v1:'+account;
-  let revision=a.revision,job=null,running=false,stopped=false,conflict=null;
+  let revision=a.revision,job=null,running=false,locking=false,stopped=false,conflict=null;
   const error=(message,code)=>Object.assign(Error(message),{code});
   const same=()=>!stopped&&a.owner()===account;
   function load(){
@@ -16,8 +16,12 @@
    job=stored.body;
   }
   function persist(body){a.storage.setItem(storageKey,JSON.stringify({version:1,owner:account,body}));}
-  function clear(){a.storage.removeItem(storageKey);job=null;}
-  async function send(){
+  function clear(){const text=a.storage.getItem(storageKey);if(text){const saved=JSON.parse(text);if(saved?.body?.request_id===job?.request_id)a.storage.removeItem(storageKey);}job=null;}
+  async function locked(fn){
+   if(locking)throw error('Wait for your current farm action.','ACTION_BUSY');locking=true;
+   try{const lock=a.lock||(typeof navigator!=='undefined'&&navigator.locks?.request?fn=>navigator.locks.request('meadow-farm-action:'+account,fn):null);return lock?await lock(fn):await fn();}finally{locking=false;}
+  }
+  async function sendUnlocked(){
    if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
    if(running)throw error('Wait for your current farm action.','ACTION_BUSY');
    if(conflict)throw error('Review the newer farm before continuing.','FARM_CONFLICT');
@@ -45,10 +49,15 @@
     if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
     if(job||running)throw error('Confirm the saved farm action before starting another.','ACTION_PENDING');
     if(!Array.isArray(commands)||commands.length<1||commands.length>32)throw error('Choose one to 32 farm actions.','INVALID_ACTION');
-    const next={request_id:a.uuid(),expected_revision:revision,commands:clone(commands)};
-    // A full or unavailable device store stops BEFORE a network mutation.
-    persist(next);job=next;return send();
-   },retry:send,
+    return locked(async()=>{
+     if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
+     // Another tab may have saved an uncertain request while this view waited
+     // for the account lock. Adopt it; never overwrite its only durable copy.
+     if(a.storage.getItem(storageKey)){load();throw error('Confirm the saved farm action before starting another.','ACTION_PENDING');}
+     const next={request_id:a.uuid(),expected_revision:revision,commands:clone(commands)};
+     persist(next);job=next;return sendUnlocked();
+    });
+   },retry:()=>locked(sendUnlocked),
    async useRemote(){
     if(!same()||running||!conflict)throw error('No farm conflict is ready to review.','NO_CONFLICT');
     await a.apply(clone(conflict.save_data),conflict.revision,{});
@@ -62,7 +71,7 @@
     await a.apply(clone(save),nextRevision,{});if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');revision=nextRevision;return true;
    },
    stop(){stopped=true;},
-   status:()=>({owner:account,revision,running,pending:!!job,conflict:!!conflict,stopped})
+   status:()=>({owner:account,revision,running:running||locking,pending:!!job,conflict:!!conflict,stopped})
   };
  }
  window.meadowFarmCommands={create};

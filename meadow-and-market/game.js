@@ -158,11 +158,16 @@
       if(owner&&owner!==cloudUser.id&&!forceAccountLoad){localStorage.setItem(SAVE_KEY+'-before-account-switch',JSON.stringify(state));localStorage.setItem(SAVE_KEY,JSON.stringify(defaultState()));localStorage.setItem(SAVE_KEY+'-load-account',cloudUser.id);replacingFarm=true;location.reload();return}
       const existing=await client.from('meadow_market_profiles').select('display_name,friend_code').eq('user_id',cloudUser.id).maybeSingle();if(existing.error)throw existing.error;
       const profile=window.meadowCloud.profile(state,existing.data,cloudUser.id);
-      const {data:remote,error:readError}=await client.from('meadow_market_saves').select('save_data,updated_at,revision,save_protocol').eq('user_id',cloudUser.id).maybeSingle();if(readError)throw readError;
+      let {data:remote,error:readError}=await client.from('meadow_market_saves').select('save_data,updated_at,revision,save_protocol').eq('user_id',cloudUser.id).maybeSingle();if(readError)throw readError;
       if(owner===cloudUser.id){const ack=window.meadowCloud.acknowledgedRevision(localStorage.getItem(SAVE_KEY+'-cloud-ack'),cloudUser.id,loadedSaveSeen);if(ack!==null&&ack<=Number(remote?.revision||0))state._cloudRevision=Math.max(Number(state._cloudRevision)||0,ack)}
       const reviewPending=localStorage.getItem(SAVE_KEY+'-pending-cloud-review')===cloudUser.id;
       const savedProfile=await client.from('meadow_market_profiles').upsert(profile,{onConflict:'user_id'});if(savedProfile.error)throw savedProfile.error;
-      if(remote?.save_protocol===4){await startCommandFarm(client,remote);finishCloudConnection(client);return;}
+      if(!remote){
+        window.meadowCommandUI.setWaiting(true);commandConnection(true);
+        remote=await window.meadowFarmStart.start({owner:()=>cloudUser?.id,storage:localStorage,uuid:()=>crypto.randomUUID(),send:(body,who)=>sendFarmCommand(client,body,who),persist(next,revision,who){if(cloudUser?.id!==who)throw Error('Farm account changed.');localStorage.setItem(SAVE_KEY,JSON.stringify(next));localStorage.setItem(SAVE_KEY+'-owner',who);localStorage.setItem(SAVE_KEY+'-cloud-ack',JSON.stringify({owner:who,seen:next.seen,revision}));}});
+        if(!remote||remote.save_protocol!==4){window.meadowCommandUI.setWaiting(false);commandConnection(false);}
+      }
+      if(remote?.save_protocol===4){localStorage.removeItem(window.meadowFarmStart.key(cloudUser.id));await startCommandFarm(client,remote);finishCloudConnection(client);return;}
       if((forceAccountLoad&&remote?.save_data)||(!reviewPending&&window.meadowCloud.newer(remote?.save_data,{seen:loadedSaveSeen,_cloudRevision:state._cloudRevision}))){
         const useRemote=forceAccountLoad||userRevision===revisionAtStart||await chooseCloudSave(remote.save_data);
         if(useRemote){const merged={...remote.save_data,friendCode:profile.friend_code,farmerName:profile.display_name};localStorage.setItem(SAVE_KEY+'-before-cloud-load',JSON.stringify(state));localStorage.setItem(SAVE_KEY,JSON.stringify(merged));localStorage.setItem(SAVE_KEY+'-owner',cloudUser.id);localStorage.removeItem(SAVE_KEY+'-load-account');replacingFarm=true;location.reload();return}
@@ -192,6 +197,11 @@
     if(!layer){layer=document.createElement('section');layer.id='command-connection';layer.setAttribute('role','status');layer.style.cssText='position:fixed;inset:0;z-index:20001;display:grid;place-content:center;background:#271c1644;padding:20px';layer.innerHTML='<div style="background:#fff6df;color:#52351f;border:2px solid #c49b63;border-radius:18px;padding:22px;max-width:310px;text-align:center"><h2>Connecting to your farm</h2><p>Your saved online farm will open when the connection is ready.</p><button class="small-button" id="command-connect-retry">Retry connection</button></div>';document.body.append(layer);layer.querySelector('button').onclick=()=>startCloud();}
   }
   const savedFarmNow=()=>commandClock?commandClock.server+performance.now()-commandClock.local:Date.now();
+  async function sendFarmCommand(client,body,who){
+    const {data,error}=await client.auth.getSession();if(error||data?.session?.user?.id!==who)throw Error('Farm account changed.');
+    const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),20000);
+    try{const response=await fetch('https://ejavqlyozqhzqogflqzr.supabase.co/functions/v1/meadow-market-farm-actions',{method:'POST',headers:{apikey:'sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',Authorization:'Bearer '+data.session.access_token,'Content-Type':'application/json'},body:JSON.stringify(body),signal:abort.signal});return{status:response.status,data:await response.json()};}finally{clearTimeout(timeout);}
+  }
   async function startCommandFarm(client,remote){
     const owner=cloudUser.id,canonical={...remote.save_data,_cloudRevision:remote.revision};
     if(!canonical.farms?.[canonical.active])throw Error('The online farm needs review.');
@@ -200,11 +210,7 @@
     state=window.meadowCommandUI.merge(canonical,state);window.meadowPantry.connect(state);
     let paintKey='';
     const controller=window.meadowCommandUI.attach({protocol:4,owner:()=>cloudUser?.id,canonical,revision:remote.revision,state:()=>state,storage:localStorage,uuid:()=>crypto.randomUUID(),notify,
-      async send(body,who){
-        const {data,error}=await client.auth.getSession();if(error||data?.session?.user?.id!==who)throw Error('Farm account changed.');
-        const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),20000);
-        try{const response=await fetch('https://ejavqlyozqhzqogflqzr.supabase.co/functions/v1/meadow-market-farm-actions',{method:'POST',headers:{apikey:'sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',Authorization:'Bearer '+data.session.access_token,'Content-Type':'application/json'},body:JSON.stringify(body),signal:abort.signal});return{status:response.status,data:await response.json()};}finally{clearTimeout(timeout);}
-      },
+      send:(body,who)=>sendFarmCommand(client,body,who),
       screen:()=>document.querySelector('dialog[open]')?.firstElementChild||state.view,
       persist(next,revision,who){if(cloudUser?.id!==who)throw Error('Farm account changed.');localStorage.setItem(SAVE_KEY,JSON.stringify(next));localStorage.setItem(SAVE_KEY+'-owner',who);localStorage.setItem(SAVE_KEY+'-cloud-ack',JSON.stringify({owner:who,seen:next.seen,revision}));},
       apply(next){const changed=next.active!==state.active;state=next;window.meadowPantry.connect(state);if(changed){restoreCamera();$('#modal-dialog').close();renderBuildTray();}window.meadowPlanner?.invalidate();},
@@ -213,14 +219,14 @@
       onDrift(paths){if(commandQA)console.warn('Command QA unapplied local fields: '+paths.join(', '));},
       onProblem(error,status){if(status.pending){$('#cloud-save-review').hidden=false;$('#cloud-save-review').textContent=status.conflict?'Review latest farm':'Retry saved action';}},
       onResult(summary){commandClock={server:state.seen,local:performance.now()};const lessons=(summary?.results||[]).flatMap(r=>r.lesson_rewards||[]);window.meadowGuides?.canonicalLessons(lessons);for(const r of summary?.results||[]){if(r.message)notify(r.message);if(r.type==='map.visit')window.meadowGuides?.areaOpened(r.destination);if(!r.type.startsWith('workers.')&&r.type!=='shop.check')window.meadowAudio?.play(r.type.includes('harvest')||r.type.includes('collect')?'harvest':r.type.includes('upgrade')?'upgrade':r.type.includes('water')?'water':'tap');}},
-      onConflict(){cloudReady=false;$('#cloud-save-review').hidden=false;$('#save-status').textContent='Another device changed this farm · review to continue';}
+      onConflict(){cloudReady=false;$('#cloud-save-review').hidden=false;$('#save-status').textContent='Another device changed this farm · review to continue';if(!document.getElementById('command-connection'))reviewCommandConflict();}
     });
     // This compatibility facade only flushes commands. It cannot upload or
     // replace a verified farm with a caller-supplied snapshot.
     cloudWriter={flush:()=>controller.flush(),enqueue:async(who,snapshot)=>{if(who!==owner||snapshot!==state)return{error:Error('Verified farms load their saved online state. A backup cannot replace it.')};if(!controller.isCanonical()){controller.saveUI();return{error:Error('Refresh this screen before continuing.')};}try{await controller.flush();return{};}catch(error){return{error};}},pause(){},resume(){},status:()=>controller.status()};
     localStorage.setItem(SAVE_KEY+'-owner',owner);localStorage.removeItem(SAVE_KEY+'-load-account');localStorage.removeItem(SAVE_KEY+'-pending-cloud-review');pendingCloudSave=null;cloudReady=true;
-    controller.restoreUI();render();await controller.flush();commandConnection(false);
-    client.channel('meadow_market_command_'+owner).on('postgres_changes',{event:'UPDATE',schema:'public',table:'meadow_market_saves',filter:'user_id=eq.'+owner},payload=>{const status=controller.status();if(cloudUser?.id!==owner||status.pending||status.busy||status.running||payload.new?.revision<=status.revision)return;controller.observe(payload.new.save_data,payload.new.revision).catch(()=>{});}).subscribe();
+    controller.restoreUI();render();try{await controller.flush();await controller.refreshReceipts();commandConnection(false);}catch(error){const status=controller.status();if(!status.pending&&!status.conflict)throw error;cloudReady=false;commandConnection(false);reviewCommandConflict();}
+    client.channel('meadow_market_command_'+owner).on('postgres_changes',{event:'UPDATE',schema:'public',table:'meadow_market_saves',filter:'user_id=eq.'+owner},payload=>{const status=controller.status();if(cloudUser?.id!==owner||status.pending||status.busy||status.running||uiPointers.size||state.mode==='build'||document.querySelector('dialog[open]')||payload.new?.revision<=status.revision)return;controller.observe(payload.new.save_data,payload.new.revision).catch(()=>{});}).subscribe();
     let lastPoll=0,wasAway=true;
     clearInterval(commandPollTimer);commandPollTimer=setInterval(()=>{if(cloudUser?.id!==owner||!window.meadowCommandUI.active())return clearInterval(commandPollTimer);if(document.hidden){wasAway=true;return;}const status=controller.status(),leases=Object.keys(state._serverWorkers?.leases||{}).length,now=performance.now();if(!cloudReady||status.busy||status.pending||uiPointers.size||state.mode==='build'||activeVisit||document.querySelector('dialog[open]')||now-lastPoll<(leases?3000:12000))return;lastPoll=now;const commands=wasAway?[{type:'workers.return',map:state.active},{type:'workers.tick',map:state.active}]:[{type:'workers.tick',map:state.active}];wasAway=false;controller.run(commands,{quiet:true}).catch(()=>{});},1000);
   }
@@ -528,8 +534,8 @@
       $('#open-area').onclick=()=>{if(state.coins<m.cost)return;if(command('map.open',null,{destination:id},()=>{$('#modal-dialog').close();travelArea(id,after);}))return;state.coins-=m.cost;createArea(m);$('#modal-dialog').close();travelArea(id,after)};return;
     }
     if(cameraScene.classList.contains('travelling'))return;
-    persistCamera();cameraScene.classList.add('travelling');window.meadowAudio?.play('bridge');mode('tend');setView('farm');const walker=document.createElement('div');walker.className='crossing-farmer';walker.setAttribute('role','img');walker.setAttribute('aria-label','Farmer Jade walking along the farm path');const fromEast=state.active==='east',fromBack=state.active==='back',toBack=id==='back',points=fromEast?[[15,23],[1,18]]:fromBack?[[20,31],[12,44]]:toBack?[[27,29],[29,26]]:[[79,30],[95,39.5]],direction=fromEast?3:fromBack?1:toBack?4:7;camera.pointers.clear();camera.drag=null;camera.pinch=null;const w=mapWidth(),h=w*2/3,u=(points[0][0]+points[1][0])/200,v=(points[0][1]+points[1][1])/200;camera.zoom=2;camera.x=innerWidth*((fromEast||fromBack) ? 0.35 : toBack ? 0.5 : 0.65)-innerWidth/2-(u-.5)*w*2;camera.y=innerHeight*.45-h/2-(v-.5)*h*2;cameraApply();walker.style.backgroundPositionY=direction*100/7+'%';cameraMap.append(walker);cameraScene.classList.add('travelling');const steps=walker.animate(Array.from({length:9},(_,i)=>({backgroundPositionX:(i%8)*100/7+'%',offset:i/8,easing:'steps(1,end)'})),{duration:680,iterations:Infinity,easing:'linear'});
-    try{await walker.animate([{left:points[0][0]+'%',top:points[0][1]+'%',opacity:1},{opacity:1,offset:.12},{opacity:1,offset:.85},{left:points[1][0]+'%',top:points[1][1]+'%',opacity:0}],{duration:3000,easing:'linear'}).finished;visitMap(id,after);cameraApply();notify('Welcome to '+m.name+' · your land is ready to build')}finally{steps.cancel();walker.remove();cameraScene.classList.remove('travelling');cameraApply()}
+    const origin=state.active,beforeCrossing={x:camera.x,y:camera.y,zoom:camera.zoom};persistCamera();cameraScene.classList.add('travelling');window.meadowAudio?.play('bridge');mode('tend');setView('farm');const walker=document.createElement('div');walker.className='crossing-farmer';walker.setAttribute('role','img');walker.setAttribute('aria-label','Farmer Jade walking along the farm path');const fromEast=state.active==='east',fromBack=state.active==='back',toBack=id==='back',points=fromEast?[[15,23],[1,18]]:fromBack?[[20,31],[12,44]]:toBack?[[27,29],[29,26]]:[[79,30],[95,39.5]],direction=fromEast?3:fromBack?1:toBack?4:7;camera.pointers.clear();camera.drag=null;camera.pinch=null;const w=mapWidth(),h=w*2/3,u=(points[0][0]+points[1][0])/200,v=(points[0][1]+points[1][1])/200;camera.zoom=2;camera.x=innerWidth*((fromEast||fromBack) ? 0.35 : toBack ? 0.5 : 0.65)-innerWidth/2-(u-.5)*w*2;camera.y=innerHeight*.45-h/2-(v-.5)*h*2;cameraApply();walker.style.backgroundPositionY=direction*100/7+'%';cameraMap.append(walker);cameraScene.classList.add('travelling');const steps=walker.animate(Array.from({length:9},(_,i)=>({backgroundPositionX:(i%8)*100/7+'%',offset:i/8,easing:'steps(1,end)'})),{duration:680,iterations:Infinity,easing:'linear'});
+    try{await walker.animate([{left:points[0][0]+'%',top:points[0][1]+'%',opacity:1},{opacity:1,offset:.12},{opacity:1,offset:.85},{left:points[1][0]+'%',top:points[1][1]+'%',opacity:0}],{duration:3000,easing:'linear'}).finished;visitMap(id,after);if(window.meadowCommandUI?.active())await window.meadowCommandUI.flush();if(state.active===id){cameraApply();notify('Welcome to '+m.name+' · your land is ready to build')}}catch(error){notify(error.message||'Reconnect to finish travelling.')}finally{steps.cancel();walker.remove();if(state.active===origin)Object.assign(camera,beforeCrossing);cameraScene.classList.remove('travelling');cameraApply()}
   }
 
   function createArea(m){window.meadowGuides?.areaOpened(m.id);state.farms[m.id]={layoutVersion:2,gridScaleVersion:2,cropClusterVersion:1,tileSizeVersion:1,fixedGridVersion:1,objects:[],inventory:state.farms.willow.inventory,orders:[makeOrder()],done:0,visits:0,shop:{unlocked:false,stock:{},earned:0},expansionLevel:0,expanded:false};save()}
@@ -764,7 +770,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=211;
+  const currentBuild=214;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost'&&!commandQA)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
