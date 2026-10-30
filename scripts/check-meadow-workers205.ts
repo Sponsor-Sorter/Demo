@@ -1,8 +1,9 @@
+import {earnedTutorial} from './check-meadow-fixtures209.ts';
 import {applyFarmCommands,FarmActionError} from '../supabase/functions/_shared/meadow-farm-actions204.ts';
 const now=Date.parse('2026-10-30T10:00:00Z');
 function assert(v:unknown,m='Assertion failed'):asserts v{if(!v)throw Error(m);}
 function eq(a:unknown,b:unknown){assert(JSON.stringify(a)===JSON.stringify(b),JSON.stringify(a)+' != '+JSON.stringify(b));}
-function state(level=20):any{return{version:1,coins:10000,level,xp:0,rep:0,active:'willow',sharedPantryVersion:1,farms:{willow:{objects:[{id:'well',type:'well',x:3,y:2,tier:3,autoWater:true,helperPlantMode:'previous',helperCrop:'wheat',helpers:{jade:true,rhys:true,jay:true}},{id:'plot',type:'plot',x:4,y:3,tier:0,stage:1,crop:'carrot',plantedAt:now-600000}],inventory:{carrot:0,wheat:30,flour:0},orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
+function state(level=20):any{return{version:1,tutorial:earnedTutorial(),coins:10000,level,xp:0,rep:0,active:'willow',sharedPantryVersion:1,farms:{willow:{objects:[{id:'well',type:'well',x:3,y:2,tier:3,autoWater:true,helperPlantMode:'previous',helperCrop:'wheat',helpers:{jade:true,rhys:true,jay:true}},{id:'plot',type:'plot',x:4,y:3,tier:0,stage:1,crop:'carrot',plantedAt:now-600000}],inventory:{carrot:0,wheat:30,flour:0},orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
 const run=(s:any,type:string,target?:string,data:any={},time=now,map='willow')=>applyFarmCommands(s,[{type,target,data,map}],time);
 function denied(fn:()=>unknown){let e;try{fn();}catch(x){e=x;}assert(e instanceof FarmActionError,'Expected deliberate rejection, got '+String(e));}
 function hired(s:any,map='willow'){s=run(s,'workers.hire','rowan').save;return run(s,'workers.assign','rowan',{x:4,y:4,expectedMap:null},now,map).save;}

@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for backend208 / web205. See meadow-market-backend208.md, meadow-market-backend207.md and meadow-market-build205.md for staged commands, verified expedition/market rewards, worker leases, atomic mission/help delivery and explicit remaining gates.
+Last reconciled for backend209 / web205. See meadow-market-backend209.md, meadow-market-backend208.md and meadow-market-build205.md for staged commands, direct sales/tutorial balances, verified rewards, worker leases and remaining production gates.
 
 | Area | Status | Remaining work |
 |---|---|---|

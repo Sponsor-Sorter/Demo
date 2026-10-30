@@ -1,9 +1,10 @@
+import {earnedTutorial} from './check-meadow-fixtures209.ts';
 import {applyFarmCommands,FarmActionError,type FarmCommand} from '../supabase/functions/_shared/meadow-farm-actions204.ts';
 import {createGameRules} from '../supabase/functions/_shared/meadow-game-rules204.ts';
 const now=Date.parse('2026-10-30T10:00:00Z');
 function assert(value:unknown,message='Assertion failed'):asserts value{if(!value)throw Error(message);}
 function eq(a:unknown,b:unknown,message='Values differ'){assert(JSON.stringify(a)===JSON.stringify(b),message+': '+JSON.stringify(a)+' != '+JSON.stringify(b));}
-function state(objects:any[]=[],level=1):any{return{version:1,coins:5000,level,xp:0,rep:0,active:'willow',orderIndex:0,sharedPantryVersion:1,farms:{willow:{objects,inventory:{wheat:30,carrot:20,flour:10},orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
+function state(objects:any[]=[],level=1):any{return{version:1,tutorial:earnedTutorial(),coins:5000,level,xp:0,rep:0,active:'willow',orderIndex:0,sharedPantryVersion:1,farms:{willow:{objects,inventory:{wheat:30,carrot:20,flour:10},orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
 const run=(s:any,type:string,target?:string,data?:any,time=now,map='willow')=>applyFarmCommands(s,[{type,target,data,map}],time);
 function denied(fn:()=>unknown,code?:string){let error;try{fn();}catch(e){error=e;}assert(error instanceof FarmActionError,'Invalid action must be rejected deliberately');if(code)eq(error.code,code);}
 Deno.test('Server crop cycle uses seed cost, water bonus, real elapsed time and mastery',()=>{

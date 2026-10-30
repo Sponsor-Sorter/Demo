@@ -1,10 +1,11 @@
+import {earnedTutorial} from './check-meadow-fixtures209.ts';
 import {applyFarmCommands,FarmActionError} from '../supabase/functions/_shared/meadow-farm-actions204.ts';
 import {createGameRules} from '../supabase/functions/_shared/meadow-game-rules204.ts';
 const now=Date.parse('2026-10-30T10:00:00Z');
 function assert(v:unknown,m='Assertion failed'):asserts v{if(!v)throw Error(m);}
 function eq(a:unknown,b:unknown){assert(JSON.stringify(a)===JSON.stringify(b),JSON.stringify(a)+' != '+JSON.stringify(b));}
 const rules=()=>createGameRules(now) as any;
-function state(level=20):any{return{version:1,coins:100000,level,xp:0,rep:0,active:'willow',sharedPantryVersion:1,farms:{willow:{objects:[],inventory:Object.fromEntries(Object.keys(rules().crops).map(id=>[id,200])),orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
+function state(level=20):any{return{version:1,tutorial:earnedTutorial(),coins:100000,level,xp:0,rep:0,active:'willow',sharedPantryVersion:1,farms:{willow:{objects:[],inventory:Object.fromEntries(Object.keys(rules().crops).map(id=>[id,200])),orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
 const run=(s:any,type:string,target?:string,data:any={},time=now,map='willow')=>applyFarmCommands(s,[{type,target,data,map}],time);
 function denied(fn:()=>unknown){let e;try{fn();}catch(x){e=x;}assert(e instanceof FarmActionError,'Expected deliberate command rejection, got '+String(e));}
 Deno.test('Village projects, customer cooldowns and relationship rewards use the reviewed rules',()=>{

@@ -4,7 +4,7 @@ import {createWorkerController} from './meadow-workers205.ts';
 import {tripCommand} from './meadow-trips208.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[]};
+export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];visitedFriend?:boolean};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -42,6 +42,13 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
    const j=journal();j.progress[id]=(j.progress[id]||0)+1;
   }
   events.push({event:id,amount:n,map:where});
+ }
+ function lesson(id:string,result:Data){
+  const def=R.lessons.find((l:Data)=>l.id===id);if(!def)return false;
+  s.tutorial||={version:1,completed:[],rewarded:[],seenContexts:[],started:false,paused:false};
+  const t=s.tutorial;t.completed||=[];t.rewarded||=[];if(t.rewarded.includes(id))return false;
+  if(!t.completed.includes(id))t.completed.push(id);t.rewarded.push(id);s.coins+=10;
+  (result.lesson_rewards||=[]).push(id);messages.push('Lesson complete · '+def.title+' · 10 gold');return true;
  }
  const api:Data={state:()=>s,current,farms,items,recipes:W.meadowProduction.recipes,level:()=>s.level,coins:()=>s.coins,spend,earn:(n:number)=>{if(!integer(n,0,1e12))fail('Invalid sale.');s.coins+=n;},xp,event,
   produce:(id:string,n:number)=>{record(id,n);W.meadowStory.event(id,n);},home,yield:(a:Data)=>1+tier(home(a))+W.meadowJourneyCore.animalBonus(s)+W.meadowProgress.animalBonus(s,ownedMap(a)),
@@ -97,6 +104,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
   if(!validID(map)||!farms()[map])fail('Open that farm first.');
   const f=current(),d=command.data||{};let o:Data,result:Data={type:command.type};
   settle();
+  const eventStart=events.length,fleeceBefore=Number(farms().willow.inventory.fleece)||0;
   switch(command.type){
    case 'plot.till':
     fields(d,[]);o=requireObject(command.target,'plot');if(o.plantedAt||o.stage)fail('This plot is already tilled.');o.stage=1;event('till');break;
@@ -128,12 +136,15 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
    case 'shop.upgrade':fields(d,['expected']);if(!f.shop?.unlocked||!integer(d.expected,0,2)||tier(f.shop)!==d.expected)fail('Reopen the current shop upgrade.');pay([240,520,980][d.expected]);f.shop.tier=d.expected+1;f.shop.lastSaleAt=now;break;
    case 'shop.name':fields(d,['name']);if(!f.shop?.unlocked||typeof d.name!=='string'||!d.name.trim()||Array.from(d.name).length>28)fail('Choose a shop name up to 28 characters.');f.shop.name=d.name.trim();break;
    case 'shop.plan':fields(d,['rules','enabled']);if(typeof d.enabled!=='boolean'||!W.meadowShopPlan.setPlan(f,d.rules,d.enabled))fail('Check the shelf targets and basket reserves.');break;
+   case 'market.sell_direct':{
+    fields(d,['item','count']);if(!Object.hasOwn(items,d.item)||!integer(d.count,1,10000)||(f.inventory[d.item]||0)<d.count)fail('Choose goods and a quantity from your basket.');const gold=d.count*items[d.item].sell;
+    if(!integer(gold,1,1e9))fail('This good cannot be sold directly.');f.inventory[d.item]-=d.count;s.coins+=gold;xp(2);event('sell');result.gold=gold;result.count=d.count;break;}
    case 'market.sell':{
     fields(d,['round','item']);const round=(context.marketRounds||[]).find(r=>r.id===d.round&&r.map===map),market=W.meadowFarmersMarket;
     if(!round||!round.verified||!round.won||!['market_pack','market_weigh'].includes(round.game)||!integer(round.goal,1,6)||!integer(round.expires_at,1,1e15)||round.expires_at<now||marketSales.some(r=>r.id===round.id))fail('Finish and verify a new market delivery before selling.','VERIFIED_ROUND_REQUIRED');
     if(!market.stalls.some((g:Data)=>g.goods.includes(d.item))||!market.unlocked(d.item,s))fail('Choose an unlocked market good.');const quote=market.quote(s,items[d.item],round.goal);
     if(quote.amount!==round.goal||(f.inventory[d.item]||0)<round.goal)fail('Check this batch’s basket stock and market-cart capacity.');
-    f.inventory[d.item]-=round.goal;s.coins+=quote.total;xp(8);event('premiumSale',round.goal);event('market_'+market.stalls.find((g:Data)=>g.goods.includes(d.item)).id,round.goal);marketSales.push({id:round.id,map});result={...result,item:d.item,amount:round.goal,gold:quote.total};break;}
+    f.inventory[d.item]-=round.goal;s.coins+=quote.total;xp(8);event('premiumSale',round.goal);event('market_'+market.stalls.find((g:Data)=>g.goods.includes(d.item)).id,round.goal);event('sell');marketSales.push({id:round.id,map});result={...result,item:d.item,amount:round.goal,gold:quote.total};break;}
    case 'vendor.deliver':{
     fields(d,[]);if(!validID(command.target))fail('Choose an order.');const at=f.orders?.findIndex((x:Data)=>x.id===command.target),order=f.orders?.[at],vendor=vendors.find(v=>v.id===order?.vendor||v.name===order?.name&&Object.keys(v.ask).length===Object.keys(order.ask||{}).length&&Object.entries(v.ask).every(([id,n])=>order.ask[id]===n));
     if(!vendor||s.level<(vendor.unlock||1))fail('This order is no longer available.');for(const [id,n]of Object.entries(vendor.ask) as [string,number][]){if((f.inventory[id]||0)<n)fail('Gather the requested produce first.');}
@@ -184,10 +195,18 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
    case 'well.settings':{
     fields(d,['helpers','crop','mode','cap']);o=requireObject(command.target,'well');fields(d.helpers,['jade','rhys','jay']);if(Object.keys(d.helpers).length!==3||Object.values(d.helpers).some(x=>typeof x!=='boolean')||!unlockedCrop(d.crop)||!['previous','selected'].includes(d.mode)||!integer(d.cap,0,9999))fail('Check the well’s helper settings.');o.helpers={...d.helpers};o.helperCrop=d.crop;o.helperPlantMode=d.mode;o.helperCropCap=d.cap;break;}
    case 'craft.settings':fields(d,['enabled','recipe','cap']);o=requireObject(command.target);if(!['kitchen','workshop'].includes(o.type)||typeof d.enabled!=='boolean'||!integer(d.cap,0,9999))fail('Choose valid production settings.');requireRecipe(o,d.recipe);Object.assign(o,{autoWork:d.enabled,autoRecipe:d.recipe,autoCap:d.cap});break;
+   case 'lesson.claim':fields(d,[]);if(command.target!=='friends'||!context.visitedFriend||!lesson('friends',result))fail('Complete this lesson before collecting its reward.');break;
    default:{
     const r=worker.command(command.type,command.target,d,map)||tripCommand(command.type,d,{s,W,now,fields,fail,xp})||progressionCommand(command.type,command.target,d,{s,W,R,now,map,fields,fail,xp,event,journal});
     if(!r)fail('This farm action has not moved to the verified server yet.','UNSUPPORTED_FARM_ACTION');result={...r,type:command.type};
    }
+  }
+  if(!command.type.startsWith('workers.')&&command.type!=='lesson.claim'){
+   for(const e of events.slice(eventStart))lesson(e.event,result);
+   if(command.type==='fruit.harvest')lesson('fruit',result);
+   if(['animal.care','animal.collect_all'].includes(command.type)&&(Number(farms().willow.inventory.fleece)||0)>fleeceBefore)lesson('fleece',result);
+   if(command.type==='build.place'&&result.id){const placed=f.objects.find((o:Data)=>o.id===result.id);if(placed&&animal(placed)&&home(placed,f))lesson('home',result);}
+   if(command.type==='build.move'&&d.home)lesson('home',result);
   }
   results.push(result);
   worker.invalidate();

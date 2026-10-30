@@ -29,6 +29,12 @@ begin
  if auth.uid() is not null or current_setting('meadow.command_owner',true)<>'' then raise exception 'Help acknowledgment leaked owner claims';end if;
  perform set_config('request.jwt.claims',jsonb_build_object('sub',other,'role','authenticated')::text,true);
  if public.meadow_market_ack_help(jsonb_build_array(jsonb_build_object('id',foreign_help,'outcome','not_needed')))<>1 then raise exception 'Legacy help flow regressed';end if;
+ perform set_config('request.jwt.claims','{"role":"service_role"}',true);
+ b:=jsonb_build_object('expected_revision',r,'commands','[{"type":"lesson.claim","target":"friends"}]'::jsonb);
+ a:=public.meadow_market_read_farm_command(u,gen_random_uuid(),b);if a->>'visited_friend'<>'false' then raise exception 'Visit lesson proof existed without a visit';end if;
+ insert into public.meadow_market_visit_events(owner_id,visitor_id,map_id,action,outcome) values(other,u,'willow','visit','applied');
+ a:=public.meadow_market_read_farm_command(u,gen_random_uuid(),b);if a->>'visited_friend'<>'true' then raise exception 'Recorded visit did not prove the visitor lesson';end if;
+ b:=jsonb_set(b,'{commands}','[{"type":"shop.check"}]');a:=public.meadow_market_read_farm_command(u,gen_random_uuid(),b);if a->>'visited_friend'<>'false' then raise exception 'Ordinary work unnecessarily queried the visit lesson';end if;
 end $$;
 select 'Pending help stays owner-only; canonical save and acknowledgment commit together, raw/spoofed acknowledgments fail, retries do not consume new help, invalid outcomes roll back and legacy help remains; fixture rolled back' result;
 rollback;

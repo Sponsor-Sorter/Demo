@@ -1,6 +1,7 @@
+import {earnedTutorial} from './check-meadow-fixtures209.ts';
 import {farmHandler,farmDatabaseError,type Services} from '../supabase/functions/meadow-market-farm-actions/handler.ts';
 const user='10000000-0000-4000-8000-000000000001',id='20000000-0000-4000-8000-000000000002',now=1793354400000;
-const base={version:1,coins:250,level:1,xp:0,active:'willow',farms:{willow:{objects:[{id:'plot',type:'plot',x:4,y:3,stage:0}],inventory:{},shop:{unlocked:false,stock:{}}}}};
+const base={version:1,tutorial:earnedTutorial(),coins:250,level:1,xp:0,active:'willow',farms:{willow:{objects:[{id:'plot',type:'plot',x:4,y:3,stage:0}],inventory:{},shop:{unlocked:false,stock:{}}}}};
 const body={request_id:id,expected_revision:5,commands:[{type:'plot.till',map:'willow',target:'plot'}]};
 function assert(x:unknown,message='Assertion failed'):asserts x{if(!x)throw Error(message);}
 const req=(value:unknown=body,authorization='Bearer player-token',origin='https://sponsorsorter.com')=>new Request('https://game.invalid',{method:'POST',headers:{authorization,origin},body:JSON.stringify(value)});
