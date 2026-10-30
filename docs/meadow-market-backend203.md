@@ -25,6 +25,7 @@ Google's generated JSON downloads were not delivered by the browser. Both unused
 ## Acceptance and remaining gates
 
 - Full local game regression suite passed. Five notification tests and two purchase/SSV signature tests passed; notification TypeScript check passed.
+- The exact deployed Google purchase helper authenticated with the configured credential and rejected a deliberately invalid purchase token with provider400. No purchase or virtual goods were created. OAuth/product-list success is separate from real license purchase/refund acceptance.
 - Deployed paid-entitlement, legacy-route and previous economy rollback fixtures passed, leaving no fixture account or award behind.
 - Security advisor check returned no ERROR-level findings. Existing anonymous-sign-in and leaked-password-protection warnings remain; private service tables intentionally have no player policies.
 - Live test_browser collected apples, reloaded and opened server Gold & basket history after route hardening. No credential or recovery key was read or changed.
