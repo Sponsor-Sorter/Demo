@@ -29,3 +29,7 @@ AdMob currently contains only Meadow Markets; its game privacy URL was checked. 
 Published **Meadow Markets · Privacy choices**, English, Meadow Markets only. Consent, Do not consent, Manage options and Close (do not consent) available. Google says up to an hour to deploy. This publishes consent, not ads or a legal certification. Actual UMP accept/refuse/reopen/no-fill and rewarded SSV/device acceptance remain. No US message configured; current beta Australia-only.
 
 Play still shows1.7.0 public beta/game201 in review. Do not resubmit or claim public installation acceptance. Payments, ads and production-ready flags remainfalse; all products inactive. License purchase/restore/pending/refund, physical Play-install/save retention and full farm authority remain activation gates. Play10 still uses official TEST ad IDs.
+
+## Verified refund compatibility follow-up
+
+Migration20261030132507 routes the existing service-only refund through an owner-scoped private writer. This preserves protocol4 while allowing a verified refund to reverse previously delivered resources. Context is restored on success/error; clients cannot invoke the helper. Refund deltas are labelled server_refund with their stored token hash as source. Rollback fixtures passed for BOTH normal protocol3 and staged protocol4, including exact-once reversal, wallet/VIP adjustment, review hold, restored context, private grants and unchanged snapshot-denial boundary. Source guard scripts/check-meadow-refund204.cjs is now in CI. This is SQL acceptance, not a real paid Google refund.

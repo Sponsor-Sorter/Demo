@@ -1,0 +1,12 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),dir=path.join(__dirname,'../supabase/migrations');
+const files=fs.readdirSync(dir).filter(n=>n.endsWith('.sql')).sort(),texts=files.map(n=>fs.readFileSync(path.join(dir,n),'utf8'));
+const latest=[...texts].reverse().find(s=>/function public\.meadow_market_revoke_store_purchase\(/i.test(s));
+assert.match(latest,/perform meadow_private\.write_verified_refund\(r\.user_id,s,r\.token_hash\)/,'Verified refunds must support the command-only guard');
+const helper=[...texts].reverse().find(s=>/create function meadow_private\.write_verified_refund\(/i.test(s));
+assert.match(helper,/security invoker set search_path=''/i);
+assert.match(helper,/auth\.jwt\(\)->>'role'.*<>'service_role'/);
+assert.match(helper,/revoke all on function meadow_private\.write_verified_refund\(uuid,jsonb,text\) from public,anon,authenticated,service_role/);
+assert.equal((helper.match(/set_config\('meadow\.command_owner',coalesce\(previous_owner,''\),true\)/g)||[]).length,2,'Refund owner context must be restored on success and failure');
+assert.match(helper,/lane='server_refund',source_id=p_source/);
+assert(!/insert into meadow_private\.farm_command_accounts/i.test(helper),'Refund compatibility must not enroll real players');
+console.log('Verified refund routing, private scope, protocol4 context restoration and refund audit source passed.');
