@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build210. See meadow-market-build210.md for the protected client canary, verified browser crop/build/market checks, offline launch fix and remaining rollout gates. Existing player farms remain on protocol3; the command cohort is empty after disposable-test cleanup.
+Last reconciled for build211. See meadow-market-build210.md for the protected client canary, verified browser crop/build/market checks, offline launch fix and remaining rollout gates. Existing player farms remain on protocol3; the command cohort is empty after disposable-test cleanup.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -10,9 +10,9 @@ Last reconciled for build210. See meadow-market-build210.md for the protected cl
 | Native APK updater | Samsung accepted24Oct; live-content update188 accepted | Actual8→9 Android install preserved saves. Web188 update preserved separate browser/phone farms. New189 live receipts recorded externally |
 | Offline helpers | Published180 | Bounded up-to-three-ready-jobs return, saved cursor, map-qualified replant/water covered by fixtures |
 | Cross-map foreground helpers | Task fairness already implemented | Long-session fairness/load acceptance still required; do not infer a native soak from fixtures |
-| Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Native frame-time profile remains |
+| Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Build211 removes repeated per-actor scene lookups. Native frame-time profile remains |
 | High-level pacing | Paths150–154 implemented | Worker, village, recipe and upgrade arithmetic tested; extended human pacing/play balance remains |
-| Server resources | Protocol3 receipts186–188; paid-perk guard203; command canary210 | The command client is loaded but activates only for enrolled protocol4 farms. A disposable browser farm passed crop costs/rewards, placement/rotation/tap move and one verified premium sale. Worker path/rest fixes, most progression routes and safe preferences are wired. Finish the mutation inventory, shared-landmark metadata, cross-map callbacks, backup/reset presentation and server-owned initialization/reviewed legacy conversion before real-player rollout. Historical beta wealth is not verified acquisition history. Paid well/queue state cannot be minted/cloned in snapshots |
+| Server resources | Protocol3 receipts186–188; paid-perk guard203; command canary210 | The command client is loaded but activates only for enrolled protocol4 farms. A disposable browser farm passed crop costs/rewards, placement/rotation/tap move and one verified premium sale. Worker path/rest fixes, most progression routes and safe preferences are wired. Build211 fixes shared-landmark proof, cross-map detail callbacks and protected backup/reset presentation. Finish the mutation inventory and server-owned initialization/reviewed legacy conversion before real-player rollout. Historical beta wealth is not verified acquisition history. Paid well/queue state cannot be minted/cloned in snapshots |
 | Offline launch | Fixed210 | Installed cache now contains the exact build-specific start document used by the navigation fallback; current-device offline acceptance remains |
 | Server game rewards/scores | Issued rounds/verified scores184 | One-use rounds, server time and verified ranked rewards tested. Further bot/human-input resistance remains |
 | Onboarding/help | Guided farm loops189 | Resumable level-gated tour, specific original-cast replays, gold targets and brief lesson-crop reservation. Follow future UI changes with hit-target checks |

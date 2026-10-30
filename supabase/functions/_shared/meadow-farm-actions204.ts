@@ -4,7 +4,7 @@ import {createWorkerController} from './meadow-workers205.ts';
 import {tripCommand} from './meadow-trips208.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];visitedFriend?:boolean};
+export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];sharedLandmarks?:string[];visitedFriend?:boolean};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -58,6 +58,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  // Read-only UI books must not invent domain state when first opened.
  for(const name of ['meadowAlmanac','meadowLife','meadowProgress','meadowArtisan'])W[name].book(s);
  W.meadowJourneyCore.get(s);s.workforce||={};s.cropMastery||={tiles:{}};s.minigames||={records:{},rewards:{}};s.club||={queue:[],applied:[],pending:{}};
+ if(context.sharedLandmarks!==undefined){if(!Array.isArray(context.sharedLandmarks)||context.sharedLandmarks.length>3||context.sharedLandmarks.some(id=>!['garden','river','hall'].includes(id)))fail('Shared landmarks need review.');s.journey.sharedLandmarks=[...new Set(context.sharedLandmarks)].sort();}
  s.minigames.records||={};
  if(!Array.isArray(context.roundRecords||[])||(context.roundRecords||[]).length>5)fail('Game records need review.');
  for(const r of context.roundRecords||[]){if(!['eggs','milk','word_search','market_pack','market_weigh'].includes(r.game)||!integer(r.level,1,1000)||!integer(r.wins,0,1e12)||!integer(r.bestScore,0,1e12))fail('Verified game records need review.');s.minigames.records[r.game]={...(s.minigames.records[r.game]||{}),level:r.level,wins:r.wins,bestScore:r.bestScore};}

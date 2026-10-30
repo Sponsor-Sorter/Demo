@@ -101,3 +101,10 @@ Deno.test('Homes and paid perks cannot be forged, sold with residents, or copied
  denied(()=>run(s,'build.place',undefined,{id:'coop',item:'well',x:7,y:5,rotation:0}));
  const moved=run(s,'build.move','coop',{x:7,y:5}).save;eq(moved.farms.willow.objects[1].coopId,'coop');eq(moved.farms.willow.objects[1].x,7);
 });
+
+Deno.test('Permanent landmark proof replaces cached flags and rejects unknown themes',()=>{
+ const s=state();s.journey={sharedLandmarks:['hall']};
+ const empty=applyFarmCommands(s,[{type:'shop.check'}],now,{sharedLandmarks:[]});eq(empty.save.journey.sharedLandmarks,[]);
+ const verified=applyFarmCommands(s,[{type:'shop.check'}],now,{sharedLandmarks:['river','garden','garden']});eq(verified.save.journey.sharedLandmarks,['garden','river']);eq(s.journey.sharedLandmarks,['hall']);
+ denied(()=>applyFarmCommands(s,[{type:'shop.check'}],now,{sharedLandmarks:['invented']}));
+});
