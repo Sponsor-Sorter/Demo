@@ -1,0 +1,18 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const dir='supabase/migrations';
+const migrations=fs.readdirSync(dir).filter(n=>n.endsWith('.sql')).sort();
+const definitions=migrations.map(name=>({name,sql:fs.readFileSync(dir+'/'+name,'utf8')})).filter(m=>/create\s+or\s+replace\s+function\s+meadow_private\.commit_economy_save/i.test(m.sql));
+const latest=definitions.at(-1);assert(latest,'Canonical economy save exists');
+const body=latest.sql.slice(latest.sql.search(/create\s+or\s+replace\s+function\s+meadow_private\.commit_economy_save/i));
+assert(body.includes('perform meadow_private.assert_farm_entitlements(saved.save_data,p_save_data);'),'A later save migration must preserve paid farm entitlement checks');
+assert(body.indexOf('assert_farm_entitlements')<body.indexOf('canonical:=p_save_data'),'Guard runs before verified receipt delivery');
+const guard=fs.readFileSync(dir+'/20261030105433_meadow_paid_farm_entitlements.sql','utf8');
+for(const field of ['autoWater','wellGemTier','queueSlots'])assert(guard.includes(field),'Guard covers '+field);
+assert(guard.includes("copies>greatest(1,matches)"),'Same-map copies are rejected');
+assert(guard.includes("matches<>1 or copies<>1"),'Cross-map moves require one original and one target');
+assert(guard.includes('from public,anon,authenticated'),'Pure comparison helper is private');
+const routes=migrations.map(name=>({name,sql:fs.readFileSync(dir+'/'+name,'utf8')})).filter(m=>/create\s+or\s+replace\s+function\s+meadow_private\.guard_farm_economy_protocol/i.test(m.sql));
+assert(routes.at(-1).sql.includes("if current_user in ('authenticated','anon') then"),'Legacy and direct clients cannot seed paid perks before protocol3 enrollment');
+const fixture=fs.readFileSync('tools/meadow-entitlements203-check.sql','utf8');
+assert(/^begin;/i.test(fixture.trim()));assert(/rollback;\s*$/i.test(fixture));
+console.log('Paid farm guard retained before receipt application; clone/move/default checks and rollback-only fixture present.');

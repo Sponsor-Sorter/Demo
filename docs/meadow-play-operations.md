@@ -44,11 +44,15 @@ Before enabling checkout, require a protected game account. Guest farms cannot b
 
 Store verifier requires GOOGLE_PLAY_SERVICE_ACCOUNT, with only app-specific order/product access. RTDN requires GOOGLE_PLAY_RTDN_AUDIENCE and GOOGLE_PLAY_PUBSUB_EMAIL. Ad SSV requires MEADOW_REWARDED_SSV_UNIT (6866630905 is configured). Store these only in Supabase Edge secrets. Configure Google IAM/API roles narrowly and record the grant.
 
+Backend203: all three Play settings are installed. The dedicated fairplay-meadow-markets project has the Play Developer and Pub/Sub APIs enabled. The verifier service identity is limited to Meadow Markets app read information/quality, financial data and order/subscription management. It has no publishing or account-wide grant. The separate notification identity signs authenticated pushes only and has no Play access/key. The topic is projects/fairplay-meadow-markets/topics/meadow-play-rtdn; Play receives voided and one-time events. Signed test traffic was acknowledged, unsigned requests rejected401, and verifier OAuth/product-list reads returned200 with seven drafts.
+
+The local verifier vault is C:/Users/jrbwi/.codex/private/meadow-play/, with ACL inheritance removed and access limited to the current Windows identity and SYSTEM. It contains the locally generated private credential and its public certificate. Google retains only the certificate; both failed generated-download keys were revoked. The active uploaded certificate expires30October2027. Rotate it before expiry, update Edge secrets, verify Google access and remove the superseded key only with authorized confirmation. Never commit or print private credential contents. A real license purchase/refund still requires separate provider acceptance before activation.
+
 Pub/Sub endpoint: https://ejavqlyozqhzqogflqzr.supabase.co/functions/v1/meadow-market-play-notifications
 
 Reward endpoint: https://ejavqlyozqhzqogflqzr.supabase.co/functions/v1/meadow-market-ad-reward
 
-Never disable request authentication to get a callback test to pass. AdMob's signed setup test uses meadow-admob-setup / verification-only and returns transport success without wallet writes. RTDN validates Google JWT issuer/audience/email, re-fetches the purchase from Play and never trusts incoming benefit/account fields.
+Never disable request authentication to get a callback test to pass. AdMob's signed setup test uses meadow-admob-setup / verification-only and returns transport success without wallet writes. RTDN validates Google JWT issuer/audience/email and never trusts incoming benefit/account fields. Ordinary one-time events re-fetch the recorded product from Play. Authenticated full one-time voided events revoke the recorded token directly, including when the product endpoint has not caught up with the refund. Unclaimed tokens never create or assign rewards.
 
 ## Build
 

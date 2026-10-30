@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build202. See build202 for the browser acceptance scope and remaining physical/provider gates.
+Last reconciled for backend203 / web202. See meadow-market-backend203.md for the scoped Play setup, paid-benefit checks and remaining gates.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -12,7 +12,7 @@ Last reconciled for build202. See build202 for the browser acceptance scope and 
 | Cross-map foreground helpers | Task fairness already implemented | Long-session fairness/load acceptance still required; do not infer a native soak from fixtures |
 | Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Native frame-time profile remains |
 | High-level pacing | Paths150–154 implemented | Worker, village, recipe and upgrade arithmetic tested; extended human pacing/play balance remains |
-| Server resources | Protocol3 journal/atomic receipts186–188 | Ordinary crop/animal/build/shop/craft actions still need authoritative commands; journal entries are not proof that legacy earnings are valid |
+| Server resources | Protocol3 journal/atomic receipts186–188; paid-perk guard203 | Ordinary crop/animal/build/shop/craft actions still need authoritative commands; journal entries are not proof that legacy earnings are valid. Raw/legacy client writes are retired; paid well/queue state cannot be minted or cloned in snapshots |
 | Server game rewards/scores | Issued rounds/verified scores184 | One-use rounds, server time and verified ranked rewards tested. Further bot/human-input resistance remains |
 | Onboarding/help | Guided farm loops189 | Resumable level-gated tour, specific original-cast replays, gold targets and brief lesson-crop reservation. Follow future UI changes with hit-target checks |
 | Map interaction | Artwork-traced regions189 | Five polygons cover painted features; map hash and grass/road/river exclusion samples guard regressions. Preserve pan/zoom coordinate system |
@@ -20,7 +20,7 @@ Last reconciled for build202. See build202 for the browser acceptance scope and 
 | Story/recovery | Published184/187–189 | Eleven compact chapters/35 goals retained. Real browser recovery privately completed and new-password sign-in passed187. New opt-in recovery narration189 |
 | UI layouts | Browser202; Samsung188 accepted | Animals/care, desk water task, production, markets, missions, friend visit, placement/rotation/move, save/reload, word search and shared-screen win exercised. Fixed short-landscape return control hidden by HUD. Physical iPad and current Samsung acceptance remain |
 | Purchases/tester grants | Native/server scaffold194–197 | Only approved named testers retain free packs. Real products disabled; license purchase/restore/refund acceptance remains |
-| Play Billing/AdMob | Play internal10 active; SSV transport verified | Store verifier, pending/account/idempotency/refund guards and consent bridge implemented. All7products have inactive priced drafts; IAM/PubSub, provider review, real license/SSV/device tests and full farm authority still gate activation |
+| Play Billing/AdMob | Play internal10 active; signed RTDN and SSV test transport verified | Scoped Play verifier and Pub/Sub setup completed203; private key configured and OAuth/product-list200 confirmed. Full one-time voided refunds now handled. All7products have inactive priced drafts; real license/SSV/device tests, consent review and full farm authority still gate activation |
 | Paid guest protection | Client, Edge and SQL guards shipped200 | Ready username account and non-anonymous Auth identity required for paid checkout/restore; registered/guest/incomplete fixtures passed. Real reinstall/new-device provider acceptance remains. Real-payment switches remain off |
 | Local storage failures | Fixtures183 passed | Physical storage-pressure acceptance remains |
 | Friend visits/help | Two actual farms accepted183 | Invitation, acceptance, visit, help and visitor log passed; continue account-isolation checks |
