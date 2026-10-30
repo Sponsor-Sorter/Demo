@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.73",
-  "versionCode": 73,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview73-testing/frontlines-1.0.0-preview-build-73.apk",
+  "versionName": "1.0.0.74",
+  "versionCode": 74,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview74-testing/frontlines-1.0.0-preview-build-74.apk",
   "bytes": 221185091,
-  "sha256": "54ea2191f309e4b2030d566bca58159e7a6984e33c53f01fcf3eaece82cc1ad4",
+  "sha256": "95c1670c5c571ce78c040e817f4d715db99506acbcf4850e3563be02a400016d",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public73/frontlines-1.0.0.73-android.apk",
-  "notes": "V1.0.0.73: Australian training general, action-linked spoken lessons, subtitles, replay, mute and separate General volume."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public74/frontlines-1.0.0.74-android.apk",
+  "notes": "V1.0.0.74: Fix Pause-to-Settings input blocking; Done, sliders and tabs remain responsive in training. Correct compact briefing button frames. Retains the Australian training general."
 }

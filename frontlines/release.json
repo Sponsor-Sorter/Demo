@@ -1,11 +1,11 @@
 {
-  "build": 73,
-  "version": "1.0.0.73",
-  "url": "https://sponsorsorter.com/frontlines/builds/73/",
-  "notes": "V1.0.0.73: Australian training general, action-linked spoken lessons, subtitles, replay, mute and separate General volume.",
+  "build": 74,
+  "version": "1.0.0.74",
+  "url": "https://sponsorsorter.com/frontlines/builds/74/",
+  "notes": "V1.0.0.74: Fix Pause-to-Settings input blocking; Done, sliders and tabs remain responsive in training. Correct compact briefing button frames. Retains the Australian training general.",
   "networkBuild": 69,
-  "androidBuild": 73,
-  "windowsBuild": 73,
+  "androidBuild": 74,
+  "windowsBuild": 74,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
