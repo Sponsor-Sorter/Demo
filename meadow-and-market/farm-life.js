@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+ function verified(s,type,target,data){if(!window.meadowCommandUI?.stateIs(s))return false;window.meadowCommandUI.route(type,target,data,s.active,{after:()=>{if(dialog?.open)draw(true);}});return true;}
+
   let api,dialog,page='festival',session;
   const num=n=>Number.isFinite(Number(n))?Math.max(0,Math.min(1e9,Math.floor(Number(n)))):0;
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -18,7 +20,7 @@
   function helps(s){return Object.values(s.friendHelpApplied||{}).filter(x=>x==='applied').length;}
   function baseline(s){return {stats:Object.fromEntries(Object.keys(labels).map(k=>[k,counter(s,k)])),helps:helps(s)};}
   function offered(s,now=Date.now()){const eligible=themes.filter(t=>s.level>=t.level);return eligible[Math.abs(Math.floor(Date.parse(week(now))/604800000))%eligible.length]||null;}
-  function join(s,now=Date.now()){
+  function join(s,now=Date.now()){if(verified(s,'festival.join',null,{}))return false;
     const b=book(s),t=offered(s,now),key=week(now);if(!t||b.active?.stage<3||b.lastJoinWeek===key)return false;
     b.active={id:key+':'+t.id,theme:t.id,week:key,stage:0,scale:Math.min(3,1+Math.floor((num(s.level)-1)/12)),baseline:baseline(s)};b.lastJoinWeek=key;return true;
   }
@@ -34,7 +36,7 @@
     const gold=a.stage===0?120*scale:a.stage===1?Math.round(Object.entries(ask).reduce((n,[id,count])=>n+(api?.items[id]?.sell||10)*count,0)*1.7):500+scale*100;
     return {theme:t,stage:a.stage,joined:true,runId:a.id,scale,ask,tasks,ready,gold,xp:[25,40,60][a.stage],stageName:stageNames[a.stage]};
   }
-  function advance(s,expected,now=Date.now()){
+  function advance(s,expected,now=Date.now()){if(verified(s,'festival.advance',expected,{}))return null;
     const f=festival(s,now),b=book(s);if(!f?.joined||!f.ready||expected!==f.runId+':'+f.stage)return null;
     if(f.stage===1)for(const [id,n]of Object.entries(f.ask))s.farms.willow.inventory[id]-=n;
     b.active.stage++;if(b.active.stage===2)b.active.communityBaseline=counter(s,f.theme.community.stat);
@@ -43,7 +45,7 @@
   }
   function collections(s){const known=new Set((window.meadowCollectionCatalog||[]).map(i=>i.id)),owned=new Set((s.collectionState?.owned||[]).filter(id=>known.has(id))),groups=new Map();for(const i of window.meadowCollectionCatalog||[]){if(!groups.has(i.theme))groups.set(i.theme,{id:i.theme,name:i.set,items:[]});groups.get(i.theme).items.push(i);}return [...groups.values()].map(g=>({...g,count:g.items.filter(i=>owned.has(i.id)).length}));}
   function collectionRewards(s){const claimed=book(s).collectionClaims;return collections(s).flatMap(g=>[3,6,10].map((n,i)=>({id:g.id+':'+n,theme:g.id,name:g.name,target:n,progress:g.count,gold:[80,160,300][i],xp:[15,25,50][i],claimed:claimed.includes(g.id+':'+n),ready:g.count>=n,rank:['Bronze','Silver','Gold'][i]})));}
-  function claimCollection(s,id){const r=collectionRewards(s).find(r=>r.id===id);if(!r||r.claimed||!r.ready)return null;book(s).collectionClaims.push(id);return {gold:r.gold,xp:r.xp};}
+  function claimCollection(s,id){if(verified(s,'collection.claim',id,{}))return null;const r=collectionRewards(s).find(r=>r.id===id);if(!r||r.claimed||!r.ready)return null;book(s).collectionClaims.push(id);return {gold:r.gold,xp:r.xp};}
   function shopFactor(s){const gold=collections(s).filter(g=>g.count>=10&&book(s).collectionClaims.includes(g.id+':10')).length;return 1+Math.min(5,gold)/100;}
   function sales(s){return Object.values(s.farms||{}).reduce((n,f)=>n+num(f.shop?.earned),0);}
   function capture(s,now=Date.now()){session={state:s,awayMs:Math.max(0,now-Number(s.seen||now)),sales:sales(s),read:false};}

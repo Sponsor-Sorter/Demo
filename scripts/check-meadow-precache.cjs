@@ -1,4 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),crypto=require('crypto'),source=fs.readFileSync('meadow-and-market/precache.js','utf8');
+const currentWorker=fs.readFileSync('meadow-and-market/sw.js','utf8'),currentFiles=JSON.parse(currentWorker.match(/const FILES=([^\n]+);/)[1]),currentRelease=JSON.parse(fs.readFileSync('meadow-and-market/release.json','utf8'));assert(currentFiles.includes('./index.html?release=meadow-market-v'+currentRelease.build),'An installed update must have the exact offline launch page its navigation fallback requests');
 module.exports=(async()=>{
  const base='https://example.test/meadow-and-market/',key=x=>new URL(typeof x==='string'?x:x.url,base).href,stores=new Map();let requested=[],active=0,max=0;
  class Cache{constructor(){this.rows=new Map()}async match(r){return this.rows.get(key(r))?.clone()}async put(r,v){this.rows.set(key(r),v.clone())}}

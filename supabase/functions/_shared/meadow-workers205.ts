@@ -29,9 +29,9 @@ export function createWorkerController(c:Data){
   terrain.set(map,result);return result;
  }
  function edges(t:Data,map:string){const p=fp(t);return cells(map).filter(q=>q.x>=t.x-1&&q.x<=t.x+p.w&&q.y>=t.y-1&&q.y<=t.y+p.h);}
- function route(start:Cell,goals:Cell[],map:string):{to:Cell;distance:number}|null{
+ function route(start:Cell,goals:Cell[],map:string):{to:Cell;distance:number;path:Cell[]}|null{
   const allowed=new Set(cells(map).map(key)),wanted=new Set(goals.map(key));if(!allowed.has(key(start))||!wanted.size)return null;
-  const seen=new Set([key(start)]),queue=[{...start,distance:0}];for(let i=0;i<queue.length;i++){const a=queue[i];if(wanted.has(key(a)))return{to:{x:a.x,y:a.y},distance:a.distance};for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){if(!dx&&!dy)continue;const b={x:a.x+dx,y:a.y+dy},k=key(b);if(seen.has(k)||!allowed.has(k)||dx&&dy&&(!allowed.has(key({x:a.x+dx,y:a.y}))||!allowed.has(key({x:a.x,y:a.y+dy}))))continue;seen.add(k);queue.push({...b,distance:a.distance+Math.hypot(dx,dy)});}}
+  const seen=new Set([key(start)]),previous=new Map<string,Cell>(),queue=[{...start,distance:0}];for(let i=0;i<queue.length;i++){const a=queue[i];if(wanted.has(key(a))){const path:Cell[]=[{x:a.x,y:a.y}];let p=previous.get(key(a));while(p){path.push(p);p=previous.get(key(p));}return{to:{x:a.x,y:a.y},distance:a.distance,path:path.reverse()};}for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){if(!dx&&!dy)continue;const b={x:a.x+dx,y:a.y+dy},k=key(b);if(seen.has(k)||!allowed.has(k)||dx&&dy&&(!allowed.has(key({x:a.x+dx,y:a.y}))||!allowed.has(key({x:a.x,y:a.y+dy}))))continue;seen.add(k);previous.set(k,{x:a.x,y:a.y});queue.push({...b,distance:a.distance+Math.hypot(dx,dy)});}}
   return null;
  }
  function position(data:Data,map:string){const available=cells(map);if(!available.length)return null;const p={x:Math.round(data.x??well(s.farms[map])?.x??4),y:Math.round(data.y??well(s.farms[map])?.y??3)};return available.find(q=>key(q)===key(p))||available.slice().sort((a,b)=>Math.hypot(a.x-p.x,a.y-p.y)-Math.hypot(b.x-p.x,b.y-p.y))[0];}
@@ -60,17 +60,31 @@ export function createWorkerController(c:Data){
   if(done&&role==='jade'&&t.helperAction==='fruit'){api.xp(Math.max(0,Math.min(3,Number(t.tier)||0)));event('harvest',1,map);}return done;
  });}
  function signature(map:string,target:string){const o=s.farms[map].objects.find((o:Data)=>o.id===target);if(!o)return '';const h=home(o,s.farms[map]);return JSON.stringify([o.type,o.x,o.y,o.rotation||0,o.tier||0,o.plantedAt||0,o.lastFruitAt||0,o.lastProductAt||0,(o.jobs||[]).map((j:Data)=>[j.id,j.startAt,j.finishAt]),h&&[h.id,h.x,h.y,h.rotation||0,h.tier||0]]);}
- function crew(){const b=book();return [...(s.level>=3?['jade','rhys','jay'].map(id=>{
-  b.family[id]||={map:s.active,jobs:0,drinkUntil:0};const data=b.family[id];if(data.map!==s.active){Object.assign(data,{map:s.active,x:undefined,y:undefined});delete b.leases[id];}return{id,role:id,map:s.active,data};}):[]),...W.meadowRoster.owned().filter((w:Data)=>w.map&&s.farms[w.map]).map((w:Data)=>({id:w.id,role:'all',map:w.map,data:s.workforce[w.key]}))];}
- function resting(w:Data){const p=W.meadowWells.stats(well(s.farms[w.map])),d=w.data;
+ function crew(){const b=book();return [...['jade','rhys','jay'].map(id=>{
+  const previous=b.family[id],f=s.farms[s.active];f.helperStamina||={};
+  if(previous?.map&&previous.map!==s.active){delete s.farms[previous.map]?.helperStamina?.[id]?.returning;delete b.leases[id];}
+  f.helperStamina[id]||=previous?.map===s.active?previous:{jobs:0,drinkUntil:0};
+  const data=f.helperStamina[id];data.map=s.active;b.family[id]=data;return{id,role:id,map:s.active,data};}),...W.meadowRoster.owned().filter((w:Data)=>w.map&&s.farms[w.map]).map((w:Data)=>({id:w.id,role:'all',map:w.map,data:s.workforce[w.key]}))];}
+ function resting(w:Data){const target=well(s.farms[w.map]),p=W.meadowWells.stats(target),d=w.data,wellKey=target?[target.id,target.x,target.y].join(':'):'';
   if(d.drinkUntil>now)return true;
   if(d.drinkUntil){d.drinkUntil=0;d.jobs=0;}
-  if((d.jobs||0)>=p.jobs){d.drinkUntil=now+p.drink*1000;delete book().leases[w.id];return true;}return false;
+  if(d.returning&&d.returning.well!==wellKey)delete d.returning;
+  if(d.returning){
+   if(d.returning.readyAt>now)return true;
+   Object.assign(d,{x:d.returning.to.x,y:d.returning.to.y,drinkUntil:now+p.drink*1000});delete d.returning;return true;
+  }
+  if((d.jobs||0)>=p.jobs){
+   const start=position(d,w.map),path=start&&target&&route(start,edges(target,w.map),w.map);delete book().leases[w.id];
+   if(target&&!path){d.restBlocked=true;return true;}delete d.restBlocked;
+   if(path&&path.distance>0)d.returning={well:wellKey,from:start,to:path.to,path:path.path,startedAt:now,readyAt:now+Math.ceil(path.distance*960)};
+   else d.drinkUntil=now+p.drink*1000;
+   return true;
+  }delete d.restBlocked;return false;
  }
  function tick(){const b=book(),out:Data[]=[],reserved=new Map<string,Set<string>>();
   for(const w of crew()){
-   const data=w.data,paused=well(s.farms[w.map])?.helpers?.[w.id];if(paused){delete b.leases[w.id];out.push({worker:w.id,map:w.map,status:'paused'});continue;}
-   if(resting(w)){out.push({worker:w.id,map:w.map,status:'drink',until:data.drinkUntil});continue;}
+   const data=w.data,paused=well(s.farms[w.map])?.helpers?.[w.id];if(paused){delete b.leases[w.id];delete data.returning;out.push({worker:w.id,map:w.map,status:'paused'});continue;}
+   if(resting(w)){out.push(data.restBlocked?{worker:w.id,map:w.map,status:'blocked',reason:'Leave a clear path to the family well.'}:data.returning?{worker:w.id,map:w.map,status:'returning',...data.returning}:{worker:w.id,map:w.map,status:'drink',until:data.drinkUntil});continue;}
    let lease=b.leases[w.id];if(lease&&(lease.map!==w.map||lease.revision!==(data.revision||0))){delete b.leases[w.id];lease=null;}
    if(lease&&now>=lease.readyAt){
     const skip=new Set<string>(s.farms[w.map].objects.filter((o:Data)=>o.id!==lease.target).map((o:Data)=>o.id)),fresh=candidate(w.role,w.map,data,skip);
@@ -81,7 +95,8 @@ export function createWorkerController(c:Data){
    if(lease){const set=reserved.get(w.map)||new Set();set.add(lease.target);reserved.set(w.map,set);out.push({worker:w.id,...lease,status:'working'});continue;}
    if(data.cooldownUntil>now){out.push({worker:w.id,map:w.map,status:'waiting',until:data.cooldownUntil});continue;}
    const skip=reserved.get(w.map)||new Set<string>(),found=candidate(w.role,w.map,data,new Set(skip));if(!found){out.push({worker:w.id,map:w.map,status:'idle'});continue;}
-   lease={map:w.map,revision:data.revision||0,target:found.task.id,action:found.task.helperAction,signature:signature(w.map,found.task.id),from:found.from,to:found.route.to,startedAt:now,readyAt:now+(w.role==='all'?12000:1600+Math.ceil(found.route.distance*960))};b.leases[w.id]=lease;
+   const duration=1600+Math.ceil(found.route.distance*960);
+   lease={map:w.map,revision:data.revision||0,target:found.task.id,action:found.task.helperAction,signature:signature(w.map,found.task.id),from:found.from,to:found.route.to,path:found.route.path,startedAt:now,readyAt:now+(w.role==='all'?Math.max(12000,duration):duration)};b.leases[w.id]=lease;
    skip.add(lease.target);reserved.set(w.map,skip);out.push({worker:w.id,...lease,status:'working'});
   }
   b.lastReturnAt=now;return {ok:true,workers:out};
@@ -89,7 +104,7 @@ export function createWorkerController(c:Data){
  function catchup(){const b=book(),from=b.lastReturnAt||now;b.lastReturnAt=now;if(now-from<60000)return {ok:true,completed:[]};const completed:Data[]=[];
   // Only assigned hired workers run while the game is away. Never back-date a
   // new planting or production job, and never claim more than three ready jobs.
-  for(const w of crew().filter(w=>w.role==='all')){const p=W.meadowWells.stats(well(s.farms[w.map])),d=w.data;delete b.leases[w.id];if(d.drinkUntil>now)continue;if(d.drinkUntil||now-from>=p.drink*1000+12000){d.drinkUntil=0;d.jobs=0;}
+  for(const w of crew().filter(w=>w.role==='all')){const p=W.meadowWells.stats(well(s.farms[w.map])),d=w.data;delete b.leases[w.id];if(d.drinkUntil>now)continue;if(d.drinkUntil||(d.jobs||0)>=p.jobs&&now-from>=p.drink*1000+12000){d.drinkUntil=0;d.jobs=0;delete d.returning;}
    let preferred:string|undefined;const count=Math.min(3,Math.floor((now-from)/12000),Math.max(0,p.jobs-(d.jobs||0)));
    for(let i=0;i<count;i++){const next=candidate('all',w.map,d,new Set(),preferred);if(!next||!perform('all',w.map,next.task))break;Object.assign(d,{x:next.route.to.x,y:next.route.to.y,jobs:(d.jobs||0)+1,lastJobAt:now,pending:null,cooldownUntil:now+12000});completed.push({worker:w.id,map:w.map,target:next.task.id,action:next.task.helperAction});preferred=['harvest','plant'].includes(next.task.helperAction)?next.task.id:undefined;}
   }return {ok:true,completed};
@@ -99,13 +114,15 @@ export function createWorkerController(c:Data){
    case 'workers.hire':fields(d,[]);if(typeof target!=='string'||!W.meadowRoster.hire(target))fail('Check this worker’s level and hiring cost.');return {ok:true};
    case 'workers.assign':{
     fields(d,['x','y','expectedMap']);if(typeof target!=='string'||!W.meadowRoster.catalog.some((w:Data)=>w.id===target))fail('Choose a hired worker.');const data=s.workforce?.[target as string];if(!data||d.expectedMap!==data.map)fail('This worker’s farm changed. Confirm their current assignment.');assignmentMap=map;
-    if(!W.meadowRoster.assign(target,map,{x:d.x,y:d.y},true))fail('Place this worker on clear, unlocked walking grass.');delete book().leases['hire-'+target];return {ok:true};}
+    if(!W.meadowRoster.assign(target,map,{x:d.x,y:d.y},true))fail('Place this worker on clear, unlocked walking grass.');delete data.returning;delete book().leases['hire-'+target];return {ok:true};}
    case 'workers.tick':fields(d,[]);return tick();
    case 'workers.return':fields(d,[]);return catchup();
-   case 'workers.protect':{
-    fields(d,['enabled']);if(typeof target!=='string'||typeof d.enabled!=='boolean'||!s.farms[map].objects.some((o:Data)=>o.id===target))fail('Choose a current lesson item.');const b=book();b.protected||={};b.protected[map]||={};if(d.enabled)b.protected[map][target as string]=now+120000;else delete b.protected[map][target as string];return {ok:true};}
+   case 'workers.protect':case 'workers.protect_many':{
+    fields(d,type==='workers.protect'?['enabled']:['ids','enabled']);const ids=type==='workers.protect'?[target]:d.ids;
+    if(!Array.isArray(ids)||ids.length>1000||typeof d.enabled!=='boolean'||ids.some(id=>typeof id!=='string'||!/^[a-zA-Z0-9_-]{1,80}$/.test(id)||['__proto__','constructor','prototype'].includes(id)||d.enabled&&!s.farms[map].objects.some((o:Data)=>o.id===id)))fail('Choose current lesson items.');
+    const b=book();b.protected||={};b.protected[map]||={};for(const id of ids){if(d.enabled)b.protected[map][id]=now+120000;else delete b.protected[map][id];}return {ok:true};}
    default:return null;
   }
  }
- return {command,invalidate:()=>{terrain.clear();W.meadowPlanner.invalidate();}};
+ return {command,arrive:()=>{crew();},invalidate:()=>{terrain.clear();W.meadowPlanner.invalidate();}};
 }

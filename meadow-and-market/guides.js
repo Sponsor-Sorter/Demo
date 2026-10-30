@@ -30,8 +30,10 @@
   const guideVoice=l=>l.voice||({upgrade:'rhys-upgrade-howto',move:'rhys-move-areas',friends:'jay-friend-visits',stock:'jay-shop-plan130'})[l.id]||l.person+'-'+l.id;
   const tourSteps=()=>tourOrder.map(id=>lessons.find(l=>l.id===id)||topics.find(l=>l.id===id)).filter(l=>(l.unlock||1)<=(api.state().level||1));
   let api, root, panel, launcher, currentLesson=null, lastContext='', lastTipAt=0, silenceUntil=0, lastInteraction=Date.now(), pendingHint=null,protectedItem=null,lessonUntil=0,protectedCrops=new Set(),protectedCropMap=null;
-  function reserveCropLesson(){protectedCropMap=api.state().active;protectedCrops=new Set((api.state().farms?.[protectedCropMap]?.objects||[]).filter(o=>o.type==='plot').map(o=>o.id))}
-  function protect(id){protectedItem=id?{id,map:api.state().active,until:Date.now()+120000}:null}
+  function syncProtection(map,ids,enabled){if(window.meadowCommandUI?.active()&&ids.length)window.meadowCommandUI.maintenance([{type:'workers.protect_many',map,data:{ids,enabled}}]).catch(()=>{});}
+  function releaseCrops(){if(protectedCropMap)syncProtection(protectedCropMap,[...protectedCrops],false);protectedCrops.clear();protectedCropMap=null;}
+  function reserveCropLesson(){releaseCrops();protectedCropMap=api.state().active;protectedCrops=new Set((api.state().farms?.[protectedCropMap]?.objects||[]).filter(o=>o.type==='plot').map(o=>o.id));if(get().tour?.active&&['till','plant','water','harvest'].includes(currentLesson?.id))syncProtection(protectedCropMap,[...protectedCrops],true);}
+  function protect(id){if(protectedItem)syncProtection(protectedItem.map,[protectedItem.id],false);protectedItem=id?{id,map:api.state().active,until:Date.now()+120000}:null;if(protectedItem)syncProtection(protectedItem.map,[id],true);}
   function protects(id,map=api.state().active){return !!(get().tour?.active&&Date.now()<lessonUntil&&['till','plant','water','harvest'].includes(currentLesson?.id)&&map===protectedCropMap&&protectedCrops.has(id))||!!protectedItem&&protectedItem.until>Date.now()&&protectedItem.id===id&&protectedItem.map===map}
   window.addEventListener('pointerdown',()=>{lastInteraction=Date.now()},{passive:true});
   const get = () => {
@@ -49,7 +51,7 @@
   function card(person,title,text,action,label,extra='',voice=''){
     const p=people[person]; panel.hidden=false;panel.dataset.person=person;
     panel.innerHTML=`<button class="guide-close" aria-label="Minimize guide">−</button><img class="guide-portrait" src="${image(person)}" alt="${p.name}"><div class="guide-copy"><small>${p.name} · ${p.role}</small><h2>${title}</h2><p>${text}</p><div class="guide-actions">${action?`<button class="primary-button guide-main">${label}</button>`:''}${voice?'<button class="guide-replay" aria-label="Replay spoken tip">🔊 Listen</button>':''}<button class="guide-lessons">All lessons</button></div>${extra}</div>`;
-    panel.querySelector('.guide-close').onclick=()=>{protect(null);lessonUntil=0;const t=get();if(t.tour?.active){t.tour.active=false;t.tour.paused=true;save()}hide()};
+    panel.querySelector('.guide-close').onclick=()=>{protect(null);releaseCrops();lessonUntil=0;const t=get();if(t.tour?.active){t.tour.active=false;t.tour.paused=true;save()}hide()};
     panel.querySelector('.guide-lessons').onclick=menu;
     if(action)panel.querySelector('.guide-main').onclick=action;
     if(voice){window.meadowAudio?.speak(voice);panel.querySelector('.guide-replay').onclick=()=>window.meadowAudio?.speak(voice)}else window.meadowAudio?.stopVoice();
@@ -80,11 +82,19 @@
     if(!dialog.open)dialog.showModal();
   }
   function event(id){
+    if(window.meadowCommandUI?.active()){if(id==='friends'&&!get().completed.includes(id))window.meadowCommandUI.route('lesson.claim',id,{},api.state().active,{quiet:true});return;}
     if(currentLesson?.id===id)protect(null);
     if(!api)return;const lesson=lessons.find(l=>l.id===id);if(!lesson)return;const t=get();if(t.completed.includes(id))return;
     t.completed.push(id);if(!t.rewarded.includes(id)){t.rewarded.push(id);api.reward(10)}save();
     if(t.tour?.active){if(tourSteps()[t.tour.index]?.id===id){t.tour.index++;if(t.tour.index>=tourSteps().length)t.tour.active=false;save()}return}
     if(!t.paused&&t.started&&api.state().view==='farm'&&!document.querySelector('dialog[open]')){currentLesson=lesson;card(lesson.person,'Lovely work!','You completed “'+lesson.title+'” and earned 10 gold. Keep trying things at your own pace.',()=>showLesson(next()),'Choose the next lesson')}
+  }
+  function canonicalLessons(ids){
+    if(!api||!Array.isArray(ids))return;
+    const done=ids.filter(id=>get().completed.includes(id)&&lessons.some(l=>l.id===id));if(!done.length)return;
+    if(done.includes(currentLesson?.id))protect(null);
+    const t=get();if(t.tour?.active){const steps=tourSteps();while(steps[t.tour.index]&&t.completed.includes(steps[t.tour.index].id))t.tour.index++;if(t.tour.index>=steps.length){t.tour.active=false;releaseCrops();}save();updateLauncher();return;}
+    const lesson=lessons.find(l=>l.id===done.at(-1));if(!t.paused&&t.started&&api.state().view==='farm'&&!document.querySelector('dialog[open]')){currentLesson=lesson;card(lesson.person,'Lovely work!','You completed “'+lesson.title+'” and earned 10 gold. Keep trying things at your own pace.',()=>showLesson(next()),'Choose the next lesson');}updateLauncher();
   }
   function context(view){
     if(!api||view===lastContext)return;lastContext=view;const t=get();if(Date.now()<silenceUntil||t.paused||t.tour?.active||!panel.hidden||document.querySelector('dialog[open]')||t.seenContexts.includes(view))return;
@@ -103,5 +113,5 @@
     if(!get().introduced){setTimeout(maybeWelcome,1200);setInterval(maybeWelcome,5000)}
     setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint){pendingHint=hint;lastTipAt=Date.now();updateLauncher()}},30000);
   }
-  window.meadowGuides={attach,event,context,menu,lesson:showLesson,unlocks,areaOpened,collapse:hide,showTour,resumeTour,tourSteps,guideVoice,topics,surface,protect,protects};
+  window.meadowGuides={attach,event,canonicalLessons,context,menu,lesson:showLesson,unlocks,areaOpened,collapse:hide,showTour,resumeTour,tourSteps,guideVoice,topics,surface,protect,protects};
 })();

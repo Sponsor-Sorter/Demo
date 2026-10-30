@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+ function verified(s,type,target,data){if(!window.meadowCommandUI?.stateIs(s))return false;window.meadowCommandUI.route(type,target,data,s.active,{after:()=>{show(selectedChapter);}});return true;}
+
   let api;
   const chapters=[
     {name:'A growing homestead',person:'jade',goals:[
@@ -64,7 +66,7 @@
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}
   function progress(s,g){return Math.max(0,Math.min(g.target,Number(g.measure(s))||0))}
-  function claim(s,id){const goal=chapters.flatMap(c=>c.goals).find(g=>g.id===id),j=journal(s);if(!goal||j.claimed.includes(id)||progress(s,goal)<goal.target)return null;j.claimed.push(id);return goal}
+  function claim(s,id){if(verified(s,'story.claim',id,{}))return null;const goal=chapters.flatMap(c=>c.goals).find(g=>g.id===id),j=journal(s);if(!goal||j.claimed.includes(id)||progress(s,goal)<goal.target)return null;j.claimed.push(id);return goal}
   const openings=[
     'A few beds and a happy flock can become a home. Farmer Jade helps you build a steady harvest before the village needs more.',
     'The family has more than fresh crops to share. Farmer Jay turns your harvest into food, honey and a welcoming farm shop.',

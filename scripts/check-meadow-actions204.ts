@@ -7,6 +7,16 @@ function eq(a:unknown,b:unknown,message='Values differ'){assert(JSON.stringify(a
 function state(objects:any[]=[],level=1):any{return{version:1,tutorial:earnedTutorial(),coins:5000,level,xp:0,rep:0,active:'willow',orderIndex:0,sharedPantryVersion:1,farms:{willow:{objects,inventory:{wheat:30,carrot:20,flour:10},orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
 const run=(s:any,type:string,target?:string,data?:any,time=now,map='willow')=>applyFarmCommands(s,[{type,target,data,map}],time);
 function denied(fn:()=>unknown,code?:string){let error;try{fn();}catch(e){error=e;}assert(error instanceof FarmActionError,'Invalid action must be rejected deliberately');if(code)eq(error.code,code);}
+Deno.test('Canonical mini-game records use only verified database round summaries',()=>{
+ const s=state();s.minigames={records:{eggs:{wins:99,level:100,bestScore:99999}},rewards:{}};
+ const result=applyFarmCommands(s,[{type:'shop.check'}],now,{roundRecords:[{game:'eggs',level:3,wins:2,bestScore:1400}]});eq(result.save.minigames.records.eggs,{wins:2,level:3,bestScore:1400});eq(s.minigames.records.eggs.level,100);
+ denied(()=>applyFarmCommands(s,[{type:'shop.check'}],now,{roundRecords:[{game:'unknown',level:3,wins:2,bestScore:1400}]}));
+});
+Deno.test('Verified build undo restores only an owned move on clear original tiles',()=>{
+ let s=state([{id:'plot',type:'plot',x:4,y:3,stage:1}]);s=run(s,'build.move','plot',{x:7,y:5}).save;eq(s.lastMove.from.x,4);
+ s=run(s,'build.place',undefined,{id:'block','item':'tree',x:4,y:3,rotation:0}).save;denied(()=>run(s,'build.undo'));eq(s.farms.willow.objects[0].x,7);
+ s=run(s,'build.sell','block').save;s=run(s,'build.undo').save;eq([s.farms.willow.objects[0].x,s.farms.willow.objects[0].y],[4,3]);eq(s.lastMove,null);denied(()=>run(s,'build.undo'));
+});
 Deno.test('Server crop cycle uses seed cost, water bonus, real elapsed time and mastery',()=>{
  const original=state([{id:'plot',type:'plot',x:4,y:3,stage:0}]);
  let s=run(original,'plot.till','plot').save;s=run(s,'plot.plant','plot',{crop:'carrot'}).save;

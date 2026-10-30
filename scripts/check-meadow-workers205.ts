@@ -29,7 +29,7 @@ Deno.test('Other maps automate against their own objects and caps, sharing only 
  let cap=hired(state());cap.farms.willow.objects[0].helperCropCap=2;cap=run(cap,'workers.tick').save;const c=run(cap,'workers.return',undefined,{},now+600000);eq(c.results[0].completed.map((x:any)=>x.action),['harvest']);
 });
 Deno.test('Drink breaks and missing paths block work; clients cannot forge walkable terrain',()=>{
- let s=hired(state());s.workforce.rowan.jobs=12;s=run(s,'workers.tick').save;eq(s.workforce.rowan.drinkUntil,now+12000);assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+11000).save;assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+12000).save;eq(s.workforce.rowan.jobs,0);assert(s._serverWorkers.leases['hire-rowan']);
+ let s=hired(state());Object.assign(s.workforce.rowan,{jobs:12,x:3,y:3});s=run(s,'workers.tick').save;eq(s.workforce.rowan.drinkUntil,now+12000);assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+11000).save;assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+12000).save;eq(s.workforce.rowan.jobs,0);assert(s._serverWorkers.leases['hire-rowan']);
  const blocked=hired(state());blocked.farms.willow.objects[1].x=45;blocked.farms.willow.objects[1].y=45;blocked.farms.willow.workerTerrain=[{x:45,y:45}];const out=run(blocked,'workers.tick');eq(out.results[0].workers.find((w:any)=>w.worker==='hire-rowan').status,'idle');
 });
 Deno.test('Family roles use all three farmers; leases are cancelled when they are paused or moved',()=>{
@@ -46,4 +46,24 @@ Deno.test('Planner protects ingredients and helpers collect production without d
 Deno.test('Moved targets and lesson reservations cancel stale jobs rather than teleporting a worker',()=>{
  let s=hired(state());s=run(s,'workers.tick').save;const until=s._serverWorkers.leases['hire-rowan'].readyAt;s=run(s,'build.move','plot',{x:7,y:5},now+1000).save;const moved=run(s,'workers.tick',undefined,{},until);eq(moved.save.farms.willow.inventory.carrot,0);eq(moved.save.workforce.rowan.jobs,0);
  let p=hired(state());p=run(p,'workers.protect','plot',{enabled:true}).save;p=run(p,'workers.tick').save;assert(!p._serverWorkers.leases['hire-rowan']);p=run(p,'workers.tick',undefined,{},now+120001).save;assert(p._serverWorkers.leases['hire-rowan']);
+});
+Deno.test('Return catch-up preserves a partly used shift instead of granting free stamina',()=>{
+ let s=hired(state());s.farms.willow.objects[0].tier=0;s.workforce.rowan.jobs=1;s=run(s,'workers.tick').save;const r=run(s,'workers.return',undefined,{},now+60000);eq(r.results[0].completed.length,1);eq(r.save.workforce.rowan.jobs,2);eq(r.results[0].completed[0].action,'harvest');
+});
+Deno.test('Drink breaks start after the worker walks to the well',()=>{
+ let s=hired(state());Object.assign(s.workforce.rowan,{jobs:12,x:7,y:5});s=run(s,'workers.tick').save;const path=s.workforce.rowan.returning;assert(path&&path.readyAt>now);eq(s.workforce.rowan.drinkUntil,0);
+ s=run(s,'workers.tick',undefined,{},path.readyAt-1).save;eq(s.workforce.rowan.drinkUntil,0);s=run(s,'workers.tick',undefined,{},path.readyAt).save;eq(s.workforce.rowan.drinkUntil,path.readyAt+12000);eq(s.workforce.rowan.x,path.to.x);eq(s.workforce.rowan.y,path.to.y);
+});
+Deno.test('The family keeps separate stamina at each farm when travelling',()=>{
+ let s=state();s.farms.willow.objects[0].helpers.jade=false;s=run(s,'workers.tick').save;const until=s._serverWorkers.leases.jade.readyAt;s=run(s,'workers.tick',undefined,{},until).save;eq(s.farms.willow.helperStamina.jade.jobs,1);
+ s.farms.coast=JSON.parse(JSON.stringify(state().farms.willow));s.farms.coast.objects[0].helpers.jade=false;s=run(s,'map.visit',undefined,{destination:'coast'},until).save;s=run(s,'workers.tick',undefined,{},until,'coast').save;eq(s.farms.coast.helperStamina.jade.jobs,0);
+ s=run(s,'map.visit',undefined,{destination:'willow'},until,'coast').save;s=run(s,'workers.tick',undefined,{},until).save;eq(s.farms.willow.helperStamina.jade.jobs,1);eq(s._serverWorkers.family.jade.map,'willow');
+});
+Deno.test('All three family farmers can help from the first player level',()=>{
+ const s=state(1);s.farms.willow.objects[0].helpers={jade:false,rhys:false,jay:false};const r=run(s,'workers.tick');eq(r.results[0].workers.map((w:any)=>w.worker).sort(),['jade','jay','rhys']);assert(r.save._serverWorkers.leases.jade);
+});
+Deno.test('Grouped lesson protection uses only owned targets and expires on the server clock',()=>{
+ let s=hired(state());s=run(s,'workers.protect_many',undefined,{ids:['plot','well'],enabled:true}).save;s=run(s,'workers.tick').save;assert(!s._serverWorkers.leases['hire-rowan']);
+ denied(()=>run(s,'workers.protect_many',undefined,{ids:['missing'],enabled:true}));denied(()=>run(s,'workers.protect_many',undefined,{ids:['__proto__'],enabled:true}));denied(()=>run(s,'workers.tick',undefined,{},now,'constructor'));
+ s=run(s,'workers.protect_many',undefined,{ids:['plot','missing'],enabled:false}).save;s=run(s,'workers.tick').save;assert(s._serverWorkers.leases['hire-rowan']);
 });

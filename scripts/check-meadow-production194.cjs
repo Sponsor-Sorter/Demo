@@ -18,10 +18,11 @@ assert(!read('supabase/meadow-production-commerce.sql').includes("username in ('
 assert(read(root+'delete-account.js').includes('persistSession:false'),'Deletion website never replaces the farm session');
 assert(read(root+'delete-account.js').includes("scope:'local'"));
 const privacyScope={window:{},document:{addEventListener(){}}};vm.runInNewContext(read(root+'account-privacy.js'),privacyScope);
-const storage={'farm':JSON.stringify({friendCode:'A'}),'farm-owner':'a','farm-account-a':JSON.stringify({friendCode:'A'}),'farm-account-b':JSON.stringify({friendCode:'B'}),'farm-before-cloud-load':JSON.stringify({friendCode:'A'}),'littles-save':'keep','bargain-barge-save':'keep'};
+const storage={'farm':JSON.stringify({friendCode:'A'}),'farm-owner':'a','farm-protocol':JSON.stringify({owner:'a',protocol:4}),'meadow-farm-command-v1:a':'private pending','meadow-farm-command-v1:b':'keep','meadow-ui-v1:a':'private preferences','meadow-ui-v1:b':'keep','farm-account-a':JSON.stringify({friendCode:'A'}),'farm-account-b':JSON.stringify({friendCode:'B'}),'farm-before-cloud-load':JSON.stringify({friendCode:'A'}),'littles-save':'keep','bargain-barge-save':'keep'};
 Object.defineProperties(storage,{getItem:{value:k=>storage[k]},removeItem:{value:k=>delete storage[k]}});
 privacyScope.window.meadowAccountPrivacy.clearDeviceFarm(storage,'farm','a','A');
 assert.equal(storage.farm,undefined);assert.equal(storage['farm-account-a'],undefined);assert.equal(storage['farm-before-cloud-load'],undefined);assert(storage['farm-account-b']);assert.equal(storage['littles-save'],'keep');assert.equal(storage['bargain-barge-save'],'keep');
+assert.equal(storage['farm-protocol'],undefined);assert.equal(storage['meadow-farm-command-v1:a'],undefined);assert.equal(storage['meadow-ui-v1:a'],undefined);assert.equal(storage['meadow-farm-command-v1:b'],'keep');assert.equal(storage['meadow-ui-v1:b'],'keep');
 async function storeFixture(native){
  let current='owner',config={test_access:false,purchase_account_ready:true,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,checkouts=0,restores=0,popupHook;
  const notices=[],state={coins:250};

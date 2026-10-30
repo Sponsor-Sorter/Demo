@@ -1,5 +1,7 @@
 (() => {
   'use strict';
+ function verified(s,type,target,data){if(!window.meadowCommandUI?.stateIs(s))return false;window.meadowCommandUI.route(type,target,data,s.active,{after:()=>{if(dialog?.open)draw();else show();}});return true;}
+
   let api,dialog,cache,tab='projects';
   const crops=['carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','mushroom'];
   const animalGoods={chicken:'egg',cow:'milk',sheep:'wool',goat:'goatmilk',alpaca:'fleece'};
@@ -32,8 +34,8 @@
     }
     return null;
   }
-  function pin(s,d){const q=resolve(s,d);if(!q||q.done||q.stale)return false;s.farmPlan={goal:{...d},helpers:true,keepGold:true,seenReady:false};invalidate();return true;}
-  function clear(s){delete s.farmPlan;invalidate();}
+  function pin(s,d){if(verified(s,'planner.pin',null,d))return false;const q=resolve(s,d);if(!q||q.done||q.stale)return false;s.farmPlan={goal:{...d},helpers:true,keepGold:true,seenReady:false};invalidate();return true;}
+  function clear(s){if(verified(s,'planner.clear',null,{}))return undefined;delete s.farmPlan;invalidate();}
   function reserves(s){
     const result={};for(const f of Object.values(s.farms||{})){
       if(!(f.objects||[]).some(o=>o.type==='stall'))continue;
@@ -136,8 +138,8 @@
     dialog.querySelector('#planner-clear')?.addEventListener('click',()=>{clear(state());api.save();draw();});
     dialog.querySelector('#planner-open')?.addEventListener('click',()=>{dialog.close();api.openGoal(q.goal);});
     dialog.querySelectorAll('[data-plan-good]').forEach(b=>b.onclick=()=>{dialog.close();api.find(b.dataset.planGood);});
-    dialog.querySelector('#planner-helpers')?.addEventListener('change',e=>{state().farmPlan.helpers=e.target.checked;invalidate();api.save();});
-    dialog.querySelector('#planner-gold')?.addEventListener('change',e=>{state().farmPlan.keepGold=e.target.checked;invalidate();api.save();});
+    dialog.querySelector('#planner-helpers')?.addEventListener('change',e=>{if(window.meadowCommandUI?.route('planner.settings',null,{helpers:e.target.checked,keepGold:state().farmPlan.keepGold!==false},state().active,{after:()=>draw()}))return;state().farmPlan.helpers=e.target.checked;invalidate();api.save();});
+    dialog.querySelector('#planner-gold')?.addEventListener('change',e=>{if(window.meadowCommandUI?.route('planner.settings',null,{helpers:state().farmPlan.helpers===true,keepGold:e.target.checked},state().active,{after:()=>draw()}))return;state().farmPlan.keepGold=e.target.checked;invalidate();api.save();});
     dialog.querySelector('#planner-amount-save')?.addEventListener('click',()=>{const amount=Number(dialog.querySelector('#planner-amount').value);if(!Number.isInteger(amount)||amount<1||amount>999)return api.notify('Choose a whole target from 1 to 999.');state().farmPlan.goal.amount=amount;state().farmPlan.seenReady=false;invalidate();api.save();draw();});
     if(q.ready&&!state().farmPlan.seenReady){state().farmPlan.seenReady=true;api.save();}
   }

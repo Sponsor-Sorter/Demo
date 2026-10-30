@@ -1,6 +1,8 @@
 (() => {
   'use strict';
-  let api;
+ function verified(s,type,target,data){if(!window.meadowCommandUI?.stateIs(s))return false;window.meadowCommandUI.route(type,target,data,s.active,{after:()=>{show(selectedKind);}});return true;}
+
+  let api,selectedKind='grown';
   const grown=['carrot','wheat','strawberry','corn','tomato','lavender','pumpkin','mushroom','apple'];
   const farmGoods=['nectar','egg','milk','wool','goatmilk','honey','fleece'];
   const badges=[{id:'first-five',name:'A colourful basket',kind:'grown',target:5,gold:80,xp:15},{id:'every-crop',name:'Every corner of the garden',kind:'grown',target:9,gold:200,xp:35},{id:'farm-friends',name:'Gifts from a happy farm',kind:'farm',target:7,gold:220,xp:40},{id:'artisan',name:'The village artisan',kind:'crafted',target:8,gold:280,xp:45}];
@@ -9,11 +11,11 @@
   function ids(kind){return kind==='grown'?grown:kind==='farm'?farmGoods:api.recipes.map(r=>r.id)}
   function record(id,count=1){if(!api||!api.items[id])return;const b=book(api.state()),n=Math.max(0,Math.floor(Number(count)||0));if(!n)return;b.seen[id]=true;b.totals[id]=(b.totals[id]||0)+n}
   function discovered(s,kind){const b=book(s);return ids(kind).filter(id=>b.seen[id]).length}
-  function claim(s,id){const b=book(s),g=badges.find(g=>g.id===id);if(!g||b.claimed.includes(id)||discovered(s,g.kind)<g.target)return null;b.claimed.push(id);return g}
+  function claim(s,id){if(verified(s,'almanac.claim',id,{}))return null;const b=book(s),g=badges.find(g=>g.id===id);if(!g||b.claimed.includes(id)||discovered(s,g.kind)<g.target)return null;b.claimed.push(id);return g}
   function art(id){const p=api.items[id];if(grown.includes(id)&&id!=='apple')return '<span class="book-plant"><img src="assets/generated/crop-growth/'+id+'.webp" alt=""></span>';if(p.icon)return '<img class="book-product" src="'+p.icon+'" alt="">';if(id==='apple')return '<img class="book-product" src="assets/generated/orchard/apple-fruit.webp" alt="">';const animals={egg:'hen',milk:'cow',wool:'sheep',goatmilk:'goat'};return animals[id]?'<img class="book-product" src="assets/generated/'+animals[id]+'.webp" alt="">':'<img class="book-product" src="assets/generated/flower-patch.webp" alt="">'}
   function tabs(kind){return '<div class="book-tabs">'+[['grown','Crops & fruit'],['farm','Farm produce'],['crafted','Food & crafts']].map(([id,label])=>'<button class="small-button '+(id===kind?'book-tab-active':'')+'" data-book-kind="'+id+'" aria-pressed="'+(id===kind)+'">'+label+'</button>').join('')+'</div>'}
   function show(kind='grown'){
-    if(!['grown','farm','crafted'].includes(kind))kind='grown';const s=api.state(),b=book(s),list=ids(kind),known=discovered(s,kind);
+    if(!['grown','farm','crafted'].includes(kind))kind='grown';selectedKind=kind;const s=api.state(),b=book(s),list=ids(kind),known=discovered(s,kind);
     api.modal('<div class="sheet-head"><div><small class="eyebrow">YOUR FARM ALMANAC</small><h2>Farm almanac</h2></div><button class="close-button" data-close="modal-dialog">×</button></div><details class="flow-details"><summary>Where to find crops & products</summary><p>Tap an item to find its farm, recipe or animal. Harvest totals count newly gathered items.</p></details>'+tabs(kind)+'<p class="sheet-copy">'+known+' / '+list.length+' discovered in this collection</p><div class="book-grid">'+list.map(id=>'<button class="book-entry" data-book-good="'+id+'">'+art(id)+'<strong>'+api.items[id].name+'</strong><small>'+(b.seen[id]?'✓ Discovered · '+(b.totals[id]||0)+' newly gathered':'Learn how to find this')+'</small></button>').join('')+'</div><div class="section-label">COLLECTION CELEBRATIONS</div>'+badges.map(g=>{const n=discovered(s,g.kind),done=b.claimed.includes(g.id);return '<div class="task-card"><div class="task-row"><div class="task-main"><strong>'+g.name+'</strong><small>'+Math.min(n,g.target)+' / '+g.target+' different discoveries · '+g.gold+' gold + '+g.xp+' XP</small></div><button class="small-button" data-book-claim="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Celebrated':'Claim')+'</button></div></div>'}).join(''));
     $$('[data-book-kind]').forEach(b=>b.onclick=()=>show(b.dataset.bookKind));$$('[data-book-good]').forEach(b=>b.onclick=()=>showGood(b.dataset.bookGood));$$('[data-book-claim]').forEach(b=>b.onclick=()=>{const g=claim(api.state(),b.dataset.bookClaim);if(!g)return;api.earn(g.gold);api.xp(g.xp);api.save();window.meadowAudio?.play('reward');show(kind)});
   }

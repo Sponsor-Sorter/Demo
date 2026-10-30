@@ -8,6 +8,10 @@ const rules=()=>createGameRules(now) as any;
 function state(level=20):any{return{version:1,tutorial:earnedTutorial(),coins:100000,level,xp:0,rep:0,active:'willow',sharedPantryVersion:1,farms:{willow:{objects:[],inventory:Object.fromEntries(Object.keys(rules().crops).map(id=>[id,200])),orders:[],expansionLevel:3,shop:{unlocked:false,stock:{},earned:0}}}};}
 const run=(s:any,type:string,target?:string,data:any={},time=now,map='willow')=>applyFarmCommands(s,[{type,target,data,map}],time);
 function denied(fn:()=>unknown){let e;try{fn();}catch(x){e=x;}assert(e instanceof FarmActionError,'Expected deliberate command rejection, got '+String(e));}
+Deno.test('Opening bridge land pays once without moving the camera before its crossing animation',()=>{
+ let s=state(4),before=s.coins;s=run(s,'map.open',undefined,{destination:'east'}).save;eq(s.active,'willow');eq(s.coins,before-650);assert(s.farms.east);
+ s=run(s,'map.open',undefined,{destination:'east'}).save;eq(s.coins,before-650);s=run(s,'map.visit',undefined,{destination:'east'}).save;eq(s.active,'east');eq(s.coins,before-650);denied(()=>run(state(1),'map.open',undefined,{destination:'east'}));
+});
 Deno.test('Village projects, customer cooldowns and relationship rewards use the reviewed rules',()=>{
  let s=state();s.farms.east={...s.farms.willow,objects:[]};const J=rules().window.meadowJourneyCore;
  const first=J.projectStatus(s,'outpost');assert(first?.can);const before=s.coins,expected=first.step;
@@ -43,7 +47,8 @@ Deno.test('Weekly and journal claims reject stale dates and duplicate payouts',(
  denied(()=>run(s,'journal.bonus',undefined,{day:'2026-10-30'}));denied(()=>run(s,'journal.claim','plant',{day:'2026-10-30'},now+86400000));
 });
 Deno.test('Story, almanac, artisan and fair claims award once and require earned progress',()=>{
- let s=state();denied(()=>run(s,'almanac.claim','first-five'));s.almanac={seen:{carrot:true,wheat:true,strawberry:true,corn:true,tomato:true},totals:{},claimed:[]};let gold=s.coins;s=run(s,'almanac.claim','first-five').save;eq(s.coins,gold+80);denied(()=>run(s,'almanac.claim','first-five'));
+ const empty=state();empty.farms.willow.inventory={};denied(()=>run(empty,'almanac.claim','first-five'));
+ let s=state();s.almanac={seen:{carrot:true,wheat:true,strawberry:true,corn:true,tomato:true},totals:{},claimed:[]};let gold=s.coins;s=run(s,'almanac.claim','first-five').save;eq(s.coins,gold+80);denied(()=>run(s,'almanac.claim','first-five'));
  s.artisanMastery={version:1,batches:{flour:20},claimed:{},signature:{}};gold=s.coins;s=run(s,'artisan.claim','flour',{expected:3}).save;eq(s.coins,gold+60);denied(()=>run(s,'artisan.claim','flour',{expected:3}));s=run(s,'artisan.choose','flour').save;eq(s.artisanMastery.signature.kitchen,'flour');
  denied(()=>run(s,'fair.enter',undefined,{category:'crop',entry:'carrot'}));s.journey={projects:{hall:2}};s=run(s,'fair.enter',undefined,{category:'crop',entry:'carrot'}).save;denied(()=>run(s,'fair.enter',undefined,{category:'crop',entry:'carrot'}));denied(()=>run(s,'fair.claim','2'));
  const R=rules(),g=R.window.meadowStory.chapters.flatMap((c:any)=>c.goals).find((g:any)=>R.window.meadowStory.progress(s,g)>=g.target);assert(g,'Fixture needs an earned story goal');gold=s.coins;s=run(s,'story.claim',g.id).save;eq(s.coins,gold+g.reward);denied(()=>run(s,'story.claim',g.id));

@@ -55,6 +55,12 @@
     if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
     revision=conflict.revision;clear();conflict=null;
    },
+   async observe(save,nextRevision){
+    if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
+    if(job||running||conflict)throw error('Confirm the pending action before loading another farm.','ACTION_PENDING');
+    if(!safe(nextRevision)||nextRevision<revision)return false;
+    await a.apply(clone(save),nextRevision,{});if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');revision=nextRevision;return true;
+   },
    stop(){stopped=true;},
    status:()=>({owner:account,revision,running,pending:!!job,conflict:!!conflict,stopped})
   };

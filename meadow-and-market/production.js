@@ -1,5 +1,8 @@
 (() => {
   'use strict';
+  function command(type,target,data={},after,map=api.state().active){return window.meadowCommandUI?.route(type,target,data,map,{after})||false;}
+  function settings(o,patch){const data={enabled:!!o.autoWork,recipe:o.autoRecipe||o.lastRecipe||(o.type==='workshop'?'yarn':'bread'),cap:Number(o.autoCap)||0,...patch},map=Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o));return command('craft.settings',o.id,data,()=>{const next=api.farms()[map]?.objects.find(a=>a.id===o.id);if(next)showKitchen(next);},map);}
+
   const products={flour:{name:'Stoneground flour',emoji:'🌾',sell:24},bread:{name:'Farmhouse bread',emoji:'🍞',sell:40},jam:{name:'Strawberry jam',emoji:'🍓',sell:35},cheese:{name:'Farm cheese',emoji:'🧀',sell:36}};
   for(const [id,item] of Object.entries(products))item.icon='assets/generated/production/'+id+'.webp';
   products.honeycake={name:'Meadow honey cake',emoji:'🍰',sell:65,icon:'assets/generated/apiary/honeycake.webp'};
@@ -23,6 +26,7 @@
   function shopValue(id,t,now=Date.now()){return Math.round((item(id).sell||10)*shopPrices[t]*(api.state&&window.meadowLife?window.meadowLife.shopFactor(api.state()):1)*(window.meadowProgress?.marketFactor(id,now)||1))}
   // Deterministic elapsed-time sales: checking the shop never creates extra buyers.
   function settleShop(f,now=Date.now()){
+    if(window.meadowCommandUI?.required())return 0;
     const s=shopState(f);if(!s.unlocked)return 0;const t=shopTier(s),interval=shopIntervals[t];
     if(!s.lastSaleAt||!amount(s)){s.lastSaleAt=now;return 0}
     const ticks=Math.min(10000,Math.floor(Math.max(0,now-s.lastSaleAt)/interval));let earned=0,sold=0;
@@ -53,8 +57,8 @@
   function jobOutput(j){const r=recipes.find(r=>r.id===j.id);return Number.isInteger(j.output)&&j.output>0&&j.output<=20?j.output:r?.count||0}
   function duration(o,r){return Math.round(r.time*(api.state?window.meadowProgress?.productionFactor(api.state(),Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o)))||1:1)*[1,.8,.65][tier(o)]*(api.state&&window.meadowJourneyCore?window.meadowJourneyCore.productionFactor(api.state()):1)*(api.state&&window.meadowArtisan?window.meadowArtisan.factor(api.state(),r.id):1))}
   function belowCap(o,r){const cap=Math.max(0,Math.floor(Number(o.autoCap)||0));if(!cap)return true;const farms=api.farms?.()||{here:api.current()},pending=Object.values(farms).flatMap(f=>f.objects||[]).flatMap(s=>s.jobs||[]).filter(j=>j.id===r.id).reduce((n,j)=>n+jobOutput(j),0);return (ownerFarm(o).inventory[r.id]||0)+pending+output(r)<=cap}
-  function queue(o,r){if(!r||!canMake(o,r))return false;const f=ownerFarm(o);for(const[k,n]of Object.entries(r.input))f.inventory[k]-=n;o.jobs ||= [];const start=Math.max(Date.now(),o.jobs.at(-1)?.finishAt||0),time=duration(o,r),count=output(r);o.jobs.push({id:r.id,startAt:start,finishAt:start+time,output:count});o.lastRecipe=r.id;api.save();return true}
-  function collect(o,quiet=false){const now=Date.now(),ready=(o.jobs||[]).filter(j=>j.finishAt<=now);if(!ready.length)return 0;for(const j of ready){const r=recipes.find(r=>r.id===j.id);if(r){const n=jobOutput(j);if(api.state)window.meadowArtisan?.record(api.state(),r.id);ownerFarm(o).inventory[r.id]=(ownerFarm(o).inventory[r.id]||0)+n;api.event?.('made_'+r.id,n)}}o.jobs=o.jobs.filter(j=>j.finishAt>now);api.xp(ready.length*6);api.event?.('craft',ready.length,Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o)));api.save();api.render();window.meadowAudio?.play('harvest');api.notify('Collected '+ready.length+' '+(o.type==='workshop'?'craft':'kitchen')+' batches');if(!quiet)showKitchen(o);return ready.length}
+  function queue(o,r){if(window.meadowCommandUI?.active()){if(!r)return false;const map=Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o));window.meadowCommandUI.route('craft.queue',o.id,{recipe:r.id},map,{after:()=>{const next=api.farms()[map]?.objects.find(a=>a.id===o.id);if(next&&$('#modal-dialog').open)showKitchen(next);}});return false;}if(!r||!canMake(o,r))return false;const f=ownerFarm(o);for(const[k,n]of Object.entries(r.input))f.inventory[k]-=n;o.jobs ||= [];const start=Math.max(Date.now(),o.jobs.at(-1)?.finishAt||0),time=duration(o,r),count=output(r);o.jobs.push({id:r.id,startAt:start,finishAt:start+time,output:count});o.lastRecipe=r.id;api.save();return true}
+  function collect(o,quiet=false){if(window.meadowCommandUI?.active()){const map=Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o));window.meadowCommandUI.route('craft.collect',o.id,{},map,{after:()=>{const next=api.farms()[map]?.objects.find(a=>a.id===o.id);if(!quiet&&next&&$('#modal-dialog').open)showKitchen(next);}});return 0;}const now=Date.now(),ready=(o.jobs||[]).filter(j=>j.finishAt<=now);if(!ready.length)return 0;for(const j of ready){const r=recipes.find(r=>r.id===j.id);if(r){const n=jobOutput(j);if(api.state)window.meadowArtisan?.record(api.state(),r.id);ownerFarm(o).inventory[r.id]=(ownerFarm(o).inventory[r.id]||0)+n;api.event?.('made_'+r.id,n)}}o.jobs=o.jobs.filter(j=>j.finishAt>now);api.xp(ready.length*6);api.event?.('craft',ready.length,Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o)));api.save();api.render();window.meadowAudio?.play('harvest');api.notify('Collected '+ready.length+' '+(o.type==='workshop'?'craft':'kitchen')+' batches');if(!quiet)showKitchen(o);return ready.length}
   function stationStatus(o,now=Date.now()){const jobs=o.jobs||[],ready=jobs.filter(j=>j.finishAt<=now).length;return {ready,working:jobs.filter(j=>j.finishAt>now).length,idle:jobs.length===0}}
   function incoming(id){return Object.values(api.farms?.()||{here:api.current()}).flatMap(f=>f.objects||[]).flatMap(s=>s.jobs||[]).filter(j=>j.id===id).reduce((n,j)=>n+jobOutput(j),0)}
   function prepareRecipe(o,target,seen=new Set()){
@@ -107,11 +111,11 @@
     $('#queue-upgrade').onclick=()=>queueUpgradeDialog(o);
     $('#kitchen-help-listen').onclick=()=>window.meadowAudio?.speak('rhys-farm-routine');
     const autoStatus=()=>{$('.production-auto-status').textContent=o.autoWork===false?'Helpers paused.':belowCap(o,recipes.find(r=>r.id===($('#kitchen-repeat').value))||unlocked[0])?'Ready when ingredients and a helper are available.':'Target reached or the next batch would exceed it.'};
-    $('#kitchen-auto').onchange=e=>{o.autoWork=e.target.checked;api.save();autoStatus()};
-    $('#kitchen-repeat').onchange=e=>{o.autoRecipe=e.target.value;api.save();autoStatus()};
-    $('#kitchen-cap').onchange=e=>{const n=Number(e.target.value);o.autoCap=Number.isFinite(n)?Math.max(0,Math.min(9999,Math.floor(n))):0;e.target.value=o.autoCap;api.save();autoStatus()};autoStatus();
+    $('#kitchen-auto').onchange=e=>{if(settings(o,{enabled:e.target.checked}))return;o.autoWork=e.target.checked;api.save();autoStatus()};
+    $('#kitchen-repeat').onchange=e=>{if(settings(o,{recipe:e.target.value}))return;o.autoRecipe=e.target.value;api.save();autoStatus()};
+    $('#kitchen-cap').onchange=e=>{const n=Number(e.target.value);if(settings(o,{cap:Number.isFinite(n)?Math.max(0,Math.min(9999,Math.floor(n))):0}))return;o.autoCap=Number.isFinite(n)?Math.max(0,Math.min(9999,Math.floor(n))):0;e.target.value=o.autoCap;api.save();autoStatus()};autoStatus();
     $$('.kitchen-make').forEach(b=>b.onclick=()=>{if(queue(o,recipes.find(r=>r.id===b.dataset.recipe))){o.autoRecipe=b.dataset.recipe;api.save();window.meadowAudio?.play(isWorkshop?'loom':'cook');showKitchen(o)}});
-    $('#kitchen-upgrade')?.addEventListener('click',()=>{if(t>=2||!api.spend(cost))return;o.tier=t+1;api.event?.('upgrade',1);api.save();window.meadowAudio?.play('upgrade');showKitchen(o)});
+    $('#kitchen-upgrade')?.addEventListener('click',()=>{if(command('build.upgrade',o.id,{expected:t},()=>{const next=api.current().objects.find(a=>a.id===o.id);if(next)showKitchen(next);}))return;if(t>=2||!api.spend(cost))return;o.tier=t+1;api.event?.('upgrade',1);api.save();window.meadowAudio?.play('upgrade');showKitchen(o)});
     if(window.meadowPlanner){const planButton=document.createElement('button');planButton.className='small-button full-button';planButton.textContent='Plan supplies for this recipe';planButton.onclick=()=>window.meadowPlanner.pinAndShow({kind:'recipe',id:selected,amount:10});panels.helpers.prepend(planButton)}
     api.moveControls?.(o);const move=$('#modal-content .item-move-actions');if(move)panels.helpers.append(move);
     queueMicrotask(()=>{const shortcut=$('#modal-content>.club-modal-shortcut');if(shortcut)panels.recipes.append(shortcut)});

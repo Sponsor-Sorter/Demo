@@ -32,7 +32,7 @@ export function tripCommand(type:string,d:Data,c:Data):Data|null{
     if(found<12&&elapsed+wrong*3<45-.5)fail('Finish the basket or let the round end before collecting.');
     score=found>=12?Math.max(0,100-wrong*7):Math.round(found/12*100);
    }else fail('Unknown trip.');
-   const r=success(J.completeTrip(s,p.kind,score,p.id));return {...r,score};}
+   const r=success(J.completeTrip(s,p.kind,score,p.id));for(const [id,count]of Object.entries(r.goods||{}))W.meadowAlmanac.record(id,count);return {...r,score};}
   default:return fail('Unknown trip action.');
  }
 }

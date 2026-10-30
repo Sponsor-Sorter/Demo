@@ -2,7 +2,7 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),source=f
 const barn={id:'barn',type:'barn'},farm={objects:[barn]},state={active:'willow',coins:100,lastMove:{},selected:'barn',moving:'barn'},buttons={};
 let rendered=0,saved=0;
 const ctx={state,current:()=>farm,def:o=>({name:o.type,price:220,kind:o.type==='treasure'?'collection':'building'}),isAnimal:o=>o.type==='cow',escapeHtml:s=>s,openModal:()=>{},notify:()=>{},activeVisit:null,clearPlacementPreview:()=>{},save:()=>saved++,render:()=>rendered++,window:{},$:id=>buttons[id]||=(id==='#modal-dialog'?{close:()=>{}}:{})};
-vm.createContext(ctx);vm.runInContext('let popupItemId,moveRotation;'+source.slice(source.indexOf('  function buildSaleOffer('),source.indexOf('  function rotateSelectedBuildItem('))+';this.offer=buildSaleOffer;this.sell=sellSelectedBuildItem',ctx);
+vm.createContext(ctx);vm.runInContext('let popupItemId,moveRotation;'+source.match(/  function command\([^\n]+/)[0]+source.slice(source.indexOf('  function buildSaleOffer('),source.indexOf('  function rotateSelectedBuildItem('))+';this.offer=buildSaleOffer;this.sell=sellSelectedBuildItem',ctx);
 assert.equal(ctx.offer(barn).gold,110);
 farm.objects.push({id:'cow',type:'cow',barnId:'barn'});assert.match(ctx.offer(barn).reason,/animals/);farm.objects.pop();
 barn.jobs=[{}];assert.match(ctx.offer(barn).reason,/batches/);delete barn.jobs;

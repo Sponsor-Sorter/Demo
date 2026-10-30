@@ -1,8 +1,9 @@
 (() => {
  'use strict';
  function clearDeviceFarm(storage,saveKey,owner,code){
+  if(owner)for(const prefix of ['meadow-farm-command-v1:','meadow-ui-v1:'])storage.removeItem(prefix+owner);
   for(const key of Object.keys(storage).filter(k=>k.startsWith(saveKey)||k==='meadow-market-before-shared-pantry')){
-   if(key===saveKey||[saveKey+'-owner',saveKey+'-load-account',saveKey+'-cloud-ack',saveKey+'-pending-cloud-review',saveKey+'-account-'+owner].includes(key)){storage.removeItem(key);continue;}
+   if(key===saveKey||[saveKey+'-owner',saveKey+'-protocol',saveKey+'-load-account',saveKey+'-cloud-ack',saveKey+'-pending-cloud-review',saveKey+'-account-'+owner].includes(key)){storage.removeItem(key);continue;}
    try{if(JSON.parse(storage.getItem(key))?.friendCode===code)storage.removeItem(key)}catch{}
   }
  }

@@ -157,7 +157,7 @@
     clearInterval(clockId); const elapsed = Math.max(0, Math.floor(((completedAt || Date.now()) - startedAt) / 1000));
     const points=window.meadowClub?.result({resultId:runId,game:{id:'word_search',goal:20,time:300,level:1},score:20,elapsed},true) ?? (3000+Math.max(0,300-elapsed)*10);
     const state = appState(); let earned = false; if(state)state.minigames ||= {records:{},rewards:{}};
-    if (state?.minigames) {
+    if (state?.minigames&&!window.meadowCommandUI?.active()) {
       state.minigames.records ||= {}; state.minigames.rewards ||= {};
       const record = state.minigames.records.word_search || { wins: 0, best: 0, bestScore: 0, level: 1 };
       record.wins++; record.level++; record.bestScore = Math.max(record.bestScore || 0, points);

@@ -2,7 +2,7 @@ import {applyFarmCommands,FarmActionError} from '../_shared/meadow-farm-actions2
 type Data=Record<string,any>;
 export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>};
 const uuid=(x:unknown)=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
-const origins=new Set(['https://sponsorsorter.com','https://localhost','http://localhost:8771']);
+const origins=new Set(['https://sponsorsorter.com','https://localhost','http://localhost:8771','http://127.0.0.1:8773']);
 export function farmDatabaseError(code:unknown){return ['22023','22P02'].includes(String(code))?new FarmActionError('INVALID_REQUEST','Reopen your saved farm before retrying this action.'):new Error('FARM_UNAVAILABLE');}
 async function read(req:Request){
  const reader=req.body?.getReader();if(!reader)throw new FarmActionError('INVALID_REQUEST','Choose a farm action.');
@@ -29,7 +29,7 @@ export function farmHandler(services:Services){return async(req:Request)=>{
   if(context.replayed)return reply(200,context);
   if(context.conflict)return reply(409,context);
   if(!context.ok||!Number.isSafeInteger(context.server_time)||context.server_time<1||!context.save_data)throw Error('FARM_UNAVAILABLE');
-  const applied=applyFarmCommands(context.save_data,body.commands,context.server_time,{ownedCollections:context.owned_collections||[],pendingHelp:context.pending_help||[],marketRounds:context.market_rounds||[],visitedFriend:context.visited_friend===true});
+  const applied=applyFarmCommands(context.save_data,body.commands,context.server_time,{ownedCollections:context.owned_collections||[],pendingHelp:context.pending_help||[],marketRounds:context.market_rounds||[],roundRecords:context.round_records||[],visitedFriend:context.visited_friend===true});
   const answer=await services.rpc('meadow_market_commit_farm_command',{...args,p_save_data:applied.save,p_summary:{results:applied.results,events:applied.events,help:applied.help,market_sales:applied.marketSales,messages:applied.messages,rules:applied.rules}});
   if(answer.enabled===false)return reply(409,{error:'COMMAND_ROLLOUT_PENDING'});
   return reply(answer.conflict?409:200,answer);

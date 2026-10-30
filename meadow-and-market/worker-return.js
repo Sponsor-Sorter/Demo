@@ -2,6 +2,7 @@
  'use strict';let api,pending=false,awayFrom=0,working=false;
  const minimum=60000,maxJobs=3;
  async function catchUp(a,from,now=Date.now()){
+  if(window.meadowCommandUI?.required())return null;
   if(working||!Number.isFinite(from)||now-from<minimum||a.ready?.()===false)return null;
   const s=a.state(),start=Math.max(from,Number(s.workerReturnAt)||0),workers=a.workers().filter(w=>w.map&&s.farms[w.map]);
   if(now-start<minimum||!workers.length)return null;

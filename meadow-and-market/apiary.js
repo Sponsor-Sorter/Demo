@@ -6,6 +6,7 @@
   function interval(f,h){return intervals[tier(h)]*(api?.state?window.meadowProgress?.pollinationFactor(api.state(),Object.keys(api.state().farms).find(id=>api.state().farms[id]===f))||1:1)}
   function blooms(f,h){return f.objects.filter(o=>o.type==='flowers'&&Math.abs(o.x-h.x)+Math.abs(o.y-h.y)<=4)}
   function settle(f,h,now=Date.now()){
+    if(window.meadowCommandUI?.required())return 0;
     const t=tier(h),cap=capacities[t],cycle=interval(f,h);h.honey=Math.max(0,Math.min(cap,Number(h.honey)||0));
     if(!Number.isFinite(h.lastHoneyAt)){h.lastHoneyAt=now;return 0}
     const flowering=blooms(f,h).filter(o=>Number(o.plantedAt)>0&&o.plantedAt+240000<=now);
@@ -16,7 +17,7 @@
     return count;
   }
   function collect(f,h){settle(f,h);const n=h.honey||0;if(!n)return 0;f.inventory.honey=(f.inventory.honey||0)+n;h.honey=0;return n}
-  function harvest(f,h){const n=collect(f,h);if(!n)return 0;api.xp(n*4);api.event?.('honey',n);api.save();api.render();window.meadowAudio?.play('honey');api.notify('Collected '+n+' jars of meadow honey');return n}
+  function harvest(f,h){if(window.meadowCommandUI?.active()){const map=Object.keys(api.farms()).find(id=>api.farms()[id]===f);window.meadowCommandUI.route('hive.collect',h.id,{},map);return 0;}const n=collect(f,h);if(!n)return 0;api.xp(n*4);api.event?.('honey',n);api.save();api.render();window.meadowAudio?.play('honey');api.notify('Collected '+n+' jars of meadow honey');return n}
   function settleAll(){let n=0;for(const f of Object.values(api.farms()))for(const h of f.objects.filter(o=>o.type==='hive'))n+=settle(f,h);if(n)api.save();return n}
   function status(f,h){const nearby=blooms(f,h),active=nearby.some(o=>Number(o.plantedAt)>0&&o.plantedAt+240000<=Date.now());return {nearby,active,full:h.honey>=capacities[tier(h)],remaining:Math.max(0,Math.ceil((interval(f,h)-(Date.now()-(h.lastHoneyAt||Date.now())))/1000))}}
   function statusText(f,h){const s=status(f,h);return !s.nearby.length?'Plant a flower patch within four tiles.':!s.active?'Waiting for nearby flowers to bloom.':s.full?'Honey jars are full — collect your harvest.':'Bees are foraging · next honey in '+s.remaining+' seconds.'}

@@ -12,6 +12,7 @@
  }
  function user(){return api?.user()?.id||''}
  async function deliver(){
+  if(window.meadowCommandUI?.required())return;
   if(!api.canApply())return;const who=user(),client=api.client();const r=await client.from('meadow_market_visit_events').select('id,owner_id,map_id,action,target_id,target_cycle,outcome').eq('owner_id',who).eq('outcome','pending').neq('action','visit').order('created_at').limit(100);
   if(r.error||who!==user()||!api.canApply())return;
   let changed=false;for(const row of r.data||[]){if(row.owner_id!==who)continue;const result=applyHelp(api.state(),row,api.rules);if(!result.duplicate)changed=true;row.outcome=result.outcome}
