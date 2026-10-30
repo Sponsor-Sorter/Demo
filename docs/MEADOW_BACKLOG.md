@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for backend206 / web205. See meadow-market-backend206.md and meadow-market-build205.md for staged commands, worker leases, atomic mission/help delivery and explicit remaining gates.
+Last reconciled for backend207 / web205. See meadow-market-backend207.md, meadow-market-backend206.md and meadow-market-build205.md for staged commands, verified market sales, worker leases, atomic mission/help delivery and explicit remaining gates.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -12,7 +12,7 @@ Last reconciled for backend206 / web205. See meadow-market-backend206.md and mea
 | Cross-map foreground helpers | Task fairness already implemented | Long-session fairness/load acceptance still required; do not infer a native soak from fixtures |
 | Heavy-farm performance | Improved180/181 | Reused nodes, shared flower scans, capped caches and scheduling tested. Native frame-time profile remains |
 | High-level pacing | Paths150–154 implemented | Worker, village, recipe and upgrade arithmetic tested; extended human pacing/play balance remains |
-| Server resources | Protocol3 receipts186–188; paid-perk guard203; staged commands204–206 | Core farming, workers, travel, most progression and atomic friend-help delivery deployed/tested, including isolated live Auth/Edge/DB acceptance. No real players enrolled. Account-bound durable client transport is staged/unattached; all UI wiring, server-owned initialization/legacy conversion, remaining expedition/market rewards and shared projects still need completion. Journal entries do not prove legacy earnings valid. Raw/direct client writes retired; paid well/queue state cannot be minted/cloned in snapshots |
+| Server resources | Protocol3 receipts186–188; paid-perk guard203; staged commands204–207 | Core farming, workers, travel, most progression, atomic friend-help delivery and verified market sales deployed/tested, including isolated live Auth/Edge/DB acceptance. No real players enrolled. Account-bound durable client transport is staged/unattached; all UI wiring, server-owned initialization/legacy conversion, remaining expedition rewards and shared projects still need completion. Journal entries do not prove legacy earnings valid. Raw/direct client writes retired; paid well/queue state cannot be minted/cloned in snapshots |
 | Server game rewards/scores | Issued rounds/verified scores184 | One-use rounds, server time and verified ranked rewards tested. Further bot/human-input resistance remains |
 | Onboarding/help | Guided farm loops189 | Resumable level-gated tour, specific original-cast replays, gold targets and brief lesson-crop reservation. Follow future UI changes with hit-target checks |
 | Map interaction | Artwork-traced regions189 | Five polygons cover painted features; map hash and grass/road/river exclusion samples guard regressions. Preserve pan/zoom coordinate system |

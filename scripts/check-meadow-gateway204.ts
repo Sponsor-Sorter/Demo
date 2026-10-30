@@ -26,6 +26,14 @@ Deno.test('Only database-supplied visitor help reaches the candidate and atomic 
  const f=fixture({ok:true,enabled:true,revision:5,server_time:now,save_data:save,owned_collections:[],pending_help:[help]});
  const r=await f.handler(req({...body,commands:[{type:'plot.harvest',target:'plot'}]}));assert(r.status===200);assert(f.calls[1].data.p_save_data.farms.willow.inventory.carrot===4);assert(f.calls[1].data.p_summary.help[0].id===help.id&&f.calls[1].data.p_summary.help[0].outcome==='applied');
 });
+Deno.test('Market commands use the database proof and never a client supplied win, amount or price',async()=>{
+ const save=JSON.parse(JSON.stringify(base));save.farms.willow.inventory.carrot=6;
+ const proof={id:'40000000-0000-4000-8000-000000000004',map:'willow',game:'market_pack',goal:3,verified:true,won:true,expires_at:now+600000};
+ const f=fixture({ok:true,enabled:true,revision:5,server_time:now,save_data:save,owned_collections:[],market_rounds:[proof]});
+ const command={type:'market.sell',map:'willow',data:{round:proof.id,item:'carrot'}};const r=await f.handler(req({...body,commands:[command]}));assert(r.status===200);assert(f.calls[1].data.p_save_data.coins===286);assert(f.calls[1].data.p_summary.market_sales[0].id===proof.id);
+ const fake=fixture();assert((await fake.handler(req({...body,commands:[command]}))).status===422);assert(fake.calls.length===1);
+ assert((await fake.handler(req({...body,commands:[{...command,data:{...command.data,won:true,price:999}}]}))).status===422);
+});
 Deno.test('Command gateway returns replay/conflict/disabled state without rerunning a command',async()=>{
  for(const [context,status]of [[{ok:true,replayed:true,revision:9},200],[{ok:false,conflict:true,revision:9},409],[{ok:false,enabled:false},409]] as const){
   const f=fixture(context);const r=await f.handler(req());assert(r.status===status);assert(f.calls.length===1);

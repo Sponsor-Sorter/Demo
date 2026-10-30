@@ -2,7 +2,7 @@
 // module. There is no eval, browser/DOM shim or downloaded code on the server.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..'),gameDir=path.join(root,'meadow-and-market');
-const names=['collection-catalog.js','pantry.js','animal-bonds.js','crop-growth.js','crop-mastery.js','journey-data.js','production.js','barns.js','housing.js','apiary.js','animals.js','farm-life.js','farm-progress.js','artisan-mastery.js','shop-plan.js','story.js','almanac.js','planting-policy.js','wells.js','journey-core.js','village-orders.js','farm-planner.js','farm-work.js','roster.js','workers.js','social.js'];
+const names=['collection-catalog.js','pantry.js','animal-bonds.js','crop-growth.js','crop-mastery.js','journey-data.js','production.js','barns.js','housing.js','apiary.js','animals.js','farm-life.js','farm-progress.js','artisan-mastery.js','shop-plan.js','story.js','almanac.js','planting-policy.js','wells.js','journey-core.js','village-orders.js','farm-planner.js','farm-work.js','roster.js','workers.js','social.js','farmers-market.js'];
 const read=n=>fs.readFileSync(path.join(gameDir,n),'utf8').replace(/\r\n/g,'\n');
 const game=read('game.js'),data=game.slice(game.indexOf('  const maps ='),game.indexOf('  const uiPointers=')),outlines=game.slice(game.indexOf('  const meadowOutline='),game.indexOf('  function pointInMeadow('));
 if(!data.startsWith('  const maps =')||!data.includes('const vendorDefs')||!outlines.includes('areaOutlines'))throw Error('Game data boundaries changed; review the generator');

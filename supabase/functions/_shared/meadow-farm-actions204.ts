@@ -3,7 +3,7 @@ import {progressionCommand} from './meadow-progression205.ts';
 import {createWorkerController} from './meadow-workers205.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[]};
+export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[]};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -16,7 +16,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  if(!s.farms?.willow||!integer(s.coins,0,1e12)||!integer(s.level,1,1e6))fail('The saved farm needs review.');
  W.meadowPantry.connect(s);
  s.collectionState||={};s.collectionState.owned=[...(context.ownedCollections||[])];
- const events:Data[]=[],messages:string[]=[],results:Data[]=[];
+ const events:Data[]=[],messages:string[]=[],results:Data[]=[],marketSales:Data[]=[];
  let map=s.active;
  const farms=()=>s.farms,current=()=>farms()[map];
  const animal=(o:Data)=>['chicken','cow','sheep','goat','alpaca'].includes(o.type);
@@ -127,6 +127,12 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
    case 'shop.upgrade':fields(d,['expected']);if(!f.shop?.unlocked||!integer(d.expected,0,2)||tier(f.shop)!==d.expected)fail('Reopen the current shop upgrade.');pay([240,520,980][d.expected]);f.shop.tier=d.expected+1;f.shop.lastSaleAt=now;break;
    case 'shop.name':fields(d,['name']);if(!f.shop?.unlocked||typeof d.name!=='string'||!d.name.trim()||Array.from(d.name).length>28)fail('Choose a shop name up to 28 characters.');f.shop.name=d.name.trim();break;
    case 'shop.plan':fields(d,['rules','enabled']);if(typeof d.enabled!=='boolean'||!W.meadowShopPlan.setPlan(f,d.rules,d.enabled))fail('Check the shelf targets and basket reserves.');break;
+   case 'market.sell':{
+    fields(d,['round','item']);const round=(context.marketRounds||[]).find(r=>r.id===d.round&&r.map===map),market=W.meadowFarmersMarket;
+    if(!round||!round.verified||!round.won||!['market_pack','market_weigh'].includes(round.game)||!integer(round.goal,1,6)||!integer(round.expires_at,1,1e15)||round.expires_at<now||marketSales.some(r=>r.id===round.id))fail('Finish and verify a new market delivery before selling.','VERIFIED_ROUND_REQUIRED');
+    if(!market.stalls.some((g:Data)=>g.goods.includes(d.item))||!market.unlocked(d.item,s))fail('Choose an unlocked market good.');const quote=market.quote(s,items[d.item],round.goal);
+    if(quote.amount!==round.goal||(f.inventory[d.item]||0)<round.goal)fail('Check this batch’s basket stock and market-cart capacity.');
+    f.inventory[d.item]-=round.goal;s.coins+=quote.total;xp(8);event('premiumSale',round.goal);event('market_'+market.stalls.find((g:Data)=>g.goods.includes(d.item)).id,round.goal);marketSales.push({id:round.id,map});result={...result,item:d.item,amount:round.goal,gold:quote.total};break;}
    case 'vendor.deliver':{
     fields(d,[]);if(!validID(command.target))fail('Choose an order.');const at=f.orders?.findIndex((x:Data)=>x.id===command.target),order=f.orders?.[at],vendor=vendors.find(v=>v.id===order?.vendor||v.name===order?.name&&Object.keys(v.ask).length===Object.keys(order.ask||{}).length&&Object.entries(v.ask).every(([id,n])=>order.ask[id]===n));
     if(!vendor||s.level<(vendor.unlock||1))fail('This order is no longer available.');for(const [id,n]of Object.entries(vendor.ask) as [string,number][]){if((f.inventory[id]||0)<n)fail('Gather the requested produce first.');}
@@ -186,5 +192,5 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
   worker.invalidate();
  }
  settle();s.seen=now;
- return {save:s,results,events,help,messages:messages.slice(-8),rules: RULES_HASH};
+ return {save:s,results,events,help,marketSales,messages:messages.slice(-8),rules: RULES_HASH};
 }
