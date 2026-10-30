@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.69",
-  "versionCode": 69,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview69-testing/frontlines-1.0.0-preview-build-69.apk",
-  "bytes": 212137511,
-  "sha256": "e3720bfe5756db06b51f103016b4ebc663f4e591e6a7233d5a8cb1e87810e3b0",
+  "versionName": "1.0.0.70",
+  "versionCode": 70,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview70-testing/frontlines-1.0.0-preview-build-70.apk",
+  "bytes": 210313690,
+  "sha256": "29c5854a5a07ca5a8e235d9deff1ce119c84b99fcec16c160a83f7138ebe9be4",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "notes": "V1.0.0.69: New guided training and solo campaign with scores, rewards and public standings. Skirmish rename, Pause forfeit and correct capture troop minimum.",
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview69-testing/frontlines-1.0.0-preview-build-69.apk"
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public70/frontlines-1.0.0.70-android.apk",
+  "notes": "V1.0.0.70: Clean release-mode Android package and Windows installer with verified updates and encrypted saved sign-in. Current graphics and gameplay retained."
 }

@@ -1,10 +1,12 @@
 {
-  "build": 69,
-  "version": "1.0.0.69",
-  "url": "https://sponsorsorter.com/frontlines/builds/69/",
-  "notes": "V1.0.0.69: New guided training and solo campaign with scores, rewards and public standings. Skirmish rename, Pause forfeit and correct capture troop minimum.",
+  "build": 70,
+  "version": "1.0.0.70",
+  "url": "https://sponsorsorter.com/frontlines/builds/70/",
+  "notes": "V1.0.0.70: Clean release-mode Android package and Windows installer with verified updates and encrypted saved sign-in. Current graphics and gameplay retained.",
   "networkBuild": 69,
-  "androidBuild": 69,
+  "androidBuild": 70,
+  "windowsBuild": 70,
+  "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
 }
