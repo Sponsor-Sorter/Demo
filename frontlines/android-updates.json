@@ -1,14 +1,18 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.71",
-  "versionCode": 71,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview71-testing/frontlines-1.0.0-preview-build-71.apk",
+  "versionName": "1.0.0.72",
+  "versionCode": 72,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview72-testing/frontlines-1.0.0-preview-build-72.apk",
   "bytes": 210313690,
-  "sha256": "88cd449a1857b8491a4144d7d55fa08263d76b9ca314f0d56fcd0e00784b9ca6",
+  "sha256": "87306d6ed3962edc2f7902f033aa5ccbc3e0ad4c7cc42896262c5a48d402054e",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public71/frontlines-1.0.0.71-android.apk",
-  "notes": "V1.0.0.71: Flag and spectate; retained army cards; winning captures finish immediately; improved online lobby search and Leave."
+  "manualUpdateClientBuilds": [
+    70,
+    71
+  ],
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public72/frontlines-1.0.0.72-android.apk",
+  "notes": "V1.0.0.72 Android updater repair. Builds70/71 need one manual install over the existing app; keep your game and account data."
 }
