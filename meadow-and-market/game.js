@@ -461,7 +461,7 @@
   function createArea(m){window.meadowGuides?.areaOpened(m.id);state.farms[m.id]={layoutVersion:2,gridScaleVersion:2,cropClusterVersion:1,tileSizeVersion:1,fixedGridVersion:1,objects:[],inventory:state.farms.willow.inventory,orders:[makeOrder()],done:0,visits:0,shop:{unlocked:false,stock:{},earned:0},expansionLevel:0,expanded:false};save()}
   function renderWorldLinks(){
     const special=state.active!=='willow';$$('.map-hotspot').forEach(e=>e.hidden=special);
-    let links=$('#world-links');if(!links){links=document.createElement('div');links.id='world-links';cameraMap.append(links)}
+    let links=$('#world-links');if(!links){links=document.createElement('div');links.id='world-links';cameraScene.append(links)}
     links.innerHTML=special?'<button class="area-path return-path">← Return to homestead</button>':state.active==='willow'?'<button class="area-path back-path" aria-label="Explore behind the homestead">Back pasture · Lv. 3</button>':'';
     links.querySelector('.return-path')?.addEventListener('click',()=>['back','east'].includes(state.active)?travelArea('willow'):visitMap('willow'));links.querySelector('.back-path')?.addEventListener('click',()=>travelArea('back'));
     window.meadowJourney?.mountMap();
@@ -683,7 +683,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=201;
+  const currentBuild=202;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

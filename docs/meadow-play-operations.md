@@ -60,6 +60,12 @@ For Play, native updates use Play Store. Remote farm content follows the existin
 
 Keep the previous deployed commit and private upload vault. Disable commerce flags server-side if verification or reward delivery degrades; preserve purchases for idempotent retries. Do not roll back the database to undo a content bug. Maintenance backs up bounded batches and prunes30-day backups. Any restore must respect account identity, farm revision and immutable purchase/reward receipts. Preserve shared app identities during game-only deletion. See docs/MEADOW_BACKLOG.md for unresolved production gates.
 
+## Game-only Auth retirement
+
+The seven-day game purge queues confirmed UUID-alias logins in meadow_private.auth_retirements. The meadow-market-auth-retirement cron runs at minutes03/18/33/48 only when work is due. The signer reads meadow_account_cleanup_token from Vault; the matching MEADOW_ACCOUNT_CLEANUP_TOKEN is an Edge secret. Do not put either value in source, logs or URLs. Requests send only a nonce, timestamp and two-minute HMAC signature, never the persistent key. Supabase-managed pg_net objects retain their managed ACLs; postgres revocation warnings are not proof of private queue access.
+
+The worker uses service-role-only leases and current Auth/ownership verification before should_soft_delete=true. It preserves real-email/shared/uncertain identities and never deletes another app's rows. Monitor deferred jobs/attempts and cron failures without recording raw account identifiers. Retries are bounded; stop the retirement cron if ownership classification needs investigation. Tests do not substitute for a consenting live test-account deletion acceptance.
+
 ## Build200 payment safety and AdMob review
 
 AdMob account approval was confirmed30October. App-store linking/app review remains separate. Actual store/ads switches remainfalse and all products inactive. A European privacy message is saved as a draft with visible refusal/close options. Do not publish it until its default provider/purpose list is reviewed and narrowed to the actual SDK setup; actual consent/SSV/no-fill device acceptance remains pending.

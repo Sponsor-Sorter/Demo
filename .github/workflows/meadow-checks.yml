@@ -19,7 +19,9 @@ jobs:
           deno-version: v2.x
       - run: deno test --allow-env scripts/check-meadow-recovery184.ts
       - run: deno test --no-config --node-modules-dir=none scripts/check-meadow-store194.ts
+      - run: deno test --no-config --allow-env scripts/check-meadow-cleanup202.ts
       - run: deno check --no-config --node-modules-dir=none supabase/functions/meadow-market-store/index.ts supabase/functions/meadow-market-ad-reward/index.ts supabase/functions/meadow-market-play-notifications/index.ts
+      - run: deno check --no-config supabase/functions/meadow-market-account-cleanup/index.ts
       - run: node scripts/check-meadow.cjs
       - run: node scripts/check-meadow-versions.cjs --committed
   android-build:

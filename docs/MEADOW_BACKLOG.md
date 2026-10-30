@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build201. See build183 and build186–189 release notes and their actual acceptance receipts.
+Last reconciled for build202. See build202 for the browser acceptance scope and remaining physical/provider gates.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -18,7 +18,7 @@ Last reconciled for build201. See build183 and build186–189 release notes and 
 | Map interaction | Artwork-traced regions189 | Five polygons cover painted features; map hash and grass/road/river exclusion samples guard regressions. Preserve pan/zoom coordinate system |
 | Voice coverage | Corrected189 | Main-loop clips reused by actual topic; four missing guides generated with original Hope/Noah voices. Smaller instructions need no new narration |
 | Story/recovery | Published184/187–189 | Eleven compact chapters/35 goals retained. Real browser recovery privately completed and new-password sign-in passed187. New opt-in recovery narration189 |
-| UI layouts | Browser183/188/189; Samsung188 accepted | Core animals, desk, story, build scrolling and activity history exercised.189 tour portrait/landscape checked. Physical iPad acceptance remains |
+| UI layouts | Browser202; Samsung188 accepted | Animals/care, desk water task, production, markets, missions, friend visit, placement/rotation/move, save/reload, word search and shared-screen win exercised. Fixed short-landscape return control hidden by HUD. Physical iPad and current Samsung acceptance remain |
 | Purchases/tester grants | Native/server scaffold194–197 | Only approved named testers retain free packs. Real products disabled; license purchase/restore/refund acceptance remains |
 | Play Billing/AdMob | Play internal10 active; SSV transport verified | Store verifier, pending/account/idempotency/refund guards and consent bridge implemented. All7products have inactive priced drafts; IAM/PubSub, provider review, real license/SSV/device tests and full farm authority still gate activation |
 | Paid guest protection | Client, Edge and SQL guards shipped200 | Ready username account and non-anonymous Auth identity required for paid checkout/restore; registered/guest/incomplete fixtures passed. Real reinstall/new-device provider acceptance remains. Real-payment switches remain off |
@@ -32,4 +32,4 @@ Phone use: test only while idle. A successful APK compile or a browser viewport 
 
 Build197 also links the website install option to the actual Play internal test, clarifies username-only account/signup/guest/recovery flows, removes public test-gold controls, and adds game-only privacy/deletion, private backups/maintenance and opt-in diagnostics. See meadow-market-build197.md and meadow-play-operations.md for the exact completed work and outstanding gates. The user released the Samsung for idle testing on30Oct. It is connected and idle, but still has direct1.6.1/code9; no Play installation or touch acceptance was completed this session. Do not uninstall it without preserving farm access.
 
-AdMob account approval is confirmed. App-store linking/app review and the draft European privacy message still need completion before live ads. Real commerce remains disabled; service-account/PubSub credentials, license purchase/restore/refund, SSV/consent/no-fill and physical acceptance remain. Exclusive-game Auth-principal cleanup/retention still needs review; game-only data purge must preserve other apps.
+AdMob account approval is confirmed. App-store linking/app review and the draft European privacy message still need completion before live ads. Real commerce remains disabled; service-account/PubSub credentials, license purchase/restore/refund, SSV/consent/no-fill and physical acceptance remain. Exclusive generated-game Auth-principal retirement is queued after the seven-day purge and guarded by fresh cross-app ownership checks. Shared/uncertain identities are retained. Signed transport and rollback fixtures passed; no real Auth principal was deleted. Phone testing is paused at the user's request.

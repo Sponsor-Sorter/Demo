@@ -1,6 +1,9 @@
 /* Brown notices sit directly below the current farm title in both HUD modes. */
 #toast{top:var(--hud-notice-top,90px)!important;left:var(--hud-notice-left,50%)!important;bottom:auto!important;height:auto!important;width:max-content;max-width:min(440px,calc(100vw - 24px));overflow:hidden;background:#6e503b;color:#fff9ec;transform:translate(-50%,-6px);z-index:1500}
 #toast.show{transform:translate(-50%,0)}
+/* Travel controls belong to the screen, clear of the HUD and camera transforms. */
+#world-links{position:absolute;inset:0;z-index:9;pointer-events:none}
+#world-links .area-path{left:max(12px,env(safe-area-inset-left));top:var(--hud-world-links-top,116px);min-height:44px;max-width:calc(100vw - 100px);pointer-events:auto;touch-action:manipulation}
 .compact-hud-panel{display:contents}.compact-hud-button[hidden]{display:none!important}
 .compact-hud-button{background:none!important;border:0!important;box-shadow:none!important;touch-action:none!important;user-select:none;-webkit-user-select:none}
 .compact-hud-arrow{position:absolute;right:-3px;bottom:0;color:#fff;font-size:24px;font-weight:900;line-height:1;text-shadow:0 1px 3px #49341c,0 0 2px #49341c;pointer-events:none}
