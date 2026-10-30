@@ -85,3 +85,5 @@ Meadow Markets privacy message is now Published, English, with refusal/close and
 ## Build205: staged progression and workers
 
 See docs/meadow-market-build205.md. Most progression, travel and roster/worker actions now have strict reducer commands. Workers use saved server leases and bounded catch-up; mission events commit once with accepted actions. The normal-player command cohort remains empty. Client transport is implemented/tested but unattached: UI routing, new-player initialization, legacy conversion and the remaining round/social mutations are mandatory before enrollment. Keep protocol3 player flows running meanwhile. Web205 only changes farm-history labels/versioning; it does not claim worker authority for existing clients. Real commerce remains disabled, and Play beta remains in review.
+
+Backend206 adds pending visitor-help reads and atomic help/log acknowledgments to that gateway. Only service-derived rows enter the reducer. Its trigger rejects unverified acknowledgments on enrolled farms; protocol3 help remains compatible. See docs/meadow-market-backend206.md. Do not let the old client help-delivery loop run for a future enrolled account.

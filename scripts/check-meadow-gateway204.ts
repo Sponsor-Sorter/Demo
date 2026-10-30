@@ -15,10 +15,16 @@ Deno.test('Command gateway derives owner from verified identity and clock/state 
 });
 Deno.test('Command gateway refuses callers, owner/snapshot/time injection and oversized bodies',async()=>{
  const f=fixture();assert((await f.handler(req(body,''))).status===401);
- for(const extra of [{user:'someone'},{save_data:{coins:999999}},{now:1},{expected_revision:1.5},{commands:[]}])assert((await f.handler(req({...body,...extra}))).status===422);
+ for(const extra of [{user:'someone'},{save_data:{coins:999999}},{now:1},{expected_revision:1.5},{commands:[]},{pending_help:[]}])assert((await f.handler(req({...body,...extra}))).status===422);
  assert((await f.handler(req({padding:'x'.repeat(66000)}))).status===413);assert(f.calls.length===0);
  f.services.identity=async()=>null;assert((await f.handler(req())).status===401);
  assert((await f.handler(req(body,'Bearer token','https://wrong.invalid'))).status===403);
+});
+Deno.test('Only database-supplied visitor help reaches the candidate and atomic acknowledgment',async()=>{
+ const save=JSON.parse(JSON.stringify(base));Object.assign(save.farms.willow.objects[0],{crop:'carrot',plantedAt:now-600000,stage:1});
+ const help={id:'30000000-0000-4000-8000-000000000003',map_id:'willow',target_id:'plot',target_cycle:now-600000,action:'water'};
+ const f=fixture({ok:true,enabled:true,revision:5,server_time:now,save_data:save,owned_collections:[],pending_help:[help]});
+ const r=await f.handler(req({...body,commands:[{type:'plot.harvest',target:'plot'}]}));assert(r.status===200);assert(f.calls[1].data.p_save_data.farms.willow.inventory.carrot===4);assert(f.calls[1].data.p_summary.help[0].id===help.id&&f.calls[1].data.p_summary.help[0].outcome==='applied');
 });
 Deno.test('Command gateway returns replay/conflict/disabled state without rerunning a command',async()=>{
  for(const [context,status]of [[{ok:true,replayed:true,revision:9},200],[{ok:false,conflict:true,revision:9},409],[{ok:false,enabled:false},409]] as const){

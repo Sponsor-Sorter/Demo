@@ -1,0 +1,34 @@
+begin;
+do $$
+declare u uuid:=gen_random_uuid(); v uuid:=gen_random_uuid(); other uuid:=gen_random_uuid(); h uuid:=gen_random_uuid(); foreign_help uuid:=gen_random_uuid(); later_help uuid:=gen_random_uuid(); request uuid:=gen_random_uuid(); s jsonb; b jsonb; r bigint; a jsonb; rejected boolean; applied timestamptz;
+begin
+ insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',true),(v,'authenticated','authenticated',true),(other,'authenticated','authenticated',true);
+ insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'MM-'||left(u::text,8),'Temporary help owner'),(v,'MM-'||left(v::text,8),'Temporary help visitor'),(other,'MM-'||left(other::text,8),'Temporary other farm');
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ a:=public.meadow_market_commit_economy_save(0,'{"version":1,"coins":250,"level":1,"xp":0,"active":"willow","farms":{"willow":{"objects":[{"id":"plot","type":"plot","crop":"carrot","stage":1,"plantedAt":100}],"inventory":{}}}}',gen_random_uuid());r:=(a->>'revision')::bigint;select save_data into s from public.meadow_market_saves where user_id=u;
+ insert into meadow_private.farm_command_accounts(user_id) values(u);
+ insert into public.meadow_market_visit_events(id,owner_id,visitor_id,map_id,action,target_id,target_cycle) values(h,u,v,'willow','water','plot',100),(foreign_help,other,v,'willow','water','plot',100);
+ rejected:=false;begin perform public.meadow_market_ack_help(jsonb_build_array(jsonb_build_object('id',h,'outcome','applied')));exception when sqlstate '42501' then rejected:=true;end;
+ if not rejected then raise exception 'Command farm accepted a raw help acknowledgment';end if;
+ perform set_config('meadow.command_owner',u::text,true);rejected:=false;begin perform public.meadow_market_ack_help(jsonb_build_array(jsonb_build_object('id',h,'outcome','applied')));exception when sqlstate '42501' then rejected:=true;end;
+ if not rejected then raise exception 'Spoofed owner marker acknowledged help';end if;
+ perform set_config('request.jwt.claims','{"role":"service_role"}',true);perform set_config('meadow.command_owner','',true);
+ b:=jsonb_build_object('expected_revision',r,'commands','[{"type":"shop.check"}]'::jsonb);
+ a:=public.meadow_market_read_farm_command(u,request,b);
+ if jsonb_array_length(a->'pending_help')<>1 or a->'pending_help'->0->>'id'<>h::text then raise exception 'Pending visitor help leaked owners';end if;
+ s:=jsonb_set(s,'{farms,willow,objects,0,wateredUntil}','999999');
+ a:=public.meadow_market_commit_farm_command(u,request,b,s,jsonb_build_object('events','[]'::jsonb,'help',jsonb_build_array(jsonb_build_object('id',h,'outcome','applied'),jsonb_build_object('id',foreign_help,'outcome','applied'))));
+ if a->>'ok'<>'true' or (select outcome from public.meadow_market_visit_events where id=h)<>'applied' or (select outcome from public.meadow_market_visit_events where id=foreign_help)<>'pending' then raise exception 'Atomic owner-only acknowledgment failed';end if;
+ select applied_at into applied from public.meadow_market_visit_events where id=h;
+ insert into public.meadow_market_visit_events(id,owner_id,visitor_id,map_id,action,target_id) values(later_help,u,v,'willow','feed','removed');
+ a:=public.meadow_market_commit_farm_command(u,request,b,s,'{}');
+ if a->>'replayed'<>'true' or (select applied_at from public.meadow_market_visit_events where id=h) is distinct from applied or (select outcome from public.meadow_market_visit_events where id=later_help)<>'pending' then raise exception 'Old retry acknowledged a new helping hand';end if;
+ select save_data into s from public.meadow_market_saves where user_id=u;r:=(a->>'revision')::bigint;b:=jsonb_set(b,'{expected_revision}',to_jsonb(r));
+ rejected:=false;begin perform public.meadow_market_commit_farm_command(u,gen_random_uuid(),b,s||'{"coins":260}',jsonb_build_object('events','[]'::jsonb,'help',jsonb_build_array(jsonb_build_object('id',later_help,'outcome',null))));exception when sqlstate '22023' then rejected:=true;end;
+ if not rejected or (select save_data->>'coins' from public.meadow_market_saves where user_id=u)<>'250' or (select outcome from public.meadow_market_visit_events where id=later_help)<>'pending' then raise exception 'Malformed help partially committed';end if;
+ if auth.uid() is not null or current_setting('meadow.command_owner',true)<>'' then raise exception 'Help acknowledgment leaked owner claims';end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',other,'role','authenticated')::text,true);
+ if public.meadow_market_ack_help(jsonb_build_array(jsonb_build_object('id',foreign_help,'outcome','not_needed')))<>1 then raise exception 'Legacy help flow regressed';end if;
+end $$;
+select 'Pending help stays owner-only; canonical save and acknowledgment commit together, raw/spoofed acknowledgments fail, retries do not consume new help, invalid outcomes roll back and legacy help remains; fixture rolled back' result;
+rollback;

@@ -3,7 +3,7 @@ import {progressionCommand} from './meadow-progression205.ts';
 import {createWorkerController} from './meadow-workers205.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[]};
+export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[]};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -84,6 +84,13 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  const worker=createWorkerController({s,W,R,now,api,fp,grass,home,animal,area,plotYield,seedCost,unlockedCrop,event,fields,fail,integer,runOnMap});
  function requireRecipe(o:Data,id:unknown){const r=W.meadowProduction.recipes.find((r:Data)=>r.id===id);if(!r||(r.station||'kitchen')!==o.type||s.level<(r.unlock||(o.type==='workshop'?4:2)))fail('This recipe is not unlocked at this workspace.');return r;}
  function add(id:string,n:number){if(!Object.hasOwn(items,id)||!integer(n,0,1e9))fail('Unknown farm good.');current().inventory[id]=(current().inventory[id]||0)+n;}
+ // These rows come only from the service-owned database read, never the
+ // request body. Reuse the original care/crop-cycle rules before player work.
+ if(!Array.isArray(context.pendingHelp||[])||(context.pendingHelp||[]).length>100)fail('Visitor help needs review.');
+ const help=(context.pendingHelp||[]).map(row=>{
+  const result=W.meadowSocial.applyHelp(s,row,{crops:items,settleAnimal:(o:Data)=>W.meadowAnimals.settle(o)},now);
+  return{id:row.id,outcome:result.outcome};
+ });
  for(const command of commands){
   fields(command,['type','map','target','data']);if(typeof command.type!=='string')fail('Choose a farm action.');map=command.map||s.active;
   if(!validID(map)||!farms()[map])fail('Open that farm first.');
@@ -179,5 +186,5 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
   worker.invalidate();
  }
  settle();s.seen=now;
- return {save:s,results,events,messages:messages.slice(-8),rules: RULES_HASH};
+ return {save:s,results,events,help,messages:messages.slice(-8),rules: RULES_HASH};
 }
