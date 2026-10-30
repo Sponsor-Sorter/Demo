@@ -1,9 +1,9 @@
 name: Meadow Markets regression checks
 on:
   push:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
   pull_request:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
 jobs:
   game-checks:
     runs-on: ubuntu-latest
@@ -20,6 +20,9 @@ jobs:
       - run: deno test --allow-env scripts/check-meadow-recovery184.ts
       - run: deno test --no-config --node-modules-dir=none scripts/check-meadow-store194.ts
       - run: deno test --no-config scripts/check-meadow-notifications203.ts
+      - run: node tools/build-meadow-server-rules.cjs --check
+      - run: deno test --no-config scripts/check-meadow-actions204.ts scripts/check-meadow-gateway204.ts
+      - run: deno check --no-config supabase/functions/meadow-market-farm-actions/index.ts
       - run: deno test --no-config --allow-env scripts/check-meadow-cleanup202.ts
       - run: deno check --no-config --node-modules-dir=none supabase/functions/meadow-market-store/index.ts supabase/functions/meadow-market-ad-reward/index.ts supabase/functions/meadow-market-play-notifications/index.ts
       - run: deno check --no-config supabase/functions/meadow-market-account-cleanup/index.ts

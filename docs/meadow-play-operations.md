@@ -75,3 +75,9 @@ The worker uses service-role-only leases and current Auth/ownership verification
 AdMob account approval was confirmed30October. App-store linking/app review remains separate. Actual store/ads switches remainfalse and all products inactive. A European privacy message is saved as a draft with visible refusal/close options. Do not publish it until its default provider/purpose list is reviewed and narrowed to the actual SDK setup; actual consent/SSV/no-fill device acceptance remains pending.
 
 Checkout and Restore now fail closed unless the backend confirms a ready Meadow Markets username account attached to a non-anonymous Auth identity. The Edge verifier checks the owner before Google lookup; SQL independently refuses new guest/incomplete-account deliveries. The approved free-test cohort remains separate. Browser fixtures and rollback-only database tests cover guest/incomplete/registered states. Real reinstall/new-device purchase recovery and license-test provider acceptance remain pending.
+
+## Backend204: staged commands and consent
+
+See docs/meadow-market-backend204.md. The private farm-action gateway is deployed with an empty real-player cohort. Auth/Edge/SQL acceptance passed on an isolated anonymous fixture which was removed. Existing clients still use protocol3 until every mutation and offline/worker flow is ported and wired. Do not enroll normal players or call this full authority.
+
+Meadow Markets privacy message is now Published, English, with refusal/close and Manage options. Google is the only selected ad partner (755), automatic partner additions off, creative consent checks on, optional interests off by default. Current account contains only Meadow Markets; re-review when adding apps/sources. Actual UMP/SSV/device acceptance and app-store linking/review remain. Ads/payments/production flags stay off.
