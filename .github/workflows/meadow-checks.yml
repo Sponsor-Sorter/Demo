@@ -21,7 +21,7 @@ jobs:
       - run: deno test --no-config --node-modules-dir=none scripts/check-meadow-store194.ts
       - run: deno test --no-config scripts/check-meadow-notifications203.ts
       - run: node tools/build-meadow-server-rules.cjs --check
-      - run: deno test --no-config scripts/check-meadow-actions204.ts scripts/check-meadow-gateway204.ts scripts/check-meadow-progression205.ts scripts/check-meadow-workers205.ts scripts/check-meadow-help206.ts scripts/check-meadow-market207.ts
+      - run: deno test --no-config scripts/check-meadow-actions204.ts scripts/check-meadow-gateway204.ts scripts/check-meadow-progression205.ts scripts/check-meadow-workers205.ts scripts/check-meadow-help206.ts scripts/check-meadow-market207.ts scripts/check-meadow-trips208.ts
       - run: node scripts/check-meadow-command-client205.cjs
       - run: node scripts/check-meadow-refund204.cjs
       - run: deno check --no-config supabase/functions/meadow-market-farm-actions/index.ts

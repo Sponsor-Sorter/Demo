@@ -1,6 +1,7 @@
 import {createGameRules,RULES_HASH} from './meadow-game-rules204.ts';
 import {progressionCommand} from './meadow-progression205.ts';
 import {createWorkerController} from './meadow-workers205.ts';
+import {tripCommand} from './meadow-trips208.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
 export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[]};
@@ -184,7 +185,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
     fields(d,['helpers','crop','mode','cap']);o=requireObject(command.target,'well');fields(d.helpers,['jade','rhys','jay']);if(Object.keys(d.helpers).length!==3||Object.values(d.helpers).some(x=>typeof x!=='boolean')||!unlockedCrop(d.crop)||!['previous','selected'].includes(d.mode)||!integer(d.cap,0,9999))fail('Check the well’s helper settings.');o.helpers={...d.helpers};o.helperCrop=d.crop;o.helperPlantMode=d.mode;o.helperCropCap=d.cap;break;}
    case 'craft.settings':fields(d,['enabled','recipe','cap']);o=requireObject(command.target);if(!['kitchen','workshop'].includes(o.type)||typeof d.enabled!=='boolean'||!integer(d.cap,0,9999))fail('Choose valid production settings.');requireRecipe(o,d.recipe);Object.assign(o,{autoWork:d.enabled,autoRecipe:d.recipe,autoCap:d.cap});break;
    default:{
-    const r=worker.command(command.type,command.target,d,map)||progressionCommand(command.type,command.target,d,{s,W,R,now,map,fields,fail,xp,event,journal});
+    const r=worker.command(command.type,command.target,d,map)||tripCommand(command.type,d,{s,W,now,fields,fail,xp})||progressionCommand(command.type,command.target,d,{s,W,R,now,map,fields,fail,xp,event,journal});
     if(!r)fail('This farm action has not moved to the verified server yet.','UNSUPPORTED_FARM_ACTION');result={...r,type:command.type};
    }
   }
