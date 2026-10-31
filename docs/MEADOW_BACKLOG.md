@@ -26,7 +26,7 @@ Last reconciled for live build216. Both216CI jobs and Pages deployment passed; t
 | Local storage failures | Fixtures183 passed | Physical storage-pressure acceptance remains |
 | Friend visits/help | Two actual farms accepted183 | Invitation, acceptance, visit, help and visitor log passed; continue account-isolation checks |
 | Community safety | Published201 | Report/block controls in Friends, visits and visitor log; Settings unblocking; rules acceptance, bilateral server enforcement, private staff report queue and 180-day retention. Rollback fixtures and browser entry points passed. Staff must review reports daily |
-| Play public beta | Submitted30Oct | Early-access track4699801153255070807, native1.7.0/code10, game201, Australia, unlimited open invites. Console shows Changes in review; automated checks pending at submission. Approval and public installation/link acceptance remain |
+| Play public beta | Resubmitted31Oct | Early-access track4699801153255070807 now uses the Samsung-tested native1.7.1/code11 launch fix, with current web216 content. Review restarted to replace crashing native10; automated checks precede review. Australia/unlimited open invites preserved. Approval and public installation/link acceptance remain |
 | Store declarations/artwork | Completed30Oct | Audience13+, IARC including block/report, data safety (ten data subtypes), advertising-ID/SDK purposes, reviewer access, listing feature and four gameplay screenshots saved/submitted. Revisit when SDK/data behaviour changes |
 
 Phone use: test only while idle. A successful APK compile or a browser viewport is not physical-device acceptance. Full authoritative farming, native performance/storage and real-store integration are still production gates.
