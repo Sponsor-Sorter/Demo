@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.75",
-  "versionCode": 75,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview75-testing/frontlines-1.0.0-preview-build-75.apk",
-  "bytes": 221185091,
-  "sha256": "1e61987c54546745444a1c33b22a9a5638ee7e713accc32a03497c432c3eaf20",
+  "versionName": "1.0.0.77",
+  "versionCode": 77,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview77-testing/frontlines-1.0.0-preview-build-77.apk",
+  "bytes": 221289292,
+  "sha256": "3e6d2fcf31a1acfcf556501ddc489a400e69442b9910cea28ed15e765f050855",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public75/frontlines-1.0.0.75-android.apk",
-  "notes": "V1.0.0.75: Capital training now starts with city selection and uses capital income, defence and victory rules. Previously blocked saved lessons reopen at capital selection; completed campaign progress is kept."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public77/frontlines-1.0.0.77-android.apk",
+  "notes": "V1.0.0.77: Saved online battle results, troop history and player reports. Store lifecycle fixes and a clean browser release runtime."
 }

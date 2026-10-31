@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "bytes": 104194352,
+  "sha256": "490ba5442b7596a42b6a819ae2ab0be1dfa50e3f9e4c27186a93462d93f55fe9",
+  "chunks": [
+    {
+      "file": "index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "4b66dcd9348169ec42e04a80684494ef018a5bbbb4b3dae375055ed6e99dc7b8"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "0460aa144cba4c7dd32191b213ad90b01d86f2673b8b75c0946e60404bc2d5e1"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "563877b699d8a28e9f03e5ffbb051110be333fc11700d0f1dff7873d354a1cbc"
+    },
+    {
+      "file": "index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "9d0376884b6c96e32bb69377f37e83706e13a247d7511db40cba90a0af3c5b70"
+    },
+    {
+      "file": "index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "cd9ff2701c1936f9f9cf8760425baeb749a3951f237112ecac24cdd6eaa96257"
+    },
+    {
+      "file": "index.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "051250db1b520b85eccb866adbcfdfe63fff7e5d3af7b7e4f1e90d017c817307"
+    },
+    {
+      "file": "index.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "ef128ae3c5dc8691e89b3de862df725d2a2de7c8f94a7591bc8129bcc607a1ea"
+    },
+    {
+      "file": "index.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "de8a115bbdc2d5688ecee6c34cb4e44c4010c3d976d5de5612f42cf2ba24756e"
+    },
+    {
+      "file": "index.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "d1745204b16f7bae8c0b3323f43d5a417f4479dfd31ac00b240babf753f7f303"
+    },
+    {
+      "file": "index.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "0ee24c4fdcc0371e6f4cd6b6a94015cf6cdb03b7c7c1f5908d79dd781acb4a82"
+    },
+    {
+      "file": "index.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "7c2452483098275f54e0b109c935adb18dadf5ff023c20c61d4524c6135da2b6"
+    },
+    {
+      "file": "index.pck.part-11",
+      "bytes": 8388608,
+      "sha256": "171cb334261b0b007b482acab229c11108ee3c5ce691d353129054aaa8531e71"
+    },
+    {
+      "file": "index.pck.part-12",
+      "bytes": 3531056,
+      "sha256": "7b6975966151af651b62019e7fa760368f8ee9ec776339d9698dd9a270ffa013"
+    }
+  ]
+}

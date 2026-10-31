@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28",
+  "updated": "2026-10-31",
   "entries": [
     {
       "id": "meadow-markets",
@@ -131,18 +131,18 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play the latest Frontlines preview in your browser or on Android. Build 58 makes the prehistoric map art upgrade compatible with existing R1 campaigns and saved games. Network protocol 51 remains compatible; Android build 50 and newer can use the in-game updater.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. Version1.0.0.77 adds saved online battle results, player cards, a troop timeline with elimination markers and manual player reporting. Online rooms use network protocol77.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Web and Android map upgrade preview",
-      "build": "Version 1.0.0-preview.58 · Build 58 (browser + Android)",
-      "requirements": "WebGL 2 and WebAssembly browser, or Android 7.0+ (64-bit ARM). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
+      "status": "Public preview · browser, Android & Windows",
+      "build": "Version1.0.0.77 · Build77 (browser, Android and Windows)",
+      "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Build 58 keeps existing prehistoric-map campaigns playable from their checksum-pinned R1 map cache. Choose Update Art to download the improved terrain from the existing visual57 map pack. Art updates preserve the map identity, campaign state, troops, cards and gameplay rules.",
-        "The game checks for newer builds while open. Browser players can choose Install Update to open the current build. On Android build 50 and newer, the game downloads and verifies the update, then Android asks you to approve installation. Builds 49 and earlier need a manual APK setup update.",
-        "Browser acceptance: visible build 58 menu and isolated-origin Carboniferous 325 match passed. Terrain rendered; zoom, territory reserve deployment and bonus overlay responded.",
-        "Android acceptance: one build56 Triassic round7 campaign continued from its legacy R1 cache, downloaded the public visual57 art pack with verified SHA-256, then continued with the original countries, hands and deck. Original campaign/settings files were restored and hash-verified. This is not APK OTA or a full seven-map campaign test."
+        "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play testing builds are a separate unpublished distribution.",
+        "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Android50+ supports in-game updates, although stock70/71 clients with the old compiled updater fault need a manual signed replacement first. Android asks you to confirm installation.",
+        "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
+        "Online players need compatible protocol77 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
       ],
       "actions": [
         {
@@ -151,12 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android build 58 APK (manual setup for builds 49 and earlier)",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview58-testing/frontlines-1.0.0-preview-build-58.apk"
+          "label": "Download Android77 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public77/frontlines-1.0.0.77-android.apk"
+        },
+        {
+          "label": "Download Windows77 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public77/frontlines-1.0.0.77-windows-setup.exe"
+        },
+        {
+          "label": "Installation and update guide",
+          "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Build 58 adds an Update Art flow for seven prehistoric maps. Old R1 cache and saved campaigns remain playable offline; the new visual57 map packs are checksum-pinned and reused unchanged. 147 native upgrade checks passed. The actual browser test used an isolated origin; the phone acceptance covers one old-cache campaign update and continue. No APK OTA, iPhone or full seven-map physical campaign acceptance is claimed. Network protocol 51, backend 22, Earth, accounts, wardrobe and approved audio are retained.",
-      "sha256": "28E93F33565A3425F09D70CAD7036CC35CB7BF76164D9E6EB2CEFA3724865A31",
+      "notes": "Build77 preserves the approved artwork, maps, wardrobe and account/save locations. Browser and compiled release results/report screens passed candidate checks; the physical Android75-to77 public update check follows publication. Physical iPhone77 acceptance is not claimed. Purchases, ads and game deletion processing remain disabled; retention policy approval is still pending.",
+      "sha256": "3E6D2FCF31A1ACFCF556501DDC489A400E69442B9910CEA28ED15E765F050855",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

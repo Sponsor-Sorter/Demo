@@ -1,11 +1,11 @@
 {
-  "build": 75,
-  "version": "1.0.0.75",
-  "url": "https://sponsorsorter.com/frontlines/builds/75/",
-  "notes": "V1.0.0.75: Capital training now starts with city selection and uses capital income, defence and victory rules. Previously blocked saved lessons reopen at capital selection; completed campaign progress is kept.",
-  "networkBuild": 69,
-  "androidBuild": 75,
-  "windowsBuild": 75,
+  "build": 77,
+  "version": "1.0.0.77",
+  "url": "https://sponsorsorter.com/frontlines/builds/77/",
+  "notes": "V1.0.0.77: Saved online battle results, troop history and player reports. Store lifecycle fixes and a clean browser release runtime.",
+  "networkBuild": 77,
+  "androidBuild": 77,
+  "windowsBuild": 77,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
