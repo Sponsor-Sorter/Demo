@@ -1,11 +1,11 @@
 {
-  "build": 77,
-  "version": "1.0.0.77",
-  "url": "https://sponsorsorter.com/frontlines/builds/77/",
-  "notes": "V1.0.0.77: Saved online battle results, troop history and player reports. Store lifecycle fixes and a clean browser release runtime.",
+  "build": 79,
+  "version": "1.0.0.79",
+  "url": "https://sponsorsorter.com/frontlines/builds/79/",
+  "notes": "V1.0.0.79: Reliable online gameplay commands, accessible lobby rules, verified update continuity and browser download retry recovery. Approved graphics and audio retained.",
   "networkBuild": 77,
-  "androidBuild": 77,
-  "windowsBuild": 77,
+  "androidBuild": 79,
+  "windowsBuild": 79,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
