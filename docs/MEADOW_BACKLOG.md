@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build216 readiness. Live215 passed CI and the actual214→215 update in both browser and Samsung. Build216 adds isolated Google license acceptance and a refund-review checkout entry guard; publication acceptance is recorded in meadow-market-build216.md. Existing player farms remain on protocol3; the command cohort and provider-test allowlist are empty.
+Last reconciled for live build216. Both216CI jobs and Pages deployment passed; the browser accepted215→216 and Settings confirmed216 with level14/VIP1 retained. Samsung accepted214→215; its216/Play-provider acceptance is pending approval to replace the direct APK. Build216 adds isolated Google license acceptance and a refund-review checkout entry guard; details are in meadow-market-build216.md. Existing player farms remain on protocol3; the command cohort and provider-test allowlist are empty.
 
 | Area | Status | Remaining work |
 |---|---|---|
