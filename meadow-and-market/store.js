@@ -53,16 +53,20 @@
   finally{busy=false}
  }
  async function advertisement(rewarded=false){
-  await refresh();if(configuration.test_access)return {test:true};
-  if(!ads||!configuration.ads_enabled)return {unavailable:true};
-  const consent=await ads.consent();if(!consent.canRequestAds)return {unavailable:true};
-  const data={rewarded};
-  if(rewarded){const r=await api.client().rpc('meadow_market_start_ad_reward');if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
-  const result=await ads.show(data);
-  if(result.earned)api.notify('Ad finished. Your reward arrives after server verification.');
-  if(result.earned){let checks=0;const who=api.user()?.id;const timer=setInterval(()=>{if(who!==api.user()?.id||++checks>4){clearInterval(timer);return;}window.meadowClub?.refresh();},5000);}
-  // Native earned callbacks never authorize currency.
-  return result;
+  if(busy)return {unavailable:true};busy=true;const who=api.user()?.id;
+  const sameAccount=()=>{if(who!==api.user()?.id)throw Error('Account changed. Open the reward on your own farm.');};
+  try{
+   await refresh();sameAccount();if(configuration.test_access&&!configuration.ads_provider_test)return {test:true};
+   if(!ads||!configuration.ads_enabled)return {unavailable:true};
+   const consent=await ads.consent();sameAccount();if(!consent.canRequestAds)return {unavailable:true};
+   const data={rewarded};
+   if(rewarded){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
+   const result=await ads.show(data);sameAccount();
+   if(result.earned)api.notify('Ad finished. Your reward arrives after server verification.');
+   if(result.earned){let checks=0;const timer=setInterval(()=>{if(who!==api.user()?.id||++checks>4){clearInterval(timer);return;}window.meadowClub?.refresh();},5000);}
+   // Native earned callbacks never authorize currency, including provider tests.
+   return result;
+  }finally{busy=false}
  }
  function settings(root){
   if(!billing)return;
@@ -70,5 +74,5 @@
   const section=root.querySelector('.install-game-card .task-main small');if(section)section.textContent='Google Play installs and updates this version. Your cloud farm stays on your account.';
  }
  function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().catch(()=>{}));if(billing)billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));}
- window.meadowStore={attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,available:()=>!!billing,privacy:()=>ads?.privacy()};
+ window.meadowStore={attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();

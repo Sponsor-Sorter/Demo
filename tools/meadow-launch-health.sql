@@ -6,6 +6,7 @@ select jsonb_build_object(
  'new_farms',(select new_farms from meadow_private.farm_start_config where singleton),
  'enabled_products',(select count(*) from meadow_private.store_products where enabled),
  'active_provider_tests',(select count(*) from meadow_private.play_license_acceptance where expires_at>clock_timestamp()),
+ 'active_ad_provider_tests',(select count(*) from meadow_private.ad_provider_acceptance where expires_at>clock_timestamp()),
  'farms',(select count(*) from public.meadow_market_saves),
  'protected_farms',(select count(*) from public.meadow_market_saves where save_protocol=4),
  'protected_without_provenance',(select count(*) from public.meadow_market_saves s where s.save_protocol=4 and (not exists(select 1 from meadow_private.farm_command_accounts a where a.user_id=s.user_id) or not exists(select 1 from meadow_private.farm_origins o where o.user_id=s.user_id))),

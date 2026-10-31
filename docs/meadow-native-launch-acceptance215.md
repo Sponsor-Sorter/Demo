@@ -22,7 +22,7 @@ Prepared31October2026. This is an execution checklist, not a completed device te
 
 ## Isolated provider acceptance
 
-Keep public payments/ads off and all seven product options inactive until an explicitly documented test configuration is ready. Current free tester packs exercise game receipts; they do not exercise Google Billing. The native test-AdMob IDs do not prove the live SSV path.
+Keep public payments/ads off. On31October, Pocket Gems and lifetime Premium buy options were activated for Google license acceptance; five other options remain drafts. Backend products remain disabled. Native11's demo AdMob IDs do not prove the configured SSV path. Native12/1.7.2 is prepared with the actual Meadow IDs and AdMob non-revenue Test mode; its private ad acceptance is separate and expires within24hours. Neither lane enrolls a farm automatically. Current free tester packs exercise game receipts; they do not exercise Google Billing.
 
 Before an actual Billing test: configure a Google license tester and a dedicated registered protocol4 farm with recorded provenance. Scope any temporary provider access to that account and Google test payment methods; do not enable general customer checkout. Confirm the Google sheet explicitly identifies a test transaction before confirming it. Store raw provider tokens only in the private backend.
 
