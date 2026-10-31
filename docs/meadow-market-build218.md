@@ -17,3 +17,7 @@ Build217 runtime671ff8806722e5e830359a067ef1e6dc2b033fb8 passed CI41177718093 (g
 ## Pending acceptance
 
 Record218 deployment, CI, actual decoration storage/re-placement and friend visit results below. Full server rollout, physical Samsung/iPad checks, real provider transactions/ads and backup restore rehearsal remain open. No claim is made that the full production checklist has been completed.
+
+## Actual live acceptance, 31 October
+
+Runtime99d8a7ad137b87203c428a7244349ff442e81fea passed CI41178427060 and Pages41178426484. Browser217→218 used the real Install update prompt and retained the farm. The owned Orchard hammock was stored through its Details button: revision4876 showed zero placed instances, ownership retained and cleared move history. Re-placement on the original x6/y3, rotation0 footprint succeeded at revision4880 with unchanged gold. Automatic well watering purchased for20gems was acknowledged at revision4889 and immediately displayed Owned. A subsequent180gold well upgrade was correctly refused for insufficient clear footprint, but its status was hidden behind the modal; build219 fixes that visibility issue. This was not a successful well coin upgrade. Recorded friend visit217 and the browser's protected animal collection also passed.

@@ -17,3 +17,15 @@ The user released the test Samsung for this acceptance pass. Its installed Googl
 - Samsung loaded web build 218 after conversion. Compact HUD expansion and horizontal build tray scrolling worked with actual Android touch input.
 - Focused UI219 fixture covers modal notice visibility/replacement/expiry and the build control layout contract. Actual live build 219 device acceptance is recorded below when completed.
 - Public purchases, live ads and automatic new-farm enrollment remain disabled. Google license purchase, restore/refund, consent/SSV, physical iPad acceptance and a disaster restore rehearsal remain release gates until separately evidenced.
+
+## Live acceptance, 31 October
+
+- Runtime b2a7234719036c799b99e28655c76515620b37a0 and generated-rule follow-up5bbc5936eb312f6e3ea4f5bb773b59637d20261e are published. The first CI run caught the stale generated-rule bundle after the UI source changed. It was regenerated and the gateway redeployed (version32, JWT required). Final CI41181859750 and Pages41181859693 both passed. No gameplay rule was changed by this UI patch.
+- Browser218→219 accepted the actual Install update prompt. At516CSS pixels wide, selected-placement controls ended at506px in the expanded tray; all four controls fit. The minimized controls occupied10–111px. Done returned to normal play. The well upgrade refusal displayed inside its popup beneath the header; no gold was charged.
+- Samsung Settings visibly confirmed219 on the existing Play1.7.1 shell. Portrait and both landscape orientations rendered with cutout insets. Rotation-transition screenshots were not treated as stable acceptance frames.
+- With mobile data already off, Wi-Fi was temporarily disabled and the app force-stopped/relaunched. It displayed the explicit reconnect screen, without a new farm or a browser error. This is online-only startup behavior, not offline gameplay. Restoring Wi-Fi and tapping Try again reopened the same level65/VIP2 farm; server revision5272 retained protocol4, six maps and318objects.
+- Auto-rotation1, user_rotation0, Wi-Fi2 and mobile_data0 were restored exactly. The phone was left at Home and released to Frontlines. No app data was cleared or other app changed. Long-hold drag/drop, native provider transactions and a controlled15minute performance soak remain unaccepted in this pass.
+- Earlier preliminary Android counters were577,820KB totalPSS,724,764KB RSS and102/9,889janky frames (1.03%; legacy metric9.13%). They include mixed activity and are not a controlled WebView frame-time or memory-leak benchmark.
+- Fresh Play Console review still reports Changes in review for1.7.1 public beta. No production rollout or public monetisation was enabled.
+
+Private evidence: phone219-settings-landscape1.png, phone219-offline.png, phone219-reconnected.png, browser219-visible-upgrade-denial.jpg and browser219-build-controls.jpg in the external farm205 evidence folder. Private farm backups/proposals remain outside Git.
