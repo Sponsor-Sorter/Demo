@@ -19,3 +19,15 @@
 - Real provider purchase/cancel/pending/restore/refund, native rewarded view→signed SSV, no-fill and device performance remain pending. No test lane has been opened for the phone while it is held by Frontlines.
 
 AdMob configuration proof stays at D:/Chat Gpt/workspaces/meadow-production194-evidence/farm205/admob-test-version172.jpg. Its app itself remains Requires review / limited serving until a supported public store listing can be linked. Google public beta1.7.1 review is preserved; internal1.7.2 acceptance is separate.
+
+## Live closeout
+
+Runtime88bff2f4182e0f7f8a10dfc0beb2ed3daf8b0445 pushed to origin/main. CI41189220801 game-checks and Android-build both succeeded; Pages41189221044 build/deploy succeeded. The running browser accepted the actual219→221 Install update prompt, returned to the same level15/VIP1 farm and Settings confirmed Game build221. The tester shop retained its free-purchase labels and610gems/one ticket; no purchase or ad view was performed. Screenshot: farm205/browser221-settings.jpg in the external evidence folder.
+
+09:42UTC health:51farms,2protected with provenance,49 daily recovery archives,0 missing eligible archives,0 recent hash failures,0 overdue unsettled purchases,0 real purchases and0 active purchase/ad provider test entries. Public payments/ads/production and new-farm issuance remainoff. Guarded source mirror copied22 changed paths with0 conflicts.
+
+## Play native12 published internally
+
+The signed1.7.2/code12 release built successfully, JAR signature verified, and signer SHA256 matched the existing upload certificate. Bundle7,617,307bytes; SHA256 a8509bb6e5e46a9fc892017bd974987b4a29af219ec660f645587ab0df65b203. Google independently parsed the uploaded bundle as12/1.7.2, minAPI24/target36, with no supported-device changes. The sole warning is absent deobfuscation metadata; minification remains disabled.
+
+Published to existing internal track4701019499198110666/release3. Console confirms Available to internal testers, released31October8:53PM local. Proof farm205/play-native12-published.jpg. This is not a physical install or provider acceptance result: the Samsung was not touched and remains with Frontlines. Google publicbeta1.7.1 still shows Changes in review after internal12 publication; no beta review restart or production rollout occurred. Proof farm205/play-beta11-preserved221.jpg.
