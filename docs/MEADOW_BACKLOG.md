@@ -2,6 +2,8 @@
 
 Build217 fixes a confirmed false resource-drift warning from club audio introduction preferences and routes friend-visit story/lesson progress through recorded server proof. Full Node regression and60shared-rule tests passed; migration and gateway deployed. See meadow-market-build217.md for publication and browser acceptance. General enrollment and provider/device gates below remain open.
 
+Build217 CI/Pages and actual216→217 browser update passed; Settings retained level15/VIP1/4,651gold and the club warning no longer reproduced. Build218 also fixes the separate collection Details put-away button and adds77-endpoint routing coverage plus an aggregate launch health check/rollback runbook. See meadow-market-build218.md. These fixes do not by themselves authorize broad protocol4 enrollment.
+
 Last reconciled for live build216. Both216CI jobs and Pages deployment passed; the browser accepted215→216 and Settings confirmed216 with level14/VIP1 retained. Samsung accepted214→215. The human approved distribution replacement; Play native10 installed but crashed on launch. Native11/1.7.1 is published internally, installed through Play and accepted for launch/login/relaunch with the same level64/VIP2 farm, six maps and318objects. Build216 adds isolated Google license acceptance and a refund-review checkout entry guard; details are in meadow-market-build216.md. Normal player farms remain on protocol3. Only the existing approved test_browser was backed up/reviewed and converted to protocol4, whose temporary Google provider-test access was expired after phone recovery (active allowlist0); broader canary flow acceptance remains open.
 
 | Area | Status | Remaining work |

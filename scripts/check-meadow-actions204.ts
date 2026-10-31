@@ -108,3 +108,12 @@ Deno.test('Permanent landmark proof replaces cached flags and rejects unknown th
  const verified=applyFarmCommands(s,[{type:'shop.check'}],now,{sharedLandmarks:['river','garden','garden']});eq(verified.save.journey.sharedLandmarks,['garden','river']);eq(s.journey.sharedLandmarks,['hall']);
  denied(()=>applyFarmCommands(s,[{type:'shop.check'}],now,{sharedLandmarks:['invented']}));
 });
+Deno.test('Putting away an owned decoration keeps ownership and permits one later placement without refunding gold',()=>{
+ const s=state([{id:'treasure',type:'collection_001',x:4,y:3}]),context={ownedCollections:['collection_001']};s.lastMove={map:'willow',id:'treasure'};
+ const stored=applyFarmCommands(s,[{type:'build.put_away',target:'treasure'}],now,context).save;
+ eq(stored.coins,s.coins);eq(stored.farms.willow.objects,[]);eq(stored.collectionState.owned,['collection_001']);eq(stored.lastMove,null);
+ const placed=applyFarmCommands(stored,[{type:'build.place',data:{id:'placed-again',item:'collection_001',x:4,y:3,rotation:0}}],now,context).save;
+ eq(placed.farms.willow.objects.length,1);eq(placed.coins,s.coins);
+ denied(()=>applyFarmCommands(placed,[{type:'build.place',data:{id:'duplicate',item:'collection_001',x:7,y:5,rotation:0}}],now,context));
+ denied(()=>applyFarmCommands(s,[{type:'build.put_away',target:'treasure'}],now,{ownedCollections:[]}));
+});
