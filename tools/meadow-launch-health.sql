@@ -13,5 +13,11 @@ select jsonb_build_object(
  'opt_in_errors_24h',(select count(*) from meadow_private.diagnostics where created_at>clock_timestamp()-interval '24 hours'),
  'unsettled_purchases_15m',(select count(*) from meadow_private.store_purchases where not settled and revoked_at is null and created_at<clock_timestamp()-interval '15 minutes'),
  'real_purchases',(select count(*) from meadow_private.store_purchases where not test_purchase),
- 'backup_rows',(select count(*) from meadow_private.farm_backups)
+ 'backup_rows',(select count(*) from meadow_private.farm_backups),
+ 'recovery_archives',(select count(*) from meadow_private.farm_recovery_backups),
+ 'recovery_archives_today',(select count(*) from meadow_private.farm_recovery_backups where backup_day=current_date),
+ 'recovery_missing_today',(select count(*) from public.meadow_market_saves s join public.meadow_market_profiles p using(user_id) where not exists(select 1 from meadow_private.account_deletions d where d.user_id=s.user_id) and not exists(select 1 from meadow_private.farm_recovery_backups b where b.user_id=s.user_id and b.backup_day=current_date)),
+ 'last_recovery_archive',(select max(created_at) from meadow_private.farm_recovery_backups),
+ -- Bound integrity work: check the newest 100 archives, not every retained farm.
+ 'recovery_hash_failures_recent',(select count(*) from (select bundle,bundle_hash from meadow_private.farm_recovery_backups order by created_at desc limit 100) b where b.bundle_hash<>encode(sha256(convert_to(b.bundle::text,'UTF8')),'hex'))
 ) as meadow_launch_health;
