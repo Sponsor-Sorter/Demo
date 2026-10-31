@@ -1,6 +1,6 @@
 # Meadow Markets remaining work
 
-Last reconciled for build214, deployed and accepted via the live 210→214 in-game update. See meadow-market-build214.md for the protected client canary, verified browser crop/build/market checks, offline launch fix and remaining rollout gates. Existing player farms remain on protocol3; the command cohort is empty after disposable-test cleanup.
+Last reconciled for build216 readiness. Live215 passed CI and the actual214→215 update in both browser and Samsung. Build216 adds isolated Google license acceptance and a refund-review checkout entry guard; publication acceptance is recorded in meadow-market-build216.md. Existing player farms remain on protocol3; the command cohort and provider-test allowlist are empty.
 
 | Area | Status | Remaining work |
 |---|---|---|
@@ -41,4 +41,4 @@ Production/well gem acknowledgements now redraw saved building state, cap edits 
 
 A backend gate now independently requires protocol4, enrollment and recorded origin before real checkout or ad-nonce issuance. Public commerce/ads remain off and all products inactive. Native license tests therefore need an explicitly isolated provider-test configuration, not the free test pack route and not a general activation.
 
-Support mailbox delivery is confirmed31October by one human-approved self-addressed Resend test and an actual inbound message at meadowmarkets@sponsorsorter.com; do not resend. Play beta still shows in review. The Samsung direct1.6.1/code9 opened with the intact level64/VIP2 farm; native215 update/Play distribution/provider/performance acceptance is in progress. Physical iPad acceptance remains pending.
+Support mailbox delivery is confirmed31October by one human-approved self-addressed Resend test and an actual inbound message at meadowmarkets@sponsorsorter.com; do not resend. Play beta still shows in review. The Samsung direct1.6.1/code9 accepted the214→215 remote update with its level64/VIP2 farm. The Play invitation is accepted and the correct Google account/license tester list selected. Play requires reinstalling this direct APK; a private backup and a separate successful existing-login restore are recorded, and human approval is pending before uninstall. Native provider/performance acceptance and physical iPad acceptance remain pending.

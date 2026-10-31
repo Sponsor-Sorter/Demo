@@ -7,11 +7,11 @@ async function db(path:string,body?:unknown,bearer=secret){
  const r=await fetch(base+path,{method:body===undefined?'GET':'POST',signal:AbortSignal.timeout(12000),headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
  if(!r.ok)throw Error('STORE_DELIVERY_UNAVAILABLE');return r.json();
 }
-export async function verify(user:string,product:string,purchaseToken:string){
+export async function verify(user:string,product:string,purchaseToken:string,testOnly=false){
  if(!consumables.has(product)&&product!=='mm_premium')throw Error('UNKNOWN_PRODUCT');
  if(purchaseToken.length<10||purchaseToken.length>4096)throw Error('INVALID_PURCHASE');
  const purchase=await googlePurchase(product,purchaseToken);
- const checked=validatePurchase(purchase,await sha('meadow-markets:'+user));
+ const checked=validatePurchase(purchase,await sha('meadow-markets:'+user),testOnly);
  const hash=await sha(purchaseToken);
  const delivered=await db('/rest/v1/rpc/meadow_market_deliver_store_purchase',{p_user:user,p_product:product,p_token_hash:hash,p_order:purchase.orderId||null,p_test:checked.test});
  // Credit first, then acknowledge. A retry uses the same global token hash.
@@ -36,10 +36,10 @@ Deno.serve(async req=>{
   if(account.farm_authoritative!==true)return reply(403,{error:'Your farm needs the verified online update before store purchases can open. Your existing farm is safe.'});
   const raw=await req.text();if(raw.length>8192)return reply(413,{error:'Request too large'});
   const body=JSON.parse(raw);
-  return reply(200,await verify(identity.id,String(body.product||''),String(body.token||'')));
+  return reply(200,await verify(identity.id,String(body.product||''),String(body.token||''),account.provider_test===true));
  }catch(error){
   // No tokens, credentials, Google bodies or user data enter response/logs.
   const code=error instanceof Error?error.message:'';
-  return reply(code==='PURCHASE_PENDING'?409:503,{error:['PURCHASE_PENDING','PURCHASE_ACCOUNT_MISMATCH','PURCHASE_NOT_COMPLETED','UNKNOWN_PRODUCT'].includes(code)?code:'Your purchase has not been confirmed. Restore purchases to retry; no duplicate reward will be added.'});
+  return reply(code==='PURCHASE_PENDING'?409:503,{error:['PURCHASE_PENDING','PURCHASE_ACCOUNT_MISMATCH','PURCHASE_NOT_COMPLETED','UNKNOWN_PRODUCT','LICENSE_TEST_REQUIRED'].includes(code)?code:'Your purchase has not been confirmed. Restore purchases to retry; no duplicate reward will be added.'});
  }
 });

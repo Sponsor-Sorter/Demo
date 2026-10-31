@@ -17,7 +17,7 @@
   })();
   try{await loading}finally{loading=null}
  }
- function label(sku){if(configuration.test_access)return 'Free test purchase';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku);return prices.get(product?.product_id)?.price||'Currently unavailable';}
+ function label(sku){if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):'Currently unavailable';}
  function requirePurchaseAccount(){if(configuration.purchase_account_ready!==true)throw Error('Protect your farm with a username and password before buying or restoring purchases. Open Settings → Account & switch farm.');}
  async function verify(rows,who){
   let completed=0;

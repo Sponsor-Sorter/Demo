@@ -6,6 +6,9 @@ Deno.test('Google purchase requires paid state, account binding and one quantity
  const valid={purchaseState:0,quantity:1,obfuscatedExternalAccountId:'account',purchaseType:0};
  assert(validatePurchase(valid,'account').test,'Google license test is recognized');
  assert(!validatePurchase({...valid,purchaseType:undefined},'account').test,'Real purchase remains real');
+ assert(validatePurchase(valid,'account',true).test,'Scoped provider tests accept Google license purchases');
+ rejects(()=>validatePurchase({...valid,purchaseType:undefined},'account',true),'LICENSE_TEST_REQUIRED');
+ rejects(()=>validatePurchase({...valid,purchaseType:1},'account',true),'LICENSE_TEST_REQUIRED');
  rejects(()=>validatePurchase({...valid,purchaseState:2},'account'),'PURCHASE_PENDING');
  rejects(()=>validatePurchase({...valid,purchaseState:1},'account'),'PURCHASE_NOT_COMPLETED');
  rejects(()=>validatePurchase({...valid,quantity:2},'account'),'MULTI_QUANTITY_UNSUPPORTED');
