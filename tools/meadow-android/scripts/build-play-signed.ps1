@@ -41,10 +41,14 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Signed Play bundle build failed.' }
         $evidence194 = 'D:/Chat Gpt/workspaces/meadow-production194-evidence'
         New-Item -ItemType Directory -Path $evidence194 -Force | Out-Null
-        Copy-Item -LiteralPath (Join-Path $project194 'android/app/build/outputs/bundle/playRelease/app-play-release.aab') -Destination (Join-Path $evidence194 'meadow-markets-1.7.0-internal.aab')
+        $gradle194 = Get-Content -LiteralPath (Join-Path $project194 'android/app/build.gradle') -Raw
+        $playVersion194 = [regex]::Match($gradle194, "(?s)play\s*\{.*?versionName '([0-9.]+)'").Groups[1].Value
+        if (-not $playVersion194) { throw 'Cannot identify the Play release version.' }
+        $bundle194 = Join-Path $evidence194 ('meadow-markets-{0}-internal.aab' -f $playVersion194)
+        Copy-Item -LiteralPath (Join-Path $project194 'android/app/build/outputs/bundle/playRelease/app-play-release.aab') -Destination $bundle194
         & $keytool194 -exportcert -rfc -keystore $key194 -alias meadow-upload -storepass:env MEADOW_UPLOAD_STORE_PASSWORD -file (Join-Path $evidence194 'upload-certificate.pem')
         if ($LASTEXITCODE -ne 0) { throw 'Certificate export failed.' }
-        Get-FileHash -LiteralPath (Join-Path $evidence194 'meadow-markets-1.7.0-internal.aab') -Algorithm SHA256
+        Get-FileHash -LiteralPath $bundle194 -Algorithm SHA256
     } finally { Pop-Location }
 } finally {
     Remove-Item Env:MEADOW_UPLOAD_STORE_PASSWORD,Env:MEADOW_UPLOAD_KEY_PASSWORD,Env:MEADOW_UPLOAD_KEYSTORE,Env:MEADOW_UPLOAD_KEY_ALIAS -ErrorAction SilentlyContinue

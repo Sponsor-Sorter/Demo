@@ -23,8 +23,8 @@ android {
         direct { dimension 'distribution' }
         play {
             dimension 'distribution'
-            versionCode 10
-            versionName '1.7.0'
+            versionCode 11
+            versionName '1.7.1'
             buildConfigField 'String', 'MEADOW_REWARDED_AD_UNIT', '"' + (System.getenv('MEADOW_REWARDED_AD_UNIT') ?: 'ca-app-pub-3940256099942544/5224354917') + '"'
             buildConfigField 'String', 'MEADOW_INTERSTITIAL_AD_UNIT', '"' + (System.getenv('MEADOW_INTERSTITIAL_AD_UNIT') ?: 'ca-app-pub-3940256099942544/1033173712') + '"'
         }

@@ -10,19 +10,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Native store UI only. Entitlements are always verified/delivered by our server. */
 @CapacitorPlugin(name="MeadowStore")
-public class MeadowStorePlugin extends Plugin implements PurchasesUpdatedListener {
+public class MeadowStorePlugin extends MeadowPlayPlugin implements PurchasesUpdatedListener {
     private BillingClient billing;
     private final Map<String,ProductDetails> catalog=new HashMap<>();
     private final Set<String> allowed=new HashSet<>(Arrays.asList("mm_pocket_gems","mm_gem_chest","mm_starter_pack","mm_builders_pack","mm_reward_tickets","mm_pantry_pack","mm_premium"));
     private PluginCall purchaseCall;
-    private boolean trusted(PluginCall call){
-        String url=getBridge().getWebView().getUrl();
-        if(url==null||!url.startsWith("https://sponsorsorter.com/meadow-and-market/")){call.reject("Purchases are limited to Meadow Markets");return false;}
-        return true;
-    }
     private void connect(PluginCall call,Runnable action){
-        if(!trusted(call))return;
-        getActivity().runOnUiThread(()->{
+        trustedPage(call, () -> {
             if(billing==null)billing=BillingClient.newBuilder(getContext()).setListener(this)
                 .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
                 .enableAutoServiceReconnection().build();

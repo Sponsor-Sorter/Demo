@@ -7,7 +7,7 @@ assert(read(android+'play/AndroidManifest.xml').includes('tools:node="remove"'))
 const playUpdater=read(android+'play/java/com/meadowandmarket/game/MeadowUpdatesPlugin.java');
 for(const text of ['FileOutputStream','HttpURLConnection','FileProvider','ACTION_MANAGE_UNKNOWN_APP_SOURCES'])assert(!playUpdater.includes(text),'Play updater cannot install APKs');
 assert(playUpdater.includes('market://details?id='));
-assert(/play\s*\{\s*dimension 'distribution'\s*versionCode 10\s*versionName '1.7.0'/.test(read('tools/meadow-android/android/app/build.gradle')),'The Play build has its own release version');
+assert(/play\s*\{\s*dimension 'distribution'\s*versionCode 11\s*versionName '1.7.1'/.test(read('tools/meadow-android/android/app/build.gradle')),'The Play build has its own release version');
 const game=read(root+'game.js');assert(!game.includes('test-gold-grant'));assert(!game.includes('testgold'));assert(!game.includes('state.coins+=10000'));assert(!game.includes('merged.coins=(Number(merged.coins)||0)+8000'));
 assert(game.includes('https://play.google.com/apps/internaltest/4701019499198110666'),'The website links the actual internal Play test');
 assert.equal(JSON.parse(read('tools/meadow-android/capacitor.config.json')).server.url,'https://sponsorsorter.com/meadow-and-market/','Website and Play app load the same live game');

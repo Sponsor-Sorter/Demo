@@ -8,8 +8,8 @@ Prepared31October2026. This is an execution checklist, not a completed device te
 - Internal Play invite accepted after the human signed into Samsung Internet. The Play Store had a different existing Google account selected; switching it to the invited jrb.williams.95@gmail.com opened the listing. Play displays only Uninstall, with its explicit message that this installation came from another source and needs reinstalling.
 - Google license testing now selects the existing Meadow Markets internal testers list, containing that one invited email. Console confirmed saved. This setting is developer-wide; it does not activate any app product, customer checkout, real ad unit or backend tester farm.
 - A private backup of test_phone revision4295 is saved outside Git. Its existing login successfully restored the same farm in Samsung Internet; Auth confirmed a new sign-in on the exact phone-farm identity at02:10:34UTC. No password was changed or recovery key extracted.
-- The human has been asked to approve replacing only the direct APK with the Play test build. Until answered, do not uninstall or clear app data. The existing app remains installed.
-- Runtime216 adds expiring per-farm, per-product provider acceptance, with zero accounts enrolled. SQL fixtures are not actual Google purchases. See meadow-market-build216.md.
+- The human approved replacement. Only the direct Meadow APK was removed. Play installed native10 (installer=com.android.vending), but it crashed on first launch in the update plugin’s off-thread WebView origin check. Native11 fixes this; native farm recovery remains pending until the Play update is installed. See meadow-market-native11-acceptance.md.
+- Runtime216 adds expiring per-farm, per-product provider acceptance, with the existing approved test_browser temporarily enrolled for the test-only provider lane. SQL fixtures are not actual Google purchases. See meadow-market-build216.md.
 
 ## Entry and farm preservation
 

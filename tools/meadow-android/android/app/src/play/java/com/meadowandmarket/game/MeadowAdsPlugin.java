@@ -9,17 +9,11 @@ import com.google.android.ump.*;
 
 /** Consent first; rewards require the independent AdMob server callback. */
 @CapacitorPlugin(name="MeadowAds")
-public class MeadowAdsPlugin extends Plugin {
+public class MeadowAdsPlugin extends MeadowPlayPlugin {
     private ConsentInformation consent;
     private boolean showing=false;
-    private boolean trusted(PluginCall call){
-        String url=getBridge().getWebView().getUrl();
-        if(url==null||!url.startsWith("https://sponsorsorter.com/meadow-and-market/")){call.reject("Game address not supported");return false;}
-        return true;
-    }
     @PluginMethod public void consent(PluginCall call){
-        if(!trusted(call))return;
-        getActivity().runOnUiThread(()->{
+        trustedPage(call, () -> {
             consent=UserMessagingPlatform.getConsentInformation(getContext());
             // All ages in our 13+ audience get restricted/nonpersonalised requests.
             ConsentRequestParameters params=new ConsentRequestParameters.Builder().setTagForUnderAgeOfConsent(true).build();
@@ -34,10 +28,9 @@ public class MeadowAdsPlugin extends Plugin {
             }),error->call.reject("Advertising privacy choices are unavailable; no ad will be shown"));
         });
     }
-    @PluginMethod public void privacy(PluginCall call){if(!trusted(call))return;getActivity().runOnUiThread(()->UserMessagingPlatform.showPrivacyOptionsForm(getActivity(),error->{if(error==null)call.resolve();else call.reject("Privacy options are unavailable");}));}
+    @PluginMethod public void privacy(PluginCall call){trustedPage(call, () -> UserMessagingPlatform.showPrivacyOptionsForm(getActivity(),error->{if(error==null)call.resolve();else call.reject("Privacy options are unavailable");}));}
     @PluginMethod public void show(PluginCall call){
-        if(!trusted(call))return;
-        getActivity().runOnUiThread(()->{
+        trustedPage(call, () -> {
             if(showing||consent==null||!consent.canRequestAds()){call.reject("Advertising is not ready");return;}
             boolean reward=Boolean.TRUE.equals(call.getBoolean("rewarded",false));
             String unit=reward?BuildConfig.MEADOW_REWARDED_AD_UNIT:BuildConfig.MEADOW_INTERSTITIAL_AD_UNIT;
