@@ -2,7 +2,7 @@
 
 ## Purchase acceptance controls
 
-The private play_license_acceptance table permits a named registered protocol4 farm with recorded provenance to test only mm_pocket_gems and/or mm_premium for at most seven days. RLS is deny-all, table grants are revoked even from service_role, and no client-facing enrollment function exists. The existing approved test_browser is temporarily enrolled until31October04:40UTC; public access remains closed. See meadow-market-native11-acceptance.md.
+The private play_license_acceptance table permits a named registered protocol4 farm with recorded provenance to test only mm_pocket_gems and/or mm_premium for at most seven days. RLS is deny-all, table grants are revoked even from service_role, and no client-facing enrollment function exists. The existing approved test_browser was temporarily admitted, then its provider access was expired at31October03:33UTC after native recovery. Active provider allowlist0; public access remains closed. See meadow-market-native11-acceptance.md.
 
 That account's status explicitly selects provider_test and disables the free test_access shortcut. The native purchase button therefore reaches Google Billing, showing Google test beside its localized price. Google independently needs to recognize the signed-in license tester; the payment sheet must visibly say it is a test and use Google's test payment instrument before confirmation. A test-track invitation alone does not make a transaction free.
 
@@ -20,7 +20,7 @@ Public commerce payments/ads/production flags arefalse, all seven backend produc
 
 ## Phone and remaining gates
 
-The Samsung accepted the internal invitation and now opens the Play listing. The current direct APK cannot be replaced there in place; Play offers only uninstall/reinstall. The level64/VIP2 farm was backed up privately and its existing login successfully reopened it in Samsung Internet. The human approved replacement. Play installed native10, but its first launch exposed a WebView-thread crash. Play1.7.1/code11 fixes that launch failure; see meadow-market-native11-acceptance.md for actual release/restore acceptance.
+The Samsung accepted the internal invitation and now opens the Play listing. The current direct APK cannot be replaced there in place; Play offers only uninstall/reinstall. The level64/VIP2 farm was backed up privately and its existing login successfully reopened it in Samsung Internet. The human approved replacement. Play installed native10, but its first launch exposed a WebView-thread crash. Play1.7.1/code11 is now installed through Play, fixes that launch failure and restores/reopens the level64/VIP2 phone farm. See meadow-market-native11-acceptance.md for exact evidence and remaining gates.
 
 Runtime41a1504286df52f2ed8a285a3f2284876ee89470 passed CI41159740185 (game-checks and android-build) and Pages41159739607 (build/report/deploy). The live browser displayed215→216 Install update; it was accepted, the existing level14/VIP1 farm returned, and Settings confirmed Game build216. Evidence live-update-prompt216.jpg and live-settings216.jpg. The authoritative workspace mirror synchronized18committed files with0conflicts; no other game's paths were changed.
 
