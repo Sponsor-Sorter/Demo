@@ -5,7 +5,15 @@
 
 .direction-orchard{position:absolute;inset:0;display:block;pointer-events:none}.direction-orchard>img{position:absolute;object-fit:contain;object-position:center bottom;pointer-events:none}.direction-status-anchor{position:absolute;left:50%;width:0;height:0;pointer-events:none}.direction-status-anchor>.station-need{position:absolute;left:-14px;top:-14px;right:auto;bottom:auto}
 
-#build-tray .tray-head-actions{display:grid;grid-template-columns:auto 44px;grid-template-rows:44px 44px;gap:3px;width:max-content}#build-done{grid-column:2;grid-row:1}#build-minimize{grid-column:2;grid-row:2}.build-turn-controls,#build-tray.collapsed .build-turn-controls{display:contents}.build-turn-controls>button:first-child{grid-column:1;grid-row:1}.build-turn-controls>button:last-child{grid-column:1;grid-row:2}.build-turn-controls>button:disabled{display:none}.build-turn-controls>button{width:44px;min-height:44px}
+/* Reserve the complete control width when rotation becomes available. */
+#build-tray{grid-template-columns:minmax(0,1fr) max-content}
+#build-tray .build-tray-head{min-width:54px;width:max-content}
+#build-tray .tray-head-actions{display:grid;grid-template-columns:54px;grid-template-rows:44px 44px;gap:3px;width:max-content}
+#build-done{grid-column:1;grid-row:1}#build-minimize{grid-column:1;grid-row:2}
+#build-tray:has(.build-turn-controls>button:not(:disabled)) .tray-head-actions{grid-template-columns:44px 54px}
+#build-tray:has(.build-turn-controls>button:not(:disabled)) #build-done,#build-tray:has(.build-turn-controls>button:not(:disabled)) #build-minimize{grid-column:2}
+#build-tray.collapsed,#build-tray.collapsed .build-tray-head{width:max-content!important}
+.build-turn-controls,#build-tray.collapsed .build-turn-controls{display:contents}.build-turn-controls>button:first-child{grid-column:1;grid-row:1}.build-turn-controls>button:last-child{grid-column:1;grid-row:2}.build-turn-controls>button:disabled{display:none}.build-turn-controls>button{width:44px;min-height:44px}
 .direction-billboard{bottom:45%}.farm-grid>.farm-object .directional-art>svg,.farm-grid>.farm-object .direction-yard>svg{pointer-events:visiblePainted}.farm-grid>.farm-object .direction-orchard>img,.farm-grid>.farm-object .direction-billboard>img{pointer-events:auto}.placement-ghost *,.map-place-scene .directional-art>svg,.map-place-scene .direction-yard>svg,.map-place-scene .direction-orchard>img,.map-place-scene .direction-billboard>img{pointer-events:none!important}
 
 .rotation-mini{display:block;position:relative;flex:none;width:88px;height:92px;pointer-events:none}.rotation-mini-object{position:absolute;left:0;bottom:0;width:88px;height:44px;pointer-events:none}

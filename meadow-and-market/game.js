@@ -298,7 +298,19 @@
     const result=await client.auth.setSession({access_token:target.access_token,refresh_token:target.refresh_token});if(result.error)throw Error('Could not open this account.');
     localStorage.setItem(SAVE_KEY+'-load-account',target.user_id);localStorage.removeItem('meadow-markets-login-required');location.reload();
   }
-  function notify(msg){window.meadowCompactHud?.positionToast();const e=$('#toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),2300)}
+  function notify(msg){
+    window.meadowCompactHud?.positionToast();const e=$('#toast');e.textContent=msg;
+    document.querySelectorAll('.dialog-action-notice').forEach(n=>n.remove());
+    const dialog=[...document.querySelectorAll('dialog[open]')].at(-1);let notice=null;
+    e.classList.toggle('show',!dialog);
+    if(dialog){
+      notice=document.createElement('div');notice.className='dialog-action-notice';notice.setAttribute('role','status');notice.textContent=msg;
+      const head=dialog.querySelector('.production-head,.sheet-head,.club-head,.section-title');
+      if(head)notice.style.top=Math.max(8,head.getBoundingClientRect().bottom-dialog.getBoundingClientRect().top+6)+'px';
+      dialog.append(notice);
+    }
+    clearTimeout(toastTimer);toastTimer=setTimeout(()=>{e.classList.remove('show');notice?.remove()},dialog?4000:2300);
+  }
   function announceLevel(level){window.meadowGuides?.unlocks(level,{areas:maps.filter(m=>m.unlock===level).map(m=>m.name),items:catalog.filter(i=>(i.unlock||1)===level).map(i=>({id:i.id,name:i.name}))});window.meadowAudio?.play('reward');notify('Level up! Welcome to level '+level+' 🌟'+(level===5?' · Care all unlocked in Animal Family.':''))}
   function xp(amount){state.xp+=amount;let threshold=90+(state.level-1)*50;if(state.xp>=threshold){state.xp-=threshold;state.level++;state.coins+=35;announceLevel(state.level)}}
   function xpNeed(){return 90+(state.level-1)*50}
@@ -778,7 +790,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=218;
+  const currentBuild=219;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost'&&!commandQA)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

@@ -1,5 +1,7 @@
 # Meadow Markets remaining work
 
+Build219 follows actual Samsung acceptance: fixed the build tray control-column overflow and invisible action notices behind open dialogs. The named test_phone stress farm was privately backed up, had twelve invalid old Eastbank placements repaired with strict move rules, then was enrolled as a reviewed legacy protocol4 baseline with all318objects/sixmaps and balances retained. Browser218 collection storage/re-placement and gem watering purchase passed. Device offline/rotation, provider purchases/ads, physical iPad and restore rehearsal remain gates; see meadow-market-build219.md. Public monetisation and new-farm enrollment stay off.
+
 Build217 fixes a confirmed false resource-drift warning from club audio introduction preferences and routes friend-visit story/lesson progress through recorded server proof. Full Node regression and60shared-rule tests passed; migration and gateway deployed. See meadow-market-build217.md for publication and browser acceptance. General enrollment and provider/device gates below remain open.
 
 Build217 CI/Pages and actual216→217 browser update passed; Settings retained level15/VIP1/4,651gold and the club warning no longer reproduced. Build218 also fixes the separate collection Details put-away button and adds77-endpoint routing coverage plus an aggregate launch health check/rollback runbook. See meadow-market-build218.md. These fixes do not by themselves authorize broad protocol4 enrollment.

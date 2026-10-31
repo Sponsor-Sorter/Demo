@@ -29,3 +29,6 @@
 .compact-hud .compact-hud-panel .hud-painted{touch-action:pan-x!important;flex-shrink:0!important}.compact-hud .compact-hud-panel{scrollbar-width:none}
 
 .compact-hud.compact-top-expanded .top-hud-farm{visibility:hidden}
+.compact-hud.compact-top-expanded #eastbank-town-road{visibility:hidden;pointer-events:none}
+/* Native dialog top layers otherwise hide the farm's global status toast. */
+.dialog-action-notice{position:absolute;top:60px;left:12px;right:12px;z-index:10000;width:max-content;max-width:calc(100% - 24px);margin:0 auto;padding:9px 13px;border-radius:10px;background:#6e503b;color:#fff9ec;box-shadow:0 3px 12px #30200f44;font:600 13px/1.35 system-ui;text-align:center;pointer-events:none}

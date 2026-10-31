@@ -1,0 +1,14 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('meadow-and-market/game.js','utf8');
+const notify=source.slice(source.indexOf('  function notify(msg){'),source.indexOf('\n  function ',source.indexOf('  function notify(msg){')+3));
+const notices=[],classes=new Set();let dialogs=[],timer,cleared=0;
+const toast={textContent:'',classList:{toggle(k,on){on?classes.add(k):classes.delete(k)},remove(k){classes.delete(k)}}};
+const document={querySelectorAll(selector){return selector==='dialog[open]'?dialogs:notices.filter(n=>!n.removed)},createElement(){return{style:{},setAttribute(k,v){this[k]=v},remove(){this.removed=true}}}};
+const ctx={document,$:()=>toast,window:{meadowCompactHud:{positionToast(){}}},toastTimer:0,setTimeout(fn){timer=fn;return 1},clearTimeout(){cleared++}};vm.createContext(ctx);vm.runInContext(notify,ctx);
+ctx.notify('Harvest collected');assert(classes.has('show'));assert.equal(toast.textContent,'Harvest collected');
+const modal={getBoundingClientRect:()=>({top:100}),querySelector:()=>({getBoundingClientRect:()=>({bottom:158})}),append(n){notices.push(n)}};
+dialogs=[modal];ctx.notify('Make room for the upgraded footprint first.');assert(!classes.has('show'));assert.equal(notices.at(-1).role,'status');assert.equal(notices.at(-1).style.top,'64px');
+ctx.notify('Wait for your saved farm action.');assert(notices[0].removed);assert.equal(notices.filter(n=>!n.removed).length,1);timer();assert(notices.at(-1).removed);
+dialogs=[];ctx.notify('Back on the farm');assert(classes.has('show'));timer();assert(!classes.has('show'));assert(cleared>=4);
+const css=fs.readFileSync('meadow-and-market/rotations.css','utf8');assert(css.includes('grid-template-columns:minmax(0,1fr) max-content'));assert(css.includes('grid-template-columns:44px 54px'));assert(css.includes('#build-tray.collapsed .build-tray-head{width:max-content!important}'));
+console.log('UI219: modal status visibility, replacement/expiry, farm notices and intrinsic build-control widths passed.');
