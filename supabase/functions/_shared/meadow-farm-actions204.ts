@@ -170,6 +170,11 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
     if(quote.amount!==round.goal||(f.inventory[d.item]||0)<round.goal)fail('Check this batch’s basket stock and market-cart capacity.');
     f.inventory[d.item]-=round.goal;s.coins+=quote.total;xp(8);event('premiumSale',round.goal);event('market_'+market.stalls.find((g:Data)=>g.goods.includes(d.item)).id,round.goal);event('sell');marketSales.push({id:round.id,map});result={...result,item:d.item,amount:round.goal,gold:quote.total};break;}
    case 'profile.help':fields(d,['need']);if(!['none','water','feed','cheer'].includes(d.need))fail('Choose a visiting-friends request.');s.helpWanted=d.need;break;
+   case 'social.visit':
+    fields(d,[]);if(command.target!=null||!context.visitedFriend)fail('Visit an accepted friend before updating your story.');
+    // The social service records the authenticated visit first. This command
+    // proves the first-visit goal, never a caller-supplied count or reward.
+    if(!(s.homestead?.stats?.visit>=1))event('visit');lesson('friends',result);break;
    case 'vendor.replace':{
     fields(d,[]);if(!validID(command.target)||Number(f.nextOrderRefreshAt)>now)fail('Wait for the next request refresh.','NOT_READY');const index=f.orders.findIndex((o:Data)=>o.id===command.target);if(index<0)fail('Reopen this request.');const eligible=vendors.filter(v=>s.level>=(v.unlock||1)),next=eligible[(s.orderIndex||0)%eligible.length];s.orderIndex=(s.orderIndex||0)+1;f.orders[index]={...next,id:'order-'+crypto.randomUUID(),vendor:next.id};f.nextOrderRefreshAt=now+60000;result.message='A new village request arrived';break;}
    case 'vendor.deliver':{

@@ -22,3 +22,9 @@ Deno.test('Visit lessons require a database-owned visit proof and never accept a
 Deno.test('Invalid batches cannot partially award a tutorial bonus',()=>{
  const s=state(),before=JSON.stringify(s);denied(()=>applyFarmCommands(s,[{type:'plot.till',target:'plot'},{type:'wallet.credit'}],now));eq(JSON.stringify(s),before);
 });
+Deno.test('A recorded friend visit completes story and lesson once without trusting client counters',()=>{
+ const s=state();denied(()=>run(s,'social.visit'));denied(()=>run(s,'social.visit',undefined,{visitedFriend:true},now,{visitedFriend:true}));denied(()=>run(s,'social.visit','forged',{},now,{visitedFriend:true}));
+ const a=run(s,'social.visit',undefined,{},now,{visitedFriend:true});eq(a.save.homestead.stats.visit,1);eq(a.save.coins,260);eq(a.results[0].lesson_rewards,['friends']);
+ const b=run(a.save,'social.visit',undefined,{},now,{visitedFriend:true});eq(b.save.homestead.stats.visit,1);eq(b.save.coins,260);eq(b.events,[]);
+ const c=run(b.save,'story.claim','visit');eq(c.save.coins,360);denied(()=>run(c.save,'story.claim','visit'));
+});

@@ -43,8 +43,16 @@
  }
  async function record(visit,action,target=''){
   if(!api.ready()||!visit)return null;const key=[visit.map,action,target].join(':'),request=visit.requests ||= {};request[key] ||= crypto.randomUUID();
-  const result=await api.client().rpc('meadow_market_record_visit',{p_owner:visit.userId,p_map:visit.map,p_action:action,p_target:target,p_request:request[key]});
-  if(result.error){api.notify(result.error.message||'Could not save your helping hand. Please try again.');return null}return result.data;
+  const who=user(),map=api.state().active,result=await api.client().rpc('meadow_market_record_visit',{p_owner:visit.userId,p_map:visit.map,p_action:action,p_target:target,p_request:request[key]});
+  if(who!==user())return null;
+  if(result.error){api.notify(result.error.message||'Could not save your helping hand. Please try again.');return null}
+  if(action==='visit'&&result.data){
+   if(window.meadowCommandUI?.required()){
+    try{await window.meadowCommandUI.maintenance([{type:'social.visit',map}]);}
+    catch{api.notify('Your visit is saved. Reconnect to update your farm progress.');}
+   }else{window.meadowStory?.event('visit');window.meadowGuides?.event('friends');api.save();}
+  }
+  return result.data;
  }
  function candidates(visit,action){const farm=visit.save.farms?.[visit.map];return (farm?.objects||[]).filter(o=>action==='water'?o.type==='plot'&&o.plantedAt&&!o.wateredUntil&&!api.rules.cropReady(o,farm):animalTypes.includes(o.type)&&(action==='feed'?(o.hunger??100)<100:(o.happy??100)<100)).slice(0,40)}
  function mountVisit(visit){

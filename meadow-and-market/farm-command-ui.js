@@ -3,7 +3,7 @@
  const clone=v=>JSON.parse(JSON.stringify(v)),own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
  const rootUI=['view','mode','orientation','selected','moving','placing','visitorLogSeenAt','travelGuide119','upgradeHelpSeen77','farmerName'];
  const tutorialUI=['started','paused','introduced','seenContexts','metPeople','tour','unlockAnnouncements','moveAreaHints'];
- const clubUI=['queue','rounds','roundResults','pending','adResults','adGames','adPending'];
+ const clubUI=['queue','rounds','roundResults','pending','adResults','adGames','adPending','introduced'];
  const displayBooks=['artisanMastery','homestead','almanac','cropMastery','farmLife'];
  function preferences(s){
   const p={root:{},tutorial:{},journey:{},progress:{},club:{},collections:{},books:{},farms:{}};
