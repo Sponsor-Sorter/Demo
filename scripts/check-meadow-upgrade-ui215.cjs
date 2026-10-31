@@ -1,0 +1,26 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const production=fs.readFileSync('meadow-and-market/production.js','utf8'),game=fs.readFileSync('meadow-and-market/game.js','utf8');
+let farm={objects:[{id:'oven',type:'kitchen',queueSlots:3,tier:1,jobs:[]},{id:'well',type:'well',autoWater:true}]};
+const ctx={api:{current:()=>farm},current:()=>farm,openKitchen:null};vm.createContext(ctx);
+const kitchen=production.slice(production.indexOf('  function showKitchen(o){'),production.indexOf('    const t=tier(o),cost='));
+vm.runInContext(kitchen+'return o;}',ctx);
+const stale={id:'oven',type:'kitchen',queueSlots:0,tier:1,jobs:[]};
+assert.equal(ctx.showKitchen(stale),farm.objects[0]);assert.equal(ctx.showKitchen(stale).queueSlots,3);
+farm.objects=[];assert.equal(ctx.showKitchen(stale),undefined,'A removed building must not reopen from its old object');
+farm.objects=[{id:'oven',type:'workshop'}];assert.equal(ctx.showKitchen(stale),undefined,'A reused identity cannot change the building type');
+const well=game.slice(game.indexOf('  function showWell(o){'),game.indexOf('    const settings=patch=>'));
+vm.runInContext(well+'return o;}',ctx);farm.objects=[{id:'well',type:'well',autoWater:true,wellGemTier:2}];
+assert.equal(ctx.showWell({id:'well',type:'well',autoWater:false}).wellGemTier,2);
+let sent;ctx.command=(type,target,data)=>{sent=data;return true};ctx.ownerFarm=()=>farm;ctx.api.farms=()=>({willow:farm});ctx.api.state=()=>({active:'willow'});
+vm.runInContext(production.match(/  function settings\(o,patch\)[^\n]+/)[0],ctx);
+ctx.settings(stale,{cap:40});assert.equal(sent.enabled,true,'Changing a cap preserves the checked default automation setting');
+ctx.settings({...stale,autoWork:false},{recipe:'bread'});assert.equal(sent.enabled,false,'Explicitly paused automation stays paused');
+const handler=game.match(/water\.onclick=async\(\)=>\{[^\n]+?\};\$\('#modal-content \.sheet-head'\)/)[0].split(";$('#modal-content .sheet-head')")[0];
+(async()=>{
+ let shown=0,finish;const screen={isConnected:true},water={disabled:false,isConnected:true};
+ Object.assign(ctx,{water,state:{active:'willow'},o:{id:'well',type:'well'},$:selector=>selector.includes('well-window')?screen:{open:true},window:{meadowClub:{buyWatering:()=>new Promise(resolve=>finish=resolve)}},showWell:()=>shown++});
+ vm.runInContext(handler,ctx);let task=water.onclick();finish(true);await task;assert.equal(shown,1,'Watering acknowledgement redraws the current well');
+ task=water.onclick();screen.isConnected=false;finish(true);await task;assert.equal(shown,1,'A late purchase cannot reopen a closed well');
+ screen.isConnected=true;task=water.onclick();ctx.state.active='coast';finish(true);await task;assert.equal(shown,1,'A late acknowledgement cannot open another map’s same-named well');
+ console.log('Upgrade UI215: canonical building identities, fresh queue/well state, automation defaults and late purchase screen guards passed.');
+})().catch(e=>{console.error(e);process.exitCode=1});

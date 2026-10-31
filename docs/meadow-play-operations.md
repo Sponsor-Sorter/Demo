@@ -89,3 +89,11 @@ See docs/meadow-market-build205.md. Most progression, travel and roster/worker a
 Backend206 adds pending visitor-help reads and atomic help/log acknowledgments to that gateway. Only service-derived rows enter the reducer. Its trigger rejects unverified acknowledgments on enrolled farms; protocol3 help remains compatible. See docs/meadow-market-backend206.md. Do not let the old client help-delivery loop run for a future enrolled account.
 
 Backend207 adds one-sale-per-verified-market-round consumption. Market proofs are selected only for the command's owner and requested round; the database rechecks ownership, success, map, expiry and prior use at commit. See docs/meadow-market-backend207.md. The future client must wait for round verification before sending a sale; the current local sale path cannot remain active on enrolled farms.
+
+## Build215 launch controls
+
+Real commerce status now includes farm_authoritative. A farm must have protocol4, command enrollment and a recorded origin, with no pending deletion, before global checkout/ads settings can open for it. SQL independently enforces this for new store delivery and rewarded-ad nonce issuance; original receipt replay and already-issued signed callbacks remain deliverable. Normal-player conversion/new-farm rollout remain disabled. Public payments, ads and production readiness remainfalse; all7products disabled.
+
+The31October native checklist is docs/meadow-native-launch-acceptance215.md. The human released the idle Samsung for this turn through Frontlines, which paused concurrent phone input. Preserve the existing protected farm and direct installation before any signing-distribution change. Google license tests require their own scoped provider configuration: approved free test packs are not Google Billing acceptance.
+
+The public support mailbox meadowmarkets@sponsorsorter.com now exists as a Resend receiving inbox. One specifically human-approved self-addressed test was provider-delivered and appeared as an inbound message31October2026at01:18:35UTC. Sanitized proof is D:/Chat Gpt/workspaces/frontlines-build/monetisation76/meadow-support-delivery-proof.json. This closes the previous incoming-mail uncertainty; do not resend the test.

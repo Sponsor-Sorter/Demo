@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   function command(type,target,data={},after,map=api.state().active){return window.meadowCommandUI?.route(type,target,data,map,{after})||false;}
-  function settings(o,patch){const data={enabled:!!o.autoWork,recipe:o.autoRecipe||o.lastRecipe||(o.type==='workshop'?'yarn':'bread'),cap:Number(o.autoCap)||0,...patch},map=Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o));return command('craft.settings',o.id,data,()=>{const next=api.farms()[map]?.objects.find(a=>a.id===o.id);if(next)showKitchen(next);},map);}
+  function settings(o,patch){const data={enabled:o.autoWork!==false,recipe:o.autoRecipe||o.lastRecipe||(o.type==='workshop'?'yarn':'bread'),cap:Number(o.autoCap)||0,...patch},map=Object.keys(api.farms()).find(id=>api.farms()[id]===ownerFarm(o));return command('craft.settings',o.id,data,()=>{const next=api.farms()[map]?.objects.find(a=>a.id===o.id);if(next)showKitchen(next);},map);}
 
   const products={flour:{name:'Stoneground flour',emoji:'🌾',sell:24},bread:{name:'Farmhouse bread',emoji:'🍞',sell:40},jam:{name:'Strawberry jam',emoji:'🍓',sell:35},cheese:{name:'Farm cheese',emoji:'🧀',sell:36}};
   for(const [id,item] of Object.entries(products))item.icon='assets/generated/production/'+id+'.webp';
@@ -79,6 +79,9 @@
   function helperTask(o){if(o.autoWork===false)return null;const status=stationStatus(o);if(status.ready)return 'collect';if(nextRecipe(o))return 'make';return null}
   function helperWork(o,action){if(o.autoWork===false)return false;if(action==='collect')return !!collect(o,true);if(action==='make'){const recipe=nextRecipe(o);if(!recipe)return false;const chosen=o.autoRecipe||o.lastRecipe||'bread';o.autoRecipe=chosen;if(!queue(o,recipe))return false;api.render();window.meadowAudio?.play('cook');api.notify('Family bakery started '+item(recipe.id).name.toLowerCase());return true}return false}
   function showKitchen(o){
+    // A verified acknowledgement replaces farm objects. Reopen from the saved
+    // identity rather than rendering an object captured before a purchase.
+    const live=api.current().objects.find(next=>next.id===o.id&&next.type===o.type);if(!live)return;o=live;
     openKitchen=o.id;o.jobs ||= [];
     const t=tier(o),cost=[250,600][t],isWorkshop=o.type==='workshop',ready=o.jobs.filter(j=>j.finishAt<=Date.now()).length,
       title=isWorkshop?'Craft shed':'Farm kitchen',available=recipes.filter(r=>(r.station||'kitchen')===(o.type||'kitchen')),

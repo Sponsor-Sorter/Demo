@@ -67,3 +67,10 @@ Deno.test('Grouped lesson protection uses only owned targets and expires on the 
  denied(()=>run(s,'workers.protect_many',undefined,{ids:['missing'],enabled:true}));denied(()=>run(s,'workers.protect_many',undefined,{ids:['__proto__'],enabled:true}));denied(()=>run(s,'workers.tick',undefined,{},now,'constructor'));
  s=run(s,'workers.protect_many',undefined,{ids:['plot','missing'],enabled:false}).save;s=run(s,'workers.tick').save;assert(s._serverWorkers.leases['hire-rowan']);
 });
+Deno.test('A hired worker waters a new crop before older optional production chores',()=>{
+ let s=state();const p=s.farms.willow.objects[1];p.plantedAt=now;p.lastHelperAt=now;
+ s.farms.willow.objects.push({id:'oven',type:'kitchen',x:6,y:3,autoWork:true,autoRecipe:'flour',jobs:[]});
+ s=hired(s);s=run(s,'workers.tick').save;const water=s._serverWorkers.leases['hire-rowan'];eq(water.action,'water');
+ s=run(s,'workers.tick',undefined,{},water.readyAt).save;assert(s.farms.willow.objects[1].wateredUntil>water.readyAt);
+ s=run(s,'workers.tick',undefined,{},water.readyAt+12000).save;eq(s._serverWorkers.leases['hire-rowan'].action,'make');
+});

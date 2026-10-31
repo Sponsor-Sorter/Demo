@@ -29,6 +29,7 @@ jobs:
       - run: node scripts/check-meadow-navigation211.cjs
       - run: node scripts/check-meadow-farm-start212.cjs
       - run: node scripts/check-meadow-crossing214.cjs
+      - run: node scripts/check-meadow-upgrade-ui215.cjs
       - run: node scripts/check-meadow-refund204.cjs
       - run: deno check --no-config supabase/functions/meadow-market-farm-actions/index.ts
       - run: deno test --no-config --allow-env scripts/check-meadow-cleanup202.ts

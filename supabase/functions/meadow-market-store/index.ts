@@ -33,6 +33,7 @@ Deno.serve(async req=>{
   const identity=await db('/auth/v1/user',undefined,bearer);if(!identity?.id)return reply(401,{error:'Sign in first'});
   const account=await db('/rest/v1/rpc/meadow_market_commerce_status',{},bearer);
   if(identity.is_anonymous||account.purchase_account_ready!==true)return reply(403,{error:'Protect your farm with a Meadow Markets username and password before buying or restoring purchases.'});
+  if(account.farm_authoritative!==true)return reply(403,{error:'Your farm needs the verified online update before store purchases can open. Your existing farm is safe.'});
   const raw=await req.text();if(raw.length>8192)return reply(413,{error:'Request too large'});
   const body=JSON.parse(raw);
   return reply(200,await verify(identity.id,String(body.product||''),String(body.token||'')));

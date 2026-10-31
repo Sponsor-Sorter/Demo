@@ -13,8 +13,9 @@
    else if(o.type==='stall'&&window.meadowShopPlan?.needed(f)){action='stock';label='Restocking shop shelves'}
    if(action){const home=api.home(o,f)||o;tasks.push({...home,id:o.id,helperAction:action,label,seed,lastHelperAt:o.lastHelperAt||0})}
   }
-  // Fair turns: a busy bakery cannot indefinitely starve fields or animals.
-  return tasks.sort((a,b)=>a.lastHelperAt-b.lastHelperAt||((a.helperAction==='water'?-1:0)-(b.helperAction==='water'?-1:0)))[0]||null;
+  // Water has a growing-season deadline. Once it is done for this crop cycle,
+  // oldest-job ordering gives fields, animals and production fair turns.
+  return tasks.sort((a,b)=>((a.helperAction==='water'?-1:0)-(b.helperAction==='water'?-1:0))||a.lastHelperAt-b.lastHelperAt)[0]||null;
  }
  function perform(role,t,map=api.state().active){const s=api.state(),f=s.farms[map],o=f?.objects.find(o=>o.id===t.id);if(!o)return false;const well=api.well(f);let done=false;const action=t.helperAction;
   if(action==='water'&&o.type==='plot'&&o.plantedAt&&!o.wateredUntil&&well?.autoWater&&window.meadowCropGrowth.calculate(o,api.crops[o.crop],f.objects).stage<3&&s.coins>=api.area(o)){s.coins-=api.area(o);o.wateredUntil=Date.now()+api.crops[o.crop].time*3;done=true}
