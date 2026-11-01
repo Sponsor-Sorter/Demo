@@ -159,7 +159,12 @@
     const height = landscape ? wrap.clientHeight : wrap.clientHeight - (dialog.querySelector('.ws-word-list')?.offsetHeight || 0) - (dialog.querySelector('[data-live]')?.offsetHeight || 0) - 20;
     const gap = Math.max(2, Math.min(5, Math.floor(width / (size * 22))));
     const padding = 20;
-    const cell = Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size));
+    // Keep each letter easy to touch without letting tall tablets inflate the
+    // puzzle to fill the whole screen. Larger word sets use slightly smaller
+    // tiles so the board stays calm and the words remain visible together.
+    const tablet = window.innerWidth >= 900 && window.innerHeight >= 600;
+    const maxCell = wordCount <= 3 ? (tablet ? 64 : 56) : wordCount <= 4 ? (tablet ? 58 : 52) : (tablet ? 54 : 48);
+    const cell = Math.min(maxCell, Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size)));
     if (!Number.isFinite(cell) || cell < 17) return;
     grid.style.setProperty('--ws-cols', size);
     grid.style.setProperty('--ws-cell', cell + 'px');
