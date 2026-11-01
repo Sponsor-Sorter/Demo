@@ -12,6 +12,10 @@ Reports, moderation, warnings, appeals, maintenance, notices and bounded telemet
 
 06:47UTC health:52farms,2protected with provenance,50eligible daily recovery archives,0missing,0recent checksum failures,0overdue purchases and0real purchases. Public commerce, enabled products and provider-test entries remain0/off. Native12 publication/device/provider gates below are unchanged.
 
+## Physical iPad Safari checklist
+
+On 1 November 2026, the owner reported **all checks work** on the live game in Safari: farm drag/pinch, crop tap, Build-item scrolling, Market and Animals, and portrait → landscape → portrait rotation. Alignment and input remained correct without the page scrolling. This is human-reported physical-device acceptance, separate from desktop viewport tests. The iPad model, iPadOS version and Settings build were not supplied. Long-hold/drop, audio and saved-farm reload were outside this checklist and are not claimed as tested.
+
 ## Previously verified 221/native 12 evidence
 
 ## Shipped and verified
@@ -31,7 +35,7 @@ Reports, moderation, warnings, appeals, maintenance, notices and bounded telemet
 | Samsung | Wait for Frontlines/user release, update through Play to12, preserve named cloud farm; verify long hold/drop, UI/touch and controlled heavy-farm soak |
 | Google Billing | Scoped named test farm and Google test instrument: cancel, pending approve/decline, consumable exact delivery, interrupted reply, Premium restore, wrong-account denial, refund/revoke/RTDN |
 | Ad SDK | Scoped24h named farm: restricted privacy/failure behavior, test-labelled rewarded view and actual signed SSV if provided, early close, no-fill/offline, premium/frequency suppression; never replace provider evidence with fixtures |
-| iPad | User agreed to run physical Safari check; await model/iPadOS and rotation, pan/pinch, tray scroll, long hold/drop, modal/game return, audio and saved-farm reload results |
+| Additional iPad checks | Basic physical Safari touch/scroll/rotation checklist passed by owner report on1November. Long hold/drop, audio and saved-farm reload remain unverified; model/iPadOS were not supplied |
 | Farm rollout | Expand reviewed protocol4 acceptance before enabling new-server-farm issuance; review existing beta baselines individually, no mass snapshot conversion |
 | Platform recovery | Off-host/full hosted-project backup and Auth/Storage/Edge recovery are not established by the logical farm restore. Dashboard backup coverage still needs owner-session inspection |
 | Shared Auth | Existing leaked-password protection is disabled in the shared project. Review its cross-app impact with the owner before changing global Auth. [Supabase guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) |
