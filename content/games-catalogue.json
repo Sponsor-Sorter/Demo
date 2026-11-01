@@ -135,7 +135,7 @@
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public preview · browser, Android & Windows",
-      "build": "Version1.0.0.79 · Build79 (browser, Android and Windows)",
+      "build": "Browser / Android 1.0.0.79 · Windows 1.0.0.80",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -155,15 +155,15 @@
           "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public79/frontlines-1.0.0.79-android.apk"
         },
         {
-          "label": "Download Windows79 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public79/frontlines-1.0.0.79-windows-setup.exe"
+          "label": "Download Windows80 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public80/frontlines-1.0.0.80-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Build79 preserves approved artwork, maps, wardrobe and account/save locations. Two complete five-round online matches passed on native Windows79 and physical Google Play Android79 with four AI. Physical Play78-to79 update retained account and online seat. Direct APK79 phone update and physical iPhone79 are not claimed. Purchases, ads and deletion processing remain disabled.",
+      "notes": "Build79 preserves approved artwork, maps, wardrobe and account/save locations. Two complete five-round online matches passed on native Windows79 and physical Google Play Android79 with four AI. Physical Play78-to79 update retained account and online seat. Direct APK79 phone update and physical iPhone79 are not claimed. Purchases, ads and deletion processing remain disabled. Windows80 adds the reviewed PC performance update. High mode improved in measured scenarios but is not universally hitch-free or guaranteed 60FPS.",
       "sha256": "120537CBA5F6F21DE2FA0104962930117EE0CCDCA5D6A5CF5198284FF1C0E5EA",
       "releaseManifest": "./frontlines/release.json"
     }

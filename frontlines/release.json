@@ -5,7 +5,7 @@
   "notes": "V1.0.0.79: Reliable online gameplay commands, accessible lobby rules, verified update continuity and browser download retry recovery. Approved graphics and audio retained.",
   "networkBuild": 77,
   "androidBuild": 79,
-  "windowsBuild": 79,
+  "windowsBuild": 80,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual57/manifest.json",
   "mapsVisualRevision": 57
