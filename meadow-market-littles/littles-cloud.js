@@ -4,7 +4,7 @@
  const CONFIG={url:'https://ejavqlyozqhzqogflqzr.supabase.co',key:'sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',storageKey:'meadow-littles-auth-v1'};
  const clone=x=>JSON.parse(JSON.stringify(x));
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
- let client,store,options={},user=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,controlsState={moderation:null,runtime:null,build:34};
+ let client,store,options={},user=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,controlsState={moderation:null,runtime:null,build:36};
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
