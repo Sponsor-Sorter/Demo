@@ -83,15 +83,19 @@ Deno.serve(async (req) => {
     }
 
     if (parsed.action === 'connect') {
+      // Register the authenticated account as a Littles member without
+      // returning cloud data. This lets Fairplay look up decisions for a new
+      // Littles account before the save-open RPC can reveal any progress.
+      const { error: registerError } = await userClient.rpc('meadow_littles_register_member')
+      if (registerError) throw new Error('LITTLES_CONTROL_UNAVAILABLE')
       let state = await currentStatus()
       if (state.moderation.banned === true) return reply(200, { ok: true, ...state, account: null, integration_reported: false })
       const { data: account, error: openError } = await userClient.rpc('meadow_littles_open', { p_display_name: null })
       if (openError || !isObject(account) || !isObject(account.profile) || account.profile.user_id !== userId || !isObject(account.save)) {
         throw new Error('LITTLES_CLOUD_UNAVAILABLE')
       }
-      // A first visit has no Littles membership yet. The empty status above
-      // precedes creation; read its now-authoritative status before returning
-      // the new cloud state to the client.
+      // Recheck after opening so a ban that races the first check cannot make
+      // this response disclose the cloud save.
       state = await currentStatus()
       // A moderation decision can land between the initial check and the
       // profile creation RPC. Never return cloud data after that second check
