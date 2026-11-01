@@ -31,6 +31,7 @@
     let reply;try{reply=await a.send(request,account);}catch{throw error('Your farm action is saved here. Reconnect to check its receipt.','ACTION_UNCERTAIN');}
     if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
     const data=reply?.data,status=reply?.status;
+    if(status===401||status===403){if(typeof window!=='undefined'&&typeof Event==='function')window.dispatchEvent?.(new Event('meadow-control-refresh'));throw error(data?.message||(status===401?'Sign in again. Your pending farm action is retained.':'Open account notices. Your pending farm action is retained.'),status===401?'SESSION_EXPIRED':'ACCESS_PAUSED');}
     if(status===409&&data?.conflict&&safe(data.revision)&&data.save_data){conflict=clone(data);a.onConflict?.(clone(data));throw error('Another device saved this farm. Review it before continuing.','FARM_CONFLICT');}
     if(status===422||status===413){clear();throw error(data?.message||'This farm action is no longer available.',data?.error||'ACTION_REJECTED');}
     if(status===409&&data?.error==='COMMAND_ROLLOUT_PENDING')throw error('This farm is waiting for the verified game update.','ROLLOUT_PENDING');

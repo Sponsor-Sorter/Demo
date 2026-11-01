@@ -10,6 +10,12 @@ async function request(path:string, method='GET', body?:unknown, bearer=secret) 
   return {ok:response.ok,status:response.status,data};
 }
 const digest = async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))).map(b=>b.toString(16).padStart(2,'0')).join('');
+async function sessionIdentity(bearer:string){
+ const identity=await request('/auth/v1/user','GET',undefined,bearer);
+ if(!identity.ok||!identity.data?.id)return identity;
+ const context=await request('/rest/v1/rpc/meadow_market_control_session','POST',{},bearer);
+ return context.ok&&context.data?.id===identity.data.id?identity:{ok:false,status:401,data:null};
+}
 Deno.serve(async req=>{
   const origin=req.headers.get('origin')||'';
   const headers={'Content-Type':'application/json','Cache-Control':'no-store','Access-Control-Allow-Origin':origins.has(origin)?origin:'https://sponsorsorter.com','Access-Control-Allow-Headers':'authorization, apikey, content-type, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Vary':'Origin'};
@@ -27,7 +33,7 @@ Deno.serve(async req=>{
     if(!attempt.ok||attempt.data!==true)return reply(429,{error:'Too many attempts. Please try again in 15 minutes.'});
     if(action==='recovery_setup'){
       const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');
-      const identity=await request('/auth/v1/user','GET',undefined,bearer);
+      const identity=await sessionIdentity(bearer);
       if(!identity.ok||!identity.data?.id||identity.data.is_anonymous)return reply(401,{error:'Sign in to your Meadow Markets account first.'});
       const owner=await request('/rest/v1/meadow_market_accounts?user_id=eq.'+identity.data.id+'&ready=eq.true&select=username');
       if(!owner.ok||!owner.data?.length)return reply(403,{error:'Protect this farm with a username first.'});
@@ -62,7 +68,7 @@ Deno.serve(async req=>{
     }
     if(action==='register'){
       const bearer=(req.headers.get('authorization')||'').replace(/^Bearer /i,'');
-      const identity=await request('/auth/v1/user','GET',undefined,bearer);
+      const identity=await sessionIdentity(bearer);
       if(!identity.ok||!identity.data?.id||!identity.data.is_anonymous)return reply(401,{error:'Continue as a guest before protecting this farm.'});
       const id=identity.data.id;
       const farm=await request('/rest/v1/meadow_market_profiles?user_id=eq.'+id+'&select=user_id');

@@ -42,10 +42,11 @@
  async function manage(){
   const who=owner(),d=dialog('Community & blocked farms'),body=d.querySelector('.safety-body');body.textContent='Loading…';
   try{const info=await request('status');if(!d.isConnected||who!==owner())return;
-   body.innerHTML='<p><a href="community.html" target="_blank" rel="noopener">Community rules & reporting</a></p><p>Unblocking does not restore a friend connection. Both players must connect again.</p>'+((info.blocked||[]).map(b=>'<div class="safety-blocked"><span>'+escape(b.name||'Meadow Farmer')+'</span><button class="small-button" data-unblock="'+escape(b.user_id)+'">Unblock</button></div>').join('')||'<p>No blocked farms.</p>');
+   body.innerHTML='<button class="small-button full-button" id="safety-account-notices">Account notices, warnings & appeals</button><p><a href="community.html" target="_blank" rel="noopener">Community rules & reporting</a></p><p>Unblocking does not restore a friend connection. Both players must connect again.</p>'+((info.blocked||[]).map(b=>'<div class="safety-blocked"><span>'+escape(b.name||'Meadow Farmer')+'</span><button class="small-button" data-unblock="'+escape(b.user_id)+'">Unblock</button></div>').join('')||'<p>No blocked farms.</p>');
+   body.querySelector('#safety-account-notices').onclick=()=>{d.close();window.meadowControl?.open()};
    body.querySelectorAll('[data-unblock]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{if(who!==owner())throw Error('Your account changed. Reopen this screen.');await request('unblock',{p_target:b.dataset.unblock});b.parentElement.remove();api.refreshFriends();d.querySelector('.safety-status').textContent='Farm unblocked.'}catch(e){error(d,e);b.disabled=false}});
   }catch(e){body.textContent='';error(d,e)}
  }
  function mount(root){root?.querySelectorAll('[data-safety-user]').forEach(card=>{if(card.querySelector('[data-farm-safety]'))return;const b=document.createElement('button');b.className='small-button safety-link';b.dataset.farmSafety='';b.textContent='Report / block';b.onclick=()=>show(card.dataset.safetyUser,card.dataset.safetyName);card.append(b)})}
- window.meadowSafety={attach(a){api=a},ensureRules,show,manage,mount,escape};
+ window.meadowSafety={attach(a){api=a;window.meadowControl?.attach(a)},ensureRules,show,manage,mount,escape};
 })();
