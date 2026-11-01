@@ -14,7 +14,7 @@
     { id: 'farm', name: 'On the farm', icon: '🌾', scene: 'assets/generated/minigames/tractor-scene.webp', words: [['cow', '🐮', 'assets/generated/cow.webp'], ['pig', '🐷'], ['hen', '🐔', 'assets/generated/hen.webp'], ['egg', '🥚'], ['hay', '🌾'], ['bee', '🐝'], ['ram', '🐏'], ['pea', '🫛'], ['barn', '🏚️'], ['farm', '🚜'], ['goat', '🐐'], ['duck', '🦆'], ['corn', '🌽'], ['seed', '🌱'], ['calf', '🐮'], ['lamb', '🐑'], ['pony', '🐴'], ['coop', '🐓'], ['milk', '🥛'], ['cart', '🛒'], ['bale', '🌾'], ['gate', '🚪'], ['roof', '🏠'], ['crop', '🌱'], ['wheat', '🌾'], ['grain', '🌾'], ['field', '🌱'], ['soil', '🪴'], ['well', '🪣'], ['pond', '🦆'], ['horse', '🐴'], ['apple', '🍎'], ['peach', '🍑'], ['plum', '🫐'], ['melon', '🍈'], ['goose', '🪿'], ['chick', '🐣'], ['sheep', '🐑', 'assets/generated/sheep.webp'], ['chore', '🧹'], ['plant', '🌱'], ['wool', '🧶']] },
     { id: 'city', name: 'Meadow Town', icon: '🚌', scene: 'assets/generated/word-search/city-scene.svg', words: [['cop', '👮'], ['bus', '🚌'], ['cab', '🚕'], ['car', '🚗'], ['van', '🚐'], ['map', '🗺️'], ['jet', '✈️'], ['zoo', '🦁'], ['taxi', '🚕'], ['shop', '🏪'], ['stop', '🛑'], ['park', '🌳'], ['road', '🛣️'], ['sign', '🪧'], ['town', '🏘️'], ['bike', '🚲'], ['train', '🚂'], ['truck', '🚚'], ['plane', '✈️'], ['store', '🏬'], ['house', '🏠'], ['beach', '🏖️'], ['boat', '⛵'], ['ship', '🚢'], ['fire', '🚒'], ['light', '🚦'], ['school', '🏫'], ['police', '👮'], ['cross', '🚸'], ['street', '🛣️'], ['bridge', '🌉'], ['river', '🏞️'], ['hotel', '🏨'], ['cafe', '☕'], ['bread', '🥖'], ['fruit', '🍎'], ['flower', '🌼'], ['market', '🛒'], ['cinema', '🎬'], ['doctor', '🩺'], ['nurse', '🧑‍⚕️']] }
   ];
-  let api, dialog, topic = topics[2], wordCount = 6, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], resizeHandler = null;
+  let api, dialog, topic = topics[2], wordCount = 3, board = [], answers = [], found = new Map(), path = [], drag = null, skipCellClick = false, startedAt = 0, completedAt = 0, clockId = 0, winTimer = 0, starCount = 0, layoutHistory = [], resizeHandler = null;
   const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const audio = (id) => window.meadowAudio?.play(id);
   const say = (text) => { const live = dialog?.querySelector('[data-live]'); if (live) live.textContent = text; };
@@ -39,7 +39,15 @@
     speakText(pick(phrases));
     audio('reward');
   }
-  function boardSize() { return window.innerWidth >= 900 && window.innerHeight >= 600 ? 14 : Math.min(window.innerWidth, window.innerHeight) >= 600 ? 12 : 9; }
+  function boardSize() {
+    // Keep the letter field small enough to scan at preschool age. Tablets get
+    // a little more breathing room, while every word remains short and direct.
+    const tablet = window.innerWidth >= 900 && window.innerHeight >= 600;
+    if (wordCount <= 3) return tablet ? 6 : 5;
+    if (wordCount <= 4) return tablet ? 7 : 6;
+    return tablet ? 8 : 7;
+  }
+  function wordLengthLimit() { return wordCount <= 3 ? 3 : wordCount <= 4 ? 4 : 5; }
   function loadHistory() { try { const saved = JSON.parse(localStorage.getItem(storeKey) || '{}'); layoutHistory = Array.isArray(saved.layouts) ? saved.layouts.filter((item) => typeof item === 'string').slice(-250) : []; } catch { layoutHistory = []; } }
   function saveHistory(signature) { layoutHistory.push(signature); layoutHistory = layoutHistory.slice(-250); try { localStorage.setItem(storeKey, JSON.stringify({ layouts: layoutHistory })); } catch {} }
   function buildBoard(words) {
@@ -101,7 +109,7 @@
     dialog.showModal();
   }
   function open() {
-    topic = topics.find((item) => item.id === topic.id) || topics[2]; wordCount = 6; loadHistory(); intro();
+    topic = topics.find((item) => item.id === topic.id) || topics[2]; wordCount = 3; loadHistory(); intro();
   }
   function intro() {
     clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0;
@@ -119,7 +127,9 @@
     completedAt = 0;
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     size = boardSize();
-    const choices = shuffle(topic.words.map(([label, icon, asset]) => ({ id: topic.id + '-' + label, label: label.toUpperCase(), icon, asset })));
+    const choices = shuffle(topic.words
+      .filter(([label]) => label.length <= wordLengthLimit())
+      .map(([label, icon, asset]) => ({ id: topic.id + '-' + label, label: label.toUpperCase(), icon, asset })));
     const result = buildBoard(choices.slice(0, wordCount)); board = result.cells; answers = result.answers; saveHistory(result.signature); startedAt = Date.now();
     playBoard(); clockId = setInterval(updateTimer, 1000); updateTimer();
   }
@@ -135,11 +145,11 @@
     grid.addEventListener('pointercancel', () => { drag = null; path = []; renderCells(); });
     grid.addEventListener('click', (event) => { if (skipCellClick) { skipCellClick = false; return; } if (drag !== null) return; const cell = event.target.closest('[data-cell]'); if (!cell) return; const index = Number(cell.dataset.cell); if (!path.length) path = [index]; else if (path[0] === index) path = []; else extendPath(index); renderCells(); if (path.length > 2) finishPath(); });
     dialog.querySelector('[data-new]').addEventListener('click', newRound);
-    dialog.querySelector('[data-hear]').addEventListener('click', () => speakText('Find the words in the list. Put your finger on the first letter and slide across each letter in the word.'));
+    dialog.querySelector('[data-hear]').addEventListener('click', () => speakText('Find the little words. Put your finger on the first letter and slide across each letter in the word.'));
     resizeHandler = () => requestAnimationFrame(sizeBoard);
     window.addEventListener('resize', resizeHandler);
     requestAnimationFrame(sizeBoard);
-    speakText('Put your finger on the first letter and slide across each letter in the word. Find the words in the list!');
+    speakText('Find the little words. Put your finger on the first letter and slide across each letter in the word.');
   }
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
@@ -149,7 +159,12 @@
     const height = landscape ? wrap.clientHeight : wrap.clientHeight - (dialog.querySelector('.ws-word-list')?.offsetHeight || 0) - (dialog.querySelector('[data-live]')?.offsetHeight || 0) - 20;
     const gap = Math.max(2, Math.min(5, Math.floor(width / (size * 22))));
     const padding = 20;
-    const cell = Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size));
+    // Keep each letter easy to touch without letting tall tablets inflate the
+    // puzzle to fill the whole screen. Larger word sets use slightly smaller
+    // tiles so the board stays calm and the words remain visible together.
+    const tablet = window.innerWidth >= 900 && window.innerHeight >= 600;
+    const maxCell = wordCount <= 3 ? (tablet ? 64 : 56) : wordCount <= 4 ? (tablet ? 58 : 52) : (tablet ? 54 : 48);
+    const cell = Math.min(maxCell, Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size)));
     if (!Number.isFinite(cell) || cell < 17) return;
     grid.style.setProperty('--ws-cols', size);
     grid.style.setProperty('--ws-cell', cell + 'px');

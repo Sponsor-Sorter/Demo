@@ -35,3 +35,9 @@
 @media (max-height:520px){.ws-screen{place-items:center}.ws-window{gap:4px;padding:5px 8px}.ws-header h1{font-size:20px}.ws-header small{font-size:9px}.ws-close{width:36px;height:36px;font-size:24px}.ws-board-wrap{gap:4px}.ws-word{min-height:29px}.ws-live{min-height:28px}.ws-help{min-height:32px}}
 @media (max-width:360px){.ws-window{padding:7px;gap:5px}.ws-topics{gap:3px}.ws-topic{min-height:60px;font-size:10px}.ws-count{min-width:70px}.ws-grid{padding:5px;gap:var(--ws-gap,2px)}}
 @media (prefers-reduced-motion:reduce){.ws-star-layer span,.ws-win-stars,.ws-again{animation:none!important}.ws-again{transform:none}}
+
+/* Preschool boards stay compact and keep each letter easy to touch. */
+.ws-grid{padding:6px}
+.ws-cell{font-size:clamp(18px,calc(var(--ws-cell,32px)*.58),32px)}
+.ws-word{min-width:64px;min-height:42px;font-size:clamp(17px,2vh,21px)}
+.ws-count{min-width:84px;min-height:46px;font-size:16px}
