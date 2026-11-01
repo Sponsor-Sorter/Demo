@@ -1,6 +1,18 @@
 # Meadow Markets launch status
 
-31October2026. This is the current status; older backlog entries retain historical results.
+1 November 2026. This is the current status; older backlog entries retain historical results.
+
+## Web 222 and account controls
+
+Web222 is live from source `229414510a7aca03340983964ef5bc3e9b134628`, preserving Littles35 and Frontlines Android/browser79/Windows80. CI41282108389 passed game checks and both Android build variants; Pages41282108449 deployed. Actual public release/index/control/safety/game/service-worker bytes match the committed source. An independent real-browser check passed existing Willowbrook farm boot, Settings222, Community → Account notices and recovery/settings return with no console warnings/errors or manual gameplay/provider actions.
+
+The reviewed Meadow-only Fairplay migration is deployed (catalog20261101061454), stable farm gateway35/JWT and accounts18 read back exactly. Enforcement enabled at2026-11-01T06:55:28.763Z after confirming no active Meadow decisions/maintenance. A fresh disposable signed account passed pre-profile status, profile/session admission, exact own identity and stable rollout guard; actor spoof and revoked sessions were denied. Its profile/Auth row and token file were removed. A fresh post-enforcement production farm reload/account/recovery check passed with no console warnings/errors. The single on-demand integration declaration was accepted at06:57:27UTC. Exact receipts are in meadow-fairplay-consumer222.md. No real sanctions, public payments/ads, new-farm issuance or shared Auth changes were enabled.
+
+Reports, moderation, warnings, appeals, maintenance, notices and bounded telemetry are supported. There is no ads.policy consumer, central match-history feed or uptime-monitor claim. Private farm/privacy/recovery/paid-settlement paths remain distinct from protected gameplay. See meadow-fairplay-consumer222.md for exact scope, hashes and rollback.
+
+06:47UTC health:52farms,2protected with provenance,50eligible daily recovery archives,0missing,0recent checksum failures,0overdue purchases and0real purchases. Public commerce, enabled products and provider-test entries remain0/off. Native12 publication/device/provider gates below are unchanged.
+
+## Previously verified 221/native 12 evidence
 
 ## Shipped and verified
 
@@ -23,6 +35,6 @@
 | Farm rollout | Expand reviewed protocol4 acceptance before enabling new-server-farm issuance; review existing beta baselines individually, no mass snapshot conversion |
 | Platform recovery | Off-host/full hosted-project backup and Auth/Storage/Edge recovery are not established by the logical farm restore. Dashboard backup coverage still needs owner-session inspection |
 | Shared Auth | Existing leaked-password protection is disabled in the shared project. Review its cross-app impact with the owner before changing global Auth. [Supabase guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) |
-| Public release | Google publicbeta1.7.1 is still Changes in review; internal12 publication did not restart it. Public listing/AdMob store linking and app readiness are separate from account approval. Production has not been submitted |
+| Public release | Google publicbeta1.7.1 was last confirmed Changes in review on31October; current review state was not rechecked for222. Internal12 publication did not restart it. Public listing/AdMob store linking and app readiness are separate from account approval. Production has not been submitted |
 
 After device/provider acceptance, explicitly close the temporary test entries, retain evidence and make the production activation decision. Free grants, SQL fixtures, signed setup probes, compilation and responsive browser checks do not count as real payment, ad-view or physical-device acceptance.

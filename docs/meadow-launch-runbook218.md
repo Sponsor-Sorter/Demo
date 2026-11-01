@@ -13,6 +13,8 @@ Run tools/meadow-launch-health.sql through the operator's private Supabase conne
 
 ## Release and rollback
 
+Build222 account-control rollback has a separate reversible switch: an operator may set `meadow_private.control_config.enforced=false` while investigating a regression. Keep central decision/report/audit history and previously paid settlement/recovery operational. Re-enable only after reviewed client/backend acceptance. The integration heartbeat is an on-demand observation, not an uptime or crash-monitoring guarantee. Full scope and receipts: meadow-fairplay-consumer222.md.
+
 1. Record the previous immutable source commit, signed native bundle, rules hash and working browser build. Keep game and backend changes backward compatible with the current Play shell.
 2. Run focused behaviour checks, the full CI workflow and actual live browser acceptance. Keep native purchase/device outcomes separate from fixtures.
 3. Back up a named existing farm privately before any reviewed conversion, with its exact revision and SHA256. Conversion must reject stale revision/hash and retain a reviewed-beta opening balance; old test wealth is not verified earning history.

@@ -29,6 +29,18 @@ Declared features: `reports`, `moderation`, `warnings`, `appeals`, `maintenance`
 
 Activation is deliberately separate: `meadow_private.control_config.enforced` stays false until public client acceptance. No synthetic/real player sanction is needed for activation.
 
+## Public rollout and activation
+
+Source `229414510a7aca03340983964ef5bc3e9b134628` is public web222. CI41282108389 passed both jobs (game regression and both Android build variants); Pages41282108449 completed successfully. The six public feed/index/control/style/game/service-worker files match the committed Git blobs. Receipt: `D:/Chat Gpt/workspaces/meadow-production194-evidence/control222/public222-source.json`. Reviewed safety.css differs only by three normalized CRLF line endings; normalized content is identical. Native12 is unchanged and no physical install is claimed.
+
+Independent production-browser acceptance passed existing Willowbrook Meadow level17 farm boot, Settings → Game build222, Community → Account notices with no restrictions, and Account/recovery/settings return. Console warnings/errors were empty. No manual save/gameplay, report, decision, purchase or ad actions; autonomous helpers progressed while visible. Screenshot: `C:/Users/jrbwi/OneDrive/Documents/ChatGPT/mobile games/FairplayAdmin/evidence/meadow-control222/public222-account-notices.png`.
+
+Enforcement was enabled **2026-11-01T06:55:28.763Z** after checking zero active Meadow decisions and no maintenance. Public commerce/ads/readiness remained false. A new disposable anonymous account then passed actual stable services with enforcement ON: pre-profile status200, profile201, admission200, identity200, unchanged disabled-new-farm guard409, actor spoof422, logout204, revoked-RPC403 and gateway401. No save/resources/password/email was created. Cleanup refused an initial display-name assumption; after inspecting only that exact anonymous QA UUID and proving no saves, sessions or other-app memberships, the normalized QA profile and Auth row were removed. Temporary token file deleted. Evidence: `stable-auth222-report.json` in the external control222 evidence folder.
+
+An independent fresh **post-enforcement** reload also passed existing level17 farm connection, Settings222, Community/account notices and recovery/settings return. No console warnings/errors or manual gameplay/account/provider mutations. Proof: `FairplayAdmin/evidence/meadow-control222/public222-enforcement-on.png`.
+
+One on-demand integration declaration was accepted at **2026-11-01T06:57:27.336397Z**: app `meadow`, protocol1, consumer `meadow-control222`, all seven declared features, metrics `client_rollout=public222`, `enforcement=true`, `observation=on-demand acceptance, not uptime`. No ads.policy capability is declared. Final sanitized receipt: `D:/Chat Gpt/workspaces/meadow-production194-evidence/control222/final-receipt.json`.
+
 ## Acceptance evidence and limits
 
 1. `tools/meadow-control222-check.sql` passed in explicit rollback transactions: session expiry/revocation, actor/app spoofing, actual authenticated-role raw writes, ban/restrict/revoked/expired decisions, read/recovery preservation, acknowledgment/appeal ownership and retry, report evidence/dedup/rate limits, wrong-game isolation, maintenance admission, notice filtering, old service routes and bounded telemetry. No test decision/report persisted.
@@ -41,3 +53,9 @@ The physical iPad check is pending with the human. Samsung native 12/provider ac
 ## Rollback
 
 If control integration causes a regression, turn `control_config.enforced` off while investigating; leave paid settlement/recovery operational. Preserve decisions/reports/audit history. Publish any client rollback as a higher web/cache build. Do not lower native/web versions, mass-convert farms or use legacy snapshots to bypass authoritative save rules.
+
+Exact operator-only emergency switch (data setting, not a schema change):
+
+```sql
+update meadow_private.control_config set enforced=false where id;
+```
