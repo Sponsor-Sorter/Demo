@@ -1,0 +1,32 @@
+{
+  "visual_revision": 83,
+  "maps": [
+    {
+      "bytes": 52732588,
+      "file": "europe_theatre-r1-art83.pck",
+      "graph_hash": "6f6cfe79c00cf1c07ba1594aa52032c1aa0c194538ccc5b573d7cc2859167d6d",
+      "id": "europe_theatre",
+      "revision": 1,
+      "sha256": "9ca6b2573cf80bdeebc18317df785e955b40c5dfff659a30cb8690de820ec788",
+      "visual_revision": 83
+    },
+    {
+      "bytes": 47540376,
+      "file": "east_asia-r1-art83.pck",
+      "graph_hash": "e911f81ccd178739314c735333439bf38cdf1f9a3ff9eb481dc486ef9997a960",
+      "id": "east_asia",
+      "revision": 1,
+      "sha256": "0839ba145fe7e320786eda7dc69d35db2d17b124e494d910b433f443cf639292",
+      "visual_revision": 83
+    },
+    {
+      "bytes": 12379804,
+      "file": "sky_citadel-r1-art83.pck",
+      "graph_hash": "87d5b46875daa35a85eb7a71c8c676b74f902e8b641b4408022a062706e0dacd",
+      "id": "sky_citadel",
+      "revision": 1,
+      "sha256": "5abb2d5fd8ff772af8ea6f336f365f8f9e5ed3a596ba57c0cbfb62465a77513e",
+      "visual_revision": 83
+    }
+  ]
+}
