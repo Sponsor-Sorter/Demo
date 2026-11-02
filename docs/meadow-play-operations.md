@@ -1,5 +1,9 @@
 # Meadow Markets Play operations
 
+## 2November2026 acceptance update
+
+Web223 is live; Samsung has Play1.7.2/code12. Four free Google test receipts were actually verified and then refunded/revoked through authenticated RTDN; two native rewarded views produced signed AdMob SSV. All temporary provider leases were expired at01:52:30UTC. No real orders/public payments/ads/new-farm issuance were enabled. Native wrong-account/interruption and ad early-close/no-fill/consent/Premium cases remain. See meadow-market-build223.md and MEADOW_LAUNCH_STATUS.md for current evidence, limits and remaining gates; older statements below are historical.
+
 ## Identity and distribution
 
 Game name: Meadow Markets. Publisher: Fairplay Gaming. Package: com.meadowandmarket.game. Website and app load the same live game URL. A Google tester account grants installation access; a Meadow Markets username loads the cloud farm. These are separate logins.

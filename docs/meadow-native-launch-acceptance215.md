@@ -1,5 +1,11 @@
 # Meadow Markets native launch acceptance
 
+## 2November2026 current results
+
+Play12/1.7.2 updated in place with the six-map/318-object registered farm retained. Native launch, settled rotations, real222→223 update and15-minute heavy-farm profile passed. Google free test cancel, +100 once, pending approve/no pending credit, Premium/Restore and four refund→signed RTDN reversals passed. Delayed decline gave no new grant; final owned-list check remains. Two actual native rewarded views produced signed SSV receipts; a separate free preview is excluded. Provider leases are expired and all public switches remainoff.
+
+Final long-hold/drop/highlight/build scrolling and offline/interruption were not completed before the phone switched to World Conquest. Wrong-farm native restore, true interrupted-success recovery, genuine early-close/no-reward, no-fill/consent/Premium/frequency provider cases remain open. See meadow-market-build223.md for observed times/metrics and MEADOW_LAUNCH_STATUS.md for release gates. The prepared checklist below remains a checklist, not blanket acceptance.
+
 Prepared31October2026. This is an execution checklist, not a completed device test. The human explicitly released the idle Samsung through Frontlines for this turn; Frontlines has paused its phone input. Browser acceptance does not replace physical checks.
 
 ## Results recorded31October

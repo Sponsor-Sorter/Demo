@@ -1,44 +1,37 @@
 # Meadow Markets launch status
 
-1 November 2026. This is the current status; older backlog entries retain historical results.
+2 November 2026. Web223 / Google Play1.7.2 (code12). This page supersedes older pending-device/provider statements in historical build notes. The game is not yet cleared for public production monetisation.
 
-## Web 222 and account controls
+## Completed in this acceptance turn
 
-Web222 is live from source `229414510a7aca03340983964ef5bc3e9b134628`, preserving Littles35 and Frontlines Android/browser79/Windows80. CI41282108389 passed game checks and both Android build variants; Pages41282108449 deployed. Actual public release/index/control/safety/game/service-worker bytes match the committed source. An independent real-browser check passed existing Willowbrook farm boot, Settings222, Community → Account notices and recovery/settings return with no console warnings/errors or manual gameplay/provider actions.
+- Play updated the Samsung SM-S908E from native11 to12 in place. The registered test_phone cloud farm retained protocol4, all six maps and318 objects. The actual222→223 in-game update prompt was installed with that farm retained.
+- Real Google test checkout passed cancellation, a confirmed100-gem delivery, delayed approval with no pending credit, lifetime Premium delivery and Restore without duplicate delivery. Delayed decline produced no new receipt or credit.
+- Four test receipts were refunded through the official Google API. Authenticated RTDN revoked all four and reversed300 test gems and Premium. No real-money order was placed. These were Google license tests, not free-pack fixtures.
+- Two actual native rewarded views delivered two signed AdMob SSV rewards. AdMob1.7.2 was configured as Test mode; a captured SDK view explicitly shows Test Ad. One separate free in-game preview is excluded from SSV evidence.
+- A900.777-second dense-farm run recorded53,077 frames,58.92 average FPS and0.97% janky frames,16 foreground samples and thermal status0. Main-process PSS ranged525–666 MiB; this is not a JS-heap or separate WebView-renderer leak test.
+- Two disposable accounts completed the actual stable JWT farm gateway: server-owned starter, till/plant/water costs, early-harvest denial, real-time carrot harvest and replay without duplicate output. A third unenrolled account was refused. Public new-farm issuance stayedoff. All three sessions/accounts and their private token file were removed.
+- Build223 fixes open-shop wallet/Premium display after delivery, bounded native purchase recovery on return/online, and missing no-reward explanations for unavailable/unfinished ads.
+- Full local regression and final CI41372770029 passed, including both Android variants. Pages41372769188 deployed f74e081e1fe37c423a1a8b20fc2d4b158563049d. All six checked public files match committed source. Native12 remains the same installed binary.
 
-The reviewed Meadow-only Fairplay migration is deployed (catalog20261101061454), stable farm gateway35/JWT and accounts18 read back exactly. Enforcement enabled at2026-11-01T06:55:28.763Z after confirming no active Meadow decisions/maintenance. A fresh disposable signed account passed pre-profile status, profile/session admission, exact own identity and stable rollout guard; actor spoof and revoked sessions were denied. Its profile/Auth row and token file were removed. A fresh post-enforcement production farm reload/account/recovery check passed with no console warnings/errors. The single on-demand integration declaration was accepted at06:57:27UTC. Exact receipts are in meadow-fairplay-consumer222.md. No real sanctions, public payments/ads, new-farm issuance or shared Auth changes were enabled.
+Detailed outcomes and limits: [build223 acceptance](meadow-market-build223.md). Existing Fairplay enforcement and account controls remain as documented in [consumer222](meadow-fairplay-consumer222.md).
 
-Reports, moderation, warnings, appeals, maintenance, notices and bounded telemetry are supported. There is no ads.policy consumer, central match-history feed or uptime-monitor claim. Private farm/privacy/recovery/paid-settlement paths remain distinct from protected gameplay. See meadow-fairplay-consumer222.md for exact scope, hashes and rollback.
+## Closeout
 
-06:47UTC health:52farms,2protected with provenance,50eligible daily recovery archives,0missing,0recent checksum failures,0overdue purchases and0real purchases. Public commerce, enabled products and provider-test entries remain0/off. Native12 publication/device/provider gates below are unchanged.
+At01:55UTC:52 saves,2 protected farms,50/50 eligible daily recovery archives,0 missing eligible archives and0 archive hash faults. There are0 active Play/ad acceptance entries,0 enabled backend products,0 real purchases and0 overdue unsettled purchases. All four test orders are revoked. The phone farm has610 gems,3 reward turns and Premiumfalse after refunds, one separate free preview and two signed ad rewards.
 
-## Physical iPad Safari checklist
+Public payments, ads, production readiness and new-farm issuance remainfalse. Temporary provider leases were explicitly expired at01:52:30UTC. Only reviewed test-phone refund holds were released after verifying test-only receipts and completed reversals; no other player's hold or balance was changed.
 
-On 1 November 2026, the owner reported **all checks work** on the live game in Safari: farm drag/pinch, crop tap, Build-item scrolling, Market and Animals, and portrait → landscape → portrait rotation. Alignment and input remained correct without the page scrolling. This is human-reported physical-device acceptance, separate from desktop viewport tests. The iPad model, iPadOS version and Settings build were not supplied. Long-hold/drop, audio and saved-farm reload were outside this checklist and are not claimed as tested.
+## Remaining release gates
 
-## Previously verified 221/native 12 evidence
-
-## Shipped and verified
-
-- Web221 is live. The real219→221 update returned the same level15/VIP1 farm; Settings confirms221 and the approved tester shop retains free packs. No pack or ad reward was claimed during this check.
-- Play1.7.2/code12 is Available to internal testers. Signed bundle and existing upload signer verified. Google parsed its package/version and reports no device-support loss. The Samsung still has native11 until its next authorized Play update.
-- CI41189220801 game and both Android compile checks passed; Pages41189221044 deployed. Runtime88bff2f4182e0f7f8a10dfc0beb2ed3daf8b0445; farm gateway33 requires JWT; generated rules hash5a9c0bdcc63b.
-- Recovery220 daily private bundles cover49/49 eligible farms, no missing archives/hash faults. An actual archived farm and19,486 rows of matching resources/ledgers restored into a fresh isolated PostgreSQL database. Wallet, ownership and exact-once command/reward behavior passed. See meadow-market-recovery220.md for the narrower game-data scope.
-- Two approved QA farms use protocol4 with recorded provenance. Existing Samsung rotation/offline-reconnect evidence remains valid for native11/web219; it does not establish native12 touch/performance acceptance.
-- Pocket Gems and lifetime Premium buy options are active in Google for license acceptance. Five others remain drafts. AdMob app/rewarded/interstitial IDs and signed callback endpoint match. Exact native1.7.2 is configured as non-revenue Test mode in AdMob. Always confirm the displayed ad's test status before any click.
-- Public payments, ads, production readiness and new-farm issuance remainoff. All backend products disabled; zero active billing/ad test entries and zero real purchases. No customer was charged.
-
-## Gates still open
-
-| Gate | Next evidence needed |
+| Area | Remaining evidence/action |
 |---|---|
-| Samsung | Wait for Frontlines/user release, update through Play to12, preserve named cloud farm; verify long hold/drop, UI/touch and controlled heavy-farm soak |
-| Google Billing | Scoped named test farm and Google test instrument: cancel, pending approve/decline, consumable exact delivery, interrupted reply, Premium restore, wrong-account denial, refund/revoke/RTDN |
-| Ad SDK | Scoped24h named farm: restricted privacy/failure behavior, test-labelled rewarded view and actual signed SSV if provided, early close, no-fill/offline, premium/frequency suppression; never replace provider evidence with fixtures |
-| Additional iPad checks | Basic physical Safari touch/scroll/rotation checklist passed by owner report on1November. Long hold/drop, audio and saved-farm reload remain unverified; model/iPadOS were not supplied |
-| Farm rollout | Expand reviewed protocol4 acceptance before enabling new-server-farm issuance; review existing beta baselines individually, no mass snapshot conversion |
-| Platform recovery | Off-host/full hosted-project backup and Auth/Storage/Edge recovery are not established by the logical farm restore. Dashboard backup coverage still needs owner-session inspection |
-| Shared Auth | Existing leaked-password protection is disabled in the shared project. Review its cross-app impact with the owner before changing global Auth. [Supabase guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) |
-| Public release | Google publicbeta1.7.1 was last confirmed Changes in review on31October; current review state was not rechecked for222. Internal12 publication did not restart it. Public listing/AdMob store linking and app readiness are separate from account approval. Production has not been submitted |
+| Samsung touch/reliability | Current long-hold versus pan, drop/highlight/rotate, Build/roster scrolling, offline/reconnect and interrupted-action recovery. Basic native12 launch/rotation/soak and live-content update passed; the phone switched to World Conquest before final touch/offline checks, so input stopped. Original automatic rotation settings were restored. |
+| Billing | True interrupted-success/restart recovery and wrong-farm native restore. Build223 lifecycle/account-switch fixtures pass, but they do not replace these provider tests. Delayed-decline no-grant was observed; its final native owned-purchase query remains to capture. |
+| Advertising | True early-close/no-reward, no-fill/offline/load failure, restricted-consent choices and actual Premium/frequency suppression. The attempted early close had already reached Reward granted and must not be marked passed. |
+| Farm authority | Two additional server-starter crop canaries passed. Complete remaining mutation/worker/progression routes before general issuance; do not mass-convert unreviewed beta wealth. |
+| Full recovery | Daily game bundles and the isolated logical farm/ledger restore are established. Independent off-host/full hosted-project backup and Auth/Storage/Edge recovery are not. The shared project is on Free, which has no managed daily-backup entitlement. |
+| Shared Auth | Leaked-password protection remains disabled; review cross-app impact, plan eligibility and account recovery before changing the shared configuration. No global Auth change was made. |
+| Physical iPad | Owner reported drag/pinch, crop tap, Build scrolling, Market/Animals and rotation passed on1November. Long-hold/drop, audio and reload were not reported; model/iPadOS/exact build were not supplied. |
+| Public release | Publicbeta1.7.1 was observed Changes in review on2November; internal12 is installed. Public installation/store link, current Google approval and AdMob app readiness remain separate. Production was not submitted. |
 
-After device/provider acceptance, explicitly close the temporary test entries, retain evidence and make the production activation decision. Free grants, SQL fixtures, signed setup probes, compilation and responsive browser checks do not count as real payment, ad-view or physical-device acceptance.
+The desktop browser-control runtime failed before initialization with “failed to write kernel assets … os error3”; reset/retry did not recover it. Current-turn browser UI/dashboard checks are therefore unverified. Static public-byte verification and real Samsung checks are recorded separately. No alternate browser-control bypass was used.
