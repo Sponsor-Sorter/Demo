@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "entries": [
     {
       "id": "meadow-markets",
@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.84 adds Airship: Sky Citadel, Europe: Iron Frontiers and East Asia: Jade Sea, with optional Fog of War and neutral irradiated territories. New online rooms use compatible network protocol83 clients.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.85 makes bonus regions easier to read with matching terrain tints and captions, stronger complete-region boundaries and compact labels for dense boards. All eleven maps and protocol83 multiplayer rules are retained.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.84 · browser, Android & Windows",
+      "build": "V1.0.0.85 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android84 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public84/frontlines-1.0.0.84-android.apk"
+          "label": "Download Android85 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public85/frontlines-1.0.0.85-android.apk"
         },
         {
-          "label": "Download Windows84 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public84/frontlines-1.0.0.84-windows-setup.exe"
+          "label": "Download Windows85 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public85/frontlines-1.0.0.85-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "New maps download when selected. Existing accounts, portraits and saves are retained. Old protocol77 rooms remain on their existing service; all players need the current version to join new protocol83 rooms. Google Play production review and Steam review are separate. Physical iPhone84 testing is not claimed.",
-      "sha256": "63E08C5F2DEDE9CD8AC6C6F6306F0FF6DD64C14C2BD8545A02FB2C412F04A2AE",
+      "notes": "Hold the Bonuses button during a match to compare regions; release to return to your normal map view. Existing map downloads, approved artwork, accounts, portraits and saves are retained. Google Play production review and Steam review are separate.",
+      "sha256": "2FF958F8D6D3EF83D9CDFF0AD2FE841B054B75446AA4FAB5C81851EE84C93004",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

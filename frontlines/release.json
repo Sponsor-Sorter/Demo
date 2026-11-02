@@ -1,11 +1,11 @@
 {
-  "build": 84,
-  "version": "1.0.0.84",
-  "url": "https://sponsorsorter.com/frontlines/builds/84/",
-  "notes": "V1.0.0.84: Airship: Sky Citadel, Europe: Iron Frontiers and East Asia: Jade Sea. Optional Fog of War and connected neutral irradiated territories. Native menu layout corrected; approved artwork, accounts and saves retained.",
+  "build": 85,
+  "version": "1.0.0.85",
+  "url": "https://sponsorsorter.com/frontlines/builds/85/",
+  "notes": "V1.0.0.85: Clearer bonus regions with matching terrain tints and captions, complete dark-and-light boundaries that stay readable as you zoom, and compact labels for dense maps. Hold Bonuses to compare regions; release to return. Existing graphics, maps, rules, accounts and saves retained.",
   "networkBuild": 83,
-  "androidBuild": 84,
-  "windowsBuild": 84,
+  "androidBuild": 85,
+  "windowsBuild": 85,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
   "mapsVisualRevision": 83
