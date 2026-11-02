@@ -1,11 +1,11 @@
 {
-  "build": 86,
-  "version": "1.0.0.86",
-  "url": "https://sponsorsorter.com/frontlines/builds/86/",
-  "notes": "V1.0.0.86: Army miniatures now use the same main-world size on every map, during combat, movement and captured-garrison updates. Original meshes, animations, terrain, bonus view, rules, accounts and saves retained.",
+  "build": 87,
+  "version": "1.0.0.87",
+  "url": "https://sponsorsorter.com/frontlines/builds/87/",
+  "notes": "V1.0.0.87: Corrected corrupted text characters in the auto-roll button, kill feed and full battle log. Original artwork, graphics, rules, accounts and saves retained.",
   "networkBuild": 83,
-  "androidBuild": 86,
-  "windowsBuild": 86,
+  "androidBuild": 87,
+  "windowsBuild": 87,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
   "mapsVisualRevision": 83

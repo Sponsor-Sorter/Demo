@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.86",
-  "versionCode": 86,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview86-testing/frontlines-1.0.0-preview-build-86.apk",
+  "versionName": "1.0.0.87",
+  "versionCode": 87,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview87-testing/frontlines-1.0.0-preview-build-87.apk",
   "bytes": 221343510,
-  "sha256": "02ffae14575dbdf7488d02f751e5424bf083ba41bb3165b770643435485cbdcc",
+  "sha256": "3d2a23fc7bd00cfee745f77ecf9b7e86432d444d067062c3f0c4899022fdccfd",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public86/frontlines-1.0.0.86-android.apk",
-  "notes": "V1.0.0.86: Army miniatures now use the same main-world size on every map, during combat, movement and captured-garrison updates. Original meshes, animations, terrain, bonus view, rules, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-android.apk",
+  "notes": "V1.0.0.87: Corrected corrupted text characters in the auto-roll button, kill feed and full battle log. Original artwork, graphics, rules, accounts and saves retained."
 }

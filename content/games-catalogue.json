@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.86 fixes inconsistent unit sizes on new maps. Army miniatures keep their main-world scale during captures, movement and combat. All eleven maps and protocol83 multiplayer rules are retained.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.87 corrects corrupted text characters in the auto-roll button, kill feed and battle log. All eleven maps and protocol83 multiplayer rules are retained.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.86 · browser, Android & Windows",
+      "build": "V1.0.0.87 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android86 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public86/frontlines-1.0.0.86-android.apk"
+          "label": "Download Android87 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-android.apk"
         },
         {
-          "label": "Download Windows86 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public86/frontlines-1.0.0.86-windows-setup.exe"
+          "label": "Download Windows87 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Unit sizes are consistent across maps and animation phases; small territories no longer shrink individual miniatures. Existing map downloads, approved artwork, accounts, portraits and saves are retained. Google Play production review and Steam review are separate.",
-      "sha256": "02FFAE14575DBDF7488D02F751E5424BF083BA41BB3165B770643435485CBDCC",
+      "notes": "Battle labels now show clean separators, arrows and loss counts. Existing map downloads, approved artwork, accounts, portraits and saves are retained. Google Play production review and Steam review are separate.",
+      "sha256": "3D2A23FC7BD00CFEE745F77ECF9B7E86432D444D067062C3F0C4899022FDCCFD",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
