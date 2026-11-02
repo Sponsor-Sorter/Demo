@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "entries": [
     {
       "id": "meadow-markets",
@@ -130,19 +130,19 @@
       "id": "frontlines",
       "title": "Frontlines: World in Conflict",
       "type": "Game",
-      "tagline": "Six factions. Forty-two territories. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. Version1.0.0.79 improves online gameplay controls, lobby rules, update continuity and browser download retry recovery. Online rooms use network protocol77.",
+      "tagline": "Six factions. Eleven battlefields. One world to conquer.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.84 adds Airship: Sky Citadel, Europe: Iron Frontiers and East Asia: Jade Sea, with optional Fog of War and neutral irradiated territories. New online rooms use compatible network protocol83 clients.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Public preview · browser, Android & Windows",
-      "build": "Browser / Android 1.0.0.79 · Windows 1.0.0.80",
+      "status": "Public testing · browser, Android & Windows",
+      "build": "V1.0.0.84 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
         "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play and Steam are separate distributions.",
         "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Android50+ supports in-game updates, although stock70/71 clients with the old compiled updater fault need a manual signed replacement first. Android asks you to confirm installation.",
         "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
-        "Online players need compatible protocol77 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
+        "Online players need compatible protocol83 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
       ],
       "actions": [
         {
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android79 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public79/frontlines-1.0.0.79-android.apk"
+          "label": "Download Android84 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public84/frontlines-1.0.0.84-android.apk"
         },
         {
-          "label": "Download Windows80 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public80/frontlines-1.0.0.80-windows-setup.exe"
+          "label": "Download Windows84 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public84/frontlines-1.0.0.84-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Build79 preserves approved artwork, maps, wardrobe and account/save locations. Two complete five-round online matches passed on native Windows79 and physical Google Play Android79 with four AI. Physical Play78-to79 update retained account and online seat. Direct APK79 phone update and physical iPhone79 are not claimed. Purchases, ads and deletion processing remain disabled. Windows80 adds the reviewed PC performance update. High mode improved in measured scenarios but is not universally hitch-free or guaranteed 60FPS.",
-      "sha256": "120537CBA5F6F21DE2FA0104962930117EE0CCDCA5D6A5CF5198284FF1C0E5EA",
+      "notes": "New maps download when selected. Existing accounts, portraits and saves are retained. Old protocol77 rooms remain on their existing service; all players need the current version to join new protocol83 rooms. Google Play production review and Steam review are separate. Physical iPhone84 testing is not claimed.",
+      "sha256": "63E08C5F2DEDE9CD8AC6C6F6306F0FF6DD64C14C2BD8545A02FB2C412F04A2AE",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

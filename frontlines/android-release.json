@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.79",
-  "versionCode": 79,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview79-testing/frontlines-1.0.0-preview-build-79.apk",
-  "bytes": 221293388,
-  "sha256": "120537cba5f6f21de2fa0104962930117ee0ccdca5d6a5cf5198284ff1c0e5ea",
+  "versionName": "1.0.0.84",
+  "versionCode": 84,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview84-testing/frontlines-1.0.0-preview-build-84.apk",
+  "bytes": 221339259,
+  "sha256": "63e08c5f2dede9cd8ac6c6f6306f0ff6dd64c14c2bd8545a02fb2c412f04a2ae",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public79/frontlines-1.0.0.79-android.apk",
-  "notes": "V1.0.0.79: Reliable online gameplay commands, accessible lobby rules, verified update continuity and browser download retry recovery. Approved graphics and audio retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public84/frontlines-1.0.0.84-android.apk",
+  "notes": "V1.0.0.84: Airship: Sky Citadel, Europe: Iron Frontiers and East Asia: Jade Sea. Optional Fog of War and connected neutral irradiated territories. Native menu layout corrected; approved artwork, accounts and saves retained."
 }
