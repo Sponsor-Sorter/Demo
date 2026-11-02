@@ -1,11 +1,11 @@
 {
-  "build": 85,
-  "version": "1.0.0.85",
-  "url": "https://sponsorsorter.com/frontlines/builds/85/",
-  "notes": "V1.0.0.85: Clearer bonus regions with matching terrain tints and captions, complete dark-and-light boundaries that stay readable as you zoom, and compact labels for dense maps. Hold Bonuses to compare regions; release to return. Existing graphics, maps, rules, accounts and saves retained.",
+  "build": 86,
+  "version": "1.0.0.86",
+  "url": "https://sponsorsorter.com/frontlines/builds/86/",
+  "notes": "V1.0.0.86: Army miniatures now use the same main-world size on every map, during combat, movement and captured-garrison updates. Original meshes, animations, terrain, bonus view, rules, accounts and saves retained.",
   "networkBuild": 83,
-  "androidBuild": 85,
-  "windowsBuild": 85,
+  "androidBuild": 86,
+  "windowsBuild": 86,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
   "mapsVisualRevision": 83

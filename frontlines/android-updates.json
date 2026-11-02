@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.85",
-  "versionCode": 85,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview85-testing/frontlines-1.0.0-preview-build-85.apk",
+  "versionName": "1.0.0.86",
+  "versionCode": 86,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview86-testing/frontlines-1.0.0-preview-build-86.apk",
   "bytes": 221343510,
-  "sha256": "2ff958f8d6d3ef83d9cdff0ad2fe841b054b75446aa4fab5c81851ee84c93004",
+  "sha256": "02ffae14575dbdf7488d02f751e5424bf083ba41bb3165b770643435485cbdcc",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public85/frontlines-1.0.0.85-android.apk",
-  "notes": "V1.0.0.85: Clearer bonus regions with matching terrain tints and captions, complete dark-and-light boundaries that stay readable as you zoom, and compact labels for dense maps. Hold Bonuses to compare regions; release to return. Existing graphics, maps, rules, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public86/frontlines-1.0.0.86-android.apk",
+  "notes": "V1.0.0.86: Army miniatures now use the same main-world size on every map, during combat, movement and captured-garrison updates. Original meshes, animations, terrain, bonus view, rules, accounts and saves retained."
 }
