@@ -19,11 +19,11 @@
  }
  function label(sku){if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):'Currently unavailable';}
  function requirePurchaseAccount(){if(configuration.purchase_account_ready!==true)throw Error('Protect your farm with a username and password before buying or restoring purchases. Open Settings → Account & switch farm.');}
- async function verify(rows,who){
+ async function verify(rows,who,silent=false){
   let completed=0;
   for(const purchase of rows||[]){
    if(who!==api.user()?.id)throw Error('Sign back into the purchasing account to restore this purchase.');
-   if(purchase.pending){api.notify('Payment is pending. Your items will arrive after Google confirms it.');continue;}
+   if(purchase.pending){if(!silent)api.notify('Payment is pending. Your items will arrive after Google confirms it.');continue;}
    if(purchase.products?.length!==1)throw Error('This purchase needs support.');
    const r=await api.client().functions.invoke('meadow-market-store',{body:{product:purchase.products[0],token:purchase.token}});
    if(r.error||!r.data?.verified)throw Error(r.data?.error||'Purchase verification is pending. Use Restore purchases to retry.');
@@ -52,17 +52,35 @@
   try{await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');requirePurchaseAccount();const result=await billing.restore();const n=await verify(result.purchases,who);api.notify(n?'Purchases checked and restored.':'No unfinished purchases on this Play account.');}
   finally{busy=false}
  }
+ // Google can approve a pending payment while the game is closed. Re-query
+ // owned purchases on return; only the server can bind and deliver them.
+ let lastRecoveryOwner='',lastRecoveryAt=0;
+ async function recover(){
+  if(!billing||busy||document.hidden||!api?.ready()||!api.canPlay())return;
+  const who=api.user()?.id,now=Date.now();
+  if(who===lastRecoveryOwner&&now-lastRecoveryAt<30000)return;
+  busy=true;
+  try{
+   await refresh();if(who!==api.user()?.id)return;
+   if(configuration.test_access||!configuration.payments_enabled||configuration.purchase_account_ready!==true)return;
+   lastRecoveryOwner=who;lastRecoveryAt=now;
+   const result=await billing.restore();if(who!==api.user()?.id)return;
+   await verify(result.purchases,who,true);
+  }catch{ /* Manual Restore remains available after a network/provider failure. */ }
+  finally{busy=false}
+ }
  async function advertisement(rewarded=false){
   if(busy)return {unavailable:true};busy=true;const who=api.user()?.id;
   const sameAccount=()=>{if(who!==api.user()?.id)throw Error('Account changed. Open the reward on your own farm.');};
   try{
    await refresh();sameAccount();if(configuration.test_access&&!configuration.ads_provider_test)return {test:true};
-   if(!ads||!configuration.ads_enabled)return {unavailable:true};
-   const consent=await ads.consent();sameAccount();if(!consent.canRequestAds)return {unavailable:true};
+   if(!ads||!configuration.ads_enabled){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
+   const consent=await ads.consent();sameAccount();if(!consent.canRequestAds){api.notify('Advertising privacy choices are unavailable. No ad was shown.');return {unavailable:true};}
    const data={rewarded};
    if(rewarded){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
    const result=await ads.show(data);sameAccount();
    if(result.earned)api.notify('Ad finished. Your reward arrives after server verification.');
+   else if(rewarded)api.notify('Ad closed before the reward was earned. No reward was added.');
    if(result.earned){let checks=0;const timer=setInterval(()=>{if(who!==api.user()?.id||++checks>4){clearInterval(timer);return;}window.meadowClub?.refresh();},5000);}
    // Native earned callbacks never authorize currency, including provider tests.
    return result;
@@ -73,6 +91,6 @@
   for(const link of root.querySelectorAll('a[href$=".apk"]')){link.href='https://play.google.com/store/apps/details?id=com.meadowandmarket.game';link.removeAttribute('download');link.textContent='Open Meadow Markets in Google Play';}
   const section=root.querySelector('.install-game-card .task-main small');if(section)section.textContent='Google Play installs and updates this version. Your cloud farm stays on your account.';
  }
- function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().catch(()=>{}));if(billing)billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));}
+ function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().then(recover).catch(()=>{}));if(billing){billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));document.addEventListener('visibilitychange',()=>{if(!document.hidden)recover()});window.addEventListener('online',recover);}}
  window.meadowStore={attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();

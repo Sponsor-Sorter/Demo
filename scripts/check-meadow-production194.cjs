@@ -27,7 +27,7 @@ async function storeFixture(native){
  let current='owner',config={test_access:false,purchase_account_ready:true,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,checkouts=0,restores=0,popupHook;
  const notices=[],state={coins:250};
  const billing={products:async()=>({products:[{id:'mm_pocket_gems',price:'A$2.99'}]}),purchase:async()=>{checkouts++;popupHook?.();return purchase},restore:async()=>{restores++;return purchase},addListener(){}};
- const scope={window:{addEventListener(){},Capacitor:native?{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowStore',Plugins:{MeadowStore:billing}}:undefined},document:{querySelectorAll:()=>[],querySelector:()=>null},setInterval,clearInterval};
+ const scope={window:{addEventListener(){},Capacitor:native?{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowStore',Plugins:{MeadowStore:billing}}:undefined},document:{addEventListener(){},querySelectorAll:()=>[],querySelector:()=>null},setInterval,clearInterval};
  vm.runInNewContext(read(root+'store.js'),scope);const store=scope.window.meadowStore;
  const api={ready:()=>true,user:()=>({id:current}),client:()=>({rpc:async()=>({data:config}),functions:{invoke:async()=>{verifications++;return{data:{verified:true}}}}}),notify:t=>notices.push(t),save(){},flush:async()=>flushes++,state:()=>state};
  scope.window.meadowClub={refresh:async()=>{}};store.attach(api);
