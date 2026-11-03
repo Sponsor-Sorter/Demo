@@ -1,12 +1,12 @@
 {
-  "build": 90,
-  "version": "1.0.0.90",
-  "url": "https://sponsorsorter.com/frontlines/builds/90/",
-  "notes": "V1.0.0.90: New matches shuffle turn order once, including capital selection. Saved matches keep their order. Browser save flushing is more resilient. Spectator result screens name the correct winner. Approved graphics, accounts and portraits retained.",
-  "networkBuild": 90,
-  "androidBuild": 90,
-  "windowsBuild": 90,
+  "build": 91,
+  "version": "1.0.0.91",
+  "url": "https://sponsorsorter.com/frontlines/builds/91/",
+  "notes": "V1.0.0.91: Owner-edited Main World and Cambrian boundaries and connections. Main World adds Northwest Territory–Quebec and Afghanistan–Siberia; Cambrian retains the authored dotted route. Original HD terrain, accounts and local saves retained.",
+  "networkBuild": 91,
+  "androidBuild": 91,
+  "windowsBuild": 91,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
-  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
-  "mapsVisualRevision": 83
+  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual91/manifest.json",
+  "mapsVisualRevision": 91
 }

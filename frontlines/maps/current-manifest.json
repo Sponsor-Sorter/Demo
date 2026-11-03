@@ -1,7 +1,8 @@
 {
-  "visualRevision": 83,
+  "visualRevision": 91,
   "gameplayRevision": 1,
-  "manifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
+  "baseMapRevision": 2,
+  "manifestUrl": "https://sponsorsorter.com/frontlines/maps/visual91/manifest.json",
   "packs": 10,
-  "bytes": 330560048
+  "bytes": 330599472
 }

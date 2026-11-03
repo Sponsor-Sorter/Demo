@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.90 adds a shuffled turn order for new matches and clearer match results.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.91 includes the owner-edited Main World and Cambrian maps.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.90 · browser, Android & Windows",
+      "build": "V1.0.0.91 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android90 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public90/frontlines-1.0.0.90-android.apk"
+          "label": "Download Android91 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public91/frontlines-1.0.0.91-android.apk"
         },
         {
-          "label": "Download Windows90 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public90/frontlines-1.0.0.90-windows-setup.exe"
+          "label": "Download Windows91 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public91/frontlines-1.0.0.91-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "New matches shuffle once, including capital selection. Saved matches keep their order. Spectator results name the correct winner. Approved graphics, accounts and portraits retained. Multiplayer uses protocol90; existing legacy rooms retain their prior service.",
-      "sha256": "7BCB46F2BEF0593ABC1CB7E3D96ECC0514CA4B24F313722886E76EDB94689F1E",
+      "notes": "Updated shared territory boundaries and visible connections. Original HD terrain, account and portrait assets retained. Multiplayer uses protocol91; existing rooms keep their prior service.",
+      "sha256": "3C2C6FA603641F1E86E0C609CBF05BE9D7041054ABE037E22F8B0F609BA82FD6",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
