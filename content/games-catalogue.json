@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.89 improves map connections, moves Quit Game to the bottom right and keeps portrait reactions under player control.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.90 adds a shuffled turn order for new matches and clearer match results.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.89 · browser, Android & Windows",
+      "build": "V1.0.0.90 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android89 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public89/frontlines-1.0.0.89-android.apk"
+          "label": "Download Android90 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public90/frontlines-1.0.0.90-android.apk"
         },
         {
-          "label": "Download Windows89 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public89/frontlines-1.0.0.89-windows-setup.exe"
+          "label": "Download Windows90 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public90/frontlines-1.0.0.90-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "All eleven maps have audited visible connections. Select emotes yourself; captures no longer trigger portrait reactions. Approved graphics, accounts and saves are retained. Multiplayer remains compatible with build88.",
-      "sha256": "601BEFA47023864FE2C0A199F9070F9FFB2B00466D1188BB4330C42377EA303D",
+      "notes": "New matches shuffle once, including capital selection. Saved matches keep their order. Spectator results name the correct winner. Approved graphics, accounts and portraits retained. Multiplayer uses protocol90; existing legacy rooms retain their prior service.",
+      "sha256": "7BCB46F2BEF0593ABC1CB7E3D96ECC0514CA4B24F313722886E76EDB94689F1E",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.89",
-  "versionCode": 89,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview89-testing/frontlines-1.0.0-preview-build-89.apk",
-  "bytes": 221426253,
-  "sha256": "601befa47023864fe2c0a199f9070f9ffb2b00466d1188bb4330c42377ea303d",
+  "versionName": "1.0.0.90",
+  "versionCode": 90,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview90-testing/frontlines-1.0.0-preview-build-90.apk",
+  "bytes": 221426412,
+  "sha256": "7bcb46f2bef0593abc1cb7e3d96ecc0514ca4b24f313722886e76edb94689f1e",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public89/frontlines-1.0.0.89-android.apk",
-  "notes": "V1.0.0.89: Clearer connections across all eleven maps, bottom-right Quit Game, and manual-only portrait emotes. Approved terrain artwork, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public90/frontlines-1.0.0.90-android.apk",
+  "notes": "V1.0.0.90: New matches shuffle turn order once, including capital selection. Saved matches keep their order. Browser save flushing is more resilient. Spectator result screens name the correct winner. Approved graphics, accounts and portraits retained."
 }
