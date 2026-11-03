@@ -1,11 +1,11 @@
 {
-  "build": 87,
-  "version": "1.0.0.87",
-  "url": "https://sponsorsorter.com/frontlines/builds/87/",
-  "notes": "V1.0.0.87: Corrected corrupted text characters in the auto-roll button, kill feed and full battle log. Original artwork, graphics, rules, accounts and saves retained.",
-  "networkBuild": 83,
-  "androidBuild": 87,
-  "windowsBuild": 87,
+  "build": 88,
+  "version": "1.0.0.88",
+  "url": "https://sponsorsorter.com/frontlines/builds/88/",
+  "notes": "V1.0.0.88: Rush instant capped-loss attacks, hold-to-commit slider and capture odds. Battle Log troop graphs, death markers and fog-safe history. Approved artwork, accounts and saves retained.",
+  "networkBuild": 88,
+  "androidBuild": 88,
+  "windowsBuild": 88,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
   "mapsVisualRevision": 83

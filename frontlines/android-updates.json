@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.87",
-  "versionCode": 87,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview87-testing/frontlines-1.0.0-preview-build-87.apk",
-  "bytes": 221343510,
-  "sha256": "3d2a23fc7bd00cfee745f77ecf9b7e86432d444d067062c3f0c4899022fdccfd",
+  "versionName": "1.0.0.88",
+  "versionCode": 88,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview88-testing/frontlines-1.0.0-preview-build-88.apk",
+  "bytes": 221368740,
+  "sha256": "cb7eeecd89263f531a23e8f612f87de3c15be8a64f9212829cde2c3192fd8f6c",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-android.apk",
-  "notes": "V1.0.0.87: Corrected corrupted text characters in the auto-roll button, kill feed and full battle log. Original artwork, graphics, rules, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public88/frontlines-1.0.0.88-android.apk",
+  "notes": "V1.0.0.88: Rush instant capped-loss attacks, hold-to-commit slider and capture odds. Battle Log troop graphs, death markers and fog-safe history. Approved artwork, accounts and saves retained."
 }

@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.87 corrects corrupted text characters in the auto-roll button, kill feed and battle log. All eleven maps and protocol83 multiplayer rules are retained.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.88 adds instant Rush attacks with capped losses, selectable troop commitments and capture odds. Battle Log now includes troop graphs and elimination markers.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.87 · browser, Android & Windows",
+      "build": "V1.0.0.88 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android87 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-android.apk"
+          "label": "Download Android88 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public88/frontlines-1.0.0.88-android.apk"
         },
         {
-          "label": "Download Windows87 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public87/frontlines-1.0.0.87-windows-setup.exe"
+          "label": "Download Windows88 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public88/frontlines-1.0.0.88-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Battle labels now show clean separators, arrows and loss counts. Existing map downloads, approved artwork, accounts, portraits and saves are retained. Google Play production review and Steam review are separate.",
-      "sha256": "3D2A23FC7BD00CFEE745F77ECF9B7E86432D444D067062C3F0C4899022FDCCFD",
+      "notes": "Tap Rush for an immediate attack or hold to choose troops. View troop history and elimination markers in Battle Log. All eleven maps, approved graphics, accounts and local saves are retained. New online matches use build88; existing reviews are unchanged.",
+      "sha256": "CB7EEECD89263F531A23E8F612F87DE3C15BE8A64F9212829CDE2C3192FD8F6C",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
