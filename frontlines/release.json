@@ -1,11 +1,11 @@
 {
-  "build": 88,
-  "version": "1.0.0.88",
-  "url": "https://sponsorsorter.com/frontlines/builds/88/",
-  "notes": "V1.0.0.88: Rush instant capped-loss attacks, hold-to-commit slider and capture odds. Battle Log troop graphs, death markers and fog-safe history. Approved artwork, accounts and saves retained.",
+  "build": 89,
+  "version": "1.0.0.89",
+  "url": "https://sponsorsorter.com/frontlines/builds/89/",
+  "notes": "V1.0.0.89: Clearer connections across all eleven maps, bottom-right Quit Game, and manual-only portrait emotes. Approved terrain artwork, accounts and saves retained.",
   "networkBuild": 88,
-  "androidBuild": 88,
-  "windowsBuild": 88,
+  "androidBuild": 89,
+  "windowsBuild": 89,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual83/manifest.json",
   "mapsVisualRevision": 83
