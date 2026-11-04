@@ -21,8 +21,10 @@
   function speak(id) { return window.meadowAudio?.speak(id) || Promise.resolve(0); }
   function shell(title, body) {
     cleanup();
+    dialog.classList.toggle('balloon-dialog', mode === 'balloons');
     dialog.innerHTML = `<main class="writing-desk"><header class="writing-head"><img class="writing-guide" src="assets/generated/guides/${guide}.webp" alt="Farmer ${guideName()}"><div><small>MEADOW MARKET LITTLES · FARMER ${guideName().toUpperCase()}’S LETTER DESK</small><h1>${title}</h1></div><button class="writing-close" type="button" aria-label="Back to games">×</button></header><section class="writing-page">${body}</section></main>`;
     $('.writing-close').onclick = close; if (!dialog.open) dialog.showModal();
+    if (mode === 'balloons') $('.writing-head small').textContent = 'MEADOW MARKET LITTLES';
   }
   function start(modeName) {
     mode = modeName; index = 0; strokes = []; guide = 'jade'; lastHint = 0;
@@ -30,14 +32,15 @@
     if (mode === 'balloons') { balloonStart(); return; }
     namePrompt();
   }
-  function balloonStart() { balloonSequence = [...alphabet].sort(() => Math.random() - .5).slice(0, 8); index = 0; balloonBusy = false; showBalloons(); }
+  function shuffled(items) { const result = [...items]; for (let i = result.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [result[i], result[j]] = [result[j], result[i]]; } return result; }
+  function balloonStart() { balloonSequence = shuffled(alphabet).slice(0, 6); index = 0; balloonBusy = false; showBalloons(); }
   function showBalloons() {
     if (index >= balloonSequence.length) { balloonDone(); return; }
-    const wanted = balloonSequence[index], distractors = [...alphabet].filter(letter => letter !== wanted).sort(() => Math.random() - .5).slice(0, 5), choices = [...distractors, wanted].sort(() => Math.random() - .5);
+    const wanted = balloonSequence[index], choices = shuffled(balloonSequence);
     guide = farmerFor(wanted);
-    shell('Letter balloon pop!', `<div class="balloon-instruction"><img src="assets/generated/guides/${guide}.webp" alt="Farmer ${guideName()}"><div><div class="balloon-speech">Find the letter <strong>${wanted}!</strong></div><button class="writing-button balloon-hear" type="button" data-hear>🔊 Hear again</button></div></div><div class="writing-progress">Balloon ${index + 1} of ${balloonSequence.length}</div><div class="balloon-field" aria-label="Choose the letter ${wanted}">${choices.map((letter, i) => `<button class="letter-balloon balloon-color-${i % 6}" type="button" data-balloon="${letter}" aria-label="Balloon with letter ${letter}" style="--balloon-delay:${(i % 4) * -.65}s"><span>${letter}</span><i aria-hidden="true"></i></button>`).join('')}</div><p class="writing-message" role="status" aria-live="polite">Tap the balloon with ${wanted}.</p>`);
-    $('[data-hear]').onclick = () => sayBalloon(wanted);
-    dialog.querySelectorAll('[data-balloon]').forEach(button => button.onclick = () => popBalloon(button, wanted));
+    shell('Letter balloon pop!', `<div class="balloon-instruction"><img src="assets/generated/guides/${guide}.webp" alt="Farmer ${guideName()}"><div><div class="balloon-speech">Find the letter <strong>${wanted}!</strong></div><button class="writing-button balloon-hear" type="button" data-hear>🔊 Hear again</button></div></div><div class="writing-progress" aria-label="Balloons found"><span class="balloon-count">0 / ${balloonSequence.length}</span><span class="balloon-stars" aria-hidden="true">${balloonSequence.map(() => '<span>☆</span>').join('')}</span></div><div class="balloon-field" aria-label="Choose the letter ${wanted}">${choices.map((letter, i) => `<button class="letter-balloon balloon-color-${i % 6}" type="button" data-balloon="${letter}" aria-label="Balloon with letter ${letter}" style="--balloon-delay:${(i % 4) * -.65}s"><span>${letter}</span><i aria-hidden="true"></i></button>`).join('')}</div><p class="writing-message" role="status" aria-live="polite">Tap the balloon with ${wanted}.</p>`);
+    $('[data-hear]').onclick = () => { if (!balloonBusy) sayBalloon(balloonSequence[index]); };
+    dialog.querySelectorAll('[data-balloon]').forEach(button => button.onclick = () => popBalloon(button, balloonSequence[index]));
     sayBalloon(wanted);
   }
   function sayBalloon(letter) { speak('letter-find-' + letter.toLowerCase()); }
@@ -45,8 +48,17 @@
     if (balloonBusy) return;
     const picked = button.dataset.balloon;
     if (picked !== wanted) { button.classList.remove('balloon-wrong'); void button.offsetWidth; button.classList.add('balloon-wrong'); const note = $('.writing-message'); if (note) note.textContent = `That is ${picked}. Let’s find ${wanted}.`; speak([cue('wrong'), 'letter-find-' + wanted.toLowerCase()]); return; }
-    balloonBusy = true; button.classList.add('balloon-pop'); button.disabled = true; window.meadowAudio?.play('reward'); const note = $('.writing-message'); if (note) note.textContent = `Pop! You found ${wanted}!`;
-    const round = index, currentToken = token; Promise.resolve(speak(cue('success'))).then(duration => { if (!dialog.open || token !== currentToken || round !== index) return; setTimeout(() => { if (!dialog.open || token !== currentToken || round !== index) return; index++; balloonBusy = false; showBalloons(); }, Math.max(1600, (duration || 0) * 1000 + 400)); });
+    balloonBusy = true; $('.balloon-count').textContent = (index + 1) + ' / ' + balloonSequence.length; const star = dialog.querySelectorAll('.balloon-stars span')[index]; if (star) { star.textContent = '★'; star.classList.add('earned'); } button.classList.add('balloon-pop'); button.disabled = true; window.meadowAudio?.play('reward'); const note = $('.writing-message'); if (note) note.textContent = `Pop! You found ${wanted}!`;
+    const round = index, currentToken = token; Promise.resolve(speak(cue('success'))).then(duration => { if (!dialog.open || token !== currentToken || round !== index) return; setTimeout(() => { if (!dialog.open || token !== currentToken || round !== index) return; index++; balloonBusy = false; advanceBalloon(); }, Math.max(1600, (duration || 0) * 1000 + 400)); });
+  }
+  function advanceBalloon() {
+    if (index >= balloonSequence.length) { balloonDone(); return; }
+    const wanted = balloonSequence[index]; guide = farmerFor(wanted);
+    dialog.querySelectorAll('.writing-guide,.balloon-instruction>img').forEach(img => { img.src = 'assets/generated/guides/' + guide + '.webp'; img.alt = 'Farmer ' + guideName(); });
+    $('.balloon-speech').innerHTML = 'Find the letter <strong>' + wanted + '!</strong>';
+    $('.balloon-field').setAttribute('aria-label', 'Choose the letter ' + wanted);
+    $('.writing-message').textContent = 'Tap the balloon with ' + wanted + '.';
+    sayBalloon(wanted);
   }
   function balloonDone() { window.meadowAudio?.play('reward'); shell('Balloon letter star!', '<div class="writing-congrats"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div><h2>You found every letter balloon!</h2><p>Lovely listening and letter finding!</p><button class="writing-button writing-primary" type="button" data-again>Play again</button><button class="writing-button" type="button" data-close>Back to games</button></div>'); $('[data-again]').onclick = () => start('balloons'); $('[data-close]').onclick = close; speak(cue('balloonsdone')); }
   function namePrompt() {

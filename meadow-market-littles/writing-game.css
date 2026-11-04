@@ -31,3 +31,26 @@
 @media(prefers-reduced-motion:reduce){.letter-balloon,.letter-balloon i{animation:none}.letter-balloon.balloon-pop{animation:balloon-burst .2s ease-in forwards}}
 
 .writing-guide{width:44px;height:44px;object-fit:contain;flex:none;margin-right:8px}.writing-head>div{flex:1}
+/* Balloon Pop lives directly in the meadow, independently of the writing desk. */
+.balloon-dialog{background:#c5eaf5}
+.balloon-dialog .writing-desk{background:#c5eaf5 url('assets/generated/writing/balloon-meadow.webp') center bottom/cover no-repeat;overflow:hidden;gap:0;padding:calc(env(safe-area-inset-top) + 10px) max(14px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 12px) max(14px,env(safe-area-inset-left))}
+.balloon-dialog .writing-head{width:100%;max-width:none;min-height:52px;color:#29553d;text-shadow:0 1px #fff9;gap:10px}
+.balloon-dialog .writing-head .writing-guide{display:none}
+.balloon-dialog .writing-head h1{font-size:clamp(20px,3.5vw,32px)}
+.balloon-dialog .writing-close{box-shadow:0 3px 0 #214a32}
+.balloon-dialog .writing-page{width:100%;max-width:1400px;border:0;border-radius:0;background:none;box-shadow:none;padding:8px 0 0;overflow:hidden;gap:8px}
+.balloon-dialog .balloon-instruction{flex:none;min-height:0;padding:8px 18px;border-radius:26px;background:#fff9e9ed;box-shadow:0 4px 0 #6d98582b;gap:12px}
+.balloon-dialog .balloon-instruction>img{width:clamp(60px,11vh,96px);height:clamp(60px,11vh,96px)}
+.balloon-dialog .balloon-speech{border:0;background:none;padding:0;font-size:clamp(21px,3.6vh,34px)}
+.balloon-dialog .balloon-hear{border:0;min-width:0;min-height:40px;margin:2px auto 0;padding:4px 14px;background:#e5f0d8;color:#2b5737;font-size:15px}
+.balloon-dialog .writing-progress{display:flex;align-items:center;gap:12px;padding:5px 16px;border-radius:30px;background:#fff9e9eb;color:#315838;font-size:16px}
+.balloon-stars{display:flex;gap:6px;color:#746846;font-size:25px;line-height:1.1}.balloon-stars .earned{color:#9c6510;text-shadow:0 0 5px #ffdf4d;animation:writing-twinkle .4s ease-in-out 2}
+.balloon-dialog .balloon-field{width:min(1100px,100%);max-width:none;min-height:0;background:none;overflow:visible;gap:clamp(6px,2vw,28px);padding:18px 8px 40px;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.balloon-dialog .letter-balloon{width:clamp(76px,min(21vw,18vh),160px);height:clamp(92px,min(26vw,22vh),195px);font-size:clamp(36px,7vh,76px);color:#25354a;border:3px solid #ffffffb3;box-shadow:inset -7px -7px 0 #0000000b}
+.balloon-dialog .letter-balloon span{text-shadow:0 1px 0 #ffffffaa}.balloon-dialog .letter-balloon:focus-visible{outline:4px solid #294e39;outline-offset:6px}
+.balloon-dialog .letter-balloon.balloon-pop{animation:balloon-burst .7s ease-in forwards}
+.balloon-dialog .writing-message{flex:none;background:#fff9e9ee;border-radius:24px;padding:8px 18px;color:#315838;min-height:0;max-width:90%;margin:0 0 10px;box-shadow:0 3px 0 #507b3826}
+.balloon-dialog .writing-congrats{box-sizing:border-box;background:#fff9e9f2;border:4px solid #e3c98b;border-radius:28px;padding:clamp(18px,4vw,40px);box-shadow:0 8px 0 #486a3830}
+@media(max-height:500px) and (min-width:600px){.balloon-dialog .writing-head{min-height:40px}.balloon-dialog .writing-head small{display:none}.balloon-dialog .writing-page{gap:4px;padding:0}.balloon-dialog .balloon-instruction{padding:4px 14px}.balloon-dialog .balloon-instruction>img{width:45px;height:45px}.balloon-dialog .balloon-instruction>div{display:flex;align-items:center;gap:12px}.balloon-dialog .balloon-speech{font-size:23px}.balloon-dialog .balloon-field{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:minmax(0,1fr);padding:12px 0 30px}.balloon-dialog .letter-balloon{width:clamp(64px,10vw,100px);height:clamp(80px,25vh,120px);font-size:39px}.balloon-dialog .writing-message{padding:4px 14px;margin:0}.balloon-dialog .writing-progress{padding:2px 12px;font-size:13px}.balloon-stars{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.balloon-stars .earned{animation:none}}
+@media(max-aspect-ratio:3/4){.balloon-dialog .writing-desk{background-image:url('assets/generated/writing/balloon-meadow-portrait.webp')}}
