@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.91",
-  "versionCode": 91,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview91-testing/frontlines-1.0.0-preview-build-91.apk",
-  "bytes": 221438859,
-  "sha256": "3c2c6fa603641f1e86e0c609cbf05be9d7041054abe037e22f8b0f609ba82fd6",
+  "versionName": "1.0.0.92",
+  "versionCode": 92,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview92-testing/frontlines-1.0.0-preview-build-92.apk",
+  "bytes": 221451147,
+  "sha256": "e762dd433727f930072979093f2a8ee25a177286ce2c7c7fdf11cb85ef5d85de",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public91/frontlines-1.0.0.91-android.apk",
-  "notes": "V1.0.0.91: Owner-edited Main World and Cambrian boundaries and connections. Main World adds Northwest Territory–Quebec and Afghanistan–Siberia; Cambrian retains the authored dotted route. Original HD terrain, accounts and local saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-android.apk",
+  "notes": "V1.0.0.92: Rebuilt Europe: Iron Frontiers with 84 territories, 14 bonuses and audited land and sea connections. Clearer boundaries and corrected ship placement. Legacy Europe saves remain supported. Existing HD assets, accounts and other maps retained."
 }

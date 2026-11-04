@@ -1,12 +1,12 @@
 {
-  "build": 91,
-  "version": "1.0.0.91",
-  "url": "https://sponsorsorter.com/frontlines/builds/91/",
-  "notes": "V1.0.0.91: Owner-edited Main World and Cambrian boundaries and connections. Main World adds Northwest Territory–Quebec and Afghanistan–Siberia; Cambrian retains the authored dotted route. Original HD terrain, accounts and local saves retained.",
-  "networkBuild": 91,
-  "androidBuild": 91,
-  "windowsBuild": 91,
+  "build": 92,
+  "version": "1.0.0.92",
+  "url": "https://sponsorsorter.com/frontlines/builds/92/",
+  "notes": "V1.0.0.92: Rebuilt Europe: Iron Frontiers with 84 territories, 14 bonuses and audited land and sea connections. Clearer boundaries and corrected ship placement. Legacy Europe saves remain supported. Existing HD assets, accounts and other maps retained.",
+  "networkBuild": 92,
+  "androidBuild": 92,
+  "windowsBuild": 92,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
-  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual91/manifest.json",
-  "mapsVisualRevision": 91
+  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual92/manifest.json",
+  "mapsVisualRevision": 92
 }

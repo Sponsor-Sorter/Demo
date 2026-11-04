@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "entries": [
     {
       "id": "meadow-markets",
@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.91 includes the owner-edited Main World and Cambrian maps.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.92 includes the rebuilt Europe: Iron Frontiers map.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.91 · browser, Android & Windows",
+      "build": "V1.0.0.92 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android91 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public91/frontlines-1.0.0.91-android.apk"
+          "label": "Download Android92 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-android.apk"
         },
         {
-          "label": "Download Windows91 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public91/frontlines-1.0.0.91-windows-setup.exe"
+          "label": "Download Windows92 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Updated shared territory boundaries and visible connections. Original HD terrain, account and portrait assets retained. Multiplayer uses protocol91; existing rooms keep their prior service.",
-      "sha256": "3C2C6FA603641F1E86E0C609CBF05BE9D7041054ABE037E22F8B0F609BA82FD6",
+      "notes": "Europe rebuilt with 84 territories, 14 bonuses and audited connections. Existing HD assets, accounts and saves retained. Multiplayer uses protocol92; earlier rooms remain on their prior service.",
+      "sha256": "E762DD433727F930072979093F2A8EE25A177286CE2C7C7FDF11CB85EF5D85DE",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
