@@ -29,3 +29,5 @@
 @media(max-width:430px){.balloon-field{grid-template-columns:repeat(3,minmax(68px,1fr));gap:2px;padding-left:0;padding-right:0}.letter-balloon{width:clamp(68px,22vw,90px);height:clamp(84px,18vh,112px)}}
 @media(min-width:700px){.balloon-field{min-height:45vh;max-width:920px}}
 @media(prefers-reduced-motion:reduce){.letter-balloon,.letter-balloon i{animation:none}.letter-balloon.balloon-pop{animation:balloon-burst .2s ease-in forwards}}
+
+.writing-guide{width:44px;height:44px;object-fit:contain;flex:none;margin-right:8px}.writing-head>div{flex:1}

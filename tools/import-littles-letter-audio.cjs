@@ -1,0 +1,14 @@
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
+const root=path.resolve(__dirname,'../meadow-market-littles/assets/audio');
+const voices={jade:'Hope - upbeat and clear',rhys:'Noah - YA Audiobooks Narrator',jay:'Mike - Animation, Explainers & Gaming'};
+const common={success:'Pop! You found it! Well done!',wrong:'Good try! Listen again and find the letter.',more:'Lovely tracing! Follow another part of the letter.',retry:'Good try! Follow the dotted letter with your finger.',next:'Good job! Let’s do the next letter!',balloonsdone:'You found every letter balloon! Great job!',alphabetdone:'You traced all the letters! What a lovely job!',namedone:'You wrote your name! Great job!',unknown:'Follow the dotted letter with your finger.'};
+const farmer=process.argv[2],source=process.argv[3],ffmpeg=process.argv[4];
+if(!voices[farmer]||!source||!ffmpeg)throw Error('Supply farmer, source batch MP3 and ffmpeg executable');
+const cues=[];for(const [i,letter]of [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].entries())if(i%3===Object.keys(voices).indexOf(farmer)){const spoken=letter==='Z'?'zed':letter;cues.push({id:'letter-find-'+letter.toLowerCase(),text:'Find the letter '+spoken+'.'},{id:'letter-trace-'+letter.toLowerCase(),text:'This is the letter '+spoken+'. Follow the dots with your finger.'});}
+for(const [id,text]of Object.entries(common))cues.push({id:'letter-'+farmer+'-'+id,text});
+const scan=cp.spawnSync(ffmpeg,['-hide_banner','-i',source,'-af','silencedetect=noise=-40dB:d=1.3','-f','null','NUL'],{encoding:'utf8'});if(scan.status!==0)throw Error(scan.stderr);
+const gaps=[...scan.stderr.matchAll(/silence_start: ([\d.]+)[\s\S]*?silence_end: ([\d.]+)/g)].map(m=>[+m[1],+m[2]]);
+if(gaps.length!==cues.length-1)throw Error('Expected '+(cues.length-1)+' cue gaps, found '+gaps.length+'; inspect audio before importing');
+const manifestPath=path.join(root,'letters-generation.json');const manifest=fs.existsSync(manifestPath)?JSON.parse(fs.readFileSync(manifestPath)): {provider:'ElevenLabs',model:'Eleven Multilingual v2',generated:'2026-11-04',files:[]};
+for(let i=0;i<cues.length;i++){const start=i?Math.max(0,gaps[i-1][1]-.12):0,end=i<gaps.length?gaps[i][0]+.12:null;const args=['-y','-hide_banner','-loglevel','error','-ss',String(start),'-i',source];if(end!==null)args.push('-t',String(end-start));args.push('-af','atempo=0.88,loudnorm=I=-18:TP=-2:LRA=7','-ar','44100','-ac','1','-b:a','96k',path.join(root,cues[i].id+'.mp3'));const out=cp.spawnSync(ffmpeg,args,{encoding:'utf8'});if(out.status!==0)throw Error(out.stderr);const item={...cues[i],farmer,voice:voices[farmer],bytes:fs.statSync(path.join(root,cues[i].id+'.mp3')).size};manifest.files=manifest.files.filter(x=>x.id!==item.id);manifest.files.push(item);}
+fs.writeFileSync(manifestPath,JSON.stringify(manifest,null,2)+'\n');console.log('Imported '+cues.length+' '+farmer+' cues.');

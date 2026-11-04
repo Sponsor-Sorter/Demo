@@ -1,5 +1,5 @@
 (() => {'use strict';
-const $=s=>document.querySelector(s),key='meadow-littles-save-v1',build=37,saveRules=window.meadowLittlesSaveState;let stateLoad=saveRules.load(localStorage,key),state=stateLoad.state,stateWritable=stateLoad.writable,category='all',installPrompt,toastTimer,completed=0;
+const $=s=>document.querySelector(s),key='meadow-littles-save-v1',build=38,saveRules=window.meadowLittlesSaveState;let stateLoad=saveRules.load(localStorage,key),state=stateLoad.state,stateWritable=stateLoad.writable,category='all',installPrompt,toastTimer,completed=0;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3200)}
 function save(){if(!saveRules.write(localStorage,key,state,stateWritable)){if(!stateWritable)$('#save-state').textContent=stateLoad.message;else $('#save-state').textContent='Device storage is full';$('#star-total').textContent='✦ '+state.stars+' · 💎 '+(state.gems||0);return false}$('#save-state').textContent='Saved on this device';window.meadowLittlesCloud?.queueSave?.(state);$('#star-total').textContent='✦ '+state.stars+' · 💎 '+(state.gems||0);return true}

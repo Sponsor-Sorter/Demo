@@ -1,0 +1,560 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-04",
+  "files": [
+    {
+      "id": "letter-find-b",
+      "text": "Find the letter B.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 11085
+    },
+    {
+      "id": "letter-trace-b",
+      "text": "This is the letter B. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 34909
+    },
+    {
+      "id": "letter-find-e",
+      "text": "Find the letter E.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 11398
+    },
+    {
+      "id": "letter-trace-e",
+      "text": "This is the letter E. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 32714
+    },
+    {
+      "id": "letter-find-h",
+      "text": "Find the letter H.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 12966
+    },
+    {
+      "id": "letter-trace-h",
+      "text": "This is the letter H. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 34282
+    },
+    {
+      "id": "letter-find-k",
+      "text": "Find the letter K.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 11712
+    },
+    {
+      "id": "letter-trace-k",
+      "text": "This is the letter K. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 27699
+    },
+    {
+      "id": "letter-find-n",
+      "text": "Find the letter N.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 10772
+    },
+    {
+      "id": "letter-trace-n",
+      "text": "This is the letter N. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 24251
+    },
+    {
+      "id": "letter-find-q",
+      "text": "Find the letter Q.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-q",
+      "text": "This is the letter Q. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 33655
+    },
+    {
+      "id": "letter-find-t",
+      "text": "Find the letter T.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 10772
+    },
+    {
+      "id": "letter-trace-t",
+      "text": "This is the letter T. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 26758
+    },
+    {
+      "id": "letter-find-w",
+      "text": "Find the letter W.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-w",
+      "text": "This is the letter W. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 33968
+    },
+    {
+      "id": "letter-find-z",
+      "text": "Find the letter zed.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-z",
+      "text": "This is the letter zed. Follow the dots with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 32714
+    },
+    {
+      "id": "letter-rhys-success",
+      "text": "Pop! You found it! Well done!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 20489
+    },
+    {
+      "id": "letter-rhys-wrong",
+      "text": "Good try! Listen again and find the letter.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 20803
+    },
+    {
+      "id": "letter-rhys-more",
+      "text": "Lovely tracing! Follow another part of the letter.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 32087
+    },
+    {
+      "id": "letter-rhys-retry",
+      "text": "Good try! Follow the dotted letter with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 33968
+    },
+    {
+      "id": "letter-rhys-next",
+      "text": "Good job! Let’s do the next letter!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 28639
+    },
+    {
+      "id": "letter-rhys-balloonsdone",
+      "text": "You found every letter balloon! Great job!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 34282
+    },
+    {
+      "id": "letter-rhys-alphabetdone",
+      "text": "You traced all the letters! What a lovely job!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 34595
+    },
+    {
+      "id": "letter-rhys-namedone",
+      "text": "You wrote your name! Great job!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 23937
+    },
+    {
+      "id": "letter-rhys-unknown",
+      "text": "Follow the dotted letter with your finger.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 32401
+    },
+    {
+      "id": "letter-find-a",
+      "text": "Find the letter A.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 11712
+    },
+    {
+      "id": "letter-trace-a",
+      "text": "This is the letter A. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 29580
+    },
+    {
+      "id": "letter-find-d",
+      "text": "Find the letter D.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 13279
+    },
+    {
+      "id": "letter-trace-d",
+      "text": "This is the letter D. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 31460
+    },
+    {
+      "id": "letter-find-g",
+      "text": "Find the letter G.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 12966
+    },
+    {
+      "id": "letter-trace-g",
+      "text": "This is the letter G. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 32401
+    },
+    {
+      "id": "letter-find-j",
+      "text": "Find the letter J.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 13279
+    },
+    {
+      "id": "letter-trace-j",
+      "text": "This is the letter J. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 33028
+    },
+    {
+      "id": "letter-find-m",
+      "text": "Find the letter M.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-m",
+      "text": "This is the letter M. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 28326
+    },
+    {
+      "id": "letter-find-p",
+      "text": "Find the letter P.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 11712
+    },
+    {
+      "id": "letter-trace-p",
+      "text": "This is the letter P. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 28012
+    },
+    {
+      "id": "letter-find-s",
+      "text": "Find the letter S.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 10772
+    },
+    {
+      "id": "letter-trace-s",
+      "text": "This is the letter S. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 26445
+    },
+    {
+      "id": "letter-find-v",
+      "text": "Find the letter V.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 11085
+    },
+    {
+      "id": "letter-trace-v",
+      "text": "This is the letter V. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 28639
+    },
+    {
+      "id": "letter-find-y",
+      "text": "Find the letter Y.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 13279
+    },
+    {
+      "id": "letter-trace-y",
+      "text": "This is the letter Y. Follow the dots with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 30834
+    },
+    {
+      "id": "letter-jade-success",
+      "text": "Pop! You found it! Well done!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 23310
+    },
+    {
+      "id": "letter-jade-wrong",
+      "text": "Good try! Listen again and find the letter.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 32401
+    },
+    {
+      "id": "letter-jade-more",
+      "text": "Lovely tracing! Follow another part of the letter.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 30207
+    },
+    {
+      "id": "letter-jade-retry",
+      "text": "Good try! Follow the dotted letter with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 30834
+    },
+    {
+      "id": "letter-jade-next",
+      "text": "Good job! Let’s do the next letter!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 22056
+    },
+    {
+      "id": "letter-jade-balloonsdone",
+      "text": "You found every letter balloon! Great job!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 28953
+    },
+    {
+      "id": "letter-jade-alphabetdone",
+      "text": "You traced all the letters! What a lovely job!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 34909
+    },
+    {
+      "id": "letter-jade-namedone",
+      "text": "You wrote your name! Great job!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 24878
+    },
+    {
+      "id": "letter-jade-unknown",
+      "text": "Follow the dotted letter with your finger.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 33655
+    },
+    {
+      "id": "letter-find-c",
+      "text": "Find the letter C.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 11712
+    },
+    {
+      "id": "letter-trace-c",
+      "text": "This is the letter C. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 31460
+    },
+    {
+      "id": "letter-find-f",
+      "text": "Find the letter F.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12652
+    },
+    {
+      "id": "letter-trace-f",
+      "text": "This is the letter F. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 32714
+    },
+    {
+      "id": "letter-find-i",
+      "text": "Find the letter I.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12966
+    },
+    {
+      "id": "letter-trace-i",
+      "text": "This is the letter I. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 30520
+    },
+    {
+      "id": "letter-find-l",
+      "text": "Find the letter L.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12339
+    },
+    {
+      "id": "letter-trace-l",
+      "text": "This is the letter L. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 30520
+    },
+    {
+      "id": "letter-find-o",
+      "text": "Find the letter O.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 11085
+    },
+    {
+      "id": "letter-trace-o",
+      "text": "This is the letter O. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 29266
+    },
+    {
+      "id": "letter-find-r",
+      "text": "Find the letter R.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-r",
+      "text": "This is the letter R. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 29893
+    },
+    {
+      "id": "letter-find-u",
+      "text": "Find the letter U.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12025
+    },
+    {
+      "id": "letter-trace-u",
+      "text": "This is the letter U. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 29893
+    },
+    {
+      "id": "letter-find-x",
+      "text": "Find the letter X.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 12966
+    },
+    {
+      "id": "letter-trace-x",
+      "text": "This is the letter X. Follow the dots with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 30520
+    },
+    {
+      "id": "letter-jay-success",
+      "text": "Pop! You found it! Well done!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 16727
+    },
+    {
+      "id": "letter-jay-wrong",
+      "text": "Good try! Listen again and find the letter.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 23624
+    },
+    {
+      "id": "letter-jay-more",
+      "text": "Lovely tracing! Follow another part of the letter.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 31147
+    },
+    {
+      "id": "letter-jay-retry",
+      "text": "Good try! Follow the dotted letter with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 30207
+    },
+    {
+      "id": "letter-jay-next",
+      "text": "Good job! Let’s do the next letter!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 19862
+    },
+    {
+      "id": "letter-jay-balloonsdone",
+      "text": "You found every letter balloon! Great job!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 28326
+    },
+    {
+      "id": "letter-jay-alphabetdone",
+      "text": "You traced all the letters! What a lovely job!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 31147
+    },
+    {
+      "id": "letter-jay-namedone",
+      "text": "You wrote your name! Great job!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 23937
+    },
+    {
+      "id": "letter-jay-unknown",
+      "text": "Follow the dotted letter with your finger.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 29266
+    }
+  ]
+}
