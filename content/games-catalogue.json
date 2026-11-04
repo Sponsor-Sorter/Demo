@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Eleven battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.92 includes the rebuilt Europe: Iron Frontiers map.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.93 adds Airship: Grand Command and richer Europe terrain.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.92 · browser, Android & Windows",
+      "build": "V1.0.0.93 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android92 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-android.apk"
+          "label": "Download Android93 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public93/frontlines-1.0.0.93-android.apk"
         },
         {
-          "label": "Download Windows92 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-windows-setup.exe"
+          "label": "Download Windows93 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public93/frontlines-1.0.0.93-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Europe rebuilt with 84 territories, 14 bonuses and audited connections. Existing HD assets, accounts and saves retained. Multiplayer uses protocol92; earlier rooms remain on their prior service.",
-      "sha256": "E762DD433727F930072979093F2A8EE25A177286CE2C7C7FDF11CB85EF5D85DE",
+      "notes": "Airship: 104 territories, twenty bonuses and 140 audited connections. Airship Beta retained. Enhanced Europe terrain and materials. Multiplayer uses isolated protocol93.",
+      "sha256": "43736E6800AB781467D309BC40CE917DA2C714305E2B920A70D837F3DE920FA7",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

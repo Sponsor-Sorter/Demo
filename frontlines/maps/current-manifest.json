@@ -1,10 +1,10 @@
 {
-  "visualRevision": 92,
+  "visualRevision": 93,
   "gameplayRevision": 1,
   "baseMapRevision": 2,
-  "manifestUrl": "https://sponsorsorter.com/frontlines/maps/visual92/manifest.json",
-  "packs": 10,
-  "catalogueEntries": 11,
+  "manifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
+  "packs": 11,
+  "catalogueEntries": 12,
   "legacyPacksExcludedFromCurrentTotal": 1,
-  "bytes": 309766520
+  "bytes": 333836836
 }

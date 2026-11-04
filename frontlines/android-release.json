@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.92",
-  "versionCode": 92,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview92-testing/frontlines-1.0.0-preview-build-92.apk",
-  "bytes": 221451147,
-  "sha256": "e762dd433727f930072979093f2a8ee25a177286ce2c7c7fdf11cb85ef5d85de",
+  "versionName": "1.0.0.93",
+  "versionCode": 93,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview93-testing/frontlines-1.0.0-preview-build-93.apk",
+  "bytes": 221479980,
+  "sha256": "43736e6800ab781467d309bc40ce917da2c714305e2b920a70d837f3de920fa7",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public92/frontlines-1.0.0.92-android.apk",
-  "notes": "V1.0.0.92: Rebuilt Europe: Iron Frontiers with 84 territories, 14 bonuses and audited land and sea connections. Clearer boundaries and corrected ship placement. Legacy Europe saves remain supported. Existing HD assets, accounts and other maps retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public93/frontlines-1.0.0.93-android.apk",
+  "notes": "V1.0.0.93: New Airship with 104 territories, 20 bonuses and 140 audited reference connections. Original Airship retained as Airship Beta. Richer Europe terrain, relief and instanced forest detail. Accounts, saves and approved assets retained."
 }

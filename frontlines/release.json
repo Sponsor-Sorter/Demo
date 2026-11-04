@@ -1,12 +1,12 @@
 {
-  "build": 92,
-  "version": "1.0.0.92",
-  "url": "https://sponsorsorter.com/frontlines/builds/92/",
-  "notes": "V1.0.0.92: Rebuilt Europe: Iron Frontiers with 84 territories, 14 bonuses and audited land and sea connections. Clearer boundaries and corrected ship placement. Legacy Europe saves remain supported. Existing HD assets, accounts and other maps retained.",
-  "networkBuild": 92,
-  "androidBuild": 92,
-  "windowsBuild": 92,
+  "build": 93,
+  "version": "1.0.0.93",
+  "url": "https://sponsorsorter.com/frontlines/builds/93/",
+  "notes": "V1.0.0.93: New Airship with 104 territories, 20 bonuses and 140 audited reference connections. Original Airship retained as Airship Beta. Richer Europe terrain, relief and instanced forest detail. Accounts, saves and approved assets retained.",
+  "networkBuild": 93,
+  "androidBuild": 93,
+  "windowsBuild": 93,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
-  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual92/manifest.json",
-  "mapsVisualRevision": 92
+  "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
+  "mapsVisualRevision": 93
 }
