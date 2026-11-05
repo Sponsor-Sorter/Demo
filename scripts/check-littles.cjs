@@ -21,3 +21,5 @@ require("./check-littles-state.cjs");
 require("./check-littles-recovery.cjs");
 
 const nextGames=fs.readFileSync(root+'/next-games.js','utf8'),nextCss=fs.readFileSync(root+'/next-games.css','utf8');assert(nextGames.includes("board.classList.add('next-memory-board')"));assert(nextCss.includes('.next-memory-board .next-choice{height:100%'));
+
+require("./check-pip-day.cjs");
