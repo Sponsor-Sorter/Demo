@@ -3,7 +3,7 @@
   const mud = [[380,342],[445,310],[508,350],[410,403],[485,412],[552,396]];
   const distance = (p,a,b) => { const dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/(dx*dx+dy*dy||1))); return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy); };
   // Count movement across wool, never elapsed time or repeated stationary taps.
-  function brushPatch(values,a,b) { if(Math.hypot(b.x-a.x,b.y-a.y)<2)return values; return values.map((v,i)=>Math.min(100,v+(distance({x:mud[i][0],y:mud[i][1]},a,b)<53?Math.min(25,Math.hypot(b.x-a.x,b.y-a.y)*.45):0))); }
+  function brushPatch(values,a,b) { if(Math.hypot(b.x-a.x,b.y-a.y)<2)return values; return values.map((v,i)=>{const next=Math.min(100,v+(distance({x:mud[i][0],y:mud[i][1]},a,b)<53?Math.min(25,Math.hypot(b.x-a.x,b.y-a.y)*.45):0));return next>=85?100:next;}); }
   const svg = `<svg class="pip-world" viewBox="160 40 680 720" aria-label="Play with Pip the lamb">
     <defs><linearGradient id="pip-wool" x2=".7" y2="1"><stop stop-color="#fffdf2"/><stop offset="1" stop-color="#ead6b5"/></linearGradient><linearGradient id="pip-face" x2="1" y2="1"><stop stop-color="#ffedcf"/><stop offset="1" stop-color="#eac099"/></linearGradient>
     <g id="pip-carrot-art"><path d="M-18-23Q-5-39 18-20L3 45Q-2 57-8 43Z" fill="#f59c30" stroke="#9a5025" stroke-width="4"/><path d="M-9-27Q-45-65-20-65L0-35Q0-80 17-70L9-29Q40-61 43-42L15-19" fill="#65a548" stroke="#3c6b35" stroke-width="4"/><path d="m-12-3 17 3m-14 17 11 2" stroke="#d77a27" stroke-width="4"/></g>
