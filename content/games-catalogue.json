@@ -130,7 +130,7 @@
       "id": "frontlines",
       "title": "Frontlines: World in Conflict",
       "type": "Game",
-      "tagline": "Six factions. Eleven battlefields. One world to conquer.",
+      "tagline": "Six factions. Twelve battlefields. One world to conquer.",
       "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.94 improves territory HUD performance and offline map credits.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
@@ -142,7 +142,7 @@
         "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play and Steam are separate distributions.",
         "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Android50+ supports in-game updates, although stock70/71 clients with the old compiled updater fault need a manual signed replacement first. Android asks you to confirm installation.",
         "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
-        "Online players need compatible protocol83 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
+        "Online players need compatible protocol93 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
       ],
       "actions": [
         {
