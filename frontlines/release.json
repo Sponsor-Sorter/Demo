@@ -1,11 +1,11 @@
 {
-  "build": 94,
-  "version": "1.0.0.94",
-  "url": "https://sponsorsorter.com/frontlines/builds/94/",
-  "notes": "V1.0.0.94: Faster territory HUD layout, correct catalogue-specific offline map credits and Windows version metadata. Approved graphics, soundtrack, gameplay rules, saves and accounts retained.",
+  "build": 95,
+  "version": "1.0.0.95",
+  "url": "https://sponsorsorter.com/frontlines/builds/95/",
+  "notes": "V1.0.0.95: Fix card-hold highlights getting stuck during training, give scripted drills time to follow battle-log instructions, and show the next progressive or exponential card-trade value. Approved graphics, soundtrack, saves and accounts retained.",
   "networkBuild": 93,
-  "androidBuild": 94,
-  "windowsBuild": 94,
+  "androidBuild": 95,
+  "windowsBuild": 95,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93
