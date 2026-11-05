@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.93",
-  "versionCode": 93,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview93-testing/frontlines-1.0.0-preview-build-93.apk",
-  "bytes": 221479980,
-  "sha256": "43736e6800ab781467d309bc40ce917da2c714305e2b920a70d837f3de920fa7",
+  "versionName": "1.0.0.94",
+  "versionCode": 94,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview94-testing/frontlines-1.0.0-preview-build-94.apk",
+  "bytes": 221484233,
+  "sha256": "554c5195c5cdf7828fcbd2003b10f5a3e578620cd0e3b69e9d8298e9d31ed5b6",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public93/frontlines-1.0.0.93-android.apk",
-  "notes": "V1.0.0.93: New Airship with 104 territories, 20 bonuses and 140 audited reference connections. Original Airship retained as Airship Beta. Richer Europe terrain, relief and instanced forest detail. Accounts, saves and approved assets retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public94/frontlines-1.0.0.94-android.apk",
+  "notes": "V1.0.0.94: Faster territory HUD layout, correct catalogue-specific offline map credits and Windows version metadata. Approved graphics, soundtrack, gameplay rules, saves and accounts retained."
 }

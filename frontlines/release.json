@@ -1,11 +1,11 @@
 {
-  "build": 93,
-  "version": "1.0.0.93",
-  "url": "https://sponsorsorter.com/frontlines/builds/93/",
-  "notes": "V1.0.0.93: New Airship with 104 territories, 20 bonuses and 140 audited reference connections. Original Airship retained as Airship Beta. Richer Europe terrain, relief and instanced forest detail. Accounts, saves and approved assets retained.",
+  "build": 94,
+  "version": "1.0.0.94",
+  "url": "https://sponsorsorter.com/frontlines/builds/94/",
+  "notes": "V1.0.0.94: Faster territory HUD layout, correct catalogue-specific offline map credits and Windows version metadata. Approved graphics, soundtrack, gameplay rules, saves and accounts retained.",
   "networkBuild": 93,
-  "androidBuild": 93,
-  "windowsBuild": 93,
+  "androidBuild": 94,
+  "windowsBuild": 94,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93
