@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.96",
-  "versionCode": 96,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview96-testing/frontlines-1.0.0-preview-build-96.apk",
-  "bytes": 221484396,
-  "sha256": "eb9001a7f5e374dfa26f3bd65c3ca2fe3ecb8bb5bccf2d60292b595a9e3eed75",
+  "versionName": "1.0.0.99",
+  "versionCode": 99,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview99-testing/frontlines-1.0.0-preview-build-99.apk",
+  "bytes": 226769420,
+  "sha256": "c73a116e0fe2e6cf75b67738c7ddff56e7788a480ea5c71ae9633db8af9697ee",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public96/frontlines-1.0.0.96-android.apk",
-  "notes": "V1.0.0.96: Normal gameplay now runs at twice its previous pace, with AI playback at four times the original pace. Online state updates arrive sooner, and the current roll and march finish before the next AI action is requested. Real-time clocks, approved graphics, soundtrack, saves and accounts retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public99/frontlines-1.0.0.99-android.apk",
+  "notes": "V1.0.0.99: A redesigned war-room menu, online/local/account dashboards, mission cards and grouped settings/rules. Detailed gem/VIP artwork and purchase previews. Responsive portrait, landscape and larger-text layouts. Existing accounts, saves, prices, battle rules and gameplay graphics retained."
 }

@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.96 speeds up normal gameplay and AI turns.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.99 introduces the redesigned war-room menus and Commander Collection.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.96 · browser, Android & Windows",
+      "build": "V1.0.0.99 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android96 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public96/frontlines-1.0.0.96-android.apk"
+          "label": "Download Android99 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public99/frontlines-1.0.0.99-android.apk"
         },
         {
-          "label": "Download Windows96 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public96/frontlines-1.0.0.96-windows-setup.exe"
+          "label": "Download Windows99 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public99/frontlines-1.0.0.99-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Faster gameplay, automatic AI acceleration and quicker online updates. Approved graphics, twelve boards and protocol93 multiplayer retained.",
-      "sha256": "EB9001A7F5E374DFA26F3BD65C3CA2FE3ECB8BB5BCCF2D60292B595A9E3EED75",
+      "notes": "War-room menus, mission cards, grouped rules/settings, illustrated gem bundles and clearer purchase previews. Twelve boards and protocol93 multiplayer retained.",
+      "sha256": "C73A116E0FE2E6CF75B67738C7DDFF56E7788A480EA5C71AE9633DB8AF9697EE",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

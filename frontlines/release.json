@@ -1,11 +1,11 @@
 {
-  "build": 96,
-  "version": "1.0.0.96",
-  "url": "https://sponsorsorter.com/frontlines/builds/96/",
-  "notes": "V1.0.0.96: Normal gameplay now runs at twice its previous pace, with AI playback at four times the original pace. Online state updates arrive sooner, and the current roll and march finish before the next AI action is requested. Real-time clocks, approved graphics, soundtrack, saves and accounts retained.",
+  "build": 99,
+  "version": "1.0.0.99",
+  "url": "https://sponsorsorter.com/frontlines/builds/99/",
+  "notes": "V1.0.0.99: A redesigned war-room menu, online/local/account dashboards, mission cards and grouped settings/rules. Detailed gem/VIP artwork and purchase previews. Responsive portrait, landscape and larger-text layouts. Existing accounts, saves, prices, battle rules and gameplay graphics retained.",
   "networkBuild": 93,
-  "androidBuild": 96,
-  "windowsBuild": 96,
+  "androidBuild": 99,
+  "windowsBuild": 99,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93
