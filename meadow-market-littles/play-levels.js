@@ -7,14 +7,14 @@
     if(g.id==='milk')Object.assign(r,{goal:8+Math.min(10,Math.floor(d/2)),time:Math.max(24,40-d*.6),zone:Math.max(.10,.36/(1+d*.15)),markerSpeed:2.6+d*.18});
     if(g.id==='memory'){const pairs=Math.min(18,8+Math.floor(d/2)*2);Object.assign(r,{pairs,goal:pairs,time:Math.max(65,100-d*1.5)})}
     if(g.id==='sorting')Object.assign(r,{goal:15+Math.min(25,d*2),time:Math.max(32,50-d*.5),basketCount:Math.min(6,3+Math.floor(d/3))});
-    if(['sheep','goat','cow'].includes(g.id))Object.assign(r,{goal:Math.min(6,4+Math.floor(d/4)),time:0,relaxed:true});
+    if(['sheep','goat','cow'].includes(g.id))Object.assign(r,{goal:Math.min(6,3+Math.floor(d/3)),time:0,relaxed:true});
     if(g.id==='flowers')Object.assign(r,{goal:12+Math.min(18,d),time:Math.max(21,35-d*.35)});
     if(g.id==='coopmath')Object.assign(r,{goal:6+Math.min(6,Math.floor(d/3)),time:Math.max(65,110-d*1.5)});
     if(g.id==='differences')Object.assign(r,{goal:Math.min(6,3+Math.floor(d/4)),time:0,relaxed:true});
     r.time=Math.ceil(r.time);
     const copy={eggs:()=>`Catch ${r.goal} falling eggs before three break. Later levels drop faster eggs and small bursts.`,milk:()=>`Tap the playfield or Milk when the marker is inside the golden zone. Fill ${r.goal} buckets before the timer ends.`,sorting:()=>`Sort ${r.goal} items into ${r.basketCount} labelled baskets. Listen to each produce name. A wrong basket costs two seconds.`,flowers:()=>`Follow the glowing flower and pick ${r.goal} before time runs out. Only the glowing flower counts.`,coopmath:()=>`Solve ${r.goal} number problems to build the coop. Tap a wooden answer sign: a tick builds another piece; a cross means try another answer.`,differences:()=>`Look at two farm pictures. Find ${r.goal} changes and tap them in either picture. Take your time. Tap Show a hint whenever you like.`};
     if(copy[g.id])r.text=copy[g.id]();
-    if(['sheep','goat','cow'].includes(g.id))r.text=`Find ${r.goal} farm friends hiding in the picture. Their places and appearances change each time. Take your time and ask Farmer Rhys for a hint whenever you like.`;
+    if(['sheep','goat','cow'].includes(g.id))r.text=`Find ${r.goal} little farm friends. Move the leaves, lift hay and open gates to uncover them. Tap each friend, guide everyone home along the footprints, then scatter their snack. Ask Farmer Rhys for a sound clue whenever you like.`;
     return r;
   }
   function deck(pairs=8,random=Math.random){const chosen=shuffle(Object.keys(names),random).slice(0,Math.min(18,Math.max(2,pairs)));return shuffle(chosen.flatMap(id=>[id,id]),random)}

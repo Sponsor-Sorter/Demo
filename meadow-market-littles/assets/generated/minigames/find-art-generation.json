@@ -1,0 +1,19 @@
+{
+  "tool": "Built-in image_gen",
+  "mode": "generate",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "file": "assets/generated/minigames/find-meadow.webp",
+      "prompt": "Use case: illustration-story. Asset type: full-screen background for Meadow Market Littles hide-and-find farm animal adventures, ages 3–6. Landscape 1536x1024. A sunny farm meadow with soft green rolling hills, a distant little red barn in the far upper left, two rounded trees at outer edges, a few daisies in the bottom corners. Keep the middle and lower 75 percent a very simple empty grassy play area, no objects in it. Warm polished simple cartoon storybook illustration, broad rounded shapes, soft outlines, gentle greens, cream and warm red, playful farm aesthetic matching a friendly preschool game. Low visual clutter. Sky top 20 percent. Centre must crop well to a portrait phone while keeping plenty of clear grass for interactive hiding objects. No animals, people, bushes or hay bales in the play area; the game adds those. No text, no letters, no UI, no panels, no watermark. Full bleed illustration."
+    },
+    {
+      "file": "assets/generated/minigames/find-orchard.webp",
+      "prompt": "Use case: illustration-story. Asset type: full-screen background for Meadow Market Littles hide-and-find farm animal adventures, ages 3–6. Landscape 1536x1024. A farm apple orchard clearing. Two rounded apple trees at the far outer edges with a few large red apples, distant soft green hills, small wooden fence at far upper background. Keep the middle and lower 75 percent a very simple empty grassy play area, no objects in it. Warm polished simple cartoon storybook illustration, broad rounded shapes, soft outlines, gentle greens, cream and warm red, playful farm aesthetic matching a friendly preschool game. Low visual clutter. Sky top 20 percent. Centre must crop well to a portrait phone while keeping plenty of clear grass for interactive hiding objects. No animals, people, bushes or hay bales in the play area; the game adds those. No text, no letters, no UI, no panels, no watermark. Full bleed illustration."
+    },
+    {
+      "file": "assets/generated/minigames/find-barnyard.webp",
+      "prompt": "Use case: illustration-story. Asset type: full-screen background for Meadow Market Littles hide-and-find farm animal adventures, ages 3–6. Landscape 1536x1024. A friendly farm barnyard clearing, small red barn and wooden fence along distant upper background, a rounded tree at one outer edge and tiny flowers in bottom corners. Keep the middle and lower 75 percent a very simple empty grassy play area, no objects in it. Warm polished simple cartoon storybook illustration, broad rounded shapes, soft outlines, gentle greens, cream and warm red, playful farm aesthetic matching a friendly preschool game. Low visual clutter. Sky top 20 percent. Centre must crop well to a portrait phone while keeping plenty of clear grass for interactive hiding objects. No animals, people, bushes or hay bales in the play area; the game adds those. No text, no letters, no UI, no panels, no watermark. Full bleed illustration."
+    }
+  ]
+}

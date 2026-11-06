@@ -1,0 +1,79 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "find-rhys-sheep",
+      "text": "Let’s find the little lambs! Look behind the leaves, hay and baskets. Move a hiding place, then tap the lamb you find.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 7.86655,
+      "bytes": 95408
+    },
+    {
+      "id": "find-rhys-goat",
+      "text": "Let’s find the little goats! Look behind the leaves, hay and baskets. Move a hiding place, then tap the goat you find.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.806420000000001,
+      "sourceEnd": 17.442800000000002,
+      "bytes": 92587
+    },
+    {
+      "id": "find-rhys-cow",
+      "text": "Let’s find the little cows! Look behind the leaves, hay and baskets. Move a hiding place, then tap the cow you find.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 19.8159,
+      "sourceEnd": 27.1564,
+      "bytes": 89139
+    },
+    {
+      "id": "find-rhys-clue",
+      "text": "Let’s listen carefully. A farm friend is hiding here.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 29.019199999999998,
+      "sourceEnd": 32.665299999999995,
+      "bytes": 44626
+    },
+    {
+      "id": "find-rhys-gate",
+      "text": "You found everyone! Open the gate, then follow the little path with your finger to guide your friends home.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 34.6066,
+      "sourceEnd": 39.933699999999995,
+      "bytes": 64688
+    },
+    {
+      "id": "find-rhys-feed",
+      "text": "Everyone is safely home. Drag the feed scoop over the trough. Move it gently to scatter their food.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 41.702400000000004,
+      "sourceEnd": 48.5494,
+      "bytes": 83183
+    },
+    {
+      "id": "find-rhys-done",
+      "text": "What lovely helping! Your friends are home and enjoying their snack. Shall we find some more?",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 50.313,
+      "sourceEnd": 56.3275,
+      "bytes": 73152
+    },
+    {
+      "id": "find-rhys-butterfly",
+      "text": "A little butterfly! Let’s try another hiding place.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 58.320600000000006,
+      "sourceEnd": null,
+      "bytes": 55284
+    }
+  ]
+}
