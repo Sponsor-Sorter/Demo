@@ -1,11 +1,11 @@
 {
-  "build": 95,
-  "version": "1.0.0.95",
-  "url": "https://sponsorsorter.com/frontlines/builds/95/",
-  "notes": "V1.0.0.95: Fix card-hold highlights getting stuck during training, give scripted drills time to follow battle-log instructions, and show the next progressive or exponential card-trade value. Approved graphics, soundtrack, saves and accounts retained.",
+  "build": 96,
+  "version": "1.0.0.96",
+  "url": "https://sponsorsorter.com/frontlines/builds/96/",
+  "notes": "V1.0.0.96: Normal gameplay now runs at twice its previous pace, with AI playback at four times the original pace. Online state updates arrive sooner, and the current roll and march finish before the next AI action is requested. Real-time clocks, approved graphics, soundtrack, saves and accounts retained.",
   "networkBuild": 93,
-  "androidBuild": 95,
-  "windowsBuild": 95,
+  "androidBuild": 96,
+  "windowsBuild": 96,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93

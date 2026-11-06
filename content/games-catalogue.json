@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.95 improves training and card controls.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.96 speeds up normal gameplay and AI turns.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.95 · browser, Android & Windows",
+      "build": "V1.0.0.96 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android95 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public95/frontlines-1.0.0.95-android.apk"
+          "label": "Download Android96 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public96/frontlines-1.0.0.96-android.apk"
         },
         {
-          "label": "Download Windows95 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public95/frontlines-1.0.0.95-windows-setup.exe"
+          "label": "Download Windows96 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public96/frontlines-1.0.0.96-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "Clear card-hold highlighting and guided battle-log lessons, with the approved graphics retained. Twelve boards and protocol93 multiplayer retained.",
-      "sha256": "536D990D9A80D536991E1BB82161BDB826543901EAC7AF443F80FE31051C47EB",
+      "notes": "Faster gameplay, automatic AI acceleration and quicker online updates. Approved graphics, twelve boards and protocol93 multiplayer retained.",
+      "sha256": "EB9001A7F5E374DFA26F3BD65C3CA2FE3ECB8BB5BCCF2D60292B595A9E3EED75",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
