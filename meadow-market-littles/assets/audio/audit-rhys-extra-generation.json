@@ -1,0 +1,25 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "approved-minigame-differences",
+      "farmer": "rhys",
+      "text": "Look at both farm pictures. Can you spot what is different? Tap each change in either picture.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 7.37596,
+      "bytes": 89452
+    },
+    {
+      "id": "approved-minigame-drawing",
+      "farmer": "rhys",
+      "text": "Let’s draw a farm picture! Choose a pencil, brush, marker or crayon. Pick your colours and draw with your finger. You can undo a mark or start another picture.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.39746,
+      "sourceEnd": null,
+      "bytes": 159043
+    }
+  ]
+}

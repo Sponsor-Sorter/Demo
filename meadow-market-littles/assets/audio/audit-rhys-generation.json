@@ -1,0 +1,124 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "world-little_farm_builder",
+      "farmer": "rhys",
+      "text": "Choose a farm scene, then add friends and crops.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 2.8646700000000003,
+      "bytes": 35222
+    },
+    {
+      "id": "world-farm_weather",
+      "farmer": "rhys",
+      "text": "Choose a cosy place for a farm friend on a rainy day.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.66145,
+      "sourceEnd": 7.45671,
+      "bytes": 34595
+    },
+    {
+      "id": "world-shape_shadows",
+      "farmer": "rhys",
+      "text": "Find the shape that fits the farm window.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.341560000000001,
+      "sourceEnd": 11.4619,
+      "bytes": 26445
+    },
+    {
+      "id": "world-tractor_trail",
+      "farmer": "rhys",
+      "text": "Choose a short path to help the tractor reach the orchard.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 13.253200000000001,
+      "sourceEnd": 15.8827,
+      "bytes": 32401
+    },
+    {
+      "id": "world-windmill_workshop",
+      "farmer": "rhys",
+      "text": "Put the windmill together, then watch the breeze turn it.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 17.7948,
+      "sourceEnd": 20.4783,
+      "bytes": 33028
+    },
+    {
+      "id": "world-little_bridge_builders",
+      "farmer": "rhys",
+      "text": "Choose a bridge plank that fits the stream.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 22.362399999999997,
+      "sourceEnd": 24.429100000000002,
+      "bytes": 25818
+    },
+    {
+      "id": "world-pond_balance",
+      "farmer": "rhys",
+      "text": "Count the ducks and give each one a lily pad.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 26.1677,
+      "sourceEnd": 28.4947,
+      "bytes": 28953
+    },
+    {
+      "id": "world-barnyard_action_parade",
+      "farmer": "rhys",
+      "text": "Pick an action and watch a farm friend bring it to life.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 30.3893,
+      "sourceEnd": 33.2022,
+      "bytes": 34595
+    },
+    {
+      "id": "next-paddockchange",
+      "farmer": "rhys",
+      "text": "Compare the Before and Now pictures, then choose the farm friend who is missing.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 35.1056,
+      "sourceEnd": 39.3011,
+      "bytes": 51209
+    },
+    {
+      "id": "next-harvestcount",
+      "farmer": "rhys",
+      "text": "Count the apples in the basket and choose the number. Take your time and count them together.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 41.1482,
+      "sourceEnd": 45.406099999999995,
+      "bytes": 51836
+    },
+    {
+      "id": "next-farmpicture",
+      "farmer": "rhys",
+      "text": "Put the four picture pieces back in their places.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 48.116600000000005,
+      "sourceEnd": 50.2392,
+      "bytes": 26445
+    },
+    {
+      "id": "next-fullbasket",
+      "farmer": "rhys",
+      "text": "Tap the basket that has more apples.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 52.3851,
+      "sourceEnd": 54.208099999999995,
+      "bytes": 22683
+    },
+    {
+      "id": "creative-rhys-served",
+      "farmer": "rhys",
+      "text": "Yum! What a lovely farm treat! Thank you for sharing. Shall we make another?",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 55.959700000000005,
+      "sourceEnd": null,
+      "bytes": 70958
+    }
+  ]
+}

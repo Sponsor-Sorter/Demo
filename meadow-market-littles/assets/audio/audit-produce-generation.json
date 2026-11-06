@@ -1,0 +1,187 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "approved-produce-apple",
+      "farmer": "jade",
+      "text": "Apple.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 0,
+      "sourceEnd": 0.49941,
+      "tempo": 0.7,
+      "bytes": 7010
+    },
+    {
+      "id": "approved-produce-carrot",
+      "farmer": "jade",
+      "text": "Carrot.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 1.32905,
+      "sourceEnd": 1.77726,
+      "tempo": 0.7,
+      "bytes": 6383
+    },
+    {
+      "id": "approved-produce-tomato",
+      "farmer": "jade",
+      "text": "Tomato.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 2.76497,
+      "sourceEnd": 3.18288,
+      "tempo": 0.7,
+      "bytes": 5756
+    },
+    {
+      "id": "approved-produce-corn",
+      "farmer": "jade",
+      "text": "Corn.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 4.15757,
+      "sourceEnd": 4.6102300000000005,
+      "tempo": 0.7,
+      "bytes": 6383
+    },
+    {
+      "id": "approved-produce-pumpkin",
+      "farmer": "jade",
+      "text": "Pumpkin.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 5.49508,
+      "sourceEnd": 5.93857,
+      "tempo": 0.7,
+      "bytes": 6069
+    },
+    {
+      "id": "approved-produce-strawberry",
+      "farmer": "jade",
+      "text": "Strawberry.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 6.80234,
+      "sourceEnd": 7.28172,
+      "tempo": 0.7,
+      "bytes": 6696
+    },
+    {
+      "id": "approved-produce-pear",
+      "farmer": "jade",
+      "text": "Pear.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 8.21179,
+      "sourceEnd": 8.586189999999998,
+      "tempo": 0.7,
+      "bytes": 5443
+    },
+    {
+      "id": "approved-produce-banana",
+      "farmer": "jade",
+      "text": "Banana.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 9.50816,
+      "sourceEnd": 9.91587,
+      "tempo": 0.7,
+      "bytes": 5756
+    },
+    {
+      "id": "approved-produce-orange",
+      "farmer": "jade",
+      "text": "Orange.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 10.804300000000001,
+      "sourceEnd": 11.277099999999999,
+      "tempo": 0.7,
+      "bytes": 6696
+    },
+    {
+      "id": "approved-produce-grapes",
+      "farmer": "jade",
+      "text": "Grapes.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 12.201,
+      "sourceEnd": 12.6326,
+      "tempo": 0.7,
+      "bytes": 6069
+    },
+    {
+      "id": "approved-produce-watermelon",
+      "farmer": "jade",
+      "text": "Watermelon.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 13.5341,
+      "sourceEnd": 14.047099999999999,
+      "tempo": 0.7,
+      "bytes": 7010
+    },
+    {
+      "id": "approved-produce-lemon",
+      "farmer": "jade",
+      "text": "Lemon.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 14.919500000000001,
+      "sourceEnd": 15.319199999999999,
+      "tempo": 0.7,
+      "bytes": 5756
+    },
+    {
+      "id": "approved-produce-cucumber",
+      "farmer": "jade",
+      "text": "Cucumber.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 16.3132,
+      "sourceEnd": 16.768,
+      "tempo": 0.7,
+      "bytes": 6383
+    },
+    {
+      "id": "approved-produce-potato",
+      "farmer": "jade",
+      "text": "Potato.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 17.717599999999997,
+      "sourceEnd": 18.1489,
+      "tempo": 0.7,
+      "bytes": 6069
+    },
+    {
+      "id": "approved-produce-onion",
+      "farmer": "jade",
+      "text": "Onion.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 19.1098,
+      "sourceEnd": 19.528000000000002,
+      "tempo": 0.7,
+      "bytes": 6069
+    },
+    {
+      "id": "approved-produce-broccoli",
+      "farmer": "jade",
+      "text": "Broccoli.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 20.4564,
+      "sourceEnd": 20.904700000000002,
+      "tempo": 0.7,
+      "bytes": 6383
+    },
+    {
+      "id": "approved-produce-peas",
+      "farmer": "jade",
+      "text": "Peas.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 21.8535,
+      "sourceEnd": 22.2654,
+      "tempo": 0.7,
+      "bytes": 5756
+    },
+    {
+      "id": "approved-produce-pepper",
+      "farmer": "jade",
+      "text": "Pepper.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 23.2629,
+      "sourceEnd": null,
+      "tempo": 0.7,
+      "bytes": 7950
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "coop-rhys-intro",
+      "farmer": "rhys",
+      "text": "Let’s build a cosy coop for the hens! We’ll put the pieces together, hammer the nails, paint the roof and make three soft nests. Take your time!",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 9.42902,
+      "bytes": 113903
+    },
+    {
+      "id": "coop-rhys-floor",
+      "farmer": "rhys",
+      "text": "First, drag three floor boards onto the outlines. One, two, three.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 11.4449,
+      "sourceEnd": 16.3288,
+      "bytes": 59359
+    },
+    {
+      "id": "coop-rhys-walls",
+      "farmer": "rhys",
+      "text": "Now fit the walls. Look at the shapes and slide each piece into its matching space.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 18.3145,
+      "sourceEnd": 23.683,
+      "bytes": 65315
+    },
+    {
+      "id": "coop-rhys-roof",
+      "farmer": "rhys",
+      "text": "Put the two roof pieces on top. Match each triangle to its outline.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 25.3076,
+      "sourceEnd": 28.9576,
+      "bytes": 44626
+    },
+    {
+      "id": "coop-rhys-nails",
+      "farmer": "rhys",
+      "text": "Tap the shiny nails to hammer them in. Three gentle taps on each nail.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 30.5704,
+      "sourceEnd": 34.6898,
+      "bytes": 50269
+    },
+    {
+      "id": "coop-rhys-paint",
+      "farmer": "rhys",
+      "text": "Choose a colour. Then move your finger across the roof to paint it.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 36.479600000000005,
+      "sourceEnd": 40.0731,
+      "bytes": 43999
+    },
+    {
+      "id": "coop-rhys-nests",
+      "farmer": "rhys",
+      "text": "Let’s make three soft nests. Drag a bundle of straw into each nest.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 42.294200000000004,
+      "sourceEnd": 47.2866,
+      "bytes": 60927
+    },
+    {
+      "id": "coop-rhys-done",
+      "farmer": "rhys",
+      "text": "What lovely building! Your hens have a cosy new home. Look, they’ve laid some eggs! Shall we build another coop?",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 49.4485,
+      "sourceEnd": null,
+      "bytes": 106693
+    }
+  ]
+}

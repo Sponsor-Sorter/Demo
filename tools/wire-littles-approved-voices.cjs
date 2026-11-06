@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'../meadow-market-littles');
+const edit=(f,fn)=>{const p=path.join(root,f),s=fs.readFileSync(p,'utf8');fs.writeFileSync(p,fn(s));};
+edit('world-play.js',s=>s.replace(/voice:\(\{story:[\s\S]*?\}\)\[kind\]/,"voice:'world-'+id"));
+edit('next-games.js',s=>s.replace('scene,voice,text,goal:',"scene,voice:'next-'+id,text,goal:").replace("window.meadowAudio?.speak('game-result-win')","window.meadowAudio?.speak('letter-'+g.person+'-success')"));
+edit('creative-play.js',s=>s.replace("speak('market-welcome')","speak('creative-jade-kitchen')").replace("speak('care-result')","speak('creative-'+farmer+'-served')").replace("speak('jade-welcome')","speak('creative-jade-band')").replace("speak('game-result-win')","speak('letter-jade-success')"));
+edit('together.js',s=>s.replace(/function help\(\)\{[\s\S]*?\}\r?\nfunction /,"function help(){window.meadowAudio?.speak('together-'+(!state&&mode!=='local'?'local':game))}\nfunction ").replace("speak('game-result-win')","speak('letter-jay-success')"));
+edit('word-search.js',s=>s.replace(/  function speakText\(text\) \{[\s\S]*?\n  function boardSize\(\)/,"  function praise() { window.meadowAudio?.speak('ws-jade-praise-'+Math.floor(Math.random()*4)); audio('reward'); }\n  function boardSize()").replaceAll("speakText('Find the little words. Put your finger on the first letter and slide across each letter in the word.')","window.meadowAudio?.speak('ws-jade-intro')").replace("if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!');","window.meadowAudio?.speak('ws-jade-done');"));
+edit('minigames.js',s=>s.replace("won?'game-result-win':'game-result-lose'","won?'letter-'+g.person+'-success':'letter-'+g.person+'-retry'"));
+edit('farmers-market.js',s=>s.replace("'market-result-win':'game-result-lose'","'market-result-win':'letter-jay-retry'"));
+console.log('Wired activity-specific farmer recordings; removed device speech.');

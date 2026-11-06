@@ -1,0 +1,232 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "world-market_pretend",
+      "farmer": "jay",
+      "text": "Fill a neighbour’s picture order at the farm stall.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 0,
+      "sourceEnd": 2.4203200000000002,
+      "bytes": 29893
+    },
+    {
+      "id": "world-meadow_keepsakes",
+      "farmer": "jay",
+      "text": "Make a little page with your favourite farm pictures.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 4.37063,
+      "sourceEnd": 6.98095,
+      "bytes": 32087
+    },
+    {
+      "id": "world-haystack_tower",
+      "farmer": "jay",
+      "text": "Stack three cosy hay towers from big to small.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 8.894290000000002,
+      "sourceEnd": 11.935699999999999,
+      "bytes": 37416
+    },
+    {
+      "id": "world-orchard_seasons",
+      "farmer": "jay",
+      "text": "See the orchard change and help the tree through the year.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 13.907,
+      "sourceEnd": 16.8651,
+      "bytes": 36476
+    },
+    {
+      "id": "next-spokenorder",
+      "farmer": "jay",
+      "text": "Listen to Farmer Jay’s three-item market order, then pack each food in the same order. You can replay the order whenever you need.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 18.863599999999998,
+      "sourceEnd": 25.8197,
+      "bytes": 84437
+    },
+    {
+      "id": "next-animalhome",
+      "farmer": "jay",
+      "text": "Help each animal find its right home.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 27.788999999999998,
+      "sourceEnd": 29.8529,
+      "bytes": 25818
+    },
+    {
+      "id": "next-applecartsort",
+      "farmer": "jay",
+      "text": "Put each harvest item in the fruit or vegetable basket.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 31.886599999999998,
+      "sourceEnd": 34.706599999999995,
+      "bytes": 34595
+    },
+    {
+      "id": "together-meadowrace",
+      "farmer": "jay",
+      "text": "Take turns rolling the friendly one, two or three. Move your farmer along the path. First to the barn wins!",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 36.779,
+      "sourceEnd": 43.1579,
+      "bytes": 77540
+    },
+    {
+      "id": "together-harvestbasket",
+      "farmer": "jay",
+      "text": "Take turns picking fruit from the market. Remember where each fruit is hiding. Four of the same fruit fills your basket and wins!",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 45.1052,
+      "sourceEnd": 52.3486,
+      "bytes": 87885
+    },
+    {
+      "id": "together-memorygarden",
+      "farmer": "jay",
+      "text": "Take turns finding matching garden pictures. Remember where each card is hiding. Find the most pairs to win!",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 54.3615,
+      "sourceEnd": 60.5073,
+      "bytes": 74719
+    },
+    {
+      "id": "together-animalrescue",
+      "farmer": "jay",
+      "text": "Guide a farm friend along the right path, then build what the trail needs. Help all three friends get home together. Your jobs swap after each rescue.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 62.5428,
+      "sourceEnd": 71.0973,
+      "bytes": 103558
+    },
+    {
+      "id": "together-picnicpartners",
+      "farmer": "jay",
+      "text": "Work together to fill a picnic basket. One friend finds the food on the picture list; the other packs it in. Swap jobs as you go.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 73.1159,
+      "sourceEnd": 80.66600000000001,
+      "bytes": 91647
+    },
+    {
+      "id": "together-gardenhelpers",
+      "farmer": "jay",
+      "text": "Choose the picture seed together, then give it a drink of water. Swap jobs and help three little plants grow.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 82.634,
+      "sourceEnd": 88.6517,
+      "bytes": 73152
+    },
+    {
+      "id": "together-cozyhome",
+      "farmer": "jay",
+      "text": "Help three farm friends feel at home. One player chooses a cosy item; the other puts it in the right place. Then swap jobs.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 90.64779999999999,
+      "sourceEnd": 98.5827,
+      "bytes": 96035
+    },
+    {
+      "id": "together-animalband",
+      "farmer": "jay",
+      "text": "Choose a farm friend to add a sound to your song. Your partner plays it, then you swap jobs. Make a little tune together.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 100.57799999999999,
+      "sourceEnd": 107.438,
+      "bytes": 83183
+    },
+    {
+      "id": "together-storywagon",
+      "farmer": "jay",
+      "text": "Take turns choosing a farm friend, a place and a fun thing to do. Make three little stories together. There are no wrong choices.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 109.383,
+      "sourceEnd": 117.287,
+      "bytes": 95722
+    },
+    {
+      "id": "creative-jay-served",
+      "farmer": "jay",
+      "text": "Yum! What a lovely farm treat! Thank you for sharing. Shall we make another?",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 119.18599999999999,
+      "sourceEnd": 123.941,
+      "bytes": 58105
+    },
+    {
+      "id": "approved-minigame-eggs-levels",
+      "farmer": "jay",
+      "text": "Catch the falling eggs before they reach the floor. Tap each egg to save it!",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 126.064,
+      "sourceEnd": 130.154,
+      "bytes": 49955
+    },
+    {
+      "id": "approved-minigame-sorting-levels",
+      "farmer": "jay",
+      "text": "Look at the food on the counter. Tap the basket with the same picture to put it away.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 132.177,
+      "sourceEnd": 136.752,
+      "bytes": 55911
+    },
+    {
+      "id": "approved-minigame-matchpainting",
+      "farmer": "jay",
+      "text": "Look at the little coloured picture. Choose your paints and colour your big picture to match. You can use your brush or the bucket.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 138.728,
+      "sourceEnd": 145.939,
+      "bytes": 87572
+    },
+    {
+      "id": "approved-market-welcome",
+      "farmer": "jay",
+      "text": "Welcome to our little farm market! You can pack a picture order, or help weigh the harvest. Choose what you would like to try.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 148.024,
+      "sourceEnd": 154.952,
+      "bytes": 84123
+    },
+    {
+      "id": "approved-market-pack",
+      "farmer": "jay",
+      "text": "Look at the order picture. Tap the matching food to put it in the basket. Keep packing until the order is ready.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 157.033,
+      "sourceEnd": 162.609,
+      "bytes": 67823
+    },
+    {
+      "id": "approved-market-weigh",
+      "farmer": "jay",
+      "text": "Let’s weigh the harvest! Watch the moving marker. Tap weigh when it is inside the golden zone.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 164.608,
+      "sourceEnd": 169.584,
+      "bytes": 60613
+    },
+    {
+      "id": "approved-market-result-win",
+      "farmer": "jay",
+      "text": "Lovely helping! Your market order is ready. Shall we visit the market again?",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 171.529,
+      "sourceEnd": 175.77,
+      "bytes": 51836
+    },
+    {
+      "id": "approved-animals-welcome",
+      "farmer": "jay",
+      "text": "Welcome to our farm friends! Choose an animal to feed, brush or play with. Take your time and give them some gentle care.",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 177.74699999999999,
+      "sourceEnd": null,
+      "bytes": 92900
+    }
+  ]
+}

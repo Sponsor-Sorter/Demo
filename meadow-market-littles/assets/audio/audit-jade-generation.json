@@ -1,0 +1,241 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-06",
+  "files": [
+    {
+      "id": "world-meadow_story",
+      "farmer": "jade",
+      "text": "Put the farm friends where you like and make up what happens.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 0,
+      "sourceEnd": 2.58129,
+      "bytes": 31774
+    },
+    {
+      "id": "world-hiding_friend",
+      "farmer": "jade",
+      "text": "Listen for a farm friend, then find their picture in the paddock.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 4.44696,
+      "sourceEnd": 7.41129,
+      "bytes": 36476
+    },
+    {
+      "id": "world-seed_to_snack",
+      "farmer": "jade",
+      "text": "Help plant, water and pick a little crop.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 9.359520000000002,
+      "sourceEnd": 11.678799999999999,
+      "bytes": 28639
+    },
+    {
+      "id": "world-sound_garden",
+      "farmer": "jade",
+      "text": "Choose farm friends and make a little sound pattern.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 13.511800000000001,
+      "sourceEnd": 16.0208,
+      "bytes": 31147
+    },
+    {
+      "id": "world-kindness_meadow",
+      "farmer": "jade",
+      "text": "Help farm friends feel welcome with kind choices.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 17.891299999999998,
+      "sourceEnd": 20.493100000000002,
+      "bytes": 32087
+    },
+    {
+      "id": "world-nest_builder",
+      "farmer": "jade",
+      "text": "Choose soft, safe things to make a bird a cosy nest.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 22.0964,
+      "sourceEnd": 24.745800000000003,
+      "bytes": 32714
+    },
+    {
+      "id": "world-rainy_day_clothesline",
+      "farmer": "jade",
+      "text": "Choose clothes and accessories for the day’s weather.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 26.361,
+      "sourceEnd": 28.3594,
+      "bytes": 24878
+    },
+    {
+      "id": "world-farm_post_office",
+      "farmer": "jade",
+      "text": "Make picture postcards and deliver them to farm friends.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 29.9864,
+      "sourceEnd": 32.521,
+      "bytes": 31460
+    },
+    {
+      "id": "next-listenharvest",
+      "farmer": "jade",
+      "text": "Pick the fruit or vegetable Farmer Jade asks for.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 34.273,
+      "sourceEnd": 36.6795,
+      "bytes": 29893
+    },
+    {
+      "id": "next-meadowpairs",
+      "farmer": "jade",
+      "text": "Turn two cards at a time and find three matching pairs.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 38.801700000000004,
+      "sourceEnd": 42.0312,
+      "bytes": 39611
+    },
+    {
+      "id": "next-farmerpattern",
+      "farmer": "jade",
+      "text": "Listen to the little pattern, then tap the pictures in the same order.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 44.061,
+      "sourceEnd": 47.4922,
+      "bytes": 42118
+    },
+    {
+      "id": "next-barnyardlisten",
+      "farmer": "jade",
+      "text": "Listen for a farm friend, then tap the picture of the animal who made the sound. Hear it again as often as you like.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 49.5414,
+      "sourceEnd": 56.0824,
+      "bytes": 79421
+    },
+    {
+      "id": "next-gentleharvest",
+      "farmer": "jade",
+      "text": "Pick the named harvest as it rolls by. There is lots of time.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 58.4696,
+      "sourceEnd": 61.9695,
+      "bytes": 42745
+    },
+    {
+      "id": "ws-jade-intro",
+      "farmer": "jade",
+      "text": "Find the little words. Put your finger on the first letter and slide across each letter in the word.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 64.0052,
+      "sourceEnd": 68.9624,
+      "bytes": 60300
+    },
+    {
+      "id": "ws-jade-done",
+      "farmer": "jade",
+      "text": "Well done! You found all the words! Great job! Shall we find some more?",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 70.9369,
+      "sourceEnd": 75.25070000000001,
+      "bytes": 52776
+    },
+    {
+      "id": "ws-jade-praise-0",
+      "farmer": "jade",
+      "text": "Well done!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 76.60239999999999,
+      "sourceEnd": 77.289,
+      "bytes": 9204
+    },
+    {
+      "id": "ws-jade-praise-1",
+      "farmer": "jade",
+      "text": "Great job!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 78.6117,
+      "sourceEnd": 79.27860000000001,
+      "bytes": 8891
+    },
+    {
+      "id": "ws-jade-praise-2",
+      "farmer": "jade",
+      "text": "You found it!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 80.6522,
+      "sourceEnd": 81.2988,
+      "bytes": 8577
+    },
+    {
+      "id": "ws-jade-praise-3",
+      "farmer": "jade",
+      "text": "What a clever word finder!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 82.7678,
+      "sourceEnd": 83.8486,
+      "bytes": 13906
+    },
+    {
+      "id": "creative-jade-kitchen",
+      "farmer": "jade",
+      "text": "Let’s make a little farm treat! Tap some harvest foods to put them in your bowl. Then tap make it. You can choose any mix you like!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 85.2426,
+      "sourceEnd": 90.32560000000001,
+      "bytes": 61867
+    },
+    {
+      "id": "creative-jade-band",
+      "farmer": "jade",
+      "text": "Let’s make a little farm tune! Tap a sound, then try another. Tap hear our tune to listen to your song.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 92.34989999999999,
+      "sourceEnd": 98.6739,
+      "bytes": 76914
+    },
+    {
+      "id": "creative-jade-served",
+      "farmer": "jade",
+      "text": "Yum! What a lovely farm treat! Thank you for sharing. Shall we make another?",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 100.792,
+      "sourceEnd": 105.376,
+      "bytes": 55911
+    },
+    {
+      "id": "approved-minigame-milk-levels",
+      "farmer": "jade",
+      "text": "Let’s collect some milk. Tap when the moving marker is inside the golden zone. Give your hand a little rest between squeezes.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 107.96,
+      "sourceEnd": 115.254,
+      "bytes": 88512
+    },
+    {
+      "id": "approved-minigame-flowers-levels",
+      "farmer": "jade",
+      "text": "Watch the flowers. Tap the flower that is glowing. Then look for the next glowing flower!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 117.42399999999999,
+      "sourceEnd": 122.61200000000001,
+      "bytes": 63121
+    },
+    {
+      "id": "approved-minigame-memory-levels",
+      "farmer": "jade",
+      "text": "Turn over two cards and look at their pictures. Find all the matching pairs. Listen to the names and remember where each picture is hiding.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 124.76299999999999,
+      "sourceEnd": 131.875,
+      "bytes": 86318
+    },
+    {
+      "id": "approved-minigame-colourbynumber",
+      "farmer": "jade",
+      "text": "Let’s colour a farm picture! Choose a numbered paint. Find the same number in the picture. Use your brush, or tap with the bucket to fill the whole space.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 133.91299999999998,
+      "sourceEnd": null,
+      "bytes": 96976
+    }
+  ]
+}

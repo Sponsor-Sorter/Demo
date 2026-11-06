@@ -24,3 +24,5 @@ const nextGames=fs.readFileSync(root+'/next-games.js','utf8'),nextCss=fs.readFil
 
 require("./check-pip-day.cjs");
 require("./check-littles-find.cjs");
+
+require("./check-littles-coop-audio.cjs");

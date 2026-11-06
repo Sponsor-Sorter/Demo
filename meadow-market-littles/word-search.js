@@ -23,22 +23,7 @@
   const image = (word) => word.asset ? '<img src="' + esc(word.asset) + '" alt="">' : '<span class="ws-object-emoji" aria-hidden="true">' + word.icon + '</span>';
   const sceneUrl = () => topic.scene;
   const appState = () => api?.state?.();
-  function speakText(text) {
-    const preferences = (() => { try { return JSON.parse(localStorage.getItem('meadow-littles-audio-v1') || '{}'); } catch { return {}; } })();
-    const supported = window.speechSynthesis && window.SpeechSynthesisUtterance;
-    if (supported && !preferences.muted && preferences.voice !== 0) {
-      const voice = new SpeechSynthesisUtterance(text);
-      const voices = window.speechSynthesis.getVoices?.() || [];
-      voice.voice = voices.find((item) => /^en-AU/i.test(item.lang)) || voices.find((item) => /^en-GB/i.test(item.lang)) || null;
-      voice.lang = voice.voice?.lang || 'en-AU'; voice.rate = 0.88; voice.pitch = 1.12; voice.volume = Math.max(0, Math.min(1, Number(preferences.voice ?? 0.8)));
-      window.speechSynthesis.cancel(); window.speechSynthesis.speak(voice);
-    }
-  }
-  function praise() {
-    const phrases = ['Well done!', 'Great job!', 'You found it!', 'What a clever word finder!'];
-    speakText(pick(phrases));
-    audio('reward');
-  }
+  function praise() { window.meadowAudio?.speak('ws-jade-praise-'+Math.floor(Math.random()*4)); audio('reward'); }
   function boardSize() {
     // Keep the letter field small enough to scan at preschool age. Tablets get
     // a little more breathing room, while every word remains short and direct.
@@ -120,12 +105,12 @@
     dialog.querySelectorAll('[data-topic]').forEach((button) => button.addEventListener('click', () => { topic = topics.find((item) => item.id === button.dataset.topic) || topics[2]; intro(); }));
     dialog.querySelectorAll('[data-count]').forEach((button) => button.addEventListener('click', () => { wordCount = Number(button.dataset.count); intro(); }));
     dialog.querySelector('[data-start]').addEventListener('click', newRound);
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    window.meadowAudio?.stopVoice();
   }
   function newRound() {
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
     completedAt = 0;
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    window.meadowAudio?.stopVoice();
     size = boardSize();
     const choices = shuffle(topic.words
       .filter(([label]) => label.length <= wordLengthLimit())
@@ -145,11 +130,11 @@
     grid.addEventListener('pointercancel', () => { drag = null; path = []; renderCells(); });
     grid.addEventListener('click', (event) => { if (skipCellClick) { skipCellClick = false; return; } if (drag !== null) return; const cell = event.target.closest('[data-cell]'); if (!cell) return; const index = Number(cell.dataset.cell); if (!path.length) path = [index]; else if (path[0] === index) path = []; else extendPath(index); renderCells(); if (path.length > 2) finishPath(); });
     dialog.querySelector('[data-new]').addEventListener('click', newRound);
-    dialog.querySelector('[data-hear]').addEventListener('click', () => speakText('Find the little words. Put your finger on the first letter and slide across each letter in the word.'));
+    dialog.querySelector('[data-hear]').addEventListener('click', () => window.meadowAudio?.speak('ws-jade-intro'));
     resizeHandler = () => requestAnimationFrame(sizeBoard);
     window.addEventListener('resize', resizeHandler);
     requestAnimationFrame(sizeBoard);
-    speakText('Find the little words. Put your finger on the first letter and slide across each letter in the word.');
+    window.meadowAudio?.speak('ws-jade-intro');
   }
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
@@ -230,10 +215,10 @@
     const formatted = String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0');
     screen('<header class="ws-header"><div><small>MEADOW MARKET LITTLES</small><h1>Wonderful word finding!</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><section class="ws-win"><div class="ws-win-stars" aria-label="' + starCount + ' stars">' + '★'.repeat(Math.min(starCount, 6)) + '</div><h2>Well done!</h2><p>You found all <strong>' + wordCount + '</strong> words in <strong>' + formatted + '</strong>.</p><p class="ws-earned">' + starCount + ' meadow stars ' + (earned ? 'earned!' : 'collected!') + '</p><div class="ws-win-actions"><button class="ws-again" data-again>Play again</button><button class="ws-thanks" data-thanks>No thank you</button></div></section><div class="ws-live" data-live role="status" aria-live="polite">A lovely word search!</div>', 'ws-result');
     bindClose(); dialog.querySelector('[data-again]').addEventListener('click', newRound); dialog.querySelector('[data-thanks]').addEventListener('click', close); animateStars();
-    if (window.speechSynthesis) window.speechSynthesis.cancel(); speakText('Well done! You found all ' + wordCount + ' words! Great job!'); audio('reward');
+    window.meadowAudio?.speak('ws-jade-done'); audio('reward');
   }
   function bindClose() { dialog.querySelector('[data-close]').addEventListener('click', close); }
-  function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); dialog.close(); }
-  function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) return; dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; if (window.speechSynthesis) window.speechSynthesis.cancel(); }); }
+  function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; window.meadowAudio?.stopVoice(); dialog.close(); }
+  function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) return; dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; window.meadowAudio?.stopVoice(); }); }
   window.meadowWordSearch = { attach, open, topics };
 })();
