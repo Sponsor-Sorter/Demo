@@ -1,5 +1,13 @@
 # Meadow Markets commerce225
 
+## 7 November 2026 — web227, native commerce tests and AdMob approved
+
+Google Play1.7.2/code12 is available in Australia. AdMob now shows Meadow Markets **Ready / Ad serving enabled**. Web227 is live; final regression/native CI42360522367 and Pages42360522499 passed, with seven public files matching Git. Samsung accepted the226→227 update and Settings confirmed227; browser227 was checked independently.
+
+Actual  Google tests passed pending-no-credit, automatic recovery after app termination, restart idempotency, lifetime Premium, wrong-farm native Restore and two refunds followed by authenticated RTDN reversals. Two actual Test Ad views produced signed SSV rewards. Final phone wallet620gems/5tickets/Premiumfalse; no real orders, overdue unsettled receipts or active provider leases. Build227 fixes immediate offline purchase/reward guidance, confirmed on the Samsung.
+
+Public commerce/ads/products and general new-farm issuance remain off. Remaining activation work is reviewed server-farm progression/worker rollout, genuine ad interruption/no-fill and applicable consent/Premium/frequency device checks, then reviewed commercial configuration and staged switch activation. Approval is no longer a pending gate. Full evidence and precise limits: [native227](meadow-native227.md). Earlier entries below are historical.
+
 7 November 2026, Australia/Sydney. This prepares commerce; it does not activate public charges or ad revenue.
 
 Web226 includes these225 changes and explicitly preserves lastPopupAt in the existing account-scoped device-preference store. The final command-UI check verifies that popup cooldown survives canonical replies and reload without being treated as a resource mutation. Native remains1.7.2/code12. Backend migration20261107082228_meadow_ad_reward_day226 also bounds the reward count to the nonce’s exact UTC day. A rollback fixture reproduced the old rejection after three new-day rewards, then passed with the fix before and after deployment. Previously issued signed callbacks can settle across midnight without consuming the next day’s limit.

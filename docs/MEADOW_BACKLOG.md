@@ -1,5 +1,13 @@
 # Meadow Markets remaining work
 
+## 7 November 2026 — web227, native commerce tests and AdMob approved
+
+Google Play1.7.2/code12 is available in Australia. AdMob now shows Meadow Markets **Ready / Ad serving enabled**. Web227 is live; final regression/native CI42360522367 and Pages42360522499 passed, with seven public files matching Git. Samsung accepted the226→227 update and Settings confirmed227; browser227 was checked independently.
+
+Actual  Google tests passed pending-no-credit, automatic recovery after app termination, restart idempotency, lifetime Premium, wrong-farm native Restore and two refunds followed by authenticated RTDN reversals. Two actual Test Ad views produced signed SSV rewards. Final phone wallet620gems/5tickets/Premiumfalse; no real orders, overdue unsettled receipts or active provider leases. Build227 fixes immediate offline purchase/reward guidance, confirmed on the Samsung.
+
+Public commerce/ads/products and general new-farm issuance remain off. Remaining activation work is reviewed server-farm progression/worker rollout, genuine ad interruption/no-fill and applicable consent/Premium/frequency device checks, then reviewed commercial configuration and staged switch activation. Approval is no longer a pending gate. Full evidence and precise limits: [native227](meadow-native227.md). Earlier entries below are historical.
+
 ## 7 November 2026 — production availability confirmed
 
 Google Play Production → Releases now shows **Active / Available on Google Play** for **1.7.2 - Meadow Markets production**, one country (Australia). The public Australian listing opens as Meadow Markets by Fairplay Gaming, with Install on more devices. This supersedes earlier Changes in review observations below; no new release was submitted in this commerce turn. AdMob separately remains Getting ready / Limited ad serving / Review in progress. All seven Google buy options are active, while customer checkout, public ads, backend product flags and new-farm issuance remain off pending the documented commercial gates.
