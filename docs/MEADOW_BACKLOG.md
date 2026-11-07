@@ -1,5 +1,11 @@
 # Meadow Markets remaining work
 
+## 7 November 2026 — commercial activation and public installation
+
+Web229 follows228: verified new-farm issuance is enabled; all seven products, public payments and advertising issuance are on. Google Play production1.7.2/code12 is available in Australia and Settings now links its public listing. Existing free testers retain their access; older beta farms keep their saves and cannot enter paid checkout until reviewed. No real-money test order was placed.
+
+Actual live progression/worker canaries passed. Fixed newly assigned workers claiming pre-assignment absence; live previous-crop replanting and gem-licensed watering passed. All62 farming tests, complete game regression and actual Java ad-callback contracts passed. Registered the approved Samsung in AdMob and ended only Meadow1.7.2 app-wide Test mode. A post-activation signed SSV credited one reward; temporary overrides and disposable canaries are removed. Precise evidence, ad-test limitations, rollout scope and reversible operations: [commercial229](meadow-commercial229.md). Earlier entries below are historical.
+
 ## 7 November 2026 — web227, native commerce tests and AdMob approved
 
 Google Play1.7.2/code12 is available in Australia. AdMob now shows Meadow Markets **Ready / Ad serving enabled**. Web227 is live; final regression/native CI42360522367 and Pages42360522499 passed, with seven public files matching Git. Samsung accepted the226→227 update and Settings confirmed227; browser227 was checked independently.
