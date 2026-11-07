@@ -33,6 +33,7 @@
   function hearWord(answer, button) {
     const taps = wordTaps.get(answer.id) || 0, prompt = wordPrompt(answer.label, taps);
     wordTaps.set(answer.id, taps + 1); clearTimeout(showPicture.timer);
+    dialog.querySelector('.ws-found-pop')?.remove();
     button.dataset.help = prompt.kind; say(prompt.text);
     window.meadowAudio?.speak(prompt.cue, { gap: prompt.gap });
   }
