@@ -24,6 +24,20 @@ Deno.test('Bounded offline return replants the last crop and waters it only with
  const again=run(s,'workers.return',undefined,{},now+600000);eq(again.results[0].completed,[]);eq(again.save.coins,s.coins);
  let dry=hired(state());dry.farms.willow.objects[0].autoWater=false;dry=run(dry,'workers.tick').save;const d=run(dry,'workers.return',undefined,{},now+600000);eq(d.results[0].completed.map((j:any)=>j.action),['harvest','plant']);eq(d.save.farms.willow.objects[1].wateredUntil,0);
 });
+Deno.test('New and reassigned workers cannot use absence time from before their assignment',()=>{
+ let s=run(state(),'workers.tick').save;
+ s=run(s,'workers.hire','rowan',{},now+600000).save;
+ s=run(s,'workers.assign','rowan',{x:4,y:4,expectedMap:null},now+600000).save;
+ const fresh=run(s,'workers.return',undefined,{},now+600000);
+ eq(fresh.results[0].completed,[]);eq(fresh.save.farms.willow.inventory.carrot,0);eq(fresh.save.workforce.rowan.jobs,0);
+ s=run(state(),'workers.tick').save;s=hired(s);
+ s.farms.coast=JSON.parse(JSON.stringify(s.farms.willow));
+ s=run(s,'workers.assign','rowan',{x:4,y:4,expectedMap:'willow'},now+600000,'coast').save;
+ const moved=run(s,'workers.return',undefined,{},now+600000);
+ eq(moved.results[0].completed,[]);eq(moved.save.farms.coast.objects[1].plantedAt,now-600000);
+ const earned=run(moved.save,'workers.return',undefined,{},now+660000);
+ eq(earned.results[0].completed.map((j:any)=>j.action),['harvest','plant','water']);
+});
 Deno.test('Other maps automate against their own objects and caps, sharing only the pantry',()=>{
  let s=state();s.farms.coast={...s.farms.willow,objects:JSON.parse(JSON.stringify(s.farms.willow.objects)),inventory:s.farms.willow.inventory};s=hired(s,'coast');s=run(s,'workers.tick').save;const r=run(s,'workers.return',undefined,{},now+600000);s=r.save;assert(r.results[0].completed.every((x:any)=>x.map==='coast'));eq(s.farms.willow.objects[1].plantedAt,now-600000);eq(s.farms.coast.objects[1].plantedAt,now+600000);eq(s.farms.willow.inventory.carrot,3);eq(s.active,'willow');eq(s.farmProgress.farms.coast.practice.harvest,1);
  let cap=hired(state());cap.farms.willow.objects[0].helperCropCap=2;cap=run(cap,'workers.tick').save;const c=run(cap,'workers.return',undefined,{},now+600000);eq(c.results[0].completed.map((x:any)=>x.action),['harvest']);

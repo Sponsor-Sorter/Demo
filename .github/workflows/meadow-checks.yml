@@ -65,6 +65,8 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: gradle
+      - run: node ../../scripts/check-meadow-native-ads228.cjs
+        working-directory: tools/meadow-android
       - run: npm ci --ignore-scripts
       - run: npm run android:debug
       - run: npm run android:play

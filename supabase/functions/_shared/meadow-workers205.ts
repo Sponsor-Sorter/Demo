@@ -104,8 +104,12 @@ export function createWorkerController(c:Data){
  function catchup(){const b=book(),from=b.lastReturnAt||now;b.lastReturnAt=now;if(now-from<60000)return {ok:true,completed:[]};const completed:Data[]=[];
   // Only assigned hired workers run while the game is away. Never back-date a
   // new planting or production job, and never claim more than three ready jobs.
-  for(const w of crew().filter(w=>w.role==='all')){const p=W.meadowWells.stats(well(s.farms[w.map])),d=w.data;delete b.leases[w.id];if(d.drinkUntil>now)continue;if(d.drinkUntil||(d.jobs||0)>=p.jobs&&now-from>=p.drink*1000+12000){d.drinkUntil=0;d.jobs=0;delete d.returning;}
-   let preferred:string|undefined;const count=Math.min(3,Math.floor((now-from)/12000),Math.max(0,p.jobs-(d.jobs||0)));
+  for(const w of crew().filter(w=>w.role==='all')){const p=W.meadowWells.stats(well(s.farms[w.map])),d=w.data;
+   // A hire/reassignment resets lastJobAt. The farm's old absence cursor must
+   // not grant work on a map this worker only just joined.
+   const elapsed=now-Math.max(from,Number(d.lastJobAt)||0);if(elapsed<60000)continue;
+   delete b.leases[w.id];if(d.drinkUntil>now)continue;if(d.drinkUntil||(d.jobs||0)>=p.jobs&&elapsed>=p.drink*1000+12000){d.drinkUntil=0;d.jobs=0;delete d.returning;}
+   let preferred:string|undefined;const count=Math.min(3,Math.floor(elapsed/12000),Math.max(0,p.jobs-(d.jobs||0)));
    for(let i=0;i<count;i++){const next=candidate('all',w.map,d,new Set(),preferred);if(!next||!perform('all',w.map,next.task))break;Object.assign(d,{x:next.route.to.x,y:next.route.to.y,jobs:(d.jobs||0)+1,lastJobAt:now,pending:null,cooldownUntil:now+12000});completed.push({worker:w.id,map:w.map,target:next.task.id,action:next.task.helperAction});preferred=['harvest','plant'].includes(next.task.helperAction)?next.task.id:undefined;}
   }return {ok:true,completed};
  }

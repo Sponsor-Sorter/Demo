@@ -24,14 +24,14 @@ privacyScope.window.meadowAccountPrivacy.clearDeviceFarm(storage,'farm','a','A')
 assert.equal(storage.farm,undefined);assert.equal(storage['farm-account-a'],undefined);assert.equal(storage['farm-before-cloud-load'],undefined);assert(storage['farm-account-b']);assert.equal(storage['littles-save'],'keep');assert.equal(storage['bargain-barge-save'],'keep');
 assert.equal(storage['farm-protocol'],undefined);assert.equal(storage['meadow-farm-command-v1:a'],undefined);assert.equal(storage['meadow-ui-v1:a'],undefined);assert.equal(storage['meadow-farm-command-v1:b'],'keep');assert.equal(storage['meadow-ui-v1:b'],'keep');
 async function storeFixture(native){
- let current='owner',config={test_access:false,purchase_account_ready:true,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,checkouts=0,restores=0,popupHook;
+ let current='owner',config={farm_authoritative:true,test_access:false,purchase_account_ready:true,payments_enabled:true,ads_enabled:false,account_id:'a'.repeat(64),products:[{sku:'pocket_gems',product_id:'mm_pocket_gems'}]},purchase={purchases:[{products:['mm_pocket_gems'],token:'opaque-token',pending:false}]},verifications=0,flushes=0,checkouts=0,restores=0,popupHook;
  const notices=[],state={coins:250};
  const billing={products:async()=>({products:[{id:'mm_pocket_gems',price:'A$2.99'}]}),purchase:async()=>{checkouts++;popupHook?.();return purchase},restore:async()=>{restores++;return purchase},addListener(){}};
  const scope={window:{addEventListener(){},Capacitor:native?{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowStore',Plugins:{MeadowStore:billing}}:undefined},document:{addEventListener(){},querySelectorAll:()=>[],querySelector:()=>null},setInterval,clearInterval};
  vm.runInNewContext(read(root+'store.js'),scope);const store=scope.window.meadowStore;
  const api={ready:()=>true,user:()=>({id:current}),client:()=>({rpc:async()=>({data:config}),functions:{invoke:async()=>{verifications++;return{data:{verified:true}}}}}),notify:t=>notices.push(t),save(){},flush:async()=>flushes++,state:()=>state};
  scope.window.meadowClub={refresh:async()=>{}};store.attach(api);
- return {store,state,notices,counts:()=>({verifications,flushes,checkouts,restores}),config:c=>config=c,purchase:p=>purchase=p,switchDuringPopup:()=>popupHook=()=>current='other'};
+ return {store,state,notices,counts:()=>({verifications,flushes,checkouts,restores}),config:c=>config={farm_authoritative:true,...c},purchase:p=>purchase=p,switchDuringPopup:()=>popupHook=()=>current='other'};
 }
 module.exports=(async()=>{
  const web=await storeFixture(false);assert.notEqual(web.store.label('pocket_gems'),'Free test purchase');await web.store.refresh();await assert.rejects(()=>web.store.purchase('pocket_gems'),/Google Play app/);assert.equal(web.counts().verifications,0);

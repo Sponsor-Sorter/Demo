@@ -20,7 +20,7 @@
   loading=request;
   try{await request.promise}finally{if(loading===request)loading=null}
  }
- function label(sku){if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):'Currently unavailable';}
+ function label(sku){if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(configuration.farm_authoritative===false)return 'Farm review required';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):'Currently unavailable';}
  function requirePurchaseAccount(){if(configuration.purchase_account_ready!==true)throw Error('Protect your farm with a username and password before buying or restoring purchases. Open Settings → Account & switch farm.');}
  async function verificationError(result){
   let body=result.data;
@@ -49,6 +49,7 @@
   try{
    await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');
    if(configuration.test_access)return {test:true};
+   if(configuration.farm_authoritative!==true)throw Error('Purchases for this earlier test farm need a support review. Your farm is safe; contact Meadow Markets support in Settings.');
    if(!billing||!configuration.payments_enabled)throw Error(label(sku));
    requirePurchaseAccount();
    const product=configuration.products.find(p=>p.sku===sku);
