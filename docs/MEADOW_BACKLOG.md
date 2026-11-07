@@ -1,5 +1,11 @@
 # Meadow Markets remaining work
 
+## 7 November 2026 — production availability confirmed
+
+Google Play Production → Releases now shows **Active / Available on Google Play** for **1.7.2 - Meadow Markets production**, one country (Australia). The public Australian listing opens as Meadow Markets by Fairplay Gaming, with Install on more devices. This supersedes earlier Changes in review observations below; no new release was submitted in this commerce turn. AdMob separately remains Getting ready / Limited ad serving / Review in progress. All seven Google buy options are active, while customer checkout, public ads, backend product flags and new-farm issuance remain off pending the documented commercial gates.
+
+Web226 is live from0f2b4e456eae9a481d2f6e451184f5788615c192. Regression/native CI42355290964 and Pages42355290880 passed. Seven live runtime files match Git bytes. The actual225→226 in-game Install update was accepted; Settings confirms226 and the same level17/VIP1 farm returned. No Samsung input or new provider purchase/ad view is claimed.
+
 ## 7 November 2026 — commerce226 preparation
 
 All seven Play buy options are ACTIVE; backend checkout/ads/products remain off. AdMob is now linked to the exact Play listing and shows app verification successful, readiness review in progress. Build226 repairs collected-bundle refund journaling, closed-shop/price-outage receipt recovery, mixed-farm restores, account-switch races and Premium/frequency ad guards. Current database fixtures passed; no real charge or revenue-ad test was performed. Native edge-case acceptance, reviewed server-farm rollout and Google/AdMob approvals remain before commercial activation. See [commerce225](meadow-commerce225.md); this supersedes older draft-product/unlinked-app status below.

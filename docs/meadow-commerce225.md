@@ -8,7 +8,7 @@ Web226 includes these225 changes and explicitly preserves lastPopupAt in the exi
 
 All seven existing Play one-time products now have an ACTIVE backwards-compatible buy option. Five existing drafts were activated through Console; Pocket Gems and Premium were already active for license testing. Google's authenticated catalogue API independently returned seven ACTIVE options, Australia available, with the unchanged AUD reference prices: Pocket Gems2.99, Gem Chest12.99, Starter4.99, Builder9.99, Tickets1.99, Pantry3.99 and lifetime Premium9.99. Clients still display Google's localized prices rather than these reference amounts.
 
-Meadow Markets is now linked to its exact public Play package, com.meadowandmarket.game, in AdMob. Google confirmed successful app verification and started the readiness review; the Apps page shows Getting ready / Limited ad serving / Review in progress. The account was already approved. This app-specific review is separate from the Play production review, which remains Changes in review. No new terms, access grants or credentials were created.
+Meadow Markets is now linked to its exact public Play package, com.meadowandmarket.game, in AdMob. Google confirmed successful app verification and started the readiness review; the Apps page shows Getting ready / Limited ad serving / Review in progress. The account was already approved. This app-specific review is separate from Play. A fresh final Production → Releases check now shows Active / Available on Google Play for1.7.2 in Australia, and its public listing opens under Fairplay Gaming. Earlier Changes in review observations are superseded. No new terms, access grants or credentials were created.
 
 Native1.7.2/code12 retains its existing non-revenue AdMob test designation. Public backend payments, ads, production_ready and all seven backend product switches remain false. No customer charge or revenue-ad test occurred. No other app's settings were changed.
 
@@ -41,8 +41,12 @@ Older SQL acceptance fixtures were updated to create rollback-only Auth sessions
 
 1. Finish the remaining native tests using Google free instruments and non-revenue ads on the correct protected farm, then close its scoped test leases.
 2. Finish the reviewed general server-farm issuance/conversion rollout. Existing legacy farms must not become paid farms merely by bypassing provenance guards; new_farms remains off. The current two protected test farms do not prove all new-player progression routes.
-3. Confirm Play approval/public installation and AdMob app Ready. Preserve test build/device designations while producing/reviewing the commercial native configuration.
+3. Play approval and the public listing are confirmed; perform the public physical installation check and wait for AdMob app Ready. Preserve test build/device designations while producing/reviewing the commercial native configuration.
 4. Enable backend products and customer checkout separately from ad issuance after acceptance. Re-read effective status for a protected registered farm and verify localized prices. Ads also require the player's consent/settings; Premium suppresses optional popups.
 5. Keep original paid receipt settlement, Restore and signed callbacks operational if new purchases/ads must be closed. Do not turn on real revenue automatically just because Google approves the app.
 
 Evidence directory: D:/Chat Gpt/workspaces/meadow-production194-evidence/commerce225. Includes sanitized Google catalogue output, AdMob verification screenshot, regression log and operator scripts. Private service credentials remain outside Git.
+
+The actual live225 browser shop opened on the existing approved test farm showing its server wallet of610gems/one ticket and correct free-test copy. No test pack or ad was run in the browser. Final web226 deployment evidence is in the local acceptance record; the native binary is unchanged.
+
+Web226 is live from0f2b4e456eae9a481d2f6e451184f5788615c192. Regression/native CI42355290964 and Pages42355290880 passed. Seven live runtime files match Git bytes. The actual225→226 in-game Install update was accepted; Settings confirms226 and the same level17/VIP1 farm returned. No Samsung input or new provider purchase/ad view is claimed.
