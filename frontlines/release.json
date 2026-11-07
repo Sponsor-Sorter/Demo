@@ -1,11 +1,11 @@
 {
-  "build": 99,
-  "version": "1.0.0.99",
-  "url": "https://sponsorsorter.com/frontlines/builds/99/",
-  "notes": "V1.0.0.99: A redesigned war-room menu, online/local/account dashboards, mission cards and grouped settings/rules. Detailed gem/VIP artwork and purchase previews. Responsive portrait, landscape and larger-text layouts. Existing accounts, saves, prices, battle rules and gameplay graphics retained.",
-  "networkBuild": 93,
-  "androidBuild": 99,
-  "windowsBuild": 99,
+  "build": 100,
+  "version": "1.0.0.100",
+  "url": "https://sponsorsorter.com/frontlines/builds/100/",
+  "notes": "V1.0.0.100: Named commander and dice loadouts; persistent guest sign-in and explicit rejoin; opt-in rematches and waiting-lobby host recovery. Weekly tactical challenges, optional player patterns and six shaped troop counters, reviewed issue reports, and improved troop-move responsiveness. Approved graphics retained.",
+  "networkBuild": 100,
+  "androidBuild": 100,
+  "windowsBuild": 100,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93

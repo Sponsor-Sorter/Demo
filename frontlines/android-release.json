@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.99",
-  "versionCode": 99,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview99-testing/frontlines-1.0.0-preview-build-99.apk",
-  "bytes": 226769420,
-  "sha256": "c73a116e0fe2e6cf75b67738c7ddff56e7788a480ea5c71ae9633db8af9697ee",
+  "versionName": "1.0.0.100",
+  "versionCode": 100,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview100-testing/frontlines-1.0.0-preview-build-100.apk",
+  "bytes": 226815470,
+  "sha256": "e268ab1d810c7aca0f26f243dd61e9b219e193356a0030e84de5842a6627c23e",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public99/frontlines-1.0.0.99-android.apk",
-  "notes": "V1.0.0.99: A redesigned war-room menu, online/local/account dashboards, mission cards and grouped settings/rules. Detailed gem/VIP artwork and purchase previews. Responsive portrait, landscape and larger-text layouts. Existing accounts, saves, prices, battle rules and gameplay graphics retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public100/frontlines-1.0.0.100-android.apk",
+  "notes": "V1.0.0.100: Named commander and dice loadouts; persistent guest sign-in and explicit rejoin; opt-in rematches and waiting-lobby host recovery. Weekly tactical challenges, optional player patterns and six shaped troop counters, reviewed issue reports, and improved troop-move responsiveness. Approved graphics retained."
 }
