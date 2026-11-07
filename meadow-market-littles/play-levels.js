@@ -3,16 +3,16 @@
   const names={apple:'Apple',carrot:'Carrot',tomato:'Tomato',corn:'Corn',pumpkin:'Pumpkin',strawberry:'Strawberry',pear:'Pear',banana:'Banana',orange:'Orange',grapes:'Grapes',watermelon:'Watermelon',lemon:'Lemon',cucumber:'Cucumber',potato:'Potato',onion:'Onion',broccoli:'Broccoli',peas:'Peas',pepper:'Pepper'};
   const shuffle=(list,random=Math.random)=>{const a=list.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
   function levelGame(g,level=1){const n=Math.max(1,Math.floor(Number(level)||1)),d=Math.min(30,n-1),r={...g,level:n};
-    if(g.id==='eggs')Object.assign(r,{goal:12+Math.min(30,d*2),time:Math.max(28,45-d*.5),spawnGap:Math.max(.32,1.25/(1+d*.12)),fallSpeed:1+d*.07,burst:d>=4?2:1});
-    if(g.id==='milk')Object.assign(r,{goal:8+Math.min(10,Math.floor(d/2)),time:Math.max(24,40-d*.6),zone:Math.max(.10,.36/(1+d*.15)),markerSpeed:2.6+d*.18});
-    if(g.id==='memory'){const pairs=Math.min(18,8+Math.floor(d/2)*2);Object.assign(r,{pairs,goal:pairs,time:Math.max(65,100-d*1.5)})}
-    if(g.id==='sorting')Object.assign(r,{goal:15+Math.min(25,d*2),time:Math.max(32,50-d*.5),basketCount:Math.min(6,3+Math.floor(d/3))});
+    if(g.id==='eggs')Object.assign(r,{goal:6+Math.min(30,d*2),time:0,relaxed:true,spawnGap:Math.max(.65,1.7/(1+d*.08)),fallSpeed:.75+d*.045,burst:d>=8?2:1});
+    if(g.id==='milk')Object.assign(r,{goal:4+Math.min(10,Math.floor(d/2)),time:0,relaxed:true,zone:Math.max(.22,.48/(1+d*.08)),markerSpeed:1.6+d*.1});
+    if(g.id==='memory'){const pairs=Math.min(8,3+Math.floor(d/3));Object.assign(r,{pairs,goal:pairs,time:0,relaxed:true})}
+    if(g.id==='sorting')Object.assign(r,{goal:6+Math.min(24,d*2),time:0,relaxed:true,basketCount:Math.min(4,2+Math.floor(d/4))});
     if(['sheep','goat','cow'].includes(g.id))Object.assign(r,{goal:Math.min(6,3+Math.floor(d/3)),time:0,relaxed:true});
-    if(g.id==='flowers')Object.assign(r,{goal:12+Math.min(18,d),time:Math.max(21,35-d*.35)});
+    if(g.id==='flowers')Object.assign(r,{goal:6+Math.min(18,d),time:0,relaxed:true});
     if(g.id==='coopmath')Object.assign(r,{goal:6,time:0,relaxed:true});
     if(g.id==='differences')Object.assign(r,{goal:Math.min(6,3+Math.floor(d/4)),time:0,relaxed:true});
     r.time=Math.ceil(r.time);
-    const copy={eggs:()=>`Catch ${r.goal} falling eggs before three break. Later levels drop faster eggs and small bursts.`,milk:()=>`Tap the playfield or Milk when the marker is inside the golden zone. Fill ${r.goal} buckets before the timer ends.`,sorting:()=>`Sort ${r.goal} items into ${r.basketCount} labelled baskets. Listen to each produce name. A wrong basket costs two seconds.`,flowers:()=>`Follow the glowing flower and pick ${r.goal} before time runs out. Only the glowing flower counts.`,coopmath:()=>`Build a cosy coop with Farmer Rhys. Fit the floor boards, walls and roof, hammer the shiny nails, paint your roof and make three soft nests. Take your time.`,differences:()=>`Look at two farm pictures. Find ${r.goal} changes and tap them in either picture. Take your time. Tap Show a hint whenever you like.`};
+    const copy={eggs:()=>`Catch ${r.goal} gently falling eggs. An egg that drops is okay. Keep playing at your own pace.`,milk:()=>`Tap the playfield or Milk when the marker is inside the golden zone. Fill ${r.goal} buckets. There is no timer, so take your time.`,sorting:()=>`Sort ${r.goal} items into ${r.basketCount} picture baskets. Listen to each produce name. You can try again whenever you like.`,flowers:()=>`Follow the glowing flower and pick ${r.goal}. Watch and listen. There is no hurry.`,coopmath:()=>`Build a cosy coop with Farmer Rhys. Fit the floor boards, walls and roof, hammer the shiny nails, paint your roof and make three soft nests. Take your time.`,differences:()=>`Look at two farm pictures. Find ${r.goal} changes and tap them in either picture. Take your time. Tap Show a hint whenever you like.`};
     if(copy[g.id])r.text=copy[g.id]();
     if(['sheep','goat','cow'].includes(g.id))r.text=`Find ${r.goal} little farm friends. Move the leaves, lift hay and open gates to uncover them. Tap each friend, guide everyone home along the footprints, then scatter their snack. Ask Farmer Rhys for a sound clue whenever you like.`;
     return r;

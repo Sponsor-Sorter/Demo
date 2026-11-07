@@ -783,6 +783,54 @@
       "height": 420,
       "bytes": 105538,
       "sha256": "401f4574ef5f6001dbc96cbb7a3956df76f837babae85c4778cf07babd745cce"
+    },
+    {
+      "id": "sheep",
+      "name": "Find the Lambs",
+      "method": "built-in image_gen",
+      "reference": "Approved Garden Memory illustrated preview",
+      "source": "exec-6b92e886-f108-4f44-8f83-cb44d23f0796.png",
+      "prompt": "Create a finished landscape game preview for Meadow Market Littles, children ages3–6. Use supplied reference only for STYLE and quality: polished warm illustrated farm scene, softly dimensional natural materials, clear friendly farm characters, rich sunny greens, gentle golden light, inviting handpainted storybook atmosphere. Full-bleed coherent illustration, large clear activity-readable subjects, simplified background, calm small-thumbnail composition. Landscape3:2. No title, text, UI, badges, panels, arrows, watermarks, collage or flat vector symbols. Activity: Find the Lambs. A calm sunny green farm meadow with THREE adorable cream lambs. One large friendly lamb peeks out from a broad leafy bush in the foreground, another peeks beside a low wooden gate, the third stands further back by a little hay bundle. Clearly a gentle hiding-and-finding activity. Large simple subjects, not a crowded seek-and-find illustration. Soft red barn far in the background.",
+      "width": 640,
+      "height": 420,
+      "bytes": 104874,
+      "sha256": "36a6f86e87de4fa073d76472b8dd573394dfc64b74883437232d08b9483a7772"
+    },
+    {
+      "id": "goat",
+      "name": "Find the Goats",
+      "method": "built-in image_gen",
+      "reference": "Approved Garden Memory illustrated preview",
+      "source": "exec-02ee2fd4-d738-42e9-bfbd-f0b4d0a53474.png",
+      "prompt": "Create a finished landscape game preview for Meadow Market Littles, children ages3–6. Use supplied reference only for STYLE and quality: polished warm illustrated farm scene, softly dimensional natural materials, clear friendly farm characters, rich sunny greens, gentle golden light, inviting handpainted storybook atmosphere. Full-bleed coherent illustration, large clear activity-readable subjects, simplified background, calm small-thumbnail composition. Landscape3:2. No title, text, UI, badges, panels, arrows, watermarks, collage or flat vector symbols. Activity: Find the Goats. THREE friendly little goats in a sunny farm paddock: one large foreground goat peeking around a rounded hay bale, one behind a low wooden gate and one beside a small leafy shrub. Warm natural farm textures, soft meadow hills behind. Clear playful hiding activity, calm simple composition, no clutter.",
+      "width": 640,
+      "height": 420,
+      "bytes": 116020,
+      "sha256": "937e036e423c555f4f285a5e8de599beb4375b88a48e5d50bcc6446508d7edfc"
+    },
+    {
+      "id": "cow",
+      "name": "Find the Cows",
+      "method": "built-in image_gen",
+      "reference": "Approved Garden Memory illustrated preview",
+      "source": "exec-dc9b1ca7-10e1-494a-bcbe-7f0e00ec3a6f.png",
+      "prompt": "Create a finished landscape game preview for Meadow Market Littles, children ages3–6. Use supplied reference only for STYLE and quality: polished warm illustrated farm scene, softly dimensional natural materials, clear friendly farm characters, rich sunny greens, gentle golden light, inviting handpainted storybook atmosphere. Full-bleed coherent illustration, large clear activity-readable subjects, simplified background, calm small-thumbnail composition. Landscape3:2. No title, text, UI, badges, panels, arrows, watermarks, collage or flat vector symbols. Activity: Find the Cows. THREE friendly brown-and-cream calves on a sunny dairy farm: one large foreground calf peeks around a low wooden fence post, another peeks from beside the distant open red barn door, one stands beside a small hay bale in the middle ground. Clear gentle farm finding activity. Warm sunlight and green grass, calm readable composition with few props.",
+      "width": 640,
+      "height": 420,
+      "bytes": 112498,
+      "sha256": "aa70440a530c28813513a90a1f9d152ccbb3c487fa14e1f36fae507326b2282f"
+    },
+    {
+      "id": "lambcare",
+      "name": "Pip’s happy little day",
+      "method": "built-in image_gen",
+      "reference": "Approved Garden Memory illustrated preview",
+      "source": "exec-da1af3e8-1441-4659-8a63-31d317cc40b3.png",
+      "prompt": "Create a finished landscape game preview for Meadow Market Littles, children ages3–6. Use supplied reference only for STYLE and quality: polished warm illustrated farm scene, softly dimensional natural materials, clear friendly farm characters, rich sunny greens, gentle golden light, inviting handpainted storybook atmosphere. Full-bleed coherent illustration, large clear activity-readable subjects, simplified background, calm small-thumbnail composition. Landscape3:2. No title, text, UI, badges, panels, arrows, watermarks, collage or flat vector symbols. Activity: Pip’s happy little day. One adorable fluffy cream lamb stands happily in a sunny little farm meadow while a child's hand gently brushes a small patch of its wool with a natural wooden brush. The lamb is the big clear foreground focus, its expression delighted. A single carrot and one small red wooden play ball rest nearby as quiet secondary props. A simple soft hay bed and very distant barn suggest the cosy farm. Clean calm composition, not crowded.",
+      "width": 640,
+      "height": 420,
+      "bytes": 95358,
+      "sha256": "1b3c842efedb8cbc94a6663dab42c68cad91da7a632da33bb35c24558921fb31"
     }
   ]
 }
