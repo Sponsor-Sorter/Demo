@@ -1,5 +1,9 @@
 # Meadow Markets Play operations
 
+## Production submission — 7 November 2026
+
+Publishing overview confirms Changes in review for 1.7.2 - Meadow Markets production/code12. Australia/full rollout, managed publishing off; approval is pending. Web224 and both Android CI variants passed. Purchases/ads remain off. See meadow-production224.md for current acceptance, the six submitted changes, evidence and remaining commercial checks. The owner withdrew further backup work and kept the Samsung for Frontlines; no new physical/full-platform restore claim is made.
+
 ## 2November2026 acceptance update
 
 Web223 is live; Samsung has Play1.7.2/code12. Four free Google test receipts were actually verified and then refunded/revoked through authenticated RTDN; two native rewarded views produced signed AdMob SSV. All temporary provider leases were expired at01:52:30UTC. No real orders/public payments/ads/new-farm issuance were enabled. Native wrong-account/interruption and ad early-close/no-fill/consent/Premium cases remain. See meadow-market-build223.md and MEADOW_LAUNCH_STATUS.md for current evidence, limits and remaining gates; older statements below are historical.

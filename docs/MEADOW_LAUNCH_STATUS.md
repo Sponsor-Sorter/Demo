@@ -1,5 +1,13 @@
 # Meadow Markets launch status
 
+## 7 November 2026 — production submitted
+
+Google Play now shows **Changes in review** for **1.7.2 - Meadow Markets production (12)**, full rollout in **Australia**. Web **224** is live; regression/native CI42329286461 and Pages42329285798 passed. The small-screen animal-header overlap is fixed. Current browser farming, Build, collection, requests, friend visits, live reload and saved-action recovery were exercised; 63 server tests passed. Public payments and ads remain off.
+
+The owner kept the Samsung on Frontlines and explicitly stopped further backup work because the current farms are predominantly test data. These are not marked as completed physical/provider/full-platform recovery tests. The earlier private connection-file request is withdrawn. Current evidence, the export incident/recovery, commercial deferrals and submission details are in [production224](meadow-production224.md). Google's approval/public installation remains pending.
+
+The 2 November record below is historical and does not override this submission.
+
 2 November 2026. Web223 / Google Play1.7.2 (code12). This page supersedes older pending-device/provider statements in historical build notes. The game is not yet cleared for public production monetisation.
 
 ## Completed in this acceptance turn
