@@ -6,7 +6,7 @@
  let api,configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]},prices=new Map(),owner='',loading=null,busy=false,refreshVersion=0;
  const known=new Set(['starter_pack','pocket_gems','gem_chest','builders_pack','reward_tickets','pantry_pack','premium']);
  async function refresh(withPrices=true){
-  if(!api?.ready())return;
+  if(!api?.ready()||(typeof navigator!=='undefined'&&navigator.onLine===false))throw Error('Connect online for purchases and ad rewards. You can keep exploring your farm.');
   const who=api.user()?.id;
   if(owner!==who){owner=who;configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]};prices.clear();}
   if(loading?.who===who&&(!withPrices||loading.withPrices))return loading.promise;
