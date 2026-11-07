@@ -2,6 +2,8 @@
 
 7 November 2026, Australia/Sydney. This prepares commerce; it does not activate public charges or ad revenue.
 
+Web226 includes these225 changes and explicitly preserves lastPopupAt in the existing account-scoped device-preference store. The final command-UI check verifies that popup cooldown survives canonical replies and reload without being treated as a resource mutation. Native remains1.7.2/code12. Backend migration20261107082228_meadow_ad_reward_day226 also bounds the reward count to the nonce’s exact UTC day. A rollback fixture reproduced the old rejection after three new-day rewards, then passed with the fix before and after deployment. Previously issued signed callbacks can settle across midnight without consuming the next day’s limit.
+
 ## Google configuration
 
 All seven existing Play one-time products now have an ACTIVE backwards-compatible buy option. Five existing drafts were activated through Console; Pocket Gems and Premium were already active for license testing. Google's authenticated catalogue API independently returned seven ACTIVE options, Australia available, with the unchanged AUD reference prices: Pocket Gems2.99, Gem Chest12.99, Starter4.99, Builder9.99, Tickets1.99, Pantry3.99 and lifetime Premium9.99. Clients still display Google's localized prices rather than these reference amounts.

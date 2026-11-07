@@ -54,6 +54,11 @@ begin
  if not denied then raise exception 'Ad crossed account ownership';end if;
  denied:=false;begin perform public.meadow_market_finish_ad_reward(nonces[4],encode(sha256(convert_to('meadow-markets:'||u::text,'UTF8')),'hex'),'rollback225-fourth',now());exception when raise_exception then denied:=true;end;
  if not denied or not exists(select 1 from public.meadow_market_wallets where user_id=u and gems=15 and reward_turns=3 and not premium) then raise exception 'Ad replay/daily cap failed';end if;
+ -- Three rewards today must not reject a legitimate delayed reward from yesterday.
+ insert into meadow_private.ad_rewards(user_id,created_at,expires_at)
+ values(u,date_trunc('day',now() at time zone 'UTC') at time zone 'UTC'-interval '1 millisecond',date_trunc('day',now() at time zone 'UTC') at time zone 'UTC'+interval '5 minutes') returning ad_rewards.nonce into nonce;
+ perform public.meadow_market_finish_ad_reward(nonce,encode(sha256(convert_to('meadow-markets:'||u::text,'UTF8')),'hex'),'rollback226-previous-day',date_trunc('day',now() at time zone 'UTC') at time zone 'UTC'-interval '1 millisecond');
+ if not exists(select 1 from public.meadow_market_wallets where user_id=u and gems=20 and reward_turns=4) then raise exception 'Delayed prior-day reward was counted against today';end if;
 end $$;
 select 'Seven catalogue deliveries, replay/owner binding/settlement, seven refund reversals, ad account/daily limits and closed-issuance callback recovery passed; all data rolled back' as result;
 rollback;
