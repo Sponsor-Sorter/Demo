@@ -33,3 +33,6 @@
 .animal-room-head .animal-bulk-actions #animal-collect-all,.animal-room-head .animal-bulk-actions #animal-care-all{min-height:44px;font-size:12px;padding:7px 10px;white-space:nowrap}
 @media(max-width:600px){.animal-room-head .animal-room-title{grid-column:1;grid-row:1}.animal-room-head #add-animal{grid-column:2;grid-row:1}.animal-room-head #animal-room-listen{grid-column:3;grid-row:1}.animal-room-head h2{font-size:18px}.animal-room-head .animal-room-totals{grid-column:1/-1;grid-row:2}.animal-bulk-actions{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:1fr 1fr}.animal-room-head .animal-bulk-actions #animal-collect-all,.animal-room-head .animal-bulk-actions #animal-care-all{grid-column:auto;grid-row:auto;min-width:0;font-size:12px;min-height:44px}}
 @media(orientation:landscape) and (max-height:550px){.animal-bulk-actions{grid-row:1/3}.animal-room-head .animal-bulk-actions #animal-collect-all,.animal-room-head .animal-bulk-actions #animal-care-all{font-size:11px}}
+
+/* Override the older two-column title span so Add animal never covers it. */
+@media(max-width:600px){.animal-room-head>.animal-room-title:first-child{grid-column:1;grid-row:1;min-width:0}.animal-room-head>.animal-room-title h2{font-size:clamp(14px,4vw,18px);overflow-wrap:break-word}}
