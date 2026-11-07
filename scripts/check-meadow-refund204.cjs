@@ -1,5 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),dir=path.join(__dirname,'../supabase/migrations');
 const files=fs.readdirSync(dir).filter(n=>n.endsWith('.sql')).sort(),texts=files.map(n=>fs.readFileSync(path.join(dir,n),'utf8'));
+const journalConstraint=[...texts].reverse().find(s=>/add constraint farm_economy_journal_lane_check/i.test(s));
+for(const lane of ['server_initial','server_refund'])assert(journalConstraint.includes("'"+lane+"'"),'Latest journal constraint must preserve '+lane);
 const latest=[...texts].reverse().find(s=>/function public\.meadow_market_revoke_store_purchase\(/i.test(s));
 assert.match(latest,/perform meadow_private\.write_verified_refund\(r\.user_id,s,r\.token_hash\)/,'Verified refunds must support the command-only guard');
 const helper=[...texts].reverse().find(s=>/create function meadow_private\.write_verified_refund\(/i.test(s));

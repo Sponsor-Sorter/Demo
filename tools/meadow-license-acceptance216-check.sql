@@ -1,16 +1,17 @@
 -- SQL-only delivery fixtures, never a substitute for a Google provider test.
 begin;
 do $$
-declare u uuid:=gen_random_uuid();reply jsonb;saved public.meadow_market_saves;denied boolean;g bigint;receipt text;
+declare session_uuid uuid:=gen_random_uuid();u uuid:=gen_random_uuid();reply jsonb;saved public.meadow_market_saves;denied boolean;g bigint;receipt text;
 begin
  if has_table_privilege('authenticated','meadow_private.play_license_acceptance','INSERT')
   or has_table_privilege('service_role','meadow_private.play_license_acceptance','INSERT')
   or has_function_privilege('authenticated','meadow_private.play_license_test_allowed(uuid,text)','EXECUTE') then
   raise exception 'Acceptance permissions exposed';end if;
  insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',false);
+ session_uuid:=gen_random_uuid();insert into auth.sessions(id,user_id) values(session_uuid,u);
  insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'MM-'||left(u::text,8),'Disposable license SQL fixture');
  insert into public.meadow_market_accounts(username,user_id,ready) values('qa_'||left(replace(u::text,'-',''),16),u,true);
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commit_economy_save(0,'{"version":1,"coins":250,"level":1,"xp":0,"active":"willow","farms":{"willow":{"objects":[],"inventory":{}}}}',gen_random_uuid());
  update meadow_private.commerce_config set payments_enabled=false,ads_enabled=false,production_ready=false where id;
  update meadow_private.store_products set enabled=false;
@@ -22,7 +23,7 @@ begin
  select * into saved from public.meadow_market_saves where user_id=u;
  perform set_config('request.jwt.claims','{"role":"service_role"}',true);
  reply:=meadow_private.convert_reviewed_farm(u,gen_random_uuid(),saved.revision,encode(sha256(convert_to(saved.save_data::text,'UTF8')),'hex'),repeat('3',64),'Disposable rollback-only opening balance, not a player conversion');
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commerce_status();
  if reply->>'test_access'<>'false' or reply->>'provider_test'<>'true' or reply->>'payments_enabled'<>'true'
   or reply->>'ads_enabled'<>'false' or jsonb_array_length(reply->'products')<>2 then raise exception 'License status incorrect: %',reply;end if;
@@ -47,7 +48,7 @@ begin
  insert into meadow_private.store_review_holds(user_id,reason) values(u,'Fixture refund hold');
  if meadow_private.play_license_test_allowed(u) then raise exception 'Refund hold accepted';end if;
  update meadow_private.commerce_config set payments_enabled=true,production_ready=true where id;
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commerce_status();
  if reply->>'payments_enabled'<>'false' or reply->>'purchase_review_required'<>'true' then raise exception 'Refund hold can open a payment';end if;
  perform set_config('request.jwt.claims','{"role":"service_role"}',true);

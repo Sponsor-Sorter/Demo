@@ -1,5 +1,9 @@
 # Meadow Markets Play operations
 
+## 7 November 2026 — commerce225 preparation
+
+All seven Play buy options are ACTIVE; backend checkout/ads/products remain off. AdMob is now linked to the exact Play listing and shows app verification successful, readiness review in progress. Build225 repairs collected-bundle refund journaling, closed-shop/price-outage receipt recovery, mixed-farm restores, account-switch races and Premium/frequency ad guards. Current database fixtures passed; no real charge or revenue-ad test was performed. Native edge-case acceptance, reviewed server-farm rollout and Google/AdMob approvals remain before commercial activation. See [commerce225](meadow-commerce225.md); this supersedes older draft-product/unlinked-app status below.
+
 ## Production submission — 7 November 2026
 
 Publishing overview confirms Changes in review for 1.7.2 - Meadow Markets production/code12. Australia/full rollout, managed publishing off; approval is pending. Web224 and both Android CI variants passed. Purchases/ads remain off. See meadow-production224.md for current acceptance, the six submitted changes, evidence and remaining commercial checks. The owner withdrew further backup work and kept the Samsung for Frontlines; no new physical/full-platform restore claim is made.

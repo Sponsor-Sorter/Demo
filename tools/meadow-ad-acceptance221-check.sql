@@ -1,15 +1,16 @@
 -- Rollback-only SQL fixture, never evidence of an actual AdMob view or SSV.
 begin;
 do $$
-declare u uuid:=gen_random_uuid();saved public.meadow_market_saves;reply jsonb;denied boolean;n integer;
+declare session_uuid uuid:=gen_random_uuid();u uuid:=gen_random_uuid();saved public.meadow_market_saves;reply jsonb;denied boolean;n integer;
 begin
  if has_table_privilege('authenticated','meadow_private.ad_provider_acceptance','INSERT')
   or has_table_privilege('service_role','meadow_private.ad_provider_acceptance','INSERT')
   or has_function_privilege('authenticated','meadow_private.ad_provider_test_allowed(uuid)','EXECUTE') then raise exception 'Ad test access exposed';end if;
  insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',false);
+ session_uuid:=gen_random_uuid();insert into auth.sessions(id,user_id) values(session_uuid,u);
  insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'MM-'||left(u::text,8),'Rollback-only ad fixture');
  insert into public.meadow_market_accounts(username,user_id,ready) values('qa_'||left(replace(u::text,'-',''),16),u,true);
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commit_economy_save(0,'{"version":1,"coins":250,"level":1,"xp":0,"active":"willow","farms":{"willow":{"objects":[],"inventory":{}}}}',gen_random_uuid());
  update meadow_private.commerce_config set payments_enabled=false,ads_enabled=false,production_ready=false where id;
  insert into meadow_private.ad_provider_acceptance(user_id,reason,native_version,expires_at) values(u,'Rollback-only SQL ad acceptance','1.7.2',now()+interval '1 hour');
@@ -17,7 +18,7 @@ begin
  select * into saved from public.meadow_market_saves where user_id=u;
  perform set_config('request.jwt.claims','{"role":"service_role"}',true);
  reply:=meadow_private.convert_reviewed_farm(u,gen_random_uuid(),saved.revision,encode(sha256(convert_to(saved.save_data::text,'UTF8')),'hex'),repeat('6',64),'Rollback-only test baseline, no player conversion');
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commerce_status();
  if reply->>'ads_provider_test'<>'true' or reply->>'ads_enabled'<>'true' or reply->>'payments_enabled'<>'false' then raise exception 'Ad acceptance leaked billing or stayed closed: %',reply;end if;
  if meadow_private.ad_provider_test_allowed(gen_random_uuid()) then raise exception 'Ad access crossed accounts';end if;

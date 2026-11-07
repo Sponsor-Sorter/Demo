@@ -1,11 +1,12 @@
 begin;
 do $$
-declare u uuid:=gen_random_uuid();reply jsonb;saved public.meadow_market_saves;rejected boolean;
+declare session_uuid uuid:=gen_random_uuid();u uuid:=gen_random_uuid();reply jsonb;saved public.meadow_market_saves;rejected boolean;
 begin
  insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',false);
+ session_uuid:=gen_random_uuid();insert into auth.sessions(id,user_id) values(session_uuid,u);
  insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'MM-'||left(u::text,8),'Temporary commerce gate');
  insert into public.meadow_market_accounts(username,user_id,ready) values('qa_'||left(replace(u::text,'-',''),16),u,true);
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commit_economy_save(0,'{"version":1,"coins":250,"level":1,"xp":0,"active":"willow","farms":{"willow":{"objects":[],"inventory":{}}}}',gen_random_uuid());
  update meadow_private.commerce_config set payments_enabled=true,ads_enabled=true,production_ready=true where id;
  reply:=public.meadow_market_commerce_status();
@@ -18,7 +19,7 @@ begin
  select * into saved from public.meadow_market_saves where user_id=u;
  reply:=meadow_private.convert_reviewed_farm(u,gen_random_uuid(),saved.revision,encode(sha256(convert_to(saved.save_data::text,'UTF8')),'hex'),repeat('3',64),'Disposable rollback-only commerce acceptance');
  if reply->>'ok'<>'true' or not meadow_private.farm_commerce_ready(u) then raise exception 'Reviewed farm did not become eligible';end if;
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  reply:=public.meadow_market_commerce_status();
  if reply->>'farm_authoritative'<>'true' or reply->>'payments_enabled'<>'true' or reply->>'ads_enabled'<>'true' then raise exception 'Protected farm could not open configured commerce';end if;
  reply:=public.meadow_market_start_ad_reward();if reply->>'nonce' is null then raise exception 'Protected farm did not receive an ad nonce';end if;

@@ -1,14 +1,15 @@
 begin;
 do $$
-declare u uuid:=gen_random_uuid(); rid uuid:=gen_random_uuid(); token text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex');
+declare session_uuid uuid:=gen_random_uuid();u uuid:=gen_random_uuid(); rid uuid:=gen_random_uuid(); token text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex');
  s jsonb; answer jsonb; r bigint; rejected boolean; enrolled boolean;
 begin
  for enrolled in select false union all select true loop
  u:=gen_random_uuid();rid:=gen_random_uuid();token:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex');
  perform set_config('request.jwt.claims','{}',true);
  insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',true);
+ session_uuid:=gen_random_uuid();insert into auth.sessions(id,user_id) values(session_uuid,u);
  insert into public.meadow_market_profiles(user_id,friend_code,display_name) values(u,'REF-'||left(u::text,8),'Temporary refund fixture');
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  s:='{"version":1,"coins":3100,"level":1,"xp":0,"active":"willow","farms":{"willow":{"objects":[],"inventory":{"carrot":10}}}}';
  answer:=public.meadow_market_commit_economy_save(0,s,gen_random_uuid());r:=(answer->>'revision')::bigint;
  update public.meadow_market_wallets set gems=300,vip_xp=300 where user_id=u;
@@ -28,7 +29,7 @@ begin
  if not exists(select 1 from meadow_private.farm_economy_journal where user_id=u and revision=r and lane='server_refund' and source_id=token and changes->>'gold'='-3000') then raise exception 'Refund audit missing';end if;
  if not exists(select 1 from meadow_private.store_review_holds where user_id=u) then raise exception 'Refund review hold missing';end if;
  if not public.meadow_market_revoke_store_purchase(token) or (select revision from public.meadow_market_saves where user_id=u)<>r then raise exception 'Refund replay changed the farm twice';end if;
- perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated')::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',u,'role','authenticated','session_id',session_uuid)::text,true);
  rejected:=false;begin
   perform public.meadow_market_commit_economy_save(r,s||'{"coins":999999}',gen_random_uuid());
  exception when sqlstate '40001' then rejected:=true;end;
