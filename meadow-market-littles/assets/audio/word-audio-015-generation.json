@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-chick",
+      "farmer": "rhys",
+      "text": "Chick.",
+      "word": "chick",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.979433,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 12583
+    },
+    {
+      "id": "ws-word-chore",
+      "farmer": "rhys",
+      "text": "Chore.",
+      "word": "chore",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.45773,
+      "sourceEnd": 5.49644,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 13210
+    },
+    {
+      "id": "ws-word-coat",
+      "farmer": "rhys",
+      "text": "Coat.",
+      "word": "coat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.53036,
+      "sourceEnd": 8.06943,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-coop",
+      "farmer": "rhys",
+      "text": "Coop.",
+      "word": "coop",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 10.017100000000001,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

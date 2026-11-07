@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-pony",
+      "farmer": "rhys",
+      "text": "Pony.",
+      "word": "pony",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.601791,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-puppy",
+      "farmer": "rhys",
+      "text": "Puppy.",
+      "word": "puppy",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.68878,
+      "sourceEnd": 3.23871,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-word-ram",
+      "farmer": "rhys",
+      "text": "Ram.",
+      "word": "ram",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.19181,
+      "sourceEnd": 5.7985,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-red",
+      "farmer": "rhys",
+      "text": "Red.",
+      "word": "red",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.72354,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    }
+  ]
+}

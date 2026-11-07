@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-bus",
+      "farmer": "rhys",
+      "text": "Bus.",
+      "word": "bus",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.608912,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-cab",
+      "farmer": "rhys",
+      "text": "Cab.",
+      "word": "cab",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.9878899999999997,
+      "sourceEnd": 3.71054,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    },
+    {
+      "id": "ws-word-cafe",
+      "farmer": "rhys",
+      "text": "Cafe.",
+      "word": "cafe",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.65726,
+      "sourceEnd": 6.47011,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10703
+    },
+    {
+      "id": "ws-word-calf",
+      "farmer": "rhys",
+      "text": "Calf.",
+      "word": "calf",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.63678,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10389
+    }
+  ]
+}

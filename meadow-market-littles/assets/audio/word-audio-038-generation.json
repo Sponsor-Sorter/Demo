@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-taxi",
+      "farmer": "rhys",
+      "text": "Taxi.",
+      "word": "taxi",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.700454,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-teddy",
+      "farmer": "rhys",
+      "text": "Teddy.",
+      "word": "teddy",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.76585,
+      "sourceEnd": 3.40302,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-tiger",
+      "farmer": "rhys",
+      "text": "Tiger.",
+      "word": "tiger",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.4695,
+      "sourceEnd": 6.14617,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-top",
+      "farmer": "rhys",
+      "text": "Top.",
+      "word": "top",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.236260000000001,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    }
+  ]
+}

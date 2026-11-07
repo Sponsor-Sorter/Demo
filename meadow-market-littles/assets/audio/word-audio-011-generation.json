@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-bee",
+      "farmer": "rhys",
+      "text": "Bee.",
+      "word": "bee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 1.5608399999999998,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 19480
+    },
+    {
+      "id": "ws-word-bike",
+      "farmer": "rhys",
+      "text": "Bike.",
+      "word": "bike",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 3.5525599999999997,
+      "sourceEnd": 4.12664,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-word-boat",
+      "farmer": "rhys",
+      "text": "Boat.",
+      "word": "boat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.12268,
+      "sourceEnd": 6.66313,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-book",
+      "farmer": "rhys",
+      "text": "Book.",
+      "word": "book",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.69175,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    }
+  ]
+}

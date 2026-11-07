@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-owl",
+      "farmer": "rhys",
+      "text": "Owl.",
+      "word": "owl",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.5349889999999999,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-panda",
+      "farmer": "rhys",
+      "text": "Panda.",
+      "word": "panda",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.7947599999999997,
+      "sourceEnd": 3.42889,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-park",
+      "farmer": "rhys",
+      "text": "Park.",
+      "word": "park",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.56367,
+      "sourceEnd": 6.17265,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-pea",
+      "farmer": "rhys",
+      "text": "Pea.",
+      "word": "pea",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.17692,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    }
+  ]
+}

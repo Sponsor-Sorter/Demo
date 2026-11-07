@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-van",
+      "farmer": "rhys",
+      "text": "Van.",
+      "word": "van",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.64254,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-water",
+      "farmer": "rhys",
+      "text": "Water.",
+      "word": "water",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.64093,
+      "sourceEnd": 3.2254400000000003,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-well",
+      "farmer": "rhys",
+      "text": "Well.",
+      "word": "well",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.5934,
+      "sourceEnd": 6.1310400000000005,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-whale",
+      "farmer": "rhys",
+      "text": "Whale.",
+      "word": "whale",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.293220000000002,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    }
+  ]
+}

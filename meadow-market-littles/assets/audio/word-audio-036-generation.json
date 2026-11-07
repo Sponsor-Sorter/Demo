@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-snail",
+      "farmer": "rhys",
+      "text": "Snail.",
+      "word": "snail",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.631134,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-snake",
+      "farmer": "rhys",
+      "text": "Snake.",
+      "word": "snake",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.7542899999999997,
+      "sourceEnd": 3.41156,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-sock",
+      "farmer": "rhys",
+      "text": "Sock.",
+      "word": "sock",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.319,
+      "sourceEnd": 6.07751,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    },
+    {
+      "id": "ws-word-soil",
+      "farmer": "rhys",
+      "text": "Soil.",
+      "word": "soil",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.87317,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 12583
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-rhys-intro",
+      "farmer": "rhys",
+      "text": "Tap a word and I’ll spell it for you. Tap again for a first-letter clue. Then slide your finger across the letters on the board. Take your time!",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 99728
+    }
+  ]
+}

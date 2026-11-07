@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-a",
+      "farmer": "rhys",
+      "text": "Ay.",
+      "letter": "A",
+      "pronunciation": "Ay",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.503107,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6941
+    },
+    {
+      "id": "ws-letter-b",
+      "farmer": "rhys",
+      "text": "Bee.",
+      "letter": "B",
+      "pronunciation": "Bee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.56041,
+      "sourceEnd": 3.1096600000000003,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-letter-c",
+      "farmer": "rhys",
+      "text": "See.",
+      "letter": "C",
+      "pronunciation": "See",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.13476,
+      "sourceEnd": 5.6746,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-letter-d",
+      "farmer": "rhys",
+      "text": "Dee.",
+      "letter": "D",
+      "pronunciation": "Dee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.61501,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-cop",
+      "farmer": "rhys",
+      "text": "Cop.",
+      "word": "cop",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.604762,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-corn",
+      "farmer": "rhys",
+      "text": "Corn.",
+      "word": "corn",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.66408,
+      "sourceEnd": 3.27717,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-cow",
+      "farmer": "rhys",
+      "text": "Cow.",
+      "word": "cow",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.27265,
+      "sourceEnd": 5.86408,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-crop",
+      "farmer": "rhys",
+      "text": "Crop.",
+      "word": "crop",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.9400900000000005,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-m",
+      "farmer": "rhys",
+      "text": "Em.",
+      "letter": "M",
+      "pronunciation": "Em",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.359773,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5060
+    },
+    {
+      "id": "ws-letter-n",
+      "farmer": "rhys",
+      "text": "En.",
+      "letter": "N",
+      "pronunciation": "En",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.5503899999999997,
+      "sourceEnd": 3.2376400000000003,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-letter-o",
+      "farmer": "rhys",
+      "text": "Oh.",
+      "letter": "O",
+      "pronunciation": "Oh",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.82948,
+      "sourceEnd": 5.20259,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5374
+    },
+    {
+      "id": "ws-letter-p",
+      "farmer": "rhys",
+      "text": "Pee.",
+      "letter": "P",
+      "pronunciation": "Pee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.74546,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6941
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-wheat",
+      "farmer": "rhys",
+      "text": "Wheat.",
+      "word": "wheat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.525533,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-wool",
+      "farmer": "rhys",
+      "text": "Wool.",
+      "word": "wool",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.48873,
+      "sourceEnd": 3.0275700000000003,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-zebra",
+      "farmer": "rhys",
+      "text": "Zebra.",
+      "word": "zebra",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.94737,
+      "sourceEnd": 5.67372,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    },
+    {
+      "id": "ws-word-zoo",
+      "farmer": "rhys",
+      "text": "Zoo.",
+      "word": "zoo",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.64415,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11016
+    }
+  ]
+}

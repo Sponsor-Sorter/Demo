@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-goat",
+      "farmer": "rhys",
+      "text": "Goat.",
+      "word": "goat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.632857,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-goose",
+      "farmer": "rhys",
+      "text": "Goose.",
+      "word": "goose",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.68458,
+      "sourceEnd": 3.44896,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    },
+    {
+      "id": "ws-word-grain",
+      "farmer": "rhys",
+      "text": "Grain.",
+      "word": "grain",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.47787,
+      "sourceEnd": 6.24104,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    },
+    {
+      "id": "ws-word-hand",
+      "farmer": "rhys",
+      "text": "Hand.",
+      "word": "hand",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.28753,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 12583
+    }
+  ]
+}

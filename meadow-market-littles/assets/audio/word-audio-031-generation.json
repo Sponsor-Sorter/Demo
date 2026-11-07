@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-plant",
+      "farmer": "rhys",
+      "text": "Plant.",
+      "word": "plant",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.647551,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-play",
+      "farmer": "rhys",
+      "text": "Play.",
+      "word": "play",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.66735,
+      "sourceEnd": 3.29678,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-plum",
+      "farmer": "rhys",
+      "text": "Plum.",
+      "word": "plum",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.49311,
+      "sourceEnd": 5.99274,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6941
+    },
+    {
+      "id": "ws-word-pond",
+      "farmer": "rhys",
+      "text": "Pond.",
+      "word": "pond",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.966349999999999,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9762
+    }
+  ]
+}

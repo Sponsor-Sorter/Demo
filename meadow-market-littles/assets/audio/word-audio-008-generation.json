@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-ant",
+      "farmer": "rhys",
+      "text": "Ant.",
+      "word": "ant",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.340998,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5060
+    },
+    {
+      "id": "ws-word-apple",
+      "farmer": "rhys",
+      "text": "Apple.",
+      "word": "apple",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.32306,
+      "sourceEnd": 2.94467,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-baby",
+      "farmer": "rhys",
+      "text": "Baby.",
+      "word": "baby",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.88057,
+      "sourceEnd": 5.43671,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-word-bag",
+      "farmer": "rhys",
+      "text": "Bag.",
+      "word": "bag",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.35084,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    }
+  ]
+}

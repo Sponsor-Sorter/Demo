@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-peach",
+      "farmer": "rhys",
+      "text": "Peach.",
+      "word": "peach",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.713719,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    },
+    {
+      "id": "ws-word-pen",
+      "farmer": "rhys",
+      "text": "Pen.",
+      "word": "pen",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.68152,
+      "sourceEnd": 3.30737,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-pig",
+      "farmer": "rhys",
+      "text": "Pig.",
+      "word": "pig",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.30329,
+      "sourceEnd": 5.89714,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-plane",
+      "farmer": "rhys",
+      "text": "Plane.",
+      "word": "plane",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.798,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

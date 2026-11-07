@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-bale",
+      "farmer": "rhys",
+      "text": "Bale.",
+      "word": "bale",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.666304,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-ball",
+      "farmer": "rhys",
+      "text": "Ball.",
+      "word": "ball",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.62993,
+      "sourceEnd": 3.25156,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-barn",
+      "farmer": "rhys",
+      "text": "Barn.",
+      "word": "barn",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.19977,
+      "sourceEnd": 5.85086,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-bat",
+      "farmer": "rhys",
+      "text": "Bat.",
+      "word": "bat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.79277,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

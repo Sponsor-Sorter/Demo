@@ -23,6 +23,19 @@
   const image = (word) => word.asset ? '<img src="' + esc(word.asset) + '" alt="">' : '<span class="ws-object-emoji" aria-hidden="true">' + word.icon + '</span>';
   const sceneUrl = () => topic.scene;
   const appState = () => api?.state?.();
+  const wordTaps = new Map();
+  function wordPrompt(label, taps = 0) {
+    const word = String(label).toLowerCase(), clue = taps % 2 === 1;
+    return { cue: clue ? ['ws-clue-start', 'ws-letter-' + word[0], 'ws-clue-next'] : [...word].map(letter => 'ws-letter-' + letter).concat('ws-word-' + word), gap: clue ? .14 : .3,
+      kind: clue ? 'clue' : 'spelling',
+      text: clue ? 'Let’s find ' + word[0].toUpperCase() + ' to start ' + word.toUpperCase() + '. What’s the next letter?' : word.toUpperCase().split('').join(' · ') + ' — ' + word.toUpperCase() + '. Tap the word again for a clue.' };
+  }
+  function hearWord(answer, button) {
+    const taps = wordTaps.get(answer.id) || 0, prompt = wordPrompt(answer.label, taps);
+    wordTaps.set(answer.id, taps + 1); clearTimeout(showPicture.timer);
+    button.dataset.help = prompt.kind; say(prompt.text);
+    window.meadowAudio?.speak(prompt.cue, { gap: prompt.gap });
+  }
   function praise() { window.meadowAudio?.speak('ws-jade-praise-'+Math.floor(Math.random()*4)); audio('reward'); }
   function boardSize() {
     // Keep the letter field small enough to scan at preschool age. Tablets get
@@ -108,6 +121,7 @@
     window.meadowAudio?.stopVoice();
   }
   function newRound() {
+    wordTaps.clear();
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
     completedAt = 0;
     window.meadowAudio?.stopVoice();
@@ -119,22 +133,26 @@
     playBoard(); clockId = setInterval(updateTimer, 1000); updateTimer();
   }
   function playBoard() {
-    const words = answers.map((answer) => '<button class="ws-word" data-word="' + answer.id + '"><span>' + answer.label + '</span></button>').join('');
+    const words = answers.map((answer) => '<button class="ws-word" aria-description="Tap to hear the spelling and word. Tap again for a first-letter clue." data-word="' + answer.id + '"><span>' + answer.label + '</span></button>').join('');
     const cells = board.map((letter, index) => '<button class="ws-cell" role="gridcell" aria-rowindex="' + (Math.floor(index / size) + 1) + '" aria-colindex="' + ((index % size) + 1) + '" data-cell="' + index + '" aria-label="Letter ' + letter + '">' + letter + '</button>').join('');
-    screen('<header class="ws-header"><div><small>' + esc(topic.name.toUpperCase()) + ' · ' + wordCount + ' LITTLE WORDS</small><h1>Find the words</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><div class="ws-status"><span class="ws-progress" data-progress>0 of ' + wordCount + ' found</span><span class="ws-timer" data-timer aria-label="Time">00:00</span></div><section class="ws-board-wrap"><div class="ws-grid" role="grid" aria-label="Word search letters">' + cells + '</div><div class="ws-word-list" aria-label="Words to find">' + words + '</div><div class="ws-live" data-live role="status" aria-live="polite">Put your finger on the first letter and follow the word.</div></section><footer class="ws-controls"><button class="ws-help" data-hear>🔊 Hear the directions</button><button class="ws-help" data-new>New puzzle</button></footer>');
+    screen('<header class="ws-header"><div><small>' + esc(topic.name.toUpperCase()) + ' · ' + wordCount + ' LITTLE WORDS</small><h1>Find the words</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><div class="ws-status"><span class="ws-progress" data-progress>0 of ' + wordCount + ' found</span><span class="ws-timer" data-timer aria-label="Time">00:00</span></div><section class="ws-board-wrap"><div class="ws-grid" role="grid" aria-label="Word search letters">' + cells + '</div><div class="ws-word-list" aria-label="Words to find">' + words + '</div><div class="ws-live" data-live role="status" aria-live="polite">Tap a word to hear it spelled. Tap again for a clue.</div></section><footer class="ws-controls"><button class="ws-help" data-hear>🔊 Hear the directions</button><button class="ws-help" data-new>New puzzle</button></footer>');
     bindClose();
     const grid = dialog.querySelector('.ws-grid');
+    dialog.querySelectorAll('[data-word]').forEach(button => button.addEventListener('click', () => {
+      const answer = answers.find(word => word.id === button.dataset.word);
+      if (answer) hearWord(answer, button);
+    }));
     grid.addEventListener('pointerdown', (event) => { const cell = event.target.closest('[data-cell]'); if (!cell || event.button > 0) return; event.preventDefault(); drag = event.pointerId; skipCellClick = true; setTimeout(() => { skipCellClick = false; }, 500); grid.setPointerCapture?.(event.pointerId); path = [Number(cell.dataset.cell)]; renderCells(); });
     grid.addEventListener('pointermove', (event) => { if (drag !== event.pointerId) return; const cell = document.elementFromPoint(event.clientX, event.clientY)?.closest?.('[data-cell]'); if (cell && grid.contains(cell)) extendPath(Number(cell.dataset.cell)); });
     grid.addEventListener('pointerup', (event) => { if (drag !== event.pointerId) return; drag = null; if (grid.hasPointerCapture?.(event.pointerId)) grid.releasePointerCapture(event.pointerId); finishPath(); });
     grid.addEventListener('pointercancel', () => { drag = null; path = []; renderCells(); });
     grid.addEventListener('click', (event) => { if (skipCellClick) { skipCellClick = false; return; } if (drag !== null) return; const cell = event.target.closest('[data-cell]'); if (!cell) return; const index = Number(cell.dataset.cell); if (!path.length) path = [index]; else if (path[0] === index) path = []; else extendPath(index); renderCells(); if (path.length > 2) finishPath(); });
     dialog.querySelector('[data-new]').addEventListener('click', newRound);
-    dialog.querySelector('[data-hear]').addEventListener('click', () => window.meadowAudio?.speak('ws-jade-intro'));
+    dialog.querySelector('[data-hear]').addEventListener('click', () => window.meadowAudio?.speak('ws-rhys-intro'));
     resizeHandler = () => requestAnimationFrame(sizeBoard);
     window.addEventListener('resize', resizeHandler);
     requestAnimationFrame(sizeBoard);
-    window.meadowAudio?.speak('ws-jade-intro');
+    window.meadowAudio?.speak('ws-rhys-intro');
   }
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
@@ -220,5 +238,5 @@
   function bindClose() { dialog.querySelector('[data-close]').addEventListener('click', close); }
   function close() { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; window.meadowAudio?.stopVoice(); dialog.close(); }
   function attach(options) { api = options; dialog = document.querySelector(dialogId); if (!dialog) return; dialog.addEventListener('cancel', () => { clearInterval(clockId); clearTimeout(winTimer); clockId = 0; winTimer = 0; if (resizeHandler) window.removeEventListener('resize', resizeHandler); resizeHandler = null; window.meadowAudio?.stopVoice(); }); }
-  window.meadowWordSearch = { attach, open, topics };
+  window.meadowWordSearch = { attach, open, topics, wordPrompt };
 })();

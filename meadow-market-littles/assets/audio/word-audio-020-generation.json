@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-fire",
+      "farmer": "rhys",
+      "text": "Fire.",
+      "word": "fire",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.646803,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-fish",
+      "farmer": "rhys",
+      "text": "Fish.",
+      "word": "fish",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.57603,
+      "sourceEnd": 3.19068,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-fox",
+      "farmer": "rhys",
+      "text": "Fox.",
+      "word": "fox",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.22973,
+      "sourceEnd": 5.99909,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    },
+    {
+      "id": "ws-word-frog",
+      "farmer": "rhys",
+      "text": "Frog.",
+      "word": "frog",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.96916,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

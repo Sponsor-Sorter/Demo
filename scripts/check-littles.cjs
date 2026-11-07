@@ -26,3 +26,5 @@ require("./check-pip-day.cjs");
 require("./check-littles-find.cjs");
 
 require("./check-littles-coop-audio.cjs");
+
+require("./check-littles-previews-wordhelp.cjs");

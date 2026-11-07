@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-stop",
+      "farmer": "rhys",
+      "text": "Stop.",
+      "word": "stop",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.607823,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-store",
+      "farmer": "rhys",
+      "text": "Store.",
+      "word": "store",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.62766,
+      "sourceEnd": 3.3144,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-sun",
+      "farmer": "rhys",
+      "text": "Sun.",
+      "word": "sun",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.21553,
+      "sourceEnd": 5.82542,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-swan",
+      "farmer": "rhys",
+      "text": "Swan.",
+      "word": "swan",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.77912,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

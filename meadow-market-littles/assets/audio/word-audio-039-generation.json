@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-town",
+      "farmer": "rhys",
+      "text": "Town.",
+      "word": "town",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.641224,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-toy",
+      "farmer": "rhys",
+      "text": "Toy.",
+      "word": "toy",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.72961,
+      "sourceEnd": 3.2812,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-word-train",
+      "farmer": "rhys",
+      "text": "Train.",
+      "word": "train",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.1451199999999995,
+      "sourceEnd": 6.84107,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-truck",
+      "farmer": "rhys",
+      "text": "Truck.",
+      "word": "truck",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.0342,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

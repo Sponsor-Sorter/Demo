@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-y",
+      "farmer": "rhys",
+      "text": "Why.",
+      "letter": "Y",
+      "pronunciation": "Why",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.5255099999999999,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-letter-z",
+      "farmer": "rhys",
+      "text": "Zed.",
+      "letter": "Z",
+      "pronunciation": "Zed",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.5481599999999998,
+      "sourceEnd": 3.15234,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-clue-start",
+      "farmer": "rhys",
+      "text": "We’re trying to find the letter...",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.24449,
+      "sourceEnd": 6.68213,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 18226
+    },
+    {
+      "id": "ws-clue-next",
+      "farmer": "rhys",
+      "text": "to start the word. What’s the next letter?",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.778820000000001,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 31078
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-box",
+      "farmer": "rhys",
+      "text": "Box.",
+      "word": "box",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.67195,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-bread",
+      "farmer": "rhys",
+      "text": "Bread.",
+      "word": "bread",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.63626,
+      "sourceEnd": 3.2848800000000002,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-bug",
+      "farmer": "rhys",
+      "text": "Bug.",
+      "word": "bug",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.29132,
+      "sourceEnd": 5.8966400000000005,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-bunny",
+      "farmer": "rhys",
+      "text": "Bunny.",
+      "word": "bunny",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.87968,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11016
+    }
+  ]
+}

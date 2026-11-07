@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-fruit",
+      "farmer": "rhys",
+      "text": "Fruit.",
+      "word": "fruit",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.6140140000000001,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-fun",
+      "farmer": "rhys",
+      "text": "Fun.",
+      "word": "fun",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.54005,
+      "sourceEnd": 3.12295,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-game",
+      "farmer": "rhys",
+      "text": "Game.",
+      "word": "game",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.11016,
+      "sourceEnd": 5.76175,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-gate",
+      "farmer": "rhys",
+      "text": "Gate.",
+      "word": "gate",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.29209,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11016
+    }
+  ]
+}

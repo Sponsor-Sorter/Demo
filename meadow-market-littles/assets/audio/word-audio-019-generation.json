@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-egg",
+      "farmer": "rhys",
+      "text": "Egg.",
+      "word": "egg",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.523447,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-eyes",
+      "farmer": "rhys",
+      "text": "Eyes.",
+      "word": "eyes",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.4241699999999997,
+      "sourceEnd": 3.08231,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-farm",
+      "farmer": "rhys",
+      "text": "Farm.",
+      "word": "farm",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.09764,
+      "sourceEnd": 5.74465,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-field",
+      "farmer": "rhys",
+      "text": "Field.",
+      "word": "field",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.62104,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 12270
+    }
+  ]
+}

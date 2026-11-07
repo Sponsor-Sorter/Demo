@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-shop",
+      "farmer": "rhys",
+      "text": "Shop.",
+      "word": "shop",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.62619,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-sign",
+      "farmer": "rhys",
+      "text": "Sign.",
+      "word": "sign",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.52846,
+      "sourceEnd": 3.25537,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    },
+    {
+      "id": "ws-word-sleep",
+      "farmer": "rhys",
+      "text": "Sleep.",
+      "word": "sleep",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.15361,
+      "sourceEnd": 5.69376,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-snack",
+      "farmer": "rhys",
+      "text": "Snack.",
+      "word": "snack",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.7245099999999995,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

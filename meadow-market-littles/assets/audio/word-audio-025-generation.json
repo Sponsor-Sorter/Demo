@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-house",
+      "farmer": "rhys",
+      "text": "House.",
+      "word": "house",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.698413,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-jet",
+      "farmer": "rhys",
+      "text": "Jet.",
+      "word": "jet",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.5712699999999997,
+      "sourceEnd": 3.0630800000000002,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6627
+    },
+    {
+      "id": "ws-word-kitty",
+      "farmer": "rhys",
+      "text": "Kitty.",
+      "word": "kitty",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.2046,
+      "sourceEnd": 5.78472,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-koala",
+      "farmer": "rhys",
+      "text": "Koala.",
+      "word": "koala",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.68551,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 14778
+    }
+  ]
+}

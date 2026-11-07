@@ -1105,6 +1105,831 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "letters-generation.json"
     },
+    "ws-letter-a": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-001-generation.json"
+    },
+    "ws-letter-b": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-001-generation.json"
+    },
+    "ws-letter-c": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-001-generation.json"
+    },
+    "ws-letter-d": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-001-generation.json"
+    },
+    "ws-letter-e": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-002-generation.json"
+    },
+    "ws-letter-f": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-002-generation.json"
+    },
+    "ws-letter-g": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-002-generation.json"
+    },
+    "ws-letter-h": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-002-generation.json"
+    },
+    "ws-letter-i": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-003-generation.json"
+    },
+    "ws-letter-j": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-003-generation.json"
+    },
+    "ws-letter-k": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-003-generation.json"
+    },
+    "ws-letter-l": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-003-generation.json"
+    },
+    "ws-letter-m": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-004-generation.json"
+    },
+    "ws-letter-n": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-004-generation.json"
+    },
+    "ws-letter-o": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-004-generation.json"
+    },
+    "ws-letter-p": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-004-generation.json"
+    },
+    "ws-letter-q": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-005-generation.json"
+    },
+    "ws-letter-r": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-005-generation.json"
+    },
+    "ws-letter-s": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-005-generation.json"
+    },
+    "ws-letter-t": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-005-generation.json"
+    },
+    "ws-letter-u": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-006-generation.json"
+    },
+    "ws-letter-v": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-006-generation.json"
+    },
+    "ws-letter-w": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-006-generation.json"
+    },
+    "ws-letter-x": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-006-generation.json"
+    },
+    "ws-letter-y": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-007-generation.json"
+    },
+    "ws-letter-z": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-007-generation.json"
+    },
+    "ws-clue-start": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-007-generation.json"
+    },
+    "ws-clue-next": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-007-generation.json"
+    },
+    "ws-word-ant": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-008-generation.json"
+    },
+    "ws-word-apple": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-008-generation.json"
+    },
+    "ws-word-baby": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-008-generation.json"
+    },
+    "ws-word-bag": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-008-generation.json"
+    },
+    "ws-word-bale": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-009-generation.json"
+    },
+    "ws-word-ball": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-009-generation.json"
+    },
+    "ws-word-barn": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-009-generation.json"
+    },
+    "ws-word-bat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-009-generation.json"
+    },
+    "ws-word-bath": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-010-generation.json"
+    },
+    "ws-word-beach": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-010-generation.json"
+    },
+    "ws-word-bear": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-010-generation.json"
+    },
+    "ws-word-bed": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-010-generation.json"
+    },
+    "ws-word-bee": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-011-generation.json"
+    },
+    "ws-word-bike": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-011-generation.json"
+    },
+    "ws-word-boat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-011-generation.json"
+    },
+    "ws-word-book": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-011-generation.json"
+    },
+    "ws-word-box": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-012-generation.json"
+    },
+    "ws-word-bread": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-012-generation.json"
+    },
+    "ws-word-bug": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-012-generation.json"
+    },
+    "ws-word-bunny": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-012-generation.json"
+    },
+    "ws-word-bus": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-013-generation.json"
+    },
+    "ws-word-cab": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-013-generation.json"
+    },
+    "ws-word-cafe": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-013-generation.json"
+    },
+    "ws-word-calf": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-013-generation.json"
+    },
+    "ws-word-camel": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-014-generation.json"
+    },
+    "ws-word-car": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-014-generation.json"
+    },
+    "ws-word-cart": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-014-generation.json"
+    },
+    "ws-word-cat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-014-generation.json"
+    },
+    "ws-word-chick": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-015-generation.json"
+    },
+    "ws-word-chore": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-015-generation.json"
+    },
+    "ws-word-coat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-015-generation.json"
+    },
+    "ws-word-coop": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-015-generation.json"
+    },
+    "ws-word-cop": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-016-generation.json"
+    },
+    "ws-word-corn": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-016-generation.json"
+    },
+    "ws-word-cow": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-016-generation.json"
+    },
+    "ws-word-crop": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-016-generation.json"
+    },
+    "ws-word-cross": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-017-generation.json"
+    },
+    "ws-word-cup": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-017-generation.json"
+    },
+    "ws-word-dad": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-017-generation.json"
+    },
+    "ws-word-deer": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-017-generation.json"
+    },
+    "ws-word-dog": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-018-generation.json"
+    },
+    "ws-word-dress": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-018-generation.json"
+    },
+    "ws-word-duck": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-018-generation.json"
+    },
+    "ws-word-eagle": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-018-generation.json"
+    },
+    "ws-word-egg": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-019-generation.json"
+    },
+    "ws-word-eyes": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-019-generation.json"
+    },
+    "ws-word-farm": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-019-generation.json"
+    },
+    "ws-word-field": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-019-generation.json"
+    },
+    "ws-word-fire": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-020-generation.json"
+    },
+    "ws-word-fish": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-020-generation.json"
+    },
+    "ws-word-fox": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-020-generation.json"
+    },
+    "ws-word-frog": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-020-generation.json"
+    },
+    "ws-word-fruit": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-021-generation.json"
+    },
+    "ws-word-fun": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-021-generation.json"
+    },
+    "ws-word-game": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-021-generation.json"
+    },
+    "ws-word-gate": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-021-generation.json"
+    },
+    "ws-word-goat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-022-generation.json"
+    },
+    "ws-word-goose": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-022-generation.json"
+    },
+    "ws-word-grain": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-022-generation.json"
+    },
+    "ws-word-hand": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-022-generation.json"
+    },
+    "ws-word-happy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-023-generation.json"
+    },
+    "ws-word-hat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-023-generation.json"
+    },
+    "ws-word-hay": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-023-generation.json"
+    },
+    "ws-word-help": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-023-generation.json"
+    },
+    "ws-word-hen": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-024-generation.json"
+    },
+    "ws-word-home": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-024-generation.json"
+    },
+    "ws-word-horse": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-024-generation.json"
+    },
+    "ws-word-hotel": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-024-generation.json"
+    },
+    "ws-word-house": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-025-generation.json"
+    },
+    "ws-word-jet": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-025-generation.json"
+    },
+    "ws-word-kitty": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-025-generation.json"
+    },
+    "ws-word-koala": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-025-generation.json"
+    },
+    "ws-word-lamb": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-026-generation.json"
+    },
+    "ws-word-light": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-026-generation.json"
+    },
+    "ws-word-lion": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-026-generation.json"
+    },
+    "ws-word-lunch": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-026-generation.json"
+    },
+    "ws-word-map": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-027-generation.json"
+    },
+    "ws-word-melon": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-027-generation.json"
+    },
+    "ws-word-milk": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-027-generation.json"
+    },
+    "ws-word-mom": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-027-generation.json"
+    },
+    "ws-word-moose": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-028-generation.json"
+    },
+    "ws-word-mouse": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-028-generation.json"
+    },
+    "ws-word-nose": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-028-generation.json"
+    },
+    "ws-word-nurse": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-028-generation.json"
+    },
+    "ws-word-owl": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-029-generation.json"
+    },
+    "ws-word-panda": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-029-generation.json"
+    },
+    "ws-word-park": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-029-generation.json"
+    },
+    "ws-word-pea": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-029-generation.json"
+    },
+    "ws-word-peach": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-030-generation.json"
+    },
+    "ws-word-pen": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-030-generation.json"
+    },
+    "ws-word-pig": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-030-generation.json"
+    },
+    "ws-word-plane": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-030-generation.json"
+    },
+    "ws-word-plant": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-031-generation.json"
+    },
+    "ws-word-play": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-031-generation.json"
+    },
+    "ws-word-plum": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-031-generation.json"
+    },
+    "ws-word-pond": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-031-generation.json"
+    },
+    "ws-word-pony": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-032-generation.json"
+    },
+    "ws-word-puppy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-032-generation.json"
+    },
+    "ws-word-ram": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-032-generation.json"
+    },
+    "ws-word-red": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-032-generation.json"
+    },
+    "ws-word-river": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-033-generation.json"
+    },
+    "ws-word-road": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-033-generation.json"
+    },
+    "ws-word-roof": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-033-generation.json"
+    },
+    "ws-word-run": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-033-generation.json"
+    },
+    "ws-word-seed": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-034-generation.json"
+    },
+    "ws-word-sheep": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-034-generation.json"
+    },
+    "ws-word-ship": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-034-generation.json"
+    },
+    "ws-word-shoe": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-034-generation.json"
+    },
+    "ws-word-shop": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-035-generation.json"
+    },
+    "ws-word-sign": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-035-generation.json"
+    },
+    "ws-word-sleep": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-035-generation.json"
+    },
+    "ws-word-snack": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-035-generation.json"
+    },
+    "ws-word-snail": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-036-generation.json"
+    },
+    "ws-word-snake": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-036-generation.json"
+    },
+    "ws-word-sock": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-036-generation.json"
+    },
+    "ws-word-soil": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-036-generation.json"
+    },
+    "ws-word-stop": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-037-generation.json"
+    },
+    "ws-word-store": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-037-generation.json"
+    },
+    "ws-word-sun": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-037-generation.json"
+    },
+    "ws-word-swan": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-037-generation.json"
+    },
+    "ws-word-taxi": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-038-generation.json"
+    },
+    "ws-word-teddy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-038-generation.json"
+    },
+    "ws-word-tiger": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-038-generation.json"
+    },
+    "ws-word-top": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-038-generation.json"
+    },
+    "ws-word-town": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-039-generation.json"
+    },
+    "ws-word-toy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-039-generation.json"
+    },
+    "ws-word-train": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-039-generation.json"
+    },
+    "ws-word-truck": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-039-generation.json"
+    },
+    "ws-word-van": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-040-generation.json"
+    },
+    "ws-word-water": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-040-generation.json"
+    },
+    "ws-word-well": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-040-generation.json"
+    },
+    "ws-word-whale": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-040-generation.json"
+    },
+    "ws-word-wheat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-041-generation.json"
+    },
+    "ws-word-wool": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-041-generation.json"
+    },
+    "ws-word-zebra": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-041-generation.json"
+    },
+    "ws-word-zoo": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-041-generation.json"
+    },
+    "ws-rhys-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "word-audio-042-generation.json"
+    },
     "together-connectfour": {
       "farmer": "jay",
       "voice": "Mike - Animation, Explainers & Gaming",

@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-river",
+      "farmer": "rhys",
+      "text": "River.",
+      "word": "river",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.5360769999999999,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-road",
+      "farmer": "rhys",
+      "text": "Road.",
+      "word": "road",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.49356,
+      "sourceEnd": 3.02272,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7254
+    },
+    {
+      "id": "ws-word-roof",
+      "farmer": "rhys",
+      "text": "Roof.",
+      "word": "roof",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.01399,
+      "sourceEnd": 5.64519,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-run",
+      "farmer": "rhys",
+      "text": "Run.",
+      "word": "run",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.60562,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9762
+    }
+  ]
+}

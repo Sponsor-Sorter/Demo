@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-i",
+      "farmer": "rhys",
+      "text": "Eye.",
+      "letter": "I",
+      "pronunciation": "Eye",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.446644,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6314
+    },
+    {
+      "id": "ws-letter-j",
+      "farmer": "rhys",
+      "text": "Jay.",
+      "letter": "J",
+      "pronunciation": "Jay",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.3734699999999997,
+      "sourceEnd": 2.97751,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-letter-k",
+      "farmer": "rhys",
+      "text": "Kay.",
+      "letter": "K",
+      "pronunciation": "Kay",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.98544,
+      "sourceEnd": 5.5526800000000005,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7568
+    },
+    {
+      "id": "ws-letter-l",
+      "farmer": "rhys",
+      "text": "Ell.",
+      "letter": "L",
+      "pronunciation": "Ell",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.60272,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    }
+  ]
+}

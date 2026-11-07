@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-happy",
+      "farmer": "rhys",
+      "text": "Happy.",
+      "word": "happy",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.5769610000000001,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-hat",
+      "farmer": "rhys",
+      "text": "Hat.",
+      "word": "hat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.60315,
+      "sourceEnd": 3.25211,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-hay",
+      "farmer": "rhys",
+      "text": "Hay.",
+      "word": "hay",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.27519,
+      "sourceEnd": 5.87095,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-help",
+      "farmer": "rhys",
+      "text": "Help.",
+      "word": "help",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.86125,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10389
+    }
+  ]
+}

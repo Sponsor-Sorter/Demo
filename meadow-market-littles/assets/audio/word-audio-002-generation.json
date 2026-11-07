@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-e",
+      "farmer": "rhys",
+      "text": "Ee.",
+      "letter": "E",
+      "pronunciation": "Ee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.356236,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5060
+    },
+    {
+      "id": "ws-letter-f",
+      "farmer": "rhys",
+      "text": "Eff.",
+      "letter": "F",
+      "pronunciation": "Eff",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.34977,
+      "sourceEnd": 2.72145,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5374
+    },
+    {
+      "id": "ws-letter-g",
+      "farmer": "rhys",
+      "text": "Jee.",
+      "letter": "G",
+      "pronunciation": "Jee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 4.7639,
+      "sourceEnd": 5.14565,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 5374
+    },
+    {
+      "id": "ws-letter-h",
+      "farmer": "rhys",
+      "text": "Aitch.",
+      "letter": "H",
+      "pronunciation": "Aitch",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.2130399999999995,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9449
+    }
+  ]
+}

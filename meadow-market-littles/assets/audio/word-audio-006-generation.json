@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-letter-u",
+      "farmer": "rhys",
+      "text": "You.",
+      "letter": "U",
+      "pronunciation": "You",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.916621,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11956
+    },
+    {
+      "id": "ws-letter-v",
+      "farmer": "rhys",
+      "text": "Vee.",
+      "letter": "V",
+      "pronunciation": "Vee",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.87009,
+      "sourceEnd": 3.3271,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6314
+    },
+    {
+      "id": "ws-letter-w",
+      "farmer": "rhys",
+      "text": "Double you.",
+      "letter": "W",
+      "pronunciation": "Double you",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.52757,
+      "sourceEnd": 6.27166,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9762
+    },
+    {
+      "id": "ws-letter-x",
+      "farmer": "rhys",
+      "text": "Ex.",
+      "letter": "X",
+      "pronunciation": "Ex",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.22891,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10389
+    }
+  ]
+}

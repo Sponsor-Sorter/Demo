@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-camel",
+      "farmer": "rhys",
+      "text": "Camel.",
+      "word": "camel",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 1.5996800000000002,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 20107
+    },
+    {
+      "id": "ws-word-car",
+      "farmer": "rhys",
+      "text": "Car.",
+      "word": "car",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 3.86376,
+      "sourceEnd": 4.49882,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-cart",
+      "farmer": "rhys",
+      "text": "Cart.",
+      "word": "cart",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.53229,
+      "sourceEnd": 7.16209,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-cat",
+      "farmer": "rhys",
+      "text": "Cat.",
+      "word": "cat",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.17506,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    }
+  ]
+}

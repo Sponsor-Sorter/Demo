@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-hen",
+      "farmer": "rhys",
+      "text": "Hen.",
+      "word": "hen",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.5868709999999999,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-home",
+      "farmer": "rhys",
+      "text": "Home.",
+      "word": "home",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.50927,
+      "sourceEnd": 3.13388,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-horse",
+      "farmer": "rhys",
+      "text": "Horse.",
+      "word": "horse",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.10626,
+      "sourceEnd": 5.79404,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-hotel",
+      "farmer": "rhys",
+      "text": "Hotel.",
+      "word": "hotel",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.71442,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}

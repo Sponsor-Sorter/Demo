@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-bath",
+      "farmer": "rhys",
+      "text": "Bath.",
+      "word": "bath",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.601247,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-beach",
+      "farmer": "rhys",
+      "text": "Beach.",
+      "word": "beach",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 3.32515,
+      "sourceEnd": 4.02206,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-bear",
+      "farmer": "rhys",
+      "text": "Bear.",
+      "word": "bear",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.01662,
+      "sourceEnd": 6.67077,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-bed",
+      "farmer": "rhys",
+      "text": "Bed.",
+      "word": "bed",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.72166,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    }
+  ]
+}

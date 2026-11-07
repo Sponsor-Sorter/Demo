@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-cross",
+      "farmer": "rhys",
+      "text": "Cross.",
+      "word": "cross",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.763923,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10076
+    },
+    {
+      "id": "ws-word-cup",
+      "farmer": "rhys",
+      "text": "Cup.",
+      "word": "cup",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.8934699999999998,
+      "sourceEnd": 3.50698,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-dad",
+      "farmer": "rhys",
+      "text": "Dad.",
+      "word": "dad",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.60839,
+      "sourceEnd": 6.20456,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 7881
+    },
+    {
+      "id": "ws-word-deer",
+      "farmer": "rhys",
+      "text": "Deer.",
+      "word": "deer",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 8.46626,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9762
+    }
+  ]
+}

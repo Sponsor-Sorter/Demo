@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-map",
+      "farmer": "rhys",
+      "text": "Map.",
+      "word": "map",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.601791,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-melon",
+      "farmer": "rhys",
+      "text": "Melon.",
+      "word": "melon",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.5540599999999998,
+      "sourceEnd": 3.25812,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    },
+    {
+      "id": "ws-word-milk",
+      "farmer": "rhys",
+      "text": "Milk.",
+      "word": "milk",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.21197,
+      "sourceEnd": 5.8695200000000005,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8822
+    },
+    {
+      "id": "ws-word-mom",
+      "farmer": "rhys",
+      "text": "Mom.",
+      "word": "mom",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.8561,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9135
+    }
+  ]
+}

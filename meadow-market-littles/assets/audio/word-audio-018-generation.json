@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-dog",
+      "farmer": "rhys",
+      "text": "Dog.",
+      "word": "dog",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.627959,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-dress",
+      "farmer": "rhys",
+      "text": "Dress.",
+      "word": "dress",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.58113,
+      "sourceEnd": 3.3320600000000002,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 9762
+    },
+    {
+      "id": "ws-word-duck",
+      "farmer": "rhys",
+      "text": "Duck.",
+      "word": "duck",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.33213,
+      "sourceEnd": 5.97234,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-eagle",
+      "farmer": "rhys",
+      "text": "Eagle.",
+      "word": "eagle",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.925489999999999,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 10389
+    }
+  ]
+}

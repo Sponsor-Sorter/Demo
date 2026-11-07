@@ -1,0 +1,55 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-07",
+  "files": [
+    {
+      "id": "ws-word-seed",
+      "farmer": "rhys",
+      "text": "Seed.",
+      "word": "seed",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 0.638231,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8508
+    },
+    {
+      "id": "ws-word-sheep",
+      "farmer": "rhys",
+      "text": "Sheep.",
+      "word": "sheep",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 2.53245,
+      "sourceEnd": 3.158,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 8195
+    },
+    {
+      "id": "ws-word-ship",
+      "farmer": "rhys",
+      "text": "Ship.",
+      "word": "ship",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 5.09825,
+      "sourceEnd": 5.57327,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 6627
+    },
+    {
+      "id": "ws-word-shoe",
+      "farmer": "rhys",
+      "text": "Shoe.",
+      "word": "shoe",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 7.57079,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "peak -3 dBFS",
+      "bytes": 11329
+    }
+  ]
+}
