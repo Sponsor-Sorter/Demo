@@ -1,0 +1,13 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../meadow-market-littles'),registered={},queue=[];
+const scope={window:{meadowFarmAdventures:{register:(kind,impl)=>registered[kind]=impl},meadowFarmJourneys:{rub(){},stage(){},laterPhase(a,fn){if(a.busy||a.finished)return;a.busy=true;queue.push(()=>{a.busy=false;fn();});}}}};
+vm.runInNewContext(fs.readFileSync(path.join(root,'farm-neighbours.js'),'utf8'),scope);
+assert.deepEqual(Object.keys(registered).sort(),['balance','haystack','market']);
+const pond={round:2,journeyPhase:'pads',parts:[],fed:[],busy:false,render(){},sound(){}};
+registered.balance.accept(pond,'pad-8','duck');assert.equal(pond.parts.length,0,'An absent lily pad cannot receive a duck');
+for(const i of [0,0,1,2,2])registered.balance.accept(pond,'pad-'+i,'duck');assert.deepEqual(pond.parts,[0,1,2]);assert.equal(queue.length,1,'Repeated drops cannot skip a pond phase');queue.shift()();assert.equal(pond.journeyPhase,'feed');
+for(const i of [1,1,0,2])registered.balance.accept(pond,'feed-'+i,'carrot');assert.deepEqual(pond.fed,[1,0,2]);assert.equal(queue.length,1);queue.shift()();assert.equal(pond.journeyPhase,'swim','Every duck must eat before the family swims');
+const hay={journeyPhase:'stack',wanted:'big',parts:[],render(){this.wanted=['big','middle','little'][this.parts.length];}};
+registered.haystack.accept(hay,'bale','bale-little');assert.equal(hay.parts.length,0,'The smallest bale cannot start a tower');for(const size of ['big','middle','little'])registered.haystack.accept(hay,'bale','bale-'+size);assert.deepEqual(hay.parts,['big','middle','little']);assert.equal(queue.length,1);registered.haystack.accept(hay,'bale','bale-undefined');assert.equal(hay.parts.length,3);queue.shift()();assert.equal(hay.journeyPhase,'fluff','Finishing a tower must lead to hands-on bedding work');
+const market={journeyPhase:'pack',required:['apple','carrot'],parts:[],render(){},sound(){}};registered.market.accept(market,'food-corn','corn');assert.equal(market.parts.length,0);for(const id of ['apple','apple','carrot','carrot'])registered.market.accept(market,'food-'+id,id);assert.deepEqual(market.parts,['apple','carrot']);assert.equal(queue.length,1);queue.shift()();assert.equal(market.journeyPhase,'weigh','A packed order still needs weighing and delivery');
+console.log('Littles neighbours: bedding phase, every-duck feeding, duplicate drop locks, absent targets, big-to-small ordering and complete-order weighing passed.');

@@ -3,7 +3,7 @@
   'use strict';
   const keys={
     jade:new Set(['nest-line','nest-smooth','nest-hatch','garden-plant','garden-water','garden-pick','garden-wash','garden-share','weather-dress','weather-rainy','weather-sunny','weather-windy','laundry-hang','laundry-peg','laundry-dry','laundry-collect','kindness-snack','kindness-water','kindness-play','post-stamp','post-deliver']),
-    rhys:new Set(['bridge-fit','bridge-guide']),jay:new Set(['spring-return'])
+    rhys:new Set(['bridge-fit','bridge-guide','pond-pads','pond-feed','pond-swim']),jay:new Set(['spring-return','hay-stack','hay-fluff','hay-rest','market-pack','market-weigh','market-deliver','slide-intro'])
   };
   function instructionId(farmer,key){return keys[farmer]?.has(key)?'journey-'+farmer+'-'+key:null;}
   function instruction(adventure,key){

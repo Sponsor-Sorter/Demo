@@ -1225,6 +1225,56 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "letters-generation.json"
     },
+    "journey-jay-hay-stack": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-hay-fluff": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-hay-rest": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-market-pack": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-market-weigh": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-market-deliver": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-jay-slide-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "neighbours-jay-generation.json"
+    },
+    "journey-rhys-pond-pads": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "neighbours-rhys-generation.json"
+    },
+    "journey-rhys-pond-feed": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "neighbours-rhys-generation.json"
+    },
+    "journey-rhys-pond-swim": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "neighbours-rhys-generation.json"
+    },
     "ws-letter-a": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",

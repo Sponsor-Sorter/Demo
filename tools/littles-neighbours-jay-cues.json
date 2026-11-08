@@ -1,0 +1,37 @@
+[
+  {
+    "id": "journey-jay-hay-stack",
+    "farmer": "jay",
+    "text": "Let's make a cosy hay tower! Big at the bottom, then middle, then little."
+  },
+  {
+    "id": "journey-jay-hay-fluff",
+    "farmer": "jay",
+    "text": "Now for a soft bed! Rub the loose bedding to make it nice and fluffy."
+  },
+  {
+    "id": "journey-jay-hay-rest",
+    "farmer": "jay",
+    "text": "Oh, look! Your friend has a lovely cosy place to rest. Well done!"
+  },
+  {
+    "id": "journey-jay-market-pack",
+    "farmer": "jay",
+    "text": "A neighbour needs our help! Look at the picture list, and pack their basket."
+  },
+  {
+    "id": "journey-jay-market-weigh",
+    "farmer": "jay",
+    "text": "Let's weigh your harvest! Move your finger gently over the basket, and watch the little arrow."
+  },
+  {
+    "id": "journey-jay-market-deliver",
+    "farmer": "jay",
+    "text": "All ready! Carry your lovely basket over to your neighbour."
+  },
+  {
+    "id": "journey-jay-slide-intro",
+    "farmer": "jay",
+    "text": "Let's put the farm picture back together! Tap a piece next to the empty space, or slide it across. Look at the little picture to help you."
+  }
+]

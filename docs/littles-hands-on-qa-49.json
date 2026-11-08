@@ -1,0 +1,785 @@
+{
+  "build": 49,
+  "fullRoundGames": [
+    "haystack_tower",
+    "pond_balance",
+    "market_pretend"
+  ],
+  "puzzleRounds": [
+    {
+      "label": "Sheep little shuffle",
+      "slides": 4,
+      "drag": true
+    },
+    {
+      "label": "Sheep play again",
+      "slides": 4,
+      "drag": false
+    },
+    {
+      "label": "Picture 1 shuffle 8",
+      "slides": 8,
+      "drag": false
+    },
+    {
+      "label": "Picture 2 shuffle 12",
+      "slides": 12,
+      "drag": true
+    },
+    {
+      "label": "Picture 3 shuffle 12",
+      "slides": 12,
+      "drag": false
+    },
+    {
+      "label": "Phone puzzle",
+      "slides": 4,
+      "drag": true
+    },
+    {
+      "label": "iPad puzzle",
+      "slides": 4,
+      "drag": false
+    },
+    {
+      "label": "Landscape puzzle",
+      "slides": 4,
+      "drag": true
+    }
+  ],
+  "audioChecks": [
+    {
+      "duration": 4.76175,
+      "task": "Build a cosy hay tower",
+      "voice": "journey-jay-hay-stack"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.76175,
+      "task": "Build a cosy hay tower",
+      "voice": "journey-jay-hay-stack"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.260041666666667,
+      "task": "A lily pad for every duck",
+      "voice": "journey-rhys-pond-pads"
+    },
+    {
+      "duration": 4.2686875,
+      "task": "A little snack for every duck",
+      "voice": "journey-rhys-pond-feed"
+    },
+    {
+      "duration": 5.532354166666667,
+      "task": "Guide your duck family home",
+      "voice": "journey-rhys-pond-swim"
+    },
+    {
+      "duration": 4.260041666666667,
+      "task": "A lily pad for every duck",
+      "voice": "journey-rhys-pond-pads"
+    },
+    {
+      "duration": 4.2686875,
+      "task": "A little snack for every duck",
+      "voice": "journey-rhys-pond-feed"
+    },
+    {
+      "duration": 5.532354166666667,
+      "task": "Guide your duck family home",
+      "voice": "journey-rhys-pond-swim"
+    },
+    {
+      "duration": 4.260041666666667,
+      "task": "A lily pad for every duck",
+      "voice": "journey-rhys-pond-pads"
+    },
+    {
+      "duration": 4.2686875,
+      "task": "A little snack for every duck",
+      "voice": "journey-rhys-pond-feed"
+    },
+    {
+      "duration": 5.532354166666667,
+      "task": "Guide your duck family home",
+      "voice": "journey-rhys-pond-swim"
+    },
+    {
+      "duration": 3.700291666666667,
+      "task": "Pack a neighbour’s basket",
+      "voice": "journey-jay-market-pack"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    },
+    {
+      "duration": 3.034895833333333,
+      "task": "Bring your neighbour their basket",
+      "voice": "journey-jay-market-deliver"
+    },
+    {
+      "duration": 3.700291666666667,
+      "task": "Pack a neighbour’s basket",
+      "voice": "journey-jay-market-pack"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    },
+    {
+      "duration": 3.034895833333333,
+      "task": "Bring your neighbour their basket",
+      "voice": "journey-jay-market-deliver"
+    },
+    {
+      "duration": 3.700291666666667,
+      "task": "Pack a neighbour’s basket",
+      "voice": "journey-jay-market-pack"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    },
+    {
+      "duration": 3.034895833333333,
+      "task": "Bring your neighbour their basket",
+      "voice": "journey-jay-market-deliver"
+    },
+    {
+      "duration": 4.76175,
+      "task": "Build a cosy hay tower",
+      "voice": "journey-jay-hay-stack"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.1316041666666665,
+      "task": "Make the bedding soft",
+      "voice": "journey-jay-hay-fluff"
+    },
+    {
+      "duration": 4.0551875,
+      "task": "A cosy bed for your friend",
+      "voice": "journey-jay-hay-rest"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    },
+    {
+      "duration": 4.2686875,
+      "task": "A little snack for every duck",
+      "voice": "journey-rhys-pond-feed"
+    },
+    {
+      "duration": 5.532354166666667,
+      "task": "Guide your duck family home",
+      "voice": "journey-rhys-pond-swim"
+    },
+    {
+      "duration": 4.964395833333334,
+      "task": "Weigh your harvest basket",
+      "voice": "journey-jay-market-weigh"
+    }
+  ],
+  "responsiveChecks": [
+    {
+      "label": "phone puzzle",
+      "buttons": [
+        {
+          "h": 44,
+          "label": "Back to games",
+          "w": 44,
+          "x": 323,
+          "y": 18
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 1, row 1, column 1",
+          "w": 119.4609375,
+          "x": 15.8046875,
+          "y": 170.796875
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 2, row 1, column 3",
+          "w": 119.4609375,
+          "x": 254.734375,
+          "y": 170.796875
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 3, row 2, column 3, can slide",
+          "w": 119.4609375,
+          "x": 254.734375,
+          "y": 290.2578125
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 4, row 2, column 1, can slide",
+          "w": 119.4609375,
+          "x": 15.8046875,
+          "y": 290.2578125
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 5, row 1, column 2, can slide",
+          "w": 119.4609375,
+          "x": 135.265625,
+          "y": 170.796875
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 6, row 3, column 3",
+          "w": 119.4609375,
+          "x": 254.734375,
+          "y": 409.7265625
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 7, row 3, column 1",
+          "w": 119.4609375,
+          "x": 15.8046875,
+          "y": 409.7265625
+        },
+        {
+          "h": 119.4609375,
+          "label": "Picture piece 8, row 3, column 2, can slide",
+          "w": 119.4609375,
+          "x": 135.265625,
+          "y": 409.7265625
+        },
+        {
+          "h": 44,
+          "label": "Show me a piece",
+          "w": 171.5,
+          "x": 21,
+          "y": 642.1953125
+        },
+        {
+          "h": 44,
+          "label": "Undo my slide",
+          "w": 171.5,
+          "x": 197.5,
+          "y": 642.1953125
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 171.5,
+          "x": 21,
+          "y": 691.1953125
+        },
+        {
+          "h": 44,
+          "label": "Choose a picture",
+          "w": 171.5,
+          "x": 197.5,
+          "y": 691.1953125
+        }
+      ],
+      "height": 844,
+      "width": 390
+    },
+    {
+      "label": "phone market scale",
+      "buttons": [
+        {
+          "h": 46,
+          "label": "Back to games",
+          "w": 46,
+          "x": 324,
+          "y": 19.5
+        },
+        {
+          "h": 295.421875,
+          "label": "Gently press the scale to weigh your basket",
+          "w": 181.296875,
+          "x": 43.296875,
+          "y": 196.125
+        },
+        {
+          "h": 44,
+          "label": "Hear Farmer’s instructions",
+          "w": 105.7890625,
+          "x": 92.9609375,
+          "y": 784
+        },
+        {
+          "h": 44,
+          "label": "Start over",
+          "w": 78.2890625,
+          "x": 218.75,
+          "y": 784
+        }
+      ],
+      "height": 844,
+      "width": 390
+    },
+    {
+      "label": "iPad puzzle",
+      "buttons": [
+        {
+          "h": 44,
+          "label": "Back to games",
+          "w": 44,
+          "x": 753,
+          "y": 20
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 1, row 1, column 2, can slide",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 372.6015625
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 2, row 1, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 372.6015625
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 3, row 2, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 4, row 2, column 1, can slide",
+          "w": 169.59375,
+          "x": 40.6015625,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 5, row 2, column 2",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 6, row 3, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 711.796875
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 7, row 3, column 1",
+          "w": 169.59375,
+          "x": 40.6015625,
+          "y": 711.796875
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 8, row 3, column 2",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 711.796875
+        },
+        {
+          "h": 44,
+          "label": "Show me a piece",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 714.75
+        },
+        {
+          "h": 44,
+          "label": "Undo my slide",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 765.75
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 816.75
+        },
+        {
+          "h": 44,
+          "label": "Choose a picture",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 867.75
+        }
+      ],
+      "height": 1180,
+      "width": 820
+    },
+    {
+      "label": "iPad market scale",
+      "buttons": [
+        {
+          "h": 46,
+          "label": "Back to games",
+          "w": 46,
+          "x": 754,
+          "y": 19.5
+        },
+        {
+          "h": 392,
+          "label": "Gently press the scale to weigh your basket",
+          "w": 392,
+          "x": 82,
+          "y": 241.484375
+        },
+        {
+          "h": 44,
+          "label": "Hear Farmer’s instructions",
+          "w": 105.7890625,
+          "x": 307.9609375,
+          "y": 1120
+        },
+        {
+          "h": 44,
+          "label": "Start over",
+          "w": 78.2890625,
+          "x": 433.75,
+          "y": 1120
+        }
+      ],
+      "height": 1180,
+      "width": 820
+    },
+    {
+      "label": "landscape picture menu",
+      "buttons": [
+        {
+          "h": 35,
+          "label": "Back to games",
+          "w": 35,
+          "x": 788,
+          "y": 15
+        },
+        {
+          "h": 136.5,
+          "label": "Sheep meadow",
+          "w": 194,
+          "x": 19,
+          "y": 138.75
+        },
+        {
+          "h": 136.5,
+          "label": "Goat paddock",
+          "w": 194,
+          "x": 223,
+          "y": 138.75
+        },
+        {
+          "h": 136.5,
+          "label": "Cow farm",
+          "w": 194,
+          "x": 427,
+          "y": 138.75
+        },
+        {
+          "h": 136.5,
+          "label": "Little tractor",
+          "w": 194,
+          "x": 631,
+          "y": 138.75
+        }
+      ],
+      "height": 390,
+      "width": 844
+    },
+    {
+      "label": "landscape puzzle",
+      "buttons": [
+        {
+          "h": 35,
+          "label": "Back to games",
+          "w": 35,
+          "x": 788,
+          "y": 15
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 1, row 1, column 1",
+          "w": 98,
+          "x": 150,
+          "y": 75.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 2, row 1, column 2",
+          "w": 98,
+          "x": 248,
+          "y": 75.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 3, row 1, column 3",
+          "w": 98,
+          "x": 346,
+          "y": 75.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 4, row 2, column 2",
+          "w": 98,
+          "x": 248,
+          "y": 173.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 5, row 2, column 3",
+          "w": 98,
+          "x": 346,
+          "y": 173.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 6, row 3, column 3",
+          "w": 98,
+          "x": 346,
+          "y": 271.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 7, row 2, column 1, can slide",
+          "w": 98,
+          "x": 150,
+          "y": 173.5
+        },
+        {
+          "h": 98,
+          "label": "Picture piece 8, row 3, column 2, can slide",
+          "w": 98,
+          "x": 248,
+          "y": 271.5
+        },
+        {
+          "h": 44,
+          "label": "Show me a piece",
+          "w": 104,
+          "x": 481,
+          "y": 212.5
+        },
+        {
+          "h": 44,
+          "label": "Undo my slide",
+          "w": 104,
+          "x": 589,
+          "y": 212.5
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 104,
+          "x": 481,
+          "y": 260.5
+        },
+        {
+          "h": 44,
+          "label": "Choose a picture",
+          "w": 104,
+          "x": 589,
+          "y": 260.5
+        }
+      ],
+      "height": 390,
+      "width": 844
+    },
+    {
+      "label": "landscape duck pads",
+      "buttons": [
+        {
+          "h": 46,
+          "label": "Back to games",
+          "w": 46,
+          "x": 778,
+          "y": 19.5
+        },
+        {
+          "h": 105.5625,
+          "label": "Duckling place 1",
+          "w": 158.21875,
+          "x": 223.890625,
+          "y": 199.8984375
+        },
+        {
+          "h": 82,
+          "label": "Duck",
+          "w": 160,
+          "x": 644,
+          "y": 186.09375
+        },
+        {
+          "h": 44,
+          "label": "Hear Farmer’s instructions",
+          "w": 91.03125,
+          "x": 645.65625,
+          "y": 273.09375
+        },
+        {
+          "h": 44,
+          "label": "Start over",
+          "w": 65.6484375,
+          "x": 736.6875,
+          "y": 273.09375
+        }
+      ],
+      "height": 390,
+      "width": 844
+    },
+    {
+      "label": "landscape duck swim",
+      "buttons": [
+        {
+          "h": 46,
+          "label": "Back to games",
+          "w": 46,
+          "x": 778,
+          "y": 19.5
+        },
+        {
+          "h": 200.5625,
+          "label": "Guide the duck family across the pond",
+          "w": 539.1171875,
+          "x": 33.4375,
+          "y": 149.7578125
+        },
+        {
+          "h": 44,
+          "label": "Hear Farmer’s instructions",
+          "w": 91.03125,
+          "x": 645.65625,
+          "y": 252.640625
+        },
+        {
+          "h": 44,
+          "label": "Start over",
+          "w": 65.6484375,
+          "x": 736.6875,
+          "y": 252.640625
+        }
+      ],
+      "height": 390,
+      "width": 844
+    },
+    {
+      "label": "desktop scale corrected",
+      "buttons": [
+        {
+          "h": 46,
+          "label": "Back to games",
+          "w": 46,
+          "x": 1214,
+          "y": 19.5
+        },
+        {
+          "h": 326.6484375,
+          "label": "Gently press the scale to weigh your basket",
+          "w": 326.6484375,
+          "x": 92.2890625,
+          "y": 201.234375
+        },
+        {
+          "h": 44,
+          "label": "Hear Farmer’s instructions",
+          "w": 91.03125,
+          "x": 1027.859375,
+          "y": 416.7734375
+        },
+        {
+          "h": 44,
+          "label": "Start over",
+          "w": 65.6484375,
+          "x": 1118.890625,
+          "y": 416.7734375
+        }
+      ],
+      "height": 720,
+      "width": 1280
+    }
+  ],
+  "approvedAudio": {
+    "rhys": "Noah - YA Audiobooks Narrator",
+    "jay": "Mike - Animation, Explainers & Gaming",
+    "newClips": 10,
+    "model": "Eleven Multilingual v2",
+    "tempo": 1
+  },
+  "fixes": [
+    "Square reference image matches board crop",
+    "Directional drag suppresses synthetic click",
+    "Bale target matches placed bale geometry",
+    "Scale dial stays visible and supports basket"
+  ],
+  "limits": [
+    "Browser viewport simulation; no physical-device or child usability study",
+    "Existing illustrated farm assets reused; preview is actual gameplay"
+  ],
+  "finalCleanBrowser": {
+    "puzzleSlides": 4,
+    "wrongDirectionDragRejected": true,
+    "consoleWarnings": 0,
+    "consoleErrors": 0
+  }
+}

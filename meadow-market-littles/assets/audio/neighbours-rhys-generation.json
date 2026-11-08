@@ -1,0 +1,40 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-08",
+  "files": [
+    {
+      "id": "journey-rhys-pond-pads",
+      "farmer": "rhys",
+      "text": "Let's help the ducklings! Bring one little duck to each lily pad.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 4.26005,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 52162
+    },
+    {
+      "id": "journey-rhys-pond-feed",
+      "farmer": "rhys",
+      "text": "They're ready for a snack! Give each duckling one little carrot.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.31009,
+      "sourceEnd": 10.5788,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 52162
+    },
+    {
+      "id": "journey-rhys-pond-swim",
+      "farmer": "rhys",
+      "text": "Time for a swim! Move your finger across the water, and guide your duck family home.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 12.619000000000002,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 67209
+    }
+  ]
+}

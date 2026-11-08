@@ -121,5 +121,5 @@
     render(a){a.renderBase();a.root.classList.add('fj-screen');if(kind==='haystack'){const stack=a.root.querySelectorAll('.fa-hay-stack')[a.round],top=stack?.querySelector('.fa-stacked-bale:last-child');if(a.parts.length&&top){top.classList.add('fj-bale-land');top.style.setProperty('--bale-delay','0s');}}if(kind==='balance'&&a.parts.length)a.root.querySelector('.fa-settled-duck[data-pad="'+a.parts.at(-1)+'"]')?.classList.add('fj-duck-swim');if(kind==='market')a.root.querySelector('.fa-customer').classList.add('fj-neighbour-wave');if(kind==='parade')a.root.querySelector('.fa-parade-friend').insertAdjacentHTML('beforeend','<span class="fj-parade-dust" aria-hidden="true"></span>');},
     accept(a,target,id){a.acceptBase(target,id);}
   });
-  window.meadowFarmJourneys={rules:{travel}};
+  window.meadowFarmJourneys={rules:{travel},rub,stage,laterPhase};
 })();
