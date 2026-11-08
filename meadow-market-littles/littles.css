@@ -26,3 +26,6 @@ body{background-color:#efdfc5}#littles-home{background:#fff7e6f5}
 @media(max-width:600px){.welcome{display:grid;grid-template-columns:minmax(105px,.85fr) minmax(0,1.15fr);gap:12px;align-items:center;min-height:140px;margin:12px auto}.welcome .family{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;width:100%;height:120px;min-width:0;gap:0}.welcome .family img,.welcome .family img:first-child{width:100%;height:115px;margin:0;object-fit:contain}.welcome>div:last-child{min-width:0}.welcome h2{font-size:clamp(20px,5.8vw,24px);line-height:1.1;margin:0}.welcome p{line-height:1.35;margin:7px 0;font-size:12px}.welcome .primary-button{min-height:47px;padding:9px 13px;font-size:14px}}
 
 .mini-result-stars{font-size:clamp(28px,5vh,46px);color:#dfa025;text-shadow:0 2px #a66c2b;letter-spacing:5px;margin:8px 0}.mini-progress-details{max-width:100%;font-size:13px;color:#617444;margin:10px auto}.mini-progress-details summary{cursor:pointer;min-height:30px;display:list-item}.mini-progress-details .club-metric{font-size:17px;display:block;margin:8px}.mini-progress-details .mini-reward{font-size:14px;line-height:1.3}
+.mini-caption{pointer-events:none}
+
+.mini-dialog:has(.art-gallery) .mini-score{display:none!important}

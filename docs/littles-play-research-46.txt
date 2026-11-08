@@ -1,0 +1,41 @@
+Meadow Market Littles: engagement through meaningful play (Build 46)
+
+Design objective: children want to return because they enjoy making, helping,
+discovering and mastering something. App engagement is not evidence of learning.
+These changes require child/family usability work before claiming learning gains.
+
+Evidence consulted 8 November 2026:
+NAEYC, Principles of Child Development and Learning.
+https://www.naeyc.org/resources/position-statements/dap/principles
+Relevant principles: choice, wonder, delight, active meaningful engagement,
+supported challenge and learning through exploration and social play.
+
+Skene et al., Child Development (2022), systematic review/meta-analysis,
+DOI 10.1111/cdev.13730. 39 studies reviewed; 17 in meta-analysis.
+https://ueaeprints.uea.ac.uk/id/eprint/90660/1/Child_Development_2022_Skene_Can_guidance_during_play_enhance_children_s_learning_and_development_in_educational.pdf
+Guided play showed advantages for selected early maths, shape knowledge,
+task switching and spatial vocabulary comparisons. Other outcomes did not show
+differences. This does not validate this app or support a blanket educational claim.
+
+Harvard Center on the Developing Child, Brain-Building Through Play (2022),
+and activities for 4-7-year-olds.
+https://developingchild.harvard.edu/resources/handouts-tools/brainbuildingthroughplay/
+https://developingchild.harvard.edu/wp-content/uploads/2024/12/5-Games-Activities-for-Children-4-7-years.pdf
+Use age/ability appropriate challenges, physical play, memory, turn taking,
+and opportunities for adults to guide then allow growing independence.
+
+Applied design decisions:
+- Optional picture-led farm jobs offer a helping, thinking and creating choice.
+  All catalogue games stay available. Recent choices vary the invitations.
+- Play has a meaningful visible outcome: a fitted window, stirred recipe,
+  performing animal tune, movable saved farm/story, uncovered farm friend.
+- Forgiving targets, deliberate actions, duplicate-tap locks and optional hints.
+- A short shared celebration adds animated golden stars, clear farmer praise
+  already approved in the game, and a gently glowing next/replay control.
+- A clear All done/Back control remains available. No expiry, loss of a streak,
+  randomized prize schedule or automatic relaunch is introduced.
+- Reduced-motion preferences remove decorative movement.
+- Saved creations and compositions provide reasons to revisit and experiment.
+
+Validation: automated regression checks plus catalogue browser play testing.
+Separate browser/device QA records report the actual extent of coverage.

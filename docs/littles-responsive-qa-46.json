@@ -1,0 +1,262 @@
+[
+  {
+    "id": "little_farm_builder",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      320,
+      568
+    ]
+  },
+  {
+    "id": "little_farm_builder",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      390,
+      844
+    ]
+  },
+  {
+    "id": "little_farm_builder",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      820,
+      1180
+    ]
+  },
+  {
+    "id": "little_farm_builder",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      844,
+      390
+    ]
+  },
+  {
+    "id": "meadow_keepsakes",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      320,
+      568
+    ]
+  },
+  {
+    "id": "meadow_keepsakes",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      390,
+      844
+    ]
+  },
+  {
+    "id": "meadow_keepsakes",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      820,
+      1180
+    ]
+  },
+  {
+    "id": "meadow_keepsakes",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      844,
+      390
+    ]
+  },
+  {
+    "id": "windmill_workshop",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      320,
+      568
+    ]
+  },
+  {
+    "id": "windmill_workshop",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      390,
+      844
+    ]
+  },
+  {
+    "id": "windmill_workshop",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      820,
+      1180
+    ]
+  },
+  {
+    "id": "windmill_workshop",
+    "dialog": "Meadow Market Littles game",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      844,
+      390
+    ]
+  },
+  {
+    "id": "market",
+    "dialog": "Farmers Market",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      320,
+      568
+    ]
+  },
+  {
+    "id": "market",
+    "dialog": "Farmers Market",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      390,
+      844
+    ]
+  },
+  {
+    "id": "market",
+    "dialog": "Farmers Market",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      820,
+      1180
+    ]
+  },
+  {
+    "id": "market",
+    "dialog": "Farmers Market",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      844,
+      390
+    ]
+  },
+  {
+    "id": "picnicpartners",
+    "dialog": "together-dialog",
+    "offscreen": [],
+    "overflow": [
+      0,
+      10
+    ],
+    "screen": [
+      320,
+      568
+    ]
+  },
+  {
+    "id": "picnicpartners",
+    "dialog": "together-dialog",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      390,
+      844
+    ]
+  },
+  {
+    "id": "picnicpartners",
+    "dialog": "together-dialog",
+    "offscreen": [],
+    "overflow": [
+      0,
+      1
+    ],
+    "screen": [
+      820,
+      1180
+    ]
+  },
+  {
+    "id": "picnicpartners",
+    "dialog": "together-dialog",
+    "offscreen": [],
+    "overflow": [
+      0,
+      0
+    ],
+    "screen": [
+      844,
+      390
+    ]
+  }
+]

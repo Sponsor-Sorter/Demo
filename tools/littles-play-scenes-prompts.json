@@ -1,0 +1,45 @@
+[
+  {
+    "id": "windmill-clearing",
+    "transparent": false,
+    "prompt": "Use case: illustration-story. Full-screen BACKGROUND only for Meadow Market Littles ages 3-6. Match the reference's rich warm softly dimensional storybook farm painting and natural wood, inviting golden sunlight. A quiet sunny orchard clearing seen at child eye level, distant rolling green hills, distant apple trees and a very small red barn at far right. CRUCIAL COMPOSITION: horizon at 35 percent image height, large flat level ochre earth foreground from 45 percent to bottom, absolutely empty centre 60 percent of the image; this is the ground on which a separate interactive wooden windmill will stand. Natural grass at left and right edges only, no foreground fence, no bench, no building or windmill, no props or shadows prepainted in centre. Light comes from upper left. Landscape 3:2, full bleed, no text, no buttons or UI.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-317f535a-2b91-4288-b661-58b10c3614ae.png"
+  },
+  {
+    "id": "kitchen-room",
+    "transparent": false,
+    "prompt": "Use case: illustration-story. Full-screen BACKGROUND for Meadow Market Littles preschool pretend kitchen. Match reference's polished warm softly dimensional storybook farm painting. Cosy farmhouse kitchen with large empty natural oak tabletop occupying bottom half, a simple small window at upper centre overlooking a sunny green farm meadow, pale warm plaster walls, quiet wood shelves only far left/right, a few soft herbs at edges. Clear centre table space for a separate mixing bowl and draggable ingredients. Calm few objects, child-friendly without clutter. Golden sunlight from upper left, natural tactile wood and linen materials. Full bleed landscape 3:2. No people, food, bowl, utensils, lettering, buttons or UI.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-577f0c03-0535-4b80-884e-3c68c6133727.png"
+  },
+  {
+    "id": "music-meadow",
+    "transparent": false,
+    "prompt": "Use case: illustration-story. Full-screen BACKGROUND for Meadow Market Littles preschool farm music game. Match reference's rich warm softly dimensional storybook farm painting. A sunny little farm meadow performance area, broad EMPTY green clearing across middle and foreground for separate animal performers, low distant wooden fence at horizon 35 percent high, small red barn far back right, soft trees at left edge, a few flowers along outer bottom corners only. Child eye-level, bright inviting golden daylight. Calm simple composition, no animals, no people, no instruments, no table, no foreground fence. Full bleed landscape 3:2. No lettering, no game UI.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-37a7cad8-c644-4c5c-8e63-d7420cf27ff3.png"
+  },
+  {
+    "id": "mixing-bowl",
+    "transparent": true,
+    "prompt": "Use case: illustration-story. ONE isolated empty rustic farmhouse mixing bowl, warm creamy glazed ceramic with subtle blue rim, wide open elliptical top viewed slightly from above so contents can be added inside. Broad rounded low body, front wall clearly visible, natural handmade tactile material, softly dimensional storybook children's farm game illustration, warm sunlight upper left, crisp clean silhouette. Centre one bowl filling frame. Genuinely transparent background, no table, no surroundings, no props, no text, no floor or cast shadow.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-f0c5864f-95e8-4beb-a187-338b46ff6ebd.png"
+  },
+  {
+    "id": "wooden-spoon",
+    "transparent": true,
+    "prompt": "Use case: illustration-story. ONE isolated natural honey-coloured wooden cooking spoon for a preschool farm kitchen game. Large round shallow spoon head at top, short comfortable handle pointing down. Straight-on slightly top-down view, softly dimensional polished storybook illustration, natural wood grain, gentle warm light upper left. Centre whole object fully visible filling frame with breathing room. Genuinely transparent background. No hands, food, table, bowl, floor, shadow, text or other objects.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-070d3109-c5be-4b12-b421-d1a442b073d6.png"
+  },
+  {
+    "id": "hiding-bush",
+    "transparent": true,
+    "prompt": "Use case: illustration-story. ONE isolated low broad rounded leafy farm bush, two soft lobes with a subtle seam at centre, densely layered natural green leaves with a few tiny soft cream blossoms. Preschool Meadow Market Littles farm game, polished warm softly dimensional storybook illustration, natural leaf texture, golden light upper left, clear simple readable silhouette and no clutter. Frontal view, low wide bush can conceal a small lamb standing behind it. Object entirely visible with breathing room. Genuinely transparent background, no ground, no floor shadow, no surrounding scene, no animals, no letters or UI.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-b334108c-f249-47f8-aa04-0fabfe294f2e.png"
+  },
+  {
+    "id": "hiding-gate",
+    "transparent": true,
+    "prompt": "Use case: illustration-story. ONE isolated small rustic farm paddock gate facing the viewer, honey-coloured natural timber, two short upright side posts and a broad closed gate of three horizontal wooden bars with ONE diagonal brace. Simple warm natural wood grain, a friendly softly rounded children's farm object, polished warm softly dimensional storybook style matching Meadow Market Littles. Gate broad enough to hide a small lamb behind it. Entire object visible. Genuinely transparent background. No animal, fence extending outwards, ground, landscape, cast shadow, text or UI.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-dfa68093-1136-46c9-99fb-9541f6392f60.png",
+    "editPrompt": "Edit target: the supplied wooden gate image. Preserve exactly the gate's wooden bars, two posts, diagonal brace, golden wood texture, soft storybook style and proportions. Remove ALL brown background glow/halo and ALL cast shadow. Every area outside the wooden gate AND the open holes between its bars must be fully transparent (alpha zero), with clean soft antialiased edges only immediately against the wood. No surrounding haze or floor. Keep only the one wooden gate as a clean transparent game cutout. Do not add anything."
+  }
+]

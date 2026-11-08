@@ -1,0 +1,106 @@
+{
+  "first_sounds": "Completed 6; double-tap did not skip; animated stars and next button",
+  "shape_shadows": "Completed 6; wrong shape rejected",
+  "little_farm_builder": "Placed, saved and reopened creation",
+  "hiding_friend": "Completed four hidden-friend rounds",
+  "meadow_kitchen": "Added ingredients, stirred with actual drags, shared and completed",
+  "meadow_story": "Placed and dragged friend, played scene, saved and finished",
+  "together_animalrescue": "Completed 3; real dragged bridge and crossing",
+  "together_picnicpartners": "Completed 3; role swaps and packing animation",
+  "together_gardenhelpers": "Completed 3; watering and growth",
+  "together_cozyhome": "Completed 3; comfort item placement",
+  "together_animalband": "Completed four shared sounds; animated performances",
+  "together_storywagon": "Completed three stories with dance, picnic and puddle animations",
+  "together_connectfour": "Full round completed; reward and exit verified",
+  "together_tictactoe": "Full round completed; reward and exit verified",
+  "together_rps": "Full round completed; reward and exit verified",
+  "together_meadowrace": "Full round completed; reward and exit verified; 21 die rolls",
+  "together_harvestbasket": "Full round completed; reward and exit verified",
+  "together_memoryduel": "Full round completed; reward and exit verified; solved from revealed labels in 20 flips",
+  "together_memorygarden": "Full round completed; reward and exit verified; solved from revealed labels in 24 flips",
+  "farm_band": "Composed 3 notes; performers and active note animated; stop and clear worked",
+  "sound_garden": "Composed 3 notes; performers and active note animated; stop and clear worked",
+  "meadow_keepsakes": "Picture stamped, animated, saved and reopened",
+  "windmill_workshop": "Completed 4 sails and 3 gusts; grounded clearing, spinning rotor and shared win effects",
+  "little_bridge_builders": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "haystack_tower": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "nest_builder": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "pond_balance": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "farm_post_office": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "farm_weather": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "rainy_day_clothesline": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "kindness_meadow": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "orchard_seasons": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "seed_to_snack": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "market_pretend": {
+    "coverage": "Opened and performed core placement",
+    "imagesLoaded": true
+  },
+  "tractor_trail": "Completed six-command route with visible travel and win",
+  "barnyard_action_parade": "Selected hop; actual tap triggered the friend animation",
+  "listenharvest": "Full puzzle completed; feedback and shared celebration verified",
+  "gentleharvest": "Full puzzle completed; feedback and shared celebration verified",
+  "harvestcount": "Full puzzle completed; feedback and shared celebration verified",
+  "fullbasket": "Full puzzle completed; feedback and shared celebration verified",
+  "spokenorder": "Full puzzle completed; feedback and shared celebration verified",
+  "animalhome": "Full puzzle completed; feedback and shared celebration verified",
+  "applecartsort": "Full puzzle completed; feedback and shared celebration verified",
+  "paddockchange": "Full puzzle completed; feedback and shared celebration verified",
+  "barnyardlisten": "Full puzzle completed; feedback and shared celebration verified",
+  "farmerpattern": "Completed all five patterns by watching highlighted notes",
+  "farmpicture": "All four picture pieces fitted; win and replay controls verified",
+  "meadowpairs": "Solved from revealed picture names; persistent card images and win effects verified",
+  "eggs": "Caught all six moving eggs after resuming; countdown-free round and win",
+  "flowers": "Followed six highlighted flowers; completed result",
+  "sorting": "Sorted six matching produce; completed result",
+  "milk": "Filled four buckets with live timing controls; no countdown or failure pressure",
+  "memory": "Completed all 3 pairs from revealed labels; card flips and result verified",
+  "sheep": "Full illustrated adventure: uncovered and gathered herd, traced curved path, scattered feed and won",
+  "goat": "Illustrated scene and hiding-cover gesture checked; shared stages completed with lambs",
+  "cow": "Cow scene opened and hiding place moved; shared route/feed fully tested with lambs",
+  "lambcare": "Full four-stage day completed: 3 carrots, 6 brushed patches, 3 ball returns, hay bed and blanket",
+  "tractorrepair": "Completed 8 repairs and picture counting; countdown removed; fixed caption intercepting phone answer buttons",
+  "differences": "Compared both pictures and found every difference; completed result",
+  "coopmath": "All six construction stages completed; hen walk-in, eggs and win verified",
+  "drawing": "Drew a real stroke, tested no-selected-colour prompt, undo/redo, saved and completed",
+  "colourbynumber": "Completed all five coloured regions with selected buckets; visually checked solid fills, saved and won",
+  "matchpainting": "Completed matching five region colours, saved and won",
+  "care_feed": "Filled both food and water troughs through actual tool drags; no countdown; no premature win effects",
+  "care_play": "Three actual ball drags completed; pointer-start handler fixed and retested",
+  "care_brush": "Completed full brush, clean and shear via native tool drags; no accidental reopening.",
+  "market": "Completed packing and weighing three items; wrong picture retry and no countdown verified.",
+  "balloon_letters": "All six spoken targets popped, three farmer portraits rotate, complete win and highlighted replay.",
+  "name_tracing": "One-letter test name traced by actual stroke; Good job and own handwriting name result displayed.",
+  "letter_tracing": "Capital A and little a traced by real strokes; next letter reward and rainbow drawing verified (representative alphabet, not all 52 manually).",
+  "word_search": "Completed easy three-word board by native letter drags; alternating word help taps, time/word count and glowing replay verified."
+}
