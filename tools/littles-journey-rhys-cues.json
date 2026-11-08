@@ -1,0 +1,12 @@
+[
+  {
+    "id": "journey-rhys-bridge-fit",
+    "farmer": "rhys",
+    "text": "Choose the plank that fits across the stream. Bring it to the bridge."
+  },
+  {
+    "id": "journey-rhys-bridge-guide",
+    "farmer": "rhys",
+    "text": "Slide your finger across the bridge to guide Clover safely home."
+  }
+]

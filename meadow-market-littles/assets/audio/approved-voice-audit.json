@@ -710,6 +710,126 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "find-generation.json"
     },
+    "journey-jade-nest-line": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-nest-smooth": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-nest-hatch": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-garden-plant": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-garden-water": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-garden-pick": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-garden-wash": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-garden-share": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-weather-dress": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-weather-rainy": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-weather-sunny": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-weather-windy": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-laundry-hang": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-laundry-peg": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-laundry-dry": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-laundry-collect": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-kindness-snack": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-kindness-water": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-kindness-play": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-post-stamp": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jade-post-deliver": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "journey-jade-generation.json"
+    },
+    "journey-jay-spring-return": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "journey-jay-generation.json"
+    },
+    "journey-rhys-bridge-fit": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "journey-rhys-generation.json"
+    },
+    "journey-rhys-bridge-guide": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "journey-rhys-generation.json"
+    },
     "letter-find-b": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",

@@ -1,0 +1,18 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-08",
+  "files": [
+    {
+      "id": "journey-jay-spring-return",
+      "farmer": "jay",
+      "text": "Your tree is cosy. Here comes a new spring!",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "sourceStart": 0,
+      "sourceEnd": null,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 33987
+    }
+  ]
+}

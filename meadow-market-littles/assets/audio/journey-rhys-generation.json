@@ -1,0 +1,29 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-08",
+  "files": [
+    {
+      "id": "journey-rhys-bridge-fit",
+      "farmer": "rhys",
+      "text": "Choose the plank that fits across the stream. Bring it to the bridge.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 4.54807,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 55619
+    },
+    {
+      "id": "journey-rhys-bridge-guide",
+      "farmer": "rhys",
+      "text": "Slide your finger across the bridge to guide Clover safely home.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 6.5024299999999995,
+      "sourceEnd": null,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 57186
+    }
+  ]
+}

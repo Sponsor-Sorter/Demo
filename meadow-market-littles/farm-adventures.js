@@ -30,7 +30,7 @@
       const root=this.dialog.querySelector('.fa-screen');this.root=root;
       root.querySelector('[data-fa-exit]').onclick=this.hooks.close;
       root.querySelector('[data-fa-reset]').onclick=this.hooks.restart;
-      root.querySelector('[data-fa-help]').onclick=()=>window.meadowAudio?.speak(this.g.voice);
+      root.querySelector('[data-fa-help]').onclick=()=>window.meadowAudio?.speak(this.helpVoice||this.g.voice);
       root.addEventListener('click',e=>{if(performance.now()<(this.ignoreClickUntil||0)){e.preventDefault();e.stopPropagation();return;}const piece=e.target.closest('[data-fa-piece]'),target=e.target.closest('[data-fa-target]');if(piece)this.select(piece);else if(target)this.drop(target);},{signal});
       root.addEventListener('pointerdown',e=>this.down(e),{signal});root.addEventListener('pointermove',e=>this.move(e),{signal});root.addEventListener('pointerup',e=>this.up(e),{signal});root.addEventListener('pointercancel',()=>this.cancelDrag(),{signal});root.addEventListener('lostpointercapture',()=>this.cancelDrag(),{signal});
       this.later(()=>{if(!this.selected&&!this.busy&&!this.finished){root.querySelector('[data-fa-piece]')?.classList.add('fa-hint');}},6500);

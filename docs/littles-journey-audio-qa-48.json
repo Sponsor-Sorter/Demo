@@ -1,0 +1,297 @@
+{
+  "build": 48,
+  "completedRounds": [
+    "nest_builder",
+    "seed_to_snack",
+    "farm_weather",
+    "rainy_day_clothesline",
+    "kindness_meadow",
+    "farm_post_office",
+    "little_bridge_builders",
+    "orchard_seasons"
+  ],
+  "uniqueNewClips": [
+    "journey-jade-nest-line",
+    "journey-jade-nest-smooth",
+    "journey-jade-nest-hatch",
+    "journey-jade-garden-plant",
+    "journey-jade-garden-water",
+    "journey-jade-garden-pick",
+    "journey-jade-garden-wash",
+    "journey-jade-garden-share",
+    "journey-jade-weather-dress",
+    "journey-jade-weather-rainy",
+    "journey-jade-weather-sunny",
+    "journey-jade-weather-windy",
+    "journey-jade-laundry-hang",
+    "journey-jade-laundry-peg",
+    "journey-jade-laundry-dry",
+    "journey-jade-laundry-collect",
+    "journey-jade-kindness-snack",
+    "journey-jade-kindness-water",
+    "journey-jade-kindness-play",
+    "journey-jade-post-stamp",
+    "journey-jade-post-deliver",
+    "journey-rhys-bridge-fit",
+    "journey-rhys-bridge-guide",
+    "journey-jay-spring-return"
+  ],
+  "phaseChecks": [
+    {
+      "duration": 2.1883125,
+      "id": "journey-jade-nest-line",
+      "task": "Make a soft, cosy nest",
+      "repeat": true
+    },
+    {
+      "duration": 2.4304375,
+      "id": "journey-jade-nest-smooth",
+      "task": "Smooth the nest lining",
+      "repeat": true
+    },
+    {
+      "duration": 3.2524166666666665,
+      "id": "journey-jade-nest-hatch",
+      "task": "Warm the eggs for the ducklings",
+      "repeat": true
+    },
+    {
+      "duration": 2.2326875,
+      "id": "journey-jade-garden-plant",
+      "task": "Plant your carrot garden",
+      "repeat": true
+    },
+    {
+      "duration": 3.6405833333333337,
+      "id": "journey-jade-garden-water",
+      "task": "Water and watch it grow",
+      "repeat": true
+    },
+    {
+      "duration": 2.4031041666666666,
+      "id": "journey-jade-garden-pick",
+      "task": "Pull your carrots from the soil",
+      "repeat": true
+    },
+    {
+      "duration": 2.603479166666667,
+      "id": "journey-jade-garden-wash",
+      "task": "Wash your crunchy carrots",
+      "repeat": true
+    },
+    {
+      "duration": 3.357583333333334,
+      "id": "journey-jade-garden-share",
+      "task": "Share the harvest with your friends",
+      "repeat": true
+    },
+    {
+      "duration": 3.066291666666667,
+      "id": "journey-jade-weather-dress",
+      "task": "Help Cloud dress for rainy weather",
+      "repeat": true
+    },
+    {
+      "duration": 2.865395833333334,
+      "id": "journey-jade-weather-rainy",
+      "task": "Splash through the puddles",
+      "repeat": true
+    },
+    {
+      "duration": 3.066291666666667,
+      "id": "journey-jade-weather-dress",
+      "task": "Help Cloud dress for sunny weather",
+      "repeat": false
+    },
+    {
+      "duration": 3.005145833333333,
+      "id": "journey-jade-weather-sunny",
+      "task": "Gather sunny meadow flowers",
+      "repeat": true
+    },
+    {
+      "duration": 3.066291666666667,
+      "id": "journey-jade-weather-dress",
+      "task": "Help Cloud dress for windy weather",
+      "repeat": false
+    },
+    {
+      "duration": 2.8566875,
+      "id": "journey-jade-weather-windy",
+      "task": "Catch the breezy fallen leaves",
+      "repeat": true
+    },
+    {
+      "duration": 3.0433958333333333,
+      "id": "journey-jade-laundry-hang",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 2.0595833333333333,
+      "id": "journey-jade-laundry-peg",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 3.3270833333333334,
+      "id": "journey-jade-laundry-dry",
+      "task": "Send a breeze to dry the washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.4621041666666668,
+      "id": "journey-jade-laundry-collect",
+      "task": "Collect your dry washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.0433958333333333,
+      "id": "journey-jade-laundry-hang",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 2.0595833333333333,
+      "id": "journey-jade-laundry-peg",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 3.3270833333333334,
+      "id": "journey-jade-laundry-dry",
+      "task": "Send a breeze to dry the washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.4621041666666668,
+      "id": "journey-jade-laundry-collect",
+      "task": "Collect your dry washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.0433958333333333,
+      "id": "journey-jade-laundry-hang",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 2.0595833333333333,
+      "id": "journey-jade-laundry-peg",
+      "task": "A little farm clothesline",
+      "repeat": true
+    },
+    {
+      "duration": 3.3270833333333334,
+      "id": "journey-jade-laundry-dry",
+      "task": "Send a breeze to dry the washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.4621041666666668,
+      "id": "journey-jade-laundry-collect",
+      "task": "Collect your dry washing",
+      "repeat": true
+    },
+    {
+      "duration": 3.059,
+      "id": "journey-jade-kindness-snack",
+      "task": "Share a little farm snack",
+      "repeat": true
+    },
+    {
+      "duration": 2.9755,
+      "id": "journey-jade-kindness-water",
+      "task": "Bring fresh water to your friends",
+      "repeat": true
+    },
+    {
+      "duration": 3.3826875,
+      "id": "journey-jade-kindness-play",
+      "task": "Bring everyone into the game",
+      "repeat": true
+    },
+    {
+      "duration": 2.655291666666667,
+      "id": "journey-jade-post-stamp",
+      "task": "Make a postcard for Pip",
+      "repeat": true
+    },
+    {
+      "duration": 4.494125,
+      "id": "journey-jade-post-deliver",
+      "task": "Deliver your picture postcard",
+      "repeat": true
+    },
+    {
+      "duration": 2.655291666666667,
+      "id": "journey-jade-post-stamp",
+      "task": "Make a postcard for Daisy",
+      "repeat": true
+    },
+    {
+      "duration": 4.494125,
+      "id": "journey-jade-post-deliver",
+      "task": "Deliver your picture postcard",
+      "repeat": true
+    },
+    {
+      "duration": 2.655291666666667,
+      "id": "journey-jade-post-stamp",
+      "task": "Make a postcard for Cloud",
+      "repeat": true
+    },
+    {
+      "duration": 4.494125,
+      "id": "journey-jade-post-deliver",
+      "task": "Deliver your picture postcard",
+      "repeat": true
+    },
+    {
+      "duration": 4.5480625,
+      "id": "journey-rhys-bridge-fit",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 4.686541666666667,
+      "id": "journey-rhys-bridge-guide",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 4.5480625,
+      "id": "journey-rhys-bridge-fit",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 4.686541666666667,
+      "id": "journey-rhys-bridge-guide",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 4.5480625,
+      "id": "journey-rhys-bridge-fit",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 4.686541666666667,
+      "id": "journey-rhys-bridge-guide",
+      "task": "Help Clover cross the stream",
+      "repeat": true
+    },
+    {
+      "duration": 2.767541666666667,
+      "id": "journey-jay-spring-return",
+      "task": "Winter in the orchard",
+      "repeat": true
+    }
+  ],
+  "replay": "Hear again checked at all new stages; original orchard introduction restored on a new round",
+  "springWin": "Jay clip decoded to 2.7675 seconds; win absent at speech start; full win reached after narration",
+  "console": [],
+  "limits": "Browser playtests on this computer; no physical device or child usability study."
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "journey-jade-nest-line",
+    "farmer": "jade",
+    "text": "Bring one of each soft material into the nest."
+  },
+  {
+    "id": "journey-jade-nest-smooth",
+    "farmer": "jade",
+    "text": "Gently rub around the nest to make the lining smooth."
+  },
+  {
+    "id": "journey-jade-nest-hatch",
+    "farmer": "jade",
+    "text": "Gently rub each egg to warm it. Watch the ducklings hatch!"
+  },
+  {
+    "id": "journey-jade-garden-plant",
+    "farmer": "jade",
+    "text": "Bring the seed packet to each patch of soil."
+  },
+  {
+    "id": "journey-jade-garden-water",
+    "farmer": "jade",
+    "text": "Bring the watering can to each little plant. Watch it grow!"
+  },
+  {
+    "id": "journey-jade-garden-pick",
+    "farmer": "jade",
+    "text": "Pull the carrots from the soil and carry them to your basket."
+  },
+  {
+    "id": "journey-jade-garden-wash",
+    "farmer": "jade",
+    "text": "Rub each muddy carrot with your finger to wash it clean."
+  },
+  {
+    "id": "journey-jade-garden-share",
+    "farmer": "jade",
+    "text": "Bring a carrot to each friend. You grew them yourself!"
+  },
+  {
+    "id": "journey-jade-weather-dress",
+    "farmer": "jade",
+    "text": "Look at the weather picture. Bring Cloud the clothes she needs."
+  },
+  {
+    "id": "journey-jade-weather-rainy",
+    "farmer": "jade",
+    "text": "Rub each puddle with your finger and make a little splash!"
+  },
+  {
+    "id": "journey-jade-weather-sunny",
+    "farmer": "jade",
+    "text": "Tap each little flower patch to gather the meadow flowers."
+  },
+  {
+    "id": "journey-jade-weather-windy",
+    "farmer": "jade",
+    "text": "Rub over each pile of fluttering leaves to gather them."
+  },
+  {
+    "id": "journey-jade-laundry-hang",
+    "farmer": "jade",
+    "text": "Hang the matching clothes on the line. Look at the weather picture."
+  },
+  {
+    "id": "journey-jade-laundry-peg",
+    "farmer": "jade",
+    "text": "Bring a wooden peg to each piece of washing."
+  },
+  {
+    "id": "journey-jade-laundry-dry",
+    "farmer": "jade",
+    "text": "Swipe your finger back and forth through the washing to help it dry."
+  },
+  {
+    "id": "journey-jade-laundry-collect",
+    "farmer": "jade",
+    "text": "Carry each piece of dry washing from the line into your basket."
+  },
+  {
+    "id": "journey-jade-kindness-snack",
+    "farmer": "jade",
+    "text": "Look at each friend's little picture. Bring the snack they want."
+  },
+  {
+    "id": "journey-jade-kindness-water",
+    "farmer": "jade",
+    "text": "Both friends need a drink. Bring fresh water to each bowl."
+  },
+  {
+    "id": "journey-jade-kindness-play",
+    "farmer": "jade",
+    "text": "Bring the ball to each friend. Everyone can join our game!"
+  },
+  {
+    "id": "journey-jade-post-stamp",
+    "farmer": "jade",
+    "text": "Choose a picture stamp and put it on your postcard."
+  },
+  {
+    "id": "journey-jade-post-deliver",
+    "farmer": "jade",
+    "text": "Match the friend on your postcard to their letterbox. Carry it over."
+  }
+]

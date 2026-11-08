@@ -1,0 +1,238 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-08",
+  "files": [
+    {
+      "id": "journey-jade-nest-line",
+      "farmer": "jade",
+      "text": "Bring one of each soft material into the nest.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 0,
+      "sourceEnd": 2.18832,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 27095
+    },
+    {
+      "id": "journey-jade-nest-smooth",
+      "farmer": "jade",
+      "text": "Gently rub around the nest to make the lining smooth.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 3.85703,
+      "sourceEnd": 6.28667,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 30230
+    },
+    {
+      "id": "journey-jade-nest-hatch",
+      "farmer": "jade",
+      "text": "Gently rub each egg to warm it. Watch the ducklings hatch!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 7.95347,
+      "sourceEnd": 11.2059,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 39947
+    },
+    {
+      "id": "journey-jade-garden-plant",
+      "farmer": "jade",
+      "text": "Bring the seed packet to each patch of soil.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 12.9373,
+      "sourceEnd": 15.17,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 27722
+    },
+    {
+      "id": "journey-jade-garden-water",
+      "farmer": "jade",
+      "text": "Bring the watering can to each little plant. Watch it grow!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 16.9288,
+      "sourceEnd": 20.5694,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 44649
+    },
+    {
+      "id": "journey-jade-garden-pick",
+      "farmer": "jade",
+      "text": "Pull the carrots from the soil and carry them to your basket.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 22.3198,
+      "sourceEnd": 24.722900000000003,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 29603
+    },
+    {
+      "id": "journey-jade-garden-wash",
+      "farmer": "jade",
+      "text": "Rub each muddy carrot with your finger to wash it clean.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 26.403499999999998,
+      "sourceEnd": 29.007,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 32110
+    },
+    {
+      "id": "journey-jade-garden-share",
+      "farmer": "jade",
+      "text": "Bring a carrot to each friend. You grew them yourself!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 30.7322,
+      "sourceEnd": 34.0898,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 41201
+    },
+    {
+      "id": "journey-jade-weather-dress",
+      "farmer": "jade",
+      "text": "Look at the weather picture. Bring Cloud the clothes she needs.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 35.7909,
+      "sourceEnd": 38.8572,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 37753
+    },
+    {
+      "id": "journey-jade-weather-rainy",
+      "farmer": "jade",
+      "text": "Rub each puddle with your finger and make a little splash!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 40.7946,
+      "sourceEnd": 43.66,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 35245
+    },
+    {
+      "id": "journey-jade-weather-sunny",
+      "farmer": "jade",
+      "text": "Tap each little flower patch to gather the meadow flowers.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 45.604800000000004,
+      "sourceEnd": 48.6089,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 37126
+    },
+    {
+      "id": "journey-jade-weather-windy",
+      "farmer": "jade",
+      "text": "Rub over each pile of fluttering leaves to gather them.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 50.587700000000005,
+      "sourceEnd": 53.444399999999995,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 35245
+    },
+    {
+      "id": "journey-jade-laundry-hang",
+      "farmer": "jade",
+      "text": "Hang the matching clothes on the line. Look at the weather picture.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 55.4307,
+      "sourceEnd": 58.4741,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 37439
+    },
+    {
+      "id": "journey-jade-laundry-peg",
+      "farmer": "jade",
+      "text": "Bring a wooden peg to each piece of washing.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 60.348600000000005,
+      "sourceEnd": 62.4082,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 25528
+    },
+    {
+      "id": "journey-jade-laundry-dry",
+      "farmer": "jade",
+      "text": "Swipe your finger back and forth through the washing to help it dry.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 64.2154,
+      "sourceEnd": 67.5425,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 40888
+    },
+    {
+      "id": "journey-jade-laundry-collect",
+      "farmer": "jade",
+      "text": "Carry each piece of dry washing from the line into your basket.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 69.3917,
+      "sourceEnd": 72.8538,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 42455
+    },
+    {
+      "id": "journey-jade-kindness-snack",
+      "farmer": "jade",
+      "text": "Look at each friend's little picture. Bring the snack they want.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 74.7923,
+      "sourceEnd": 77.85130000000001,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 37753
+    },
+    {
+      "id": "journey-jade-kindness-water",
+      "farmer": "jade",
+      "text": "Both friends need a drink. Bring fresh water to each bowl.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 79.5718,
+      "sourceEnd": 82.5473,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 36499
+    },
+    {
+      "id": "journey-jade-kindness-play",
+      "farmer": "jade",
+      "text": "Bring the ball to each friend. Everyone can join our game!",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 84.271,
+      "sourceEnd": 87.6537,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 41515
+    },
+    {
+      "id": "journey-jade-post-stamp",
+      "farmer": "jade",
+      "text": "Choose a picture stamp and put it on your postcard.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 89.3622,
+      "sourceEnd": 92.0175,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 32737
+    },
+    {
+      "id": "journey-jade-post-deliver",
+      "farmer": "jade",
+      "text": "Match the friend on your postcard to their letterbox. Carry it over.",
+      "voice": "Hope - upbeat and clear",
+      "sourceStart": 93.9161,
+      "sourceEnd": null,
+      "tempo": 0.82,
+      "normalization": "LUFS -18",
+      "bytes": 54994
+    }
+  ]
+}
