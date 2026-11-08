@@ -1,0 +1,19 @@
+{
+  "fullRounds": 15,
+  "phoneFullRounds": [
+    "nest_builder",
+    "seed_to_snack",
+    "haystack_tower"
+  ],
+  "inputChecks": [
+    "Stationary rubbing leaves progress at zero",
+    "Wrong snack, plank and postcard recipient rejected",
+    "Garden washing stars advance to 12/14",
+    "Only newly placed bale/duck animates",
+    "Restart resets progress",
+    "Leaving during crossing cancels delayed work and awards no stars"
+  ],
+  "responsiveLayouts": 48,
+  "consoleErrors": [],
+  "limits": "Browser on this computer; no physical iPad, physical two-device or child usability test in this release."
+}

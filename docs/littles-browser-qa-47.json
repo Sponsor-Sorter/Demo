@@ -1,0 +1,62 @@
+{
+  "nest_builder": {
+    "coverage": "Full round completed in browser",
+    "actions": "Placed all three materials, stationary touch rejected, real smoothing rubs and warming all three eggs; hatch animations and win."
+  },
+  "seed_to_snack": {
+    "coverage": "Full round completed in browser",
+    "actions": "All 14 tasks: planted/watered three plots, dragged three carrots to basket, rubbed all three clean, shared with both friends; full win."
+  },
+  "farm_weather": {
+    "coverage": "Full round completed in browser",
+    "actions": "Completed rainy/sunny/windy outfits and all nine outdoor tasks using real rubs/drags; proper generated outfit sprites; fixed overlapping windy targets and repeated entire round."
+  },
+  "rainy_day_clothesline": {
+    "coverage": "Full round completed in browser",
+    "actions": "All three loads: matched clothes, clipped each peg, real drying swipes, dragged each item into the basket and reached win."
+  },
+  "kindness_meadow": {
+    "coverage": "Full round completed in browser",
+    "actions": "Completed snack matching, fresh water for both friends and play invitations for both; wrong snack rejected without progress."
+  },
+  "little_bridge_builders": {
+    "coverage": "Full round completed in browser",
+    "actions": "All three widths and guided crossings; wrong plank and stationary bridge touch rejected, real drags/rubs, Clover crossing animation."
+  },
+  "farm_post_office": {
+    "coverage": "Full round completed in browser",
+    "actions": "Made three different stamps; wrong recipient rejected; dragged each addressed postcard to matching letterbox, animated deliveries and full result."
+  },
+  "haystack_tower": {
+    "coverage": "Full round completed in browser",
+    "actions": "All nine bales dragged in big-to-small order, three completed towers and full win."
+  },
+  "pond_balance": {
+    "coverage": "Full round completed in browser",
+    "actions": "Completed all one/two/three duck rounds with real drags, settled pad targets disabled, new-duck swim animation and full result."
+  },
+  "market_pretend": {
+    "coverage": "Full round completed in browser",
+    "actions": "Three shuffled picture orders fully packed by dragging each item; baskets animate delivery; all three neighbours served."
+  },
+  "orchard_seasons": {
+    "coverage": "Full round completed in browser",
+    "actions": "Planted, watered, harvested all three apples, applied two winter leaf blankets; watched spring return and full win."
+  },
+  "barnyard_action_parade": {
+    "coverage": "Full round completed in browser",
+    "actions": "Full four-friend round with native hop taps, sideways wiggle and upward stretch; distinct animated movements and full win."
+  },
+  "windmill_workshop": {
+    "coverage": "Full round completed in browser",
+    "actions": "Regression: all four sails dragged into place and wind supplied with real swipes; grounded art, spinning sails and full win."
+  },
+  "tractor_trail": {
+    "coverage": "Full round completed in browser",
+    "actions": "Regression: incomplete route retried successfully; six-command route travelled visibly and reached orchard win."
+  },
+  "first_sounds": {
+    "coverage": "Full round completed in browser",
+    "actions": "Regression: all six first-sound questions completed after engine changes; correct feedback, approved audio and full result."
+  }
+}

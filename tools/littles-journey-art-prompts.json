@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cloud-rainy",
+    "outfit": "a small sunny yellow rain cape naturally fitted over her quadruped back and shoulders with her entire face and ears visible, and little red rain boots correctly fitted onto all four legs. Her fleece, head, eye identity and quadruped anatomy must remain exactly recognizable.",
+    "prompt": "Edit the reference sheep into a single polished transparent game sprite for Meadow Market Littles, ages 3–6. Edit target/reference: the provided Cloud sheep. Keep the identical adorable cream wool, warm brown eyes, pink ears, friendly expression, three-quarter standing pose and soft painterly 3D storybook illustration. Add ONLY a small sunny yellow rain cape naturally fitted over her quadruped back and shoulders with her entire face and ears visible, and little red rain boots correctly fitted onto all four legs. Her fleece, head, eye identity and quadruped anatomy must remain exactly recognizable. No humans, no spare clothing, no text, no scene, no extra props, no framing, no cast ground shadow, no white border or halo. Full body isolated with clean genuine alpha transparency, all extremities inside the canvas, consistent scale. Clothing is actually worn and naturally fitted, never pasted floating in front of the sheep.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-4421a603-829e-42ea-9004-337a8c56f008.png",
+    "reference": "meadow-market-littles/assets/generated/sheep.webp",
+    "method": "Built-in image generation; transparent edit; resized to 900px WebP"
+  },
+  {
+    "id": "cloud-sunny",
+    "outfit": "a small woven straw sun hat with a green ribbon naturally resting on top of her fluffy head between her ears. Her entire face, all four legs and fluffy body remain visible, with exactly the same eye identity, pose and quadruped anatomy.",
+    "prompt": "Edit the reference sheep into a single polished transparent game sprite for Meadow Market Littles, ages 3–6. Edit target/reference: the provided Cloud sheep. Keep the identical adorable cream wool, warm brown eyes, pink ears, friendly expression, three-quarter standing pose and soft painterly 3D storybook illustration. Add ONLY a small woven straw sun hat with a green ribbon naturally resting on top of her fluffy head between her ears. Her entire face, all four legs and fluffy body remain visible, with exactly the same eye identity, pose and quadruped anatomy. No humans, no spare clothing, no text, no scene, no extra props, no framing, no cast ground shadow, no white border or halo. Full body isolated with clean genuine alpha transparency, all extremities inside the canvas, consistent scale. Clothing is actually worn and naturally fitted, never pasted floating in front of the sheep.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-25ac1480-8d11-455b-8224-c162fef13591.png",
+    "reference": "meadow-market-littles/assets/generated/sheep.webp",
+    "method": "Built-in image generation; transparent edit; resized to 900px WebP"
+  },
+  {
+    "id": "cloud-windy",
+    "outfit": "a small sunny yellow windproof cape naturally fitted over her quadruped back and shoulders, and a cosy coral red scarf properly wrapped around the neck behind her face with two short ends gently fluttering. Her entire face and ears and all four hooves remain visible, with the same eye identity, pose and quadruped anatomy.",
+    "prompt": "Edit the reference sheep into a single polished transparent game sprite for Meadow Market Littles, ages 3–6. Edit target/reference: the provided Cloud sheep. Keep the identical adorable cream wool, warm brown eyes, pink ears, friendly expression, three-quarter standing pose and soft painterly 3D storybook illustration. Add ONLY a small sunny yellow windproof cape naturally fitted over her quadruped back and shoulders, and a cosy coral red scarf properly wrapped around the neck behind her face with two short ends gently fluttering. Her entire face and ears and all four hooves remain visible, with the same eye identity, pose and quadruped anatomy. No humans, no spare clothing, no text, no scene, no extra props, no framing, no cast ground shadow, no white border or halo. Full body isolated with clean genuine alpha transparency, all extremities inside the canvas, consistent scale. Clothing is actually worn and naturally fitted, never pasted floating in front of the sheep.",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-a8de0597-d084-4f51-afc0-455763421141.png",
+    "reference": "meadow-market-littles/assets/generated/sheep.webp",
+    "method": "Built-in image generation; transparent edit; resized to 900px WebP"
+  }
+]

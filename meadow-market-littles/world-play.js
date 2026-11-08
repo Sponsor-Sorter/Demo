@@ -5,23 +5,23 @@
     ['meadow_story','Make a Meadow Story','jade','meadow','Put the farm friends where you like and make up what happens.','story'],
     ['little_farm_builder','Build a Little Farm','rhys','coop-build','Choose a farm scene, then add friends and crops.','builder'],
     ['hiding_friend','Find the Hiding Farm Friend','jade','differences','Listen for a farm friend, then find their picture in the paddock.','hide'],
-    ['seed_to_snack','From Seed to Snack','jade','sorting','Help plant, water and pick a little crop.','seed'],
-    ['farm_weather','Dress for the Farm Weather','jade','coop','Choose matching clothes to help a farm friend get ready for the weather.','weather'],
+    ['seed_to_snack','From Seed to Snack','jade','sorting','Plant, water, pick and wash carrots, then share your harvest.','seed'],
+    ['farm_weather','Dress for the Farm Weather','jade','coop','Choose Cloud’s weather clothes, then splash, gather flowers and catch leaves.','weather'],
     ['market_pretend','Little Market Pretend Play','jay','sorting','Fill a neighbour’s picture order at the farm stall.','market'],
     ['shape_shadows','Farm Shape Shadow Match','rhys','tractor-scene','Find the shape that fits the farm window.','shapes'],
     ['sound_garden','Make a Barnyard Sound Garden','jade','meadow','Choose farm friends and make a little sound pattern.','sounds'],
     ['tractor_trail','Follow the Tractor Trail','rhys','tractor-scene','Choose a short path to help the tractor reach the orchard.','tractor'],
     ['meadow_keepsakes','Meadow Day Keepsakes','jay','meadow','Make a little page with your favourite farm pictures.','keepsake'],
-    ['kindness_meadow','Kindness Meadow','jade','meadow','Help farm friends feel welcome with kind choices.','kindness'],
+    ['kindness_meadow','Kindness Meadow','jade','meadow','Match each friend’s need: share snacks, bring water and include everyone in play.','kindness'],
     ['windmill_workshop','Windmill Workshop','rhys','coop-build','Put the windmill together, then watch the breeze turn it.','windmill'],
-    ['little_bridge_builders','Little Bridge Builders','rhys','tractor-scene','Choose a bridge plank that fits the stream.','bridge'],
+    ['little_bridge_builders','Little Bridge Builders','rhys','tractor-scene','Fit the bridge, then guide Clover safely across the stream.','bridge'],
     ['haystack_tower','Haystack Tower','jay','coop','Stack three cosy hay towers from big to small.','haystack'],
-    ['nest_builder','Nest Builder','jade','meadow','Choose soft, safe things to make a bird a cosy nest.','nest'],
-    ['rainy_day_clothesline','Rainy-Day Clothesline','jade','coop','Choose clothes and accessories for the day’s weather.','clothesline'],
+    ['nest_builder','Nest Builder','jade','meadow','Line and smooth a cosy nest, then gently warm three eggs and watch them hatch.','nest'],
+    ['rainy_day_clothesline','Rainy-Day Clothesline','jade','coop','Hang and peg the washing, send a drying breeze, then collect it in a basket.','clothesline'],
     ['pond_balance','Lily Pad Pairs','rhys','meadow','Count the ducks and give each one a lily pad.','balance'],
     ['orchard_seasons','Orchard Seasons','jay','tractor-scene','See the orchard change and help the tree through the year.','seasons'],
     ['barnyard_action_parade','Barnyard Action Parade','rhys','coop','Pick an action and watch a farm friend bring it to life.','parade'],
-    ['farm_post_office','Farm Post Office','jade','sorting','Make picture postcards and deliver them to farm friends.','postoffice']
+    ['farm_post_office','Farm Post Office','jade','sorting','Make a picture postcard and match it to the right friend’s letterbox.','postoffice']
   ].map(([id,name,farmer,scene,text,kind])=>({id,name,farmer,scene,text,kind,voice:id==='farm_weather'?'world-rainy_day_clothesline':'world-'+id,image:id==='windmill_workshop'?base+'play-scenes/windmill-clearing.webp':`${base}minigames/${scene}.webp`}));
   let api,dialog,active=null,selected=null,step=0,round=0,target='',order=[],placed=[],soundSeq=[],route=[],custom=[],local={},soundRun=0,playGeneration=0;const delayedTimers=new Set();function cancelDelayed(){playGeneration++;for(const id of delayedTimers)clearTimeout(id);delayedTimers.clear()}function later(fn,ms){const token=playGeneration,id=setTimeout(()=>{delayedTimers.delete(id);if(token===playGeneration&&active)fn()},ms);delayedTimers.add(id);return id}
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
