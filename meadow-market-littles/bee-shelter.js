@@ -2,7 +2,7 @@
   'use strict';
   const C=window.meadowBeeCore,base='assets/generated/',art=base+'bee-shelter/';
   let dialog,canvas,ctx,sim,level=0,spent=0,draft=[],finger=null,raf=0,last=0,accumulator=0,epoch=0,images={},ready=false,hint=false,completed=false,complete=()=>{},uiSecond=-1,pencil={x:300,y:180},keyboardMode=false,welcomed=false;
-  const say=id=>window.meadowAudio?.speak(id==='intro'?'bee51-rhys-intro':id==='hint'?'bee51-rhys-map-'+level:'bee-rhys-'+id),sound=id=>window.meadowAudio?.play(id);
+  const say=id=>window.meadowAudio?.speak(id==='intro'?'bee51-rhys-intro':id==='hint'?'bee51-rhys-map-'+(C.levels[level].cue??level):'bee-rhys-'+id),sound=id=>window.meadowAudio?.play(id);
   function close(){epoch++;cancelAnimationFrame(raf);raf=0;sim?.dispose();sim=null;finger=null;window.meadowAudio?.stopVoice();dialog?.close();}
   function open(){if(!dialog){dialog=document.createElement('dialog');dialog.className='bs-dialog';dialog.setAttribute('aria-label','Bee Meadow Shelter');document.body.append(dialog);dialog.addEventListener('cancel',close);}dialog.showModal();start();}
   async function start(){const token=++epoch;cancelAnimationFrame(raf);sim?.dispose();sim=null;finger=null;spent=0;draft=[];hint=level===0;completed=false;last=0;accumulator=0;uiSecond=-1;pencil={x:300,y:180};keyboardMode=false;
