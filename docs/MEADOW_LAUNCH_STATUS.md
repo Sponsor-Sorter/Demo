@@ -4,7 +4,7 @@
 
 Production1.7.2/code12 remains active in Australia; website229 is live. Seven individually reviewed beta farms are now protected protocol4 saves with assets and wealth retained. No registered legacy save remains awaiting review. Meadow-only FK indexes and aggregate monitoring improvements are applied; live reviewer-farm sign-in, crops, helpers, travel and Build actions passed.
 
-Native1.7.3/code13 is the optimized candidate, pending its final compilation/Play analysis/device acceptance. Do not confuse it with the current public native release. Phone access and the remaining real-device ad edge cases are still outstanding. Full scope and evidence: [follow-up230](meadow-launch-followup230.md).
+Native 1.7.3/code13 is active on Internal testing. Its signed optimized build, DEX plugin-retention checks and both CI jobs passed; Play accepted it without release blockers. Public production remains 1.7.2. Phone access, optimized-device acceptance and the remaining real-device ad edge cases are still outstanding before promotion. Full scope and evidence: [follow-up230](meadow-launch-followup230.md).
 
 ## 7 November 2026 — commercial activation and public installation
 

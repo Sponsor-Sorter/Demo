@@ -24,4 +24,10 @@ The Samsung was observed with another game open; no input was sent to it. Physic
 
 ## Release status
 
-Native build, Play analysis/internal release and final device results are recorded below as they complete. Keep public1.7.2 available while validating the optimized candidate. No web cache/version increment is necessary for native-only changes.
+The signed optimized build passed release compilation and vital lint. Bundle SHA256:0f15165cb8fb292800c665936b0fbd81cc31458e6d97ef5ccae4edccfdafbc8a. Its6,751,235-byte upload is11.4%smaller than the prior7,617,307-byte bundle despite the newer SDK. Play estimates a3.37MB new install, down3.76MB, with2.46MB updates; supported phones/tablets are unchanged. These delivery figures are not a measured frame-rate or memory improvement.
+
+Inspection of the actual optimized DEX confirmed all four native plugin class names, runtime CapacitorPlugin annotations and twelve PluginMethod annotations survived R8: Ads consent/privacy/show, Store products/purchase/restore, Updates allowInstalls/check/install and Vault get/remove/set. The bundle includes its ReTrace mapping and the existing upload signature verifies.
+
+Google Play accepted 13/1.7.3 with no release blockers and published it to Internal testing at 02:53 UTC. The track shows Active / Available to internal testers. This is not a public production rollout. Both game and Android jobs in CI 42744981751 passed, including the new optimized release build. Private verification output is launch230/r8-verification.json; release proof is launch230/play-internal173.png.
+
+Keep public1.7.2 available while validating the optimized candidate on the Samsung. No web cache/version increment is necessary for native-only changes. No fresh physical test is claimed while another game's device turn remains active.
