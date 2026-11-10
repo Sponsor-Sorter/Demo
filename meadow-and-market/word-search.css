@@ -39,3 +39,33 @@
 /* Farming edition: retain the Littles interaction system and use the whole screen. */
 .word-search-dialog .ws-window{width:100%;max-width:none;border:0;border-radius:0;background:#fff8e9e8;box-shadow:none}.ws-intro{min-height:0;overflow:auto;justify-content:flex-start}.ws-topics{grid-template-columns:repeat(auto-fit,minmax(120px,1fr));width:min(100%,1000px);overflow:auto;min-height:110px;flex:1}.ws-intro-art,.ws-counts{display:none}.ws-word-list{overflow:auto;min-height:0;align-content:flex-start;max-height:29vh}.ws-board-wrap{min-height:0}.ws-cell{font-size:clamp(10px,calc(var(--ws-cell,20px)*.7),25px)!important;min-width:0;min-height:0}.ws-grid{flex:none;align-self:center}.ws-window .ws-live{font-size:12px;min-height:18px}.ws-found-pop{pointer-events:none;max-width:150px;min-height:100px;opacity:.94}.ws-found-pop .ws-object-emoji{font-size:40px;height:44px}.ws-header,.ws-controls{background:transparent;box-shadow:none}.ws-word{font-size:12px;min-height:28px}.ws-board-wrap>.ws-word-list{touch-action:pan-y}.ws-screen{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 @media(orientation:landscape) and (min-width:620px){.ws-board-wrap{grid-template-columns:minmax(0,3fr) minmax(130px,2fr)}.ws-word-list{max-height:100%}.ws-grid{grid-row:1/4}.ws-word-list{grid-row:1/3}.ws-live{grid-row:3}.ws-intro h2,.ws-intro>h3{display:none}.ws-topic{min-height:48px}.ws-topic>span{font-size:19px}.ws-topics{grid-template-columns:repeat(5,minmax(0,1fr))}.ws-intro{flex:1}.ws-topics{flex:1}}
+
+/* Mobile play: the letter board owns all space below one header and word strip. */
+.word-search-dialog .ws-playing{padding:4px;gap:4px;background:transparent;touch-action:manipulation}
+.ws-playing .ws-play-header{padding:0 2px;gap:4px;min-height:44px;flex:none;border-radius:0}
+.ws-playing .ws-game-heading{min-width:0;flex:1;background:#fff5d9e8;border-radius:10px;padding:2px 6px}
+.ws-playing .ws-game-heading h1{font-size:17px;white-space:nowrap;margin:0;line-height:1.1}
+.ws-mini-status{display:flex;gap:8px;white-space:nowrap;font-size:12px;line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums}
+.ws-header-actions{display:flex;align-items:center;gap:4px;flex:none}
+.ws-playing .ws-header-actions button{box-sizing:border-box;min-height:44px;height:44px;min-width:44px;margin:0;border-radius:11px;border:1px solid #c8a36b;background:#fff5dcee;color:#493320;line-height:1;font-size:13px;padding:3px 6px;touch-action:manipulation}
+.ws-playing .ws-header-actions .ws-icon{width:44px;padding:0;font-size:27px}.ws-icon img{display:block;width:42px;height:42px;object-fit:contain}
+.ws-playing .ws-header-actions .ws-close{width:44px;font-size:27px}.ws-playing .ws-words-toggle{width:65px}
+.ws-playing .ws-word-strip{height:36px;min-height:36px;flex:none;min-width:0}
+.ws-playing .ws-word-list{display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;align-content:normal;gap:5px;height:100%;max-height:none;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;touch-action:pan-x;padding:1px 0}
+.ws-playing .ws-word-list::-webkit-scrollbar{display:none}.ws-playing .ws-word{flex:none;min-height:32px;padding:4px 9px;border-width:1px;letter-spacing:.02em;font-size:13px;font-weight:800;white-space:nowrap}
+.ws-playing .ws-board-wrap{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-content:stretch;align-items:stretch;justify-content:stretch;gap:0;flex:1;min-height:0;min-width:0;width:100%}
+.ws-playing .ws-grid{grid-column:auto;grid-row:auto;grid-template-columns:repeat(var(--ws-cols,16),minmax(0,1fr));grid-template-rows:repeat(var(--ws-cols,16),minmax(0,1fr));align-self:stretch;justify-self:stretch;width:100%;height:100%;min-height:0;min-width:0;margin:0;padding:2px;border:1px solid #b39867;border-radius:5px;gap:1px;background:#e7d7b5;box-shadow:none}
+.ws-playing .ws-cell{width:100%;height:100%;min-width:0;min-height:0;border-radius:2px;border-width:1px;font-size:clamp(10px,calc(var(--ws-cell,20px)*.88),32px)!important;letter-spacing:0;background:#fff7e8ef}
+.ws-playing .ws-cell.is-found{background:var(--found-bg);border-color:var(--found-line);box-shadow:none}.ws-playing .ws-cell.is-selecting{background:#ffd660;border-color:#a66c1f;box-shadow:none;transform:none}
+.ws-playing .ws-play-live{position:absolute!important;width:1px;height:1px;min-height:0;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.ws-playing .ws-found-pop{top:54px;left:50%;min-height:0;min-width:0;max-width:80%;padding:5px 12px;display:block;border:1px solid #d6b36f;border-radius:12px;font-size:15px;transform:translateX(-50%);animation:none;box-shadow:0 2px 8px #4c331b44}.ws-playing .ws-found-pop .ws-object-emoji,.ws-playing .ws-found-pop img{display:none}
+.ws-playing .ws-options{position:absolute;z-index:8;right:5px;top:54px;display:flex;flex-direction:column;gap:8px;width:min(245px,calc(100% - 10px));max-height:calc(100% - 60px);overflow:auto;padding:12px;background:#fff2d8;border:2px solid #c9a168;border-radius:14px;box-shadow:0 6px 20px #49302055}.ws-options .ws-help{min-height:44px;font-size:14px}
+.ws-playing.ws-words-open .ws-word-list{position:absolute;z-index:7;top:54px;left:4px;right:4px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;align-items:stretch;height:auto;max-height:calc(100% - 62px);overflow-x:hidden;overflow-y:auto;padding:8px;border:2px solid #c9a168;border-radius:12px;background:#fff2d9;box-shadow:0 6px 20px #49302055;touch-action:pan-y;scrollbar-width:thin}
+.ws-playing.ws-words-open .ws-word{min-width:0;min-height:36px}.ws-word-hide{grid-column:1/-1;min-height:44px}.ws-playing [hidden]{display:none!important}
+.ws-playing button:focus-visible{outline:3px solid #976c26;outline-offset:1px}
+@media(max-width:340px){.ws-playing .ws-game-heading{padding-inline:3px}.ws-playing .ws-game-heading h1{font-size:15px}.ws-mini-status{font-size:11px;gap:5px}.ws-playing .ws-words-toggle{width:59px}.ws-header-actions{gap:3px}}
+@media(orientation:landscape) and (min-width:480px){
+ .word-search-dialog .ws-playing{display:grid;grid-template-columns:100px minmax(0,1fr) 209px;grid-template-rows:44px minmax(0,1fr)}
+ .ws-playing .ws-play-header{display:contents}.ws-playing .ws-game-heading{grid-column:1;grid-row:1}.ws-playing .ws-header-actions{grid-column:3;grid-row:1}
+ .ws-playing .ws-word-strip{grid-column:2;grid-row:1;height:44px;min-height:44px}.ws-playing .ws-board-wrap{grid-column:1/-1;grid-row:2}
+}

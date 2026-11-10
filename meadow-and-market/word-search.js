@@ -73,11 +73,15 @@
   function playBoard() {
     const words = answers.map((answer) => '<button class="ws-word" title="Read word with device pronunciation" data-word="' + answer.id + '"><span>' + answer.label + '</span></button>').join('');
     const cells = board.map((letter, index) => '<button class="ws-cell" role="gridcell" aria-rowindex="' + (Math.floor(index / size) + 1) + '" aria-colindex="' + ((index % size) + 1) + '" data-cell="' + index + '" aria-label="Letter ' + letter + '">' + letter + '</button>').join('');
-    screen('<header class="ws-header"><div><small>' + esc(topic.name.toUpperCase()) + ' · ' + wordCount + ' WORDS</small><h1>Find the words</h1></div><button class="ws-close" data-close aria-label="Back to games">×</button></header><div class="ws-status"><span class="ws-progress" data-progress>0 of ' + wordCount + ' found</span><span class="ws-timer" data-timer aria-label="Time">00:00</span></div><section class="ws-board-wrap"><div class="ws-grid" role="grid" aria-label="Word search letters">' + cells + '</div><div class="ws-word-list" aria-label="Words to find">' + words + '</div><div class="ws-live" data-live role="status" aria-live="polite">Put your finger on the first letter and follow the word.</div></section><footer class="ws-controls"><button class="ws-help" data-hear>🔊 Hear the directions</button><button class="ws-help" data-new>New puzzle</button><button class="ws-help" data-theme>Change theme</button></footer>');
+    screen('<header class="ws-header ws-play-header"><div class="ws-game-heading"><h1>Word find</h1><div class="ws-mini-status"><span data-progress aria-label="Words found">0 / ' + wordCount + '</span><span data-timer aria-label="Time">00:00</span></div></div><div class="ws-header-actions"><button class="ws-help ws-words-toggle" data-words-toggle aria-label="Show all words" aria-expanded="false" aria-controls="ws-words">Words ▾</button><button class="ws-help ws-icon" data-hear><img src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"></button><button class="ws-help ws-icon" data-options aria-label="Puzzle options" aria-expanded="false" aria-controls="ws-puzzle-options">⋯</button><button class="ws-close" data-close aria-label="Back to games">×</button></div></header><div class="ws-word-strip"><div class="ws-word-list" id="ws-words" aria-label="Words to find">' + words + '<button class="ws-help ws-word-hide" data-words-hide hidden>Back to grid</button></div></div><section class="ws-board-wrap"><div class="ws-grid" role="grid" aria-label="Word search letters">' + cells + '</div></section><div class="ws-live ws-play-live" data-live role="status" aria-live="polite">Put your finger on the first letter and follow the word.</div><section class="ws-options" id="ws-puzzle-options" aria-label="Puzzle options" hidden><strong>' + esc(topic.name) + '</strong><button class="ws-help" data-new>New puzzle</button><button class="ws-help" data-theme>Change theme</button><button class="ws-help" data-options-close>Back to grid</button></section>', 'ws-playing');
     bindClose();
-    dialog.querySelectorAll('[data-word]').forEach(button=>button.addEventListener('click',()=>speakText(answers.find(a=>a.id===button.dataset.word)?.label||'')));
+    dialog.querySelectorAll('[data-word]').forEach(button=>button.addEventListener('click',()=>{speakText(answers.find(a=>a.id===button.dataset.word)?.label||'');showWords(false);const strip=dialog.querySelector('.ws-word-list');strip.scrollLeft=button.offsetLeft-strip.offsetLeft-(strip.clientWidth-button.clientWidth)/2;}));
+    dialog.querySelector('[data-words-toggle]').onclick=()=>showWords(!dialog.querySelector('.ws-window').classList.contains('ws-words-open'));
+    dialog.querySelector('[data-words-hide]').onclick=()=>showWords(false);
+    dialog.querySelector('[data-options]').onclick=()=>showOptions(dialog.querySelector('.ws-options').hidden);
+    dialog.querySelector('[data-options-close]').onclick=()=>showOptions(false);
     const grid = dialog.querySelector('.ws-grid');
-    grid.addEventListener('pointerdown', (event) => { const cell = event.target.closest('[data-cell]'); if (!cell || event.button > 0) return; event.preventDefault(); drag = event.pointerId; skipCellClick = true; setTimeout(() => { skipCellClick = false; }, 500); grid.setPointerCapture?.(event.pointerId); path = [Number(cell.dataset.cell)]; renderCells(); });
+    grid.addEventListener('pointerdown', (event) => { const cell = event.target.closest('[data-cell]'); if (!cell || event.button > 0) return;if(!dialog.querySelector('.ws-options').hidden||dialog.querySelector('.ws-window').classList.contains('ws-words-open')){showWords(false);showOptions(false);skipCellClick=true;setTimeout(()=>{skipCellClick=false;},500);return;} event.preventDefault(); drag = event.pointerId; skipCellClick = true; setTimeout(() => { skipCellClick = false; }, 500); grid.setPointerCapture?.(event.pointerId); path = [Number(cell.dataset.cell)]; renderCells(); });
     grid.addEventListener('pointermove', (event) => { if (drag !== event.pointerId) return; const cell = document.elementFromPoint(event.clientX, event.clientY)?.closest?.('[data-cell]'); if (cell && grid.contains(cell)) extendPath(Number(cell.dataset.cell)); });
     grid.addEventListener('pointerup', (event) => { if (drag !== event.pointerId) return; drag = null; if (grid.hasPointerCapture?.(event.pointerId)) grid.releasePointerCapture(event.pointerId); finishPath(); });
     grid.addEventListener('pointercancel', () => { drag = null; path = []; renderCells(); });
@@ -90,21 +94,24 @@
     requestAnimationFrame(sizeBoard);
     hearGuide();
   }
+  function showWords(open){
+    const panel=dialog.querySelector('.ws-window'),toggle=dialog.querySelector('[data-words-toggle]');
+    panel.classList.toggle('ws-words-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Hide all words':'Show all words');toggle.textContent=open?'Words ▴':'Words ▾';dialog.querySelector('[data-words-hide]').hidden=!open;
+    if(open)showOptions(false);
+  }
+  function showOptions(open){
+    dialog.querySelector('.ws-options').hidden=!open;dialog.querySelector('[data-options]').setAttribute('aria-expanded',String(open));if(open)showWords(false);
+  }
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
     if (!wrap || !grid) return;
-    const landscape = window.matchMedia('(orientation: landscape) and (min-width: 620px)').matches;
-    const width = landscape ? wrap.clientWidth * .60 : wrap.clientWidth;
-    const height = landscape ? wrap.clientHeight : wrap.clientHeight - (dialog.querySelector('.ws-word-list')?.offsetHeight || 0) - (dialog.querySelector('[data-live]')?.offsetHeight || 0) - 20;
-    const gap = Math.max(2, Math.min(5, Math.floor(width / (size * 22))));
-    const padding = 20;
-    const cell = Math.floor(Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size));
+    const width=wrap.clientWidth,height=wrap.clientHeight,gap=1,padding=6;
+    const cell = Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size);
     if (!Number.isFinite(cell)) return;
-    const fitCell = Math.max(10,cell);
+    const fitCell = Math.max(1,cell);
     grid.style.setProperty('--ws-cols', size);
     grid.style.setProperty('--ws-cell', fitCell + 'px');
     grid.style.setProperty('--ws-gap', gap + 'px');
-    grid.style.setProperty('--ws-board', (size * fitCell + (size - 1) * gap + padding) + 'px');
   }
   function extendPath(end) {
     if (!path.length || path.at(-1)===end) return;
@@ -133,7 +140,7 @@
     dialog.querySelector('[data-word="' + answer.id + '"]')?.classList.add('is-found');
     dialog.querySelector('[data-word="' + answer.id + '"]')?.style.setProperty('--found-bg', color[0]);
     dialog.querySelector('[data-word="' + answer.id + '"]')?.style.setProperty('--found-line', color[1]);
-    dialog.querySelector('[data-progress]').textContent = found.size + ' of ' + wordCount + ' found';
+    dialog.querySelector('[data-progress]').textContent = found.size + ' / ' + wordCount;
     say('You found ' + answer.label + '!'); praise(); animateStars(); showPicture(answer);
     if (found.size === wordCount) { completedAt = Date.now(); clearInterval(clockId); winTimer = setTimeout(finish, 2000); }
   }

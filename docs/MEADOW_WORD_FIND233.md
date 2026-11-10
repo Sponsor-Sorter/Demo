@@ -1,0 +1,17 @@
+# Meadow Markets 233 — larger mobile word find
+
+The old square board competed with a tall word list, separate progress row, instructions and footer. On a 740×360 landscape viewport it used only 226×226 pixels, leaving substantial blank space. At 360×740 it used 338×334 pixels, while the word list alone occupied 215 pixels of height.
+
+The playing layout now gives the letter board all remaining width and height. Cells adapt to the available rectangle; the 16×16 board and all twenty words remain unchanged. Progress, elapsed time, Farmer Rhys guidance, puzzle options and Close share one 44px control row. Portrait keeps words in a compact horizontal strip; landscape fits that strip into the same header row. Words can expand into a scrollable drawer and collapse back without restarting. New puzzle/theme actions live in the compact options menu. Found-word feedback no longer covers the middle of the grid.
+
+## Acceptance before publication
+
+- Final browser layout: 740×360 → 732×304 grid; 360×740 → 352×644; 320×568 → 312×472. Small-phone header controls remain within the viewport with 44px minimum height. Portrait and landscape resets preserve the current words and found count.
+- Actual native-pointer horizontal/vertical selection, forward and reverse diagonal selection and rotation passed. A complete twenty-word round finished through the visible controls and the existing server returned “Reward verified and saved to your farm.” Final one-row landscape validation also passed with native diagonal selection and progress retained through menu, word drawer and rotation checks. No console errors were captured.
+- The existing word-search regression passes 125 generated complete boards across all 25 themes. Changed-runtime version checks, exact offline launch entry, asset-cache reuse/fingerprints and generated server-rule checks pass. No new low-impact layout test duplicates the implementation; actual browser geometry and interaction evidence cover this change.
+- The existing approved `rhys-word-search189` guide is retained. Its Noah recording explains twenty words, eight directions and dragging, without referring to the old word-list location. No new art or audio was generated. All 1,418 asset fingerprints are retained.
+- Gateway 43 is deployed with JWT verification and all eight files read back exactly. Its only change is build fingerprint `bbaa1cb29b08159508734ead3d5df479b3ca6b4629bebadd416e3c497ccd53e9`. This release includes no schema, permission, reward arithmetic or native-binary change.
+
+Evidence under `D:/Chat Gpt/workspaces/meadow-production194-evidence/launch230/`: `word-before-portrait233.png`, `word-before-landscape233.png`, `word-after-portrait233.png`, `word-after-landscape233.png`, `word-small-phone233.png`.
+
+Runtime scripts/styles are explicitly versioned (`word-search.js?v=234`, `word-search.css?v=3`) within web build 233. These module versions also prevent the initial local draft from being mistaken for the final source. Publication and final CI/public acceptance are recorded below once complete. No physical-device acceptance is claimed; these are browser viewport and native-pointer checks.
