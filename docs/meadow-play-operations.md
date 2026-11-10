@@ -2,6 +2,8 @@
 
 ## 10 November 2026 — optimized production update submitted
 
+Final Google check: quick checks completed and Console explicitly confirms Your changes are now in review. The production submission is complete; approval/publication remains pending.
+
 Verified native1.7.4/code14 is active internally and installed through Google Play on the Samsung. Its exact signed artifact was promoted to production, preserving Australia/100%/managed publishing off. Publishing overview shows Changes in review; quick checks are running. Public1.7.2 remains active until14 approval/publication. Web230 is live. Both CI jobs and Pages passed. Private ad demo acceptance is expired and all test wallet/preferences restored. Use [native174 acceptance](meadow-native174-acceptance230.md) for the artifact SHA256, tests, evidence, source and known limits. Do not enable normal-unit ad testing merely because the device is registered; use the isolated demo lease and capability handshake on14+.
 
 ## 7 November 2026 — web227, native commerce tests and AdMob approved

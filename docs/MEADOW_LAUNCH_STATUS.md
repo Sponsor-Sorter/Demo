@@ -2,6 +2,8 @@
 
 ## 10 November 2026 — native14 submitted after device acceptance
 
+Final Google check: automated checks finished; Console explicitly confirms Your changes are now in review. No further submission button is pending. Approval/publication is separate.
+
 Website230 is live and both the browser and Samsung reopened their saved farms on230. Play1.7.4/code14 updated the phone in place and passed the focused optimized-build/ad/restore/offline checks. Labelled Google demo impressions created no gameplay rewards; Premium/default-off suppression and reconnect/retry passed. Private acceptance leases0, Premiumfixture removed, original device settings restored. Full game/Android CI42765854339 and Pages42765854164 passed. The same artifact is submitted to Production (Australia, full rollout); Publishing overview shows Changes in review while quick checks run. Public1.7.2 remains active until Google approves/publishes14. Exact scope, hashes and remaining provider/advisory limits: [native174 acceptance](meadow-native174-acceptance230.md). Earlier pending-device entries are historical.
 
 ## 10 November 2026 — follow-up acceptance
