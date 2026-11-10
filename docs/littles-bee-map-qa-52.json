@@ -1,0 +1,170 @@
+{
+  "build": 52,
+  "date": "2026-11-10",
+  "scope": "Ten additional fixed-terrain bee maps; twenty total. Existing ten retained.",
+  "automated": {
+    "command": "node scripts/check-littles.cjs",
+    "result": "passed",
+    "completePhysicsRounds": 800,
+    "idealGuideRounds": 600,
+    "sampledStrokeRounds": 200,
+    "checks": [
+      "Every guide is legal, short and noncollinear with spare ink",
+      "Every layout has unique terrain/hive/friend geometry",
+      "All map terrain stays static and all 24 bees spawn",
+      "Drawn ink remains dynamic and collision-driven",
+      "Irrelevant ink fails and blank drawing cannot launch",
+      "Ink exhaustion, cleanup, offline asset closure and approved-voice proof",
+      "Full Littles regression suite"
+    ]
+  },
+  "browser": {
+    "url": "http://127.0.0.1:4196/?qa=52",
+    "newMaps": [
+      {
+        "map": 11,
+        "result": "win",
+        "ink": 550,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 12,
+        "result": "win",
+        "ink": 170,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 13,
+        "result": "win",
+        "ink": 440,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 14,
+        "result": "win",
+        "ink": 120,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 15,
+        "result": "win",
+        "ink": 360,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 16,
+        "result": "win",
+        "ink": 245,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 17,
+        "result": "win",
+        "ink": 150,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 18,
+        "result": "win",
+        "ink": 470,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 19,
+        "result": "win",
+        "ink": 145,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      },
+      {
+        "map": 20,
+        "result": "win",
+        "ink": 370,
+        "input": "Continuous 5-unit keyboard pencil strokes through the normal legality and physics path"
+      }
+    ],
+    "extraRounds": [
+      {
+        "map": 15,
+        "result": "win",
+        "viewport": "375x667 browser emulation"
+      },
+      {
+        "map": 16,
+        "result": "win",
+        "viewport": "1024x768 browser emulation"
+      },
+      {
+        "map": 17,
+        "result": "win",
+        "input": "Native pointer; three joined strokes"
+      }
+    ],
+    "otherChecks": [
+      "Map 20 next wraps to map 1",
+      "No browser console errors observed"
+    ],
+    "audio": [
+      {
+        "map": 18,
+        "duration": 4.614895833333334,
+        "id": "bee51-rhys-map-8"
+      },
+      {
+        "map": 19,
+        "duration": 5.2516875,
+        "id": "bee51-rhys-map-1"
+      },
+      {
+        "map": 20,
+        "duration": 4.601479166666667,
+        "id": "bee51-rhys-map-6"
+      },
+      {
+        "map": 11,
+        "duration": 4.213479166666667,
+        "id": "bee51-rhys-map-5"
+      },
+      {
+        "map": 12,
+        "duration": 3.594895833333333,
+        "id": "bee51-rhys-map-2"
+      },
+      {
+        "map": 13,
+        "duration": 4.614895833333334,
+        "id": "bee51-rhys-map-8"
+      },
+      {
+        "map": 14,
+        "duration": 4.110791666666667,
+        "id": "bee51-rhys-map-4"
+      },
+      {
+        "map": 15,
+        "duration": 4.601479166666667,
+        "id": "bee51-rhys-map-6"
+      },
+      {
+        "map": 16,
+        "duration": 4.174104166666667,
+        "id": "bee51-rhys-map-7"
+      },
+      {
+        "map": 17,
+        "duration": 4.984583333333333,
+        "id": "bee51-rhys-map-3"
+      }
+    ],
+    "limitations": [
+      "Browser viewport emulation is not physical-device testing",
+      "No independent child or Dot review performed"
+    ]
+  },
+  "fixes": [
+    "Widened pointed-roof ledge after a sampled browser stroke tipped off the first version",
+    "Added a lower catch to the side hatch so it resists pressure",
+    "Moved a rock that intersected the long-corner guide"
+  ],
+  "handover": "docs/MEADOW_BEE_SHELTER_ADULT_HANDOVER.md",
+  "audioPolicy": "Reused matching approved natural-speed Rhys instructions; no new audio generation needed"
+}

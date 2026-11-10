@@ -3,9 +3,9 @@
   'use strict';
   const W=600,H=600,INK=12,TERRAIN=1,LINE=2,BEE=4,FRIEND=8;
   const block=(x,y,w,h,kind='rock')=>({x,y,w,h,kind});
-  const map=(name,x,terrain,hives,hint,help,shape)=>({name,friend:{x,y:454,r:30},floor:500,
+  const map=(name,x,terrain,hives,hint,help,shape,cue)=>({name,friend:{x,y:454,r:30},floor:500,
     terrain:[block(300,550,620,100,'ground'),...terrain],hives:hives.map(([x,y])=>({x,y})),
-    hint:hint.map(([x,y])=>({x,y})),help,shape,ink:850,bees:24,seconds:8});
+    hint:hint.map(([x,y])=>({x,y})),help,shape,cue,ink:850,bees:24,seconds:8});
   const levels=[
     map('The little cave',240,[block(140,400,60,200),block(245,310,260,35,'ledge'),block(355,485,100,30),block(365,360,20,65),block(410,455,20,90)],[[530,350]],
       [[390,335],[390,460],[335,460]],'Draw a little door, then turn onto the low rock.','left-door'),
@@ -26,7 +26,27 @@
     map('The garden bowl',300,[block(210,465,80,70),block(390,465,80,70)],[[300,160],[520,230]],
       [[190,415],[245,355],[355,355],[410,415]],'Rest a rainbow roof on the stone rim.','bowl'),
     map('The low tunnel',260,[block(150,435,60,130),block(265,370,280,35,'ledge'),block(375,485,100,30),block(395,415,20,55),block(440,480,20,40)],[[520,390]],
-      [[420,400],[420,460],[350,460]],'Draw a short door and a foot on the low rock.','low-door')
+      [[420,400],[420,460],[350,460]],'Draw a short door and a foot on the low rock.','low-door'),
+    map('The apple-tree hook',250,[block(250,350,120,50,'ledge')],[[85,200],[510,230]],
+      [[175,485],[175,320],[250,285],[325,320],[325,485]],'Draw a pointy roof over the little ledge.','pointed-hook',5),
+    map('The side chimney',370,[block(170,400,60,200),block(500,400,60,200),block(245,300,210,30,'ledge'),block(470,300,120,30,'ledge')],[[390,160]],
+      [[320,270],[330,245],[430,245],[440,270]],'Cap the little chimney on the right.','offset-chimney',2),
+    map('The wide garden cradle',280,[block(160,460,100,80),block(400,460,100,80)],[[280,170],[520,240]],
+      [[125,405],[205,340],[355,340],[435,405]],'Rest a broad rainbow roof on the low rocks.','wide-cradle',8),
+    map('The left hatch',300,[block(480,400,60,200),block(300,300,420,30,'ledge'),block(130,325,40,70),block(130,455,40,90),block(70,470,40,60)],[[45,380]],
+      [[100,345],[80,345],[80,425],[100,425]],'Close the left-hand window with a little box.','left-hatch',4),
+    map('The right-hand shelf',300,[block(470,400,60,200),block(400,375,80,30,'ledge')],[[70,180],[130,300]],
+      [[430,345],[210,345],[210,485]],'Start at the right shelf. Draw across and down.','right-canopy',6),
+    map('The descending ledges',300,[block(480,400,60,200),block(385,300,250,40,'ledge'),block(150,440,100,120)],[[70,230]],
+      [[295,265],[220,265],[220,365],[150,365]],'Draw from the high ledge down to the low rock.','descending-step',7),
+    map('The deep roof notch',300,[block(130,400,60,200),block(470,400,60,200),block(160,330,140,40,'ledge'),block(440,330,140,40,'ledge'),block(250,380,60,30,'ledge'),block(370,380,60,30,'ledge')],[[300,170]],
+      [[255,335],[255,355],[365,355],[365,335]],'Fit a little cup between the roof shelves.','deep-pocket',3),
+    map('The stepped bowl',295,[block(160,460,120,80),block(420,475,100,50)],[[300,160],[520,230]],
+      [[130,405],[200,345],[350,345],[450,435]],'Rest each end of your roof on a different step.','uneven-rim',8),
+    map('The little gate',330,[block(440,420,60,160),block(340,350,260,30,'ledge'),block(220,485,100,30),block(220,395,20,60),block(175,480,20,40)],[[80,400]],
+      [[195,375],[195,460],[255,460]],'Give the low opening a door with a little foot.','low-left-gate',1),
+    map('The long cosy corner',300,[block(140,400,60,200),block(250,350,60,30,'ledge'),block(470,450,60,100)],[[520,180]],
+      [[220,315],[420,315],[420,485]],'Rest your corner on the little shelf.','long-corner',6)
   ];
   const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
   function legalPoint(p,level){return Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=8&&p.x<=592&&p.y>=45&&p.y<level.floor-4&&distance(p,level.friend)>level.friend.r+INK/2+3&&!level.terrain.some(t=>p.x>t.x-t.w/2-2&&p.x<t.x+t.w/2+2&&p.y>t.y-t.h/2-2&&p.y<t.y+t.h/2+2);}
