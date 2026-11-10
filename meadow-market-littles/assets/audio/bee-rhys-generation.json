@@ -1,0 +1,62 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-09",
+  "files": [
+    {
+      "id": "bee-rhys-intro",
+      "farmer": "rhys",
+      "text": "Let's keep Cloud cosy! Draw a black shelter. Catch your line on the fixed posts or rocks. Then let the bees fly.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 8.774849999999999,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 106086
+    },
+    {
+      "id": "bee-rhys-hint",
+      "farmer": "rhys",
+      "text": "Try a roof that reaches across both posts. Rest your line on the map, so it doesn't slip away.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 10.4351,
+      "sourceEnd": 15.504399999999999,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 61887
+    },
+    {
+      "id": "bee-rhys-watch",
+      "farmer": "rhys",
+      "text": "Here come the bees! Let's see if your shelter holds.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 17.1538,
+      "sourceEnd": 20.5696,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 41825
+    },
+    {
+      "id": "bee-rhys-retry",
+      "farmer": "rhys",
+      "text": "A little bee found a gap. That's okay! Let's draw another shelter.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 22.580099999999998,
+      "sourceEnd": 27.3371,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 58125
+    },
+    {
+      "id": "bee-rhys-success",
+      "farmer": "rhys",
+      "text": "Cloud is safe and cosy! Your drawing held. Great helping!",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 29.362299999999998,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 70351
+    }
+  ]
+}

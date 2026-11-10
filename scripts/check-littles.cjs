@@ -35,3 +35,4 @@ require('./check-littles-journeys.cjs');
 require('./check-littles-journey-audio.cjs');
 require('./check-littles-sliding.cjs');
 require('./check-littles-neighbours.cjs');
+require('./check-littles-bees.cjs');

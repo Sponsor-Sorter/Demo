@@ -1,0 +1,347 @@
+{
+  "build": 50,
+  "fullBrowserBeeMaps": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "fullBrowserPictureRotation": [
+    "Finished picture: Flower garden",
+    "Finished picture: Little tractor",
+    "Finished picture: Windmill meadow",
+    "Finished picture: Orchard seasons",
+    "Finished picture: Goat paddock",
+    "Finished picture: Milking time",
+    "Finished picture: Sheep meadow",
+    "Finished picture: Carrot garden",
+    "Finished picture: Cow farm",
+    "Finished picture: Egg rescue",
+    "Finished picture: Duck pond",
+    "Finished picture: Cosy nest"
+  ],
+  "uniquePictures": 12,
+  "cycleBoundaryDoesNotRepeat": true,
+  "voiceChecks": [
+    {
+      "duration": 8.774833333333333,
+      "id": "bee-rhys-intro"
+    },
+    {
+      "duration": 5.0692916666666665,
+      "id": "bee-rhys-hint"
+    },
+    {
+      "duration": 3.415791666666667,
+      "id": "bee-rhys-watch"
+    },
+    {
+      "duration": 4.757,
+      "id": "bee-rhys-retry"
+    },
+    {
+      "duration": 5.791041666666667,
+      "id": "bee-rhys-success"
+    }
+  ],
+  "responsiveChecks": [
+    {
+      "label": "Small phone bee controls",
+      "controls": [
+        {
+          "h": 44,
+          "label": "Back to games",
+          "w": 44,
+          "x": 308,
+          "y": 15.25
+        },
+        {
+          "h": 44,
+          "label": "🐝 Let the bees fly",
+          "w": 314,
+          "x": 23,
+          "y": 504.1953125
+        },
+        {
+          "h": 46,
+          "label": "Undo line",
+          "w": 101.328125,
+          "x": 23,
+          "y": 555.1953125
+        },
+        {
+          "h": 46,
+          "label": "Start drawing again",
+          "w": 101.3359375,
+          "x": 129.328125,
+          "y": 555.1953125
+        },
+        {
+          "h": 46,
+          "label": "Show a hint",
+          "w": 101.3359375,
+          "x": 235.6640625,
+          "y": 555.1953125
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 101.328125,
+          "x": 23,
+          "y": 606.1953125
+        },
+        {
+          "h": 44,
+          "label": "Another map",
+          "w": 101.3359375,
+          "x": 129.328125,
+          "y": 606.1953125
+        }
+      ],
+      "height": 667,
+      "width": 375,
+      "outside": []
+    },
+    {
+      "label": "Landscape phone bee controls",
+      "controls": [
+        {
+          "h": 36,
+          "label": "Back to games",
+          "w": 36,
+          "x": 787,
+          "y": 15.5
+        },
+        {
+          "h": 44,
+          "label": "🐝 Let the bees fly",
+          "w": 227,
+          "x": 475,
+          "y": 168.6484375
+        },
+        {
+          "h": 44,
+          "label": "Undo line",
+          "w": 111.5,
+          "x": 475,
+          "y": 217.6484375
+        },
+        {
+          "h": 44,
+          "label": "Start drawing again",
+          "w": 111.5,
+          "x": 590.5,
+          "y": 217.6484375
+        },
+        {
+          "h": 44,
+          "label": "Show a hint",
+          "w": 111.5,
+          "x": 475,
+          "y": 265.6484375
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 111.5,
+          "x": 590.5,
+          "y": 265.6484375
+        },
+        {
+          "h": 44,
+          "label": "Another map",
+          "w": 227,
+          "x": 475,
+          "y": 313.6484375
+        }
+      ],
+      "height": 390,
+      "width": 844,
+      "outside": []
+    },
+    {
+      "label": "iPad bee controls",
+      "controls": [
+        {
+          "h": 44,
+          "label": "Back to games",
+          "w": 44,
+          "x": 753,
+          "y": 19.5
+        },
+        {
+          "h": 44,
+          "label": "🐝 Let the bees fly",
+          "w": 225,
+          "x": 566.5,
+          "y": 551.453125
+        },
+        {
+          "h": 53,
+          "label": "Undo line",
+          "w": 109,
+          "x": 566.5,
+          "y": 607.453125
+        },
+        {
+          "h": 53,
+          "label": "Start drawing again",
+          "w": 109,
+          "x": 682.5,
+          "y": 607.453125
+        },
+        {
+          "h": 44,
+          "label": "Show a hint",
+          "w": 109,
+          "x": 566.5,
+          "y": 667.453125
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 109,
+          "x": 682.5,
+          "y": 667.453125
+        },
+        {
+          "h": 44,
+          "label": "Another map",
+          "w": 225,
+          "x": 566.5,
+          "y": 718.453125
+        }
+      ],
+      "height": 1180,
+      "width": 820,
+      "outside": []
+    },
+    {
+      "label": "iPad rotating puzzle",
+      "controls": [
+        {
+          "h": 44,
+          "label": "Back to games",
+          "w": 44,
+          "x": 753,
+          "y": 20
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 1, row 1, column 1",
+          "w": 169.59375,
+          "x": 40.6015625,
+          "y": 372.6015625
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 2, row 1, column 2",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 372.6015625
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 3, row 1, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 372.6015625
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 4, row 2, column 2",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 5, row 3, column 2, can slide",
+          "w": 169.59375,
+          "x": 210.1953125,
+          "y": 711.796875
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 6, row 2, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 7, row 2, column 1, can slide",
+          "w": 169.59375,
+          "x": 40.6015625,
+          "y": 542.1953125
+        },
+        {
+          "h": 169.59375,
+          "label": "Picture piece 8, row 3, column 3",
+          "w": 169.59375,
+          "x": 379.796875,
+          "y": 711.796875
+        },
+        {
+          "h": 44,
+          "label": "Show me a piece",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 714.75
+        },
+        {
+          "h": 44,
+          "label": "Undo my slide",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 765.75
+        },
+        {
+          "h": 44,
+          "label": "🔊 Hear again",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 816.75
+        },
+        {
+          "h": 44,
+          "label": "Choose a picture",
+          "w": 176,
+          "x": 594.3984375,
+          "y": 867.75
+        }
+      ],
+      "height": 1180,
+      "width": 820,
+      "outside": []
+    }
+  ],
+  "behaviours": {
+    "inkLimit": 850,
+    "undoRefund": true,
+    "weakShelterRetry": true,
+    "closeDuringSwarmStopsGameAndVoice": true
+  },
+  "physicsTests": {
+    "supportedShelterRounds": 30,
+    "terrainAlwaysStatic": true,
+    "beeCanLiftLooseInk": true,
+    "inkCannotCrossFriendOrSolidMap": true
+  },
+  "artwork": "assets/generated/bee-shelter/generation.json",
+  "limits": [
+    "Browser viewport simulation, not physical-device or child usability testing",
+    "No Dot review claimed"
+  ],
+  "finalCleanBrowser": {
+    "fullBeeRoundWon": true,
+    "consoleWarnings": 0,
+    "consoleErrors": 0
+  }
+}

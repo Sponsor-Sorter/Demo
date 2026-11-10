@@ -1,0 +1,7 @@
+[
+ {"id":"bee-rhys-intro","farmer":"rhys","text":"Let's keep Cloud cosy! Draw a black shelter. Catch your line on the fixed posts or rocks. Then let the bees fly."},
+ {"id":"bee-rhys-hint","farmer":"rhys","text":"Try a roof that reaches across both posts. Rest your line on the map, so it doesn't slip away."},
+ {"id":"bee-rhys-watch","farmer":"rhys","text":"Here come the bees! Let's see if your shelter holds."},
+ {"id":"bee-rhys-retry","farmer":"rhys","text":"A little bee found a gap. That's okay! Let's draw another shelter."},
+ {"id":"bee-rhys-success","farmer":"rhys","text":"Cloud is safe and cosy! Your drawing held. Great helping!"}
+]

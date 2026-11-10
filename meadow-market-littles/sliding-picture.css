@@ -4,3 +4,4 @@
 
 .sp-tile{overflow:hidden;background:none!important}.sp-tile>img{position:absolute;width:300%;height:300%;max-width:none;object-fit:cover;pointer-events:none}.sp-board.sp-complete{background-size:cover}
 .sp-reference{display:block;width:min(100%,23vh);height:min(23vh,230px);max-height:none;aspect-ratio:1;margin:0 auto;object-fit:cover}@media(max-width:700px) and (orientation:portrait){.sp-reference{width:80px;height:80px}}@media(max-height:450px) and (orientation:landscape){.sp-reference{width:65px;height:65px}}
+@media(min-width:900px){.sp-pictures{grid-template-columns:repeat(4,minmax(0,1fr))}.sp-pictures img{height:min(14vh,120px)}}.sp-menu [data-sp-surprise]{padding:9px 20px;background:#387546;color:#fff5d9;margin:0 0 12px}

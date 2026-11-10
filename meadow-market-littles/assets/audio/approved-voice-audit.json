@@ -630,6 +630,31 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "audit-rhys-generation.json"
     },
+    "bee-rhys-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee-rhys-generation.json"
+    },
+    "bee-rhys-hint": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee-rhys-generation.json"
+    },
+    "bee-rhys-watch": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee-rhys-generation.json"
+    },
+    "bee-rhys-retry": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee-rhys-generation.json"
+    },
+    "bee-rhys-success": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee-rhys-generation.json"
+    },
     "coop-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
