@@ -15,3 +15,9 @@ The playing layout now gives the letter board all remaining width and height. Ce
 Evidence under `D:/Chat Gpt/workspaces/meadow-production194-evidence/launch230/`: `word-before-portrait233.png`, `word-before-landscape233.png`, `word-after-portrait233.png`, `word-after-landscape233.png`, `word-small-phone233.png`.
 
 Runtime scripts/styles are explicitly versioned (`word-search.js?v=234`, `word-search.css?v=3`) within web build 233. These module versions also prevent the initial local draft from being mistaken for the final source. Publication and final CI/public acceptance are recorded below once complete. No physical-device acceptance is claimed; these are browser viewport and native-pointer checks.
+
+## Hosting recovery
+
+Both jobs in game/Android CI 42919603468 passed on runtime `ec716ca8c26b15da5ece46f933aed9e3bfe9e48a`. The Pages build/upload succeeded, but deployment 42919602746 timed out after ten minutes while syncing the existing 5,066,831,062-byte multi-game package. A failed-job-only retry reused the cancelled revision; its status polling returned an empty value until another timeout. The same-size 232 package previously deployed successfully, so this is not evidence of a word-grid failure or permission to remove other games' downloads.
+
+A fresh documentation-only revision is being issued to obtain a new Pages deployment identity while preserving the exact six tested runtime files. Successful game/Android checks are retained; public verification still requires all six files to match `ec716ca` and an actual 232→233 update. Public 232 remains in service until that verification passes. No other games or published downloads have been removed.
