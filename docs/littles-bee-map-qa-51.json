@@ -1,0 +1,111 @@
+{
+  "build": 51,
+  "date": "2026-11-10",
+  "scope": "Ten fixed-terrain bee shelter maps with simple guided doors, caps, notches, windows, hooks, steps and roofs",
+  "automated": {
+    "command": "node scripts/check-littles.cjs",
+    "result": "passed",
+    "supportedPhysicsRounds": 300,
+    "additionalDoorStressTests": "60 seeded supported rounds each on maps 0, 1 and 9; all won; irrelevant short ink failed all 60 each after tuning",
+    "checks": [
+      "Static terrain does not move",
+      "Ink becomes dynamic and can be lifted by collisions",
+      "Guides are drawable, noncollinear, short and leave spare ink",
+      "Unsupported shelters can fail",
+      "Undo, cleanup and limited ink",
+      "All game regression suites and offline asset closure"
+    ]
+  },
+  "browser": {
+    "url": "http://127.0.0.1:4195/?qa=51",
+    "fullRounds": [
+      {
+        "map": 0,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 1,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 2,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 3,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 4,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 5,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 6,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 7,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 8,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      },
+      {
+        "map": 9,
+        "result": "win",
+        "input": "Continuous keyboard pencil using the same stroke, legality and physics path as pointer input"
+      }
+    ],
+    "extraRounds": [
+      {
+        "map": 0,
+        "result": "win",
+        "input": "Native pointer, two joined strokes"
+      },
+      {
+        "map": 0,
+        "result": "win",
+        "viewport": "375x667 browser emulation"
+      },
+      {
+        "map": 1,
+        "result": "win",
+        "viewport": "1024x768 browser emulation"
+      }
+    ],
+    "checks": [
+      "Each map plays its own approved Rhys hint and decodes audio",
+      "Irrelevant line produces retry; retry returns to drawing",
+      "Undo and clear return ink",
+      "Another map cycles layouts",
+      "No browser console errors observed"
+    ],
+    "limitations": [
+      "Browser viewport emulation, not physical device testing",
+      "No independent child usability study or Dot review performed"
+    ]
+  },
+  "audio": {
+    "newClips": 11,
+    "character": "Rhys",
+    "approvedVoice": "Noah - YA Audiobooks Narrator",
+    "model": "Eleven Multilingual v2",
+    "tempo": 1,
+    "sourceProof": "meadow-market-littles/assets/audio/bee51-rhys-generation.json"
+  },
+  "preview": "A captured gameplay scene showing the new fixed terrain, ink shelter, hive and bees"
+}

@@ -655,6 +655,61 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "bee-rhys-generation.json"
     },
+    "bee51-rhys-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-0": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-1": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-2": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-3": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-4": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-5": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-6": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-7": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-8": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
+    "bee51-rhys-map-9": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bee51-rhys-generation.json"
+    },
     "coop-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
