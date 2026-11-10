@@ -4,6 +4,7 @@ Updated 11 November 2026. Use this list for current work. [MEADOW_BACKLOG.md](ME
 
 ## Completed in the current follow-up
 
+- Web 233's [mobile word-find overhaul](MEADOW_WORD_FIND233.md) is live: a full-area adaptive letter grid, one-row landscape header, scrolling words and optional word/options drawers. Browser portrait/landscape/320px-phone geometry and native selection/rotation pass; a complete twenty-word round returned a verified reward. Game/Android CI 42919603468 passed. Fresh Pages 42923711591 succeeded after two cancelled deployment attempts; all six public runtime files match tested `ec716ca`. Settings confirms 233 and the public phone/landscape board retained progress. No art/audio generation or new native binary was needed.
 - Web 232's [adult Bee Shelter campaign](MEADOW_BEE_CHALLENGE232.md) is live: twenty maps, physical drawing, limited ink, four difficulty groups, approved Rhys narration and farm/device-scoped personal records. All twenty local browser rounds and reload persistence pass, as do 200 supported physics rounds and final game/Android CI 42819307061. Pages 42819307725 deployed; all 38 changed public files match Git. The public 231→232 update, native-pointer win and reopened best score passed. Littles, farm currency and public native 14 are unchanged.
 - Samsung Play 1.7.4/code 14 update, preserved farm, isolated labelled ad checks, Premium/default-off suppression, native Restore and offline/reconnect acceptance. All temporary fixtures and provider leases removed.
 - Native 14 is now Active / Available on Google Play in Australia, confirmed from Production → Releases. It is the same artifact already accepted on the Samsung through Play testing.
@@ -20,6 +21,8 @@ Updated 11 November 2026. Use this list for current work. [MEADOW_BACKLOG.md](ME
 6. Assess weekly-prize eligibility feedback: previous-week boards currently expose a claim entry even when the player has no winning score. Any display improvement must use server-provided global eligibility and claimed state, not a friends-board rank.
 
 ## Ongoing operations
+
+Hosting follow-up: the shared Pages artifact is approximately 5.07 GB, above the action's 1 GB warning. Build 233 needed a fresh deployment identity after a ten-minute syncing timeout and a failed-job retry that polled an empty cancelled status. Keep all runtime/download URLs intact when reducing the package; avoid speculative deletion of other games' archives. Final documentation-only notes are retained separately to avoid another whole-site upload for this release.
 
 Public payments/ads and seven backend products are enabled; approved free testers remain separate. Watch aggregate diagnostics, overdue purchase settlement, provenance and recovery checks as traffic grows. Staff review of community reports is an operational responsibility. Do not send recurring alerts or contact other chats without the owner's instruction. No further full-project backup/password work is requested.
 
