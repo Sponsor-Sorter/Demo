@@ -24,7 +24,7 @@ function fixture(changes={}){
  const nofill=fixture();nofill.fail(true);await assert.rejects(()=>nofill.store.advertisement(true),/No ad/);nofill.fail(false);assert((await nofill.store.advertisement(true)).earned,'Failure releases the busy guard');
  let finish;const concurrent=fixture();concurrent.pause(new Promise(r=>finish=r));const first=concurrent.store.advertisement(true);await Promise.resolve();await Promise.resolve();assert((await concurrent.store.advertisement(true)).unavailable);finish();await first;assert.equal(concurrent.calls.show,1);
  const native=fs.readFileSync('tools/meadow-android/android/app/build.gradle','utf8');for(const id of ['6946008351204848~7779211148','6946008351204848/6866630905','6946008351204848/8491985021'])assert(native.includes(id));
- assert(native.includes("versionName '1.7.4'"));assert(native.includes('ca-app-pub-3940256099942544~3347511713'),'Direct shell retains demo app ID');
+ assert(native.includes("versionName '1.7.5'"));assert(native.includes('ca-app-pub-3940256099942544~3347511713'),'Direct shell retains demo app ID');
  const club=fs.readFileSync('meadow-and-market/farm-club.js','utf8');assert(club.includes('!window.meadowStore?.test()||window.meadowStore?.providerAds()'),'Native ad acceptance does not route to the free preview');
  console.log('Ad221 fixtures: scoped native route, privacy denial, account switching, concurrency/no-fill recovery and no client reward grants passed.');
 })().catch(e=>{console.error(e);process.exitCode=1});
