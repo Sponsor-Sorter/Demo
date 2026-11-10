@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 10 November 2026 — follow-up acceptance
+
+Production1.7.2/code12 remains active in Australia; website229 is live. Seven individually reviewed beta farms are now protected protocol4 saves with assets and wealth retained. No registered legacy save remains awaiting review. Meadow-only FK indexes and aggregate monitoring improvements are applied; live reviewer-farm sign-in, crops, helpers, travel and Build actions passed.
+
+Native1.7.3/code13 is the optimized candidate, pending its final compilation/Play analysis/device acceptance. Do not confuse it with the current public native release. Phone access and the remaining real-device ad edge cases are still outstanding. Full scope and evidence: [follow-up230](meadow-launch-followup230.md).
+
 ## 7 November 2026 — commercial activation and public installation
 
 Web229 follows228: verified new-farm issuance is enabled; all seven products, public payments and advertising issuance are on. Google Play production1.7.2/code12 is available in Australia and Settings now links its public listing. Existing free testers retain their access; older beta farms keep their saves and cannot enter paid checkout until reviewed. No real-money test order was placed.

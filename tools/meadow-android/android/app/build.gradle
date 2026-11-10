@@ -23,10 +23,10 @@ android {
         direct { dimension 'distribution' }
         play {
             dimension 'distribution'
-            versionCode 12
-            versionName '1.7.2'
-            // Exact version1.7.2 is marked non-revenue Test mode in AdMob.
-            // Public ad issuance remains independently disabled in the backend.
+            versionCode 13
+            versionName '1.7.3'
+            // Production units; SDK testing requires the registered test device
+            // and a private, expiring backend acceptance lease.
             manifestPlaceholders = [admobAppId: 'ca-app-pub-6946008351204848~7779211148']
             buildConfigField 'String', 'MEADOW_REWARDED_AD_UNIT', '"ca-app-pub-6946008351204848/6866630905"'
             buildConfigField 'String', 'MEADOW_INTERSTITIAL_AD_UNIT', '"ca-app-pub-6946008351204848/8491985021"'
@@ -45,8 +45,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.upload
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -68,7 +69,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
     playImplementation 'com.android.billingclient:billing:8.3.0'
-    playImplementation 'com.google.android.gms:play-services-ads:24.8.0'
+    playImplementation 'com.google.android.gms:play-services-ads:25.5.0'
     playImplementation 'com.google.android.ump:user-messaging-platform:4.0.0'
     playImplementation 'com.google.android.play:app-update:2.1.0'
 }

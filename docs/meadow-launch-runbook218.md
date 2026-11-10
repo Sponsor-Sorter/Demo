@@ -1,5 +1,7 @@
 # Meadow Markets launch operations
 
+Current10November2026 status is [follow-up230](meadow-launch-followup230.md), with public native1.7.2 and web229. Public commerce and new server-owned farms are enabled; approved testers remain free. Historical preparation instructions below are not a request to disable live services or repeat completed provider tests.
+
 ## Before opening production
 
 Run tools/meadow-launch-health.sql through the operator's private Supabase connection. It contains only aggregate health, never player snapshots or provider tokens. Capture the results with the release commit, web build, native version, rules hash and UTC time. Check Play's package-specific crash/ANR and pre-launch reports separately; opt-in JavaScript diagnostics are not universal crash reporting.
@@ -7,9 +9,9 @@ Run tools/meadow-launch-health.sql through the operator's private Supabase conne
 - protected_without_provenance must be0. An unexpected value blocks enrollment and checkout; inspect that account privately.
 - Public commerce stays off until provider acceptance. Active provider test entries must match the exact approved account, products and expiry. Close them after testing.
 - Investigate any purchase unsettled longer than15minutes. Retry its existing provider verification/settlement; never mint a replacement grant or create another charge.
-- Compare errors against unique opted-in devices and the previous build. A zero count is not proof of zero crashes because reporting is opt-in.
+- Compare opt_in_error_groups_7d by build/module/category with the preceding release and available Play Vitals crash/ANR data. A zero count is not proof of zero crashes because reporting is opt-in; this aggregate does not estimate unique users.
 - Check private player reports and the support inbox each operating day. Resolve purchase/recovery issues against the original account and receipt, preserving audit records.
-- Recovery archives now include the authoritative farm, wallets, paid entitlement, collection ownership, provenance and receipt watermarks. Inspect recovery_missing_today after scheduled maintenance has caught up (100 farms per run); recovery_hash_failures_recent must be0. These database-local archives are not an independent disaster backup. Keep a private off-host database backup and its matching immutable ledgers.
+- Recovery archives include the authoritative farm, wallets, paid entitlement, collection ownership, provenance and receipt watermarks. Inspect recovery_missing_today after scheduled maintenance has caught up (100 farms per run); a newly created farm may await the next scheduled run. recovery_hash_failures_recent must be0. These database-local archives are not an independent disaster backup. The owner explicitly stopped additional full-database backup work; do not restart it or request a shared database password as a release gate.
 
 ## Release and rollback
 

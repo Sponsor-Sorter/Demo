@@ -1,5 +1,11 @@
 # Meadow Markets remaining work
 
+## 10 November 2026 — native optimization and reviewed beta farms
+
+Production remains native1.7.2/code12 in Australia, website229. Seven registered legacy farms have now passed individual placement/balance review and guarded protocol4 conversion, with every asset and balance retained; registered legacy farms awaiting review are0. Three Meadow-only missing foreign-key indexes are installed. Live browser crop/helper/Build actions passed on the converted reviewer farm. Aggregate health and per-build opt-in diagnostic grouping are ready; real traffic is still very low.
+
+Native1.7.3/code13 adds AndroidX edge-to-edge setup, R8/resource shrinking and Google advertising SDK25.5.0. Release compilation, Play analysis and optimized-device acceptance must be recorded before calling that candidate production-ready. The deprecated-cutout warning is in Google's ad overlay; a source update alone does not prove the warning gone. Samsung access and physical ad interruption/Premium checks remain pending. See [follow-up230](meadow-launch-followup230.md). Earlier entries are historical.
+
 ## 7 November 2026 — commercial activation and public installation
 
 Web229 follows228: verified new-farm issuance is enabled; all seven products, public payments and advertising issuance are on. Google Play production1.7.2/code12 is available in Australia and Settings now links its public listing. Existing free testers retain their access; older beta farms keep their saves and cannot enter paid checkout until reviewed. No real-money test order was placed.

@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
@@ -21,6 +22,9 @@ public class MainActivity extends BridgeActivity {
             } catch (ClassNotFoundException e) { throw new IllegalStateException("Missing Play integration", e); }
         }
         super.onCreate(state);
+        // Enable the supported edge-to-edge setup before installing our
+        // cutout/system-bar inset bridge. The game owns its HUD safe areas.
+        EdgeToEdge.enable(this);
         View web = getBridge().getWebView();
         ViewCompat.setOnApplyWindowInsetsListener(web, (view, insets) -> {
             publishSafeArea(insets);
@@ -60,7 +64,6 @@ public class MainActivity extends BridgeActivity {
     }
 
     private void enterImmersiveMode() {
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         WindowInsetsControllerCompat controller =
             WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
         controller.setSystemBarsBehavior(

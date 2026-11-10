@@ -70,3 +70,14 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run android:debug
       - run: npm run android:play
+      # Exercise R8 and resource shrinking, not only the unoptimized debug APK.
+      # This disposable signing identity is never used for a distributed build.
+      - name: Build optimized Play release
+        env:
+          MEADOW_UPLOAD_KEYSTORE: ${{ runner.temp }}/meadow-ci-upload.p12
+          MEADOW_UPLOAD_STORE_PASSWORD: android
+          MEADOW_UPLOAD_KEY_PASSWORD: android
+          MEADOW_UPLOAD_KEY_ALIAS: meadow-ci
+        run: |
+          keytool -genkeypair -keystore "$MEADOW_UPLOAD_KEYSTORE" -storetype PKCS12 -alias meadow-ci -keyalg RSA -keysize 2048 -validity 2 -dname "CN=Meadow CI" -storepass android -keypass android -noprompt
+          npm run android:bundle
