@@ -1,5 +1,9 @@
 # Meadow Markets Play operations
 
+## 10 November 2026 — optimized production update submitted
+
+Verified native1.7.4/code14 is active internally and installed through Google Play on the Samsung. Its exact signed artifact was promoted to production, preserving Australia/100%/managed publishing off. Publishing overview shows Changes in review; quick checks are running. Public1.7.2 remains active until14 approval/publication. Web230 is live. Both CI jobs and Pages passed. Private ad demo acceptance is expired and all test wallet/preferences restored. Use [native174 acceptance](meadow-native174-acceptance230.md) for the artifact SHA256, tests, evidence, source and known limits. Do not enable normal-unit ad testing merely because the device is registered; use the isolated demo lease and capability handshake on14+.
+
 ## 7 November 2026 — web227, native commerce tests and AdMob approved
 
 Google Play1.7.2/code12 is available in Australia. AdMob now shows Meadow Markets **Ready / Ad serving enabled**. Web227 is live; final regression/native CI42360522367 and Pages42360522499 passed, with seven public files matching Git. Samsung accepted the226→227 update and Settings confirmed227; browser227 was checked independently.
