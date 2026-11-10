@@ -1,0 +1,128 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-10",
+  "files": [
+    {
+      "id": "bee51-rhys-intro",
+      "farmer": "rhys",
+      "text": "Let's keep Cloud cosy! Draw around the fixed ledges, or fit your line into a gap. Then let the bees fly.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 0,
+      "sourceEnd": 7.2123800000000005,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 87595
+    },
+    {
+      "id": "bee51-rhys-map-0",
+      "farmer": "rhys",
+      "text": "This cave needs a little door. Draw down beside the ledge, then turn along the low rock.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 9.052380000000001,
+      "sourceEnd": 13.5567,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 54994
+    },
+    {
+      "id": "bee51-rhys-map-1",
+      "farmer": "rhys",
+      "text": "The opening is on the other side. Draw down beside the ledge, then turn onto the rock.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 15.3519,
+      "sourceEnd": 20.6036,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 64084
+    },
+    {
+      "id": "bee51-rhys-map-2",
+      "farmer": "rhys",
+      "text": "There's a gap in the roof. Draw a little curved cap that rests on both edges.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 22.2812,
+      "sourceEnd": 25.8761,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 44022
+    },
+    {
+      "id": "bee51-rhys-map-3",
+      "farmer": "rhys",
+      "text": "Can you fill the notch? Draw a little cup shape and rest it on the two shelves.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 27.493,
+      "sourceEnd": 32.477599999999995,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 60636
+    },
+    {
+      "id": "bee51-rhys-map-4",
+      "farmer": "rhys",
+      "text": "There's a side window. Draw three sides of a little box around its edges.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 34.1788,
+      "sourceEnd": 38.2896,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 50292
+    },
+    {
+      "id": "bee51-rhys-map-5",
+      "farmer": "rhys",
+      "text": "Draw a big upside-down cup over Cloud. Let the little ledge catch the roof.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 39.965,
+      "sourceEnd": 44.1785,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 51546
+    },
+    {
+      "id": "bee51-rhys-map-6",
+      "farmer": "rhys",
+      "text": "Start above the shelf, draw across, then turn down to make a cosy corner.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 45.884100000000004,
+      "sourceEnd": 50.4856,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 56248
+    },
+    {
+      "id": "bee51-rhys-map-7",
+      "farmer": "rhys",
+      "text": "Here's a high ledge and a low rock. Draw across, down, and across again.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 52.298100000000005,
+      "sourceEnd": 56.4722,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 50919
+    },
+    {
+      "id": "bee51-rhys-map-8",
+      "farmer": "rhys",
+      "text": "Let's give this garden bowl a rainbow roof. Rest each end on the stone rim.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 58.4491,
+      "sourceEnd": 63.064,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 56248
+    },
+    {
+      "id": "bee51-rhys-map-9",
+      "farmer": "rhys",
+      "text": "This tunnel needs a short door. Draw down, then turn along the low rock.",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceStart": 65.0645,
+      "sourceEnd": null,
+      "tempo": 1,
+      "normalization": "LUFS -18",
+      "bytes": 63144
+    }
+  ]
+}

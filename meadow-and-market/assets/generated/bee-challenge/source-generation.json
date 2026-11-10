@@ -1,0 +1,52 @@
+{
+  "mode": "Built-in image_gen tool",
+  "generated": "2026-11-09",
+  "directory": "meadow-market-littles/assets/generated/bee-shelter",
+  "prompts": {
+    "meadow": "Use case: illustration-story. Asset type: full-screen background for Meadow Market Littles, a premium preschool farm cartoon game. Create a polished warm hand-painted 2D farm meadow clearing, wide 3:2 landscape. Gentle pale blue sky upper half, distant green hills, small red barn far in the distance, apple tree and daisies framing the outer left and right edges. The entire central 80% is a broad VERY SIMPLE open softly green grassy area with minimal visual detail, no large foreground objects. Camera nearly straight-on like a 2D physics puzzle, low horizon. Welcoming golden morning light, soft rounded forms, rich but calm natural colours, high-quality children's storybook farm illustration. No characters, no bees, no hive, no text, no UI, no logos. The background must work behind separate interactive platforms and drawn black lines.",
+    "hive": "Use case: illustration-story. Asset type: isolated game sprite on a transparent background. One lovely golden honey beehive with stacked rounded wax rings, a dark round entrance hole facing front slightly right, and a short little twig at the top. Premium soft painterly preschool farm cartoon style, warm honey gold, clean silhouette, gentle dimensional shading, readable at small size, entire object visible with ample transparent padding. No bees, no background, no text, no labels, no border, no shadow rectangle.",
+    "bee": "Use case: illustration-story. Asset type: isolated game sprite on a transparent background. One cute friendly honey bee flying in side three-quarter view facing left, round fluffy golden yellow body with two dark brown stripes, tiny dark antennae, little smiling face, large clear dark eyes, two small translucent pale blue wings. Premium soft painterly preschool farm cartoon style, clean clear silhouette, entire bee visible with transparent padding. No aggressive expression, no visible stinger, no background, no text, no labels, no border.",
+    "post": "A single fixed wooden farm fence post for a premium preschool farm cartoon physics game, isolated transparent sprite. Straight-on side view, chunky rectangular silhouette, broad flat horizontal top, vertical warm golden brown wood with gently painterly grain, rounded corners, a little soft moss on the very top only. Entire object visible, fills 90% of portrait 1:2 canvas, no scene, no grass clump extending sides, no text, no UI. Match warm polished children's storybook farm illustration, readable geometry.",
+    "rock": "A single fixed tall rectangular rock pillar for a premium preschool farm cartoon physics game, isolated transparent sprite. Straight-on side view, chunky tall boulder with broad FLAT HORIZONTAL TOP so a drawn roof can rest on it, gently rounded corners and nearly vertical sides. Warm grey stone with soft painterly facets, a little green moss along the top. Entire object visible, fills 90% of portrait 1:2 canvas, no scene, no text, no UI. Match polished warm children's farm storybook art.",
+    "ground": "One long grass-topped soil platform for a premium preschool farm cartoon 2D physics game, isolated transparent background. Straight-on SIDE VIEW, very wide horizontal rectangle 3:1 aspect, LEVEL FLAT horizontal grass surface at the top edge, rich golden brown soil below with a few small smooth pebbles and roots, grass fringe at top only. Rounded bottom corners, clear clean silhouette, object fills canvas nearly edge to edge. Warm softly painted farm storybook illustration. No scene, no characters, no text, no perspective, no floating particles."
+  },
+  "preparation": "WebP encoding; transparent sprite padding trimmed to alpha bounds for terrain/collider alignment. Original generations preserved.",
+  "files": [
+    {
+      "id": "meadow",
+      "file": "meadow.webp",
+      "bytes": 147086,
+      "sha256": "76a925c97742ba85efb79411e58686c57ffe9a6541f9ea3c834176cc5b070326"
+    },
+    {
+      "id": "hive",
+      "file": "hive.webp",
+      "bytes": 14914,
+      "sha256": "33658b05e85ef6945a651650fdffb21fb91b0e83c552e759eab531e0ade4e86b"
+    },
+    {
+      "id": "bee",
+      "file": "bee.webp",
+      "bytes": 7124,
+      "sha256": "b639f03bf7c7d02f913824c471f5f0ef2c3bd6c8c2434f656255ac1f31f022f0"
+    },
+    {
+      "id": "post",
+      "file": "post.webp",
+      "bytes": 19186,
+      "sha256": "d32aa4cc8d9b79181eb809bc1817ec2bf6394d3452e99b8c349cf80905aac74f"
+    },
+    {
+      "id": "rock",
+      "file": "rock.webp",
+      "bytes": 17666,
+      "sha256": "d3680abbd032be1b2916800e71626cd7d4390433f189d6ce01349d8f9e3d3a67"
+    },
+    {
+      "id": "ground",
+      "file": "ground.webp",
+      "bytes": 75496,
+      "sha256": "342b2356b458660e3261cd5502d60e92487ac84287a09ec68dbd036488073e07"
+    }
+  ]
+}

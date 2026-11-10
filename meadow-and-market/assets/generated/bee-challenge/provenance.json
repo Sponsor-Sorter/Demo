@@ -1,0 +1,65 @@
+{
+  "port": "Meadow Markets Bee Shelter Challenge",
+  "baseline": "Littles 52 / 465f4f5",
+  "sourceArt": "meadow-market-littles/assets/generated/bee-shelter/generation.json",
+  "files": [
+    {
+      "file": "bee.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/bee.webp",
+      "sha256": "b639f03bf7c7d02f913824c471f5f0ef2c3bd6c8c2434f656255ac1f31f022f0"
+    },
+    {
+      "file": "ground.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/ground.webp",
+      "sha256": "342b2356b458660e3261cd5502d60e92487ac84287a09ec68dbd036488073e07"
+    },
+    {
+      "file": "hive.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/hive.webp",
+      "sha256": "33658b05e85ef6945a651650fdffb21fb91b0e83c552e759eab531e0ade4e86b"
+    },
+    {
+      "file": "meadow.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/meadow.webp",
+      "sha256": "76a925c97742ba85efb79411e58686c57ffe9a6541f9ea3c834176cc5b070326"
+    },
+    {
+      "file": "post.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/post.webp",
+      "sha256": "d32aa4cc8d9b79181eb809bc1817ec2bf6394d3452e99b8c349cf80905aac74f"
+    },
+    {
+      "file": "rock.webp",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/rock.webp",
+      "sha256": "d3680abbd032be1b2916800e71626cd7d4390433f189d6ce01349d8f9e3d3a67"
+    },
+    {
+      "file": "cloud.webp",
+      "source": "meadow-market-littles/assets/generated/sheep.webp",
+      "sha256": "2d9f8498b85d2f9148564201be2db2698f5258832c06d38167afa69cd53104aa"
+    },
+    {
+      "file": "preview.png",
+      "source": "meadow-market-littles/assets/generated/bee-shelter/preview51.png",
+      "sha256": "3851cc37bfbbb81eca9276831e09340bb950a2714f1714fd546db64bdde1d1b8"
+    }
+  ],
+  "audio": [
+    "bee51-rhys-intro",
+    "bee51-rhys-map-0",
+    "bee51-rhys-map-1",
+    "bee51-rhys-map-2",
+    "bee51-rhys-map-3",
+    "bee51-rhys-map-4",
+    "bee51-rhys-map-5",
+    "bee51-rhys-map-6",
+    "bee51-rhys-map-7",
+    "bee51-rhys-map-8",
+    "bee51-rhys-map-9",
+    "bee-rhys-watch",
+    "bee-rhys-retry",
+    "bee-rhys-success"
+  ],
+  "voice": "Farmer Rhys / Noah - YA Audiobooks Narrator",
+  "licence": "Matter.js 0.20.0 MIT; see vendor/matter-LICENSE.txt"
+}

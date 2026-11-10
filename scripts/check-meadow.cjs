@@ -121,6 +121,7 @@ require('./check-meadow-build-sales.cjs');
 require('./check-meadow-compact-hud.cjs');
 
 require('./check-meadow-word-search.cjs');
+require('./check-meadow-bees232.cjs');
 
 require('./check-meadow-precache.cjs');
 
