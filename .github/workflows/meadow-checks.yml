@@ -81,3 +81,5 @@ jobs:
         run: |
           keytool -genkeypair -keystore "$MEADOW_UPLOAD_KEYSTORE" -storetype PKCS12 -alias meadow-ci -keyalg RSA -keysize 2048 -validity 2 -dname "CN=Meadow CI" -storepass android -keypass android -noprompt
           npm run android:bundle
+      - name: Verify optimized native bridges
+        run: node ../../scripts/check-meadow-optimized-bundle.cjs

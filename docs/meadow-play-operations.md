@@ -1,5 +1,9 @@
 # Meadow Markets Play operations
 
+## 10 November 2026 — production14 published
+
+Production → Releases now shows1.7.4 (14) - Android performance as Available on Google Play, with the track Active in one country (Australia). This supersedes the review-pending notes below. Web231 is live and accepted on browser/Samsung; native14 stays installed. No production release or monetization setting was changed during the231 follow-up. Native15 store-intent/resource-optimization work is prepared for a future verified release. Keep the14 edge-to-edge/resource recommendations visible until addressed; see meadow-ui231.md and MEADOW_ACTIVE_BACKLOG.md.
+
 ## 10 November 2026 — optimized production update submitted
 
 Final Google check: quick checks completed and Console explicitly confirms Your changes are now in review. The production submission is complete; approval/publication remains pending.

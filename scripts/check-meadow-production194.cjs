@@ -8,6 +8,7 @@ const playUpdater=read(android+'play/java/com/meadowandmarket/game/MeadowUpdates
 for(const text of ['FileOutputStream','HttpURLConnection','FileProvider','ACTION_MANAGE_UNKNOWN_APP_SOURCES'])assert(!playUpdater.includes(text),'Play updater cannot install APKs');
 assert(playUpdater.includes('market://details?id='));
 assert(playUpdater.includes('.setPackage("com.android.vending")'),'The Play version opens its own store without a competing market chooser');
+assert(/^android\.r8\.optimizedResourceShrinking=true$/m.test(read('tools/meadow-android/android/gradle.properties')),'The optimized release enables the integrated resource shrinker');
 assert(/play\s*\{\s*dimension 'distribution'\s*versionCode 15\s*versionName '1.7.5'/.test(read('tools/meadow-android/android/app/build.gradle')),'The Play build has its own release version');
 const game=read(root+'game.js');assert(!game.includes('test-gold-grant'));assert(!game.includes('testgold'));assert(!game.includes('state.coins+=10000'));assert(!game.includes('merged.coins=(Number(merged.coins)||0)+8000'));
 assert(game.includes('https://play.google.com/store/apps/details?id=com.meadowandmarket.game'),'Production downloads link the public Play listing');assert(!game.includes('apps/internaltest/'),'Public installation must not require a test invitation');assert(!game.includes('Use your invited Google account'),'Production copy must not send customers through tester enrollment');

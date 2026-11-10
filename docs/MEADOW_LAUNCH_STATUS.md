@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 10 November 2026 — production14 available; web231 live
+
+Google Production → Releases explicitly confirms Active / Available on Google Play for1.7.4/code14, Australia. Website231 is live and accepted via the actual230→231 update in browser and Samsung, with saved farms retained. Emporium navigation, safer speed-up selection, leaderboard response/prize binding and mission refresh are fixed; full CI42788722121 and Pages42788722913 passed. Five public runtime files match68c2592. Native15 store-intent and optimized-resource changes are prepared separately, not distributed. Current priorities: [active backlog](MEADOW_ACTIVE_BACKLOG.md). Detailed evidence and advisory limits: [ui231](meadow-ui231.md). Older review-pending statements below are historical.
+
 ## 10 November 2026 — native14 submitted after device acceptance
 
 Final Google check: automated checks finished; Console explicitly confirms Your changes are now in review. No further submission button is pending. Approval/publication is separate.
