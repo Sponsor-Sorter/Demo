@@ -1,5 +1,7 @@
 # Meadow Markets remaining work
 
+Current actionable priorities are maintained in [MEADOW_ACTIVE_BACKLOG.md](MEADOW_ACTIVE_BACKLOG.md). Entries below retain chronological evidence and are superseded by newer acceptance records.
+
 ## 10 November 2026 — Samsung acceptance complete; production update submitted
 
 Web230 is live. Play1.7.4/code14 is installed and accepted on the Samsung, with the same protected stress farm preserved. Actual labelled Google demo rewarded/interstitial ads, completion/close/resume/retry, default-off and Premium popup suppression, offline refusal/reconnect and native Restore passed. Tests added no currency or reward nonces; all temporary leases and the Premium fixture are restored. Both final CI jobs and Pages passed. Production14 is submitted and shows Changes in review with quick checks running; public12 remains available in Australia until approval. See [native174 acceptance](meadow-native174-acceptance230.md) for evidence and precise limits. This supersedes the pending-device entries below.

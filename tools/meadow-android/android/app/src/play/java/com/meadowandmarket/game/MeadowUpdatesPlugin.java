@@ -23,7 +23,7 @@ public class MeadowUpdatesPlugin extends MeadowPlayPlugin {
     }
     @PluginMethod public void install(PluginCall call) {
         trustedPage(call, () -> {
-            try{getActivity().startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id="+getContext().getPackageName())));call.resolve(new JSObject());}
+            try{getActivity().startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id="+getContext().getPackageName())).setPackage("com.android.vending"));call.resolve(new JSObject());}
             catch(Exception e){call.reject("Google Play is unavailable on this device");}
         });
     }
