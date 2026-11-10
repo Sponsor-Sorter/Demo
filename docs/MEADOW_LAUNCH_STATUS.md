@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 11 November 2026 — Bee Shelter 232 live
+
+Web 232 adds the separate adult Bee Shelter Challenge under Farm games: twenty fixed-terrain puzzles, limited physical ink, larger swarms, personal stars/best scores and fourteen reused approved Rhys clips. Littles and the productive apiary are unchanged. All twenty local browser rounds and reload persistence passed; the public 231→232 update and complete native-pointer round passed. Both main CI 42819307061 jobs and Pages 42819307725 succeeded; all 38 changed public files match `fe368bf`. Public Play remains 1.7.4/code 14 in Australia. Bee-game physical acceptance and authoritative reward/ranking integration remain separate; this release is unlimited personal practice. [Acceptance and limits](MEADOW_BEE_CHALLENGE232.md).
+
 ## 10 November 2026 — production14 available; web231 live
 
 Google Production → Releases explicitly confirms Active / Available on Google Play for1.7.4/code14, Australia. Website231 is live and accepted via the actual230→231 update in browser and Samsung, with saved farms retained. Emporium navigation, safer speed-up selection, leaderboard response/prize binding and mission refresh are fixed; full CI42788722121 and Pages42788722913 passed. Five public runtime files match68c2592. Native15 store-intent and optimized-resource changes are prepared separately, not distributed. Current priorities: [active backlog](MEADOW_ACTIVE_BACKLOG.md). Detailed evidence and advisory limits: [ui231](meadow-ui231.md). Older review-pending statements below are historical.

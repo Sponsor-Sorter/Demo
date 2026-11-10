@@ -22,12 +22,31 @@
     "retryAndNextPuzzle": true,
     "pauseResume": true,
     "allRecordsAfterReload": 20,
-    "viewportChecks": ["360x740", "740x360", "768x1024"],
+    "viewportChecks": [
+      "360x740",
+      "740x360",
+      "768x1024"
+    ],
     "consoleErrors": [],
     "proof": "bee-all20-restored232.png"
   },
   "economy": "Unlimited personal practice; no currency, goods, turns or ranked score issued",
   "audio": "14 reused approved Rhys recordings; no new generation",
   "physicalDevice": "Not performed; Samsung belongs to another active game test",
-  "publicAcceptance": "pending deployment"
+  "publicAcceptance": {
+    "matchedFiles": 38,
+    "totalFiles": 38,
+    "update": "231 -> 232 accepted; saved farm retained",
+    "nativePointerPuzzle": 3,
+    "win": true,
+    "points": 2900,
+    "stars": 3,
+    "recordAfterReopen": true,
+    "proof": "bee-live-campaign232.png"
+  },
+  "publishedDate": "2026-11-11",
+  "source": "fe368bfbcfda84832ca6c91a0a0e5a014a17b632",
+  "finalCI": 42819307061,
+  "pages": 42819307725,
+  "minorFollowUp": "Refresh status text after exhausted ink is undone; meter/refund and drawing already reset correctly."
 }
