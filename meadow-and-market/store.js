@@ -89,12 +89,15 @@
   const sameAccount=()=>{if(who!==api.user()?.id)throw Error('Account changed. Open the reward on your own farm.');};
   try{
    await refresh();sameAccount();if(configuration.test_access&&!configuration.ads_provider_test)return {test:true};
-   if(!ads||!configuration.ads_enabled){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
-   if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true)return {unavailable:true};}
+   const testOnly=configuration.ads_provider_test===true;
+   if(!ads||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled)){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
+   if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true){if(testOnly)api.notify(wallet?.premium?'Premium is active. Popup ads are blocked.':'Optional popup ads are off.');return {unavailable:true};}}
+   if(testOnly){let supported=false;try{supported=(await ads.capabilities()).isolatedTestAds===true;}catch{}sameAccount();if(!supported)throw Error('Update Meadow Markets in Google Play before running isolated test ads.');}
    const consent=await ads.consent();sameAccount();if(!consent.canRequestAds){api.notify('Advertising privacy choices are unavailable. No ad was shown.');return {unavailable:true};}
-   const data={rewarded};
-   if(rewarded){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
+   const data={rewarded};if(testOnly)data.testOnly=true;
+   if(rewarded&&!testOnly){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
    const result=await ads.show(data);sameAccount();
+   if(testOnly){api.notify(result.earned?'Test ad finished. No game rewards were added.':'Test ad closed. No game rewards were added.');return result;}
    if(result.earned)api.notify('Ad finished. Your reward arrives after server verification.');
    else if(rewarded)api.notify('Ad closed before the reward was earned. No reward was added.');
    if(result.earned){let checks=0;const timer=setInterval(()=>{if(who!==api.user()?.id||++checks>4){clearInterval(timer);return;}window.meadowClub?.refresh();},5000);}

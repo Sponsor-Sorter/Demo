@@ -12,6 +12,9 @@ import com.google.android.ump.*;
 public class MeadowAdsPlugin extends MeadowPlayPlugin {
     private ConsentInformation consent;
     private boolean showing=false;
+    @PluginMethod public void capabilities(PluginCall call){
+        trustedPage(call, () -> {JSObject r=new JSObject();r.put("isolatedTestAds",true);call.resolve(r);});
+    }
     @PluginMethod public void consent(PluginCall call){
         trustedPage(call, () -> {
             consent=UserMessagingPlatform.getConsentInformation(getContext());
@@ -33,29 +36,33 @@ public class MeadowAdsPlugin extends MeadowPlayPlugin {
         trustedPage(call, () -> {
             if(showing||consent==null||!consent.canRequestAds()){call.reject("Advertising is not ready");return;}
             boolean reward=Boolean.TRUE.equals(call.getBoolean("rewarded",false));
-            String unit=reward?BuildConfig.MEADOW_REWARDED_AD_UNIT:BuildConfig.MEADOW_INTERSTITIAL_AD_UNIT;
+            boolean testOnly=Boolean.TRUE.equals(call.getBoolean("testOnly",false));
+            // Explicit operator acceptance uses Google's demo creatives. Device
+            // registration alone is not proof that a request is non-revenue.
+            String unit=testOnly?(reward?"ca-app-pub-3940256099942544/5224354917":"ca-app-pub-3940256099942544/1033173712")
+                :(reward?BuildConfig.MEADOW_REWARDED_AD_UNIT:BuildConfig.MEADOW_INTERSTITIAL_AD_UNIT);
             if(unit.isEmpty()){call.reject("No ad is available");return;}
             String nonce=call.getString("nonce"),account=call.getString("accountId");
-            if(reward&&(nonce==null||!nonce.matches("[a-f0-9-]{36}")||account==null||!account.matches("[a-f0-9]{64}"))){call.reject("Start the reward online first");return;}
+            if(reward&&!testOnly&&(nonce==null||!nonce.matches("[a-f0-9-]{36}")||account==null||!account.matches("[a-f0-9]{64}"))){call.reject("Start the reward online first");return;}
             showing=true;
             AdRequest request=new AdRequest.Builder().build();
             if(reward)RewardedAd.load(getContext(),unit,request,new RewardedAdLoadCallback(){
                 public void onAdFailedToLoad(LoadAdError error){showing=false;call.reject("No ad available. Try later.");}
                 public void onAdLoaded(RewardedAd ad){
                     final boolean[] earned={false};
-                    ad.setServerSideVerificationOptions(new ServerSideVerificationOptions.Builder().setUserId(account).setCustomData(nonce).build());
-                    ad.setFullScreenContentCallback(callback(call,earned));
+                    if(!testOnly)ad.setServerSideVerificationOptions(new ServerSideVerificationOptions.Builder().setUserId(account).setCustomData(nonce).build());
+                    ad.setFullScreenContentCallback(callback(call,earned,testOnly));
                     ad.show(getActivity(),item->earned[0]=true);
                 }
             });
             else InterstitialAd.load(getContext(),unit,request,new InterstitialAdLoadCallback(){
                 public void onAdFailedToLoad(LoadAdError error){showing=false;call.reject("No ad available");}
-                public void onAdLoaded(InterstitialAd ad){ad.setFullScreenContentCallback(callback(call,new boolean[]{false}));ad.show(getActivity());}
+                public void onAdLoaded(InterstitialAd ad){ad.setFullScreenContentCallback(callback(call,new boolean[]{false},testOnly));ad.show(getActivity());}
             });
         });
     }
-    private FullScreenContentCallback callback(PluginCall call,boolean[] earned){return new FullScreenContentCallback(){
-        public void onAdDismissedFullScreenContent(){showing=false;JSObject r=new JSObject();r.put("earned",earned[0]);r.put("verificationPending",earned[0]);call.resolve(r);}
+    private FullScreenContentCallback callback(PluginCall call,boolean[] earned,boolean testOnly){return new FullScreenContentCallback(){
+        public void onAdDismissedFullScreenContent(){showing=false;JSObject r=new JSObject();r.put("earned",earned[0]);r.put("verificationPending",earned[0]&&!testOnly);if(testOnly)r.put("testOnly",true);call.resolve(r);}
         public void onAdFailedToShowFullScreenContent(AdError error){showing=false;call.reject("Could not show ad");}
     };}
 }
