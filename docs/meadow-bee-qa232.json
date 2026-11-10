@@ -1,0 +1,33 @@
+{
+  "build": 232,
+  "date": "2026-11-10",
+  "scope": "Main-game-owned adult Bee Shelter campaign; Littles unchanged",
+  "automated": {
+    "fullMeadowRegression": "passed",
+    "supportedRounds": 200,
+    "sampledKeyboardRounds": 100,
+    "unsupportedFailures": 20,
+    "focusedPrivacyAndCache": "passed",
+    "branchCI": 42816561330,
+    "branchCIConclusion": "both jobs passed"
+  },
+  "browser": {
+    "origin": "http://localhost:8771",
+    "completePuzzleWins": 20,
+    "nativePointerRoofWin": true,
+    "keyboardDrawing": true,
+    "undoInkRefund": true,
+    "clearAndRedraw": true,
+    "hintAssistedScoring": true,
+    "retryAndNextPuzzle": true,
+    "pauseResume": true,
+    "allRecordsAfterReload": 20,
+    "viewportChecks": ["360x740", "740x360", "768x1024"],
+    "consoleErrors": [],
+    "proof": "bee-all20-restored232.png"
+  },
+  "economy": "Unlimited personal practice; no currency, goods, turns or ranked score issued",
+  "audio": "14 reused approved Rhys recordings; no new generation",
+  "physicalDevice": "Not performed; Samsung belongs to another active game test",
+  "publicAcceptance": "pending deployment"
+}

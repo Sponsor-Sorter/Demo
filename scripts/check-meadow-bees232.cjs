@@ -4,7 +4,7 @@ for(const name of ['bee-challenge-core.js','bee-challenge-progress.js'])vm.runIn
 const C=scope.window.meadowBeeChallengeCore,P=scope.window.meadowBeeChallengeProgress;
 assert.equal(C.levels.length,20);assert.equal(new Set(C.levels.map(l=>JSON.stringify(l.terrain))).size,20);
 const random=seed=>()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
-function sampled(h){const points=[h[0]];for(let i=1;i<h.length;i++){const a=h[i-1],b=h[i],n=Math.ceil(C.rules.distance(a,b)/5);for(let j=1;j<=n;j++)points.push({x:a.x+(b.x-a.x)*j/n,y:a.y+(b.y-a.y)*j/n});}return points;}
+function sampled(h){const points=[h[0]];for(let i=1;i<h.length;i++){const a=h[i-1],b=h[i],n=Math.max(Math.abs(b.x-a.x),Math.abs(b.y-a.y))/5;let x=a.x,y=a.y;for(let j=1;j<=n;j++){const nx=a.x+Math.round((b.x-a.x)*j/n/5)*5,ny=a.y+Math.round((b.y-a.y)*j/n/5)*5;if(nx!==x){x=nx;points.push({x,y});}if(ny!==y){y=ny;points.push({x,y});}}}return points;}
 let rounds=0;
 for(let i=0;i<20;i++){
   const level=C.levels[i];assert(level.bees>=32&&level.seconds>=10&&level.ink<850);assert(!C.rules.legalPoint(level.friend,level));
