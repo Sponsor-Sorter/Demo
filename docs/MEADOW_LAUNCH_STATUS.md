@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 11 November 2026 — Premium gift consumer234 live
+
+Web234 is published as `10e5e8d` with runtime `e4d61cf`. Both main CI42943049500 jobs and Pages42943049582 pass; all five public files match. The actual233→234 Install update restores the saved public farm. The published Premium module passed live grant/expiry/reopen/revocation through a disposable full-game browser fixture; exact cleanup counts for gift/profile/Auth are zero. Delivered paid access survives acknowledgement retry and gift removal; refunds preserve valid paid/support/gift sources, including two frozen existing preview entitlements. The central Admin issuance switch remains off pending its independent qualification; no commercial flags or public native14 changed. [Acceptance](MEADOW_PREMIUM234.md), [deployed hashes and permissions](meadow-premium234-backend.json).
+
 ## 11 November 2026 — mobile word find 233 live
 
 The word grid now fills the space below compact controls. Final public browser measurements: 352×644 on a 360×740 phone viewport and 732×304 on 740×360 landscape; selection and progress survive rotation. The full local twenty-word round verified its reward, and the public pointer selection/reopen succeeded. Game/Android CI 42919603468 passed; fresh Pages 42923711591 deployed `f2d107c` after two cancelled hosting attempts. All six public runtime files match tested `ec716ca`, and Settings reports Game build 233. Public native Play 1.7.4/code 14 remains unchanged. [Acceptance, hosting recovery and limits](MEADOW_WORD_FIND233.md).

@@ -1,6 +1,6 @@
 # Meadow Markets Premium consumer234
 
-11 November2026, Sydney. Candidate web234; publication and final browser acceptance are recorded below when complete. The word-find233 layout and Littles53 are preserved. No ad gate, product price, native binary or central grant capability is enabled by this change.
+11 November 2026, Sydney. Web234 is published; final consumer acceptance is recorded below. The word-find233 layout and Littles53 are preserved. No ad gate, product price, native binary or central grant capability is enabled by this change.
 
 ## Authoritative access
 
@@ -31,4 +31,16 @@ Android package `com.meadowandmarket.game`; production app ID `ca-app-pub-694600
 
 Acceptance uses the full game at the existing command-QA origin `127.0.0.1:8773`, with local-server-only isolated auth/save namespaces and legacy-session import disabled. Production source files are unchanged by that isolation; the shipped `farm-club.js` is the actual module under test. Only a newly created anonymous account tagged `command-ui210` receives the temporary ledger fixture. The earlier untagged guest at that origin was left untouched. All fixture transitions, cleanup and live-public source verification must be recorded before enabling Admin issuance.
 
-Local real-browser active→expired→active→revoked transitions passed through the live database while Emporium remained open, with no refresh click or reload. The Premium button and ad-suppression note changed automatically. Evidence is in the external launch230 folder: `premium-active234.png`, `premium-expired234.png`, `premium-restored234.png`, `premium-revoked234.png`. A public deployment and cleanup are still pending at this candidate receipt.
+Local real-browser active→expired→active→revoked transitions passed through the live database while Emporium remained open, with no refresh click or reload. The Premium button and ad-suppression note changed automatically. Evidence is in the external launch230 folder: `premium-active234.png`, `premium-expired234.png`, `premium-restored234.png`, `premium-revoked234.png`. Published-module checks are recorded below.
+
+## Publication234
+
+Public revision `10e5e8d11b8615cbbe42055376574ad25e3bb32c` is deployed. Both jobs in main CI42943049500 pass, as do the earlier qualified branch CI42942067189. Pages42943049582 succeeds. All five changed public files match normalized source `e4d61cf63c92afc7e145abcbf01dd2d2f978a96f`; `premium-public234.json` contains their hashes. The published consumer module SHA256 is `a3ca93915ccdd6e9852d581e5d652debf985219b90de17613b5483d51e2ccd70`.
+
+The existing public browser presented the real233→234 Install update prompt, installed it, restored the same level-nine Willowbrook farm and showed Settings Game build234. Worker planting continued; no frozen-gold claim is made during ongoing automation. Evidence: `premium-update-prompt234.png`, `premium-public-build234.png`.
+
+The isolated full-game acceptance page loaded `https://sponsorsorter.com/meadow-and-market/farm-club.js?v=234` directly. It used its generated QA account, production Supabase connection and actual Emporium UI. Published active→expired and active→revoked transitions changed the open card and ad note automatically. Reopening Emporium also refreshed restored access correctly. These are real browser/server checks, without mocked responses or issuing access to an existing player. Evidence: `premium-published-active234.png`, `premium-published-expired234.png`, `premium-published-restored234.png`, `premium-published-revoked234.png`.
+
+The dedicated local test controller confirmed **Local test closed** before cleanup. Its exact temporary central gift, new profile and anonymous Auth identity were removed with guarded identity/date/ownership checks; all three residual counts are zero. The two frozen legacy preview records remain. The original public farm and earlier untagged local guest were preserved. The preview tab/server are closed; public build234 remains open for play. The Samsung was reserved for Frontlines and was not used.
+
+The Meadow central gift issuance adapter is still **off**, as required by the coordinating Admin task until its independent qualification is complete. This consumer receipt, exact hashes and AdMob IDs are supplied to that task; reporting authorization and capability activation belong there. No revenue/production-ad claim is made from these browser tests. Final documentation is kept on the acceptance branch to avoid another5GB site deployment just for notes.

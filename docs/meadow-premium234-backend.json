@@ -3,8 +3,30 @@
   "game": "Meadow Markets",
   "build": 234,
   "project": "ejavqlyozqhzqogflqzr",
-  "state": "backend_deployed_publication_pending",
+  "state": "published_and_consumer_qualified",
   "source": "e4d61cf63c92afc7e145abcbf01dd2d2f978a96f",
+  "publication_revision": "10e5e8d11b8615cbbe42055376574ad25e3bb32c",
+  "public_runtime_files_match": 5,
+  "consumer_sha256": "a3ca93915ccdd6e9852d581e5d652debf985219b90de17613b5483d51e2ccd70",
+  "successful_branch_ci": 42942067189,
+  "successful_main_ci": 42943049500,
+  "successful_pages": 42943049582,
+  "public_update_prompt": "233_to_234_installed_saved_farm_retained",
+  "published_consumer": {
+    "url": "https://sponsorsorter.com/meadow-and-market/farm-club.js?v=234",
+    "full_game_fixture": true,
+    "activation": true,
+    "expiry_live": true,
+    "reopen_refresh": true,
+    "revocation_live": true,
+    "mocked_responses": false
+  },
+  "fixture_cleanup": {
+    "auth": 0,
+    "profile": 0,
+    "gift": 0,
+    "session_stopped_before_cleanup": true
+  },
   "functions": [
     {
       "schema": "meadow_private",
