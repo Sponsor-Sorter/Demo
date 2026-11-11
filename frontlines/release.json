@@ -1,11 +1,11 @@
 {
-  "build": 100,
-  "version": "1.0.0.100",
-  "url": "https://sponsorsorter.com/frontlines/builds/100/",
-  "notes": "V1.0.0.100: Named commander and dice loadouts; persistent guest sign-in and explicit rejoin; opt-in rematches and waiting-lobby host recovery. Weekly tactical challenges, optional player patterns and six shaped troop counters, reviewed issue reports, and improved troop-move responsiveness. Approved graphics retained.",
+  "build": 102,
+  "version": "1.0.0.102",
+  "url": "https://sponsorsorter.com/frontlines/builds/102/",
+  "notes": "V1.0.0.102: Improved first-battle and card preparation, faster menu returns, advertising privacy/account binding and verified gem rewards in the Play edition. Clearer VIP restore, refund and complimentary-expiry state. Existing graphics, artwork, maps, accounts and saves retained.",
   "networkBuild": 100,
-  "androidBuild": 100,
-  "windowsBuild": 100,
+  "androidBuild": 102,
+  "windowsBuild": 102,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93
