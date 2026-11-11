@@ -4,7 +4,8 @@
  const config=window.meadowLittlesCommerceConfig,access=window.meadowLittlesAccess;
  const native=!!window.Capacitor?.isNativePlatform?.();
  const plugin=name=>native&&window.Capacitor?.isPluginAvailable?.(name)?window.Capacitor.Plugins?.[name]||window.Capacitor.registerPlugin?.(name):null;
- const store=plugin('LittlesStore'),ads=plugin('LittlesAds'),proofKey='meadow-littles-plus-proof-v1';
+ const store=plugin('LittlesStore'),ads=plugin('LittlesAds'),proofKey='meadow-littles-plus-proof-v1',roundPolicyKey='meadow-littles-round-policy-v1';
+ let lastPublicLimits=false;try{lastPublicLimits=localStorage.getItem(roundPolicyKey)==='enabled';}catch{}
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
  const responseSeq=new WeakMap();
@@ -17,8 +18,8 @@
   }catch{return false;}
  }
  async function request(action,extra={}){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id)throw Error('Connect your grown-up account first.');const run=requestChain.catch(()=>{}).then(async()=>{if(stamp!==authEpoch)throw Error('The account changed.');const seq=++requestSeq,answer=await window.meadowLittlesCloud.commerce(action,extra);if(stamp!==authEpoch||id!==window.meadowLittlesCloud.getStatus().userId||answer?.user_id!==id||answer.contract!==config.contract)throw Error('The account changed. Open grown-up settings again.');responseSeq.set(answer,seq);return answer;});requestChain=run;return run;}
- function updateAccess(){access.configure({enabled:status?.checkout_enabled===true,plus});parentRender?.();syncBanner();}
- async function accept(answer){const user=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch,seq=responseSeq.get(answer)||0;if(answer?.user_id!==user||seq<appliedSeq)return;const verified=!!answer.proof&&await validProof(answer.proof,user);if(stamp!==authEpoch||user!==window.meadowLittlesCloud?.getStatus().userId||seq<appliedSeq)return;appliedSeq=seq;status=answer;plus=verified;try{if(plus)localStorage.setItem(proofKey,answer.proof);else localStorage.removeItem(proofKey);}catch{}updateAccess();}
+ function updateAccess(){access.configure({enabled:status?status.checkout_enabled===true:lastPublicLimits,plus});parentRender?.();syncBanner();}
+ async function accept(answer){const user=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch,seq=responseSeq.get(answer)||0;if(answer?.user_id!==user||seq<appliedSeq)return;const verified=!!answer.proof&&await validProof(answer.proof,user);if(stamp!==authEpoch||user!==window.meadowLittlesCloud?.getStatus().userId||seq<appliedSeq)return;appliedSeq=seq;status=answer;plus=verified;if(answer.checkout_test_only===false&&typeof answer.checkout_enabled==='boolean'){lastPublicLimits=answer.checkout_enabled;try{localStorage.setItem(roundPolicyKey,lastPublicLimits?'enabled':'disabled');}catch{}}try{if(plus)localStorage.setItem(proofKey,answer.proof);else localStorage.removeItem(proofKey);}catch{}updateAccess();}
  async function refresh(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id){plus=false;status=null;updateAccess();return;}
   const before=appliedSeq;let cached=false;try{const saved=localStorage.getItem(proofKey);cached=!!saved&&await validProof(saved,id);}catch{}if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId)return;if(before===appliedSeq){plus=cached;updateAccess();}
   try{await accept(await request('status'));}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}

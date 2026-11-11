@@ -8,4 +8,6 @@ Final prompt:
 
 Use actual game screenshots for the phone/tablet galleries, without simulated purchase proofs, QA controls or technical overlays. Do not present isolated payment fixtures as real Google checkout screenshots.
 
-The four `phone-*.jpg` captures are actual 540×960 game UI; the two `tablet-*.jpg` captures are 1280×720. All were captured through the browser while playing the repository source, with cloud accounts and payment/ad SDKs disconnected. There are no invented game screens, overlays or image edits. Alphabet, balloons, Bee Shelter, picture slide and Windmill Workshop are shown. Full Bee Shelter and windmill rounds were completed during capture. The JPEG files retain the original browser screenshot bytes.
+The four `phone-*.jpg` captures are actual 540×960 game UI. The two `tablet-letter-tracing.jpg` / `tablet-windmill.jpg` captures are 1280×720; the two `tablet-large-*.jpg` captures are 1920×1080 for the larger-tablet gallery. All were captured through the browser while playing the repository source, with cloud accounts and payment/ad SDKs disconnected. There are no invented game screens, overlays or image edits. Alphabet, balloons, Bee Shelter, picture slide and Windmill Workshop are shown. Full Bee Shelter and windmill rounds were completed during capture. The JPEG files retain the original browser screenshot bytes.
+
+The Play listing labels the icon, feature graphic and screenshots containing AI-created farm illustrations accordingly. The screenshot UI itself is captured from the running game.
