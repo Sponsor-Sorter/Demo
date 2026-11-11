@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-11T12:05:08.347Z",
+  "marker": "littles-play-review53",
+  "method": "Existing demo password login and isolated live JS consumer against actual Auth/Edge responses; no phone or native payment/ad test",
+  "confirmedParentLogin": true,
+  "providerTest": false,
+  "checkoutEnabled": false,
+  "adsEnabled": false,
+  "paid": false,
+  "complimentary": true,
+  "serverPlus": true,
+  "consumerPlus": true,
+  "signedProofValid": true,
+  "publicQuotaEnabled": false,
+  "credentialsOrProofsRecorded": false
+}
