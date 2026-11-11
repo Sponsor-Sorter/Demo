@@ -20,6 +20,8 @@ The game refreshes Premium every60 seconds while visible/online, on resume, and 
 - First branch CI42941568021 found the older billing fixture passed an unmarked wallet as verified access. Its inputs now carry the new verified marker/request order; the original open-shop paid/refund assertions are retained. Migration `20261111015052_meadow_test_premium_receipt_binding234` additionally prevents a reused free-test request from creating different support evidence.
 - Gateway46 is JWT-verified; all eight deployed files read back exactly. Only the generated rules fingerprint changed to `5fd2677ecb919015c3ca8c4896f09bfee8054ebc3f39e01707f58b9a8fdc52f0`; farm arithmetic is unchanged.
 - Security advisors add only the expected private/RLS/no-policy informational entry for the inaccessible frozen legacy table. Existing shared-project advisories remain separate.
+- Corrected branch CI42942067189 passed both game checks and optimized Android compilation. The full CI cache/fingerprint check passed. Final source runtime is `e4d61cf63c92afc7e145abcbf01dd2d2f978a96f`; later receipt commits change documentation only.
+- Source lookups are covered by existing purchase/support owner indexes, the frozen table primary key and the central `(app,target,entitlement) WHERE revoked_at IS NULL` index. The public-definer warning count returned to its original6 after the private-wrapper migration. The sole additional [RLS informational entry](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy) is intentional deny-all access to the private frozen legacy table.
 
 ## AdMob reporting mapping
 
