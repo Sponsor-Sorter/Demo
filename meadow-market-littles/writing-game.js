@@ -27,6 +27,7 @@
     if (mode === 'balloons') $('.writing-head small').textContent = 'MEADOW MARKET LITTLES';
   }
   function start(modeName) {
+    if(window.meadowLittlesAccess?.begin(modeName==='alphabet'?'letter_tracing':modeName==='name'?'name_tracing':'balloon_letters',close)===false)return;
     mode = modeName; index = 0; strokes = []; guide = 'jade'; lastHint = 0;
     if (mode === 'alphabet') { name = ''; queue = [...alphabet].flatMap(letter => [letter, letter.toLowerCase()]); showTrace(); return; }
     if (mode === 'balloons') { balloonStart(); return; }
@@ -60,7 +61,7 @@
     $('.writing-message').textContent = 'Tap the balloon with ' + wanted + '.';
     sayBalloon(wanted);
   }
-  function balloonDone() { window.meadowAudio?.play('reward'); shell('Balloon letter star!', '<div class="writing-congrats"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div><h2>You found every letter balloon!</h2><p>Lovely listening and letter finding!</p><button class="writing-button writing-primary" type="button" data-again>Play again</button><button class="writing-button" type="button" data-close>Back to games</button></div>'); $('[data-again]').onclick = () => start('balloons'); $('[data-close]').onclick = close; speak(cue('balloonsdone')); }
+  function balloonDone() {window.meadowLittlesAccess?.complete('balloon_letters'); window.meadowAudio?.play('reward'); shell('Balloon letter star!', '<div class="writing-congrats"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div><h2>You found every letter balloon!</h2><p>Lovely listening and letter finding!</p><button class="writing-button writing-primary" type="button" data-again>Play again</button><button class="writing-button" type="button" data-close>Back to games</button></div>'); $('[data-again]').onclick = () => start('balloons'); $('[data-close]').onclick = close; speak(cue('balloonsdone')); }
   function namePrompt() {
     shell('Write my name', '<div class="writing-intro"><div class="writing-preview-name" aria-hidden="true"><span>A</span><span>m</span><span>y</span></div><h2>A grown-up, type the child’s name</h2><p>The name is used just for this game and is not saved or sent anywhere.</p><form class="writing-name-form"><label for="writing-name">Child’s first name</label><input id="writing-name" name="name" autocomplete="off" maxlength="16" required aria-describedby="writing-name-help"><small id="writing-name-help">Up to 12 letters. Spaces and hyphens are okay.</small><button class="writing-button writing-primary" type="submit">Let’s write!</button></form></div>');
     $('.writing-name-form').onsubmit = event => { event.preventDefault(); const typed = $('#writing-name').value.normalize('NFC').trim().replace(/[^\p{L}\p{M} '-]/gu, '').replace(/\s+/g, ' ').slice(0, 16); const letters = [...typed].filter(char => /[\p{L}\p{M}]/u.test(char)); if (!letters.length || letters.length > 12) { $('#writing-name-help').textContent = 'Please enter a name with 1 to 12 letters.'; return; } name = typed; queue = letters.map((letter, position) => position === 0 ? letter.toLocaleUpperCase() : letter.toLocaleLowerCase()); index = 0; strokes = []; showTrace(); };
@@ -169,10 +170,10 @@
     $('[data-next]').onclick = () => { if (doneToken !== token) return; index++; showTrace(); };
     speak(cue('next'));
   }
-  function alphabetDone() {
+  function alphabetDone() {window.meadowLittlesAccess?.complete('letter_tracing');
     window.meadowAudio?.play('reward'); shell('Alphabet helper!', '<div class="writing-congrats"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div><h2>You traced all the letters!</h2><p>Big letters and little letters, A to Z. What a lovely job!</p><button class="writing-button writing-primary" type="button" data-again>Trace again</button><button class="writing-button" type="button" data-close>Back to games</button></div>'); $('[data-again]').onclick = () => start('alphabet'); $('[data-close]').onclick = close; speak(cue('alphabetdone'));
   }
-  function nameDone() {
+  function nameDone() {window.meadowLittlesAccess?.complete('name_tracing');
     window.meadowAudio?.play('reward'); let letterIndex = 0; const letters = [...name].map(char => /[\p{L}\p{M}]/u.test(char) ? `<canvas class="writing-result-letter" data-result="${letterIndex++}" aria-label="Your letter ${esc(char)}"></canvas>` : `<span class="writing-name-separator">${esc(char)}</span>`).join('');
     shell('My name!', `<div class="writing-name-result"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div><h2>You wrote your name!</h2><div class="writing-result-name" aria-label="${esc(name)}">${letters}</div><p>Every rainbow letter was made by you!</p><button class="writing-button writing-primary" type="button" data-again>Write my name again</button><button class="writing-button" type="button" data-close>Back to games</button></div>`);
     dialog.querySelectorAll('[data-result]').forEach((mini, i) => renderThumbnail(mini, strokes[i] || [], queue[i])); $('[data-again]').onclick = () => start('name'); $('[data-close]').onclick = close; speak(cue('namedone'));

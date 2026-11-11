@@ -1,0 +1,70 @@
+/* Real Play receipts are verified by the server. Legacy save flags are never read here. */
+(() => {
+ 'use strict';
+ const config=window.meadowLittlesCommerceConfig,access=window.meadowLittlesAccess;
+ const native=!!window.Capacitor?.isNativePlatform?.();
+ const plugin=name=>native&&window.Capacitor?.isPluginAvailable?.(name)?window.Capacitor.Plugins?.[name]||window.Capacitor.registerPlugin?.(name):null;
+ const store=plugin('LittlesStore'),ads=plugin('LittlesAds'),proofKey='meadow-littles-plus-proof-v1';
+ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
+ const responseSeq=new WeakMap();
+ const canCheckout=()=>!!(store&&capabilities&&status?.checkout_enabled&&status?.parent_ready&&(!status?.checkout_test_only||capabilities.adsDemo===true));
+ const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
+ async function validProof(proof,user){
+  try{const parts=proof.split('.');if(parts.length!==3)return false;const head=JSON.parse(new TextDecoder().decode(decode(parts[0]))),claims=JSON.parse(new TextDecoder().decode(decode(parts[1]))),now=Math.floor(Date.now()/1000);
+   if(head.alg!=='RS256'||claims.iss!==config.contract||claims.aud!==config.package||claims.product!==config.product||claims.sub!==user||!Number.isSafeInteger(claims.exp)||!Number.isSafeInteger(claims.iat)||claims.iat>now+30||claims.exp<=now||claims.exp<=claims.iat||claims.exp-claims.iat>86400||typeof claims.paid!=='boolean'||typeof claims.complimentary!=='boolean'||(!claims.paid&&!claims.complimentary)||!claims.paid&&claims.exp-claims.iat>300)return false;
+   const key=await crypto.subtle.importKey('jwk',config.proofKey,{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['verify']);return await crypto.subtle.verify({name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},key,decode(parts[2]),new TextEncoder().encode(parts[0]+'.'+parts[1]));
+  }catch{return false;}
+ }
+ async function request(action,extra={}){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id)throw Error('Connect your grown-up account first.');const run=requestChain.catch(()=>{}).then(async()=>{if(stamp!==authEpoch)throw Error('The account changed.');const seq=++requestSeq,answer=await window.meadowLittlesCloud.commerce(action,extra);if(stamp!==authEpoch||id!==window.meadowLittlesCloud.getStatus().userId||answer?.user_id!==id||answer.contract!==config.contract)throw Error('The account changed. Open grown-up settings again.');responseSeq.set(answer,seq);return answer;});requestChain=run;return run;}
+ function updateAccess(){access.configure({enabled:status?.checkout_enabled===true,plus});parentRender?.();syncBanner();}
+ async function accept(answer){const user=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch,seq=responseSeq.get(answer)||0;if(answer?.user_id!==user||seq<appliedSeq)return;const verified=!!answer.proof&&await validProof(answer.proof,user);if(stamp!==authEpoch||user!==window.meadowLittlesCloud?.getStatus().userId||seq<appliedSeq)return;appliedSeq=seq;status=answer;plus=verified;try{if(plus)localStorage.setItem(proofKey,answer.proof);else localStorage.removeItem(proofKey);}catch{}updateAccess();}
+ async function refresh(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id){plus=false;status=null;updateAccess();return;}
+  const before=appliedSeq;let cached=false;try{const saved=localStorage.getItem(proofKey);cached=!!saved&&await validProof(saved,id);}catch{}if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId)return;if(before===appliedSeq){plus=cached;updateAccess();}
+  try{await accept(await request('status'));}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}
+ }
+ function accountChanged(id,ready){if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
+ async function settle(rows=[]){let pending=false;for(const row of rows){if(row.pending){pending=true;continue;}if(typeof row.token==='string')await accept(await request('verify',{token:row.token}));}await refresh();return pending;}
+ async function recover(){if(!store||!status?.parent_ready)return;try{const result=await store.restore();await settle(result.purchases);}catch{/* Parent-facing Restore remains available. */}}
+ function note(text){const node=dialog?.querySelector('[data-commerce-note]');if(node)node.textContent=text;}
+ function close(){epoch++;busy=false;parentRender=null;store?.cancelCheckout().catch(()=>{});dialog?.close();syncBanner();}
+ function gate(action){
+  parentRender=null;
+  if(!dialog){dialog=document.createElement('dialog');dialog.className='littles-parent';dialog.setAttribute('aria-label','Grown-up settings');dialog.addEventListener('cancel',()=>{epoch++;busy=false;store?.cancelCheckout().catch(()=>{});});document.body.append(dialog);}
+  const numbers=['twenty one','twenty seven','thirty three','thirty eight','forty two','forty six'],values=[21,27,33,38,42,46],a=Math.floor(Math.random()*numbers.length),b=Math.floor(Math.random()*numbers.length),answer=values[a]+values[b];
+  dialog.innerHTML='<main class="parent-paper"><button class="parent-close" data-parent-close aria-label="Back to games">×</button><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>For a grown-up</h2><form data-parent-gate><label>What is '+numbers[a]+' plus '+numbers[b]+'?<input inputmode="numeric" autocomplete="off" aria-label="Answer" maxlength="3" required></label><p data-gate-note role="status">Ask a grown-up to help with settings and purchases.</p><button class="primary-button" type="submit">Continue</button></form></main>';
+  dialog.querySelector('[data-parent-close]').onclick=close;dialog.querySelector('form').onsubmit=e=>{e.preventDefault();if(Number(dialog.querySelector('input').value)!==answer){dialog.querySelector('[data-gate-note]').textContent='That answer did not match. Please ask a grown-up.';dialog.querySelector('input').value='';return;}action();};if(!dialog.open)dialog.showModal();syncBanner();
+ }
+ async function parents(){
+  const token=++epoch;price=null;
+  dialog.innerHTML='<main class="parent-paper"><button class="parent-close" data-parent-close aria-label="Back to games">×</button><h2>Grown-up settings</h2>'+window.meadowAudio.settings()+'<section class="parent-plus"><h3>Meadow Littles Plus</h3><p>Ad-free play and unlimited completed rounds. Free play includes five completed rounds per game each day. Failed attempts do not count.</p><p data-plus-status role="status">Checking Plus…</p><p data-plus-price>Monthly plan: A$4.99 reference price. The Google Play checkout shows your actual local price.</p><p>Renews monthly until cancelled. Cancel in Google Play. Access continues until the paid period ends.</p><button data-buy class="primary-button" disabled>Loading Google Play price…</button><button data-restore class="small-button">Restore purchases</button><button data-manage class="small-button">Manage Google Play subscription</button></section><p data-commerce-note role="status"></p><button data-account class="small-button">Grown-up account &amp; cloud save</button><button data-install class="small-button">Install Littles</button><button data-privacy class="small-button">Advertising privacy choices</button><p><a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a> · <a href="subscription-terms.html" target="_blank" rel="noopener">Subscription terms</a> · <a href="delete-data.html" target="_blank" rel="noopener">Delete Littles data</a></p><small>Purchases are for grown-ups. Children are never asked to buy during a game.</small></main>';
+  window.meadowAudio.bind();dialog.querySelector('[data-parent-close]').onclick=close;
+  const buy=dialog.querySelector('[data-buy]'),restore=dialog.querySelector('[data-restore]'),manage=dialog.querySelector('[data-manage]');
+  dialog.querySelector('[data-account]').onclick=()=>window.meadowLittlesCloud.openAccount();
+  dialog.querySelector('[data-install]').onclick=()=>options.install?.();
+  dialog.querySelector('[data-privacy]').onclick=()=>ads?ads.privacy().catch(()=>note('No advertising privacy choices are available right now.')):note('Advertising is only available in the Android Play app.');
+  manage.disabled=!store;manage.onclick=()=>store.manage().catch(()=>note('Open Google Play, then Payments and subscriptions.'));
+  async function operation(fn){if(busy)return;busy=true;buy.disabled=true;restore.disabled=true;try{await fn();}catch{if(token===epoch&&dialog.open)note('That check could not finish. Restore purchases checks an existing order without charging again.');}finally{if(token===epoch&&dialog.open){busy=false;restore.disabled=!store;buy.disabled=!price||!canCheckout()||plus;showStatus();}}}
+  function showStatus(){if(token!==epoch||!dialog.open)return;dialog.querySelector('[data-plus-status]').textContent=plus?(status?.sources?.paid?'Plus is active through your verified Google Play subscription.':'Complimentary Plus is active.'):'Free play';buy.textContent=plus?'Plus active':price?'Subscribe · '+price.price+' per month':'Google Play plan not available';buy.disabled=busy||!price||!canCheckout()||plus;restore.disabled=busy||!store;}
+  parentRender=showStatus;
+  restore.disabled=!store;restore.onclick=()=>operation(async()=>{if(!status?.parent_ready){note('Link and verify a grown-up email account before restoring purchases.');return;}const result=await store.restore(),pending=await settle(result.purchases);if(token===epoch)note(pending?'Google Play is still waiting for payment. No new charge is needed to check it again.':plus?'Plus restored.':'No active Plus subscription was found for this account.');});
+  buy.onclick=()=>operation(async()=>{if(!canCheckout()||!price||plus)return;const result=await store.purchase({accountId:status.account_id});if(result.cancelled){if(token===epoch)note('Purchase cancelled.');return;}const pending=await settle(result.purchases);if(token===epoch)note(pending?'Payment is pending in Google Play. Plus will unlock after verification.':plus?'Plus is active. Thank you!':'Your purchase is being checked. Restore purchases will retry without charging again.');});
+  await refresh();if(token!==epoch||!dialog.open)return;showStatus();
+  if(!status?.parent_ready)note('Link and verify a grown-up email in Account & cloud save before buying.');
+  if(!store){buy.textContent='Subscribe in the Android Play app';restore.disabled=true;return;}
+  try{price=await store.products();if(token!==epoch||!dialog.open)return;if(price.id!==config.product||price.basePlan!==config.basePlan||price.period!=='P1M'||typeof price.price!=='string'||!price.price.trim()){price=null;return;}dialog.querySelector('[data-plus-price]').textContent=price.price+' per month, billed by Google Play.';showStatus();buy.disabled=!canCheckout()||plus;if(status?.checkout_test_only)note('Private Google license test only. Cancel if Google does not clearly label the checkout as a test.');}catch{if(token===epoch)note('The Google Play plan is not available yet. Free play remains available.');}
+ }
+ function limitReached(){window.meadowAudio?.stopVoice();const d=document.createElement('dialog');d.className='littles-parent littles-play-limit';d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>Let’s try another little adventure</h2><p>All five rounds of this game are finished for today. Your pictures and progress are safe.</p><button class="primary-button">Choose another game</button></main>';d.querySelector('button').onclick=()=>{d.close();d.remove();};d.addEventListener('cancel',()=>d.remove());document.body.append(d);d.showModal();}
+ async function syncBanner(){
+  const home=!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden,allowed=home&&!plus&&status?.ads_enabled&&adsReady&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);
+  if(!allowed){bannerRequested=false;document.body.style.paddingBottom='';try{await ads?.hideBanner();}catch{}return;}
+  if(bannerRequested)return;bannerRequested=true;try{await ads.showBanner({demoOnly:status.ads_test_only===true});}catch{bannerRequested=false;}
+ }
+ async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{document.body.style.paddingBottom=Math.max(0,Number(v.height)||0)+'px';});ads.addListener('bannerHidden',()=>{bannerRequested=false;document.body.style.paddingBottom='';});try{adsReady=(await ads.consent()).canRequestAds===true;}catch{adsReady=false;}}
+  if(store)store.addListener('purchasesUpdated',r=>settle(r.purchases).catch(()=>{}));
+  new MutationObserver(syncBanner).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh().then(recover);}syncBanner();});
+  await refresh();await recover();setInterval(()=>refresh(),60000);syncBanner();
+ }
+ window.meadowLittlesCommerce={init,refresh,accountChanged,open:()=>gate(parents),validProof,getStatus:()=>({plus,checkout:status?.checkout_enabled===true})};
+})();

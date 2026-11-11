@@ -18,6 +18,8 @@ public class MainActivity extends BridgeActivity {
     private byte[] pendingPicture;
     @Override
     public void onCreate(Bundle state) {
+        registerPlugin(LittlesStorePlugin.class);
+        registerPlugin(LittlesAdsPlugin.class);
         super.onCreate(state);
         getBridge().getWebView().addJavascriptInterface(new PictureBridge(), "LittlesPictures");
         enterImmersiveMode();

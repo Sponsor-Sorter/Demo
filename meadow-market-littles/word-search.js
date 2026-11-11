@@ -122,6 +122,7 @@
     window.meadowAudio?.stopVoice();
   }
   function newRound() {
+    if(window.meadowLittlesAccess?.begin('word_search',close)===false)return;
     wordTaps.clear();
     clearInterval(clockId); clearTimeout(winTimer); winTimer = 0; found = new Map(); path = []; drag = null; starCount = 0;
     completedAt = 0;
@@ -221,6 +222,7 @@
   function updateTimer() { const seconds = Math.max(0, Math.floor((Date.now() - startedAt) / 1000)); const node = dialog?.querySelector('[data-timer]'); if (node) node.textContent = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0'); }
   function finish() {
     if (!dialog?.open || found.size !== wordCount) return;
+    window.meadowLittlesAccess?.complete('word_search');
     clearInterval(clockId); const elapsed = Math.max(0, Math.floor(((completedAt || Date.now()) - startedAt) / 1000));
     const state = appState(); let earned = false;
     if (state?.minigames) {
