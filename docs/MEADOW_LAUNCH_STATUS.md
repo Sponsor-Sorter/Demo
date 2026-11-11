@@ -2,7 +2,7 @@
 
 ## 11 November 2026 — Premium gift consumer234 live
 
-Web234 is published as `10e5e8d` with runtime `e4d61cf`. Both main CI42943049500 jobs and Pages42943049582 pass; all five public files match. The actual233→234 Install update restores the saved public farm. The published Premium module passed live grant/expiry/reopen/revocation through a disposable full-game browser fixture; exact cleanup counts for gift/profile/Auth are zero. Delivered paid access survives acknowledgement retry and gift removal; refunds preserve valid paid/support/gift sources, including two frozen existing preview entitlements. The central Admin issuance switch remains off pending its independent qualification; no commercial flags or public native14 changed. [Acceptance](MEADOW_PREMIUM234.md), [deployed hashes and permissions](meadow-premium234-backend.json).
+Web234 is published as `10e5e8d` with runtime `e4d61cf`. Both main CI42943049500 jobs and Pages42943049582 pass; all five public files match. The actual233→234 Install update restores the saved public farm. The published Premium module passed live grant/expiry/reopen/revocation through a disposable full-game browser fixture; exact cleanup counts for gift/profile/Auth are zero. Delivered paid access survives acknowledgement retry and gift removal; refunds preserve valid paid/support/gift sources, including two frozen existing preview entitlements. Independent Admin qualification has enabled central Premium issuance, confirmed by a fresh backend read; no real gift was issued as a test. No game commerce flags or public native14 changed. [Acceptance](MEADOW_PREMIUM234.md), [deployed hashes and permissions](meadow-premium234-backend.json).
 
 ## 11 November 2026 — mobile word find 233 live
 
