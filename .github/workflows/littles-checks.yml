@@ -1,10 +1,19 @@
 name: Meadow Market Littles checks
 on:
   push:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
   pull_request:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
 jobs:
+  billing-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno test supabase/functions/littles-play-store/rules_test.ts
+      - run: deno check supabase/functions/littles-play-store/index.ts supabase/functions/littles-play-notifications/index.ts
   game-checks:
     runs-on: ubuntu-latest
     steps:

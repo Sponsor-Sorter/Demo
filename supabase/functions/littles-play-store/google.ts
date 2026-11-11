@@ -26,9 +26,12 @@ export async function subscription(token: string) {
   if (!response.ok) throw new Error('PURCHASE_NOT_VERIFIED');
   return response.json();
 }
-export async function acknowledge(token: string) {
+export async function acknowledge(token: string, resubscribeAccount?: string) {
   const url = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${PACKAGE}/purchases/subscriptions/${PRODUCT}/tokens/${encodeURIComponent(token)}:acknowledge`;
-  const response = await fetch(url, { method: 'POST', signal: AbortSignal.timeout(12000), headers: { Authorization: 'Bearer ' + await accessToken(), 'Content-Type': 'application/json' }, body: '{}' });
+  // Google removes outOfAppPurchaseContext after acknowledgement. Preserve its verified
+  // account binding in Google's current identifiers for later renewals and restores.
+  const body = resubscribeAccount ? { externalAccountIds: { obfuscatedAccountId: resubscribeAccount } } : {};
+  const response = await fetch(url, { method: 'POST', signal: AbortSignal.timeout(12000), headers: { Authorization: 'Bearer ' + await accessToken(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (!response.ok) throw new Error('ACKNOWLEDGEMENT_PENDING');
 }
 export async function signProof(claims: Record<string, unknown>) {

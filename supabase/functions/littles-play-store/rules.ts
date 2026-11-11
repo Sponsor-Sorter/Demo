@@ -2,8 +2,15 @@ export const PACKAGE = 'com.meadowmarket.littles';
 export const PRODUCT = 'ml_plus';
 export const BASE_PLAN = 'monthly';
 const allowed = new Set(['SUBSCRIPTION_STATE_ACTIVE', 'SUBSCRIPTION_STATE_IN_GRACE_PERIOD', 'SUBSCRIPTION_STATE_CANCELED']);
+export function subscriptionAccount(purchase: any): string {
+  const current = purchase?.externalAccountIdentifiers?.obfuscatedExternalAccountId;
+  const expired = purchase?.outOfAppPurchaseContext?.expiredExternalAccountIdentifiers?.obfuscatedExternalAccountId;
+  const selected = current ?? expired;
+  if (typeof selected !== 'string' || !/^[a-f0-9]{64}$/.test(selected) || current !== undefined && expired !== undefined && current !== expired) throw new Error('PURCHASE_ACCOUNT_MISMATCH');
+  return selected;
+}
 export function validateSubscription(purchase: any, account: string, now = Date.now()) {
-  if (!purchase || purchase.externalAccountIdentifiers?.obfuscatedExternalAccountId !== account) throw new Error('PURCHASE_ACCOUNT_MISMATCH');
+  if (subscriptionAccount(purchase) !== account) throw new Error('PURCHASE_ACCOUNT_MISMATCH');
   const lines = purchase.lineItems?.filter((line: any) => line.productId === PRODUCT && line.offerDetails?.basePlanId === BASE_PLAN);
   if (!lines?.length) throw new Error('PURCHASE_PRODUCT_MISMATCH');
   const inactiveWithoutExpiry = ['SUBSCRIPTION_STATE_PENDING', 'SUBSCRIPTION_STATE_PENDING_PURCHASE_CANCELED'].includes(purchase.subscriptionState);

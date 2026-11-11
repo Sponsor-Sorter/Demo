@@ -1,4 +1,4 @@
-import { effectivePlus, parseNotification, validateSubscription } from './rules.ts';
+import { effectivePlus, parseNotification, subscriptionAccount, validateSubscription } from './rules.ts';
 const assert=(v:unknown,m='Assertion failed')=>{if(!v)throw Error(m)};
 const now=Date.parse('2026-11-11T00:00:00Z'),account='a'.repeat(64);
 const purchase=(state='SUBSCRIPTION_STATE_ACTIVE')=>({subscriptionState:state,acknowledgementState:'ACKNOWLEDGEMENT_STATE_PENDING',externalAccountIdentifiers:{obfuscatedExternalAccountId:account},lineItems:[{productId:'ml_plus',offerDetails:{basePlanId:'monthly'},expiryTime:'2026-12-01T00:00:00Z'}]});
@@ -12,6 +12,15 @@ Deno.test('Wrong owner, product and plan are never accepted',()=>{
 });
 Deno.test('Pending purchases without expiry do not unlock Plus',()=>{
  const p:any=purchase('SUBSCRIPTION_STATE_PENDING');delete p.lineItems[0].expiryTime;assert(!validateSubscription(p,account,now).active);
+});
+Deno.test('Play Store resubscriptions retain their expired parent binding and reject conflicting identities',()=>{
+ const p:any=purchase();delete p.externalAccountIdentifiers;
+ p.outOfAppPurchaseContext={expiredExternalAccountIdentifiers:{obfuscatedExternalAccountId:account}};
+ assert(subscriptionAccount(p)===account);assert(validateSubscription(p,account,now).active);
+ p.externalAccountIdentifiers={obfuscatedExternalAccountId:'b'.repeat(64)};
+ let denied=false;try{validateSubscription(p,account,now)}catch{denied=true}assert(denied);
+ delete p.externalAccountIdentifiers;p.outOfAppPurchaseContext.expiredExternalAccountIdentifiers.obfuscatedExternalAccountId='not-a-bound-parent';
+ denied=false;try{subscriptionAccount(p)}catch{denied=true}assert(denied);
 });
 Deno.test('Revoking a complimentary grant never removes paid access, and vice versa',()=>{
  assert(effectivePlus(true,false).active);assert(effectivePlus(false,true).active);assert(!effectivePlus(false,false).active);
