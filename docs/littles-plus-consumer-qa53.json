@@ -1,0 +1,153 @@
+{
+  "contract": "littles-plus-consumer-acceptance53",
+  "publishedUrl": "https://sponsorsorter.com/meadow-market-littles/?release=53",
+  "method": "Actual Supabase Auth session, central-ledger fixture transitions and real deployed Edge responses; exact HTTP-served Build53 reader and quota controller executed in an isolated Node VM. No browser/native purchase fixture represented as Google payment acceptance.",
+  "fixture": "One disposable confirmed parent, reserved invalid email, no mail and no real child/account gifts",
+  "baseline": {
+    "parent_ready": true,
+    "plus": false,
+    "proof": null,
+    "checkout_enabled": false,
+    "ads_enabled": false
+  },
+  "source": {
+    "commit": "48f4e548743fb8fa37ac4183e576dfc447f6643f",
+    "liveBuild": 53,
+    "reader": {
+      "commerce-config.js": "e474040b81d38b239bb7462d40c00c7e1498147046705d30f134e55de364e850",
+      "play-access.js": "8a4375edd7d81f916d3dc49a1ef85b5f3fdb03f757f02eed7ba5000c1f1008cc",
+      "commerce.js": "4e37ad5e2919dc0a51528eba8e712d1366b2146268aaba90f96ac1b1e2f35b90"
+    },
+    "edgeVersion": 4,
+    "edgeBundle": "83808678bacffe7d78423a0bff33dd9d89c8b9868474c3de029d7e68680fbc99",
+    "backend": {
+      "littles-play-store/index.ts": "8961b0cc0573214ba9aa3125a2f715c13c5304c1382b52d819b324d59af16a9a",
+      "littles-play-store/rules.ts": "8019adf8a00b25b9174849d31eeecaba49194029fd1d212380f9497647e5f392",
+      "littles-play-store/google.ts": "1bab8a6e599f114dda7aa77b4acfc7b71bb1b9a02fa7a12864efff4f505a80ad",
+      "littles-play-store/service.ts": "2e01c45b542d9ddc92fffa4fd2068b797f9715bb82904167d611180e90af1904"
+    }
+  },
+  "active": {
+    "at": "2026-11-11T01:24:19.008Z",
+    "parent_ready": true,
+    "sources": {
+      "active": true,
+      "paid": false,
+      "complimentary": true
+    },
+    "consumer_plus": true,
+    "spentQuotaFixtureUnlimited": true,
+    "proofSeconds": 300,
+    "proofExpiresAt": "2026-11-11T01:29:18.000Z",
+    "wrongOwnerRejected": true,
+    "shortOutageRetainedSignedGift": true,
+    "refreshEveryMs": 60000
+  },
+  "revoked": {
+    "at": "2026-11-11T01:25:17.987Z",
+    "parent_ready": true,
+    "sources": {
+      "active": false,
+      "paid": false,
+      "complimentary": false
+    },
+    "server_plus": false,
+    "consumer_plus": false,
+    "remaining": 0,
+    "cached_proof_removed": true
+  },
+  "expired": {
+    "at": "2026-11-11T01:26:59.632Z",
+    "parent_ready": true,
+    "sources": {
+      "active": false,
+      "paid": false,
+      "complimentary": false
+    },
+    "server_plus": false,
+    "consumer_plus": false,
+    "remaining": 0,
+    "cached_proof_removed": true
+  },
+  "cachedGiftExpiry": {
+    "at": "2026-11-11T01:29:30.808Z",
+    "expiredActualSignedProofRejected": true
+  },
+  "publicBaseline": {
+    "at": "2026-11-11T01:30:25.225Z",
+    "provider_test": false,
+    "checkout_enabled": false,
+    "ads_enabled": false,
+    "sources": {
+      "active": false,
+      "paid": false,
+      "complimentary": false
+    },
+    "server_plus": false,
+    "consumer_plus": false,
+    "publicQuotaEnabled": false
+  },
+  "publicGiftActive": {
+    "at": "2026-11-11T01:32:07.212Z",
+    "provider_test": false,
+    "checkout_enabled": false,
+    "ads_enabled": false,
+    "sources": {
+      "active": true,
+      "paid": false,
+      "complimentary": true
+    },
+    "server_plus": true,
+    "consumer_plus": true,
+    "publicQuotaEnabled": false
+  },
+  "publicGiftRevoked": {
+    "at": "2026-11-11T01:34:21.266Z",
+    "provider_test": false,
+    "checkout_enabled": false,
+    "ads_enabled": false,
+    "sources": {
+      "active": false,
+      "paid": false,
+      "complimentary": false
+    },
+    "server_plus": false,
+    "consumer_plus": false,
+    "publicQuotaEnabled": false
+  },
+  "sqlSourceDigests": {
+    "finance_projection": "ca4aa74e8815865e7ac261b921570786c2572c482224b6d63ab9dc4fd76288ad",
+    "public_status": "0bccb49994ebbc3901460532fa78df8773085be84855c264fd33cd76c586b773",
+    "parent_status": "25927764629b5db8cfb2504b842f722a1b6789bc87bc2b65872b3578aca9e9c9",
+    "session_gate": "a984f90ba6b6cd46bfef4dee1f7f1886a3355bfcfe2014e365cc9ed2593325ed",
+    "central_gift_reader": "f04e2061c18b0772d4ae45b6b18715a71da514986fae2c2867599a5c971b7b5e"
+  },
+  "contractRules": {
+    "subject": "Exact shared Auth UUID",
+    "eligibility": "Live authenticated unbanned nonanonymous confirmed parent",
+    "finance": "Verified paid OR central complimentary gift; gift failure must not erase known paid access",
+    "paidProof": "At most24h, bounded by paid-through",
+    "giftProof": "At most300s, refreshed each minute/foreground/account change",
+    "publicGates": "Gift recognition does not depend on checkout/ads gates"
+  },
+  "operationalLimits": [
+    "Public checkout, ads and quota limits remainOFF pending real provider/native acceptance.",
+    "Ordinary public gifts currently deliver recognised Plus status; no differentiated ad-removal/unlimited-quota benefit exists while all public players have those commercial gatesOFF.",
+    "A private expiring lease enabled quota only for the isolated five-completions fixture; it was removed before the ordinary-parent public-path test.",
+    "Paid receipt lifecycle coverage is transactional database/rules coverage. Real Google license purchases, renewal/refund delivery and native demo ads are still outstanding.",
+    "No gift-issuance capability was enabled by this consumer test."
+  ],
+  "cleanup": {
+    "auth_users": 0,
+    "auth_sessions": 0,
+    "littles_profiles": 0,
+    "play_accounts": 0,
+    "receipts": 0,
+    "test_leases": 0,
+    "central_gifts": 0,
+    "privateSessionFileRemoved": true,
+    "public_checkout": false,
+    "public_ads": false
+  },
+  "sealedAt": "2026-11-11T01:38:25.667Z"
+}
