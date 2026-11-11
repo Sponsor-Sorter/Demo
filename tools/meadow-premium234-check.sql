@@ -5,7 +5,7 @@ do $$
 declare u uuid:=gen_random_uuid(); other_user uuid:=gen_random_uuid(); sess uuid:=gen_random_uuid(); fixture_actor uuid:=gen_random_uuid();
  gift uuid:=gen_random_uuid(); rid uuid; support_id uuid; token text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex');
  token2 text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex');
- token3 text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex'); result jsonb; projection jsonb; denied boolean;
+ token3 text:=encode(sha256(convert_to(gen_random_uuid()::text,'UTF8')),'hex'); result jsonb; projection jsonb; denied boolean; request uuid:=gen_random_uuid();
 begin
  insert into auth.users(id,aud,role,is_anonymous) values(u,'authenticated','authenticated',false),(other_user,'authenticated','authenticated',false);
  insert into auth.sessions(id,user_id) values(sess,u);
@@ -87,6 +87,9 @@ begin
  if has_table_privilege('authenticated','meadow_private.legacy_premium234','INSERT') or has_table_privilege('service_role','meadow_private.legacy_premium234','INSERT') then raise exception 'Frozen legacy preservation exposed a grant interface';end if;
  -- Approved existing free-test flow continues to create explicit private support proof.
  insert into meadow_private.test_access(user_id,reason,expires_at) values(u,'Rollback-only approved free test',now()+interval '1 hour');
+ perform public.meadow_market_play_service('purchase',jsonb_build_object('id',request,'sku','pocket_gems'));
+ perform public.meadow_market_play_service('purchase',jsonb_build_object('id',request,'sku','premium'));
+ if exists(select 1 from meadow_private.support_grants where user_id=u and body->>'test_only'='true') then raise exception 'Replayed different test purchase created Premium support evidence';end if;
  result:=public.meadow_market_play_service('purchase',jsonb_build_object('id',gen_random_uuid(),'sku','premium'));
  if result->'wallet'->>'premium'<>'true' or not exists(select 1 from meadow_private.support_grants where user_id=u and body->>'test_only'='true') then raise exception 'Approved free-test Premium flow regressed';end if;
 end $$;
