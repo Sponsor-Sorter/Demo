@@ -1,10 +1,12 @@
 {
   "name": "meadow-market-littles-android",
   "private": true,
-  "version": "0.2.6",
+  "version": "0.3.0",
   "scripts": {
     "android:sync": "node scripts/prepare-web.cjs && cap sync android",
-    "android:debug": "npm run android:sync && node scripts/build-android.cjs"
+    "android:debug": "npm run android:sync && node scripts/build-android.cjs",
+    "android:bundle:acceptance": "npm run android:sync && node scripts/build-android.cjs bundleAcceptanceRelease",
+    "android:bundle:play": "npm run android:sync && node scripts/build-android.cjs bundlePlayRelease"
   },
   "dependencies": {
     "@capacitor/android": "7.6.9",

@@ -7,8 +7,9 @@ android {
         applicationId "com.meadowmarket.littles"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "0.2.6"
+        versionCode 9
+        versionName "0.3.0"
+        manifestPlaceholders = [admobAppId: 'ca-app-pub-3940256099942544~3347511713']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +17,36 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    buildFeatures { buildConfig true }
+    flavorDimensions += 'distribution'
+    productFlavors {
+        acceptance {
+            dimension 'distribution'
+            buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'true'
+            buildConfigField 'String', 'LITTLES_BANNER_AD_UNIT', '""'
+        }
+        play {
+            dimension 'distribution'
+            versionCode 10
+            versionName '1.0.0'
+            manifestPlaceholders = [admobAppId: System.getenv('LITTLES_ADMOB_APP_ID') ?: 'ca-app-pub-3940256099942544~3347511713']
+            buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'false'
+            buildConfigField 'String', 'LITTLES_BANNER_AD_UNIT', '"' + (System.getenv('LITTLES_BANNER_AD_UNIT') ?: '') + '"'
+        }
+    }
+    signingConfigs {
+        upload {
+            if (System.getenv('LITTLES_UPLOAD_KEYSTORE')) {
+                storeFile file(System.getenv('LITTLES_UPLOAD_KEYSTORE'))
+                storePassword System.getenv('LITTLES_UPLOAD_STORE_PASSWORD')
+                keyAlias System.getenv('LITTLES_UPLOAD_KEY_ALIAS') ?: 'littles-upload'
+                keyPassword System.getenv('LITTLES_UPLOAD_KEY_PASSWORD')
+            }
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.upload
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -40,6 +69,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+    implementation 'com.android.billingclient:billing:8.3.0'
+    implementation 'com.google.android.gms:play-services-ads:25.5.0'
+    implementation 'com.google.android.ump:user-messaging-platform:4.0.0'
 }
 
 apply from: 'capacitor.build.gradle'
