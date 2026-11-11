@@ -4,7 +4,7 @@
  const CONFIG={url:'https://ejavqlyozqhzqogflqzr.supabase.co',key:'sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',storageKey:'meadow-littles-auth-v1'};
  const clone=x=>JSON.parse(JSON.stringify(x));
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
- let client,store,options={},user=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,controlsState={moderation:null,runtime:null,build:52};
+ let client,store,options={},user=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,controlsState={moderation:null,runtime:null,build:53};
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
@@ -122,5 +122,6 @@
   }
   button('Close',()=>{d.close();d.remove();dialog=null;return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null});document.body.append(d);d.showModal();
  }
- globalThis.meadowLittlesCloud={init,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,isGuest:!!user?.is_anonymous})};
+ async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
+ globalThis.meadowLittlesCloud={init,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,commerce,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at})};
 })();

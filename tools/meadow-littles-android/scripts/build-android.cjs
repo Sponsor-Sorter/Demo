@@ -2,6 +2,10 @@ const {spawnSync}=require('node:child_process');
 const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
+const task=process.argv[2]||'assembleAcceptanceDebug';
+if(!['assembleAcceptanceDebug','bundleAcceptanceRelease','bundlePlayRelease'].includes(task))throw new Error('Unknown Littles build task');
+if(task==='bundlePlayRelease'&&(!/^ca-app-pub-\d+~\d+$/.test(process.env.LITTLES_ADMOB_APP_ID||'')||!/^ca-app-pub-\d+\/\d+$/.test(process.env.LITTLES_BANNER_AD_UNIT||'')||(process.env.LITTLES_ADMOB_APP_ID||'').includes('3940256099942544')))throw new Error('Production needs Littles-specific live AdMob identifiers');
+if(task.includes('Release')&&!process.env.LITTLES_UPLOAD_KEYSTORE)throw new Error('A protected Littles upload key is required');
 const android=path.join(root,'android');
 if(!fs.existsSync(path.join(android,'local.properties'))){const sdk=process.env.ANDROID_HOME||process.env.ANDROID_SDK_ROOT||(process.platform==='win32'?path.join(process.env.LOCALAPPDATA||'', 'Android','Sdk'):null);if(sdk&&fs.existsSync(sdk))fs.writeFileSync(path.join(android,'local.properties'),'sdk.dir='+sdk.split(path.sep).join('/')+'\n')}
 
@@ -18,7 +22,7 @@ if(win){
   if(fs.existsSync(path.join(bundledJdk,'bin','javac.exe'))){env.JAVA_HOME=bundledJdk;env.PATH=path.join(bundledJdk,'bin')+';'+env.PATH;}
 }
 const command=win?path.join(process.env.SystemRoot||'C:\\Windows','System32','WindowsPowerShell','v1.0','powershell.exe'):gradle;
-const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' assembleDebug`]:['assembleDebug'];
+const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' ${task}`]:[task];
 const result=spawnSync(command,args,{cwd:android,env,stdio:'inherit',shell:false});
 if(result.error)throw result.error;
 process.exitCode=result.status??1;
