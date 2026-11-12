@@ -53,9 +53,9 @@
         if(action==='go'){const bad=s.ramps.findIndex((r,i)=>r===null||r!==s.heights[i+1]-s.heights[i]);s.bad=bad<0?null:bad;this.done=bad<0;return this.result(this.done,{stop:bad<0?3:bad});}
       }
       if(this.kind==='patchwork'){
-        const piece=s.pieces.find(x=>x.id===p.item);if(!piece||piece.placed)return this.result(false);
+        const piece=s.pieces.find(x=>x.id===p.item);if(!piece||piece.used)return this.result(false);
         if(action==='turn'){piece.turn=(piece.turn+90)%360;return this.result(true);}
-        if(action==='place'&&p.target===piece.id){const period=piece.shape==='circle'||piece.shape==='oval'?piece.shape==='circle'?1:180:piece.shape==='rect'?180:360,ok=Math.abs(piece.turn-piece.angle)%period===0;if(ok)piece.placed=true;this.done=s.pieces.every(x=>x.placed);return this.result(ok);}
+        if(action==='place'){const target=s.pieces.find(x=>x.id===p.target);if(!target||target.placed||target.shape!==piece.shape||target.w!==piece.w||target.h!==piece.h)return this.result(false);const period=piece.shape==='circle'?1:['oval','rect'].includes(piece.shape)?180:360,ok=Math.abs(piece.turn-target.angle)%period===0;if(ok){piece.used=true;target.placed=true;target.fillFrom=piece.id;}this.done=s.pieces.every(x=>x.placed);return this.result(ok);}
       }
       if(this.kind==='orchard'){
         if(action==='move'&&validIndex(p.item,s.b)&&!s.moved.includes(p.item)){s.moved.push(p.item);return this.result(true);}
