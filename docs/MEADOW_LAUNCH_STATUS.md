@@ -103,3 +103,7 @@ Public payments, ads, production readiness and new-farm issuance remainfalse. Te
 | Public release | Publicbeta1.7.1 was observed Changes in review on2November; internal12 is installed. Public installation/store link, current Google approval and AdMob app readiness remain separate. Production was not submitted. |
 
 The desktop browser-control runtime failed before initialization with “failed to write kernel assets … os error3”; reset/retry did not recover it. Current-turn browser UI/dashboard checks are therefore unverified. Static public-byte verification and real Samsung checks are recorded separately. No alternate browser-control bypass was used.
+# 13 November 2026 — pack benefits 242 live
+
+Each existing A$0.99 keepsake now includes 20 gems, three manually activated +25%/fifteen-minute boosters and its corresponding once-per-farm +5% placement bonus. Existing active owners received extras once. Refunds retain history, stop effects and protect consumed benefits. Main CI/Pages passed, all twelve public files match, and browser/Samsung acceptance is recorded with exact scope. Production 1.7.6/code 16 is **Available on Google Play**. [Final receipt](MEADOW_PACK_BENEFITS242_ACCEPTANCE.md).
+
