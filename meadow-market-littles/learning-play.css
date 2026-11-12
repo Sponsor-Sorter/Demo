@@ -48,3 +48,5 @@ html:has(.lr-dialog[open]){overflow:hidden}
 .lr-has-selection .lr-served-food{pointer-events:none}
 .lr-paper{overflow-x:hidden}
 .lr-rolling-track{left:50%;right:auto;top:50%;width:min(90cqw,180cqh);height:auto;max-height:none;aspect-ratio:1.9;transform:translate(-50%,-50%)}.lr-rolling-cart{transform:translate(-50%,-74%);max-width:none;max-height:none}
+
+.lr-rolling-home{bottom:auto;transform:translateY(-66%)}
