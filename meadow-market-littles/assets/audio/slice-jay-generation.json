@@ -1,0 +1,28 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "files": [
+    {
+      "id": "slice-jay-intro",
+      "text": "Let's make a lovely harvest! Swipe your finger through the fruit and vegetables as they fly up. Fill the basket with me!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 115575,
+      "sha256": "0e863a221e96d47242c7a5f2a3e94ed30fb77f9d44c5c8424a54935782ea5fdd"
+    },
+    {
+      "id": "slice-jay-done",
+      "text": "Well done! You sliced the fruit and vegetables, and filled our harvest basket. What a lovely helper!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 125188,
+      "sha256": "b35632c02623ab524cdb291688cc6fed76b8a63c7ea1b8b70e981f6b25645d1a"
+    }
+  ]
+}
