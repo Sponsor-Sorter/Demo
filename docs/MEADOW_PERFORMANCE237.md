@@ -1,5 +1,7 @@
 # Meadow Markets performance 237
 
+Latest acceptance, 12 November 2026: Play code 15 is uploaded, available to Internal testers and accepted on the Samsung through an in-place Play update. Browser control recovered and live build 237 was checked interactively. See [native acceptance](MEADOW_NATIVE175_ACCEPTANCE237.md); it supersedes the earlier pending-device/helper observations below.
+
 Emporium refresh previously downloaded up to 5,000 historical economy receipts and repeatedly searched the local applied-ID list. It now receives a small own-account summary with status. Full receipt history stays on the server; authoritative farm delivery handles pending rewards. Older backends retain the existing recovery path, using a Set for applied IDs. Concurrent refreshes coalesce only within the same account. UTC-day VIP claims and verified Premium responses retain their existing authority.
 
 Uncertain quiet worker ticks, worker returns and shop checks retry the exact durable request at most twice, with 250/750 ms delays and a three-second timeout per retry. Manual, paid and mixed commands keep explicit recovery. Account/map/screen changes, hidden/offline state, control blocks, access denials and conflicts stop automatic retries. Exhausted requests remain saved for recovery.
