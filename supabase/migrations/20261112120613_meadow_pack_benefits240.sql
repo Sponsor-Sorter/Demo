@@ -289,7 +289,7 @@ begin
  end if;
  return jsonb_build_object('ok',true,'enabled',true,'revision',saved.revision,'save_data',saved.save_data,
   'server_time',floor(extract(epoch from clock_timestamp())*1000),
-  
+
  'pending_help',coalesce((select jsonb_agg(to_jsonb(h) order by h.created_at,h.id) from
   (select id,map_id,action,target_id,target_cycle,created_at from public.meadow_market_visit_events
    where owner_id=p_user and outcome='pending' and action<>'visit'
