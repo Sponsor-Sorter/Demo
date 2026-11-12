@@ -41,6 +41,11 @@ jobs:
           java-version: '21'
       - run: npm ci --ignore-scripts
       - run: npm run android:debug
+      - name: Check compiled production-flavor launcher
+        env:
+          LITTLES_ADMOB_APP_ID: ca-app-pub-6946008351204848~9683786343
+          LITTLES_BANNER_AD_UNIT: ca-app-pub-6946008351204848/8881665550
+        run: node scripts/build-android.cjs assemblePlayDebug
       - run: node scripts/build-android.cjs testAcceptanceDebugUnitTest
       - name: Lint production release
         env:

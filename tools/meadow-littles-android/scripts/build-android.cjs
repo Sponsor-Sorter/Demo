@@ -3,7 +3,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const task=process.argv[2]||'assembleAcceptanceDebug';
-if(!['assembleAcceptanceDebug','bundleAcceptanceRelease','bundlePlayRelease','testAcceptanceDebugUnitTest','lintAcceptanceRelease','lintPlayRelease'].includes(task))throw new Error('Unknown Littles build task');
+if(!['assembleAcceptanceDebug','assemblePlayDebug','bundleAcceptanceRelease','bundlePlayRelease','testAcceptanceDebugUnitTest','lintAcceptanceRelease','lintPlayRelease'].includes(task))throw new Error('Unknown Littles build task');
 if(task==='bundlePlayRelease'&&(!/^ca-app-pub-\d+~\d+$/.test(process.env.LITTLES_ADMOB_APP_ID||'')||!/^ca-app-pub-\d+\/\d+$/.test(process.env.LITTLES_BANNER_AD_UNIT||'')||(process.env.LITTLES_ADMOB_APP_ID||'').includes('3940256099942544')))throw new Error('Production needs Littles-specific live AdMob identifiers');
 if(task.startsWith('bundle')&&task.includes('Release')&&!process.env.LITTLES_UPLOAD_KEYSTORE)throw new Error('A protected Littles upload key is required');
 const android=path.join(root,'android');
@@ -22,7 +22,20 @@ if(win){
   if(fs.existsSync(path.join(bundledJdk,'bin','javac.exe'))){env.JAVA_HOME=bundledJdk;env.PATH=path.join(bundledJdk,'bin')+';'+env.PATH;}
 }
 const command=win?path.join(process.env.SystemRoot||'C:\\Windows','System32','WindowsPowerShell','v1.0','powershell.exe'):gradle;
-const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' ${task}`]:[task];
+// Recreate release intermediates after source moves; never ship an incremental omission.
+const tasks=task.startsWith('bundle')?[':app:clean',task]:[task];
+const args=win?['-NoProfile','-Command',`& '${gradle.replace(/'/g,"''")}' ${tasks.join(' ')}`]:tasks;
 const result=spawnSync(command,args,{cwd:android,env,stdio:'inherit',shell:false});
 if(result.error)throw result.error;
 process.exitCode=result.status??1;
+if(result.status===0&&(task.startsWith('bundle')||task.startsWith('assemble'))){
+  const variant=task.replace(/^(bundle|assemble)/,'');
+  const flavor=variant.replace(/(Debug|Release)$/,'').toLowerCase();
+  const type=variant.endsWith('Debug')?'debug':'release';
+  const artifact=task.startsWith('bundle')
+    ?path.join(android,'app/build/outputs/bundle',flavor+'Release',`app-${flavor}-release.aab`)
+    :path.join(android,'app/build/outputs/apk',flavor,type,`app-${flavor}-${type}.apk`);
+  const check=spawnSync(process.execPath,[path.join(__dirname,'check-package.cjs'),artifact],{stdio:'inherit',shell:false});
+  if(check.error)throw check.error;
+  process.exitCode=check.status??1;
+}
