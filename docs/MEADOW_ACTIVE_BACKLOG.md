@@ -13,6 +13,8 @@ Updated 11 November 2026. Use this list for current work. [MEADOW_BACKLOG.md](ME
 
 ## Next work, in order
 
+Performance 237 follow-up: receipt-summary and exact-request worker-recovery fixes are implemented; the own-game server change and rollback-only authenticated fixtures pass. See [performance evidence](MEADOW_PERFORMANCE237.md). Publication CI, live browser and Play-native15 physical acceptance are the remaining release steps.
+
 1. Include the compiled/verified native 15 store-intent and resource-optimization changes in the next justified native release, with physical acceptance before promotion. Production 14 is live; a fresh installation from a non-tester account has not been repeated just to change its channel label.
 2. Follow up the remaining native 14 Android advisories: generic edge-to-edge guidance, SHORT_EDGES reported at `a4.c.t`, and recommendation to migrate to AGP 9+. The current AGP 8.13 supports optimized shrinking through an explicit flag; that flag is prepared for 15 without a major toolchain migration. Local 14 mapping identifies `a4.c` as a synthesized Google Play services outline; do not claim every caller is identified or that Google's advisory is cleared.
 3. Profile account-panel receipt refresh on a large history before changing its reconciliation query. Preserve reward recovery, stable retries, VIP claim state and account boundaries. The current 5,000-row request is a candidate for bounded/incremental reads, not permission to discard delivery history.

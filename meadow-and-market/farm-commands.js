@@ -21,14 +21,14 @@
    if(locking)throw error('Wait for your current farm action.','ACTION_BUSY');locking=true;
    try{const lock=a.lock||(typeof navigator!=='undefined'&&navigator.locks?.request?fn=>navigator.locks.request('meadow-farm-action:'+account,fn):null);return lock?await lock(fn):await fn();}finally{locking=false;}
   }
-  async function sendUnlocked(){
+  async function sendUnlocked(sendOptions){
    if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
    if(running)throw error('Wait for your current farm action.','ACTION_BUSY');
    if(conflict)throw error('Review the newer farm before continuing.','FARM_CONFLICT');
    if(!job)return null;
    running=true;const request=clone(job);
    try{
-    let reply;try{reply=await a.send(request,account);}catch{throw error('Your farm action is saved here. Reconnect to check its receipt.','ACTION_UNCERTAIN');}
+    let reply;try{reply=await a.send(request,account,sendOptions);}catch{throw error('Your farm action is saved here. Reconnect to check its receipt.','ACTION_UNCERTAIN');}
     if(!same())throw error('Farm account changed.','ACCOUNT_CHANGED');
     const data=reply?.data,status=reply?.status;
     if(status===401||status===403){if(typeof window!=='undefined'&&typeof Event==='function')window.dispatchEvent?.(new Event('meadow-control-refresh'));throw error(data?.message||(status===401?'Sign in again. Your pending farm action is retained.':'Open account notices. Your pending farm action is retained.'),status===401?'SESSION_EXPIRED':'ACCESS_PAUSED');}
@@ -58,7 +58,7 @@
      const next={request_id:a.uuid(),expected_revision:revision,commands:clone(commands)};
      persist(next);job=next;return sendUnlocked();
     });
-   },retry:()=>locked(sendUnlocked),
+   },retry:options=>locked(()=>sendUnlocked(options)),
    async useRemote(){
     if(!same()||running||!conflict)throw error('No farm conflict is ready to review.','NO_CONFLICT');
     await a.apply(clone(conflict.save_data),conflict.revision,{});
