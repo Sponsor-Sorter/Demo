@@ -4,3 +4,4 @@
 .hs-counter{pointer-events:none}.hs-collected canvas{display:block;width:20px;height:20px;margin:-4px;transform:rotate(var(--fruit-turn))}
 /* The shared celebration card is flex; this view needs its compact floated layout. */
 .hs-dialog .hs-result{display:block}
+.hs-scene.hs-playing{touch-action:none}

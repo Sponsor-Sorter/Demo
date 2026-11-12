@@ -15,26 +15,26 @@
     if(!dialog){dialog=document.createElement('dialog');dialog.className='hs-dialog';dialog.setAttribute('aria-label','Harvest Slice');document.body.append(dialog);dialog.addEventListener('cancel',e=>{e.preventDefault();close();});}
     dialog.innerHTML='<main class="hs-scene"><header class="hs-header"><img src="assets/generated/guides/jay.webp" alt="Farmer Jay"><h2>Harvest Slice</h2><div class="hs-count" aria-live="polite"><span data-hs-count>0</span><small> / 12</small></div><button data-hs-help aria-label="Hear how to slice">🔊</button><button data-hs-pause aria-label="Pause game">Ⅱ</button><button data-hs-close aria-label="Back to games">×</button></header><div class="hs-field"><canvas aria-hidden="true"></canvas><div class="hs-fruit-controls" role="group" aria-label="Flying fruit and vegetables"></div><div class="hs-swipe-hint" aria-hidden="true">☝</div><p class="hs-combo" aria-live="polite"></p></div><footer class="hs-counter"><div class="hs-basket"><div class="hs-collected"></div><img src="assets/generated/play-pieces/harvest-basket.webp" alt="Harvest basket"></div><div class="hs-progress"><span data-hs-message>Swipe across the fruit and vegetables!</span><div role="progressbar" aria-label="Harvest bowl" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><i></i></div></div></footer><section class="hs-overlay"><div class="hs-paper hs-intro"><small>FARMER JAY’S HARVEST</small><h2>Let’s slice the harvest!</h2><img class="hs-demo" src="'+base+'preview.webp" alt="Fruit tossed into the air and sliced with a finger swipe"><p>Swipe your finger through the flying fruit and vegetables.<br>Fill the basket. Take your time!</p><button class="hs-primary" data-hs-start disabled>Getting the harvest ready…</button><button class="hs-secondary" data-hs-intro-close>No thanks</button></div></section></main>';
     dialog.querySelector('.hs-swipe-hint').hidden=true;dialog.querySelector('.hs-count small').textContent=' / '+roundGoal();dialog.querySelector('[role=progressbar]').setAttribute('aria-valuemax',roundGoal());dialog.showModal();
-    const field=dialog.querySelector('.hs-field'),canvas=field.querySelector('canvas'),context=canvas.getContext('2d'),abort=new AbortController();
-    const s={abort,field,canvas,context,game:null,phase:'loading',finger:null,trail:[],buttons:new Map(),frame:0,last:0,finishIn:0,comboUntil:0,comboCount:0,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,resize:new ResizeObserver(()=>resize(s))};
+    const scene=dialog.querySelector('.hs-scene'),field=dialog.querySelector('.hs-field'),canvas=field.querySelector('canvas'),context=canvas.getContext('2d'),abort=new AbortController();
+    const s={abort,scene,field,canvas,context,game:null,phase:'loading',finger:null,trail:[],buttons:new Map(),frame:0,last:0,finishIn:0,comboUntil:0,comboCount:0,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,resize:new ResizeObserver(()=>resize(s))};
     session=s;s.resize.observe(field);
     const listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:abort.signal});
     listen(dialog.querySelector('[data-hs-close]'),'click',close);listen(dialog.querySelector('[data-hs-intro-close]'),'click',close);
     listen(dialog.querySelector('[data-hs-help]'),'click',()=>voice('slice-jay-intro'));
     listen(dialog.querySelector('[data-hs-pause]'),'click',()=>pause(s));
     listen(document,'visibilitychange',()=>{if(document.hidden)pause(s);});
-    listen(field,'pointerdown',e=>{
-      if(s.phase!=='playing'||s.finger||e.button>0)return;
-      e.preventDefault();field.setPointerCapture?.(e.pointerId);const p=point(s,e);s.finger={id:e.pointerId,...p};s.trail=[{...p,t:performance.now()}];s.comboCount=0;
+    listen(scene,'pointerdown',e=>{
+      if(s.phase!=='playing'||s.finger||e.button>0||e.isPrimary===false||e.target.closest?.('.hs-header,.hs-overlay'))return;
+      e.preventDefault();scene.setPointerCapture?.(e.pointerId);const p=point(s,e);s.finger={id:e.pointerId,...p};s.trail=[{...p,t:performance.now()}];s.comboCount=0;
     });
-    listen(field,'pointermove',e=>{
+    listen(scene,'pointermove',e=>{
       if(s.phase!=='playing'||s.finger?.id!==e.pointerId)return;e.preventDefault();
       const samples=e.getCoalescedEvents?.()||[e];for(const sample of samples.length?samples:[e]){
         const p=point(s,sample),hits=s.game.slice(s.finger,p);s.finger={id:e.pointerId,...p};s.trail.push({...p,t:performance.now()});if(hits.length)cut(s,hits);
       }
     });
     const end=e=>{if(s.finger?.id===e.pointerId){if(e.type==='pointerup'&&s.phase==='playing'){const hits=s.game.slice(s.finger,point(s,e));if(hits.length)cut(s,hits);}s.finger=null;s.comboCount=0;}};
-    for(const event of ['pointerup','pointercancel','lostpointercapture'])listen(field,event,end);
+    for(const event of ['pointerup','pointercancel','lostpointercapture'])listen(scene,event,end);
     try{
       const [atlas,layout]=await Promise.all([image(base+'produce-atlas.webp'),fetch(base+'atlas.json').then(r=>{if(!r.ok)throw Error('Artwork layout unavailable');return r.json();})]);
       if(session!==s)return;
@@ -54,13 +54,13 @@
   function startRound(s){
     if(session!==s)return;
     if(window.meadowLittlesAccess?.begin('harvest_slice',close)===false)return;
-    resize(s);const goal=roundGoal();s.game=new core.Game(s.width,s.height,{goal});s.phase='playing';s.last=0;s.finger=null;s.trail=[];s.comboCount=0;s.buttons.forEach(n=>n.remove());s.buttons.clear();dialog.querySelector('.hs-overlay')?.remove();dialog.querySelector('.hs-collected').textContent='';const combo=dialog.querySelector('.hs-combo');combo.textContent='';combo.classList.remove('hs-pop');dialog.querySelector('.hs-count small').textContent=' / '+goal;dialog.querySelector('[role=progressbar]').setAttribute('aria-valuemax',goal);update(s);voice('slice-jay-intro');cancelAnimationFrame(s.frame);s.frame=requestAnimationFrame(now=>tick(s,now));
+    resize(s);const goal=roundGoal();s.game=new core.Game(s.width,s.height,{goal});s.phase='playing';s.scene.classList.add('hs-playing');s.last=0;s.finger=null;s.trail=[];s.comboCount=0;s.buttons.forEach(n=>n.remove());s.buttons.clear();dialog.querySelector('.hs-overlay')?.remove();dialog.querySelector('.hs-collected').textContent='';const combo=dialog.querySelector('.hs-combo');combo.textContent='';combo.classList.remove('hs-pop');dialog.querySelector('.hs-count small').textContent=' / '+goal;dialog.querySelector('[role=progressbar]').setAttribute('aria-valuemax',goal);update(s);voice('slice-jay-intro');cancelAnimationFrame(s.frame);s.frame=requestAnimationFrame(now=>tick(s,now));
   }
   function pause(s){
     if(session!==s||!['playing','finishing'].includes(s.phase))return;
-    s.resumePhase=s.phase;s.phase='paused';s.game.paused=true;s.finger=null;s.trail=[];cancelAnimationFrame(s.frame);s.frame=0;s.buttons.forEach(b=>b.disabled=true);window.meadowAudio?.stopVoice();
+    s.resumePhase=s.phase;s.phase='paused';s.scene.classList.remove('hs-playing');s.game.paused=true;s.finger=null;s.trail=[];cancelAnimationFrame(s.frame);s.frame=0;s.buttons.forEach(b=>b.disabled=true);window.meadowAudio?.stopVoice();
     const overlay=document.createElement('section');overlay.className='hs-overlay';overlay.innerHTML='<div class="hs-paper"><h2>A little pause</h2><p>Your harvest will wait for you.</p><button class="hs-primary" data-resume>Keep playing</button><button class="hs-secondary" data-done>Back to games</button></div>';dialog.querySelector('.hs-scene').append(overlay);
-    overlay.querySelector('[data-done]').onclick=close;overlay.querySelector('[data-resume]').onclick=()=>{if(document.hidden)return;overlay.remove();s.phase=s.resumePhase;s.game.paused=false;s.last=0;s.frame=requestAnimationFrame(t=>tick(s,t));};
+    overlay.querySelector('[data-done]').onclick=close;overlay.querySelector('[data-resume]').onclick=()=>{if(document.hidden)return;overlay.remove();s.phase=s.resumePhase;s.scene.classList.add('hs-playing');s.game.paused=false;s.last=0;s.frame=requestAnimationFrame(t=>tick(s,t));};
   }
   function update(s){
     dialog.querySelector('[data-hs-count]').textContent=s.game.hits;
@@ -94,7 +94,7 @@
     if(s.phase==='won'){s.frame=0;return;}s.frame=requestAnimationFrame(t=>tick(s,t));
   }
   function win(s){
-    if(session!==s||s.phase!=='finishing')return;s.phase='won';s.game.paused=true;s.buttons.forEach(b=>b.disabled=true);completed();sound('reward');voice('slice-jay-done');
+    if(session!==s||s.phase!=='finishing')return;s.phase='won';s.scene.classList.remove('hs-playing');s.game.paused=true;s.buttons.forEach(b=>b.disabled=true);completed();sound('reward');voice('slice-jay-done');
     const overlay=document.createElement('section');overlay.className='hs-overlay';overlay.innerHTML='<div class="hs-paper hs-result fa-win-card"><img class="hs-farmer" src="assets/generated/guides/jay.webp" alt="Farmer Jay"><h2>A lovely harvest!</h2><div class="fa-win-stars" aria-label="Three meadow stars">★ ★ ★</div><p>You sliced '+s.game.hits+' fruit and vegetables.<br>Our harvest basket is full!</p><button class="hs-primary" data-again>Another harvest</button><button class="hs-secondary" data-done>No thanks</button></div>';
     // A finishing finger must not click a button that appeared underneath it.
     let fresh=false;overlay.addEventListener('pointerdown',()=>fresh=true,true);overlay.addEventListener('click',e=>{if(e.detail>0&&!fresh){e.preventDefault();e.stopImmediatePropagation();}},true);
