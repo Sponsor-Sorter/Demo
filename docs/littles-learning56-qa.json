@@ -1,0 +1,64 @@
+{
+  "candidateBuild": 56,
+  "date": "2026-11-13",
+  "timezone": "Australia/Sydney",
+  "status": "Built and browser-tested; physical phone acceptance pending. Do not publish the catalogue yet.",
+  "publicCatalogueBuild": 55,
+  "preview": "https://sponsorsorter.com/meadow-market-littles/learning56-preview.html?qa=56",
+  "art": "24 generated originals, including ten distinct farm scenes, ten illustrated previews, transparent word/prop atlases, a bunny and the cleaned Pip background; derived pieces and hashes are in assets/generated/learning56/generation.json.",
+  "audio": "51 new recordings, using only approved Jade/Hope, Rhys/Noah and Jay/Mike voices. Existing approved recordings are reused for familiar word names. Exact text, voice, model, natural playback speed and file hashes are recorded in the audio manifests.",
+  "browserFullRounds": [
+    {"id":"learning_water","mode":"Little","result":"All three gardens watered; normal three-star win"},
+    {"id":"learning_sounds","mode":"Little","result":"All three words assembled and train journeys completed; normal win"},
+    {"id":"learning_shares","mode":"Growing","viewport":"320x568","result":"All 18 picnic pieces placed across three tasks (3, 6, 9); normal win"},
+    {"id":"learning_rolling","mode":"Little","result":"Three trolley routes completed; normal win"},
+    {"id":"learning_patchwork","mode":"Growing","result":"Sheep, hen and pig completed with turned shapes and swapped equivalent legs; normal win"},
+    {"id":"learning_orchard","mode":"Growing","result":"Main-app round completed with visible apple movements, a wrong-answer retry, addition, subtraction and final 1+1=2, 3-1=2, 3+1=4 results; normal win"},
+    {"id":"learning_rhymes","mode":"Little","result":"Three bridges completed, including a wrong-picture retry; normal win"},
+    {"id":"learning_pip","mode":"Little","result":"Inside, under and behind completed with a wrong-place retry; normal win"},
+    {"id":"learning_coding","mode":"Growing","result":"Three distinct 4x4 fields completed after the within-round repeat fix; normal win"},
+    {"id":"learning_freeze","mode":"Little","input":"Keyboard-accessible activation","result":"Three dance/freeze tasks completed; normal win. This does not establish physical finger-motion acceptance."}
+  ],
+  "browserRegressions": [
+    "Final-animation pause then exit leaves the tractor preview win count at zero.",
+    "Served food no longer intercepts the next item being placed on its plate.",
+    "Small-screen picnic tray and win buttons fit at 320x568 without horizontal overflow.",
+    "Equivalent legs fit either matching shape outline and each source is consumed once.",
+    "Ramp height, supports, trolley wheels and destination align with the displayed route.",
+    "Long tractor plans wrap into two rows on narrow phones.",
+    "Pip hides behind actual foreground scenery without duplicate baked-in landmarks.",
+    "Fresh pointer-down permits the next tap immediately after a drag; the drag-generated click remains suppressed.",
+    "Orchard equations reveal their completed answer and quantities vary between plays."
+  ],
+  "responsiveOpeningChecks": {
+    "tablet":"All ten active game scenes checked at 1024x768; every visible button remained inside the viewport",
+    "smallLandscape":"All ten Growing-mode opening scenes checked at 749x360; no button overflow and no footer scroll clipping",
+    "limit":"Opening-layout checks supplement full portrait/browser rounds; they do not replace physical-phone full rounds"
+  },
+  "fullAppIntegration": {
+    "location":"Private release branch only",
+    "learnCollection":"Ten distinct games shown through the Learn category",
+    "reward":"One normal Orchard round awarded exactly three stars and one win",
+    "persistence":"Three stars and the Orchard progress entry survived reload",
+    "metering":"Uses the existing begin/complete ticket contract; five completed rounds per game/day; Plus unchanged",
+    "previewRemoval":"The activation branch removes the unmetered test harness",
+    "controlConsumer":53
+  },
+  "automatedChecks": {
+    "ruleTasks":3000,
+    "coverage":"50 seeds, both learner modes, all ten games, three tasks per round, invalid/duplicate moves, equal shares, quantities, turns, rhymes, obstacle routes and real-motion freeze rules",
+    "fullSuite":"node scripts/check-littles.cjs passed with the activated catalogue, including the existing save, recovery, commerce, ad-dock, 800 bee and 80 Harvest Slice physics checks",
+    "previewFinalHead":"ce83caa13957099e42056eb8a2702ac986cf16f0",
+    "previewCI":"GitHub Actions 43238024594 and 43238009690 succeeded, including game, billing and Android build jobs"
+  },
+  "physicalPhoneAcceptance": {
+    "device":"Samsung SM-S908E, existing USB-connected phone",
+    "completedGames":[],
+    "status":"Pending user opening the test page on the phone",
+    "blocker":"Automatic approval review rejected the Chrome launch with 'blocked by policy'. No alternative launch path was used.",
+    "required":"Full normal touch rounds in all ten games, wrong-answer retries, quick drag-to-Go, pause/resume/exit, rotation, clear farmer audio, then a post-publication native-app progress check",
+    "preservation":"No reinstall, app-data reset or density change. Restore the original automatic rotation setting after testing."
+  },
+  "evidenceDirectory":"D:/Chat Gpt/workspaces/littles-learning56",
+  "independentReview":"The Meadow owner declined a learning-module review; its coordination replies are not recorded as acceptance."
+}
