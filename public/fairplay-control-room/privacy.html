@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Control Room privacy notice — Fairplay Gaming</title>
+  <style>
+    :root{color-scheme:light;font-family:system-ui,sans-serif;color:#24352f;background:#f2f3ee;line-height:1.7}*{box-sizing:border-box}body{margin:0}main{max-width:830px;margin:auto;padding:32px 24px 64px}a{color:#25654f;text-underline-offset:3px}.draft{padding:14px 18px;background:#fff2cf;border:1px solid #d8b65a;border-radius:10px}h1{font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.2}h2{font-size:1.3rem;line-height:1.35;margin-top:30px}li{margin:8px 0}footer{border-top:1px solid #dfe5dc;margin-top:32px;padding-top:12px}a:focus-visible{outline:3px solid #c87508;outline-offset:4px}
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="index.html">Fairplay Control Room</a> / Privacy</p>
+  <h1>Fairplay Control Room: Google and AdMob data</h1>
+  <p>This notice describes the Google reporting connection in Fairplay Gaming’s private Control Room. It is separate from the privacy notices for our player-facing games and the Sponsor Sorter sponsorship platform. It supplements the staff-access and operational policies for the rest of the Control Room.</p>
+  <h2>What we access</h2>
+  <p>When the organization owner chooses to connect Google, we request the read-only AdMob reporting permission, <code>https://www.googleapis.com/auth/admob.report</code>. We use Google’s publisher-account information to check that the connected account matches Fairplay Gaming’s configured publisher.</p>
+  <p>For each configured game and selected date range, reports include the publisher and app identifiers, dates, ad formats, reporting currency, estimated earnings, impressions, ad requests and clicks. The dashboard calculates estimated eCPM from the returned earnings and impressions. These are aggregate reports; this reporting integration does not request individual players’ advertising identifiers.</p>
+  <h2>Why we use it</h2>
+  <p>We use these reports to understand ad performance and estimated income for our own games. Reports are available only to authorized staff with the required game and operations permissions. Reporting access does not authorize changing Google payment information, ad configuration or publisher settings.</p>
+  <p>Estimates may arrive late or change. We do not present them as finalized payouts, game-purchase revenue or profit.</p>
+  <h2>Credentials and storage</h2>
+  <p>The owner authorizes Google directly. The Control Room receives an authorization code and exchanges it in the backend for reporting credentials. The client secret and refresh token are encrypted before storage in our private Supabase backend. Access tokens are used for server-to-server requests and are not returned to the dashboard.</p>
+  <p>Connection changes require owner access and recent reauthentication. The authorization flow uses a session-bound state and PKCE verifier with a ten-minute validity window. Connection and mapping changes are audited without logging the tokens.</p>
+  <p>Live report requests return the current provider response to the authorized dashboard; that endpoint does not automatically archive every report. Staff may separately import a report export, which is identified as a human-uploaded report and stored with the submitting staff member and import time. Imported reports are stored separately, with no automatic deletion schedule currently enabled. Contact the owner to request manual removal. Operational audit records are kept separately, with retention requirements reviewed by the owner before removal.</p>
+  <h2>Processing and sharing</h2>
+  <p>Google processes authorization and AdMob report requests. Supabase hosts the private Control Room backend and database. When staff use the private web dashboard, Sites (OpenAI) and Cloudflare provide its web hosting and request delivery. The Windows app serves its interface locally and connects to the private backend; Google authorization opens in a browser. These delivery paths process the information needed to provide the authorized dashboard. Staff access is restricted by role and game scope.</p>
+  <p>The application uses Google reporting data for the reporting and operational purposes described here. It does not implement selling that data, advertising targeting with it, or model training using it. This statement describes this application’s behavior, rather than a guarantee about every provider’s policies. Our handling follows the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including its Limited Use requirements.</p>
+  <h2>Disconnecting and requesting deletion</h2>
+  <p>The owner can disconnect AdMob from Setup &amp; connections. The backend asks Google to revoke the refresh token and removes the stored refresh token after Google confirms revocation. The OAuth client details, game mappings and audit history are retained separately from that token.</p>
+  <p>You can also remove Google access through <a href="https://myaccount.google.com/connections">Google Account connections</a>. Revoking access prevents future authorized report requests; it does not itself delete report exports already imported into the Control Room.</p>
+  <p>For questions or requests to delete stored reporting or connection information, contact the owner at <a href="mailto:fairplaygaming@sponsorsorter.com">fairplaygaming@sponsorsorter.com</a>. The owner reviews the requester’s authority and handles removal manually, including review of retention requirements for separate operational audit records.</p>
+  <h2>This information page</h2>
+  <p>This information page has no analytics scripts, Google sign-in or advertising. The private dashboard has its own staff authentication and session controls.</p>
+  <footer>
+    <p>Fairplay Gaming · <a href="mailto:fairplaygaming@sponsorsorter.com">fairplaygaming@sponsorsorter.com</a> · <a href="index.html">Control Room overview</a></p>
+  </footer>
+</main>
+</body>
+</html>

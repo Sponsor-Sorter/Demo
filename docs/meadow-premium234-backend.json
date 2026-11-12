@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-11",
+  "game": "Meadow Markets",
+  "build": 234,
+  "project": "ejavqlyozqhzqogflqzr",
+  "state": "backend_deployed_publication_pending",
+  "source": "e4d61cf63c92afc7e145abcbf01dd2d2f978a96f",
+  "functions": [
+    {
+      "schema": "meadow_private",
+      "function": "play_service",
+      "security_definer": true,
+      "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+      "sha256": "73f247eeb7b78c2182c09716bd710d8e59b9fc55ec20015481b9b0c245783983"
+    },
+    {
+      "schema": "meadow_private",
+      "function": "premium_sources",
+      "security_definer": false,
+      "acl": "{postgres=X/postgres}",
+      "sha256": "42bc97915739198df1cd0590afa205218ad407043259e8a7369f9b742c83a785"
+    },
+    {
+      "schema": "meadow_private",
+      "function": "premium_status",
+      "security_definer": true,
+      "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+      "sha256": "f14e8a90418b47db9ea4c2ccf0993c70207897f897e7846bd4cd632170acb368"
+    },
+    {
+      "schema": "meadow_private",
+      "function": "refresh_premium",
+      "security_definer": false,
+      "acl": "{postgres=X/postgres}",
+      "sha256": "befa550c69ad30a31c20a0cda9e11957962dd390f0f96dd5b5bc39f29ae84d07"
+    },
+    {
+      "schema": "public",
+      "function": "meadow_market_premium_projection",
+      "security_definer": true,
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "sha256": "b2cb19c2ff499b573456fcf2a143727badcb1944ce536857611ccdcd76fe4e41"
+    },
+    {
+      "schema": "public",
+      "function": "meadow_market_premium_status",
+      "security_definer": false,
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "sha256": "99855100f29075be17808be90cd71efe8d825d9d36dc0f20804b8ea417a31f7c"
+    },
+    {
+      "schema": "public",
+      "function": "meadow_market_revoke_store_purchase",
+      "security_definer": true,
+      "acl": "{postgres=X/postgres,service_role=X/postgres}",
+      "sha256": "825a0c42299348c739a0b79be04263bf64e4890b50119f8d6d0700a87b71b86c"
+    }
+  ],
+  "gateway": {
+    "version": 46,
+    "verify_jwt": true,
+    "all_eight_files_read_back_exact": true,
+    "package_sha256": "42329ae2e11d5ede329806475036c1c13e09aa5cedc16d3931d0999d1c7b72ed",
+    "rules_hash": "5fd2677ecb919015c3ca8c4896f09bfee8054ebc3f39e01707f58b9a8fdc52f0"
+  },
+  "preserved_legacy_preview_accounts": 2,
+  "real_account_central_grants": 0,
+  "admin_capability_enabled": false,
+  "commercial_flags_changed": false
+}

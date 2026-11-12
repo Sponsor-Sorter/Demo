@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 11 November 2026 — mobile word find 233 live
+
+The word grid now fills the space below compact controls. Final public browser measurements: 352×644 on a 360×740 phone viewport and 732×304 on 740×360 landscape; selection and progress survive rotation. The full local twenty-word round verified its reward, and the public pointer selection/reopen succeeded. Game/Android CI 42919603468 passed; fresh Pages 42923711591 deployed `f2d107c` after two cancelled hosting attempts. All six public runtime files match tested `ec716ca`, and Settings reports Game build 233. Public native Play 1.7.4/code 14 remains unchanged. [Acceptance, hosting recovery and limits](MEADOW_WORD_FIND233.md).
+
 ## 11 November 2026 — Bee Shelter 232 live
 
 Web 232 adds the separate adult Bee Shelter Challenge under Farm games: twenty fixed-terrain puzzles, limited physical ink, larger swarms, personal stars/best scores and fourteen reused approved Rhys clips. Littles and the productive apiary are unchanged. All twenty local browser rounds and reload persistence passed; the public 231→232 update and complete native-pointer round passed. Both main CI 42819307061 jobs and Pages 42819307725 succeeded; all 38 changed public files match `fe368bf`. Public Play remains 1.7.4/code 14 in Australia. Bee-game physical acceptance and authoritative reward/ranking integration remain separate; this release is unlimited personal practice. [Acceptance and limits](MEADOW_BEE_CHALLENGE232.md).

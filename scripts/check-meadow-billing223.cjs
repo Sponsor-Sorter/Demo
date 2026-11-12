@@ -18,7 +18,7 @@ function fixture(config={}){
  const clubSource=fs.readFileSync('meadow-and-market/farm-club.js','utf8'),balance={innerHTML:''},premium={},dialog={querySelector:s=>s==='.club-wallet'?balance:s==='[data-pack="premium"]'?premium:null};
  const scope={window:{meadowStore:{label:()=>'$9.99'}},document:{getElementById:()=>null}};
  vm.runInNewContext(clubSource.replace('window.meadowClub={','window.receiveWallet=(data)=>{dialog=window.testDialog;receive(data)};window.meadowClub={'),scope);scope.window.testDialog=dialog;
- scope.window.receiveWallet({wallet:{gems:895,reward_turns:1,premium:true}});assert.match(balance.innerHTML,/895/);assert.equal(premium.disabled,true);
- scope.window.receiveWallet({wallet:{gems:795,reward_turns:1,premium:false}});assert.match(balance.innerHTML,/795/);assert.equal(premium.disabled,false,'Verified refund updates an open shop without rebuilding its scroll/form');
+ scope.window.receiveWallet({wallet:{gems:895,reward_turns:1,premium:true},premium_verified:true,premiumSequence:1});assert.match(balance.innerHTML,/895/);assert.equal(premium.disabled,true);
+ scope.window.receiveWallet({wallet:{gems:795,reward_turns:1,premium:false},premium_verified:true,premiumSequence:2});assert.match(balance.innerHTML,/795/);assert.equal(premium.disabled,false,'Verified refund updates an open shop without rebuilding its scroll/form');
  console.log('Billing223: pending denial, server-only delivery, bounded resume, account-switch guards and live wallet/Premium display passed.');
 })().catch(e=>{console.error(e);process.exitCode=1});

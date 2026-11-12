@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.100",
-  "versionCode": 100,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview100-testing/frontlines-1.0.0-preview-build-100.apk",
-  "bytes": 226815470,
-  "sha256": "e268ab1d810c7aca0f26f243dd61e9b219e193356a0030e84de5842a6627c23e",
+  "versionName": "1.0.0.102",
+  "versionCode": 102,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview102-testing/frontlines-1.0.0-preview-build-102.apk",
+  "bytes": 226832538,
+  "sha256": "8544e993ff6177f35e26535ceb8f2bac0e359c4061be014de0b442f23e02412a",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public100/frontlines-1.0.0.100-android.apk",
-  "notes": "V1.0.0.100: Named commander and dice loadouts; persistent guest sign-in and explicit rejoin; opt-in rematches and waiting-lobby host recovery. Weekly tactical challenges, optional player patterns and six shaped troop counters, reviewed issue reports, and improved troop-move responsiveness. Approved graphics retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public102/frontlines-1.0.0.102-android.apk",
+  "notes": "V1.0.0.102: Improved first-battle and card preparation, faster menu returns, advertising privacy/account binding and verified gem rewards in the Play edition. Clearer VIP restore, refund and complimentary-expiry state. Existing graphics, artwork, maps, accounts and saves retained."
 }
