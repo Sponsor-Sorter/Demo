@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-04.mp3",
+  "sourceSha256": "b05c6abe1afc853ae074014b4cacfd26d381952b94953bf9ce5e18902cb504bd",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-freeze-dance",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's dance! Move your finger and help our friend dance!",
+      "start": 0,
+      "end": 3.6234,
+      "bytes": 44244,
+      "sha256": "7703d9697b4cd32dec0849e2ca9134f1d5c9a7c8ebd70433a35c0558c6c9905c"
+    },
+    {
+      "id": "learn56-jay-freeze-now",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "And, freeze! Keep your finger still!",
+      "start": 5.58093,
+      "end": 8.13633,
+      "bytes": 31391,
+      "sha256": "4501976cb834f7b221711d011c25e07137b1d350166adbdb1cbee69d36875112"
+    },
+    {
+      "id": "learn56-jay-number-0",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Zero.",
+      "start": 10.0489,
+      "end": 10.8563,
+      "bytes": 10389,
+      "sha256": "9db8eace252a9cb48c865e23463001b1a3e73c11a0047a1cd44ec514cc92f77d"
+    },
+    {
+      "id": "learn56-jay-number-1",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "One.",
+      "start": 12.8429,
+      "end": null,
+      "bytes": 10389,
+      "sha256": "ad4533058fc8145327b195f6c94b307f5d82431c9c8a0800d30dd34c175dfd03"
+    }
+  ]
+}

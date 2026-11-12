@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-rhys-01.mp3",
+  "sourceSha256": "39b54297af07b1b23f1c04e70ef1f9727b13412811fd254ccd5617044cecb100",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-rhys-rolling-intro",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's help our little friends ride home! Fit a ramp into each gap. Then send the trolley along your track. Take your time and see what happens!",
+      "start": 0,
+      "end": 8.790569999999999,
+      "bytes": 106311,
+      "sha256": "d2abaf8e2e8bd8c277d56d90b877c4024055ad662ddf80f96160dc5747a1b14c"
+    },
+    {
+      "id": "learn56-rhys-rolling-done",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Your trolley reached every little home! You built some lovely tracks. Well done, little engineer!",
+      "start": 10.772,
+      "end": 17.595200000000002,
+      "bytes": 82800,
+      "sha256": "4f4880343a98a243138e55c43650cc1a87ff3548de645c37da62ea8386a6de2d"
+    },
+    {
+      "id": "learn56-rhys-patchwork-intro",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's make a farm friend from wooden shapes! Move each piece onto its outline. If a piece needs turning, choose it and turn it around.",
+      "start": 19.535899999999998,
+      "end": 29.0043,
+      "bytes": 114461,
+      "sha256": "73b343fbd5eb2c8f7c2397c4f2a67cd327b0343a152fc9c160ad34f4e2a85c40"
+    },
+    {
+      "id": "learn56-rhys-patchwork-done",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "You made three lovely farm friends from shapes! Look at them come to life. What a clever builder!",
+      "start": 31.1712,
+      "end": null,
+      "bytes": 86876,
+      "sha256": "ca7c539db84985d8752e248973b10bfa901898b779948fa75efebb27538905de"
+    }
+  ]
+}

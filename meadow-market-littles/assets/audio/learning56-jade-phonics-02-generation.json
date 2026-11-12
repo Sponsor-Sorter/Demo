@@ -1,0 +1,83 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Flash v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": null,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jade-phonics-02.mp3",
+  "sourceSha256": "07dd92f68551d51efbc7055b11f5ee3a1e7a04b37af86afdf059a8525483350e",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jade-blend-sun",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "sun",
+      "ipa": [
+        "s",
+        "ʌ",
+        "n"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Sun! Can you build sun?",
+      "start": 0,
+      "end": 5.64163,
+      "bytes": 68381,
+      "sha256": "d1594beceab783c75e7e19b2a37c73fab0d8a993831e3dae97bbf5785e55b788"
+    },
+    {
+      "id": "learn56-jade-blend-bed",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "bed",
+      "ipa": [
+        "b",
+        "ɛ",
+        "d"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme>. Bed! Can you build bed?",
+      "start": 7.596080000000001,
+      "end": 12.4492,
+      "bytes": 58977,
+      "sha256": "d32e79aa47182480789535f6056efac1708e07994e2cc938a9192f2e9662280e"
+    },
+    {
+      "id": "learn56-jade-blend-pen",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "pen",
+      "ipa": [
+        "p",
+        "ɛ",
+        "n"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Pen! Can you build pen?",
+      "start": 14.424100000000001,
+      "end": 19.196,
+      "bytes": 58036,
+      "sha256": "01ce4d83c90b1bf6b8b4b95fd8c07a95f845e2f2c77530a9e126ad0771ce2bcc"
+    },
+    {
+      "id": "learn56-jade-blend-bus",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "bus",
+      "ipa": [
+        "b",
+        "ʌ",
+        "s"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme>. Bus! Can you build bus?",
+      "start": 21.1054,
+      "end": null,
+      "bytes": 61485,
+      "sha256": "05d942076aa223cb981bac207cc5413eb358f2e1cf72ebbbf7687ce2b84ce95e"
+    }
+  ]
+}

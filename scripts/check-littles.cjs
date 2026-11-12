@@ -40,3 +40,4 @@ require('./check-littles-harvest-slice.cjs');
 require('./check-littles-harvest-input.cjs');
 require('./check-littles-access.cjs');
 require('./check-littles-commerce.cjs');
+require('./check-littles-learning.cjs');

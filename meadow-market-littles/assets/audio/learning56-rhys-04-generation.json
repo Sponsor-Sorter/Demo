@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-rhys-04.mp3",
+  "sourceSha256": "ddca0725e566486bd1bcd3c9b89c588f1acfbf19fed0635903a5aded68d5069b",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-rhys-word-mat",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Mat.",
+      "start": 0,
+      "end": 0.677324,
+      "bytes": 8822,
+      "sha256": "698c8dd577281028397e60ab2ec74d556b66d5305b1bf3d457b0b87bb3ee78af"
+    },
+    {
+      "id": "learn56-rhys-word-log",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Log.",
+      "start": 2.64887,
+      "end": 3.43315,
+      "bytes": 10389,
+      "sha256": "c3e1ff0d677be2dbe0217489a31d4f46f9a2268a52fa60b5858ede6b1612382c"
+    },
+    {
+      "id": "learn56-rhys-word-tree",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Tree.",
+      "start": 5.500520000000001,
+      "end": 6.16569,
+      "bytes": 8508,
+      "sha256": "3305d36b2bb66a4530d41210787c7364888cfd9666252e8a822cc252a7ee518b"
+    },
+    {
+      "id": "learn56-rhys-word-key",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Key.",
+      "start": 8.14921,
+      "end": null,
+      "bytes": 11643,
+      "sha256": "4ae6c135893d4c6d36f30f80075e771fcca3581674c399b3db2aba72ba56bef4"
+    }
+  ]
+}

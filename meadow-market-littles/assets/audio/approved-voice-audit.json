@@ -910,6 +910,261 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "journey-rhys-generation.json"
     },
+    "learn56-jade-water-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-01-generation.json"
+    },
+    "learn56-jade-water-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-01-generation.json"
+    },
+    "learn56-jade-shares-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-01-generation.json"
+    },
+    "learn56-jade-shares-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-01-generation.json"
+    },
+    "learn56-jade-sounds-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-02-generation.json"
+    },
+    "learn56-jade-sounds-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-02-generation.json"
+    },
+    "learn56-jade-blend-cat": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-01-generation.json"
+    },
+    "learn56-jade-blend-dog": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-01-generation.json"
+    },
+    "learn56-jade-blend-pig": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-01-generation.json"
+    },
+    "learn56-jade-blend-hen": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-01-generation.json"
+    },
+    "learn56-jade-blend-sun": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-02-generation.json"
+    },
+    "learn56-jade-blend-bed": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-02-generation.json"
+    },
+    "learn56-jade-blend-pen": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-02-generation.json"
+    },
+    "learn56-jade-blend-bus": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "learning56-jade-phonics-02-generation.json"
+    },
+    "learn56-jay-orchard-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-01-generation.json"
+    },
+    "learn56-jay-orchard-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-01-generation.json"
+    },
+    "learn56-jay-orchard-add": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-01-generation.json"
+    },
+    "learn56-jay-orchard-take": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-01-generation.json"
+    },
+    "learn56-jay-orchard-answer": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-02-generation.json"
+    },
+    "learn56-jay-pip-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-02-generation.json"
+    },
+    "learn56-jay-pip-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-02-generation.json"
+    },
+    "learn56-jay-pip-inside": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-02-generation.json"
+    },
+    "learn56-jay-pip-under": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-03-generation.json"
+    },
+    "learn56-jay-pip-behind": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-03-generation.json"
+    },
+    "learn56-jay-freeze-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-03-generation.json"
+    },
+    "learn56-jay-freeze-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-03-generation.json"
+    },
+    "learn56-jay-freeze-dance": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-04-generation.json"
+    },
+    "learn56-jay-freeze-now": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-04-generation.json"
+    },
+    "learn56-jay-number-0": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-04-generation.json"
+    },
+    "learn56-jay-number-1": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-04-generation.json"
+    },
+    "learn56-jay-number-2": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-05-generation.json"
+    },
+    "learn56-jay-number-3": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-05-generation.json"
+    },
+    "learn56-jay-number-4": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-05-generation.json"
+    },
+    "learn56-jay-number-5": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-05-generation.json"
+    },
+    "learn56-jay-number-6": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "learning56-jay-06-generation.json"
+    },
+    "learn56-rhys-rolling-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-01-generation.json"
+    },
+    "learn56-rhys-rolling-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-01-generation.json"
+    },
+    "learn56-rhys-patchwork-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-01-generation.json"
+    },
+    "learn56-rhys-patchwork-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-01-generation.json"
+    },
+    "learn56-rhys-coding-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-02-generation.json"
+    },
+    "learn56-rhys-coding-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-02-generation.json"
+    },
+    "learn56-rhys-rhymes-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-02-generation.json"
+    },
+    "learn56-rhys-rhymes-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-02-generation.json"
+    },
+    "learn56-rhys-rhyme-cat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-03-generation.json"
+    },
+    "learn56-rhys-rhyme-dog": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-03-generation.json"
+    },
+    "learn56-rhys-rhyme-bee": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-03-generation.json"
+    },
+    "learn56-rhys-rhyme-goat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-03-generation.json"
+    },
+    "learn56-rhys-word-mat": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-04-generation.json"
+    },
+    "learn56-rhys-word-log": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-04-generation.json"
+    },
+    "learn56-rhys-word-tree": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-04-generation.json"
+    },
+    "learn56-rhys-word-key": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "learning56-rhys-04-generation.json"
+    },
     "letter-find-b": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",

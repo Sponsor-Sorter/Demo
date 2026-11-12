@@ -1,0 +1,37 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jade-02.mp3",
+  "sourceSha256": "8f448dc2f6add97c75e8e0b3fb542c49f6754ac7c6e95543bb96c1233270e158",
+  "processing": "Separate at verified2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jade-sounds-intro",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "All aboard our sound train! Listen to the sounds, then move the letters into the carriages. When your word is ready, send the train on its way!",
+      "start": 0,
+      "end": 8.0844,
+      "bytes": 97847,
+      "sha256": "c71df5b331a7182b6c71c4e09d96c06989d06900380ac137b1c76a8e7077bd55"
+    },
+    {
+      "id": "learn56-jade-sounds-done",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "You put the sounds together and built three words! What a lovely reading adventure. Well done!",
+      "start": 10.1564,
+      "end": null,
+      "bytes": 70575,
+      "sha256": "a88f7bb8c3e432e447ccd61ec902779cd278023a8814e368143a62aab63a8743"
+    }
+  ]
+}

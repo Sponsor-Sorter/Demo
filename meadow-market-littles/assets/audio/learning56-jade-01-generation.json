@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jade-01.mp3",
+  "sourceSha256": "6c4d1d00804e2e1dd94026a21c509e1219151b566b4e2e943ef284aac2e60864",
+  "processing": "Separate at verified2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jade-water-intro",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "Hello, little gardener! Turn the wooden gutters to join the barrel to the plants. Then let the water flow. Let's watch our garden grow!",
+      "start": 0,
+      "end": 8.093309999999999,
+      "bytes": 97847,
+      "sha256": "920def1c2901c8710c3db393da9875e1485978c98eddf31ced421d2685bb9185"
+    },
+    {
+      "id": "learn56-jade-water-done",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "You brought water to every garden! Look at those lovely flowers. Well done, little gardener!",
+      "start": 10.2081,
+      "end": 15.938199999999998,
+      "bytes": 69635,
+      "sha256": "c8185161f4982b68be45af97865b0a263d4d10da6053769cb58456159f8c84ae"
+    },
+    {
+      "id": "learn56-jade-shares-intro",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "Our farm friends are ready for a picnic! Move the food onto their plates. Can you give every friend an equal share?",
+      "start": 18.0152,
+      "end": 24.2646,
+      "bytes": 75904,
+      "sha256": "5fcfba55d9eff6a3095ad872dc6ca2c506f9c570f857aaa5b349f76d6218a14f"
+    },
+    {
+      "id": "learn56-jade-shares-done",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "text": "Everyone has an equal share! What a kind picnic helper you are. Well done!",
+      "start": 26.3186,
+      "end": null,
+      "bytes": 70575,
+      "sha256": "b535b38cdea08a7140bc62f3d10574d9e8ea5fb1444e2d337c5e23736ab546b3"
+    }
+  ]
+}
