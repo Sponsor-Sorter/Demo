@@ -30,6 +30,11 @@
     "Fresh pointer-down permits the next tap immediately after a drag; the drag-generated click remains suppressed.",
     "Orchard equations reveal their completed answer and quantities vary between plays."
   ],
+  "responsiveOpeningChecks": {
+    "tablet":"All ten active game scenes checked at 1024x768; every visible button remained inside the viewport",
+    "smallLandscape":"All ten Growing-mode opening scenes checked at 749x360; no button overflow and no footer scroll clipping",
+    "limit":"Opening-layout checks supplement full portrait/browser rounds; they do not replace physical-phone full rounds"
+  },
   "fullAppIntegration": {
     "location":"Private release branch only",
     "learnCollection":"Ten distinct games shown through the Learn category",
