@@ -4,6 +4,11 @@ export async function rpc(name: string, body: unknown, bearer?: string) {
   const secret = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, base = Deno.env.get('SUPABASE_URL')!;
   const response = await fetch(base + '/rest/v1/rpc/' + name, { method: 'POST', signal: AbortSignal.timeout(12000), headers: { apikey: secret, Authorization: 'Bearer ' + (bearer || secret), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (!response.ok) throw new Error('LITTLES_STORE_UNAVAILABLE');
+  // PostgREST returns 204 for this void write. It has no JSON body to decode.
+  if (response.status === 204) {
+    if (name === 'meadow_littles_play_record') return null;
+    throw new Error('LITTLES_STORE_UNAVAILABLE');
+  }
   return response.json();
 }
 export async function reconcile(token: string, expectedOwner?: string) {

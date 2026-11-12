@@ -2,8 +2,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2.57.4'
 import { invalid, isObject, parseBody, type Json } from './contracts.ts'
 
 const APP = 'littles'
-const BUILD = 35
-const CONSUMER_VERSION = 'littles-35'
+const BUILD = 53
+const CONSUMER_VERSION = 'littles-53'
 const FEATURES = ['moderation', 'warnings', 'appeals', 'maintenance', 'notices']
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -107,7 +107,7 @@ Deno.serve(async (req) => {
         p_event_id: crypto.randomUUID(),
         p_kind: 'heartbeat',
         p_player: userId,
-        p_summary: 'Littles consumer connected build 35',
+        p_summary: 'Littles consumer connected build 53',
         p_body: { consumer_version: CONSUMER_VERSION, features: FEATURES },
       })
       integrationReported = !eventError
