@@ -3,7 +3,8 @@
   "promptFiles": [
     "tools/littles-learning56-art-prompts.json",
     "tools/littles-learning56-props-prompt.json",
-    "tools/littles-learning56-bunny-prompt.json"
+    "tools/littles-learning56-bunny-prompt.json",
+    "tools/littles-learning56-pip-scene-prompt.json"
   ],
   "files": [
     {
