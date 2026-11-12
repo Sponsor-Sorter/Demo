@@ -1,0 +1,32 @@
+{
+  "release": 54,
+  "activity": "harvest_slice",
+  "name": "Harvest Slice",
+  "date": "2026-11-12",
+  "browserRounds": [
+    {"viewport": "1280x720", "input": "real pointer swipes", "goal": 12, "result": "three-star win; multi-fruit cuts"},
+    {"viewport": "390x844", "input": "real pointer swipes", "goal": 14, "result": "three-star win"},
+    {"viewport": "1024x768 rotated to768x1024", "input": "real pointer swipes", "goal": 16, "result": "pause and rotation retained four cuts; resumed to three-star win"},
+    {"viewport": "320x568", "input": "keyboard Enter on visible produce", "goal": 16, "result": "three-star win; both result buttons fit; field scrollTop remained zero"}
+  ],
+  "lifecycle": {
+    "pause": "Visible fruit positions stayed identical and controls were disabled until resume",
+    "earlyExit": "Closed after two cuts; stars remained six; fresh round started at zero",
+    "persistence": "Three rewarded wins saved nine stars; reload retained nine",
+    "replay": "New round clears old combo text, cut fragments, basket pieces, pointer and animation state",
+    "console": "No errors or warnings in the tested game tab"
+  },
+  "automated": [
+    "80 complete seeded physics rounds at four screen sizes",
+    "Continuous fast-swipe intersections, stationary and distant touches rejected",
+    "Exactly two halves per cut; duplicate cuts and over-goal awards denied",
+    "Misses continue freely; pause freezes time and physics; resize preserves positions",
+    "Shuffled produce bags, bounded flying objects and particles",
+    "Actual view close during pending image decoding aborts listeners/observer without starting animation or awarding",
+    "All18 individual atlas frames fit; narration bytes and SHA256 match approved Jay provenance",
+    "Complete Littles regression suite including800 bee physics rounds, saves, local linking, round allowance and signed commerce proofs passed"
+  ],
+  "art": "Three built-in image_gen assets; exact prompts in tools/littles-harvest-art-prompts.json",
+  "audio": "Two new ElevenLabs Multilingual v2 recordings using approved Mike/Farmer Jay, speed0.90; exact prompts and hashes in assets/audio/slice-jay-generation.json",
+  "compatibility": "Web content54 retains the unchanged control consumer53, live-session/moderation guards, launch flags and grants. Existing native14 loads the remotely served content; no new native bundle is required."
+}
