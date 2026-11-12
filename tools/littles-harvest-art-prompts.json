@@ -1,0 +1,20 @@
+{
+  "provider": "Built-in image_gen",
+  "generated": "2026-11-12",
+  "files": [
+    {
+      "file": "meadow-market-littles/assets/generated/harvest-slice/orchard.webp",
+      "prompt": "Use case: illustration-story. Asset type: full-screen background for Meadow Market Littles preschool farm game, wide landscape 16:9. Premium warm storybook 3D cartoon sunny farm orchard preparation area: distant red barn, soft green paddocks, rounded trees, wooden fence, golden daylight. At the very bottom a wide honey-coloured wooden worktop with one little empty wicker crate tucked to each bottom corner. Keep middle 75 percent broad, bright and simple with very low detail so large flying fruit sprites read clearly. Upper edge simple blue/cream sky for overlaid game controls. Gentle dimensional textures, soft outlines, round shapes, friendly rural atmosphere, rich illustrated finish. No people, no flying fruit, no lettering, no UI, no signs, no logos, no blades, no border. Full bleed, beautifully composed, not busy."
+    },
+    {
+      "file": "meadow-market-littles/assets/generated/harvest-slice/produce-atlas.webp",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Asset type: ONE production game sprite atlas, transparent background, exactly 3 columns by 6 rows of equal-sized cells. Exactly 18 separate objects, each centred in its cell with generous transparent padding, nothing crossing cells. Rows top to bottom: red apple; orange; small round watermelon; chunky orange carrot with short green top; short green cucumber; small orange pumpkin. Columns left to right for EVERY row: WHOLE item; its LEFT HALF with freshly cut interior clearly visible; its matching RIGHT HALF with freshly cut interior clearly visible. Halves must be separate sliced produce, not whole duplicates. Apple cream flesh and brown seeds; orange juicy segments; watermelon red flesh black seeds green rind; carrot orange cut interior; cucumber pale green flesh with seeds; pumpkin golden flesh and cream seeds. Consistent premium preschool farm game storybook 3D cartoon art: rounded chunky silhouettes, richly painted soft texture, clean confident edges and simple highlights. All objects similar maximum bounding size and front view. No shadows outside objects, no hands or blades, no text or numbers, no grid lines, no containers, no decorations. Portrait atlas, real alpha transparency behind every sprite. Precisely equal 3-column 6-row layout."
+    },
+    {
+      "file": "meadow-market-littles/assets/generated/harvest-slice/preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: single square illustrated preview card for Meadow Market Littles Harvest Slice, no text. Make the activity unmistakable: one large red apple being sliced into two fresh cream-fleshed halves in midair, a chunky carrot and a small watermelon tossed beside it, a broad glowing curved finger-swipe ribbon crossing the apple with one warm sparkle and a few juicy droplets. No knife, sword, weapons or people. Low foreground wicker harvest bowl catching a few colourful fruit pieces. Background softly rendered sunny farm orchard, red barn, wooden worktop, green paddock and blue sky. Premium warm preschool storybook 3D cartoon illustration matching detailed farm activity previews. Only three or four large clear objects, joyful tactile produce, rounded friendly art, clean composition, rich finish. Full bleed square, readable thumbnail, no letters, no words, no UI controls."
+    }
+  ],
+  "processing": "WebP encoding preserves alpha. Runtime atlas.json source rectangles isolate the 18 separate illustrated objects without changing their artwork."
+}

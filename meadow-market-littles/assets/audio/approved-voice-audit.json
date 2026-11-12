@@ -1355,6 +1355,16 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "neighbours-rhys-generation.json"
     },
+    "slice-jay-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "slice-jay-generation.json"
+    },
+    "slice-jay-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "slice-jay-generation.json"
+    },
     "ws-letter-a": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
