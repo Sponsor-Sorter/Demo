@@ -12,7 +12,7 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      - run: deno test supabase/functions/littles-play-store/rules_test.ts
+      - run: deno test --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,GOOGLE_PLAY_SERVICE_ACCOUNT supabase/functions/littles-play-store/rules_test.ts supabase/functions/littles-play-store/provider-diagnostics_test.ts supabase/functions/littles-play-store/service_test.ts
       - run: deno check supabase/functions/littles-play-store/index.ts supabase/functions/littles-play-notifications/index.ts
   game-checks:
     runs-on: ubuntu-latest

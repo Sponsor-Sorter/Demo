@@ -14,6 +14,24 @@ const server = new Map([
 ]);
 const parentEmail = 'parent@example.test';
 
+// Only the standard DOM operations used by the account dialog. No browser,
+// production credentials, network, or account/save writes are involved.
+function accountDocument() {
+  class Element {
+    constructor(tag) { this.tag = tag; this.children = []; this.style = {}; this.textContent = ''; this.open = false; }
+    append(...children) { for (const child of children) { child.parent = this; this.children.push(child); } }
+    replaceChildren(...children) { this.children = []; this.append(...children); }
+    setAttribute() {}
+    addEventListener() {}
+    focus() {}
+    showModal() { this.open = true; }
+    close() { this.open = false; }
+    remove() { if (this.parent) this.parent.children = this.parent.children.filter(child => child !== this); }
+  }
+  return { createElement: tag => new Element(tag), body: new Element('body') };
+}
+const descendants = element => [element, ...element.children.flatMap(descendants)];
+
 function device(initialId = 'little-account-1', loginId = initialId) {
   const context = {
     globalThis: null,
@@ -21,6 +39,7 @@ function device(initialId = 'little-account-1', loginId = initialId) {
     location: { pathname: '/meadow-market-littles/', origin: 'https://sponsorsorter.com' },
     setTimeout,
     clearTimeout,
+    document: accountDocument(),
     crypto: { randomUUID: () => '00000000-0000-4000-8000-000000000001' },
   };
   context.globalThis = context;
@@ -111,6 +130,7 @@ function device(initialId = 'little-account-1', loginId = initialId) {
     calls,
     storage,
     client,
+    document: context.document,
     get user() { return identity; },
     get local() { return local; },
     setLocal(next) { local = structuredClone(next); },
@@ -161,7 +181,29 @@ async function run() {
   await second.api.signOut();
   assert.equal(second.calls.find(call => call.method === 'signOut').options.scope, 'local');
 
-  console.log('Littles account recovery contract: guest linkage, email confirmation, password setup/reset, same-account sign-in and explicit progress restore passed with an isolated mock; no production account or save was changed.');
+  const ui = device('dialog-guest', 'little-account-1');
+  await ui.init();
+  ui.api.openAccount();
+  const guestDialog = ui.document.body.children.at(-1);
+  const guestControls = descendants(guestDialog);
+  assert(guestControls.some(node => node.textContent === 'Guest account'));
+  assert(!guestControls.some(node => node.textContent === 'Sign out from Littles'));
+  guestControls.find(node => node.type === 'email').value = parentEmail;
+  guestControls.find(node => node.type === 'password').value = 'safe-test-password';
+  await guestControls.find(node => node.textContent === 'Sign in to an existing account').onclick();
+  const parentDialog = ui.document.body.children.at(-1);
+  const parentControls = descendants(parentDialog);
+  assert.notEqual(parentDialog, guestDialog, 'successful sign-in refreshes account controls immediately');
+  assert.equal(guestDialog.open, false);
+  assert(parentControls.some(node => node.textContent === 'Recoverable account'));
+  assert(parentControls.some(node => node.textContent === 'Use cloud progress'), 'the signed-in parent can choose their existing cloud save');
+  assert.equal(ui.local.stars, 0, 'refreshing the dialog never replaces device progress');
+  await parentControls.find(node => node.textContent === 'Sign out from Littles').onclick();
+  assert.equal(ui.api.getStatus().userId, null);
+  assert(descendants(ui.document.body.children.at(-1)).some(node => node.textContent === 'Connect cloud save'), 'sign-out refreshes the available account action');
+  assert.equal(server.get('little-account-1').data.stars, 17, 'sign-in and sign-out controls do not alter the parent save');
+
+  console.log('Littles account recovery contract: guest linkage, email confirmation, password setup/reset, explicit progress restore and immediate sign-in/sign-out dialog controls passed with an isolated mock; no production account or save was changed.');
 }
 
 run().catch(error => { console.error(error); process.exitCode = 1; });
