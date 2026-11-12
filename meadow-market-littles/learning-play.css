@@ -50,3 +50,6 @@ html:has(.lr-dialog[open]){overflow:hidden}
 .lr-rolling-track{left:50%;right:auto;top:50%;width:min(90cqw,180cqh);height:auto;max-height:none;aspect-ratio:1.9;transform:translate(-50%,-50%)}.lr-rolling-cart{transform:translate(-50%,-74%);max-width:none;max-height:none}
 
 .lr-rolling-home{bottom:auto;transform:translateY(-66%)}
+.lr-river-glints{display:none}
+@media(max-width:500px){.lr-program{height:110px;flex-wrap:wrap;align-content:center;overflow:hidden}.lr-road{width:min(95cqw,calc(100cqh - 120px),400px);top:calc((100% - 120px)/2)}}
+.lr-scene{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
