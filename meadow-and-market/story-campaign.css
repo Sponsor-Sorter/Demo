@@ -17,3 +17,5 @@
 
 #modal-dialog:has(.story-campaign),dialog.story-pack-dialog{padding:0!important;max-height:100dvh!important;height:100dvh!important;width:100vw!important;max-width:100vw!important;inset:0!important;border-radius:0!important}
 .campaign-story-copy{margin:8px 0}.campaign-story-copy summary{font-size:13px;font-weight:700;cursor:pointer}.campaign-story-copy p{margin:8px 0}
+
+.story-campaign,.story-pack-reader{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}.story-pack-reader input{-webkit-user-select:text;user-select:text}
