@@ -65,7 +65,7 @@
     selected(a,key){if(key.startsWith('word:'))this.action(a,'listen:'+key.slice(5));},
     action(a,key){if(!key.startsWith('listen:'))return;const w=key.slice(7);a.speak(['mat','log','tree','key'].includes(w)?'learn56-rhys-word-'+w:'ws-word-'+w);},
     drop(a,source,target){if(source.startsWith('word:')&&target.startsWith('plank:'))a.change('place',{word:source.slice(5),slot:Number(target.split(':')[1])});},
-    async solved(a){await a.animate(a.board.querySelector('.lr-crossing-lamb'),[{left:'4%',transform:'translateY(0)'},{left:'45%',transform:'translateY(-12px)'},{left:'88%',transform:'translateY(0)'}],1900);}
+    async solved(a){await a.animate(a.board.querySelector('.lr-crossing-lamb'),[{top:'66%',transform:'translate(-50%,-50%)'},{top:'86%',transform:'translate(-50%,-55%)'},{top:'112%',transform:'translate(-50%,-50%)'}],1900);}
   };
   const pip={
     assets:['barn','bridge','hay','hen'],
