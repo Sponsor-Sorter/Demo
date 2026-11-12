@@ -3,7 +3,7 @@
   'use strict';
   const catalog=[
     ['water','Water the Garden','jade','Turn gutters and grow a garden'],['sounds','Jade’s Sound Train','jade','Build words and blend their sounds'],['shares','Picnic Fair Shares','jade','Share a picnic with farm friends'],['rolling','Rhys’s Rolling Rescue','rhys','Build ramps and guide a trolley'],['patchwork','Patchwork Farm Animals','rhys','Fit and turn chunky wooden shapes'],['orchard','Orchard Add and Take Away','jay','Pick, share and discover numbers'],['rhymes','Rhyming River','rhys','Build bridges with rhyming pictures'],['pip','Where’s Pip?','jay','Listen, move and find hiding places'],['coding','Little Tractor Coding','rhys','Arrange arrows and drive your route'],['freeze','Meadow Freeze Dance','jay','Move to music, then freeze together']
-  ].map(([kind,name,farmer,description])=>({id:'learning_'+kind,kind,name,farmer,description,scene:'assets/generated/learning56/'+kind+'-scene.webp',preview:'assets/generated/learning56/'+kind+'-preview.webp'}));
+  ].map(([kind,name,farmer,description])=>({id:'learning_'+kind,kind,name,farmer,description,scene:'assets/generated/learning56/'+kind+(kind==='pip'?'-scene-v2.webp':'-scene.webp'),preview:'assets/generated/learning56/'+kind+'-preview.webp'}));
   const words=['cat','dog','pig','hen','sun','bed','pen','bus'];
   const families=[['cat','hat','mat'],['dog','log','frog'],['bee','tree','key'],['goat','boat','coat']];
   const rng=seed=>()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
