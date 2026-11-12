@@ -7,8 +7,8 @@ android {
         applicationId "com.meadowmarket.littles"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "0.3.0"
+        versionCode 11
+        versionName "0.4.0"
         manifestPlaceholders = [admobAppId: 'ca-app-pub-3940256099942544~3347511713']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -27,7 +27,7 @@ android {
         }
         play {
             dimension 'distribution'
-            versionCode 10
+            versionCode 12
             versionName '1.0.0'
             manifestPlaceholders = [admobAppId: System.getenv('LITTLES_ADMOB_APP_ID') ?: 'ca-app-pub-3940256099942544~3347511713']
             buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'false'

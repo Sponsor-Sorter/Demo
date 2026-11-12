@@ -41,3 +41,4 @@ jobs:
           java-version: '21'
       - run: npm ci --ignore-scripts
       - run: npm run android:debug
+      - run: node scripts/build-android.cjs testAcceptanceDebugUnitTest
