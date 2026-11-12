@@ -2,3 +2,5 @@
 
 @media(max-width:360px){.hs-header>img{display:none}.hs-header{gap:4px}.hs-header h2{max-width:72px;font-size:17px}.hs-count{font-size:20px}}
 .hs-counter{pointer-events:none}.hs-collected canvas{display:block;width:20px;height:20px;margin:-4px;transform:rotate(var(--fruit-turn))}
+/* The shared celebration card is flex; this view needs its compact floated layout. */
+.hs-dialog .hs-result{display:block}
