@@ -30,7 +30,7 @@
     const s=shopState(f);if(!s.unlocked)return 0;const t=shopTier(s),interval=shopIntervals[t];
     if(!s.lastSaleAt||!amount(s)){s.lastSaleAt=now;return 0}
     const ticks=Math.min(10000,Math.floor(Math.max(0,now-s.lastSaleAt)/interval));let earned=0,sold=0;
-    for(let i=0;i<ticks;i++){const keys=Object.keys(s.stock).filter(k=>s.stock[k]>0);if(!keys.length)break;const k=keys[(s.cursor||0)%keys.length];s.cursor=(s.cursor||0)+1;s.stock[k]--;const saleAt=s.lastSaleAt+(i+1)*interval;if(api.state)window.meadowProgress?.sold(api.state(),k,1,saleAt);earned+=shopValue(k,t,saleAt);sold++}
+    for(let i=0;i<ticks;i++){const keys=Object.keys(s.stock).filter(k=>s.stock[k]>0);if(!keys.length)break;const k=keys[(s.cursor||0)%keys.length];s.cursor=(s.cursor||0)+1;s.stock[k]--;const saleAt=s.lastSaleAt+(i+1)*interval;if(api.state)window.meadowProgress?.sold(api.state(),k,1,saleAt);const base=shopValue(k,t,saleAt),rate=window.meadowPackBoosts?.rate('shop',f,saleAt)||0,units=Math.round(rate*100);const bonus=base*units+(s.packBonusHundredths||0);earned+=base+Math.floor(bonus/100);s.packBonusHundredths=bonus%100;sold++}
     if(ticks)s.lastSaleAt=amount(s)?s.lastSaleAt+ticks*interval:now;
     if(sold){s.earned=(s.earned||0)+earned;s.sold=(s.sold||0)+sold;f.visits=(f.visits||0)+sold;api.earn(earned)}return sold;
   }

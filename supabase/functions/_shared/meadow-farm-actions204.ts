@@ -4,7 +4,7 @@ import {createWorkerController} from './meadow-workers205.ts';
 import {tripCommand} from './meadow-trips208.ts';
 type Data=Record<string,any>;
 export type FarmCommand={type:string;map?:string;target?:string;data?:Data};
-export type FarmContext={ownedCollections?:string[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];sharedLandmarks?:string[];visitedFriend?:boolean;initializing?:boolean};
+export type FarmContext={ownedCollections?:string[];packGrants?:Data[];pendingHelp?:Data[];marketRounds?:Data[];roundRecords?:Data[];sharedLandmarks?:string[];visitedFriend?:boolean;initializing?:boolean};
 export class FarmActionError extends Error{constructor(public code:string,message:string){super(message);}}
 function fail(message:string,code='INVALID_FARM_ACTION'):never{throw new FarmActionError(code,message);}
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
@@ -17,6 +17,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  if(!s.farms?.willow||!validID(s.active)||!Object.hasOwn(s.farms,s.active)||!R.maps.some((m:Data)=>m.id===s.active)||!integer(s.coins,0,1e12)||!integer(s.level,1,1e6))fail('The saved farm needs review.');
  W.meadowPantry.connect(s);
  s.collectionState||={};s.collectionState.owned=[...(context.ownedCollections||[])];
+ W.meadowPackBoosts.bind({state:()=>s,items});W.meadowPackBoosts.sync(s,context.packGrants||[],now);
  const events:Data[]=[],messages:string[]=[],results:Data[]=[],marketSales:Data[]=[];
  let map=s.active;
  const farms=()=>s.farms,current=()=>farms()[map];
@@ -199,6 +200,8 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
      const eligible=vendors.filter(v=>s.level>=(v.unlock||1)),next=eligible[(s.orderIndex||0)%eligible.length];s.orderIndex=(s.orderIndex||0)+1;opened.orders.push({...next,id:'order-'+destination.id+'-'+s.orderIndex,vendor:next.id});
     }
     if(command.type==='map.visit'){s.active=destination.id;worker.arrive();}result.destination=destination.id;break;}
+   case 'pack.activate':{
+    fields(d,[]);if(typeof command.target!=='string')fail('Choose a booster.');try{result.booster=W.meadowPackBoosts.activate(s,command.target,map,now);}catch(e){fail((e as Error).message);}messages.push('Booster active for 15 minutes on '+R.maps.find((m:Data)=>m.id===map)?.name+'.');break;}
    case 'keepsake.label':{
     fields(d,['text']);if(command.target!=='collection_pack_welcome'||!(context.ownedCollections||[]).includes(command.target)||typeof d.text!=='string'||!d.text.trim()||d.text.trim().length>20||/[\u0000-\u001f\u007f<>]/.test(d.text))fail('Choose up to 20 characters for your owned garden sign.');
     s.keepsakeLabels||={};s.keepsakeLabels[command.target]=d.text.trim().normalize('NFC');break;}
@@ -249,6 +252,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
   }
   result.map=map;if(command.target)result.target=command.target;
   results.push(result);
+  W.meadowPackBoosts.sync(s,context.packGrants||[],now);
   worker.invalidate();
  }
  normalizeFarmBooks();settle();W.meadowProgress.steps(s);s.seen=now;

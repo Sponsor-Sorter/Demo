@@ -111,7 +111,8 @@
   const section=root.querySelector('.install-game-card .task-main small');if(section)section.textContent='Google Play installs and updates this version. Your cloud farm stays on your account.';
  }
  function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().then(recover).catch(()=>{}));if(billing){billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));document.addEventListener('visibilitychange',()=>{if(!document.hidden)recover()});window.addEventListener('online',recover);}}
- const owned=sku=>(configuration.owned_products||[]).includes(sku);
+ const owned=sku=>owner===api?.user()?.id&&(configuration.owned_products||[]).includes(sku);
+ const packGrants=()=>owner===api?.user()?.id?(configuration.pack_grants||[]):[];
  const canPurchase=sku=>!owned(sku)&&(configuration.test_access===true||!!billing&&configuration.payments_enabled===true&&configuration.products.some(p=>p.sku===sku&&prices.has(p.product_id)));
- window.meadowStore={offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
+ window.meadowStore={packGrants,offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();

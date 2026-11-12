@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 12 November 2026 — Harvest Fair 239 live; native 16 in Production review
+
+Two six-step story arcs, four recordings in the approved farmer cast, and three permanent A$0.99 cosmetic arrangements are live on web 239. All 42 changed public files match tested `dfb8a25a`; final game/Android CI and Pages passed. Three real Google $0 orders, server acknowledgement, cancellation, restore/restart and an actual refund/automatic revocation passed. All history is retained. Ten backend products are enabled; the temporary provider lease is removed and approved free testers remain separate. Browser/Samsung update notices and portrait/landscape pack layouts passed; original phone settings were restored. Play 1.7.6/code 16 is submitted and explicitly **in review**, not yet confirmed public. [Full acceptance and limits](MEADOW_HARVEST_FAIR238.md).
+
 ## 12 November 2026 — native 15 Internal testing accepted
 
 Play 1.7.5/code 15 is Active / Available to internal testers. The Samsung updated from 14 in place, retained its farm and passed focused touch/build scrolling, mission receipt, Animals, portrait/landscape, Play-link and offline-recovery checks on web 237. Browser Emporium/Settings checks also passed after the helper recovered. Original device settings were restored and phone ownership handed back to Littles. The current request did not promote Production. [Acceptance, evidence and limits](MEADOW_NATIVE175_ACCEPTANCE237.md).
