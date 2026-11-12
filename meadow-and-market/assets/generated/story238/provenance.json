@@ -1,0 +1,53 @@
+[
+  {
+    "sku": "welcome_garden",
+    "source": "exec-247b2ef0-5371-4f29-9e9c-92bb96ad025c.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "sourceSha256": "d5a775f76fde409fefb46b6ab260b1e07b707d224809b2028ef8947247b9bbd0",
+    "views": 4,
+    "footprint": {
+      "w": 2,
+      "h": 1
+    },
+    "provider": "built-in image_gen",
+    "artDirection": "Original Meadow Markets warm painted farm artwork; fixed isometric camera, distinct front/back views, transparent alpha.",
+    "processing": "Quadrant extraction, alpha bounding-box trim with 16px output margin; no generated content replaced by code."
+  },
+  {
+    "sku": "coop_charm",
+    "source": "exec-e5f8c941-b124-4c83-a337-d56cfa903965.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "sourceSha256": "873c26ae79f44e7576288c6ef7e2f1eca9ab0c0e4b754be0077eea91dedf3bee",
+    "views": 4,
+    "footprint": {
+      "w": 1,
+      "h": 1
+    },
+    "provider": "built-in image_gen",
+    "artDirection": "Original Meadow Markets warm painted farm artwork; fixed isometric camera, distinct front/back views, transparent alpha.",
+    "processing": "Quadrant extraction, alpha bounding-box trim with 16px output margin; no generated content replaced by code."
+  },
+  {
+    "sku": "market_makeover",
+    "source": "exec-8d9d5517-cc20-4b42-8afd-efbfc8ce9b6f.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "sourceSha256": "6729b79bbb806f2d433a6a44d43e21d150e7ee44d73a5622d19a72d6c6352a7b",
+    "views": 4,
+    "footprint": {
+      "w": 2,
+      "h": 1
+    },
+    "provider": "built-in image_gen",
+    "artDirection": "Original Meadow Markets warm painted farm artwork; fixed isometric camera, distinct front/back views, transparent alpha.",
+    "processing": "Quadrant extraction, alpha bounding-box trim with 16px output margin; no generated content replaced by code."
+  }
+]

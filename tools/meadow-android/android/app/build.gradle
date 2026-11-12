@@ -23,8 +23,8 @@ android {
         direct { dimension 'distribution' }
         play {
             dimension 'distribution'
-            versionCode 15
-            versionName '1.7.5'
+            versionCode 16
+            versionName '1.7.6'
             // Production units; SDK testing requires the registered test device
             // and a private, expiring backend acceptance lease.
             manifestPlaceholders = [admobAppId: 'ca-app-pub-6946008351204848~7779211148']

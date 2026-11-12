@@ -113,5 +113,5 @@
     if(!get().introduced){setTimeout(maybeWelcome,1200);setInterval(maybeWelcome,5000)}
     setInterval(()=>{if(Date.now()-lastInteraction<30000||document.hidden||!panel.hidden||get().paused||document.querySelector('dialog[open]')||Date.now()-lastTipAt<180000)return;const hint=api.hint();if(hint){pendingHint=hint;lastTipAt=Date.now();updateLauncher()}},30000);
   }
-  window.meadowGuides={attach,event,canonicalLessons,context,menu,lesson:showLesson,unlocks,areaOpened,collapse:hide,showTour,resumeTour,tourSteps,guideVoice,topics,surface,protect,protects};
+  window.meadowGuides={topic:id=>{const item=lessons.find(l=>l.id===id)||topics.find(l=>l.id===id);if(item)showLesson(item);else menu();},attach,event,canonicalLessons,context,menu,lesson:showLesson,unlocks,areaOpened,collapse:hide,showTour,resumeTour,tourSteps,guideVoice,topics,surface,protect,protects};
 })();

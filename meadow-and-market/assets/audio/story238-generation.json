@@ -1,0 +1,75 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "generated": "2026-11-12",
+  "creditsUsed": 1399,
+  "settings": {
+    "stability": 0.5,
+    "similarity": 0.75
+  },
+  "normalization": {
+    "integratedLufs": -18,
+    "truePeakDb": -2.5,
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "clips": [
+    {
+      "id": "jade-willowbrook238",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "source": "ElevenLabs_2026-11-12T04_51_33_Hope - upbeat and clear_pvc_s50_sim75_v4.mp3",
+      "speed": 0.96,
+      "script": "Welcome to Willowbrook. I’m Farmer Jade. I found an old invitation to our village Harvest Fair. Let’s bring it back, starting right here. Till a little soil, plant your first seeds, give them a drink, then gather a harvest basket. The family well gives us somewhere to rest, and a bigger field will help us grow. Open your story whenever you need the next step. We’ll do this together.",
+      "measured": {
+        "integratedLufs": -18.51,
+        "truePeakDb": -2.86
+      },
+      "bytes": 300035,
+      "sha256": "8c2a812344761b5f4804f12a26147d64ec2f126b1863d21e42e4421115dcc7d0"
+    },
+    {
+      "id": "rhys-homestead238",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "source": "ElevenLabs_2026-11-12T05_06_35_Noah - YA Audiobooks Narrator_pvc_s50_sim75_v4.mp3",
+      "speed": 1,
+      "script": "There’s life in the meadow again. I’m Farmer Rhys. A steady harvest and a place to rest are the start of something good. When you upgrade a field or an animal home, check its new tile space and leave the whole footprint clear. We’ll keep building the fair together. Farmer Jay has an idea for the empty animal homes next.",
+      "measured": {
+        "integratedLufs": -18.63,
+        "truePeakDb": -2.7
+      },
+      "bytes": 245805,
+      "sha256": "6c9f3839830b8006e42382b77b8db76eb1284d96712db02e026477e67d0d001c"
+    },
+    {
+      "id": "jay-animal-home238",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "source": "ElevenLabs_2026-11-12T05_16_29_Mike - Animation, Explainers & Gaming_pvc_s50_sim75_v4.mp3",
+      "speed": 1,
+      "script": "I’m Farmer Jay. The village children asked if the Harvest Fair could have animals again. Let’s give them a happy home first. Build a coop, settle three chickens, and feed, brush or play with your new friends. Upgrade the coop when they need more room, then prepare a barn or paddock for larger animals. Your story keeps the next step ready for you. Happy animals, happy meadow.",
+      "measured": {
+        "integratedLufs": -18.48,
+        "truePeakDb": -2.46
+      },
+      "bytes": 269001,
+      "sha256": "e7a37ee655fab8abf70082535f89c474e86a952d7bc344e510d2c0b60e3ba638"
+    },
+    {
+      "id": "jay-animal-parade238",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "source": "ElevenLabs_2026-11-12T05_27_09_Mike - Animation, Explainers & Gaming_pvc_s50_sim75_v4.mp3",
+      "speed": 1,
+      "script": "Our animal homes are busy again. The first produce is ready for the village, and I’ve added an animal parade to the old fair invitation. Keep feeding, brushing and playing with your friends as the farm grows. They’re part of the family now. Let’s see what the village needs next.",
+      "measured": {
+        "integratedLufs": -18.58,
+        "truePeakDb": -2.83
+      },
+      "bytes": 184365,
+      "sha256": "bf6929d4e368562e61abc2e383147654fa47e0f8c1b0f42b1403267240dc62a4"
+    }
+  ]
+}

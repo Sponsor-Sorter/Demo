@@ -199,6 +199,9 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
      const eligible=vendors.filter(v=>s.level>=(v.unlock||1)),next=eligible[(s.orderIndex||0)%eligible.length];s.orderIndex=(s.orderIndex||0)+1;opened.orders.push({...next,id:'order-'+destination.id+'-'+s.orderIndex,vendor:next.id});
     }
     if(command.type==='map.visit'){s.active=destination.id;worker.arrive();}result.destination=destination.id;break;}
+   case 'keepsake.label':{
+    fields(d,['text']);if(command.target!=='collection_pack_welcome'||!(context.ownedCollections||[]).includes(command.target)||typeof d.text!=='string'||!d.text.trim()||d.text.trim().length>20||/[\u0000-\u001f\u007f<>]/.test(d.text))fail('Choose up to 20 characters for your owned garden sign.');
+    s.keepsakeLabels||={};s.keepsakeLabels[command.target]=d.text.trim().normalize('NFC');break;}
    case 'build.place':{
     fields(d,['id','item','x','y','rotation','home']);const def=catalog.find(c=>c.id===d.item);if(!def||!validID(d.id)||Object.values(farms()).some((f:any)=>f.objects.some((o:Data)=>o.id===d.id))||!integer(d.rotation??0,0,3))fail('Choose a new valid farm item.');if(s.level<(def.unlock||1))fail('This item is not unlocked yet.');
     if(def.kind==='collection'&&(!(context.ownedCollections||[]).includes(def.id)||Object.values(farms()).some((f:any)=>f.objects.some((o:Data)=>o.type===def.id))))fail('Own this decoration and put away its placed copy first.');
