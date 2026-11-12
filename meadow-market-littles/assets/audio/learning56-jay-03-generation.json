@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-03.mp3",
+  "sourceSha256": "becece709f760a6a90aebf6d0319a3ac16e96bdca57e7407678bce2151814597",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-pip-under",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Put Pip under the bridge. Under the bridge!",
+      "start": 0,
+      "end": 2.68757,
+      "bytes": 32959,
+      "sha256": "1693b7347a2aab20fb0b6e6b7cf282e5009171b265039c68b448e42f2507a1af"
+    },
+    {
+      "id": "learn56-jay-pip-behind",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Put Pip behind the hay bale. Behind the hay bale!",
+      "start": 4.509390000000001,
+      "end": 7.40898,
+      "bytes": 35467,
+      "sha256": "2f3303f7ad01e9ef8eaf8ed2003249f027d6c320070de517b2b0e6c3350958cb"
+    },
+    {
+      "id": "learn56-jay-freeze-intro",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's have a farm dance! Move your finger to make your friend dance. When I say freeze, stop your finger and stay still. Here we go!",
+      "start": 9.27751,
+      "end": 17.1595,
+      "bytes": 95339,
+      "sha256": "1321c090719c71cdd53c79b1c013b7d4049429eed228c4f7d77b2962a8bc5d70"
+    },
+    {
+      "id": "learn56-jay-freeze-done",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "You danced, listened and froze like a star! What a lovely farm dance. Great job!",
+      "start": 19.051299999999998,
+      "end": null,
+      "bytes": 70889,
+      "sha256": "bc028c9bfe0f8ccbaefbe7db8d1fae01b8b5232cb0cfab3350a46bafed28cc4e"
+    }
+  ]
+}

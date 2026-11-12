@@ -1,0 +1,173 @@
+{
+  "provider": "Built-in image_gen",
+  "generated": "2026-11-12",
+  "files": [
+    {
+      "id": "water-scene",
+      "game": "water",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/water-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: sunny vegetable garden beside a red farmhouse, a wooden water barrel at the far upper left, garden beds and a few flowers at the outside edges, broad simple pale soil and short lawn across the middle for a pipe puzzle. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "water-preview",
+      "game": "water",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/water-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a short course of chunky wooden water gutters joined together, sparkling blue water flowing into three small plants which blossom, one watering barrel and a cheerful little hen watching. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "sounds-scene",
+      "game": "sounds",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/sounds-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: cosy open-sided red farm railway shed, warm timber beams and bunting at the outer edges, a tiny railway curving far behind, broad clean honey-coloured wooden platform across the middle for letter carriages. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "sounds-preview",
+      "game": "sounds",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/sounds-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a delightful little wooden farm locomotive pulling three chunky carriages labelled C, A, T, a friendly ginger farm cat emerging from a softly glowing picture cloud, obvious letter-building activity. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "shares-scene",
+      "game": "shares",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/shares-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: sunny farm picnic clearing beside an orchard, red barn distant, a cream picnic cloth covering the middle foreground, basket and flowers tucked into corners, open clean cloth play space. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "shares-preview",
+      "game": "shares",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/shares-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show three friendly farm animals sheep goat and cow sitting at a picnic with three plates, six bright red apples evenly shared two on each plate, a child's small hand moving the last apple, warm happy expressions. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "rolling-scene",
+      "game": "rolling",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/rolling-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: gently rolling green meadow beside a farm workshop, wooden fence and red barn far behind, low rocks and flowers tucked to the outside corners, broad clear grassy play area in the middle. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "rolling-preview",
+      "game": "rolling",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/rolling-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a friendly little lamb riding safely in a small wooden farm trolley, chunky wooden ramps forming a gentle route over a stream to a hay-filled home, a large curved guiding arrow of golden sparkles, physical puzzle scene. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "patchwork-scene",
+      "game": "patchwork",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/patchwork-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: warm timber farm craft studio with patches of fabric and wooden offcuts along the outside edges, soft sunlit window looking at an orchard, large clear light wooden worktable in the centre foreground. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "patchwork-preview",
+      "game": "patchwork",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/patchwork-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a cheerful farm sheep built from a few large colourful wooden triangle circle square shapes on a craft table, several matching chunky shape pieces nearby and a softly glowing sheep outline, clear preschool shape assembly activity. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "orchard-scene",
+      "game": "orchard",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/orchard-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: bright sunny apple orchard, rounded trees on both outside edges with a few red apples, distant farm cottage, large clear central grass and low wooden harvest table at the bottom edge. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "orchard-preview",
+      "game": "orchard",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/orchard-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show two wooden baskets with two red apples and one red apple being combined into a larger basket of three, a friendly farm bunny watching and a big friendly wooden plus symbol, clearly showing simple hands-on addition. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "rhymes-scene",
+      "game": "rhymes",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/rhymes-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: gentle narrow farm stream between green banks with a distant red barn and willow tree, broad clear green play areas around a shallow blue stream through the lower middle, simple uncluttered landscape. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "rhymes-preview",
+      "game": "rhymes",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/rhymes-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show three chunky wooden bridge planks with clear picture badges of a cat a hat and a doormat, forming a bridge over a tiny stream, a cheerful lamb starting to cross, a few floating musical sound sparkles. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "pip-scene",
+      "game": "pip",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/pip-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: friendly farmyard with a small red open barn on the left, a low wooden bridge on the right, a single golden hay bale near the back, broad clear central lawn, all three landmarks large simple and separated. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "pip-preview",
+      "game": "pip",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/pip-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a cheerful little hen peeking from inside a red barn, a wooden bridge and a golden hay bale nearby, three softly glowing hide-and-seek places and a small pair of searching footprints, clear spatial learning activity. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "coding-scene",
+      "game": "coding",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/coding-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: top-down oblique sunny farm field with a distant low fence and red barn on outside corners, broad clear sandy square play space in the middle, orchard trees tucked near the far edge. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "coding-preview",
+      "game": "coding",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/coding-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a small green friendly tractor on a simple three-by-three farm track, three large wooden arrow cards arranged in order beside it, route leading to a basket of apples, clear first coding puzzle. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "freeze-scene",
+      "game": "freeze",
+      "role": "scene",
+      "file": "meadow-market-littles/assets/generated/learning56/freeze-scene.webp",
+      "prompt": "Use case: illustration-story. Asset type: production full-screen background for Meadow Market Littles, ages 3–6. Wide landscape 16:9, full bleed. Premium warm storybook 3D cartoon farm illustration, rounded forms, confident clean silhouettes, softly painted rich materials, golden daylight, gentle cohesive cream green red and honey palette. Scene: sunlit farm festival clearing with a barn behind, a ribbon of bunting high along the border, flowers and a fiddle tucked at the outside corners, large clear grass dance floor in the middle. Keep the central 70 percent bright, low-detail and unobstructed for large movable game objects; sky/top and bottom edges leave room for in-scene parchment controls. Background environment only, no people, no foreground game pieces, no text, no UI, no outlines of buttons, no watermark. Beautiful yet simple for preschoolers.",
+      "transparent_background": false
+    },
+    {
+      "id": "freeze-preview",
+      "game": "freeze",
+      "role": "preview",
+      "file": "meadow-market-littles/assets/generated/learning56/freeze-preview.webp",
+      "prompt": "Use case: illustration-story. Asset type: square illustrated activity preview for Meadow Market Littles, ages 3–6. Premium warm storybook 3D cartoon farm illustration with the same rounded forms, rich softly painted materials and cream/green/honey palette. One clear focal activity, a handful of big readable objects, uncluttered, crisp at small card size. Show a happy sheep goat and cow dancing on a grassy farm stage, one animal playfully frozen mid-step, warm musical notes and a large friendly wooden pause symbol, joyful movement game. Surround with the relevant sunny farm environment. The activity is immediately understandable. No game title, no UI bars, no logos, no watermarks. Only the letter carriage text C A T or the stated simple mathematical symbol if requested; otherwise no text.",
+      "transparent_background": false
+    },
+    {
+      "id": "word-pictures",
+      "role": "atlas",
+      "file": "meadow-market-littles/assets/generated/learning56/word-pictures.webp",
+      "transparent_background": true,
+      "prompt": "Use case: stylized-concept. Asset type: preschool farm game production sprite atlas on actual transparent background. Exactly 4 columns and 4 rows,16 separate objects, generous transparent gaps, each centred in its own equal cell, no overlaps. Left to right, top to bottom: row1 friendly ginger CAT, straw HAT, rectangular woven door MAT, friendly brown DOG; row2 short wooden LOG, friendly green FROG, friendly yellow and black BEE, leafy apple TREE; row3 simple golden house KEY, tiny wooden rowing BOAT, yellow rain COAT, friendly pink PIG; row4 cheerful yellow school BUS, bright round SUN, cosy small wooden BED, thick blue writing PEN. Rich warm storybook 3D cartoon style, chunky readable silhouettes, soft painted textures, clean smooth edges, all similar maximum bounding size. No text or labels, no ground shadows, no props outside each object, no outlines around cells, no background; real alpha transparency behind every separate sprite."
+    }
+  ]
+}

@@ -1,0 +1,304 @@
+{
+  "provider": "OpenAI built-in image generation",
+  "promptFiles": [
+    "tools/littles-learning56-art-prompts.json",
+    "tools/littles-learning56-props-prompt.json",
+    "tools/littles-learning56-bunny-prompt.json"
+  ],
+  "files": [
+    {
+      "file": "assets/generated/learning56/barn.webp",
+      "bytes": 40378,
+      "sha256": "ca7599c784f56fa0bd6ff40b7ef051e2a43f7d4ff17fc5e095e1c41c43adf4d8",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/barrel.webp",
+      "bytes": 32624,
+      "sha256": "7727ebfbf6e60cd9024dd8aeb67a3304e251c709f9ffcfebfe8818bede28abc1",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/bed.webp",
+      "bytes": 26598,
+      "sha256": "728292763c963ff238e1a7006b61bb0b836713a0d833f5b81506da70de6bb3e8",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/bee.webp",
+      "bytes": 29332,
+      "sha256": "18ca3bfba8e7c7fc3bc2885a3f3bdcd1824daf7eedb235ddfacfea911952c36d",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/boat.webp",
+      "bytes": 24206,
+      "sha256": "78793dc7d6bb6ddee82fee2d82b5ababeda4a2196b1bc0ec44a16b7df5e78bbe",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/bridge.webp",
+      "bytes": 31262,
+      "sha256": "a8c9a1bf08f297c627923a4f5552ed8be62ece9689aaaf21bfdc1d8c7cba7ddc",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/budding.webp",
+      "bytes": 29068,
+      "sha256": "7c4276c10394def702f11de59b5186e4de250f72355bd104239957d6fc302913",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/bunny.webp",
+      "bytes": 241364,
+      "sha256": "9b838e2550ebf7bbab19505c36f812e84a2bf175c7ea477b56504695cb1c5c45",
+      "source": "exec-324bc241-5282-424b-adc3-23511e3aa6ea.png"
+    },
+    {
+      "file": "assets/generated/learning56/bus.webp",
+      "bytes": 27882,
+      "sha256": "a1525e6c50d8e13cd5ca62c5558e3d95d30aa231e5fdf7955c9b2d0dd347ecb1",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/carriage.webp",
+      "bytes": 27656,
+      "sha256": "31a2993fba069d08e50278d62701b520247b7592c88ce3df226c5a9d1ea18d6d",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/cat.webp",
+      "bytes": 33572,
+      "sha256": "42085652276537227290a40537b971c44a54884372e500869774c40f217e1589",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/coat.webp",
+      "bytes": 26654,
+      "sha256": "bbbf0e00bd8c1f7466240af3dfb14b5504bf37e142d8cb7545b074d214c341af",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/coding-preview.webp",
+      "bytes": 171882,
+      "sha256": "2397665a30e9a736d0ab8f83d0247f411978b48af45b975a1e54c3205cb204ad",
+      "source": "exec-545d249d-e3f1-44ba-86d9-bc4d41807398.png"
+    },
+    {
+      "file": "assets/generated/learning56/coding-scene.webp",
+      "bytes": 190232,
+      "sha256": "f32d5b2f3931c91aea17365767690d5b8d440e7d417886ed4efbeac352ee8c6b",
+      "source": "exec-42057368-a36e-4407-afcf-c8f7c79f8bd6.png"
+    },
+    {
+      "file": "assets/generated/learning56/dog.webp",
+      "bytes": 32000,
+      "sha256": "4cc972483cae8ce79f794fe9a0bdf82f52a0bec3cd87e43e0b912331bcd8ab52",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/engine.webp",
+      "bytes": 39370,
+      "sha256": "1296b3596b2c1970f9bd3a2778eff5e586398f37665ad9f0794fbaee66681196",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/flower.webp",
+      "bytes": 29182,
+      "sha256": "c4553f4ebca830c9ff364fb473393a293d184cc923291398ca270588c22f8474",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/freeze-preview.webp",
+      "bytes": 168838,
+      "sha256": "4523bac61b0a0281974e72f9edeb562dcc57c900c796e1ae2e58470eef881fbd",
+      "source": "exec-66ad7298-9743-4ceb-a05c-a9795c1f725a.png"
+    },
+    {
+      "file": "assets/generated/learning56/freeze-scene.webp",
+      "bytes": 308118,
+      "sha256": "a12633b0bd92f3e69a8d635e956c04fa8d4b6bb52c7bed197dee89a2edc5acf6",
+      "source": "exec-803c442c-b758-45a5-99b6-87e3b2b9bce6.png"
+    },
+    {
+      "file": "assets/generated/learning56/frog.webp",
+      "bytes": 31812,
+      "sha256": "0068d511b176a27e44be91121a36a9fc06f49b9de948ff58ac479ae7d4f1814c",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/hat.webp",
+      "bytes": 26708,
+      "sha256": "c5ce38d49582fc959565b0c86de3d2bd55962b74029349d3819aec0bad2ec614",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/key.webp",
+      "bytes": 22570,
+      "sha256": "7aa8939ae57f559355683d9be38487fd6c7d82c0a1c8004c59f3128e0c170435",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/log.webp",
+      "bytes": 24826,
+      "sha256": "40106e82bac6e723e26a8f462d98ae221b4859e87bea77dbf24b330bbed2f099",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/mat.webp",
+      "bytes": 29814,
+      "sha256": "71b68cf195d5e106f0f005a9787cba3d026f403158de34b4141b61370be40565",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/orchard-preview.webp",
+      "bytes": 178194,
+      "sha256": "04f3d93eb485850066fa7e07e845334ef717b5661675915c2a3538126cc9f13d",
+      "source": "exec-181b142b-d541-42f6-96ea-1edb1943ccf1.png"
+    },
+    {
+      "file": "assets/generated/learning56/orchard-scene.webp",
+      "bytes": 255058,
+      "sha256": "d0e6976a31bdb5b2028114a2ceba19681898dc989b85a79114b7e0321cf365b7",
+      "source": "exec-68f10de7-ba78-42d7-a4de-7af40104046f.png"
+    },
+    {
+      "file": "assets/generated/learning56/patchwork-preview.webp",
+      "bytes": 144336,
+      "sha256": "8e55b7da530e868486ffec745bd5b7361d6b769a743b259d91fab58ab8871e1e",
+      "source": "exec-0a4615e8-2f75-4b51-83a4-1d7bc5fdfdb7.png"
+    },
+    {
+      "file": "assets/generated/learning56/patchwork-scene.webp",
+      "bytes": 161198,
+      "sha256": "dd70a5a969a8e911328a6e2bb96df3f83074394274a393d765e26ee0a39ee256",
+      "source": "exec-96d0b19b-e35f-49f1-bbe7-996b3c9c499f.png"
+    },
+    {
+      "file": "assets/generated/learning56/pen.webp",
+      "bytes": 17414,
+      "sha256": "abe413622960c53530d81c88425a953ba481199d5ee524612fc5cda9f33a183b",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/pig.webp",
+      "bytes": 28504,
+      "sha256": "18b1fcebdbcbc0c7e124c4eb30fb21efd3f6e26691a9b335525845d3c7aa2c14",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/pip-preview.webp",
+      "bytes": 188182,
+      "sha256": "1dd874aba050e90eeadde7ae3d65540af2b641221f2af94ade33b12e5e98e832",
+      "source": "exec-0e3c259f-e019-42aa-a9d9-b85aaee79fea.png"
+    },
+    {
+      "file": "assets/generated/learning56/pip-scene-v2.webp",
+      "bytes": 185094,
+      "sha256": "8f7d0a3321a2495d0759301480eb1495a2725ac73c5d414595bff4e0f26cf506",
+      "source": "exec-0f435184-7f8b-40cf-ae69-9a7a70964dfb.png"
+    },
+    {
+      "file": "assets/generated/learning56/pip-scene.webp",
+      "bytes": 194282,
+      "sha256": "1f24278d0da40c8cf854acd267185ff1be3437831176b24222662b68c1f6017c",
+      "source": "exec-417807ee-0629-4e4d-80ed-16bb970106c8.png"
+    },
+    {
+      "file": "assets/generated/learning56/play-props.webp",
+      "bytes": 260566,
+      "sha256": "a6f0582f3369186b18d4fc65e85e87d2e6626c4201ae68fd2435d3363c693f7c",
+      "source": "exec-82f18665-6a73-49e1-a974-d114891c5b3c.png"
+    },
+    {
+      "file": "assets/generated/learning56/rhymes-preview.webp",
+      "bytes": 182584,
+      "sha256": "3988eeab67d0aa4654bf57103b1a173228b8ddc05c017fa856ffe68c130e53d0",
+      "source": "exec-8848d36b-0957-48d6-9580-d3673e88a3c9.png"
+    },
+    {
+      "file": "assets/generated/learning56/rhymes-scene.webp",
+      "bytes": 212890,
+      "sha256": "341f23082f7aefdfc58b64c967d4e1cef530feb03fb612635f30748414279437",
+      "source": "exec-aeaa8107-38c3-406e-a93e-407c3a833e1e.png"
+    },
+    {
+      "file": "assets/generated/learning56/rolling-preview.webp",
+      "bytes": 200226,
+      "sha256": "5dcb8ef0a3cc66725a4fa2183842761c3cabeee94213aef7cc3c49ae1a84c7d6",
+      "source": "exec-5dc45a8e-2b1e-4945-849e-1fb4e250c992.png"
+    },
+    {
+      "file": "assets/generated/learning56/rolling-scene.webp",
+      "bytes": 252992,
+      "sha256": "63514bdedaaeadffc8a470bb88b53a8b02fe5aa0ae046b2a28a6641300604c1d",
+      "source": "exec-143d740f-3813-466e-be0a-ec32d3162d77.png"
+    },
+    {
+      "file": "assets/generated/learning56/seedling.webp",
+      "bytes": 18394,
+      "sha256": "9dfc02f25807e8e8de4aba0e90a0a706516285922a66e9a81a11f75c82868ac9",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/shares-preview.webp",
+      "bytes": 199490,
+      "sha256": "8ed73b3f42cf5ec2e7edd7ec6dfdfae3ec979c6a50d1d6a6874a86fd01e7c300",
+      "source": "exec-cd90d4af-32f0-4215-a960-f2a1468915fa.png"
+    },
+    {
+      "file": "assets/generated/learning56/shares-scene.webp",
+      "bytes": 295696,
+      "sha256": "e852ccbe808276119b817e94c079797c31a8344ada4565250f8f9350fe4a20df",
+      "source": "exec-e875a739-d704-4749-981a-4bf571f0d173.png"
+    },
+    {
+      "file": "assets/generated/learning56/sounds-preview.webp",
+      "bytes": 162540,
+      "sha256": "9fd3df77575adf4a3fb73db57c311aa0cb08c8b1c5972c2c04cabab61ceaa673",
+      "source": "exec-b1f037b8-fc66-42ea-b259-2c9f4caf1c35.png"
+    },
+    {
+      "file": "assets/generated/learning56/sounds-scene.webp",
+      "bytes": 247434,
+      "sha256": "db70000de69d5f06954a84f3ee27c84937eee5d34565a9d70b6054168a476c86",
+      "source": "exec-c3344d59-5f95-4b8f-b3c5-49fb797bc278.png"
+    },
+    {
+      "file": "assets/generated/learning56/sun.webp",
+      "bytes": 26384,
+      "sha256": "1a8794e0e61c4215bf26d6e2153f71eddb8741e31b4c47099b3d226ee44d88b9",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/tree.webp",
+      "bytes": 38380,
+      "sha256": "3a7f5126e20fefa33027ef80f62929932f177079f18bc921eabf5471ef1ce8f3",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/trolley.webp",
+      "bytes": 29338,
+      "sha256": "8df9bd486bf4ef277127efeb8aed960cae6d3b9512c21614b06fe4a16b71505c",
+      "source": "atlas crop; see frame manifest"
+    },
+    {
+      "file": "assets/generated/learning56/water-preview.webp",
+      "bytes": 211500,
+      "sha256": "f3763873726cc640405c54b64a696e3809cbb76933cd5e48b84dd92f3a33da31",
+      "source": "exec-1832e2dd-6ca7-4bf7-a376-15a9118efc74.png"
+    },
+    {
+      "file": "assets/generated/learning56/water-scene.webp",
+      "bytes": 216982,
+      "sha256": "eea6ef3291e639abfba26ee37934292ce1149ecec1bcb2d63fd51e4549025dea",
+      "source": "exec-98eeb4e8-78fd-4aab-86b0-8cfb784b7e28.png"
+    },
+    {
+      "file": "assets/generated/learning56/word-pictures.webp",
+      "bytes": 428558,
+      "sha256": "acd67540bd75eaa99eb7ccf637640ed4c7770ce242ea82ffd8283c6a8c37d25b",
+      "source": "exec-e2d564c3-e328-4561-9790-07a4daab30d4.png"
+    }
+  ]
+}

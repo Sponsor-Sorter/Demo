@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-rhys-03.mp3",
+  "sourceSha256": "fafff998dabbd90c296aac3838d6d063b058e8cc2965851ea59faba1e45dc3ba",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-rhys-rhyme-cat",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Cat! Can you find two pictures whose names rhyme with cat?",
+      "start": 0,
+      "end": 4.01512,
+      "bytes": 48946,
+      "sha256": "31650dd18d8a1b1e7a8c8ededff57aec9ca33833ce28de0158d6522072033dd7"
+    },
+    {
+      "id": "learn56-rhys-rhyme-dog",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Dog! Can you find two pictures whose names rhyme with dog?",
+      "start": 6.09415,
+      "end": 10.799999999999999,
+      "bytes": 57409,
+      "sha256": "0f368ddc3100f20ebef4cf699f5f01a0c02b3d440e64dc3123a42063681483a1"
+    },
+    {
+      "id": "learn56-rhys-rhyme-bee",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Bee! Can you find two pictures whose names rhyme with bee?",
+      "start": 12.817,
+      "end": 17.1645,
+      "bytes": 53021,
+      "sha256": "1d016c1943e51b97d53cef151caf9a824252a64611fa0d08e28873b475e970de"
+    },
+    {
+      "id": "learn56-rhys-rhyme-goat",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Goat! Can you find two pictures whose names rhyme with goat?",
+      "start": 19.2369,
+      "end": null,
+      "bytes": 54588,
+      "sha256": "d2d8bec56fae5ca4bc1f57d3ebf6246b27cddba8a2d07323b67b3e45ba85bb15"
+    }
+  ]
+}

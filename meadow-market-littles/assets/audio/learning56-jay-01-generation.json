@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-01.mp3",
+  "sourceSha256": "1de081c50f21f701a0c122bf82638015c762661dce9c4da41b27521b49ad48e1",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-orchard-intro",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's do some apple maths! Move the apples into the basket, or share some with our bunny. Then put the right number on the basket. We can count together!",
+      "start": 0,
+      "end": 9.22912,
+      "bytes": 111640,
+      "sha256": "2d6e1ea3af0a5158b4c9ff2795d4b1d0729a4e9768761103bc9863361e6c1956"
+    },
+    {
+      "id": "learn56-jay-orchard-done",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "You added apples and took some away! What a lovely harvest helper. Great job!",
+      "start": 11.2733,
+      "end": 17.916800000000002,
+      "bytes": 80606,
+      "sha256": "ff6f7a5cb4eb56459e1deef9aba7bbaeefebb1ee12f5d75a2400fc9e151ce856"
+    },
+    {
+      "id": "learn56-jay-orchard-add",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Move the apples into the basket. How many apples will there be altogether?",
+      "start": 19.9362,
+      "end": 24.3545,
+      "bytes": 53961,
+      "sha256": "a457e3da9b9bee9dc84698396e2ffc9346839eaba5c0eafb3727026850d662af"
+    },
+    {
+      "id": "learn56-jay-orchard-take",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Share these apples with our bunny. How many apples are left in the basket?",
+      "start": 26.4606,
+      "end": null,
+      "bytes": 55529,
+      "sha256": "f37eea1106d31e5a95c75dd3df174f2ad400a56c24a5d523d9e76528406ce43d"
+    }
+  ]
+}

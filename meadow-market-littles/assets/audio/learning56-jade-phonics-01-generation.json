@@ -1,0 +1,83 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Flash v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": null,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jade-phonics-01.mp3",
+  "sourceSha256": "e4e5f53f7a1949f7f1615e1ab0a865db477451c44b3b1990d6831dd84ba0b79e",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jade-blend-cat",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "cat",
+      "ipa": [
+        "k",
+        "æ",
+        "t"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"k\">c</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"æ\">a</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"t\">t</phoneme>. Cat! Can you build cat?",
+      "start": 0,
+      "end": 5.11451,
+      "bytes": 62111,
+      "sha256": "01548412bd217f9dda81b61d08d602347511cc4473fd4149b96d318c408e45f6"
+    },
+    {
+      "id": "learn56-jade-blend-dog",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "dog",
+      "ipa": [
+        "d",
+        "ɒ",
+        "ɡ"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɒ\">o</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Dog! Can you build dog?",
+      "start": 6.9339900000000005,
+      "end": 11.974699999999999,
+      "bytes": 61171,
+      "sha256": "b2254b9b45fe4f9d5c9f6d544bbda86dad0ee24e503f7eafec6813ece327f0e9"
+    },
+    {
+      "id": "learn56-jade-blend-pig",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "pig",
+      "ipa": [
+        "p",
+        "ɪ",
+        "ɡ"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɪ\">i</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Pig! Can you build pig?",
+      "start": 13.7787,
+      "end": 19.9186,
+      "bytes": 74650,
+      "sha256": "ac608dda94f4c7040386a555cc12698a1ac5a1870198bef33efd8559d87744fe"
+    },
+    {
+      "id": "learn56-jade-blend-hen",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "word": "hen",
+      "ipa": [
+        "h",
+        "ɛ",
+        "n"
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"h\">h</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Hen! Can you build hen?",
+      "start": 21.9468,
+      "end": null,
+      "bytes": 63365,
+      "sha256": "03c01f12a3896f7f58d72ade3737a87c8add24c528b83c558cf79c8a8a7874bc"
+    }
+  ]
+}

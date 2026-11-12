@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-rhys-02.mp3",
+  "sourceSha256": "4012905357685f2ea804d058c8268535354e496c6ae4063520dd74dd85f14eeb",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-rhys-coding-intro",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Our tractor needs a little plan! Put the arrow cards in order, then press Drive. Watch it follow your arrows. You can change the plan and try again!",
+      "start": 0,
+      "end": 10.225,
+      "bytes": 123551,
+      "sha256": "4a36c264dcab01c7c10146ca34829ae8f9352e0f35f9538d6a9ac8b789550016"
+    },
+    {
+      "id": "learn56-rhys-coding-done",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Your tractor followed every plan and reached the harvest! Well done, little planner!",
+      "start": 12.0632,
+      "end": 17.8735,
+      "bytes": 70575,
+      "sha256": "ec472f2c940053dd8f8b3760cfa1f67313e1b58b0f78a87da8ec7f1d520a1c8b"
+    },
+    {
+      "id": "learn56-rhys-rhymes-intro",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Let's build a rhyming bridge! Tap the pictures to hear their names. Move the pictures that rhyme onto the bridge, then watch our friend cross!",
+      "start": 19.725099999999998,
+      "end": 30.107100000000003,
+      "bytes": 125432,
+      "sha256": "c6a4e55c5439ed792cf61d6e206e13375db1e332d4cfc85127c6871649c12205"
+    },
+    {
+      "id": "learn56-rhys-rhymes-done",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "You found the rhyming pictures and helped our friends cross the river! What lovely listening!",
+      "start": 32.1805,
+      "end": null,
+      "bytes": 64933,
+      "sha256": "dce2f538281849b03da2697f6ef84a621fc7aacda588402a8a22b9eb58115eed"
+    }
+  ]
+}

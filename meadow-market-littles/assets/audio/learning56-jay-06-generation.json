@@ -1,0 +1,26 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-06.mp3",
+  "sourceSha256": "ab2527331dde3131b71abf8374b81a45c1987bab8a0a5694fc7477797939ee39",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-number-6",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Six.",
+      "start": 0,
+      "end": null,
+      "bytes": 10076,
+      "sha256": "a0cce885dbfa8dce3d36175d027960979ae341b3a61dad1968ac092a9716b2a5"
+    }
+  ]
+}
