@@ -57,11 +57,21 @@
    canonical=clone(save);canonical._cloudRevision=revision;canonicalHash=fingerprint(canonical);a.apply(next,revision,account);a.onResult?.(summary);a.render();
   }
   const transport=window.meadowFarmCommands.create({owner:a.owner,revision:a.revision,storage:a.storage,uuid:a.uuid,send:a.send,apply,onConflict:data=>{if(background)quietConflict=data;else a.onConflict?.(data);}});
+  // Retry the durable request, never regenerate a worker action or its revision.
+  // Paid/manual actions, changed screens/maps, access denials and offline views
+  // retain their existing explicit recovery paths.
+  async function recoverBackground(error,screen,map){
+   const allowed=e=>e.code==='ACTION_UNCERTAIN'&&background&&same()&&a.state().active===map&&(!a.screen||a.screen()===screen)&&
+    (typeof document==='undefined'||!document.hidden)&&(typeof navigator==='undefined'||navigator.onLine!==false)&&!window.meadowControl?.blocked();
+   const wait=a.wait||(ms=>new Promise(resolve=>setTimeout(resolve,ms)));let last=error;
+   for(const delay of [250,750]){if(!allowed(last))throw last;await wait(delay);if(!allowed(last))throw last;try{return await transport.retry({timeoutMs:3000})}catch(e){last=e}}
+   throw last;
+  }
   async function execute(commands,options={}){
    if(!same())throw Object.assign(Error('Farm account changed.'),{code:'ACCOUNT_CHANGED'});
    if(busy)throw Object.assign(Error('Wait for your saved farm action.'),{code:'ACTION_BUSY'});
-   busy=true;background=options.quiet===true&&commands.every(c=>['workers.tick','workers.return','shop.check'].includes(c.type));quietConflict=null;a.pending?.(true);const screen=a.screen?.();
-   try{const reply=await transport.run(commands);if(same()){
+   busy=true;background=options.quiet===true&&commands.every(c=>['workers.tick','workers.return','shop.check'].includes(c.type));quietConflict=null;a.pending?.(true);const screen=a.screen?.(),map=a.state().active;
+   try{let reply;try{reply=await transport.run(commands)}catch(error){reply=await recoverBackground(error,screen,map)}if(same()){
     if(options.after&&(!a.screen||a.screen()===screen))options.after(reply);
     if(!options.quiet&&reply?.summary?.messages?.length)a.notify(reply.summary.messages.at(-1));
     }return reply;}catch(error){
