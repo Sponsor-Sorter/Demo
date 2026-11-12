@@ -1,4 +1,5 @@
 import { PACKAGE, PRODUCT } from './rules.ts';
+import { reportProviderFailure } from './provider-diagnostics.ts';
 const bytes = (s: string) => new TextEncoder().encode(s);
 const b64 = (b: Uint8Array) => btoa(String.fromCharCode(...b)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 export const sha = async (s: string) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes(s)))).map(x => x.toString(16).padStart(2, '0')).join('');
@@ -23,7 +24,7 @@ export async function subscription(token: string) {
   if (token.length < 10 || token.length > 4096) throw new Error('INVALID_PURCHASE');
   const url = `https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${PACKAGE}/purchases/subscriptionsv2/tokens/${encodeURIComponent(token)}`;
   const response = await fetch(url, { signal: AbortSignal.timeout(12000), headers: { Authorization: 'Bearer ' + await accessToken() } });
-  if (!response.ok) throw new Error('PURCHASE_NOT_VERIFIED');
+  if (!response.ok) { await reportProviderFailure(response, 'lookup'); throw new Error('PURCHASE_NOT_VERIFIED'); }
   return response.json();
 }
 export async function acknowledge(token: string, resubscribeAccount?: string) {
@@ -32,7 +33,7 @@ export async function acknowledge(token: string, resubscribeAccount?: string) {
   // account binding in Google's current identifiers for later renewals and restores.
   const body = resubscribeAccount ? { externalAccountIds: { obfuscatedAccountId: resubscribeAccount } } : {};
   const response = await fetch(url, { method: 'POST', signal: AbortSignal.timeout(12000), headers: { Authorization: 'Bearer ' + await accessToken(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  if (!response.ok) throw new Error('ACKNOWLEDGEMENT_PENDING');
+  if (!response.ok) { await reportProviderFailure(response, 'acknowledge'); throw new Error('ACKNOWLEDGEMENT_PENDING'); }
 }
 export async function signProof(claims: Record<string, unknown>) {
   const raw = Deno.env.get('LITTLES_PLUS_SIGNING_JWK');
