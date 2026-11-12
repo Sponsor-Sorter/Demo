@@ -4,7 +4,7 @@
  const plugin=name=>native&&window.Capacitor?.isPluginAvailable?.(name)?window.Capacitor.Plugins?.[name]||window.Capacitor.registerPlugin?.(name):null;
  const billing=plugin('MeadowStore'),ads=plugin('MeadowAds');
  let api,configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]},prices=new Map(),owner='',loading=null,busy=false,refreshVersion=0;
- const known=new Set(['starter_pack','pocket_gems','gem_chest','builders_pack','reward_tickets','pantry_pack','premium']);
+ const known=new Set(['starter_pack','pocket_gems','gem_chest','builders_pack','reward_tickets','pantry_pack','premium','welcome_garden','coop_charm','market_makeover']);
  async function refresh(withPrices=true){
   if(!api?.ready()||(typeof navigator!=='undefined'&&navigator.onLine===false))throw Error('Connect online for purchases and ad rewards. You can keep exploring your farm.');
   const who=api.user()?.id;
@@ -20,7 +20,7 @@
   loading=request;
   try{await request.promise}finally{if(loading===request)loading=null}
  }
- function label(sku){if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(configuration.farm_authoritative===false)return 'Farm review required';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):'Currently unavailable';}
+ function label(sku){if(owned(sku))return 'Owned';if(configuration.test_access)return 'Free test purchase';if(configuration.purchase_review_required)return 'Purchases need a support review';if(configuration.farm_authoritative===false)return 'Farm review required';if(!billing)return 'Available in Google Play app';if(!configuration.payments_enabled)return 'Store opening soon';const product=configuration.products.find(p=>p.sku===sku),price=prices.get(product?.product_id)?.price;return price?(configuration.provider_test?'Google test · '+price:price):['welcome_garden','coop_charm','market_makeover'].includes(sku)?'Unavailable · check Play updates':'Currently unavailable';}
  function requirePurchaseAccount(){if(configuration.purchase_account_ready!==true)throw Error('Protect your farm with a username and password before buying or restoring purchases. Open Settings → Account & switch farm.');}
  async function verificationError(result){
   let body=result.data;
@@ -47,7 +47,7 @@
  async function purchase(sku){
   if(!known.has(sku)||busy)return;busy=true;const who=api.user()?.id;
   try{
-   await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');
+   await refresh();if(who!==api.user()?.id)throw Error('Account changed. Reopen the shop.');if(owned(sku))throw Error('You already own this keepsake.');
    if(configuration.test_access)return {test:true};
    if(configuration.farm_authoritative!==true)throw Error('Purchases for this earlier test farm need a support review. Your farm is safe; contact Meadow Markets support in Settings.');
    if(!billing||!configuration.payments_enabled)throw Error(label(sku));
@@ -111,5 +111,7 @@
   const section=root.querySelector('.install-game-card .task-main small');if(section)section.textContent='Google Play installs and updates this version. Your cloud farm stays on your account.';
  }
  function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().then(recover).catch(()=>{}));if(billing){billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));document.addEventListener('visibilitychange',()=>{if(!document.hidden)recover()});window.addEventListener('online',recover);}}
- window.meadowStore={attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
+ const owned=sku=>(configuration.owned_products||[]).includes(sku);
+ const canPurchase=sku=>!owned(sku)&&(configuration.test_access===true||!!billing&&configuration.payments_enabled===true&&configuration.products.some(p=>p.sku===sku&&prices.has(p.product_id)));
+ window.meadowStore={offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();

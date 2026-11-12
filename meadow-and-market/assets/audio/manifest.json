@@ -1061,6 +1061,34 @@
       "kind": "voice",
       "provider": "ElevenLabs",
       "bytes": 210383
+    },
+    {
+      "id": "jade-willowbrook238",
+      "kind": "voice",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "bytes": 300035
+    },
+    {
+      "id": "rhys-homestead238",
+      "kind": "voice",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "bytes": 245805
+    },
+    {
+      "id": "jay-animal-home238",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 269001
+    },
+    {
+      "id": "jay-animal-parade238",
+      "kind": "voice",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "bytes": 184365
     }
   ]
 }

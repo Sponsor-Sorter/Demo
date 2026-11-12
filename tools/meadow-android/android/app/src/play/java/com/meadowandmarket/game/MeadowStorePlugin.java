@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MeadowStorePlugin extends MeadowPlayPlugin implements PurchasesUpdatedListener {
     private BillingClient billing;
     private final Map<String,ProductDetails> catalog=new HashMap<>();
-    private final Set<String> allowed=new HashSet<>(Arrays.asList("mm_pocket_gems","mm_gem_chest","mm_starter_pack","mm_builders_pack","mm_reward_tickets","mm_pantry_pack","mm_premium"));
+    private final Set<String> allowed=new HashSet<>(Arrays.asList("mm_pocket_gems","mm_gem_chest","mm_starter_pack","mm_builders_pack","mm_reward_tickets","mm_pantry_pack","mm_premium","mm_welcome_garden","mm_coop_charm","mm_market_makeover"));
     private PluginCall purchaseCall;
     private void connect(PluginCall call,Runnable action){
         trustedPage(call, () -> {

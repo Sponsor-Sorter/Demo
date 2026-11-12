@@ -2,13 +2,14 @@ import {googlePurchase,settle,sha} from './google.ts';
 import {validatePurchase} from './rules.ts';
 const base=Deno.env.get('SUPABASE_URL')!,secret=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const origins=new Set(['https://sponsorsorter.com','https://localhost']);
+const keepsakes=new Set(['mm_welcome_garden','mm_coop_charm','mm_market_makeover']);
 const consumables=new Set(['mm_pocket_gems','mm_gem_chest','mm_starter_pack','mm_builders_pack','mm_reward_tickets','mm_pantry_pack']);
 async function db(path:string,body?:unknown,bearer=secret){
  const r=await fetch(base+path,{method:body===undefined?'GET':'POST',signal:AbortSignal.timeout(12000),headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
  if(!r.ok)throw Error('STORE_DELIVERY_UNAVAILABLE');return r.json();
 }
 export async function verify(user:string,product:string,purchaseToken:string,testOnly=false){
- if(!consumables.has(product)&&product!=='mm_premium')throw Error('UNKNOWN_PRODUCT');
+ if(!consumables.has(product)&&product!=='mm_premium'&&!keepsakes.has(product))throw Error('UNKNOWN_PRODUCT');
  if(purchaseToken.length<10||purchaseToken.length>4096)throw Error('INVALID_PURCHASE');
  const purchase=await googlePurchase(product,purchaseToken);
  const checked=validatePurchase(purchase,await sha('meadow-markets:'+user),testOnly);

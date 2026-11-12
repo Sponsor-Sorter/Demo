@@ -1,5 +1,13 @@
 # Meadow Markets launch status
 
+## 12 November 2026 — native 15 Internal testing accepted
+
+Play 1.7.5/code 15 is Active / Available to internal testers. The Samsung updated from 14 in place, retained its farm and passed focused touch/build scrolling, mission receipt, Animals, portrait/landscape, Play-link and offline-recovery checks on web 237. Browser Emporium/Settings checks also passed after the helper recovered. Original device settings were restored and phone ownership handed back to Littles. The current request did not promote Production. [Acceptance, evidence and limits](MEADOW_NATIVE175_ACCEPTANCE237.md).
+
+## 12 November 2026 — performance237 live; native15 awaiting physical acceptance
+
+Web237 ships small receipt status and bounded retries of the exact saved background-worker request. Full receipt/purchase history is retained. Real authenticated rollback-only server fixtures passed with zero residue; all eleven installed control236 checks remain accepted. PR CI43132627313, main CI43133449822 and Pages43133449116 passed. Seven public runtime files match merged456bf969. Interactive browser acceptance is blocked by the session's helper startup error; native14 preflight opened the preserved farm/Emporium, but the Samsung returned to active Littles testing. Signed Play1.7.5/code15 is ready for Internal upload, not yet installed or publicly released. [Scope, measurements, evidence and remaining checks](MEADOW_PERFORMANCE237.md).
+
 ## 11 November 2026 — mobile word find 233 live
 
 The word grid now fills the space below compact controls. Final public browser measurements: 352×644 on a 360×740 phone viewport and 732×304 on 740×360 landscape; selection and progress survive rotation. The full local twenty-word round verified its reward, and the public pointer selection/reopen succeeded. Game/Android CI 42919603468 passed; fresh Pages 42923711591 deployed `f2d107c` after two cancelled hosting attempts. All six public runtime files match tested `ec716ca`, and Settings reports Game build 233. Public native Play 1.7.4/code 14 remains unchanged. [Acceptance, hosting recovery and limits](MEADOW_WORD_FIND233.md).

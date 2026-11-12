@@ -66,7 +66,8 @@
   function journal(s){s.homestead ||= {stats:{},claimed:[]};s.homestead.stats ||= {};s.homestead.claimed ||= [];return s.homestead}
   function event(id,count=1){if(!api)return;const j=journal(api.state());j.stats[id]=(j.stats[id]||0)+Math.max(0,Number(count)||0)}
   function progress(s,g){return Math.max(0,Math.min(g.target,Number(g.measure(s))||0))}
-  function claim(s,id){if(verified(s,'story.claim',id,{}))return null;const goal=chapters.flatMap(c=>c.goals).find(g=>g.id===id),j=journal(s);if(!goal||j.claimed.includes(id)||progress(s,goal)<goal.target)return null;j.claimed.push(id);return goal}
+  function eligible(s,g){const ordered=chapters.filter(c=>c.campaign).flatMap(c=>c.goals),at=ordered.findIndex(q=>q.id===g.id);return at<0||ordered.slice(0,at).every(q=>journal(s).claimed.includes(q.id))}
+  function claim(s,id){if(verified(s,'story.claim',id,{}))return null;const goal=chapters.flatMap(c=>c.goals).find(g=>g.id===id),j=journal(s);if(!goal||j.claimed.includes(id)||!eligible(s,goal)||progress(s,goal)<goal.target)return null;j.claimed.push(id);return goal}
   const openings=[
     'A few beds and a happy flock can become a home. Farmer Jade helps you build a steady harvest before the village needs more.',
     'The family has more than fresh crops to share. Farmer Jay turns your harvest into food, honey and a welcoming farm shop.',
@@ -95,12 +96,26 @@
     ['jay-shop-plan130','Farmer Jay: shelf plans'],
     ['jay-artisan-mastery146','Farmer Jay: artisan mastery']
   ];
+  const campaign=window.meadowCampaign?.chapters||[];
+  if(campaign.length===2){
+    // Move established opening goals into the campaign without changing their
+    // IDs, measurements or rewards. Previously claimed rewards stay claimed.
+    const original=chapters.shift();
+    campaign[0].goals[0]={...original.goals.find(g=>g.id==='beds'),route:'farm',lesson:'till'};
+    campaign[0].goals[3]={...original.goals.find(g=>g.id==='baskets'),route:'farm',lesson:'harvest'};
+    campaign[1].goals[1]={...original.goals.find(g=>g.id==='flock'),route:'animals',lesson:'home'};
+    openings.shift();chapterGuides.shift();
+  }
+  chapters.unshift(...campaign);
+  openings.unshift(...campaign.map(c=>c.opening));
+  chapterGuides.unshift(...campaign.map(c=>[c.voice,'Farmer '+c.person[0].toUpperCase()+c.person.slice(1)+': our story']));
   let selectedChapter=null;
   function nextChapter(s){const claimed=journal(s).claimed;return Math.max(0,chapters.findIndex(c=>c.goals.some(g=>!claimed.includes(g.id))))}
   function goalRoute(id){if(['beds','kitchen','flock','grand-field','grove','alpaca-friends','grand-barn-family'].includes(id))return ['build','Open Build'];if(id==='visit')return ['friends','Find farm friends'];if(id==='parcels')return ['places','Choose a place'];if(['market-pantry','market-handmade'].includes(id))return ['market','Go to Farmers Market'];if(['customers','country-shop','shop-shelf-plan','shop-helper-supply'].includes(id))return ['shop','Open my farm shop'];if(id==='vendors')return ['requests','See market requests'];if(id.startsWith('animal-')||id.startsWith('family-'))return ['animals','Care for my animals'];return ['farm','Back to my farm']}
   function show(index){
     const s=api.state(),j=journal(s),total=chapters.reduce((n,c)=>n+c.goals.length,0);
     selectedChapter=Number.isInteger(index)?Math.max(0,Math.min(chapters.length-1,index)):selectedChapter??nextChapter(s);
+    if(chapters[selectedChapter].campaign&&window.meadowCampaignUI)return window.meadowCampaignUI.show(selectedChapter,{api,chapters,progress,eligible,claim,next:show});
     const c=chapters[selectedChapter],completed=c.goals.filter(g=>j.claimed.includes(g.id)).length,next=c.goals.find(g=>!j.claimed.includes(g.id)),route=next?(progress(s,next)>=next.target?['claim','Collect reward']:goalRoute(next.id)):null;
     const card=g=>{const n=progress(s,g),done=j.claimed.includes(g.id);return '<article class="story-goal '+(done?'story-complete':'')+'"><div><h3>'+g.title+'</h3><p>'+g.text+'</p><small>'+n+' / '+g.target+' · '+g.reward+' gold · '+g.xp+' XP</small><progress value="'+n+'" max="'+g.target+'" aria-label="'+g.title+' progress"></progress></div><button class="small-button story-claim" data-goal="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Collected':'Collect')+'</button></article>'};
     api.modal('<section class="story-reader"><header class="story-toolbar"><div><small class="eyebrow">YOUR HOMESTEAD STORY · '+j.claimed.length+'/'+total+'</small><h2>Growing together</h2></div><button class="small-button" id="story-daily">Daily jobs</button><button class="close-button" data-close="modal-dialog" aria-label="Return to farm">×</button><label class="story-selector">Chapter<select id="story-chapter-select">'+chapters.map((ch,i)=>'<option value="'+i+'" '+(i===selectedChapter?'selected':'')+'>'+ (i+1)+'. '+ch.name+' · '+ch.goals.filter(g=>j.claimed.includes(g.id)).length+'/'+ch.goals.length+'</option>').join('')+'</select></label></header><main class="story-pages"><div class="story-narrative"><img src="assets/generated/guides/'+c.person+'.webp" alt="Farmer '+c.person[0].toUpperCase()+c.person.slice(1)+'"><div><small>CHAPTER '+(selectedChapter+1)+' · '+completed+'/'+c.goals.length+' COLLECTED</small><h3>'+c.name+'</h3><p>'+openings[selectedChapter]+'</p><button class="small-button" id="story-listen">🔊 '+(c.person==='jade'?'Jade: growing tips':c.person==='rhys'?'Rhys: building tips':'Jay: market tips')+'</button></div></div>'+(next?'<div class="story-next"><div><small>YOUR NEXT STEP</small><strong>'+next.title+'</strong></div><button class="primary-button" id="story-go">'+route[1]+'</button></div>':'<div class="story-next"><strong>Chapter complete. Your meadow is growing!</strong>'+(selectedChapter<chapters.length-1?'<button class="primary-button" id="story-next-chapter">Next chapter →</button>':'')+'</div>')+c.goals.filter(g=>!j.claimed.includes(g.id)).map(card).join('')+(completed?'<details class="story-collected"><summary>'+completed+' collected '+(completed===1?'goal':'goals')+'</summary>'+c.goals.filter(g=>j.claimed.includes(g.id)).map(card).join('')+'</details>':'')+'</main></section>');
@@ -112,5 +127,5 @@
     document.querySelector('#story-next-chapter')?.addEventListener('click',()=>show(selectedChapter+1));
     document.querySelectorAll('.story-claim').forEach(b=>b.onclick=()=>{const g=claim(api.state(),b.dataset.goal);if(!g)return;api.earn(g.reward);api.xp(g.xp);api.save();window.meadowAudio?.play('reward');show(selectedChapter)});
   }
-  window.meadowStory={chapters,chapterGuides,progress,claim,event,show,attach(adapter){api=adapter;journal(api.state())}};
+  window.meadowStory={chapters,chapterGuides,progress,eligible,claim,event,show,attach(adapter){api=adapter;journal(api.state())}};
 })();
