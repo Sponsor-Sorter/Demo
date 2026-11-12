@@ -1,0 +1,39 @@
+{
+  "release": 55,
+  "activity": "Harvest Slice",
+  "date": "2026-11-12",
+  "device": "Samsung SM-S908E, actual USB-connected phone",
+  "installedApp": {"versionCode": 14, "versionName": "1.0.1", "installer": "com.android.vending"},
+  "method": "Normal ADB touchscreen swipes and taps derived from current visible accessibility labels. No game-state, reward or entitlement injection; no reinstall or save reset.",
+  "phoneChecksBeforePublication": {
+    "fullPortraitRound": {"goal": 16, "result": "16/16 and normal three-star win", "swipes": 18, "durationsMs": [180, 300, 500, 900]},
+    "stationaryGesture": "A 1200ms stationary touchscreen gesture left the score at 0/16",
+    "freeMisses": "Fresh produce continued after leaving multiple waves untouched, with no lost lives or failure",
+    "pause": "Fruit controls disabled; positions and 0/16 score remained identical across a swipe while paused",
+    "replay": "Another harvest starts a clean 0/16 round",
+    "rotation": "Paused portrait round rotated to landscape, retained 0/16, resumed with correctly positioned fruit",
+    "earlyExit": "Leaving the replay without completing it retained the normal 93-star save and Level 3",
+    "initialLandscapeSessions": "12- and 14-item wins were observed, but extra input was present between test actions; these are not claimed as isolated automated rounds"
+  },
+  "graphicsSample": {
+    "source": "Android dumpsys gfxinfo, reset before the isolated portrait round",
+    "renderedFrames": 4491,
+    "missedDeadlineFrames": 6,
+    "missedDeadlinePercent": 0.13,
+    "medianFrameMs": 10,
+    "legacyJankPercent": 0.87,
+    "limit": "Native app frame statistics from this device/run; not a guarantee of every WebView canvas frame or performance on all devices"
+  },
+  "bugsFixed": [
+    "Shared fa-win-card flex layout defeated Harvest Slice's compact landscape layout, clipping Farmer Jay above the screen. An activity-scoped display:block restores the intended floated layout without changing other games.",
+    "A swipe beginning on the wooden bench was ignored because listeners covered only the fruit field. Actual phone bench-to-field zigzag remained at2/16, while a field-start gesture had cut two. Listen on the scene, capture the primary finger, keep field-relative coordinates and exclude header/overlay controls; prevent browser panning only while the game is playing."
+  ],
+  "browserRegression": {
+    "landscape": {"viewport": "749x360", "completedRound": "12/12", "winCardTop": 44.25, "winCardBottom": 315.75, "farmerImageTop": 60.25, "lastButtonBottom": 299.75},
+    "smallPortrait": {"viewport": "320x568", "winCardTop": 63.359375, "winCardBottom": 504.6328125, "lastButtonBottom": 483.59375}
+  },
+  "regression": "Complete node scripts/check-littles.cjs passed before the subsequent scene-input fix, including80 Harvest Slice and800 bee physics rounds. After the input fix,80 physics rounds and the actual-view bench-to-field, excluded controls, primary pointer, cancel/lost-capture cleanup, pause/resume/final-lift and close cleanup tests passed. Complete final-head CI is required before merging.",
+  "unchanged": "Physics, artwork, farmer audio, control consumer53, billing, grants and native package are byte unchanged. Activity input listeners, active-gesture touch action, result layout and content cache/release versions change.",
+  "postPublicationPhoneRetest": "To be recorded with the public-byte receipt and final physical landscape win screenshot in the external QA evidence directory after hosting deployment.",
+  "evidenceDirectory": "D:/Chat Gpt/workspaces/littles-harvest-phone58"
+}
