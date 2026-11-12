@@ -18,6 +18,8 @@ Published 240 through PR16 / `adfc61dc17056900178074ceec4a9c45ffa1d5d3`. Main CI
 
 All three Google product descriptions are saved with their proper bonuses,20gems and three25%/fifteen-minute boosters. Production→Releases explicitly confirmed1.7.6/code16 Available on Google Play, released12November. The existing binary already supports these products.
 
-Touch follow-up241 preserves the pack panel's scroll, expanded decoration details and sign draft through redraws. Local browser confirmed scroll308→308 and disclosure retention across preview redraw. Gateway53 contains the matching build fingerprint; all eight read-back files match and JWT remains enabled. Publication of this small UI follow-up is recorded in the final acceptance receipt. The Samsung was released to Littles for its separate QA, with original rotation settings1/0 retained.
+Touch follow-up 241 preserves the pack panel's scroll, expanded decoration details and sign draft through redraws. Local browser confirmed scroll 308→308 and disclosure retention across preview redraw. Main CI 43225247833 and Pages 43225247006 both passed. The Samsung was released to Littles for its separate QA, with original rotation settings 1/0 retained.
+
+Timing follow-up 242 carries already earned paid growth/egg time with a transferred field or chicken. The destination's bonus applies only after arrival, including when a coop carries its residents. Planting/collection starts a clean cycle. Two new command-level transfer/undo/collection cases pass, along with all existing pack, farm-action and worker cases (38 focused checks). Gateway 54 contains the matching rules, JWT enabled; final publication/read-back is recorded in the acceptance receipt. No native binary or product-price change is needed.
 
 No new artwork or narration is required: original approved pack art is reused, and these secondary controls use concise text plus the existing reward effect.

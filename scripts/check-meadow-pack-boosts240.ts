@@ -42,6 +42,29 @@ Deno.test('Chicken boost changes readiness without changing cow production or an
  s=run(s,'pack.activate','coop_charm').save;const {W}=rules(s),[hen,cow]=s.farms.willow.objects;
  assert(!W.meadowAnimals.ready(hen,now+23999),'Egg completed early');assert(W.meadowAnimals.ready(hen,now+24000),'25% production speed not applied');assert(!W.meadowAnimals.ready(cow,now+24000),'Cow incorrectly boosted');hen.hunger=0;assert(!W.meadowAnimals.ready(hen,now+30000),'Boost bypassed care');
 });
+Deno.test('Moving a growing field carries earned boost time without backdating the destination bonus',()=>{
+ let s=initial();s.farms.willow.objects=[{id:'field',type:'plot',crop:'carrot',plantedAt:now,stage:1,x:4,y:3}];
+ s=run(s,'pack.activate','welcome_garden').save;
+ s=run(s,'build.move','field',now+20000,'willow',{x:4,y:3,destination:'back'}).save;
+ let {W,R}=rules(s,now+30000),p=s.farms.back.objects.find((o:any)=>o.id==='field');
+ close(W.meadowCropGrowth.calculate(p,R.crops.carrot,s.farms.back.objects,now+30000).packMs,5000);
+ s.active='back';s=run(s,'pack.activate','welcome_garden',now+30000,'back').save;
+ ({W,R}=rules(s,now+40000));p=s.farms.back.objects.find((o:any)=>o.id==='field');
+ close(W.meadowCropGrowth.calculate(p,R.crops.carrot,s.farms.back.objects,now+40000).packMs,7500);
+ s=run(s,'build.move','field',now+40000,'back',{x:7,y:5}).save;s=run(s,'build.undo',undefined,now+40000,'back').save;
+ ({W,R}=rules(s,now+50000));p=s.farms.back.objects.find((o:any)=>o.id==='field');
+ close(W.meadowCropGrowth.calculate(p,R.crops.carrot,s.farms.back.objects,now+50000).packMs,10000);
+ W.meadowCropGrowth.start(p,'carrot',now+50000);close(W.meadowCropGrowth.calculate(p,R.crops.carrot,s.farms.back.objects,now+50000).packMs,0);
+});
+Deno.test('A chicken keeps earned production time through a farm move and starts a clean cycle after collection',()=>{
+ let s=initial();s.farms.willow.objects=[{id:'hen',type:'chicken',x:4,y:3,lastProductAt:now,lastCare:now,needsAt:now,hunger:95,clean:95,happy:95}];
+ s=run(s,'pack.activate','coop_charm').save;s=run(s,'build.move','hen',now+10000,'willow',{x:4,y:3,destination:'back'}).save;
+ let {W}=rules(s,now+25000),hen=s.farms.back.objects.find((o:any)=>o.id==='hen');
+ close(hen.packEggMs,2500);assert(!W.meadowAnimals.ready(hen,now+27499),'Moved hen completed early');assert(W.meadowAnimals.ready(hen,now+27500),'Moving discarded earned egg progress');
+ s.active='back';s=run(s,'animal.care','hen',now+27500,'back',{action:'collect'}).save;
+ ({W}=rules(s,now+50000));hen=s.farms.back.objects.find((o:any)=>o.id==='hen');
+ assert(!W.meadowAnimals.ready(hen,now+55000),'Collected egg reused the old cycle bonus');assert(W.meadowAnimals.ready(hen,now+57500),'New cycle did not finish normally');
+});
 Deno.test('Offline shop sales use each sale time, fractional carry and the correct map',()=>{
  let s=initial();for(const f of Object.values(s.farms) as any[]){f.objects=[{id:'stall',type:'stall',x:4,y:3}];f.shop={unlocked:true,stock:{carrot:50},lastSaleAt:now,tier:0,earned:0};}
  s=run(s,'pack.activate','market_makeover').save;

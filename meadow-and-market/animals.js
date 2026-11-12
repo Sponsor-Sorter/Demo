@@ -12,11 +12,12 @@
   const $=s=>document.querySelector(s),clamp=n=>Math.max(0,Math.min(100,n)),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function settle(a,now=Date.now()){
     if(window.meadowCommandUI?.required())return a;
+    if(a.type==='chicken'){const same=a.packEggCycle===a.lastProductAt,from=same?Math.max(a.lastProductAt||0,Number(a.packEggAt)||0):(a.lastProductAt||0);a.packEggMs=(same?Math.max(0,Number(a.packEggMs)||0):0)+(window.meadowPackBoosts?.extra('egg',a,from,now)||0);a.packEggAt=now;a.packEggCycle=a.lastProductAt;}
     const elapsed=Math.max(0,now-(a.needsAt||a.lastCare||now))/3600000*(api?.state&&window.meadowJourneyCore?window.meadowJourneyCore.needsFactor(api.state()):1)*(api?.state?window.meadowProgress?.needsFactor(api.state(),Object.keys(api.state().farms).find(id=>api.state().farms[id].objects.includes(a)))||1:1);
     for(const [key,rate] of [['hunger',5],['clean',2],['happy',3]])a[key]=clamp((Number.isFinite(a[key])?a[key]:80)-elapsed*rate);
     a.needsAt=now;return a;
   }
-  function productElapsed(a,now=Date.now()){return Math.max(0,now-(a.lastProductAt||0))+(a.type==='chicken'?(window.meadowPackBoosts?.extra('egg',a,a.lastProductAt||0,now)||0):0)}
+  function productElapsed(a,now=Date.now()){const same=a.packEggCycle===a.lastProductAt,from=same?Math.max(a.lastProductAt||0,Number(a.packEggAt)||0):(a.lastProductAt||0);return Math.max(0,now-(a.lastProductAt||0))+(a.type==='chicken'?((same?Math.max(0,Number(a.packEggMs)||0):0)+(window.meadowPackBoosts?.extra('egg',a,from,now)||0)):0)}
   function productRemaining(a,now=Date.now()){const work=Math.max(0,products[a.type].time-productElapsed(a,now));return a.type==='chicken'?(window.meadowPackBoosts?.remaining('egg',a,work,now)??work):work}
   function ready(a,now=Date.now()){return a.hunger>45&&a.clean>35&&a.happy>50&&productElapsed(a,now)>=products[a.type].time}
   function image(a){return window.meadowJourney?.breedImage(a.type,a.breedTier)||'assets/generated/'+(a.type==='chicken'?'hen':a.type)+'.webp'}
