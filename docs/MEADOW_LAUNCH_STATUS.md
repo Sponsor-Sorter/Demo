@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 13 November 2026 — native transfer tap follow-up 245
+
+244 is publicly live: all nine changed files match bfc03603; game/optimized Android CI43370293349 and Pages43370293663 passed. Samsung accepted243→244, retained level70 and passed real crop tapping beside the paddock and both native animal filters. Native pack QA delivered the approved-free Coop Charm exactly once (+20gems/three charges); manual crop and egg activations and cross-farm earned-progress persistence were observed. No new Google checkout or real-money order was made.
+
+The final chicken return found another event-routing issue: an occupied coop’s normal click handler swallowed the destination drop.245 routes transfer taps on compatible coop/barn artwork to its home anchor, while ordinary selection and incompatible-obstacle checks remain intact. Actual-listener behavioral checks and eight pack/reducer cases pass; gateway57 matches eight source files with JWT enabled and only its rules fingerprint changes. Publication and final native245 acceptance are pending. The Samsung is temporarily released to Littles for its reserved test turn.
+
 ## 13 November 2026 — crop layer follow-up 244
 
 Live243 phone retesting found a remaining fixed-depth override: plot layers computed z10 despite object depths42/44/50, allowing neighboring buildings to intercept crop taps. The244 style correction has browser DOM proof: plots now compute42/44/44 matching their depth variables. Gateway56 matches all eight reviewed files with JWT enabled; its generated change is the rules fingerprint only. Publication and final physical acceptance are pending. The Samsung is temporarily released to Littles until05:11UTC while CI/hosting runs; no Meadow data was cleared.
