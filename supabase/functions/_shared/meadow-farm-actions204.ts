@@ -222,7 +222,12 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
     fields(d,['x','y','rotation','destination','home']);o=requireObject(command.target);const destination=d.destination||map;if(!validID(destination)||!Object.hasOwn(farms(),destination)||!R.maps.some((m:Data)=>m.id===destination)||!integer(d.rotation??o.rotation??0,0,3))fail('Choose an open destination and rotation.');
     if(destination===map)W.meadowMoves.remember(s,map,o);else s.lastMove=null;
     const target=farms()[destination],moved={...o,rotation:d.rotation??o.rotation??0},x=d.x??o.x,y=d.y??o.y;
-    if(animal(o)&&d.home){if(destination!==map)fail('Move to the farm before choosing its animal home.');const h=requireObject(d.home);if(!W.meadowHousing.assign(f,o,h))fail('That home is full or does not match this animal.');}
+    if(animal(o)&&d.home){
+     const h=target.objects.find((candidate:Data)=>candidate.id===d.home),incoming={...o,id:destination!==map&&target.objects.some((a:Data)=>a.id===o.id)?'server-'+crypto.randomUUID():o.id};
+     if(!h||target.objects.filter((candidate:Data)=>candidate.id===d.home).length!==1||!W.meadowHousing.canHouse(target,o.type,h,incoming))fail('That home is full or does not match this animal.');
+     if(destination!==map){f.objects=f.objects.filter((a:Data)=>a!==o);o.id=incoming.id;target.objects.push(o);result.id=o.id;}
+     if(!W.meadowHousing.assign(target,o,h))fail('That home is full or does not match this animal.');o.rotation=moved.rotation;
+    }
     else{if(!fits(moved,x,y,destination,destination===map?o.id:null))fail('The whole footprint must fit clear unlocked grass.');W.meadowCropGrowth.settle(f,items);if(target!==f)W.meadowCropGrowth.settle(target,items);const residents=f.objects.filter((a:Data)=>animal(a)&&home(a,f)===o);if(animal(o)){delete o.coopId;delete o.barnId;delete o.paddockId;}Object.assign(o,{x,y,rotation:moved.rotation});for(const a of residents)Object.assign(a,{x,y});if(destination!==map){const carry=new Set([o,...residents]),oldHome=o.id;for(const moved of carry){if(target.objects.some((a:Data)=>a.id===moved.id))moved.id='server-'+crypto.randomUUID();}if(o.id!==oldHome)for(const a of residents)for(const key of ['coopId','barnId','paddockId'])if(a[key]===oldHome)a[key]=o.id;f.objects=f.objects.filter((a:Data)=>!carry.has(a));target.objects.push(...carry);result.id=o.id;}for(const farm of [f,target])for(const h of farm.objects.filter((a:Data)=>a.type==='hive'))if(['flowers','hive'].includes(o.type))h.lastHoneyAt=now;}
     if(command.type==='build.move')event('move');break;}
    case 'build.undo':{
