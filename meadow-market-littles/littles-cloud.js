@@ -5,11 +5,11 @@
  const clone=x=>JSON.parse(JSON.stringify(x));
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
  const REMEMBERED='meadow-littles-account-v1';
- let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
+ let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,updateDialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
- function notify(state,code=null){status=state;lastError=code;try{options.onStatus?.({state,code,userId:user?.id||null,isGuest:!!user?.is_anonymous,revision})}catch{}return {state,code,revision};}
+ function notify(state,code=null){status=state;lastError=code;try{options.onStatus?.({state,code,userId:user?.id||null,isGuest:!!user?.is_anonymous,revision})}catch{}updateDialog?.();return {state,code,revision};}
  function failure(code){const e=new Error(code);e.code=code;return e}
  function codeOf(e){return known.has(e?.message)?e.message:'LITTLES_CLOUD_UNAVAILABLE'}
  async function actor(){const {data,error}=await client.auth.getUser();if(error||!data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');if(user&&data.user.id!==user.id)throw failure('LITTLES_ACCOUNT_CHANGED');user=data.user;return data.user;}
@@ -58,6 +58,7 @@
   if(connecting)return connecting;
   if(authBusy||busy)return {ok:false,state:status};
   connecting=(async()=>{try{
+   notify('connecting');
    client=options.client||client;if(!client){const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm');client=createClient(CONFIG.url,CONFIG.key,{auth:{storage:store,storageKey:CONFIG.storageKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}
    if(subscribedClient!==client){subscribedClient=client;client.auth.onAuthStateChange?.((event)=>{
     // Supabase holds its auth lock during callbacks. Reconnect outside it.
@@ -109,9 +110,10 @@
   const d=document.createElement('dialog');dialog=d;d.className='littles-account';d.setAttribute('aria-label','Cloud save and grown-up account');
   const add=(tag,text)=>{const el=document.createElement(tag);el.textContent=text;d.append(el);return el};
   add('h2','Grown-up account');add('p','Stay signed in on this device and keep your farm progress safe.');
-  const stateMessage={ready:'Connected. Your sign-in is saved on this device.',saved:'Your progress is saved online.',saving:'Saving your progress…',offline:'You can keep playing. We’ll reconnect when you’re online.',auth_required:'Please sign in again. Your progress is still saved on this device.',signed_out:'Signed out. Your progress is still saved on this device.',choice_required:'Choose which progress to keep below. Nothing is replaced automatically.',retry_required:'Your progress is on this device. Retry the pending cloud save below.',banned:'Cloud saves are paused. A grown-up can check account safety below.'};
+  const stateMessage={connecting:'Connecting to your saved account…',ready:'Connected. Your sign-in is saved on this device.',saved:'Your progress is saved online.',saving:'Saving your progress…',offline:'You can keep playing. We’ll reconnect when you’re online.',auth_required:'Please sign in again. Your progress is still saved on this device.',signed_out:'Signed out. Your progress is still saved on this device.',choice_required:'Choose which progress to keep below. Nothing is replaced automatically.',retry_required:'Your progress is on this device. Retry the pending cloud save below.',banned:'Cloud saves are paused. A grown-up can check account safety below.'};
   const result=add('p',stateMessage[status]||'Check your account and cloud save below.');result.setAttribute('role','status');
-  const accountIdentity=()=>[user?.id||'',!!user?.is_anonymous,!!user?.email_confirmed_at].join(':');
+  const accountIdentity=()=>[user?.id||'',!!user?.is_anonymous,!!user?.email_confirmed_at,!!profile].join(':');
+  const renderedIdentity=accountIdentity();
   const messages={LITTLES_INVALID_DISPLAY_NAME:'Use an account name with 1–32 characters and no control characters.',LITTLES_SIGN_IN_FAILED:'Check the grown-up email and password, then try again.',LITTLES_OPERATION_IN_PROGRESS:'Please wait for the current account step to finish.',LITTLES_SIGN_IN_REQUIRED:'Please sign in again. Your saved progress is still safe.',LITTLES_CLOUD_UNAVAILABLE:'Could not connect. Check your connection and try again.'};
   function button(label,run){const b=add('button',label);b.type='button';b.onclick=async()=>{b.disabled=true;const before=accountIdentity();try{const r=await run();if(d.open&&before!==accountIdentity()){d.close();d.remove();dialog=null;openAccount();return;}renderSafety();result.textContent=r?.displayName?'Account name saved. You can be found by this name for Littles Plus.':r?.verificationRequired?'Check the email confirmation link. After verification, set a password.':r?.ok===false?(messages[r.code]||stateMessage[r.state]||'Please try this step again.'):(stateMessage[status]||'Done.');}catch(e){renderSafety();result.textContent=messages[e.code]||'Could not complete this step. Please try again.'}finally{b.disabled=false;}};return b;}
   if(user){
@@ -148,6 +150,7 @@
   if(!client||!user)button('Connect cloud save',reconnect);
   else{
    add('p',user.is_anonymous?'Guest account':'Recoverable account');
+   button('Reconnect account',reconnect);
    button('Retry pending save',flush);
    if(remote?.revision>0)button('Use cloud progress',()=>choose('cloud'));
    button('Keep this device’s progress',async()=>{if(!confirm('Replace this account’s cloud progress with the progress on this device?'))return {ok:false,state:'cancelled'};return choose('device')});
@@ -167,7 +170,8 @@
    button('Send password recovery email',()=>recover(email.value));
    if(user&&!user.is_anonymous)button('Sign out from Littles',signOut);
   }
-  button('Close',()=>{d.close();d.remove();dialog=null;return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null});document.body.append(d);d.showModal();
+  button('Close',()=>{d.close();d.remove();dialog=null;updateDialog=null;return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null;updateDialog=null});document.body.append(d);d.showModal();
+  updateDialog=()=>{if(!d.open)return;if(renderedIdentity!==accountIdentity()){d.close();d.remove();dialog=null;updateDialog=null;openAccount();return}result.textContent=stateMessage[status]||'Check your account and cloud save below.';renderSafety();};
  }
  async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
  globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
