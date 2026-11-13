@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.102",
-  "versionCode": 102,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview102-testing/frontlines-1.0.0-preview-build-102.apk",
-  "bytes": 226832538,
-  "sha256": "8544e993ff6177f35e26535ceb8f2bac0e359c4061be014de0b442f23e02412a",
+  "versionName": "1.0.0.104",
+  "versionCode": 104,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview104-testing/frontlines-1.0.0-preview-build-104.apk",
+  "bytes": 226865797,
+  "sha256": "c9c37b2fbc76997946e30eec02d7d3c18ca2ba89aa12f86acc4152aacf0bb1c8",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public102/frontlines-1.0.0.102-android.apk",
-  "notes": "V1.0.0.102: Improved first-battle and card preparation, faster menu returns, advertising privacy/account binding and verified gem rewards in the Play edition. Clearer VIP restore, refund and complimentary-expiry state. Existing graphics, artwork, maps, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public104/frontlines-1.0.0.104-android.apk",
+  "notes": "V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained."
 }

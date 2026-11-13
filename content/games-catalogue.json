@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.102: Improved first-battle and card preparation, faster menu returns, advertising privacy/account binding and verified gem rewards in the Play edition. Clearer VIP restore, refund and complimentary-expiry state. Existing graphics, artwork, maps, accounts and saves retained.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.102 · browser, Android & Windows",
+      "build": "V1.0.0.104 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android102 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public102/frontlines-1.0.0.102-android.apk"
+          "label": "Download Android104 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public104/frontlines-1.0.0.104-android.apk"
         },
         {
-          "label": "Download Windows102 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public102/frontlines-1.0.0.102-windows-setup.exe"
+          "label": "Download Windows104 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public104/frontlines-1.0.0.104-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "V1.0.0.102: Improved first-battle and card preparation, faster menu returns, advertising privacy/account binding and verified gem rewards in the Play edition. Clearer VIP restore, refund and complimentary-expiry state. Existing graphics, artwork, maps, accounts and saves retained.",
-      "sha256": "8544E993FF6177F35E26535CEB8F2BAC0E359C4061BE014DE0B442F23E02412A",
+      "notes": "V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained.",
+      "sha256": "C9C37B2FBC76997946E30EEC02D7D3C18CA2BA89AA12F86ACC4152AACF0BB1C8",
       "releaseManifest": "./frontlines/release.json"
     }
   ]

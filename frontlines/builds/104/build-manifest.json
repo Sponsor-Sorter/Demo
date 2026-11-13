@@ -1,0 +1,373 @@
+{
+  "build": 104,
+  "version": "1.0.0.104",
+  "networkBuild": 100,
+  "index_pack": {
+    "format": 1,
+    "bytes": 109837324,
+    "sha256": "d65d88335b4d8a8c99dff24a013288e75a8fcdd51dae53f0a5700b91819c4b00",
+    "chunks": [
+      {
+        "file": "index.pck.part-00",
+        "bytes": 8388608,
+        "sha256": "ee9e5333cd9b80528030b96a99b6c3a2f8f09fd7a36be6cc269bce97b704ac67"
+      },
+      {
+        "file": "index.pck.part-01",
+        "bytes": 8388608,
+        "sha256": "0460aa144cba4c7dd32191b213ad90b01d86f2673b8b75c0946e60404bc2d5e1"
+      },
+      {
+        "file": "index.pck.part-02",
+        "bytes": 8388608,
+        "sha256": "563877b699d8a28e9f03e5ffbb051110be333fc11700d0f1dff7873d354a1cbc"
+      },
+      {
+        "file": "index.pck.part-03",
+        "bytes": 8388608,
+        "sha256": "53bf3fc0d677a90acd5b2a166cf04658f06f7ff536f6ea1cab8c14902fe6a7a0"
+      },
+      {
+        "file": "index.pck.part-04",
+        "bytes": 8388608,
+        "sha256": "709a77800c900ce3c94117c796a3b41d16aac3039df75c1181e1bdc6cb50a5e1"
+      },
+      {
+        "file": "index.pck.part-05",
+        "bytes": 8388608,
+        "sha256": "3bf3bcd07c2ac2b94b00834a3ad2bddf9f9dffe45a546b389d07ca0f6c95ff94"
+      },
+      {
+        "file": "index.pck.part-06",
+        "bytes": 8388608,
+        "sha256": "3290bf852e197fe1ceaf3b594eadd7841e79fa4cb434eae599d17b5f0221ee00"
+      },
+      {
+        "file": "index.pck.part-07",
+        "bytes": 8388608,
+        "sha256": "0b4268a09b6223ca272faba9479509bebd2af04fed1ea90fa06d102dc2e01db6"
+      },
+      {
+        "file": "index.pck.part-08",
+        "bytes": 8388608,
+        "sha256": "af761ca189555039bbcbe3f506cdb551f2e3f003595f5601be78cc662cfc481f"
+      },
+      {
+        "file": "index.pck.part-09",
+        "bytes": 8388608,
+        "sha256": "3064282f52273aaba4eefe0e1a5ea8960453ec9a42b9fcb849dcf45d9f171ab4"
+      },
+      {
+        "file": "index.pck.part-10",
+        "bytes": 8388608,
+        "sha256": "9e1d5dbef02a6feba70e4e6cd5dc84dd70c75d74fcf13e8430807648451354e0"
+      },
+      {
+        "file": "index.pck.part-11",
+        "bytes": 8388608,
+        "sha256": "523b23f1b68a4d23d45fab0029a45b35a048c3ead2413021bdd1709cef0bb4c8"
+      },
+      {
+        "file": "index.pck.part-12",
+        "bytes": 8388608,
+        "sha256": "affedf188f6899861a786915b7d4b102b7405fff4675fc93b7b975f101d6013e"
+      },
+      {
+        "file": "index.pck.part-13",
+        "bytes": 785420,
+        "sha256": "d2145dc895e5c1885285dd46a46509eac95d44f8aad629cbceffd40fe1575eb4"
+      }
+    ]
+  },
+  "wardrobe_pack": {
+    "format": 1,
+    "bytes": 99443116,
+    "sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+    "chunks": [
+      {
+        "file": "wardrobe.pck.part-00",
+        "bytes": 8388608,
+        "sha256": "5b66665315fd3ca96f37a60490b37e3cefaaca722b6824b8bf05e885f99eed07"
+      },
+      {
+        "file": "wardrobe.pck.part-01",
+        "bytes": 8388608,
+        "sha256": "dca9cb1f8d37bca05e60e055be91d6f5c48cc201e590fab6d2cb20276508f901"
+      },
+      {
+        "file": "wardrobe.pck.part-02",
+        "bytes": 8388608,
+        "sha256": "d55ef5b799965a1fe11f5c77708595d042a860aa6c347dd180e8fbf18d088cb8"
+      },
+      {
+        "file": "wardrobe.pck.part-03",
+        "bytes": 8388608,
+        "sha256": "bc95748e581b2d82d86162de323f2ba3193673b4c9aec980a5a6cfd277fc7da4"
+      },
+      {
+        "file": "wardrobe.pck.part-04",
+        "bytes": 8388608,
+        "sha256": "cd26fae3ee2114d2bf7c679bcfc44986dd00b7b7fca387858c7a8768988d7c7c"
+      },
+      {
+        "file": "wardrobe.pck.part-05",
+        "bytes": 8388608,
+        "sha256": "123ab6da354f2ea229bfd6f0562b851a5adc4d1603a7fd8c6f2442fa1cf7cbff"
+      },
+      {
+        "file": "wardrobe.pck.part-06",
+        "bytes": 8388608,
+        "sha256": "840cd7c576cf5eb187b239ed87e02c0cec3b0195c1df61efd2079daca3546100"
+      },
+      {
+        "file": "wardrobe.pck.part-07",
+        "bytes": 8388608,
+        "sha256": "1056fec967e153b2809300f2210622eb9c552dc5a8803128e7e2c6a1a557e9d3"
+      },
+      {
+        "file": "wardrobe.pck.part-08",
+        "bytes": 8388608,
+        "sha256": "c6016ac5cfaaad90bc01b4c2b437408749d961ff0892315c3d489947530bb77a"
+      },
+      {
+        "file": "wardrobe.pck.part-09",
+        "bytes": 8388608,
+        "sha256": "4a4979d2388d5f69aa25a50aefae03dbebc2bf77aa23eda8c60c580cf832c9cf"
+      },
+      {
+        "file": "wardrobe.pck.part-10",
+        "bytes": 8388608,
+        "sha256": "297fcf57179e8e5bb3388ae304477271bed04627673f31e414e1ae3af6abc775"
+      },
+      {
+        "file": "wardrobe.pck.part-11",
+        "bytes": 7168428,
+        "sha256": "811a18e3764df748de2ad5d63c353dbf8fa2980fc6c79a474eb75787aaa38e62"
+      }
+    ]
+  },
+  "files": [
+    {
+      "file": "campaign-journal.js",
+      "bytes": 1587,
+      "sha256": "406995e1187bf8aec9d9f17b42ce4749c7a2fe931bfad636c6d2ef06b4bb7ef8"
+    },
+    {
+      "file": "frontlines-pack-loader.js",
+      "bytes": 4864,
+      "sha256": "d4b5b94e939b85771c4a03d0c24064074c76e8847541e7af26350a58394e3ee7"
+    },
+    {
+      "file": "index.apple-touch-icon.png",
+      "bytes": 17197,
+      "sha256": "ab7e07713a8645e747f98153361b22cd380d5f143fdfc82441b940258bb35c27"
+    },
+    {
+      "file": "index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "file": "index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+    },
+    {
+      "file": "index.html",
+      "bytes": 7276,
+      "sha256": "3b51e1083675c2febe957220537b49fa62f2222866c83fabe1135c46aa2954ab"
+    },
+    {
+      "file": "index.icon.png",
+      "bytes": 66463,
+      "sha256": "a1f95d2086450d3fff09070a97296decb65306942fecaef907736dd56e00aa98"
+    },
+    {
+      "file": "index.js",
+      "bytes": 282408,
+      "sha256": "e58a2cc73f772401713fc18301d5cb0329e82bd9c6a84669b44d80faf636d657"
+    },
+    {
+      "file": "index.pack.json",
+      "bytes": 2384,
+      "sha256": "f7a6fa86e47509331d07ed8710917065386e7995855c7e53a19f6fd40056913b"
+    },
+    {
+      "file": "index.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "ee9e5333cd9b80528030b96a99b6c3a2f8f09fd7a36be6cc269bce97b704ac67"
+    },
+    {
+      "file": "index.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "0460aa144cba4c7dd32191b213ad90b01d86f2673b8b75c0946e60404bc2d5e1"
+    },
+    {
+      "file": "index.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "563877b699d8a28e9f03e5ffbb051110be333fc11700d0f1dff7873d354a1cbc"
+    },
+    {
+      "file": "index.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "53bf3fc0d677a90acd5b2a166cf04658f06f7ff536f6ea1cab8c14902fe6a7a0"
+    },
+    {
+      "file": "index.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "709a77800c900ce3c94117c796a3b41d16aac3039df75c1181e1bdc6cb50a5e1"
+    },
+    {
+      "file": "index.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "3bf3bcd07c2ac2b94b00834a3ad2bddf9f9dffe45a546b389d07ca0f6c95ff94"
+    },
+    {
+      "file": "index.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "3290bf852e197fe1ceaf3b594eadd7841e79fa4cb434eae599d17b5f0221ee00"
+    },
+    {
+      "file": "index.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "0b4268a09b6223ca272faba9479509bebd2af04fed1ea90fa06d102dc2e01db6"
+    },
+    {
+      "file": "index.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "af761ca189555039bbcbe3f506cdb551f2e3f003595f5601be78cc662cfc481f"
+    },
+    {
+      "file": "index.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "3064282f52273aaba4eefe0e1a5ea8960453ec9a42b9fcb849dcf45d9f171ab4"
+    },
+    {
+      "file": "index.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "9e1d5dbef02a6feba70e4e6cd5dc84dd70c75d74fcf13e8430807648451354e0"
+    },
+    {
+      "file": "index.pck.part-11",
+      "bytes": 8388608,
+      "sha256": "523b23f1b68a4d23d45fab0029a45b35a048c3ead2413021bdd1709cef0bb4c8"
+    },
+    {
+      "file": "index.pck.part-12",
+      "bytes": 8388608,
+      "sha256": "affedf188f6899861a786915b7d4b102b7405fff4675fc93b7b975f101d6013e"
+    },
+    {
+      "file": "index.pck.part-13",
+      "bytes": 785420,
+      "sha256": "d2145dc895e5c1885285dd46a46509eac95d44f8aad629cbceffd40fe1575eb4"
+    },
+    {
+      "file": "index.png",
+      "bytes": 31590,
+      "sha256": "01d8f0a0a63caa8158ec564713ae8ad743ee6de7ca256c9ff138116ea5f0d849"
+    },
+    {
+      "file": "index.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    },
+    {
+      "file": "jsqr-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "2e54cd84a645bea25943c75dd8ae67cb291e66a47a11578333c9b4b3b6b86c85"
+    },
+    {
+      "file": "local-qr.js",
+      "bytes": 155154,
+      "sha256": "ee87e56faa14e92af7772d0edccde490f9712c5bb996e75b8a46c87ce2ff4221"
+    },
+    {
+      "file": "qrcode-LICENSE.txt",
+      "bytes": 1086,
+      "sha256": "0108ffd737ce21514c202effb306fab10fb60751c55de6614230b47229e65020"
+    },
+    {
+      "file": "scanner.js",
+      "bytes": 3185,
+      "sha256": "4f0ea22cb3b4e1a8770ae14e2e3815d170330f90253769c23105f10b8605ab4b"
+    },
+    {
+      "file": "ui-button.png",
+      "bytes": 1246554,
+      "sha256": "1c7f31b9ba083e58ae81ff55697c4bf6ac4262437fbf890c0a4bf84557820a86"
+    },
+    {
+      "file": "ui-panel.png",
+      "bytes": 1083698,
+      "sha256": "0c2fc91f46817540cd1533edcd66cca60d03e44088a198dee800b1a111a1d8f9"
+    },
+    {
+      "file": "wardrobe.pack.json",
+      "bytes": 2100,
+      "sha256": "2e1191788ad8dd54806f6bbf581d4187eb121fb2be387d8177c4c28b1d0eb6ea"
+    },
+    {
+      "file": "wardrobe.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "5b66665315fd3ca96f37a60490b37e3cefaaca722b6824b8bf05e885f99eed07"
+    },
+    {
+      "file": "wardrobe.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "dca9cb1f8d37bca05e60e055be91d6f5c48cc201e590fab6d2cb20276508f901"
+    },
+    {
+      "file": "wardrobe.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "d55ef5b799965a1fe11f5c77708595d042a860aa6c347dd180e8fbf18d088cb8"
+    },
+    {
+      "file": "wardrobe.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "bc95748e581b2d82d86162de323f2ba3193673b4c9aec980a5a6cfd277fc7da4"
+    },
+    {
+      "file": "wardrobe.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "cd26fae3ee2114d2bf7c679bcfc44986dd00b7b7fca387858c7a8768988d7c7c"
+    },
+    {
+      "file": "wardrobe.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "123ab6da354f2ea229bfd6f0562b851a5adc4d1603a7fd8c6f2442fa1cf7cbff"
+    },
+    {
+      "file": "wardrobe.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "840cd7c576cf5eb187b239ed87e02c0cec3b0195c1df61efd2079daca3546100"
+    },
+    {
+      "file": "wardrobe.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "1056fec967e153b2809300f2210622eb9c552dc5a8803128e7e2c6a1a557e9d3"
+    },
+    {
+      "file": "wardrobe.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "c6016ac5cfaaad90bc01b4c2b437408749d961ff0892315c3d489947530bb77a"
+    },
+    {
+      "file": "wardrobe.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "4a4979d2388d5f69aa25a50aefae03dbebc2bf77aa23eda8c60c580cf832c9cf"
+    },
+    {
+      "file": "wardrobe.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "297fcf57179e8e5bb3388ae304477271bed04627673f31e414e1ae3af6abc775"
+    },
+    {
+      "file": "wardrobe.pck.part-11",
+      "bytes": 7168428,
+      "sha256": "811a18e3764df748de2ad5d63c353dbf8fa2980fc6c79a474eb75787aaa38e62"
+    }
+  ],
+  "engine_loader_and_deferred_wardrobe_unchanged": true,
+  "client_parent_manifest_sha256": "cc994189d620b32a309bf21d7b4e196b3215259463a1c5d3bafdb951acad7f68"
+}
