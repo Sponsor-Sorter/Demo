@@ -1,5 +1,9 @@
 # Meadow Markets active work
 
+## 13 November 2026 — Samsung pack and transfer follow-up 243
+
+Physical Samsung QA accepted the actual 240→242 update, preserved level 70, delivered a new approved-free Coop Charm exactly once (20 gems, three boosters), and activated crop/egg boosters with two charges remaining. A chicken transferred Back Pasture→Willowbrook with its earned egg credit retained. QA found worker refreshes detaching the native animal filter and cross-farm home drops omitting the coop ID. Both are corrected in 243, with focused UI/reducer checks passing. Gateway 55 matches all eight reviewed files and retains JWT verification. Public 243 deployment and final Samsung acceptance are in progress; this entry does not claim them complete. Google Play native 1.7.6/code 16 was confirmed Available on Google Play in the preceding acceptance. No real-money orders or new Google checkout were made in this follow-up.
+
 Updated 12 November 2026. Use this list for current work. [MEADOW_BACKLOG.md](MEADOW_BACKLOG.md) retains historical release evidence; its older pending/off/disabled statements are not the current configuration.
 
 ## Completed in the current follow-up
