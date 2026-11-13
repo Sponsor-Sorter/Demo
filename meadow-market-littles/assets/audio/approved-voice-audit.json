@@ -790,6 +790,161 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "find-generation.json"
     },
+    "harvest58-jade-pick-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-apple": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-strawberry": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-pear": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-carrot": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-corn": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jade-pick-potato": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "harvest58-jade-generation.json"
+    },
+    "harvest58-jay-order-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-order-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-home-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-home-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-sort-intro": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-sort-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-apple": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-strawberry": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-pear": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-carrot": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-corn": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-jay-word-potato": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "harvest58-jay-generation.json"
+    },
+    "harvest58-rhys-count-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-count-answer": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-count-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-fuller-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-fuller-compare": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-fuller-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-number-1": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-number-2": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-number-3": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-number-4": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
+    "harvest58-rhys-number-5": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest58-rhys-generation.json"
+    },
     "journey-jade-nest-line": {
       "farmer": "jade",
       "voice": "Hope - upbeat and clear",

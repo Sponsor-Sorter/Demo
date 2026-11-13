@@ -15,7 +15,7 @@
   function load(id){
     if(buffers.has(id)){const b=buffers.get(id);buffers.delete(id);buffers.set(id,b);return Promise.resolve(b)}
     if(pending.has(id))return pending.get(id);
-    const task=fetch(base+id+'.mp3?v=56').then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);trimBuffers();pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
+    const task=fetch(base+id+'.mp3?v='+(id.startsWith('harvest58-')?'58':'56')).then(r=>{if(!r.ok)throw Error('Audio unavailable: '+id);return r.arrayBuffer()}).then(b=>context.decodeAudioData(b)).then(b=>{buffers.set(id,b);trimBuffers();pending.delete(id);return b}).catch(()=>{pending.delete(id);return null});
     pending.set(id,task);return task;
   }
   function volumes(){if(!context)return;const t=context.currentTime;master.gain.setTargetAtTime(prefs.muted?0:1,t,.08);musicGain.gain.setTargetAtTime(musicLevel(),t,.15);effectsGain.gain.setTargetAtTime(prefs.effects,t,.04);ambientGain.gain.setTargetAtTime(prefs.ambience,t,.15);voiceGain.gain.setTargetAtTime(prefs.voice,t,.06)}

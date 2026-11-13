@@ -1,0 +1,106 @@
+{
+  "provider": "ElevenLabs Studio",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-13T03:46:12.293Z",
+  "voice": "Hope - upbeat and clear",
+  "farmer": "jade",
+  "speed": 0.96,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "chapter": "MTi18ObMd933ECRuLOzh",
+  "sourceFile": "harvest58-jade.mp3",
+  "sourceSha256": "8b931c1770588de8352f047c1459ecc257dda63ee7088f1fcafe7bdf1dd2ae06",
+  "processing": "Separate at verified2second cue boundaries; loudness normalization only; no time stretching",
+  "files": [
+    {
+      "id": "harvest58-jade-pick-intro",
+      "text": "Hello, little harvester! Listen for the fruit or vegetable. Bring the matching harvest to your basket. You can drag it, or touch it and then touch the basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 0,
+      "end": 8.44399,
+      "bytes": 102319,
+      "sha256": "e290c0ecd79676662dc922d56e04f0c8713ecbb80203349c15e724e7f970648a"
+    },
+    {
+      "id": "harvest58-jade-pick-done",
+      "text": "You picked our lovely harvest! Look at those full baskets. Thank you, little farmer. What a wonderful helper!",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 10.511000000000001,
+      "end": 16.9573,
+      "bytes": 78181,
+      "sha256": "e58b7b5e9a68c16ce6e3ce998180c6155265806bda802d9cb63cdd747494129e"
+    },
+    {
+      "id": "harvest58-jade-pick-apple",
+      "text": "Can you find the apples? Bring the apples to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 19.0261,
+      "end": 22.005300000000002,
+      "bytes": 36803,
+      "sha256": "020cfe87fcf9e17f95c8782528b399da32f1f55c35c8f4a1d0eeeb6e9d786ae4"
+    },
+    {
+      "id": "harvest58-jade-pick-strawberry",
+      "text": "Let's pick the strawberries. Bring the strawberries to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 24.9931,
+      "end": 27.9738,
+      "bytes": 36803,
+      "sha256": "cb499cb86f0e4722bc61b16556d6b0bd1ab85f3d83bf8c108d57c22be92c2dc5"
+    },
+    {
+      "id": "harvest58-jade-pick-pear",
+      "text": "Can you find the pears? Bring the pears to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 30.0797,
+      "end": 32.8581,
+      "bytes": 34296,
+      "sha256": "81327d04bfd8b2c54730e109ea2b702463a5e19209d2f9933a10d11325502aa6"
+    },
+    {
+      "id": "harvest58-jade-pick-carrot",
+      "text": "Let's pick the carrots. Bring the carrots to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 34.921,
+      "end": 37.9933,
+      "bytes": 37744,
+      "sha256": "7847e609d51e421ebbb49b0ef07f69851c1384a49a5638a4119fc4b1fdab40de"
+    },
+    {
+      "id": "harvest58-jade-pick-corn",
+      "text": "Can you find the corn? Bring the corn to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 40.4146,
+      "end": 44.0669,
+      "bytes": 44640,
+      "sha256": "8c468bfa0c1a7c29283e9a82c86bac822054b74136e0388fbf08d0d7f8b06d01"
+    },
+    {
+      "id": "harvest58-jade-pick-potato",
+      "text": "Let's pick the potatoes. Bring the potatoes to your basket.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "start": 46.157399999999996,
+      "end": null,
+      "bytes": 54044,
+      "sha256": "f23944d41ca422ae13ac908f7f0fdf16afa024eb8b3291399dc15b5b53ca2c22"
+    }
+  ]
+}
