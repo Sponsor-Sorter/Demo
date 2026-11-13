@@ -1,0 +1,801 @@
+{
+  "date": "2026-11-13",
+  "candidateBuild": 58,
+  "status": "Dated pre-publication checkpoint: eight full native rounds passed; final exit gesture, CI and rollout tracked in linked acceptance receipt.",
+  "scope": [
+    "listenharvest",
+    "spokenorder",
+    "animalhome",
+    "applecartsort",
+    "harvestcount",
+    "fullbasket"
+  ],
+  "browser": {
+    "rounds": [
+      {
+        "kind": "pick",
+        "at": "2026-11-13T04:30:08.113Z",
+        "result": "Normal three-task win"
+      },
+      {
+        "kind": "order",
+        "at": "2026-11-13T04:31:30.751Z",
+        "result": "Normal three-task win"
+      },
+      {
+        "kind": "home",
+        "at": "2026-11-13T04:32:01.026Z",
+        "result": "Normal three-task win"
+      },
+      {
+        "kind": "sort",
+        "at": "2026-11-13T04:37:31.044Z",
+        "result": "Normal three-task win"
+      },
+      {
+        "kind": "count",
+        "at": "2026-11-13T04:38:07.597Z",
+        "result": "Normal three-task win"
+      },
+      {
+        "kind": "fuller",
+        "at": "2026-11-13T04:38:30.971Z",
+        "result": "Normal three-task win"
+      }
+    ],
+    "trace": [
+      {
+        "kind": "pick",
+        "stage": "1 / 3",
+        "event": "wrong-pick-retry"
+      },
+      {
+        "at": "2026-11-13T04:29:46.134Z",
+        "kind": "pick",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 2,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:30:03.092Z",
+        "kind": "pick",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 2,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:30:08.113Z",
+        "kind": "pick",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 2,
+        "win": true
+      },
+      {
+        "kind": "order",
+        "stage": "1 / 3",
+        "event": "wrong-order-retry"
+      },
+      {
+        "at": "2026-11-13T04:30:19.124Z",
+        "kind": "order",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": false
+      },
+      {
+        "event": "real-drag",
+        "label": "pear 6",
+        "target": "Order basket",
+        "from": [
+          306,
+          437.8671875
+        ],
+        "to": [
+          180.1953125,
+          617.203125
+        ]
+      },
+      {
+        "at": "2026-11-13T04:31:24.335Z",
+        "kind": "order",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 2,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:31:30.751Z",
+        "kind": "order",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": true
+      },
+      {
+        "kind": "home",
+        "stage": "1 / 3",
+        "event": "wrong-home-retry"
+      },
+      {
+        "at": "2026-11-13T04:31:46.454Z",
+        "kind": "home",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:31:53.744Z",
+        "kind": "home",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:32:01.026Z",
+        "kind": "home",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": true
+      },
+      {
+        "kind": "sort",
+        "stage": "1 / 3",
+        "event": "wrong-sort-retry"
+      },
+      {
+        "at": "2026-11-13T04:37:09.405Z",
+        "kind": "sort",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 6,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:37:21.901Z",
+        "kind": "sort",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 6,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:37:31.044Z",
+        "kind": "sort",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 6,
+        "win": true
+      },
+      {
+        "event": "real-drag",
+        "label": "apple 1",
+        "target": "Apple counting basket",
+        "from": [
+          108.9765625,
+          231.6015625
+        ],
+        "to": [
+          169.09375,
+          595.8046875
+        ]
+      },
+      {
+        "kind": "count",
+        "stage": "1 / 3",
+        "event": "wrong-number-retry"
+      },
+      {
+        "at": "2026-11-13T04:37:52.396Z",
+        "kind": "count",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 5,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:37:59.358Z",
+        "kind": "count",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 4,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:38:07.597Z",
+        "kind": "count",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 5,
+        "win": true
+      },
+      {
+        "event": "real-drag",
+        "label": "Basket 1 with 1 apples",
+        "target": "Right side of the scales",
+        "from": [
+          128,
+          775
+        ],
+        "to": [
+          324.85546875,
+          335.75
+        ]
+      },
+      {
+        "kind": "fuller",
+        "stage": "1 / 3",
+        "event": "wrong-comparison-retry"
+      },
+      {
+        "at": "2026-11-13T04:38:21.217Z",
+        "kind": "fuller",
+        "stage": "1 / 3",
+        "event": "task-complete",
+        "actions": 2,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:38:26.048Z",
+        "kind": "fuller",
+        "stage": "2 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": false
+      },
+      {
+        "at": "2026-11-13T04:38:30.971Z",
+        "kind": "fuller",
+        "stage": "3 / 3",
+        "event": "task-complete",
+        "actions": 3,
+        "win": true
+      },
+      {
+        "event": "real-drag",
+        "label": "Number 4",
+        "target": "Number label on the basket",
+        "from": [
+          232,
+          515.5
+        ],
+        "to": [
+          238,
+          370.0390625
+        ]
+      }
+    ],
+    "layouts": [
+      {
+        "kind": "pick",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "order",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "home",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 9,
+        "bad": []
+      },
+      {
+        "kind": "sort",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 11,
+        "bad": []
+      },
+      {
+        "kind": "count",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 13,
+        "bad": []
+      },
+      {
+        "kind": "fuller",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 7,
+        "bad": []
+      },
+      {
+        "kind": "pick",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "order",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "home",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 9,
+        "bad": []
+      },
+      {
+        "kind": "sort",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 11,
+        "bad": []
+      },
+      {
+        "kind": "count",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 12,
+        "bad": []
+      },
+      {
+        "kind": "fuller",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 7,
+        "bad": []
+      },
+      {
+        "kind": "pick",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "order",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 10,
+        "bad": []
+      },
+      {
+        "kind": "home",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 9,
+        "bad": []
+      },
+      {
+        "kind": "sort",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 11,
+        "bad": []
+      },
+      {
+        "kind": "count",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 11,
+        "bad": []
+      },
+      {
+        "kind": "fuller",
+        "size": {
+          "width": 1024,
+          "height": 768
+        },
+        "buttons": 7,
+        "bad": []
+      },
+      {
+        "kind": "count-label",
+        "size": {
+          "width": 320,
+          "height": 568
+        },
+        "buttons": 8,
+        "bad": []
+      },
+      {
+        "kind": "fuller-loaded",
+        "size": {
+          "width": 749,
+          "height": 360
+        },
+        "buttons": 5,
+        "bad": []
+      }
+    ],
+    "regressions": {
+      "memory": "Full three-pair round; normal25-star reward",
+      "pause": "Loaded scales preserved across pause/resume; exit during carry did not award",
+      "dialog": "Original Farm mini-games label restored"
+    },
+    "consoleErrors": []
+  },
+  "approvedAudio": {
+    "newClips": 31,
+    "cast": {
+      "jade": "Hope - upbeat and clear",
+      "jay": "Mike - Animation, Explainers & Gaming",
+      "rhys": "Noah - YA Audiobooks Narrator"
+    },
+    "decodeReceipt": {
+      "date": "2026-11-13T04:21:45.772Z",
+      "method": "Decode each approved MP3 to mono float PCM; inspect duration, finite samples and non-silent bounded levels. This is not a physical-device listening test.",
+      "results": [
+        {
+          "id": "harvest58-jade-pick-apple",
+          "farmer": "jade",
+          "seconds": 2.979,
+          "rms": 0.11362,
+          "peak": 0.74962
+        },
+        {
+          "id": "harvest58-jade-pick-carrot",
+          "farmer": "jade",
+          "seconds": 3.072,
+          "rms": 0.10728,
+          "peak": 0.74948
+        },
+        {
+          "id": "harvest58-jade-pick-corn",
+          "farmer": "jade",
+          "seconds": 3.652,
+          "rms": 0.10793,
+          "peak": 0.75573
+        },
+        {
+          "id": "harvest58-jade-pick-done",
+          "farmer": "jade",
+          "seconds": 6.446,
+          "rms": 0.10844,
+          "peak": 0.75852
+        },
+        {
+          "id": "harvest58-jade-pick-intro",
+          "farmer": "jade",
+          "seconds": 8.444,
+          "rms": 0.10784,
+          "peak": 0.75735
+        },
+        {
+          "id": "harvest58-jade-pick-pear",
+          "farmer": "jade",
+          "seconds": 2.778,
+          "rms": 0.11823,
+          "peak": 0.75314
+        },
+        {
+          "id": "harvest58-jade-pick-potato",
+          "farmer": "jade",
+          "seconds": 4.416,
+          "rms": 0.10801,
+          "peak": 0.76847
+        },
+        {
+          "id": "harvest58-jade-pick-strawberry",
+          "farmer": "jade",
+          "seconds": 2.981,
+          "rms": 0.11139,
+          "peak": 0.70497
+        },
+        {
+          "id": "harvest58-jay-home-done",
+          "farmer": "jay",
+          "seconds": 5.481,
+          "rms": 0.10429,
+          "peak": 0.72034
+        },
+        {
+          "id": "harvest58-jay-home-intro",
+          "farmer": "jay",
+          "seconds": 10.255,
+          "rms": 0.11015,
+          "peak": 0.76256
+        },
+        {
+          "id": "harvest58-jay-order-done",
+          "farmer": "jay",
+          "seconds": 5.91,
+          "rms": 0.1229,
+          "peak": 0.75326
+        },
+        {
+          "id": "harvest58-jay-order-intro",
+          "farmer": "jay",
+          "seconds": 8.193,
+          "rms": 0.10788,
+          "peak": 0.75107
+        },
+        {
+          "id": "harvest58-jay-sort-done",
+          "farmer": "jay",
+          "seconds": 4.846,
+          "rms": 0.12117,
+          "peak": 0.75647
+        },
+        {
+          "id": "harvest58-jay-sort-intro",
+          "farmer": "jay",
+          "seconds": 7.973,
+          "rms": 0.10819,
+          "peak": 0.75448
+        },
+        {
+          "id": "harvest58-jay-word-apple",
+          "farmer": "jay",
+          "seconds": 0.602,
+          "rms": 0.10287,
+          "peak": 0.75685
+        },
+        {
+          "id": "harvest58-jay-word-carrot",
+          "farmer": "jay",
+          "seconds": 0.557,
+          "rms": 0.0936,
+          "peak": 0.72568
+        },
+        {
+          "id": "harvest58-jay-word-corn",
+          "farmer": "jay",
+          "seconds": 0.628,
+          "rms": 0.13947,
+          "peak": 0.75306
+        },
+        {
+          "id": "harvest58-jay-word-pear",
+          "farmer": "jay",
+          "seconds": 0.541,
+          "rms": 0.09473,
+          "peak": 0.77565
+        },
+        {
+          "id": "harvest58-jay-word-potato",
+          "farmer": "jay",
+          "seconds": 0.912,
+          "rms": 0.06002,
+          "peak": 0.74526
+        },
+        {
+          "id": "harvest58-jay-word-strawberry",
+          "farmer": "jay",
+          "seconds": 0.916,
+          "rms": 0.12868,
+          "peak": 0.75937
+        },
+        {
+          "id": "harvest58-rhys-count-answer",
+          "farmer": "rhys",
+          "seconds": 7.801,
+          "rms": 0.10313,
+          "peak": 0.75178
+        },
+        {
+          "id": "harvest58-rhys-count-done",
+          "farmer": "rhys",
+          "seconds": 8.777,
+          "rms": 0.10181,
+          "peak": 0.76576
+        },
+        {
+          "id": "harvest58-rhys-count-intro",
+          "farmer": "rhys",
+          "seconds": 7.709,
+          "rms": 0.10644,
+          "peak": 0.76758
+        },
+        {
+          "id": "harvest58-rhys-fuller-compare",
+          "farmer": "rhys",
+          "seconds": 6.501,
+          "rms": 0.10204,
+          "peak": 0.76157
+        },
+        {
+          "id": "harvest58-rhys-fuller-done",
+          "farmer": "rhys",
+          "seconds": 10.959,
+          "rms": 0.09718,
+          "peak": 0.77895
+        },
+        {
+          "id": "harvest58-rhys-fuller-intro",
+          "farmer": "rhys",
+          "seconds": 12.91,
+          "rms": 0.09103,
+          "peak": 0.76559
+        },
+        {
+          "id": "harvest58-rhys-number-1",
+          "farmer": "rhys",
+          "seconds": 0.51,
+          "rms": 0.12511,
+          "peak": 0.6308
+        },
+        {
+          "id": "harvest58-rhys-number-2",
+          "farmer": "rhys",
+          "seconds": 0.696,
+          "rms": 0.10159,
+          "peak": 0.60339
+        },
+        {
+          "id": "harvest58-rhys-number-3",
+          "farmer": "rhys",
+          "seconds": 0.835,
+          "rms": 0.1052,
+          "peak": 0.71859
+        },
+        {
+          "id": "harvest58-rhys-number-4",
+          "farmer": "rhys",
+          "seconds": 0.65,
+          "rms": 0.10514,
+          "peak": 0.50669
+        },
+        {
+          "id": "harvest58-rhys-number-5",
+          "farmer": "rhys",
+          "seconds": 0.789,
+          "rms": 0.09704,
+          "peak": 0.73996
+        }
+      ]
+    },
+    "naturalPlaybackRate": 1,
+    "sourcePlan": "tools/littles-harvest58-audio-plan.json",
+    "limitation": "Source/provenance, decode and output-route checks are not a recorded aural assessment of phone speaker sound."
+  },
+  "phone": {
+    "device": "Samsung SM-S908E",
+    "app": "Separate bundled Capacitor native QA app com.meadowmarket.littles.qa58; production package/data untouched",
+    "method": "Fresh native UIA labels/images and actual USB touch swipes; no hidden model/save calls",
+    "fullRounds": [
+      {
+        "kind": "pick",
+        "at": "2026-11-13T05:49:36.503Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "order",
+        "at": "2026-11-13T05:52:17.108Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "home",
+        "at": "2026-11-13T05:53:34.423Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "sort",
+        "at": "2026-11-13T05:55:16.479Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "count",
+        "at": "2026-11-13T05:56:50.392Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "fuller",
+        "at": "2026-11-13T06:00:57.340Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "pick",
+        "at": "2026-11-13T06:02:57.527Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "order",
+        "at": "2026-11-13T06:04:01.845Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      }
+    ],
+    "tasksCompleted": 24,
+    "fixes": [
+      "Precache pear and potato before first scene entry",
+      "Separate lower landscape produce hit areas from receiving basket; full pick/order retests passed"
+    ],
+    "nativeHitGeometry": {
+      "at": "2026-11-13T06:02:35.840Z",
+      "target": "[1008,862][1743,1147]",
+      "proof": [
+        {
+          "source": "",
+          "bounds": "[438,360][795,570]",
+          "gap": 292,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[1316,360][1672,570]",
+          "gap": 292,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[438,573][795,783]",
+          "gap": 79,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[1316,573][1672,783]",
+          "gap": 79,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[2193,573][2550,783]",
+          "gap": 79,
+          "overlap": 0
+        }
+      ]
+    },
+    "audio": "Six game Help actions captured unmuted speaker-route playback; approved source casting and31 decoded files checked independently",
+    "pauseResume": "Task preserved",
+    "exitAfterDrag": "Extra immediate raw-tap test did not confirm closure; retest pending in linked acceptance receipt",
+    "bundleFilesMatched": 958,
+    "apkSha256": "7d8e2c55f740107308bf79baadce31fb6c0c871c80b0cb4bd0625a3e6de90f85"
+  },
+  "releaseGate": "All six native full rounds passed. Resolve final exit check, pass latest CI, preserve Meadow245 and verify public/installed-app58 before closing linked receipt.",
+  "checkpointAt": "2026-11-13T06:15:03.028Z",
+  "finalAcceptanceReceipt": "https://github.com/Sponsor-Sorter/Demo/pull/22#issuecomment-6845713182"
+}

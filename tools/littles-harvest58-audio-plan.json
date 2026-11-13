@@ -1,0 +1,176 @@
+{
+  "provider": "ElevenLabs",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "casts": {
+    "jade": "Hope - upbeat and clear",
+    "jay": "Mike - Animation, Explainers & Gaming",
+    "rhys": "Noah - YA Audiobooks Narrator"
+  },
+  "batches": [
+    {
+      "id": "harvest58-jade",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "harvest58-jade-pick-intro",
+          "text": "Hello, little harvester! Listen for the fruit or vegetable. Bring the matching harvest to your basket. You can drag it, or touch it and then touch the basket."
+        },
+        {
+          "id": "harvest58-jade-pick-done",
+          "text": "You picked our lovely harvest! Look at those full baskets. Thank you, little farmer. What a wonderful helper!"
+        },
+        {
+          "id": "harvest58-jade-pick-apple",
+          "text": "Can you find the apples? Bring the apples to your basket."
+        },
+        {
+          "id": "harvest58-jade-pick-strawberry",
+          "text": "Let's pick the strawberries. Bring the strawberries to your basket."
+        },
+        {
+          "id": "harvest58-jade-pick-pear",
+          "text": "Can you find the pears? Bring the pears to your basket."
+        },
+        {
+          "id": "harvest58-jade-pick-carrot",
+          "text": "Let's pick the carrots. Bring the carrots to your basket."
+        },
+        {
+          "id": "harvest58-jade-pick-corn",
+          "text": "Can you find the corn? Bring the corn to your basket."
+        },
+        {
+          "id": "harvest58-jade-pick-potato",
+          "text": "Let's pick the potatoes. Bring the potatoes to your basket."
+        }
+      ],
+      "speed": 0.96,
+      "verifiedSettings": true,
+      "chapter": "MTi18ObMd933ECRuLOzh"
+    },
+    {
+      "id": "harvest58-jay",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "harvest58-jay-order-intro",
+          "text": "Our farm friends need some shopping! Listen to the order, then move the harvest into the basket in the same order. You can hear it again whenever you like."
+        },
+        {
+          "id": "harvest58-jay-order-done",
+          "text": "Every order is packed and delivered! Our farm friends are so happy. Lovely listening, little helper!"
+        },
+        {
+          "id": "harvest58-jay-home-intro",
+          "text": "Let's help our friends get home! Hens like the cosy coop. Cows rest in the barn. Sheep and goats like the grassy paddock. Move each friend to their home."
+        },
+        {
+          "id": "harvest58-jay-home-done",
+          "text": "Everyone is home and cosy! You looked after our farm friends so well. Thank you, little helper!"
+        },
+        {
+          "id": "harvest58-jay-sort-intro",
+          "text": "Let's sort our fresh harvest! Move the fruit into the fruit basket, and the vegetables into the vegetable basket. The little pictures will help you."
+        },
+        {
+          "id": "harvest58-jay-sort-done",
+          "text": "All sorted! Our fruit and vegetables are ready for the market. You did a wonderful job!"
+        },
+        {
+          "id": "harvest58-jay-word-apple",
+          "text": "Apple."
+        },
+        {
+          "id": "harvest58-jay-word-strawberry",
+          "text": "Strawberry."
+        },
+        {
+          "id": "harvest58-jay-word-pear",
+          "text": "Pear."
+        },
+        {
+          "id": "harvest58-jay-word-carrot",
+          "text": "Carrot."
+        },
+        {
+          "id": "harvest58-jay-word-corn",
+          "text": "Corn."
+        },
+        {
+          "id": "harvest58-jay-word-potato",
+          "text": "Potato."
+        }
+      ],
+      "speed": 1,
+      "verifiedSettings": true,
+      "chapter": "JHRk3qxLqLFSDD3QrsIe"
+    },
+    {
+      "id": "harvest58-rhys",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "harvest58-rhys-count-intro",
+          "text": "Let's count our apples together! Pick every apple from the little tree and bring it to the basket. Then choose the number that tells us how many."
+        },
+        {
+          "id": "harvest58-rhys-count-answer",
+          "text": "Now all the apples are in the basket. How many did we pick? Move the matching number onto the little label."
+        },
+        {
+          "id": "harvest58-rhys-count-done",
+          "text": "Picked, counted and labelled! You counted our harvest so carefully. Great counting, little farmer!"
+        },
+        {
+          "id": "harvest58-rhys-fuller-intro",
+          "text": "Let's weigh our apple baskets! Put one basket on each side of the scales. Then look carefully. Which basket has more apples?"
+        },
+        {
+          "id": "harvest58-rhys-fuller-compare",
+          "text": "Both baskets are on the scales. The fuller basket goes lower. Touch the basket that has more apples."
+        },
+        {
+          "id": "harvest58-rhys-fuller-done",
+          "text": "You found the fuller basket every time! More apples make a heavier basket. Great comparing, little farmer!"
+        },
+        {
+          "id": "harvest58-rhys-number-1",
+          "text": "One."
+        },
+        {
+          "id": "harvest58-rhys-number-2",
+          "text": "Two."
+        },
+        {
+          "id": "harvest58-rhys-number-3",
+          "text": "Three."
+        },
+        {
+          "id": "harvest58-rhys-number-4",
+          "text": "Four."
+        },
+        {
+          "id": "harvest58-rhys-number-5",
+          "text": "Five."
+        }
+      ],
+      "speed": 1,
+      "verifiedSettings": true,
+      "chapter": "DEzAqpziRLbVTc2WWzpm",
+      "mode": "individual",
+      "rejectedCombinedSource": {
+        "file": "harvest58-rhys.mp3",
+        "reason": "Only4 of10 expected long boundaries; not imported or shipped.",
+        "chapter": "e9uj1wv4gStOXK505p23"
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "mode": "Built-in image_gen; full illustrations converted to WebP without rescaling",
+  "promptFile": "tools/littles-harvest58-art-prompts.json",
+  "files": [
+    {
+      "file": "assets/generated/harvest58/pick-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 310332,
+      "sha256": "54964da4cff753aa43bdf99ab5c8697be185d4b809598dfb3f5f56887b0b1356",
+      "sourceSha256": "454a296968e7063e2c039c0e42e340bf05210ae3b7ed37d6a1a4771c7daed9b4"
+    },
+    {
+      "file": "assets/generated/harvest58/order-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 312000,
+      "sha256": "5048f5d545f59fd030dcb2421039dab44cff2e5857c0dff36169062510b7f6be",
+      "sourceSha256": "acd0287ef8df7921dcb5cbf3f16cb6ac098f6759cf7660c9bfc04b31c6c5c8f7"
+    },
+    {
+      "file": "assets/generated/harvest58/home-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 338438,
+      "sha256": "6ef301483a6587edb6f154cdefd17015011ccabd39ea64abf2fccdbea672f2d0",
+      "sourceSha256": "56c6887d3fad2b70abde0bf202398aec32d80a1c41b6df3b5769b8008f7bb658"
+    },
+    {
+      "file": "assets/generated/harvest58/sort-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 389660,
+      "sha256": "e4ea1a033330e07a4cfe38d53fd370593f4f5a1cdf019afcfd413498417e95a6",
+      "sourceSha256": "ce407fa105f7f7bc945416d968abaf36d108f945ad0b38b3d3fba65a5253b12d"
+    },
+    {
+      "file": "assets/generated/harvest58/count-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 245104,
+      "sha256": "099f508bd8a86edb075c64f7588bda231ea6b916d9af90acb564fd1444d450b4",
+      "sourceSha256": "e404f1fd3d37bb8c81d3724ef71ebd85e305c4a27eb29530896acf425a62cacb"
+    },
+    {
+      "file": "assets/generated/harvest58/fuller-scene.webp",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 228134,
+      "sha256": "bb6dbd7a7175349c5ceb9f062472acb1f777355a4d7fe75f6b8e13ebaa40f9ab",
+      "sourceSha256": "d2cd78923f3115b396a64fb5261763a9150fd671e2e1cc4238d0e72b26cb9a56"
+    },
+    {
+      "file": "assets/generated/harvest58/coop.webp",
+      "width": 515,
+      "height": 494,
+      "hasAlpha": true,
+      "bytes": 87908,
+      "sha256": "a9fd9ac76bad09b974bdf9ac3f26d38c3fc3c7d1cd904861c19839aa4012e676",
+      "sourceSha256": "559c1bd71e46643ccbade8d6b850be8bc291e29cf510c1b00a9624c8c7cceea8",
+      "cell": 0
+    },
+    {
+      "file": "assets/generated/harvest58/barn.webp",
+      "width": 568,
+      "height": 496,
+      "hasAlpha": true,
+      "bytes": 76956,
+      "sha256": "3012b6d968aeda6243419ea3b915258548276bc52de570490e2c6e3d40182020",
+      "sourceSha256": "559c1bd71e46643ccbade8d6b850be8bc291e29cf510c1b00a9624c8c7cceea8",
+      "cell": 1
+    },
+    {
+      "file": "assets/generated/harvest58/paddock.webp",
+      "width": 571,
+      "height": 406,
+      "hasAlpha": true,
+      "bytes": 89734,
+      "sha256": "9b79ac22649f37a38f58be97ea496ae236409a71a0abb4db078563bb20515489",
+      "sourceSha256": "559c1bd71e46643ccbade8d6b850be8bc291e29cf510c1b00a9624c8c7cceea8",
+      "cell": 2
+    },
+    {
+      "file": "assets/generated/harvest58/pedestal.webp",
+      "width": 358,
+      "height": 475,
+      "hasAlpha": true,
+      "bytes": 38494,
+      "sha256": "00ad09443d4bf8d99409ab5c146aa07288ccc713c719f0f0782490b6ec6bb935",
+      "sourceSha256": "559c1bd71e46643ccbade8d6b850be8bc291e29cf510c1b00a9624c8c7cceea8",
+      "cell": 3
+    }
+  ]
+}

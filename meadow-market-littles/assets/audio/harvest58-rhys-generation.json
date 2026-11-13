@@ -1,0 +1,137 @@
+{
+  "provider": "ElevenLabs Studio",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-13T04:21:32.739Z",
+  "voice": "Noah - YA Audiobooks Narrator",
+  "farmer": "rhys",
+  "speed": 1,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "chapter": "DEzAqpziRLbVTc2WWzpm",
+  "processing": "One independent generated paragraph per cue; loudness normalization only, no cue guessing or time stretching",
+  "files": [
+    {
+      "id": "harvest58-rhys-count-intro",
+      "text": "Let's count our apples together! Pick every apple from the little tree and bring it to the basket. Then choose the number that tells us how many.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-01.mp3",
+      "sourceSha256": "f0262324911fc2a9a9aebdb9130a6dcb3b375d010238f7904f6409f326f45058",
+      "bytes": 93458,
+      "sha256": "a71580256c2966113a9f1c9a87cfb530930051305580975c6c576748f1601b7e"
+    },
+    {
+      "id": "harvest58-rhys-count-answer",
+      "text": "Now all the apples are in the basket. How many did we pick? Move the matching number onto the little label.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-02.mp3",
+      "sourceSha256": "551f4326877814a0e6154b1670fb75bfe2e90dfd02f3fffc48c40e1ecc7c1378",
+      "bytes": 94399,
+      "sha256": "210334b039af8b95adfa0bb24c9fb4d84b7adfb56eaa9062b4b4fafbe4b832d7"
+    },
+    {
+      "id": "harvest58-rhys-count-done",
+      "text": "Picked, counted and labelled! You counted our harvest so carefully. Great counting, little farmer!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-03.mp3",
+      "sourceSha256": "527f1411b5ba8f9f31fd936a87e43f78a33bc9510b34c0e7343e7c880785f5d2",
+      "bytes": 105997,
+      "sha256": "5506ab589716c0f571f2feba74c45d7ddb314d6d77733f865dcc14fd30867442"
+    },
+    {
+      "id": "harvest58-rhys-fuller-intro",
+      "text": "Let's weigh our apple baskets! Put one basket on each side of the scales. Then look carefully. Which basket has more apples?",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-04.mp3",
+      "sourceSha256": "e143f9d8a7ee20f866eaec71f962b977d3cb05fce5b3cdfc0d3c30a1859b41e3",
+      "bytes": 155839,
+      "sha256": "0ff763dd9dfc0f83f46c8a489fd2ce3945eecd5d5578de348754b3ddcd7115b8"
+    },
+    {
+      "id": "harvest58-rhys-fuller-compare",
+      "text": "Both baskets are on the scales. The fuller basket goes lower. Touch the basket that has more apples.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-05.mp3",
+      "sourceSha256": "7261494ebf37972c272f6b79304bbaeb0f949e7193058fa15e0f798250edec76",
+      "bytes": 78725,
+      "sha256": "11155f11688c9ede9d1f84b5c0af4f9bd96ef5d87a8e34090c2e89141267465e"
+    },
+    {
+      "id": "harvest58-rhys-fuller-done",
+      "text": "You found the fuller basket every time! More apples make a heavier basket. Great comparing, little farmer!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-06.mp3",
+      "sourceSha256": "93aa57e65c4f87e07026f4bc4f227e209a01b7c54b8f6745c7dbe1dc40603810",
+      "bytes": 132329,
+      "sha256": "dd576972261bc314966b865ebb14cabca7e067040fdfe1eaf1558d9ee1ed31fe"
+    },
+    {
+      "id": "harvest58-rhys-number-1",
+      "text": "One.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-07.mp3",
+      "sourceSha256": "4fb2ca6859a8f4bbc07a2f9cefee33f1dc43eded561ff1593c52311f18ebb280",
+      "bytes": 6941,
+      "sha256": "402f6bba0830484d726020dfadb56dd1dff93e52ba9a548fd3bc5348a0081f0d"
+    },
+    {
+      "id": "harvest58-rhys-number-2",
+      "text": "Two.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-08.mp3",
+      "sourceSha256": "dfd2bcc6c49b251213dfc92ecf2a6d882cb60b16a54b28b8c5ca785afe298fbf",
+      "bytes": 9135,
+      "sha256": "7d5b1d490a7a8d0cc3558b5b6e53d9683f04ebe43547c605b67864d8740deea6"
+    },
+    {
+      "id": "harvest58-rhys-number-3",
+      "text": "Three.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-09.mp3",
+      "sourceSha256": "feaa284688bb5eb9fe59083bc03b98494377f76b5acb59386210627b7104160c",
+      "bytes": 10703,
+      "sha256": "ef9040a3a67034f780b72066652c93eb3048bc96980c2d6638dc71ad455e7d8a"
+    },
+    {
+      "id": "harvest58-rhys-number-4",
+      "text": "Four.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-10.mp3",
+      "sourceSha256": "e4a3887c04dcfb203f5b8715356e988429b8c3fa02836ef7e40537c756e1f122",
+      "bytes": 8508,
+      "sha256": "40705d477650835befe5029d52c9592c4f8ae0a0ead5789f2cf61fe5f854cf95"
+    },
+    {
+      "id": "harvest58-rhys-number-5",
+      "text": "Five.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "harvest58-rhys-11.mp3",
+      "sourceSha256": "010b4cada655f52fa50568226915d21ad76c379925a30c7bb708e93d3f7d0e08",
+      "bytes": 10389,
+      "sha256": "9eda415d84920c3b34d7fa9692907be7c3e0f2cf0b2ed77fe5ec3a2342ffbae5"
+    }
+  ]
+}

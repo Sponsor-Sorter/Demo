@@ -1,0 +1,150 @@
+{
+  "provider": "ElevenLabs Studio",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-13T03:54:45.053Z",
+  "voice": "Mike - Animation, Explainers & Gaming",
+  "farmer": "jay",
+  "speed": 1,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "chapter": "JHRk3qxLqLFSDD3QrsIe",
+  "sourceFile": "harvest58-jay.mp3",
+  "sourceSha256": "c2f24d5c7c4ba6a221f76d2b0ba225c59a55c9d1654c20fea5236205eb855f88",
+  "processing": "Separate at verified2second cue boundaries; loudness normalization only; no time stretching",
+  "files": [
+    {
+      "id": "harvest58-jay-order-intro",
+      "text": "Our farm friends need some shopping! Listen to the order, then move the harvest into the basket in the same order. You can hear it again whenever you like.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 0,
+      "end": 8.193109999999999,
+      "bytes": 99195,
+      "sha256": "cafb6ad200adc1ca1a3c38c2b5ae187516fd7865fab96a07b1b6936bbf92a33f"
+    },
+    {
+      "id": "harvest58-jay-order-done",
+      "text": "Every order is packed and delivered! Our farm friends are so happy. Lovely listening, little helper!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 10.1925,
+      "end": 16.1024,
+      "bytes": 71923,
+      "sha256": "8b1c70b92f834627b6aee47471edf7d1a7b010b55dbb4627f6b9c5faac896dad"
+    },
+    {
+      "id": "harvest58-jay-home-intro",
+      "text": "Let's help our friends get home! Hens like the cosy coop. Cows rest in the barn. Sheep and goats like the grassy paddock. Move each friend to their home.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 18.0564,
+      "end": 28.311400000000003,
+      "bytes": 123959,
+      "sha256": "053c99cd041f523b831cf7dd8e053250f507f9bdff941a276e45b9ef445e6a9c"
+    },
+    {
+      "id": "harvest58-jay-home-done",
+      "text": "Everyone is home and cosy! You looked after our farm friends so well. Thank you, little helper!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 30.206699999999998,
+      "end": 35.6872,
+      "bytes": 66594,
+      "sha256": "72b4a582b5b1f79d2375c9f8bc31facc76a25395fbbb6b8033122e6625732089"
+    },
+    {
+      "id": "harvest58-jay-sort-intro",
+      "text": "Let's sort our fresh harvest! Move the fruit into the fruit basket, and the vegetables into the vegetable basket. The little pictures will help you.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 37.748599999999996,
+      "end": 45.721399999999996,
+      "bytes": 96687,
+      "sha256": "7defba39af924c18491ae9b1556ff967dea75c58cd518ecac85c397b1ff8c8e5"
+    },
+    {
+      "id": "harvest58-jay-sort-done",
+      "text": "All sorted! Our fruit and vegetables are ready for the market. You did a wonderful job!",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 47.731899999999996,
+      "end": 52.5783,
+      "bytes": 59071,
+      "sha256": "cf990bd3b7900ff9783a599a70c86e1d7d32490c15755c71faece284221bfb98"
+    },
+    {
+      "id": "harvest58-jay-word-apple",
+      "text": "Apple.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 54.5436,
+      "end": 55.1446,
+      "bytes": 8289,
+      "sha256": "826c8ef5c872b0b0622d400485f026d546d9ef8c4673574b2ded6860e00aad18"
+    },
+    {
+      "id": "harvest58-jay-word-strawberry",
+      "text": "Strawberry.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 57.0606,
+      "end": 57.9771,
+      "bytes": 12050,
+      "sha256": "1d3c8867fc746569851fb970ed02e5bd8cdd541dbe4fa0d9b84cde04584ef9c6"
+    },
+    {
+      "id": "harvest58-jay-word-pear",
+      "text": "Pear.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 60.0023,
+      "end": 60.543299999999995,
+      "bytes": 7348,
+      "sha256": "63cbfc1a33ede83bc5f9f0d4eee0b79e7aef846f1c6ef5bd3b33ed782de89248"
+    },
+    {
+      "id": "harvest58-jay-word-carrot",
+      "text": "Carrot.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 62.5525,
+      "end": 63.1098,
+      "bytes": 7662,
+      "sha256": "66bac7991113c364efa8e1aeb1e9096ec38674730d4f89a4b12ead3ed785fa30"
+    },
+    {
+      "id": "harvest58-jay-word-corn",
+      "text": "Corn.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 65.1979,
+      "end": 65.8251,
+      "bytes": 8602,
+      "sha256": "9558f4395d3b1186e5b3bba4bfdf498581b426e08a8d47073191afc5961b3a25"
+    },
+    {
+      "id": "harvest58-jay-word-potato",
+      "text": "Potato.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "start": 67.81880000000001,
+      "end": null,
+      "bytes": 11737,
+      "sha256": "ef7f7fef40d03959a958a9bc93d3e36e08ce86b127655d2112f50b0873fc83bc"
+    }
+  ]
+}
