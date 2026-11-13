@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 13 November 2026 — Samsung pack and transfer follow-up 243
+
+Physical Samsung QA accepted the actual 240→242 update, preserved level 70, delivered a new approved-free Coop Charm exactly once (20 gems, three boosters), and activated crop/egg boosters with two charges remaining. A chicken transferred Back Pasture→Willowbrook with its earned egg credit retained. QA found worker refreshes detaching the native animal filter and cross-farm home drops omitting the coop ID. Both are corrected in 243. Further touch checks found transparent rotated barn/paddock image corners intercepting adjacent fields; all 32 views now use checked alpha outlines without changing their art. with focused UI/reducer checks passing. Gateway 55 matches all eight reviewed files and retains JWT verification. Public 243 deployment and final Samsung acceptance are in progress; this entry does not claim them complete. Google Play native 1.7.6/code 16 was confirmed Available on Google Play in the preceding acceptance. No real-money orders or new Google checkout were made in this follow-up.
+
 ## 12 November 2026 — Harvest Fair 239 live; native 16 in Production review
 
 Two six-step story arcs, four recordings in the approved farmer cast, and three permanent A$0.99 cosmetic arrangements are live on web 239. All 42 changed public files match tested `dfb8a25a`; final game/Android CI and Pages passed. Three real Google $0 orders, server acknowledgement, cancellation, restore/restart and an actual refund/automatic revocation passed. All history is retained. Ten backend products are enabled; the temporary provider lease is removed and approved free testers remain separate. Browser/Samsung update notices and portrait/landscape pack layouts passed; original phone settings were restored. Play 1.7.6/code 16 is submitted and explicitly **in review**, not yet confirmed public. [Full acceptance and limits](MEADOW_HARVEST_FAIR238.md).
@@ -103,3 +107,7 @@ Public payments, ads, production readiness and new-farm issuance remainfalse. Te
 | Public release | Publicbeta1.7.1 was observed Changes in review on2November; internal12 is installed. Public installation/store link, current Google approval and AdMob app readiness remain separate. Production was not submitted. |
 
 The desktop browser-control runtime failed before initialization with “failed to write kernel assets … os error3”; reset/retry did not recover it. Current-turn browser UI/dashboard checks are therefore unverified. Static public-byte verification and real Samsung checks are recorded separately. No alternate browser-control bypass was used.
+# 13 November 2026 — pack benefits 242 live
+
+Each existing A$0.99 keepsake now includes 20 gems, three manually activated +25%/fifteen-minute boosters and its corresponding once-per-farm +5% placement bonus. Existing active owners received extras once. Refunds retain history, stop effects and protect consumed benefits. Main CI/Pages passed, all twelve public files match, and browser/Samsung acceptance is recorded with exact scope. Production 1.7.6/code 16 is **Available on Google Play**. [Final receipt](MEADOW_PACK_BENEFITS242_ACCEPTANCE.md).
+

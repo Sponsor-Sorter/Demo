@@ -12,3 +12,14 @@ const feedA={...ready,id:'same',hunger:20,treatBonus:true,needsAt:Date.now()},fe
 a.attach({level:()=>feedLevel,farms:()=>feedFarms,current:()=>feedFarms.one,coins:()=>feedGold,spend:n=>{if(feedGold<n)return false;feedGold-=n;return true},xp:n=>feedXP+=n,event(){},save:()=>feedSaves++,render:()=>feedRenders++,notify(){}});
 assert.equal(a.careAllLevel,5);assert(!a.careAllUnlocked());assert.equal(a.careAll(),0);assert.equal(feedGold,19);assert.equal(feedSaves,0);feedLevel=5;assert(a.careAllUnlocked());assert.equal(a.careAllPlan().cost,20);assert.equal(a.careAll(),0);assert.equal(feedGold,19);assert.equal(Math.round(feedA.hunger),20);assert.equal(feedSaves,0);
 feedGold=20;assert.equal(a.careAll(),2);assert.equal(feedGold,0);assert.equal(feedA.hunger,100);assert.equal(feedB.hunger,100);assert.equal(Math.round(feedA.clean),100);assert.equal(Math.round(feedA.happy),100);assert.equal(feedA.lastProductAt,0);assert(feedA.treatBonus);assert.equal(feedFarms.one.inventory.wheat,4);assert.equal(feedFarms.two.inventory.wheat,7);assert.equal(feedSaves,1);assert.equal(feedRenders,1);assert.equal(feedXP,4);assert.equal(a.careAll(),0);assert.equal(feedGold,0);assert.equal(feedSaves,1);assert.equal(a.careAllPlan().cost,0);console.log('Paid care-all: level-five unlock, all three needs filled, ten gold per animal needing care across farms, exact spending, full-food skip, insufficient funds, no duplicate charge and preserved produce/treats passed.');
+
+// Worker refreshes must preserve the live Android option-picker owner.
+for (const id of ['animal-species','animal-map-filter']) {
+ const select={id}, previousQuery=scope.document.querySelector;
+ scope.document.activeElement=select;
+ scope.document.querySelector=q=>q==='#'+id?select:null;
+ assert.doesNotThrow(()=>a.render(),'A background refresh must leave the focused '+id+' attached');
+ scope.document.querySelector=previousQuery;
+}
+scope.document.activeElement=null;
+console.log('Focused species and farm-area selects survive background refreshes until selection.');

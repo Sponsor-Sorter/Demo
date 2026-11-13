@@ -1,8 +1,14 @@
 # Meadow Markets active work
 
+## 13 November 2026 — Samsung pack and transfer follow-up 243
+
+Physical Samsung QA accepted the actual 240→242 update, preserved level 70, delivered a new approved-free Coop Charm exactly once (20 gems, three boosters), and activated crop/egg boosters with two charges remaining. A chicken transferred Back Pasture→Willowbrook with its earned egg credit retained. QA found worker refreshes detaching the native animal filter and cross-farm home drops omitting the coop ID. Both are corrected in 243. Further touch checks found transparent rotated barn/paddock image corners intercepting adjacent fields; all 32 views now use checked alpha outlines without changing their art. with focused UI/reducer checks passing. Gateway 55 matches all eight reviewed files and retains JWT verification. Public 243 deployment and final Samsung acceptance are in progress; this entry does not claim them complete. Google Play native 1.7.6/code 16 was confirmed Available on Google Play in the preceding acceptance. No real-money orders or new Google checkout were made in this follow-up.
+
 Updated 12 November 2026. Use this list for current work. [MEADOW_BACKLOG.md](MEADOW_BACKLOG.md) retains historical release evidence; its older pending/off/disabled statements are not the current configuration.
 
 ## Completed in the current follow-up
+
+- Pack benefits 242 are fully published: main game/optimized Android CI `43227909307` and Pages `43227906936` passed; all twelve public files match. Browser update to 242 retained its farm. Samsung pack delivery/activation and 239→240 update passed; the later transfer fixes have shared-reducer coverage. Gateway 54 read-back matches all eight files, JWT enabled. [Final acceptance and exact device scope](MEADOW_PACK_BENEFITS242_ACCEPTANCE.md).
 
 - Pack benefits 240 are live and accepted in browser/Samsung: each A$0.99 keepsake adds 20 gems, three manually activated 25%/fifteen-minute boosters and its corresponding once-per-farm 5% placement effect. Existing active owners receive extras once; refunds stop effects and used consumables receive review protection. All 12 public files match; main CI/Pages passed. The real 239→240 update retained both test farms. Touch follow-up 241 preserves the pack panel's scroll/disclosure during redraw and is live. Timing follow-up 242 carries earned boost progress across farm transfers, with 38 focused checks passing. Production 1.7.6/code 16 is explicitly Available on Google Play. [Scope and evidence](MEADOW_PACK_BENEFITS240.md).
 
