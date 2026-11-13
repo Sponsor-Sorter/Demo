@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 13 November 2026 — captured home-anchor tap246
+
+245 is public (main CI43375229501, Pages43375229235, nine public files match f9f6e1af) and the Samsung accepted244→245 with its farm retained. Its final native home-roof retest exposed the camera capture listener running before the object listener:245 did not complete that fix.246 resolves compatible homes before projecting tap coordinates in both event phases. The regression now dispatches the actual capture listener, actual placeAt and actual completeTransfer before any bubble listener, using a roof point whose projected cell is outside the home. Normal taps, incompatible obstacles, panning suppression and source safety are covered. Final native246 acceptance/publication remain pending.
+
 ## 13 November 2026 — native transfer tap follow-up 245
 
 244 is publicly live: all nine changed files match bfc03603; game/optimized Android CI43370293349 and Pages43370293663 passed. Samsung accepted243→244, retained level70 and passed real crop tapping beside the paddock and both native animal filters. Native pack QA delivered the approved-free Coop Charm exactly once (+20gems/three charges); manual crop and egg activations and cross-farm earned-progress persistence were observed. No new Google checkout or real-money order was made.
