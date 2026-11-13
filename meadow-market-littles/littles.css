@@ -31,10 +31,10 @@ body{background-color:#efdfc5}#littles-home{background:#fff7e6f5}
 /* Grown-up account controls share the farm's parchment and green palette. */
 .littles-account{box-sizing:border-box;width:min(92vw,36rem);max-height:88dvh;margin:auto;padding:clamp(18px,4vw,30px);overflow:auto;overscroll-behavior:contain;border:3px solid #57805b;border-radius:24px;background:#fff9e8;color:#293b2f;box-shadow:0 18px 70px #193d3366;font:600 16px/1.5 Nunito,system-ui,sans-serif;text-align:left}
 .littles-account::backdrop{background:#183e32a6}
-.littles-account h2{font-size:clamp(1.5rem,6vw,2rem);line-height:1.2;margin:0 0 12px;color:#234f39}
+.littles-account h2{font-size:clamp(1.5rem,6vw,2rem);line-height:1.2;margin:0 0 12px;padding-right:48px;color:#234f39}
 .littles-account h3{font-size:1.1rem;margin:24px 0 10px;padding-top:18px;border-top:1px solid #d5ddbd;color:#234f39}
 .littles-account p{font-size:.95rem;margin:10px 0;color:#425643;overflow-wrap:anywhere}
-.littles-account [role=status]{position:sticky;top:0;z-index:1;background:#edf4d9;border:1px solid #afc994;border-radius:12px;padding:12px;color:#284b31}
+.littles-account [role=status]{background:#edf4d9;border:1px solid #afc994;border-radius:12px;padding:12px;color:#284b31}
 .littles-account label{display:block;margin:14px 0 6px;font-size:.95rem}
 .littles-account input,.littles-account textarea{display:block;box-sizing:border-box;width:100%;min-height:48px;margin-top:5px;padding:10px 12px;border:2px solid #9caf89;border-radius:12px;background:#fffef8;color:#273d2c;font:inherit}
 .littles-account .littles-account-id{font:500 .82rem/1.5 ui-monospace,monospace;background:#f1efdF;user-select:text}
@@ -42,4 +42,5 @@ body{background-color:#efdfc5}#littles-home{background:#fff7e6f5}
 .littles-account button:hover{background:#295537}
 .littles-account button:disabled{opacity:.6;cursor:wait}
 .littles-account :focus-visible{outline:3px solid #e4a32d;outline-offset:3px}
-.littles-account>button:last-child{position:sticky;bottom:0;background:#f8e6ad;color:#35482d;border:2px solid #b1a06a;box-shadow:0 4px 14px #293b2f22}
+.littles-account>button:last-child{background:#f8e6ad;color:#35482d;border:2px solid #b1a06a;box-shadow:0 4px 14px #293b2f22}
+.littles-account>.account-close{position:absolute;top:12px;right:12px;width:44px;min-height:44px;margin:0;padding:0;border:1px solid #9caf89;border-radius:50%;background:#fff9e8;color:#293b2f;font-size:1.7rem;line-height:1}

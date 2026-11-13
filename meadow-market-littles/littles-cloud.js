@@ -109,6 +109,9 @@
   if(dialog?.open){dialog.focus();return;}
   const d=document.createElement('dialog');dialog=d;d.className='littles-account';d.setAttribute('aria-label','Cloud save and grown-up account');
   const add=(tag,text)=>{const el=document.createElement(tag);el.textContent=text;d.append(el);return el};
+  const closeAccount=()=>{d.close();d.remove();dialog=null;updateDialog=null;};
+  // Focus a non-editable control so opening the panel does not raise the phone keyboard.
+  const topClose=add('button','×');topClose.type='button';topClose.className='account-close';topClose.autofocus=true;topClose.setAttribute('aria-label','Close account');topClose.onclick=closeAccount;
   add('h2','Grown-up account');add('p','Stay signed in on this device and keep your farm progress safe.');
   const stateMessage={connecting:'Connecting to your saved account…',ready:'Connected. Your sign-in is saved on this device.',saved:'Your progress is saved online.',saving:'Saving your progress…',offline:'You can keep playing. We’ll reconnect when you’re online.',auth_required:'Please sign in again. Your progress is still saved on this device.',signed_out:'Signed out. Your progress is still saved on this device.',choice_required:'Choose which progress to keep below. Nothing is replaced automatically.',retry_required:'Your progress is on this device. Retry the pending cloud save below.',banned:'Cloud saves are paused. A grown-up can check account safety below.'};
   const result=add('p',stateMessage[status]||'Check your account and cloud save below.');result.setAttribute('role','status');
@@ -170,7 +173,7 @@
    button('Send password recovery email',()=>recover(email.value));
    if(user&&!user.is_anonymous)button('Sign out from Littles',signOut);
   }
-  button('Close',()=>{d.close();d.remove();dialog=null;updateDialog=null;return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null;updateDialog=null});document.body.append(d);d.showModal();
+  button('Close',()=>{closeAccount();return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null;updateDialog=null});document.body.append(d);d.showModal();
   updateDialog=()=>{if(!d.open)return;if(renderedIdentity!==accountIdentity()){d.close();d.remove();dialog=null;updateDialog=null;openAccount();return}result.textContent=stateMessage[status]||'Check your account and cloud save below.';renderSafety();};
  }
  async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
