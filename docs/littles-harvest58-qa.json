@@ -1,7 +1,7 @@
 {
   "date": "2026-11-13",
   "candidateBuild": 58,
-  "status": "Local browser acceptance passed. Physical-phone gate pending; not published.",
+  "status": "Dated pre-publication checkpoint: eight full native rounds passed; final exit gesture, CI and rollout tracked in linked acceptance receipt.",
   "scope": [
     "listenharvest",
     "spokenorder",
@@ -695,7 +695,107 @@
     "limitation": "Source/provenance, decode and output-route checks are not a recorded aural assessment of phone speaker sound."
   },
   "phone": {
-    "status": "Awaiting exclusive release of Samsung from Meadow243 testing"
+    "device": "Samsung SM-S908E",
+    "app": "Separate bundled Capacitor native QA app com.meadowmarket.littles.qa58; production package/data untouched",
+    "method": "Fresh native UIA labels/images and actual USB touch swipes; no hidden model/save calls",
+    "fullRounds": [
+      {
+        "kind": "pick",
+        "at": "2026-11-13T05:49:36.503Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "order",
+        "at": "2026-11-13T05:52:17.108Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "home",
+        "at": "2026-11-13T05:53:34.423Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "sort",
+        "at": "2026-11-13T05:55:16.479Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "count",
+        "at": "2026-11-13T05:56:50.392Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "fuller",
+        "at": "2026-11-13T06:00:57.340Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "pick",
+        "at": "2026-11-13T06:02:57.527Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      },
+      {
+        "kind": "order",
+        "at": "2026-11-13T06:04:01.845Z",
+        "result": "Normal three-task win using physical USB touches",
+        "stars": "Three meadow stars"
+      }
+    ],
+    "tasksCompleted": 24,
+    "fixes": [
+      "Precache pear and potato before first scene entry",
+      "Separate lower landscape produce hit areas from receiving basket; full pick/order retests passed"
+    ],
+    "nativeHitGeometry": {
+      "at": "2026-11-13T06:02:35.840Z",
+      "target": "[1008,862][1743,1147]",
+      "proof": [
+        {
+          "source": "",
+          "bounds": "[438,360][795,570]",
+          "gap": 292,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[1316,360][1672,570]",
+          "gap": 292,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[438,573][795,783]",
+          "gap": 79,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[1316,573][1672,783]",
+          "gap": 79,
+          "overlap": 0
+        },
+        {
+          "source": "",
+          "bounds": "[2193,573][2550,783]",
+          "gap": 79,
+          "overlap": 0
+        }
+      ]
+    },
+    "audio": "Six game Help actions captured unmuted speaker-route playback; approved source casting and31 decoded files checked independently",
+    "pauseResume": "Task preserved",
+    "exitAfterDrag": "Extra immediate raw-tap test did not confirm closure; retest pending in linked acceptance receipt",
+    "bundleFilesMatched": 958,
+    "apkSha256": "7d8e2c55f740107308bf79baadce31fb6c0c871c80b0cb4bd0625a3e6de90f85"
   },
-  "releaseGate": "Complete physical full rounds before main/Pages publication; preserve Meadow243 c8b64830, package14 and control consumer53."
+  "releaseGate": "All six native full rounds passed. Resolve final exit check, pass latest CI, preserve Meadow245 and verify public/installed-app58 before closing linked receipt.",
+  "checkpointAt": "2026-11-13T06:15:03.028Z",
+  "finalAcceptanceReceipt": "https://github.com/Sponsor-Sorter/Demo/pull/22#issuecomment-6845713182"
 }

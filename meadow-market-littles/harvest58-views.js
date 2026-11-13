@@ -8,7 +8,7 @@
   const placed=(a,items)=>'<span class="hp-basket-food">'+items.map((id,i)=>img(a,id,'hp-stowed hp-position-'+i)).join('')+'</span>';
   const basket=(a,items,label='')=>img(a,'basket','hp-basket-art',label)+placed(a,items);
   const source=(a,id,index,style='',cls='')=>a.source(String(index),id+' '+(index+1),img(a,id,'',id),style,'hp-harvest-piece '+cls);
-  function pieces(a,cls=''){const s=a.state;return s.items.map((id,i)=>s.moved.includes(i)?'':source(a,id,i,'left:'+(20+i%3*30)+'%;top:'+((cls.includes('hp-sort-piece')?20:27)+Math.floor(i/3)*(cls.includes('hp-sort-piece')?23:27))+'%',cls)).join('');}
+  function pieces(a,cls=''){const s=a.state;return s.items.map((id,i)=>s.moved.includes(i)?'':source(a,id,i,'left:'+(20+i%3*30)+'%;top:var(--hp-row-'+Math.floor(i/3)+','+((cls.includes('hp-sort-piece')?20:27)+Math.floor(i/3)*(cls.includes('hp-sort-piece')?23:27))+'%)',cls)).join('');}
   const title=(a,content)=>'<div class="hp-goal">'+content+'</div>';
   const dockNote=text=>'<span class="hp-dock-note">'+text+'</span>';
   const helper=(a,id='sheep')=>'<div class="hp-helper">'+img(a,id,'','Your farm friend')+'</div>';
