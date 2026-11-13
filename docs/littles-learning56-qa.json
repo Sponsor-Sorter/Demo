@@ -2,7 +2,7 @@
   "candidateBuild": 56,
   "date": "2026-11-13",
   "timezone": "Australia/Sydney",
-  "status": "Built and browser-tested; physical phone acceptance pending. Do not publish the catalogue yet.",
+  "status": "Historical pre-publication receipt; superseded by docs/littles-learning-phone57-qa.json after the user requested publishing and native-app testing.",
   "publicCatalogueBuild": 55,
   "preview": "https://sponsorsorter.com/meadow-market-littles/learning56-preview.html?qa=56",
   "art": "24 generated originals, including ten distinct farm scenes, ten illustrated previews, transparent word/prop atlases, a bunny and the cleaned Pip background; derived pieces and hashes are in assets/generated/learning56/generation.json.",
