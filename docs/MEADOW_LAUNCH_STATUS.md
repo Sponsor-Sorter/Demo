@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 13 November 2026 — build246 native pack/transfer acceptance complete
+
+Web246 is live: main game/optimized Android CI43379924456 and Pages43379924295 passed; all nine changed public files match28f7017e. Browser and Samsung actual245→246 updates retained their separate farms. Samsung Settings confirms246. Native pack delivery/activation, both animal filters, crop tapping and cross-farm progress preservation passed. The returned chicken is in its original Back coop (7/7 residents); all90animals and695gems remain. A fresh corn plot transferred while still growing with its original planting clock.
+
+Final native QA also exposed a server restriction on cross-farm home assignment. The gateway now moves/assigns atomically after validating capacity/type/unique home ID;40 focused checks pass. Gateway60 is deployed, JWT enabled, read-back8/8; the normal roof-drop path passed physically on59 before the ambiguous-ID guard. No real-money order, new Google checkout or Play binary was made. Play1.7.6/code16 availability was confirmed in the preceding acceptance. Samsung released with original settings; further native use requires an idle/released phone. [Acceptance, scope and evidence](MEADOW_NATIVE_PACKS246_ACCEPTANCE.md).
+
 ## 13 November 2026 — captured home-anchor tap246
 
 245 is public (main CI43375229501, Pages43375229235, nine public files match f9f6e1af) and the Samsung accepted244→245 with its farm retained. Its final native home-roof retest exposed the camera capture listener running before the object listener:245 did not complete that fix.246 resolves compatible homes before projecting tap coordinates in both event phases. The regression now dispatches the actual capture listener, actual placeAt and actual completeTransfer before any bubble listener, using a roof point whose projected cell is outside the home. Normal taps, incompatible obstacles, panning suppression and source safety are covered. Final native246 acceptance/publication remain pending.

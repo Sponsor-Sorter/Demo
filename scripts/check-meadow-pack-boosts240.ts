@@ -65,6 +65,21 @@ Deno.test('A chicken keeps earned production time through a farm move and starts
  ({W}=rules(s,now+50000));hen=s.farms.back.objects.find((o:any)=>o.id==='hen');
  assert(!W.meadowAnimals.ready(hen,now+55000),'Collected egg reused the old cycle bonus');assert(W.meadowAnimals.ready(hen,now+57500),'New cycle did not finish normally');
 });
+Deno.test('Cross-farm animal home moves are atomic and retain earned egg progress',()=>{
+ for(const [type,homeType,key] of [['chicken','coop','coopId'],['cow','barn','barnId'],['goat','paddock','paddockId']]){
+  let s=initial();const a:any={id:'traveller',type,x:4,y:3,lastProductAt:now,lastCare:now,needsAt:now,hunger:95,clean:95,happy:95};
+  s.farms.willow.objects=[a];s.farms.back.objects=[{id:'destination-home',type:homeType,tier:1,x:7,y:5}];
+  if(type==='chicken')s=run(s,'pack.activate','coop_charm').save;
+  const result=run(s,'build.move','traveller',now+10000,'willow',{destination:'back',home:'destination-home',x:99,y:99});s=result.save;
+  const moved=s.farms.back.objects.find((o:any)=>o.id==='traveller');assert(moved,'Animal missing from destination');eq(moved[key],'destination-home');eq([moved.x,moved.y],[7,5]);eq(moved.lastProductAt,now);eq(s.farms.willow.objects.length,0);
+  eq(s.farms.back.objects.filter((o:any)=>o.type===type).length,1);if(type==='chicken')close(moved.packEggMs,2500);
+ }
+});
+Deno.test('Cross-farm homes reject full, incompatible and missing targets without changing the source',()=>{
+ for(const target of ['full','wrong','missing','ambiguous']){const s=initial();s.farms.willow.objects=[{id:'hen',type:'chicken',x:4,y:3,lastProductAt:now}];s.farms.back.objects=target==='missing'?[]:[{id:'home',type:target==='wrong'?'barn':'coop',tier:0,x:7,y:5},...(target==='full'?[{id:'hen',type:'chicken',coopId:'home',x:7,y:5}]:target==='ambiguous'?[{id:'home',type:'coop',tier:1,x:8,y:5}]:[])];const before=JSON.stringify(s);denied(()=>run(s,'build.move','hen',now,'willow',{destination:'back',home:'home'}));eq(JSON.stringify(s),before);}
+ let s=initial();s.farms.willow.objects=[{id:'hen',type:'chicken',x:4,y:3,lastProductAt:now}];s.farms.back.objects=[{id:'home',type:'coop',tier:1,x:7,y:5},{id:'hen',type:'chicken',coopId:'home',x:7,y:5}];
+ s=run(s,'build.move','hen',now,'willow',{destination:'back',home:'home'}).save;const hens=s.farms.back.objects.filter((o:any)=>o.type==='chicken');eq(hens.length,2);eq(new Set(hens.map((o:any)=>o.id)).size,2);assert(hens.every((o:any)=>o.coopId==='home'),'Renamed incoming hen was not assigned');eq(s.farms.willow.objects.length,0);
+});
 Deno.test('Offline shop sales use each sale time, fractional carry and the correct map',()=>{
  let s=initial();for(const f of Object.values(s.farms) as any[]){f.objects=[{id:'stall',type:'stall',x:4,y:3}];f.shop={unlocked:true,stock:{carrot:50},lastSaleAt:now,tier:0,earned:0};}
  s=run(s,'pack.activate','market_makeover').save;
