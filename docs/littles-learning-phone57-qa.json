@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-13",
+  "candidateBuild": 57,
+  "testedContentBuild": 56,
+  "status": "All ten physical full rounds passed on published56. Train/ramp CSS fixes require post-publication57 full-round retests.",
+  "supersedes": "docs/littles-learning56-qa.json pre-publication phone gate; user subsequently instructed publishing then installed-app testing.",
+  "device": "Samsung SM-S908E, existing Play-installed com.meadowmarket.littles14 /1.0.1",
+  "method": "Fresh native UIAutomator labels/screenshots and real USB ADB touch input. No hidden game-state access, browser model calls, save edits or testing entitlements.",
+  "physicalFullRounds": [
+    {
+      "kind": "water",
+      "at": "2026-11-12T23:20:48.871Z",
+      "result": "Three garden routes, wrong-route retry, pause blocks input, portrait-to-landscape persistence.",
+      "screenshot": "phone56-water-win.png",
+      "sha256": "092fe7ce99d0fd51fc95bee3d916b112674ff689c5eeb95954f9556aa8b4e766"
+    },
+    {
+      "kind": "sounds",
+      "at": "2026-11-12T23:28:24.050Z",
+      "result": "Three words dragged to carriages and three animated departures. Layout improvements queued for build57 retest.",
+      "screenshot": "phone56-sounds-win.png",
+      "sha256": "0b8b6a7627f1554579b404ea7cedadc4d313b6fa46d7c95cbd1a39a5ebe98ee5"
+    },
+    {
+      "kind": "shares",
+      "at": "2026-11-12T23:34:24.612Z",
+      "result": "Growing mode: all18 pieces distributed across three picnic tasks (3,6,9), including already occupied plates.",
+      "screenshot": "phone56-shares-win.png",
+      "sha256": "8f795d003d6d58d912ad6866e85dab878d1e611851858e202258b62f5f3b92f1"
+    },
+    {
+      "kind": "rolling",
+      "at": "2026-11-12T23:36:34.447Z",
+      "result": "Three complete trolley routes. Empty-ramp clarity improvement queued for build57 retest.",
+      "screenshot": "phone56-rolling-win.png",
+      "sha256": "79c4d0dc8c89dbfcd89af0e194df14d9752615719ce89bcb7471ef6bea88a2a7"
+    },
+    {
+      "kind": "patchwork",
+      "at": "2026-11-12T23:46:37.680Z",
+      "result": "Growing mode: sheep, hen and pig; quarter turns, half turns and equivalent legs in swapped matching outlines.",
+      "screenshot": "phone56-patchwork-win.png",
+      "sha256": "a01ce05870a9925c91d3ec8a92cdd107e62169aabead7f9a8f89e7583165eea8"
+    },
+    {
+      "kind": "orchard",
+      "at": "2026-11-13T00:00:23.024Z",
+      "result": "Growing mode: visible apple addition/sharing/subtraction, three number answers and a wrong-answer retry.",
+      "screenshot": "phone56-orchard-win.png",
+      "sha256": "811ab9d54009d45c933ce730fc473f4975b28e33403ee7b709b60b28d033168f"
+    },
+    {
+      "kind": "rhymes",
+      "at": "2026-11-13T00:01:38.688Z",
+      "result": "Three picture bridges and animated lamb crossings.",
+      "screenshot": "phone56-rhymes-win.png",
+      "sha256": "03d5d4345f9a59acf4cb5e0f0f0fc236c3f977b917c815a14ca01966dd33f57a"
+    },
+    {
+      "kind": "pip",
+      "at": "2026-11-13T00:02:43.374Z",
+      "result": "Under, behind and inside positions completed with actual Pip drags.",
+      "screenshot": "phone56-pip-win.png",
+      "sha256": "70f65db5b918caec8706dd40f73e2823ef6edc826ec37daae0c1cf1f68d8f01e"
+    },
+    {
+      "kind": "coding",
+      "at": "2026-11-13T00:07:27.875Z",
+      "result": "Growing mode: three distinct4x4 fields, six dragged arrows each and animated drive/harvest. First zero-gap injected Drive tap missed; retry worked. Both subsequent120ms drag-to-Drive transitions passed. No rule/input code was changed for this observation.",
+      "screenshot": "phone56-coding-win.png",
+      "sha256": "e24696a6449651271859c70b3d23b7ea5ce8a60505deac0c918e12f64081d0c4"
+    },
+    {
+      "kind": "freeze",
+      "at": "2026-11-13T00:08:43.298Z",
+      "result": "Real touchscreen swipes, including10seconds continuous movement. At8seconds Freeze remained incomplete; lifting/holding advanced. All three animal tasks and normal win completed; no keyboard shortcut.",
+      "screenshot": "phone56-freeze-win.png",
+      "sha256": "f9631f2d56e3299b7492a2785a30ea6628add1a5c2092f5de22e2fbe673af90b"
+    }
+  ],
+  "audio": {
+    "cast": {
+      "jade": "Hope - upbeat and clear",
+      "rhys": "Noah - YA Audiobooks Narrator",
+      "jay": "Mike - Animation, Explainers & Gaming"
+    },
+    "newApprovedClips": 51,
+    "validation": "Exact text/voice/model/hash provenance, natural runtime playback rate, clean PCM decoding of51 clips. Hear instructions pressed in all10 native games. Android reports Littles AAudio started, speaker route and unmuted music at2/15.",
+    "limit": "Output-route and asset checks do not establish an aural listening test of sound emitted from the phone; no phone audio recording was made."
+  },
+  "fixes": [
+    "Match train/carriage art aspect ratios, align wheels with track at all four checked viewports, fit letter panels to paper while retaining full-carriage touch targets.",
+    "Render unfilled ramp guides dashed without timber grain; solid wood appears only after placement."
+  ],
+  "browserLayout": [
+    {
+      "engineRailGap": 0,
+      "minSlotHeight": 50.9609375,
+      "minSlotWidth": 72.953125,
+      "viewport": [
+        320,
+        568
+      ]
+    },
+    {
+      "engineRailGap": 0,
+      "minSlotHeight": 62.703125,
+      "minSlotWidth": 89.7578125,
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "engineRailGap": 0,
+      "minSlotHeight": 87.515625,
+      "minSlotWidth": 125.2734375,
+      "viewport": [
+        749,
+        360
+      ]
+    },
+    {
+      "engineRailGap": 0,
+      "minSlotHeight": 104.7890625,
+      "minSlotWidth": 150,
+      "viewport": [
+        1024,
+        768
+      ]
+    }
+  ],
+  "automated": "Full node scripts/check-littles.cjs passed:3,000 learning tasks,800 bee physics rounds,80 Harvest Slice rounds and existing save/recovery/commerce/ad checks.",
+  "preservation": {
+    "originalStars": 93,
+    "expectedAfterTen": 123,
+    "originalHarvestSliceLevel": 3,
+    "packageReinstalled": false,
+    "appDataReset": false,
+    "densityChanged": false,
+    "controlConsumer": 53,
+    "billingAndEntitlementsChanged": false
+  },
+  "postPublication57": {
+    "status": "Pending normal app update and Sound Train/Rolling Rescue full retests."
+  },
+  "evidenceDirectory": "D:/Chat Gpt/workspaces/littles-learning56"
+}
