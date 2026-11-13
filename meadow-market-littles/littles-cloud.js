@@ -4,7 +4,8 @@
  const CONFIG={url:'https://ejavqlyozqhzqogflqzr.supabase.co',key:'sb_publishable_NGAHium82O8-2idyjUON5w_37bUAezE',storageKey:'meadow-littles-auth-v1'};
  const clone=x=>JSON.parse(JSON.stringify(x));
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
- let client,store,options={},user=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,controlsState={moderation:null,runtime:null,build:53};
+ const REMEMBERED='meadow-littles-account-v1';
+ let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
@@ -25,25 +26,47 @@
   return payload;
  }
  function validateOpen(data){const s=data?.save;if(!s||s.cloud_version!==1||!Number.isSafeInteger(s.revision)||s.revision<0||!s.data||typeof s.data!=='object'||Array.isArray(s.data)||data.profile?.user_id!==user.id)throw failure('LITTLES_CLOUD_UNAVAILABLE');return s;}
- async function load(){const state=await fairplay('status');if(state.moderation?.banned===true)throw failure('LITTLES_BANNED');await actor();const data=await rpc('meadow_littles_open',{});remote=validateOpen(data);revision=remote.revision;return data;}
+ async function load(){const state=await fairplay('status');if(state.moderation?.banned===true)throw failure('LITTLES_BANNED');await actor();const data=await rpc('meadow_littles_open',{});remote=validateOpen(data);profile=data.profile;revision=remote.revision;return data;}
  async function connect(){
-  ready=false;const session=await client.auth.getSession();if(session.error)throw failure('LITTLES_CLOUD_UNAVAILABLE');
-  if(!session.data?.session){const signed=await client.auth.signInAnonymously();if(signed.error||!signed.data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');}
-  const identity=await client.auth.getUser();if(identity.error||!identity.data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');user=identity.data.user;
+  ready=false;const session=await client.auth.getSession();if(session.error)throw failure(session.error.status>=400&&session.error.status<500&&session.error.status!==429?'LITTLES_SIGN_IN_REQUIRED':'LITTLES_CLOUD_UNAVAILABLE');
+  if(!session.data?.session){if(read(REMEMBERED))throw failure('LITTLES_SIGN_IN_REQUIRED');const signed=await client.auth.signInAnonymously();if(signed.error||!signed.data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');}
+  const identity=await client.auth.getUser();if(identity.error||!identity.data?.user)throw failure(identity.error&&(!identity.error.status||identity.error.status>=500)?'LITTLES_CLOUD_UNAVAILABLE':'LITTLES_SIGN_IN_REQUIRED');
+  if(user&&user.id!==identity.data.user.id){latest=null;profile=null;remote=null;clearTimeout(timer);write(prefix(identity.data.user.id)+'choice',true);}
+  user=identity.data.user;
+  write(REMEMBERED,{userId:user.id});
   const linked=await fairplay('connect');
   if(controlsState.moderation?.banned===true){remote=null;revision=0;notify('banned','LITTLES_BANNED');return;}
-  remote=validateOpen(linked.account);revision=remote.revision;
+  remote=validateOpen(linked.account);profile=linked.account.profile;revision=remote.revision;
   const pending=read(prefix(user.id)+'pending'),meta=read(prefix(user.id)+'meta');
   if(pending){notify('retry_required');return;}
-  if(revision>0&&meta?.revision!==revision){notify('choice_required');return;}
+  if(read(prefix(user.id)+'choice')||(revision>0&&meta?.revision!==revision)){notify('choice_required');return;}
   ready=true;notify('ready');if(latest)schedule();
  }
  function schedule(){clearTimeout(timer);timer=setTimeout(()=>{flush().catch(()=>{})},1200);}
  async function init(config={}){
   options=config;store=config.storage||globalThis.localStorage;
-  try{client=config.client||client;if(!client){const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm');client=createClient(CONFIG.url,CONFIG.key,{auth:{storageKey:CONFIG.storageKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}
+  bindReconnect();return reconnect();
+ }
+ function bindReconnect(){
+  if(listening)return;listening=true;
+  globalThis.addEventListener?.('online',()=>resume());
+  globalThis.document?.addEventListener?.('visibilitychange',()=>{if(document.visibilityState==='visible')resume()});
+  globalThis.addEventListener?.('pageshow',()=>resume());
+ }
+ function resume(){if(authBusy||busy||connecting||status==='signed_out')return;clearTimeout(reconnectTimer);reconnectTimer=setTimeout(()=>reconnect(),150);}
+ async function reconnect(){
+  if(connecting)return connecting;
+  if(authBusy||busy)return {ok:false,state:status};
+  connecting=(async()=>{try{
+   client=options.client||client;if(!client){const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm');client=createClient(CONFIG.url,CONFIG.key,{auth:{storage:store,storageKey:CONFIG.storageKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}
+   if(subscribedClient!==client){subscribedClient=client;client.auth.onAuthStateChange?.((event)=>{
+    // Supabase holds its auth lock during callbacks. Reconnect outside it.
+    if(event==='SIGNED_OUT'&&!authBusy){ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('auth_required','LITTLES_SIGN_IN_REQUIRED');}
+    else if(['SIGNED_IN','USER_UPDATED','TOKEN_REFRESHED'].includes(event)&&!authBusy&&!connecting)resume();
+   });}
    await connect();return {ok:true,state:status,revision};
-  }catch(e){notify('offline',e.code||'LITTLES_CLOUD_UNAVAILABLE');return {ok:false,state:status,code:lastError};}
+  }catch(e){const code=e.code||'LITTLES_CLOUD_UNAVAILABLE';notify(code==='LITTLES_SIGN_IN_REQUIRED'?'auth_required':'offline',code);return {ok:false,state:status,code:lastError};}
+  finally{connecting=null;}})();return connecting;
  }
  function queueSave(snapshot){try{latest=clone(snapshot);if(ready)schedule();return true}catch{notify('error','LITTLES_INVALID_SAVE');return false}}
  async function flush(){
@@ -65,24 +88,41 @@
   if(which==='cloud'&&revision>0){if(remote.data.schema!==1||options.applyState?.(clone(remote.data))!==true)throw failure('LITTLES_INVALID_SAVE');latest=null;}
   else if(which==='device'){latest=clone(options.getState?.());if(!latest||latest.schema!==1)throw failure('LITTLES_INVALID_SAVE');}
   else throw failure('LITTLES_INVALID_SAVE');
-  write(prefix(user.id)+'pending',null);write(prefix(user.id)+'meta',{revision});ready=true;notify('ready');if(latest)return flush();return {ok:true,revision};
+  write(prefix(user.id)+'pending',null);write(prefix(user.id)+'meta',{revision});write(prefix(user.id)+'choice',null);ready=true;notify('ready');if(latest)return flush();return {ok:true,revision};
  }
  const redirect=()=>new URL(location.pathname,location.origin).href;
  async function linkEmail(email){await actor();const r=await client.auth.updateUser({email:email.trim()},{emailRedirectTo:redirect()});if(r.error)throw failure('LITTLES_EMAIL_LINK_UNAVAILABLE');return {ok:true,verificationRequired:true};}
  async function verifyEmail(email,token){const r=await client.auth.verifyOtp({email:email.trim(),token:token.trim(),type:'email_change'});if(r.error)throw failure('LITTLES_EMAIL_VERIFICATION_FAILED');await actor();return {ok:true};}
  async function setPassword(password){const u=await actor();if(!u.email_confirmed_at||u.is_anonymous)throw failure('LITTLES_EMAIL_VERIFICATION_REQUIRED');const r=await client.auth.updateUser({password});if(r.error)throw failure('LITTLES_PASSWORD_UPDATE_FAILED');return {ok:true};}
- async function signIn(email,password){if(busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');const r=await client.auth.signInWithPassword({email:email.trim(),password});if(r.error)throw failure('LITTLES_SIGN_IN_FAILED');latest=null;user=null;await connect();ready=false;notify('choice_required');return {ok:true};}
+ async function signIn(email,password){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(!client)throw failure('LITTLES_CLOUD_UNAVAILABLE');authBusy=true;clearTimeout(timer);try{const r=await client.auth.signInWithPassword({email:email.trim(),password});if(r.error)throw failure('LITTLES_SIGN_IN_FAILED');latest=null;ready=false;user=null;profile=null;remote=null;write(REMEMBERED,{userId:r.data.user.id});write(prefix(r.data.user.id)+'choice',true);try{await connect()}catch(e){notify('offline',e.code||'LITTLES_CLOUD_UNAVAILABLE');return {ok:false,state:status,code:lastError}}return {ok:true};}finally{authBusy=false;if(ready&&latest)schedule();}}
  async function recover(email){const r=await client.auth.resetPasswordForEmail(email.trim(),{redirectTo:redirect()});if(r.error)throw failure('LITTLES_RECOVERY_UNAVAILABLE');return {ok:true};}
- async function signOut(){if(busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(user?.is_anonymous)throw failure('LITTLES_LINK_EMAIL_BEFORE_SIGN_OUT');const r=await client.auth.signOut({scope:'local'});if(r.error)throw failure('LITTLES_SIGN_OUT_FAILED');ready=false;user=null;latest=null;clearTimeout(timer);notify('signed_out');}
+ async function signOut(){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(user?.is_anonymous)throw failure('LITTLES_LINK_EMAIL_BEFORE_SIGN_OUT');authBusy=true;try{const r=await client.auth.signOut({scope:'local'});if(r.error)throw failure('LITTLES_SIGN_OUT_FAILED');write(REMEMBERED,{signedOut:true});ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('signed_out');}finally{authBusy=false}}
+ async function changeName(value){
+  if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');
+  const name=String(value).trim();if(!name||Array.from(name).length>32||/[\u0000-\u001f\u007f-\u009f]/u.test(name))throw failure('LITTLES_INVALID_DISPLAY_NAME');
+  authBusy=true;try{const current=await actor();const data=await rpc('meadow_littles_open',{p_display_name:name});
+  if((await actor()).id!==current.id||data.profile?.user_id!==current.id)throw failure('LITTLES_ACCOUNT_CHANGED');
+  profile=data.profile;return {ok:true,displayName:profile.display_name};}finally{authBusy=false}
+ }
  function openAccount(){
   if(dialog?.open){dialog.focus();return;}
-  const d=document.createElement('dialog');dialog=d;d.setAttribute('aria-label','Cloud save and grown-up account');
-  d.style.cssText='max-width:32rem;width:90%;max-height:85vh;overflow:auto;border-radius:20px;padding:20px;background:#fff9e8;color:#293b2f;';
+  const d=document.createElement('dialog');dialog=d;d.className='littles-account';d.setAttribute('aria-label','Cloud save and grown-up account');
   const add=(tag,text)=>{const el=document.createElement(tag);el.textContent=text;d.append(el);return el};
-  add('h2','Cloud save');add('p','Guest saves belong to this browser. A grown-up can link and verify an email to recover progress on another device.');
-  const result=add('p',status==='choice_required'?'A cloud save needs your choice. Nothing will be replaced automatically.':status);result.setAttribute('role','status');
+  add('h2','Grown-up account');add('p','Stay signed in on this device and keep your farm progress safe.');
+  const stateMessage={ready:'Connected. Your sign-in is saved on this device.',saved:'Your progress is saved online.',saving:'Saving your progress…',offline:'You can keep playing. We’ll reconnect when you’re online.',auth_required:'Please sign in again. Your progress is still saved on this device.',signed_out:'Signed out. Your progress is still saved on this device.',choice_required:'Choose which progress to keep below. Nothing is replaced automatically.',retry_required:'Your progress is on this device. Retry the pending cloud save below.',banned:'Cloud saves are paused. A grown-up can check account safety below.'};
+  const result=add('p',stateMessage[status]||'Check your account and cloud save below.');result.setAttribute('role','status');
   const accountIdentity=()=>[user?.id||'',!!user?.is_anonymous,!!user?.email_confirmed_at].join(':');
-  function button(label,run){const b=add('button',label);b.type='button';b.style.cssText='display:block;margin:10px 0;padding:10px;';b.onclick=async()=>{b.disabled=true;const before=accountIdentity();try{const r=await run();if(d.open&&before!==accountIdentity()){d.close();d.remove();dialog=null;openAccount();return;}renderSafety();result.textContent=r?.verificationRequired?'Check the email confirmation link. After verification, set a password.':r?.ok===false?'Cloud save needs attention: '+(r.code||r.state):'Done. '+status;}catch(e){renderSafety();result.textContent=e.code||'Could not complete this step. Please try again.'}finally{b.disabled=false;}};return b;}
+  const messages={LITTLES_INVALID_DISPLAY_NAME:'Use an account name with 1–32 characters and no control characters.',LITTLES_SIGN_IN_FAILED:'Check the grown-up email and password, then try again.',LITTLES_OPERATION_IN_PROGRESS:'Please wait for the current account step to finish.',LITTLES_SIGN_IN_REQUIRED:'Please sign in again. Your saved progress is still safe.',LITTLES_CLOUD_UNAVAILABLE:'Could not connect. Check your connection and try again.'};
+  function button(label,run){const b=add('button',label);b.type='button';b.onclick=async()=>{b.disabled=true;const before=accountIdentity();try{const r=await run();if(d.open&&before!==accountIdentity()){d.close();d.remove();dialog=null;openAccount();return;}renderSafety();result.textContent=r?.displayName?'Account name saved. You can be found by this name for Littles Plus.':r?.verificationRequired?'Check the email confirmation link. After verification, set a password.':r?.ok===false?(messages[r.code]||stateMessage[r.state]||'Please try this step again.'):(stateMessage[status]||'Done.');}catch(e){renderSafety();result.textContent=messages[e.code]||'Could not complete this step. Please try again.'}finally{b.disabled=false;}};return b;}
+  if(user){
+   add('h3','Your account');
+   const nameLabel=add('label','Account username');const name=document.createElement('input');name.type='text';name.maxLength=32;name.autocomplete='nickname';name.value=profile?.display_name||'';nameLabel.append(name);
+   add('p','Choose a memorable nickname so we can find your account for Littles Plus.');
+   button('Save account name',()=>changeName(name.value));
+   const idLabel=add('label','Account ID');const id=document.createElement('input');id.type='text';id.value=user.id;id.readOnly=true;id.className='littles-account-id';idLabel.append(id);
+   add('p','Names can be shared. Include this account ID if we need to check which account is yours.');
+   if(!user.is_anonymous)add('p','Signed in as '+(user.email||'your grown-up account')+'. You’ll sign in automatically next time, until you choose to sign out.');
+  }
   const safety=document.createElement('section');safety.setAttribute('aria-label','Fairplay account safety');d.append(safety);
   function renderSafety(){
    safety.replaceChildren();const heading=document.createElement('h3');heading.textContent='Account safety';safety.append(heading);
@@ -105,24 +145,30 @@
    const refresh=document.createElement('button');refresh.type='button';refresh.textContent='Refresh safety status';refresh.onclick=async()=>{refresh.disabled=true;try{await fairplay('status');renderSafety();result.textContent='Account safety status refreshed.'}catch(e){result.textContent=e.code||'Could not refresh account safety status.'}finally{refresh.disabled=false;}};safety.append(refresh);
   }
   renderSafety();
-  if(!client||!user)button('Connect cloud save',()=>init(options));
+  if(!client||!user)button('Connect cloud save',reconnect);
   else{
    add('p',user.is_anonymous?'Guest account':'Recoverable account');
    button('Retry pending save',flush);
    if(remote?.revision>0)button('Use cloud progress',()=>choose('cloud'));
    button('Keep this device’s progress',async()=>{if(!confirm('Replace this account’s cloud progress with the progress on this device?'))return {ok:false,state:'cancelled'};return choose('device')});
-   const label=add('label','Grown-up email');const email=document.createElement('input');email.type='email';email.autocomplete='email';label.append(email);
+  }
+  if(client){
+   add('h3',user?.is_anonymous?'Save or recover your account':'Sign-in details');
+   if(user?.is_anonymous)add('p','Link and verify a grown-up email, then set a password to recover this guest save on another device.');
+   const label=add('label','Grown-up email');const email=document.createElement('input');email.type='email';email.name='username';email.autocomplete='username';email.autocapitalize='none';email.spellcheck=false;email.value=user?.email||'';label.append(email);
+   if(user?.is_anonymous){
    button('Link email to this guest save',()=>linkEmail(email.value));
    const codeLabel=add('label','Email confirmation code (if included in the email)');const code=document.createElement('input');code.inputMode='numeric';code.autocomplete='one-time-code';codeLabel.append(code);
    button('Verify email code',()=>verifyEmail(email.value,code.value));
+   }
    const passLabel=add('label','Password');const password=document.createElement('input');password.type='password';password.autocomplete='current-password';passLabel.append(password);
-   button('Set password after email verification',async()=>{const r=await setPassword(password.value);password.value='';return r});
+   if(user)button('Set password after email verification',async()=>{const r=await setPassword(password.value);password.value='';return r});
    button('Sign in to an existing account',async()=>{const r=await signIn(email.value,password.value);password.value='';return r});
    button('Send password recovery email',()=>recover(email.value));
-   if(!user.is_anonymous)button('Sign out from Littles',signOut);
+   if(user&&!user.is_anonymous)button('Sign out from Littles',signOut);
   }
   button('Close',()=>{d.close();d.remove();dialog=null;return {ok:true}});d.addEventListener('cancel',()=>{d.remove();dialog=null});document.body.append(d);d.showModal();
  }
  async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
- globalThis.meadowLittlesCloud={init,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,commerce,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at})};
+ globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
 })();
