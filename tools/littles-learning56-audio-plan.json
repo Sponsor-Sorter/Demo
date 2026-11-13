@@ -1,0 +1,544 @@
+{
+  "provider": "ElevenLabs",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "casts": {
+    "jade": "Hope - upbeat and clear",
+    "rhys": "Noah - YA Audiobooks Narrator",
+    "jay": "Mike - Animation, Explainers & Gaming"
+  },
+  "batches": [
+    {
+      "id": "learning56-jade-01",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jade-water-intro",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "Hello, little gardener! Turn the wooden gutters to join the barrel to the plants. Then let the water flow. Let's watch our garden grow!"
+        },
+        {
+          "id": "learn56-jade-water-done",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "You brought water to every garden! Look at those lovely flowers. Well done, little gardener!"
+        },
+        {
+          "id": "learn56-jade-shares-intro",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "Our farm friends are ready for a picnic! Move the food onto their plates. Can you give every friend an equal share?"
+        },
+        {
+          "id": "learn56-jade-shares-done",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "Everyone has an equal share! What a kind picnic helper you are. Well done!"
+        }
+      ],
+      "text": "Hello, little gardener! Turn the wooden gutters to join the barrel to the plants. Then let the water flow. Let's watch our garden grow! <break time=\"2s\" /> You brought water to every garden! Look at those lovely flowers. Well done, little gardener! <break time=\"2s\" /> Our farm friends are ready for a picnic! Move the food onto their plates. Can you give every friend an equal share? <break time=\"2s\" /> Everyone has an equal share! What a kind picnic helper you are. Well done!"
+    },
+    {
+      "id": "learning56-jade-02",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jade-sounds-intro",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "All aboard our sound train! Listen to the sounds, then move the letters into the carriages. When your word is ready, send the train on its way!"
+        },
+        {
+          "id": "learn56-jade-sounds-done",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Multilingual v2",
+          "text": "You put the sounds together and built three words! What a lovely reading adventure. Well done!"
+        }
+      ],
+      "text": "All aboard our sound train! Listen to the sounds, then move the letters into the carriages. When your word is ready, send the train on its way! <break time=\"2s\" /> You put the sounds together and built three words! What a lovely reading adventure. Well done!"
+    },
+    {
+      "id": "learning56-jade-phonics-01",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "cues": [
+        {
+          "id": "learn56-jade-blend-cat",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "cat",
+          "ipa": [
+            "k",
+            "æ",
+            "t"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"k\">c</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"æ\">a</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"t\">t</phoneme>. Cat! Can you build cat?"
+        },
+        {
+          "id": "learn56-jade-blend-dog",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "dog",
+          "ipa": [
+            "d",
+            "ɒ",
+            "ɡ"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɒ\">o</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Dog! Can you build dog?"
+        },
+        {
+          "id": "learn56-jade-blend-pig",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "pig",
+          "ipa": [
+            "p",
+            "ɪ",
+            "ɡ"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɪ\">i</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Pig! Can you build pig?"
+        },
+        {
+          "id": "learn56-jade-blend-hen",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "hen",
+          "ipa": [
+            "h",
+            "ɛ",
+            "n"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"h\">h</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Hen! Can you build hen?"
+        }
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"k\">c</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"æ\">a</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"t\">t</phoneme>. Cat! Can you build cat? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɒ\">o</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Dog! Can you build dog? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɪ\">i</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɡ\">g</phoneme>. Pig! Can you build pig? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"h\">h</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Hen! Can you build hen?"
+    },
+    {
+      "id": "learning56-jade-phonics-02",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "model": "Eleven Flash v2",
+      "cues": [
+        {
+          "id": "learn56-jade-blend-sun",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "sun",
+          "ipa": [
+            "s",
+            "ʌ",
+            "n"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Sun! Can you build sun?"
+        },
+        {
+          "id": "learn56-jade-blend-bed",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "bed",
+          "ipa": [
+            "b",
+            "ɛ",
+            "d"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme>. Bed! Can you build bed?"
+        },
+        {
+          "id": "learn56-jade-blend-pen",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "pen",
+          "ipa": [
+            "p",
+            "ɛ",
+            "n"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Pen! Can you build pen?"
+        },
+        {
+          "id": "learn56-jade-blend-bus",
+          "farmer": "jade",
+          "voice": "Hope - upbeat and clear",
+          "model": "Eleven Flash v2",
+          "word": "bus",
+          "ipa": [
+            "b",
+            "ʌ",
+            "s"
+          ],
+          "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme>. Bus! Can you build bus?"
+        }
+      ],
+      "text": "Listen. <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Sun! Can you build sun? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"d\">d</phoneme>. Bed! Can you build bed? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"p\">p</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ɛ\">e</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"n\">n</phoneme>. Pen! Can you build pen? <break time=\"2s\" /> Listen. <phoneme alphabet=\"ipa\" ph=\"b\">b</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"ʌ\">u</phoneme> <break time=\"0.4s\" /> <phoneme alphabet=\"ipa\" ph=\"s\">s</phoneme>. Bus! Can you build bus?"
+    },
+    {
+      "id": "learning56-rhys-01",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-rhys-rolling-intro",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's help our little friends ride home! Fit a ramp into each gap. Then send the trolley along your track. Take your time and see what happens!"
+        },
+        {
+          "id": "learn56-rhys-rolling-done",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Your trolley reached every little home! You built some lovely tracks. Well done, little engineer!"
+        },
+        {
+          "id": "learn56-rhys-patchwork-intro",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's make a farm friend from wooden shapes! Move each piece onto its outline. If a piece needs turning, choose it and turn it around."
+        },
+        {
+          "id": "learn56-rhys-patchwork-done",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "You made three lovely farm friends from shapes! Look at them come to life. What a clever builder!"
+        }
+      ],
+      "text": "Let's help our little friends ride home! Fit a ramp into each gap. Then send the trolley along your track. Take your time and see what happens! <break time=\"2s\" /> Your trolley reached every little home! You built some lovely tracks. Well done, little engineer! <break time=\"2s\" /> Let's make a farm friend from wooden shapes! Move each piece onto its outline. If a piece needs turning, choose it and turn it around. <break time=\"2s\" /> You made three lovely farm friends from shapes! Look at them come to life. What a clever builder!"
+    },
+    {
+      "id": "learning56-rhys-02",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-rhys-coding-intro",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Our tractor needs a little plan! Put the arrow cards in order, then press Drive. Watch it follow your arrows. You can change the plan and try again!"
+        },
+        {
+          "id": "learn56-rhys-coding-done",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Your tractor followed every plan and reached the harvest! Well done, little planner!"
+        },
+        {
+          "id": "learn56-rhys-rhymes-intro",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's build a rhyming bridge! Tap the pictures to hear their names. Move the pictures that rhyme onto the bridge, then watch our friend cross!"
+        },
+        {
+          "id": "learn56-rhys-rhymes-done",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "You found the rhyming pictures and helped our friends cross the river! What lovely listening!"
+        }
+      ],
+      "text": "Our tractor needs a little plan! Put the arrow cards in order, then press Drive. Watch it follow your arrows. You can change the plan and try again! <break time=\"2s\" /> Your tractor followed every plan and reached the harvest! Well done, little planner! <break time=\"2s\" /> Let's build a rhyming bridge! Tap the pictures to hear their names. Move the pictures that rhyme onto the bridge, then watch our friend cross! <break time=\"2s\" /> You found the rhyming pictures and helped our friends cross the river! What lovely listening!"
+    },
+    {
+      "id": "learning56-rhys-03",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-rhys-rhyme-cat",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Cat! Can you find two pictures whose names rhyme with cat?"
+        },
+        {
+          "id": "learn56-rhys-rhyme-dog",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Dog! Can you find two pictures whose names rhyme with dog?"
+        },
+        {
+          "id": "learn56-rhys-rhyme-bee",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Bee! Can you find two pictures whose names rhyme with bee?"
+        },
+        {
+          "id": "learn56-rhys-rhyme-goat",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Goat! Can you find two pictures whose names rhyme with goat?"
+        }
+      ],
+      "text": "Cat! Can you find two pictures whose names rhyme with cat? <break time=\"2s\" /> Dog! Can you find two pictures whose names rhyme with dog? <break time=\"2s\" /> Bee! Can you find two pictures whose names rhyme with bee? <break time=\"2s\" /> Goat! Can you find two pictures whose names rhyme with goat?"
+    },
+    {
+      "id": "learning56-rhys-04",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-rhys-word-mat",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Mat."
+        },
+        {
+          "id": "learn56-rhys-word-log",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Log."
+        },
+        {
+          "id": "learn56-rhys-word-tree",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Tree."
+        },
+        {
+          "id": "learn56-rhys-word-key",
+          "farmer": "rhys",
+          "voice": "Noah - YA Audiobooks Narrator",
+          "model": "Eleven Multilingual v2",
+          "text": "Key."
+        }
+      ],
+      "text": "Mat. <break time=\"2s\" /> Log. <break time=\"2s\" /> Tree. <break time=\"2s\" /> Key."
+    },
+    {
+      "id": "learning56-jay-01",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-orchard-intro",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's do some apple maths! Move the apples into the basket, or share some with our bunny. Then put the right number on the basket. We can count together!"
+        },
+        {
+          "id": "learn56-jay-orchard-done",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "You added apples and took some away! What a lovely harvest helper. Great job!"
+        },
+        {
+          "id": "learn56-jay-orchard-add",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Move the apples into the basket. How many apples will there be altogether?"
+        },
+        {
+          "id": "learn56-jay-orchard-take",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Share these apples with our bunny. How many apples are left in the basket?"
+        }
+      ],
+      "text": "Let's do some apple maths! Move the apples into the basket, or share some with our bunny. Then put the right number on the basket. We can count together! <break time=\"2s\" /> You added apples and took some away! What a lovely harvest helper. Great job! <break time=\"2s\" /> Move the apples into the basket. How many apples will there be altogether? <break time=\"2s\" /> Share these apples with our bunny. How many apples are left in the basket?"
+    },
+    {
+      "id": "learning56-jay-02",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-orchard-answer",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Now count the apples in the basket. Move the matching number onto it."
+        },
+        {
+          "id": "learn56-jay-pip-intro",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Pip is playing hide and seek! Listen to where she wants to go, then move her there. Let's find some lovely hiding places!"
+        },
+        {
+          "id": "learn56-jay-pip-done",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "You helped Pip hide inside, under and behind! What wonderful listening!"
+        },
+        {
+          "id": "learn56-jay-pip-inside",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Put Pip inside the barn. Inside the barn!"
+        }
+      ],
+      "text": "Now count the apples in the basket. Move the matching number onto it. <break time=\"2s\" /> Pip is playing hide and seek! Listen to where she wants to go, then move her there. Let's find some lovely hiding places! <break time=\"2s\" /> You helped Pip hide inside, under and behind! What wonderful listening! <break time=\"2s\" /> Put Pip inside the barn. Inside the barn!"
+    },
+    {
+      "id": "learning56-jay-03",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-pip-under",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Put Pip under the bridge. Under the bridge!"
+        },
+        {
+          "id": "learn56-jay-pip-behind",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Put Pip behind the hay bale. Behind the hay bale!"
+        },
+        {
+          "id": "learn56-jay-freeze-intro",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's have a farm dance! Move your finger to make your friend dance. When I say freeze, stop your finger and stay still. Here we go!"
+        },
+        {
+          "id": "learn56-jay-freeze-done",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "You danced, listened and froze like a star! What a lovely farm dance. Great job!"
+        }
+      ],
+      "text": "Put Pip under the bridge. Under the bridge! <break time=\"2s\" /> Put Pip behind the hay bale. Behind the hay bale! <break time=\"2s\" /> Let's have a farm dance! Move your finger to make your friend dance. When I say freeze, stop your finger and stay still. Here we go! <break time=\"2s\" /> You danced, listened and froze like a star! What a lovely farm dance. Great job!"
+    },
+    {
+      "id": "learning56-jay-04",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-freeze-dance",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Let's dance! Move your finger and help our friend dance!"
+        },
+        {
+          "id": "learn56-jay-freeze-now",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "And, freeze! Keep your finger still!"
+        },
+        {
+          "id": "learn56-jay-number-0",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Zero."
+        },
+        {
+          "id": "learn56-jay-number-1",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "One."
+        }
+      ],
+      "text": "Let's dance! Move your finger and help our friend dance! <break time=\"2s\" /> And, freeze! Keep your finger still! <break time=\"2s\" /> Zero. <break time=\"2s\" /> One."
+    },
+    {
+      "id": "learning56-jay-05",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-number-2",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Two."
+        },
+        {
+          "id": "learn56-jay-number-3",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Three."
+        },
+        {
+          "id": "learn56-jay-number-4",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Four."
+        },
+        {
+          "id": "learn56-jay-number-5",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Five."
+        }
+      ],
+      "text": "Two. <break time=\"2s\" /> Three. <break time=\"2s\" /> Four. <break time=\"2s\" /> Five."
+    },
+    {
+      "id": "learning56-jay-06",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "cues": [
+        {
+          "id": "learn56-jay-number-6",
+          "farmer": "jay",
+          "voice": "Mike - Animation, Explainers & Gaming",
+          "model": "Eleven Multilingual v2",
+          "text": "Six."
+        }
+      ],
+      "text": "Six."
+    }
+  ]
+}

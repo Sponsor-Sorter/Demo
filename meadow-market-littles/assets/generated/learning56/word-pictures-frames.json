@@ -1,0 +1,134 @@
+{
+  "width": 1278,
+  "height": 1230,
+  "frames": [
+    {
+      "id": "cat",
+      "left": 19,
+      "top": 2,
+      "width": 280,
+      "height": 310,
+      "components": 1
+    },
+    {
+      "id": "hat",
+      "left": 324,
+      "top": 63,
+      "width": 308,
+      "height": 211,
+      "components": 1
+    },
+    {
+      "id": "mat",
+      "left": 649,
+      "top": 86,
+      "width": 304,
+      "height": 178,
+      "components": 1
+    },
+    {
+      "id": "dog",
+      "left": 1006,
+      "top": 5,
+      "width": 253,
+      "height": 306,
+      "components": 1
+    },
+    {
+      "id": "log",
+      "left": 8,
+      "top": 378,
+      "width": 306,
+      "height": 204,
+      "components": 1
+    },
+    {
+      "id": "frog",
+      "left": 343,
+      "top": 324,
+      "width": 273,
+      "height": 279,
+      "components": 1
+    },
+    {
+      "id": "bee",
+      "left": 652,
+      "top": 333,
+      "width": 281,
+      "height": 262,
+      "components": 1
+    },
+    {
+      "id": "tree",
+      "left": 965,
+      "top": 317,
+      "width": 305,
+      "height": 294,
+      "components": 1
+    },
+    {
+      "id": "key",
+      "left": 11,
+      "top": 637,
+      "width": 284,
+      "height": 263,
+      "components": 1
+    },
+    {
+      "id": "boat",
+      "left": 324,
+      "top": 660,
+      "width": 306,
+      "height": 217,
+      "components": 1
+    },
+    {
+      "id": "coat",
+      "left": 644,
+      "top": 612,
+      "width": 299,
+      "height": 299,
+      "components": 1
+    },
+    {
+      "id": "pig",
+      "left": 970,
+      "top": 632,
+      "width": 297,
+      "height": 279,
+      "components": 1
+    },
+    {
+      "id": "bus",
+      "left": 6,
+      "top": 952,
+      "width": 313,
+      "height": 249,
+      "components": 1
+    },
+    {
+      "id": "sun",
+      "left": 326,
+      "top": 917,
+      "width": 306,
+      "height": 293,
+      "components": 1
+    },
+    {
+      "id": "bed",
+      "left": 647,
+      "top": 935,
+      "width": 306,
+      "height": 280,
+      "components": 1
+    },
+    {
+      "id": "pen",
+      "left": 999,
+      "top": 927,
+      "width": 264,
+      "height": 282,
+      "components": 1
+    }
+  ]
+}

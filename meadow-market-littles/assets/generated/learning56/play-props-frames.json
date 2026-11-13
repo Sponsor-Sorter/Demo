@@ -1,0 +1,78 @@
+{
+  "width": 1536,
+  "height": 1024,
+  "frames": [
+    {
+      "id": "barn",
+      "left": 45,
+      "top": 1,
+      "width": 426,
+      "height": 328,
+      "components": 1
+    },
+    {
+      "id": "bridge",
+      "left": 552,
+      "top": 62,
+      "width": 431,
+      "height": 228,
+      "components": 1
+    },
+    {
+      "id": "trolley",
+      "left": 1051,
+      "top": 71,
+      "width": 458,
+      "height": 242,
+      "components": 1
+    },
+    {
+      "id": "engine",
+      "left": 51,
+      "top": 344,
+      "width": 410,
+      "height": 326,
+      "components": 1
+    },
+    {
+      "id": "carriage",
+      "left": 548,
+      "top": 353,
+      "width": 438,
+      "height": 306,
+      "components": 1
+    },
+    {
+      "id": "barrel",
+      "left": 1113,
+      "top": 345,
+      "width": 340,
+      "height": 315,
+      "components": 1
+    },
+    {
+      "id": "seedling",
+      "left": 141,
+      "top": 761,
+      "width": 248,
+      "height": 261,
+      "components": 1
+    },
+    {
+      "id": "budding",
+      "left": 630,
+      "top": 671,
+      "width": 262,
+      "height": 352,
+      "components": 1
+    },
+    {
+      "id": "flower",
+      "left": 1123,
+      "top": 668,
+      "width": 285,
+      "height": 354,
+      "components": 1
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-02.mp3",
+  "sourceSha256": "694ed9b246babf451449237c3aa7b3714214fb3571134dfa3a8e69f2d6847530",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-orchard-answer",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Now count the apples in the basket. Move the matching number onto it.",
+      "start": 0,
+      "end": 3.96914,
+      "bytes": 48319,
+      "sha256": "be992b983982fb550b82d8c42fc91def0396814e75037d780b046e8ad19aa97e"
+    },
+    {
+      "id": "learn56-jay-pip-intro",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Pip is playing hide and seek! Listen to where she wants to go, then move her there. Let's find some lovely hiding places!",
+      "start": 6.063420000000001,
+      "end": 12.796399999999998,
+      "bytes": 81547,
+      "sha256": "11c830b585371129a2ac52c96f39d5b8fa671880ea31174b4b4fd51d50be8c1e"
+    },
+    {
+      "id": "learn56-jay-pip-done",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "You helped Pip hide inside, under and behind! What wonderful listening!",
+      "start": 14.7902,
+      "end": 20.4302,
+      "bytes": 68381,
+      "sha256": "a828da8b0fb956585423404f0a120613fd667007af9c86c35a5f8710f8917712"
+    },
+    {
+      "id": "learn56-jay-pip-inside",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Put Pip inside the barn. Inside the barn!",
+      "start": 22.426499999999997,
+      "end": null,
+      "bytes": 37034,
+      "sha256": "14e83db8fe0755ea4b0b5b5eaf7d78f949bb8c12d9eae75c28bbbe7688887ead"
+    }
+  ]
+}

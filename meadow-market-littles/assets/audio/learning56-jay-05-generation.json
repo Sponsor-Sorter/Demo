@@ -1,0 +1,59 @@
+{
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "generated": "2026-11-12",
+  "speed": 0.9,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "sourceFile": "learning56-jay-05.mp3",
+  "sourceSha256": "2b0a12e000cb7fe01afb796798f54a4675b6848a225c00e270a6475567ce2839",
+  "processing": "Separate at verified 2-second cue boundaries; loudness normalization only, no time stretching",
+  "files": [
+    {
+      "id": "learn56-jay-number-2",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Two.",
+      "start": 0,
+      "end": 0.621542,
+      "bytes": 8195,
+      "sha256": "6037d455c629cbaef1c6e55f8bf0e46d2515bb4113b98fdb6d9c74844a61deee"
+    },
+    {
+      "id": "learn56-jay-number-3",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Three.",
+      "start": 2.4966,
+      "end": 3.14066,
+      "bytes": 8508,
+      "sha256": "1d4a37ec6e261365baf3c40bad60dc97f3621982f983d8fabad45a252bc5c496"
+    },
+    {
+      "id": "learn56-jay-number-4",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Four.",
+      "start": 5.1054900000000005,
+      "end": 5.7170700000000005,
+      "bytes": 7568,
+      "sha256": "fbeafd369103dc22fe87c49ae9ae6c2bb13f62f39afc98e142e621db3ee7244a"
+    },
+    {
+      "id": "learn56-jay-number-5",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "model": "Eleven Multilingual v2",
+      "text": "Five.",
+      "start": 7.629840000000001,
+      "end": null,
+      "bytes": 9449,
+      "sha256": "7d4ca7eba707901b1137013175c946fad313a95b000dcbcfd422b86d60d4e2c5"
+    }
+  ]
+}
