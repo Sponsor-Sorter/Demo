@@ -1,5 +1,9 @@
 # Meadow Markets active work
 
+## 13 November 2026 — crop layer follow-up 244
+
+Live243 phone retesting found a remaining fixed-depth override: plot layers computed z10 despite object depths42/44/50, allowing neighboring buildings to intercept crop taps. The244 style correction has browser DOM proof: plots now compute42/44/44 matching their depth variables. Gateway56 matches all eight reviewed files with JWT enabled; its generated change is the rules fingerprint only. Publication and final physical acceptance are pending. The Samsung is temporarily released to Littles until05:11UTC while CI/hosting runs; no Meadow data was cleared.
+
 ## 13 November 2026 — Samsung pack and transfer follow-up 243
 
 Physical Samsung QA accepted the actual 240→242 update, preserved level 70, delivered a new approved-free Coop Charm exactly once (20 gems, three boosters), and activated crop/egg boosters with two charges remaining. A chicken transferred Back Pasture→Willowbrook with its earned egg credit retained. QA found worker refreshes detaching the native animal filter and cross-farm home drops omitting the coop ID. Both are corrected in 243. Further touch checks found transparent rotated barn/paddock image corners intercepting adjacent fields; all 32 views now use checked alpha outlines without changing their art. with focused UI/reducer checks passing. Gateway 55 matches all eight reviewed files and retains JWT verification. Public 243 deployment and final Samsung acceptance are in progress; this entry does not claim them complete. Google Play native 1.7.6/code 16 was confirmed Available on Google Play in the preceding acceptance. No real-money orders or new Google checkout were made in this follow-up.
