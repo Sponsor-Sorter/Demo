@@ -26,3 +26,9 @@ Phone acceptance, public activation and exact publication hashes remain pending 
 ## Artwork
 
 Built-in image-generation tool. Final asset: meadow-market-littles/assets/generated/weekly61/fair.webp (1536×1024). Prompt: polished preschool cartoon harvest fair, sunny meadow, small red barn and rolling hills, wooden pavilion and bunting at outer edges, three trophy cups on rustic crates, calm central cream parchment noticeboard, no text/numbers/buttons, uncluttered full-bleed composition. Generated original retained under C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-dfc3ff0e-2a2b-4554-b232-a36cc8e1655d.png.
+
+## Native61 functional checkpoint · 14 November2026
+
+The existing official Samsung Play14/1.0.1 app restored the same signed-in parent and154stars. Six full Letter Balloon Pop rounds passed, each with six observed target letters and all three farmer characters. The first included a gentle wrong-letter retry; a separate partial round was abandoned before completion. The server read-back shows6 completions,5 scoring rounds(50points),1 bonus spent and sharing still false. No install, reset, account switch, save choice or VIP grant occurred.
+
+The native landscape review found that the graph required scrolling and the eighth home genre wrapped below the first row. Content62 corrects those layouts, and its final native visual acceptance remains pending. The public weekly rollout gate remains off until that passes. Migration source filenames are aligned with their already-applied Supabase ledger versions; definitions are not rerun.

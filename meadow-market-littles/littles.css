@@ -44,3 +44,6 @@ body{background-color:#efdfc5}#littles-home{background:#fff7e6f5}
 .littles-account :focus-visible{outline:3px solid #e4a32d;outline-offset:3px}
 .littles-account>button:last-child{background:#f8e6ad;color:#35482d;border:2px solid #b1a06a;box-shadow:0 4px 14px #293b2f22}
 .littles-account>.account-close{position:absolute;top:12px;right:12px;width:44px;min-height:44px;margin:0;padding:0;border:1px solid #9caf89;border-radius:50%;background:#fff9e8;color:#293b2f;font-size:1.7rem;line-height:1}
+
+/* Keep all eight genres on one row and expose game pictures on landscape phones. */
+@media(max-height:500px) and (min-width:651px){.category-nav{grid-template-columns:repeat(8,minmax(70px,1fr));gap:5px;margin:4px auto}.category-nav button{min-height:74px;min-width:0;padding:4px}.category-nav button img{width:46px;height:46px}.category-nav button span{font-size:11px;padding:2px 3px}.welcome{min-height:80px;margin:5px auto;gap:18px}.family{height:80px}.family img,.family img:first-child{height:80px;width:68px}.welcome h2{font-size:23px;margin-bottom:4px}.welcome p{font-size:12px;margin-bottom:6px}.welcome .primary-button{min-height:44px;padding:8px 14px;font-size:13px}}
