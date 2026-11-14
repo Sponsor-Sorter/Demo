@@ -11,6 +11,8 @@ Six older activities now use direct gestures, visible movement and a short pract
 
 All activities are untimed. New instructions and individual animal words use21 independently generated approved Jade/Hope or Rhys/Noah recordings. The Multilingualv2 recordings retain their timing; only loudness normalization is applied. Existing approved Jade food names and requests are reused. Generation manifests include original and output hashes.
 
+Pause stops narration and freezes the activity’s animations. Resume repeats the current instruction; a pattern interrupted during watching starts again from its first food. Animal clues use the game clock, so they do not fire during a pause or leak into a later round. This was reproduced with actual browser playback before the fix and verified through pause/resume afterwards.
+
 Source acceptance includes432 seeded full model sequences, free wrong moves, cancelled drags, word-duration handover, exact picture slots, preview/public gate isolation, voice closure and twelve-image closure. Browser acceptance covers complete rounds and responsive phone/tablet layouts. New scripts, images and audio are included in the offline manifest. The release helper also updates a plain Build footer correctly.
 
 Deployment first serves the code with public mechanics63 unchanged. The existing private quality-preview cohort receives66 for real installed-app acceptance. Each of the six games must complete a full phone-app round, with farmer audio and visible animation, before public mechanics66 is activated. Private evidence and exact publication receipts are kept outside source. No Android reinstall, account reset, store resubmission, ads, purchase or entitlement change is required for this content update.

@@ -4,4 +4,5 @@
 .fr-picture-board{box-sizing:content-box}.fr-field .cc-listen{width:48px;height:48px}@media(orientation:portrait){.fr-picture-board{top:34%}}
 .fr-basket-target{position:absolute;left:27%;bottom:12%;width:43%!important;height:43%!important;background:#fff2cf;border:3px solid #c79c56;border-radius:50%;padding:2px}.fr-harvest-basket>b{bottom:-5%;left:62%;right:auto;white-space:nowrap;padding:3px 7px}.fr-sound-clue{width:clamp(64px,calc(var(--unit)*.27),140px);height:clamp(64px,calc(var(--unit)*.27),140px);background:#fff2d7df;border:4px solid #dbb369;border-radius:25%;padding:4px}.fr-clue-place{position:absolute;inset:0;pointer-events:none}.fr-field button[hidden]{display:none}
 .fr-field[data-phase=happy] .fr-pet-friend{animation:none}
+.fr-paused,.fr-paused *,.fr-paused *::before,.fr-paused *::after{animation-play-state:paused!important}
 @media(orientation:portrait){.fr-engine{left:10%!important;width:calc(var(--unit)*.21);height:calc(var(--unit)*.21)}.fr-wagon{left:var(--portrait-left)!important;width:calc(var(--unit)*.34);height:calc(var(--unit)*.34)}.fr-train[data-wagons="3"] .fr-wagon{width:calc(var(--unit)*.26);height:calc(var(--unit)*.26)}}

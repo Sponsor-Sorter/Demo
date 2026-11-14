@@ -20,6 +20,13 @@
  function home(id,i,n){const q=C.pos(i,n,.76),place=id==='hen'?'coop':id==='cow'?'barn':'paddock';return object('fr-home','Home for '+id,q.x,q.y,img(root+'harvest58/'+place+'.webp')+img(animal(id),'','fr-home-sign'));}
  function nextPicture(){let stored={remaining:[],last:-1};try{stored=JSON.parse(localStorage.getItem('meadow-littles-jigsaw-v1'))||stored;}catch{}const rotate=window.meadowSlidingPicture?.rules.rotation;if(!rotate)return Math.floor(Math.random()*pictures.length);const v=rotate(Array.isArray(stored.remaining)?stored.remaining:[],stored.last);try{localStorage.setItem('meadow-littles-jigsaw-v1',JSON.stringify({remaining:v.remaining,last:v.choice}));}catch{}return v.choice;}
  function speak(a,id,done){const token=++a.voiceToken,serial=a.s.phaseSerial;Promise.resolve(window.meadowAudio?.speak(id)||0).then(duration=>{if(active!==a||token!==a.voiceToken)return;a.voiceUntil=a.s.time+(Number(duration)||0);if(a.s.phase==='happy')a.s.waitAt=Math.max(a.s.waitAt,a.voiceUntil+.15);if(done&&a.s.phaseSerial===serial)done(Number(duration)||0);});}
+ function narrate(a,p,resume=false){const s=a.s;
+  if(s.id==='farmerpattern'&&p==='watch')speak(a,cue(s.id,p),duration=>C.continueWatch(s,Math.max(.9,duration+.2)));
+  else if(s.id==='barnyardlisten'&&p==='listen')speak(a,cue(s.id,p),duration=>{a.pendingSound={serial:s.phaseSerial,at:s.time+duration+.15,id:s.target==='hen'?'chicken':s.target};});
+  else if(s.id==='barnyardlisten'&&p==='pet')speak(a,['friends66-jade-animal-'+s.target,cue(s.id,p)]);
+  else if(s.id==='gentleharvest'&&p==='pick'){if(resume)speak(a,'harvest58-jade-pick-'+s.target);}
+  else if(!['restored','train','happy','done'].includes(p))speak(a,cue(s.id,p));
+ }
  function scene(a){const s=a.s,p=s.phase,f=a.field;a.version=s.phaseSerial;f.dataset.phase=p;f.dataset.activity=s.id;
   if(p==='done'){f.classList.add('fr-complete');a.caption.textContent=words[s.id].done;return;}
   let h='';
@@ -58,10 +65,7 @@
   f.querySelector('[data-sound-clue]')?.addEventListener('click',()=>{if(!a.run.paused){a.showClue=true;showClue(a);}});
   f.querySelectorAll('[data-friend-card]').forEach(b=>b.onclick=()=>{if(!a.run.paused&&C.card(s,+b.dataset.friendCard)){events(a);render(a);}});
   f.querySelector('.cc-listen').onclick=()=>{if(a.run.paused)return;if(s.id==='farmerpattern'){if(s.phase==='watch'){s.watchIndex=0;s.watchClock=Infinity;s.phaseSerial++;}else C.replay(s);render(a);}else if(s.id==='barnyardlisten'&&s.phase==='listen')window.meadowAudio?.play(s.target==='hen'?'chicken':s.target);else speak(a,cue(s.id,p));};
-  if(s.id==='farmerpattern'&&p==='watch')speak(a,cue(s.id,p),duration=>C.continueWatch(s,Math.max(.9,duration+.2)));
-  else if(s.id==='barnyardlisten'&&p==='listen'){const serial=s.phaseSerial;speak(a,cue(s.id,p),duration=>a.hooks.later(()=>{if(active===a&&s.phaseSerial===serial&&s.phase==='listen')window.meadowAudio?.play(s.target==='hen'?'chicken':s.target);},duration*1000+150));}
-  else if(s.id==='barnyardlisten'&&p==='pet')speak(a,['friends66-jade-animal-'+s.target,cue(s.id,p)]);
-  else if(!['restored','train','happy'].includes(p)&&!(s.id==='gentleharvest'&&p==='pick'))speak(a,cue(s.id,p));
+  narrate(a,p);
   if(p==='happy')s.waitAt=Math.max(s.waitAt,a.voiceUntil+.15||0);
   if(s.id==='barnyardlisten'&&p==='listen')showClue(a);
   layout(a);
@@ -95,7 +99,9 @@
  function mount(run,hooks){if(!enabled(run.game.id))return false;dispose();const s=C.create(run.game.id,run.game.level,Math.random,run.game.id==='farmpicture'?nextPicture():0),dialog=hooks.actors.closest('dialog'),field=document.createElement('div');field.className='cc-field fr-field';hooks.actors.replaceChildren(field);dialog.classList.add('cc-dialog');
   if(s.id==='barnyardlisten'){hooks.$('.mini-stage').style.backgroundImage='url('+root+'classic63/dairy-scene.webp)';hooks.$('.mini-stage').style.backgroundPosition='center bottom';}
   if(s.id==='paddockchange')hooks.$('.mini-stage').style.backgroundImage='url('+root+'bee-shelter/meadow.webp)';
-  const a=active={s,run,hooks,dialog,field,caption:hooks.$('.mini-caption'),version:-1,pointer:null,voiceToken:0,voiceUntil:0,lit:-1};hooks.$('.mini-header h2').textContent=({meadowpairs:'Farm Friend Pairs',paddockchange:'Who’s Missing?',farmerpattern:'Copy the Pattern',barnyardlisten:'Who Made That Sound?',gentleharvest:'Moving Harvest',farmpicture:'Farm Picture Puzzle'})[s.id];run.classic=true;run.game.goal=s.goal;run.resultVoice=cue(s.id,'done');run.classicLayout=()=>layout(a);run.classicFrame=paused=>{if(paused)reset(a);};run.classicTick=dt=>{C.tick(s,dt);events(a);render(a);};
+  const a=active={s,run,hooks,dialog,field,caption:hooks.$('.mini-caption'),version:-1,pointer:null,voiceToken:0,voiceUntil:0,lit:-1};hooks.$('.mini-header h2').textContent=({meadowpairs:'Farm Friend Pairs',paddockchange:'Who’s Missing?',farmerpattern:'Copy the Pattern',barnyardlisten:'Who Made That Sound?',gentleharvest:'Moving Harvest',farmpicture:'Farm Picture Puzzle'})[s.id];run.classic=true;run.game.goal=s.goal;run.resultVoice=cue(s.id,'done');run.classicLayout=()=>layout(a);
+  run.classicFrame=paused=>{field.classList.toggle('fr-paused',paused);if(paused){reset(a);if(!a.wasPaused){a.voiceToken++;a.pendingSound=null;window.meadowAudio?.stopVoice();}}else if(a.wasPaused){if(s.id==='farmerpattern'&&s.phase==='watch'){s.watchIndex=0;s.watchClock=Infinity;a.lit=-1;a.signature='';}narrate(a,s.phase,true);}a.wasPaused=paused;};
+  run.classicTick=dt=>{C.tick(s,dt);if(a.pendingSound&&(s.phaseSerial!==a.pendingSound.serial||s.phase!=='listen'))a.pendingSound=null;if(a.pendingSound&&s.time>=a.pendingSound.at){const id=a.pendingSound.id;a.pendingSound=null;window.meadowAudio?.play(id);}events(a);render(a);};
   field.addEventListener('pointerdown',e=>{if(run.paused||document.hidden||e.isPrimary===false||e.button!==0||a.pointer!==null||e.target.closest('button'))return;const node=e.target.closest('[data-friend-drag]');if(!node&&s.phase!=='pet')return;e.preventDefault();const p=point(a,e);if(!C.start(s,p,node?.dataset.friendDrag||'pet'))return;a.pointer=e.pointerId;field.setPointerCapture(e.pointerId);a.down=p;if(node&&s.phase!=='listen'&&s.phase!=='pet'){a.dragNode=node;node.style.zIndex='20';}field.classList.add('fr-touching');});
   field.addEventListener('pointermove',e=>{if(e.pointerId!==a.pointer||run.paused)return;e.preventDefault();const p=point(a,e);C.move(s,p);if(a.dragNode){const r=field.getBoundingClientRect();a.dragNode.style.translate=(p.x-a.down.x)*r.width+'px '+(p.y-a.down.y)*r.height+'px';}if(s.phase==='listen'){const door=field.querySelector('[data-friend-drag="'+s.gesture?.target+'"] .fr-door');if(door)door.style.rotate='y '+Math.min(75,Math.abs(p.x-a.down.x)*250)+'deg';}events(a);render(a);});
   field.addEventListener('pointerup',e=>{if(e.pointerId!==a.pointer)return;e.preventDefault();if(!run.paused)C.end(s,point(a,e));reset(a);events(a);render(a);});
