@@ -1,0 +1,15 @@
+{
+  "provider": "image_gen.imagegen",
+  "mode": "edit/style-reference",
+  "sourceFile": "exec-49fa1410-e491-4b9e-9ceb-64586b5973e5.png",
+  "references": [
+    "assets/generated/hud/journal.webp",
+    "assets/generated/hud/settings.webp"
+  ],
+  "prompt": "A standalone dimensional golden farm-fair trophy with a cream star, warm wooden pedestal, small wheat sprigs and muted green ribbon. Match the approved journal/settings HUD rendering, lighting and warm palette. Simple readable silhouette at36–46px. Transparent background; no tile/frame/text/emoji or floating decoration.",
+  "transparent": true,
+  "width": 256,
+  "height": 256,
+  "bytes": 29058,
+  "sha256": "fee3507fec9b7466918e74b7e1abd8cb1020688e27b96104c22c654f0b1ec282"
+}
