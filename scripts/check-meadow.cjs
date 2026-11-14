@@ -153,3 +153,5 @@ require('./check-meadow-entitlements203.cjs');
 require('./check-meadow-guidance189.cjs');
 require('./check-meadow-production194.cjs');
 require('./check-meadow-safety.cjs');
+
+require('./check-meadow-ad-policy247.cjs');

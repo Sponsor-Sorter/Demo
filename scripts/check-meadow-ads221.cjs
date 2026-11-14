@@ -4,8 +4,8 @@ function fixture(changes={}){
  let owner='a',config={test_access:true,ads_provider_test:true,ads_enabled:true,isolated_ads_enabled:true,account_id:'a'.repeat(64),products:[],...changes},hook,showError=false,pause,lastShow;
  const calls={consent:0,show:0,nonce:0},notices=[],state={coins:250},timers=[];
  const ads={capabilities:async()=>{hook?.('capabilities');if(config.oldNative)throw Error('Not implemented');return {isolatedTestAds:true}},consent:async()=>{calls.consent++;await pause;hook?.('consent');return {canRequestAds:config.consent!==false}},show:async data=>{lastShow=data;calls.show++;hook?.('show');if(showError)throw Error('No ad available');return {earned:true,...(data.testOnly?{testOnly:true}:{} )}}};
- const scope={window:{addEventListener(){},meadowClub:{refresh:async()=>{},wallet:()=>({premium:config.premium===true,ads_enabled:config.popups===true})},Capacitor:{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowAds',Plugins:{MeadowAds:ads}}},document:{querySelectorAll:()=>[],querySelector:()=>null},setInterval(fn){timers.push(fn);return timers.length},clearInterval(){}};
- vm.runInNewContext(source,scope);
+ const scope={window:{addEventListener(){},meadowClub:{refresh:async()=>{},wallet:()=>({premium:config.premium===true,ads_enabled:config.popups===true})},Capacitor:{isNativePlatform:()=>true,isPluginAvailable:n=>n==='MeadowAds',Plugins:{MeadowAds:ads}}},document:{addEventListener(){},querySelectorAll:()=>[],querySelector:()=>null},setInterval(fn){timers.push(fn);return timers.length},clearInterval(){}};
+ vm.runInNewContext(fs.readFileSync('meadow-and-market/ad-policy.js','utf8'),scope);vm.runInNewContext(source,scope);
  scope.window.meadowStore.attach({ready:()=>true,user:()=>({id:owner}),client:()=>({rpc:async name=>{if(name==='meadow_market_commerce_status')return {data:config};assert.equal(name,'meadow_market_start_ad_reward','Client can only request a nonce, never deliver a reward');calls.nonce++;hook?.('nonce');return {data:{nonce:'00000000-0000-4000-8000-000000000221'}}}}),notify:t=>notices.push(t),state:()=>state});
  return {store:scope.window.meadowStore,calls,state,notices,timers,shown:()=>lastShow,switchAt:at=>hook=p=>{if(p===at)owner='b'},fail:value=>showError=value,pause:p=>pause=p};
 }
@@ -25,6 +25,6 @@ function fixture(changes={}){
  let finish;const concurrent=fixture();concurrent.pause(new Promise(r=>finish=r));const first=concurrent.store.advertisement(true);await Promise.resolve();await Promise.resolve();assert((await concurrent.store.advertisement(true)).unavailable);finish();await first;assert.equal(concurrent.calls.show,1);
  const native=fs.readFileSync('tools/meadow-android/android/app/build.gradle','utf8');for(const id of ['6946008351204848~7779211148','6946008351204848/6866630905','6946008351204848/8491985021'])assert(native.includes(id));
  assert(native.includes("versionName '1.7.6'"));assert(native.includes('ca-app-pub-3940256099942544~3347511713'),'Direct shell retains demo app ID');
- const club=fs.readFileSync('meadow-and-market/farm-club.js','utf8');assert(club.includes('!window.meadowStore?.test()||window.meadowStore?.providerAds()'),'Native ad acceptance does not route to the free preview');
+ const club=fs.readFileSync('meadow-and-market/farm-club.js','utf8');assert(club.includes('if(!result?.test)return;'),'Only the scoped free-preview response can route into the preview');
  console.log('Ad221 fixtures: scoped native route, privacy denial, account switching, concurrency/no-fill recovery and no client reward grants passed.');
 })().catch(e=>{console.error(e);process.exitCode=1});
