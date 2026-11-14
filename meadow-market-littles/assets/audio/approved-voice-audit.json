@@ -710,6 +710,106 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "bee51-rhys-generation.json"
     },
+    "classic63-jay-eggs-catch": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-eggs-carry": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-eggs-tuck": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-eggs-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-sorting-sort": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-sorting-load": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-sorting-push": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jay-sorting-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-milk-wash": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-milk-pump": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-milk-carry": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-milk-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-flowers-bee": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-flowers-pick": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-flowers-give": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-flowers-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-memory-match": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-memory-water": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-memory-harvest": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
+    "classic63-jade-memory-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic63-generation.json"
+    },
     "coop-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
