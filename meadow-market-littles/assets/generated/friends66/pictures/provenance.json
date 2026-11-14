@@ -1,0 +1,125 @@
+{
+  "method": "Original approved individual illustration, WebP format conversion only; no enlargement, cropping or regeneration",
+  "files": [
+    {
+      "id": "sheep",
+      "sourceFile": "exec-6b92e886-f108-4f44-8f83-cb44d23f0796.png",
+      "approvedPreview": "assets/generated/game-previews/sheep.webp",
+      "sourceSha256": "090a9d651ddf41e78529a528ff881294a8a3bf591cd25e47bc166c0ce6936a6d",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 442712,
+      "sha256": "1c887711d475b4d108de0737d78b37c0d9df555236181f4b06acb06f441d09b2"
+    },
+    {
+      "id": "goat",
+      "sourceFile": "exec-02ee2fd4-d738-42e9-bfbd-f0b4d0a53474.png",
+      "approvedPreview": "assets/generated/game-previews/goat.webp",
+      "sourceSha256": "f1419e63667c528758c6a662b9b6d8588e5de5ae38ad912d92f8e772ee3dec07",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 587472,
+      "sha256": "48b467ebc1a24b52b79343636edb04e1c1cb09be75a970d36a7ace06a37628df"
+    },
+    {
+      "id": "cow",
+      "sourceFile": "exec-dc9b1ca7-10e1-494a-bcbe-7f0e00ec3a6f.png",
+      "approvedPreview": "assets/generated/game-previews/cow.webp",
+      "sourceSha256": "532c189098a57d7fc897157047130ba79d0893a2ea826fbdd5b39d4b956d4bd9",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 538058,
+      "sha256": "48149a300c79f247718c930c025aaa127828a9172e68f851ee8bd255a3ee7187"
+    },
+    {
+      "id": "tractorrepair",
+      "sourceFile": "exec-9a779e7f-081e-4746-b613-5f37b0d5a404.png",
+      "approvedPreview": "assets/generated/game-previews/tractorrepair.webp",
+      "sourceSha256": "33298725b29ab79e85034a4a92f1256453c92e440639cfa078529c92f9ae7893",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 433056,
+      "sha256": "62b7ccbaa79df575803b2497c268453309ebb26e50688d4f925aadf9af2ba6f0"
+    },
+    {
+      "id": "lambcare",
+      "sourceFile": "exec-da1af3e8-1441-4659-8a63-31d317cc40b3.png",
+      "approvedPreview": "assets/generated/game-previews/lambcare.webp",
+      "sourceSha256": "68be69e34c5969455940e341b42efc24287004ce782a22a66a259416123f441e",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 468738,
+      "sha256": "d8c84930fe3c6553c035fdb74523c46ce52c56ebe48dfc8541770d39d2bd4bb3"
+    },
+    {
+      "id": "flowers",
+      "sourceFile": "exec-caf83dfb-964d-46ed-ae8b-7760e56655b5.png",
+      "approvedPreview": "assets/generated/game-previews/flowers.webp",
+      "sourceSha256": "1197d15214efd62a7b3c1cdd7bf8dff6e6cd357dc5a1363a8a55bc510d43b2a3",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 305744,
+      "sha256": "3e8646ea6da273f9aec17fb53ad4a48cddd076745a9247167a9acba14308bef8"
+    },
+    {
+      "id": "nest_builder",
+      "sourceFile": "exec-28ef6738-9c3a-48f2-aad9-82d82efe3d24.png",
+      "approvedPreview": "assets/generated/game-previews/nest_builder.webp",
+      "sourceSha256": "e2d51dbeae030692c4f2a8317a51bff29ff6021d7fb181ac96e67126d71f0c91",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 416588,
+      "sha256": "c7dafb62c4741a7a7d884bb46d016b3187350831e87e0854e92e1b5e38d5a506"
+    },
+    {
+      "id": "seed_to_snack",
+      "sourceFile": "exec-63160c24-df64-42c1-85bf-4b47eeb08891.png",
+      "approvedPreview": "assets/generated/game-previews/seed_to_snack.webp",
+      "sourceSha256": "307e9550084961ffd8d779e919381a7f04006be2977dde4572e0edcc0fc0667e",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 375968,
+      "sha256": "2ff771512d77d5ed577d01432d8cac9a23ec58a9391b957dd38f23c487e4ac2b"
+    },
+    {
+      "id": "orchard_seasons",
+      "sourceFile": "exec-0791c49a-b132-4fea-84f4-b416f59ba772.png",
+      "approvedPreview": "assets/generated/game-previews/orchard_seasons.webp",
+      "sourceSha256": "f2da1f9cdd48ebe8f35f9eb0f01ebd74637dcf6aa8838597dfe8d6839e3e2c0b",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 509386,
+      "sha256": "d4e8621352110487361877f8187319ec8b2e14e0f4852f39197ea03c4f652117"
+    },
+    {
+      "id": "windmill_workshop",
+      "sourceFile": "exec-c1b007a4-cf3d-4a11-a2a0-9f9535904a38.png",
+      "approvedPreview": "assets/generated/game-previews/windmill_workshop.webp",
+      "sourceSha256": "dee3566ad015bf3c01eb15948f614bad7a0d6a812f80c2ebda7dd7c30db1af47",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 419566,
+      "sha256": "ba58da69e40d743083357b4c5a9fb72fca968c502a16c9967eed032f45cde042"
+    },
+    {
+      "id": "pond_balance",
+      "sourceFile": "exec-3a994cf2-85ef-453f-8c86-d98b78cb03ce.png",
+      "approvedPreview": "assets/generated/game-previews/pond_balance.webp",
+      "sourceSha256": "8dd202e2d01652bde71ebf5833069a26e047c7967ed341828548212c11898535",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 404670,
+      "sha256": "235ef77e0b2cc52a9ba844bda87e961237838ddb447048c774b980b8341c1d6b"
+    },
+    {
+      "id": "farm_weather",
+      "sourceFile": "exec-93eb451e-bd70-48b8-a7a7-57ef4d91ee88.png",
+      "approvedPreview": "assets/generated/game-previews/farm_weather.webp",
+      "sourceSha256": "631a57fadf28919c426e57bfa9314f92a2dab45f12d43530f1c05d986a107df0",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 427258,
+      "sha256": "c86063b982d3a31a8ce2338d423fea69a4c3190262f196afbe5948c3821d980b"
+    }
+  ]
+}

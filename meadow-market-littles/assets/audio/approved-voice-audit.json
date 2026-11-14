@@ -890,6 +890,111 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "find-generation.json"
     },
+    "friends66-jade-meadowpairs-match": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-meadowpairs-home": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-meadowpairs-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-farmerpattern-watch": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-farmerpattern-pack": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-farmerpattern-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-barnyardlisten-listen": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-barnyardlisten-pet": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-barnyardlisten-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-gentleharvest-deliver": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-gentleharvest-done": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-animal-hen": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-animal-cow": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-animal-sheep": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-animal-goat": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-rhys-paddockchange-look": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-rhys-paddockchange-restore": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-rhys-paddockchange-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-rhys-farmpicture-build": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-rhys-farmpicture-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "friends66-generation.json"
+    },
+    "friends66-jade-gentleharvest-pick": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "friends66-generation.json"
+    },
     "harvest58-jade-pick-intro": {
       "farmer": "jade",
       "voice": "Hope - upbeat and clear",
