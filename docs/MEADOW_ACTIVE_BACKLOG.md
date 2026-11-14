@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 14 November 2026 — isolated247 numeric-ad consumer candidate
+
+Prepared on fresh-mainc79b12d4, branchcodex/meadow-ad-policy247.14focused policy cases, actual club/store popup-controller cases and existing ad221/commerce225/Premium234/command-UI210 checks pass;2Deno purchase/signed-callback cases pass. Shared canonical vector matches Fairplay. The additive adapter preserves commerce_status239() and pack_grants240(auth.uid()) before appending the fixed private reader result. Cache/resume/account races, stricter queue requirements, post-consent routing and UI-only preference authority are covered. No deployment/activation is claimed. [Candidate source, scope and joint gates](MEADOW_AD_POLICY247_CANDIDATE.md).
+
+Root owns central SQL/Admin and genuine approved disposable-account API acceptance. Empty-reader deployment, reciprocal SQL/ACL verification, full CI and coordinated consumer rollout remain pending. Existing live246, gates, rewards, products, downloads, workflows, archives and other-game runtimes remain unchanged.
+
 ## 13 November 2026 — build246 native pack/transfer acceptance complete
 
 Web246 is live: main game/optimized Android CI43379924456 and Pages43379924295 passed; all nine changed public files match28f7017e. Browser and Samsung actual245→246 updates retained their separate farms. Samsung Settings confirms246. Native pack delivery/activation, both animal filters, crop tapping and cross-farm progress preservation passed. The returned chicken is in its original Back coop (7/7 residents); all90animals and695gems remain. A fresh corn plot transferred while still growing with its original planting clock.

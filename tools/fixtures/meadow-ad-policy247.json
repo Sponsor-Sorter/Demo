@@ -1,0 +1,16 @@
+{
+  "envelope": {
+    "app": "meadow",
+    "contract": "meadow-ad-policy-v1",
+    "policy_version": 1,
+    "target_min_build": 247,
+    "target_max_build": null,
+    "effective_at": "2026-11-14T04:00:00.000Z",
+    "expires_at": "2026-11-21T04:00:00.000Z",
+    "enforcement": "accepted",
+    "cache_max_age_seconds": 300,
+    "parameters": {"popup_every_completed_games": 3,"popup_min_interval_seconds": 180},
+    "policy_sha256": "6becd55da3e44a6a2a3a5f6da28bcc97e15a7bf051ffb98b530f0537f453f0d3"
+  },
+  "canonical_utf8": "meadow-ad-policy-v1\napp=meadow\npolicy_version=1\ntarget_min_build=247\ntarget_max_build=*\neffective_at=2026-11-14T04:00:00.000Z\nexpires_at=2026-11-21T04:00:00.000Z\ncache_max_age_seconds=300\npopup_every_completed_games=3\npopup_min_interval_seconds=180\n"
+}

@@ -3,19 +3,24 @@
  const native=window.Capacitor?.isNativePlatform?.();
  const plugin=name=>native&&window.Capacitor?.isPluginAvailable?.(name)?window.Capacitor.Plugins?.[name]||window.Capacitor.registerPlugin?.(name):null;
  const billing=plugin('MeadowStore'),ads=plugin('MeadowAds');
- let api,configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]},prices=new Map(),owner='',loading=null,busy=false,refreshVersion=0;
+ let api,configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]},prices=new Map(),owner='',loading=null,busy=false,refreshVersion=0,popup;
  const known=new Set(['starter_pack','pocket_gems','gem_chest','builders_pack','reward_tickets','pantry_pack','premium','welcome_garden','coop_charm','market_makeover']);
  async function refresh(withPrices=true){
   if(!api?.ready()||(typeof navigator!=='undefined'&&navigator.onLine===false))throw Error('Connect online for purchases and ad rewards. You can keep exploring your farm.');
   const who=api.user()?.id;
   if(owner!==who){owner=who;configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]};prices.clear();}
   if(loading?.who===who&&(!withPrices||loading.withPrices))return loading.promise;
-  const version=++refreshVersion,request={who,withPrices,promise:null};
+  const version=++refreshVersion,request={who,withPrices,promise:null},policyRequest=popup?.begin();
   request.promise=(async()=>{
+   try{
    const r=await api.client().rpc('meadow_market_commerce_status');if(r.error)throw Error('The shop is temporarily unavailable.');
    if(who!==api.user()?.id||version!==refreshVersion)return;
+   await popup?.receive(r.data?.numeric_ad_policy??null,policyRequest);
+   if(who!==api.user()?.id||version!==refreshVersion)return;
    configuration=r.data;
+   const pending=api.state?.()?.club;if(pending?.adPending){const before=JSON.stringify(pending.adPendingPolicy);window.meadowAdPolicy?.pending(pending,who,popup?.snapshot().parameters);if(before!==JSON.stringify(pending.adPendingPolicy))api.save?.();}
    if(withPrices&&billing&&configuration.payments_enabled){prices.clear();const data=await billing.products();if(who===api.user()?.id&&version===refreshVersion)prices=new Map(data.products.map(p=>[p.id,p]));}
+   }catch(e){popup?.failed(policyRequest);throw e;}
   })();
   loading=request;
   try{await request.promise}finally{if(loading===request)loading=null}
@@ -84,16 +89,20 @@
   }catch{ /* Manual Restore remains available after a network/provider failure. */ }
   finally{busy=false}
  }
- async function advertisement(rewarded=false){
+ async function advertisement(rewarded=false,beforePopup){
   if(busy)return {unavailable:true};busy=true;const who=api.user()?.id;
   const sameAccount=()=>{if(who!==api.user()?.id)throw Error('Account changed. Open the reward on your own farm.');};
   try{
-   await refresh();sameAccount();if(configuration.test_access&&!configuration.ads_provider_test)return {test:true};
+   await refresh(false);sameAccount();
+   if(configuration.test_access&&!configuration.ads_provider_test){if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup())return {unavailable:true};}return {test:true};}
    const testOnly=configuration.ads_provider_test===true;
    if(!ads||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled)){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
    if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true){if(testOnly)api.notify(wallet?.premium?'Premium is active. Popup ads are blocked.':'Optional popup ads are off.');return {unavailable:true};}}
+   if(!rewarded&&(!popup?.snapshot().available||beforePopup&&!beforePopup(false)))return {unavailable:true};
    if(testOnly){let supported=false;try{supported=(await ads.capabilities()).isolatedTestAds===true;}catch{}sameAccount();if(!supported)throw Error('Update Meadow Markets in Google Play before running isolated test ads.');}
    const consent=await ads.consent();sameAccount();if(!consent.canRequestAds){api.notify('Advertising privacy choices are unavailable. No ad was shown.');return {unavailable:true};}
+   if(testOnly!==(configuration.ads_provider_test===true)||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled))return {unavailable:true};
+   if(!rewarded){const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup(true))return {unavailable:true};}
    const data={rewarded};if(testOnly)data.testOnly=true;
    if(rewarded&&!testOnly){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
    const result=await ads.show(data);sameAccount();
@@ -110,9 +119,9 @@
   for(const link of root.querySelectorAll('a[href$=".apk"]')){link.href='https://play.google.com/store/apps/details?id=com.meadowandmarket.game';link.removeAttribute('download');link.textContent='Open Meadow Markets in Google Play';}
   const section=root.querySelector('.install-game-card .task-main small');if(section)section.textContent='Google Play installs and updates this version. Your cloud farm stays on your account.';
  }
- function attach(a){api=a;settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().then(recover).catch(()=>{}));if(billing){billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));document.addEventListener('visibilitychange',()=>{if(!document.hidden)recover()});window.addEventListener('online',recover);}}
+ function attach(a){api=a;popup=window.meadowAdPolicy?.create({owner:()=>api.user()?.id||'',build:()=>Number(/[?&]v=(\d+)/.exec(document.querySelector('script[src^="game.js?"]')?.getAttribute('src')||'')?.[1])||247});const resume=()=>{popup?.suspend();loading=null;if(api.ready())refresh(false).catch(()=>{})};window.addEventListener('online',resume);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resume()});settings(document);window.addEventListener('meadow-cloud-ready',()=>refresh().then(recover).catch(()=>{}));if(billing){billing.addListener('purchasesUpdated',result=>verify(result.purchases,api.user()?.id).catch(e=>api.notify(e.message)));document.addEventListener('visibilitychange',()=>{if(!document.hidden)recover()});window.addEventListener('online',recover);}}
  const owned=sku=>owner===api?.user()?.id&&(configuration.owned_products||[]).includes(sku);
  const packGrants=()=>owner===api?.user()?.id?(configuration.pack_grants||[]):[];
  const canPurchase=sku=>!owned(sku)&&(configuration.test_access===true||!!billing&&configuration.payments_enabled===true&&configuration.products.some(p=>p.sku===sku&&prices.has(p.product_id)));
- window.meadowStore={packGrants,offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
+ window.meadowStore={popupPolicy:()=>popup?.snapshot()||{available:false,parameters:{popup_every_completed_games:3,popup_min_interval_seconds:180}},packGrants,offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();
