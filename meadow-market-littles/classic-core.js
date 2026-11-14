@@ -30,7 +30,7 @@
  function card(s,i){
   if(s.phase!=='match'||!Number.isInteger(i)||i<0||i>=s.deck.length||s.open.length===2||s.open.includes(i)||s.matched.includes(i))return false;
   s.open.push(i);event(s,'word',{id:s.deck[i]});
-  if(s.open.length===2){if(s.deck[s.open[0]]===s.deck[i]){s.matched.push(...s.open);s.open=[];s.score++;event(s,'success');if(s.matched.length===s.deck.length)s.matchedAt=s.time+.7;}else s.resetAt=s.time+.85;}
+  if(s.open.length===2){if(s.deck[s.open[0]]===s.deck[i]){s.matched.push(...s.open);s.open=[];s.score++;event(s,'success');if(s.matched.length===s.deck.length)s.matchedAt=s.time+1.6;}else s.resetAt=s.time+.85;}
   return true;
  }
  function start(s,p,target=''){
