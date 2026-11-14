@@ -79,7 +79,7 @@
  }}
  function render(a){if(active!==a)return;const s=a.s;if(a.version!==s.phaseSerial)scene(a);a.run.score=s.score;
   const signature=[s.phase,s.score,s.open.join(','),s.matched.join(','),s.homes.join(','),s.loaded.join(','),s.placed.join(','),a.lit].join('|');
-  if(signature!==a.signature){a.signature=signature;a.hooks.$('#mini-count').textContent=s.score+' / '+s.goal+' helping steps';a.hooks.$('#mini-timer').textContent='Take your time';a.hooks.$('#mini-status').textContent='Listen · Remember · Help';
+  if(signature!==a.signature){a.signature=signature;a.hooks.$('#mini-count').textContent=s.score+' / '+s.goal+' steps';a.hooks.$('#mini-timer').textContent='Take your time';a.hooks.$('#mini-status').textContent='Farm friends';
    a.field.querySelectorAll('[data-friend-card]').forEach(b=>{const i=+b.dataset.friendCard,show=s.open.includes(i)||s.matched.includes(i);b.classList.toggle('is-open',show);b.classList.toggle('is-matched',s.matched.includes(i));b.disabled=s.matched.includes(i);b.setAttribute('aria-label','Friend card '+(i+1)+': '+(show?s.deck[i]:'hidden'));});
    if(s.id==='meadowpairs'&&s.phase!=='match'){const ids=[...new Set(s.deck)];a.field.querySelectorAll('.fr-friend').forEach((n,i)=>{n.style.top=(s.homes.includes(ids[i])?76:30)+'%';n.classList.toggle('fr-home-safe',s.homes.includes(ids[i]));});}
    a.field.querySelectorAll('.fr-wagon').forEach((n,i)=>{const lit=s.phase==='watch'&&a.lit===i,loaded=i<s.loaded.length||s.phase==='train';n.style.setProperty('--portrait-left',((s.pattern.length===2?[.4,.75]:[.33,.59,.85])[i]*100)+'%');n.classList.toggle('fr-wagon-lit',lit);n.classList.toggle('fr-wagon-loaded',loaded);n.setAttribute('aria-label','Pattern wagon '+(i+1)+': '+(lit||loaded?s.pattern[i]:'empty'));});
