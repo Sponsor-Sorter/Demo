@@ -2,6 +2,8 @@
 
 14November2026. Branch `codex/meadow-ad-policy247`, based on fresh main `c79b12d4933f7b781d3eb0094aa778aab6679cac`. This receipt covers prepared source and focused acceptance; it does not claim deployment, policy activation, a live impression or native/public rollout.
 
+Joint backend follow-up: Root deployed the reviewed central empty reader and this adapter, then passed the genuine normal game-API read for the approved disposable actor (policy fieldnull, pack projection preserved, verified Premium unchanged and supplied app/actor overrides404). Independent read-back confirms the public/private ACLs,0accepted policies and qualificationfalse. Gateway61 is deployed/read-back8/8, JWTtrue; its sole source change is the generated247 fingerprint. These backend results do not claim web247 is public yet.
+
 ## Shared boundary
 
 Fairplay owns the central accepted-policy schema/action/editor/backend and Admin packaging. Meadow owns the optional own-account projection and client. The agreed identifier is `meadow-ad-policy-v1`, fixed app `meadow`, first compatible web build247. Root's source contract is `FairplayAdmin/docs/MEADOW_AD_POLICY_IMPLEMENTATION_V1.md`.
@@ -27,6 +29,7 @@ Read-only preflight inspected the actual existing function owner/ACL/body; no li
 - Last accepted version/hash supplies an account-session anti-rollback floor. Null/default reads do not resurrect an earlier accepted version.
 - `store.js` composes the policy read with existing commerce refresh. A queued popup captures count/gap requirements and can only become stricter across later refreshes. Provider/kill routing, account, Premium, opt-out and policy freshness are rechecked after consent, immediately before the attempt.
 - `farm-club.js` retains the cumulative completed-round count,100-result deduplication history and last attempted popup time. It uses the shared safe game-close boundary. Hidden/modal screens defer; Premium and opt-out cancel pending breaks. Attempt time is consumed before provider loading, including no-fill failures.
+- A cheap known count/cooldown check runs before commerce or consent requests. Fresh ineligible policies are checked before native consent, then checked again after consent before consuming the attempt. Offline/unavailable automatic breaks stay silent; explicit player requests retain their feedback. Follow-up script queries are store248/club248 within game build247.
 - `adPendingPolicy` is an account-bound **UI preference** added to `farm-command-ui.js`; it is stripped from the authoritative domain fingerprint. It cannot insert applied receipts, set wallet resources or grant rewards. Canonical refreshes preserve the preference safely.
 - Explicit rewarded choice remains separate, including for Premium. Only the existing server nonce/signed callback can credit gems/tickets. Scoped free previews and isolated provider tests remain separate; no real provider traffic was used here.
 - The existing shop note reports current pacing values. No new artwork/audio or native plugin is required for this backend/pacing change.

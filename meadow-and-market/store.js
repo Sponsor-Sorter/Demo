@@ -98,10 +98,11 @@
    const testOnly=configuration.ads_provider_test===true;
    if(!ads||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled)){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
    if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true){if(testOnly)api.notify(wallet?.premium?'Premium is active. Popup ads are blocked.':'Optional popup ads are off.');return {unavailable:true};}}
+   if(!rewarded&&(!popup?.snapshot().available||beforePopup&&!beforePopup(false)))return {unavailable:true};
    if(testOnly){let supported=false;try{supported=(await ads.capabilities()).isolatedTestAds===true;}catch{}sameAccount();if(!supported)throw Error('Update Meadow Markets in Google Play before running isolated test ads.');}
    const consent=await ads.consent();sameAccount();if(!consent.canRequestAds){api.notify('Advertising privacy choices are unavailable. No ad was shown.');return {unavailable:true};}
    if(testOnly!==(configuration.ads_provider_test===true)||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled))return {unavailable:true};
-   if(!rewarded){const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup())return {unavailable:true};}
+   if(!rewarded){const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup(true))return {unavailable:true};}
    const data={rewarded};if(testOnly)data.testOnly=true;
    if(rewarded&&!testOnly){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
    const result=await ads.show(data);sameAccount();
