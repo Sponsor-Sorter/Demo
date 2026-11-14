@@ -86,7 +86,7 @@
    a.field.querySelectorAll('[data-friend-slot]').forEach(n=>n.classList.toggle('fr-fitted',s.placed.includes(+n.dataset.friendSlot)));
    a.field.querySelectorAll('.fr-picture-piece').forEach(n=>n.hidden=s.placed.includes(+n.dataset.friendDrag));
   }
-  if(s.phase==='pick')a.field.querySelectorAll('.fr-rolling-food').forEach(n=>{const v=s.produce.find(v=>String(v.key)===n.dataset.friendDrag);n.style.left=v.x*100+'%';n.style.rotate=(s.time*v.dir*15)+'deg';});
+  if(s.phase==='pick')a.field.querySelectorAll('.fr-rolling-food').forEach(n=>{const v=s.produce.find(v=>String(v.key)===n.dataset.friendDrag);n.style.left=v.x*100+'%';if(a.dragNode!==n)n.firstElementChild.style.rotate=(s.time*v.dir*15)+'deg';});
   if(s.done&&s.id==='gentleharvest'){const basket=a.field.querySelector('.fr-full-basket');if(basket){basket.style.left='80%';basket.style.top='38%';}}
   if(s.done&&!a.ending){a.ending=true;a.hooks.later(()=>{if(active===a)a.hooks.finish(true);},1600);}
  }
