@@ -92,7 +92,7 @@
    s.eggClock-=dt;
    if(s.eggClock<=0&&s.eggs.length<2){s.eggClock=1.8;const sources=s.eggSources||[{x:.2,y:.08},{x:.5,y:.08},{x:.8,y:.08}],q=sources[Math.floor(s.random()*sources.length)];s.eggs.push({id:++s.eggSerial,...q,v:.19});}
    for(const e of s.eggs){e.y+=e.v*dt;e.v+=.035*dt;
-    if(s.movedBasket&&e.y>=.73&&e.y<.91&&Math.abs(e.x-s.basket.x)<.17&&!e.dead){e.dead=true;s.caught++;s.score++;event(s,'success');if(s.caught===s.catchGoal){s.eggs=[];phase(s,'carry');break;}}
+    if(s.movedBasket&&e.y>=.81&&e.y<.93&&Math.abs(e.x-s.basket.x)<.17&&!e.dead){e.dead=true;s.caught++;s.score++;event(s,'success',{x:e.x,y:.81});if(s.caught===s.catchGoal){s.eggs=[];phase(s,'carry');break;}}
     if(e.y>=1.03)e.dead=true;
    }s.eggs=s.eggs.filter(e=>!e.dead);
   }

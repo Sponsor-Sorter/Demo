@@ -63,7 +63,7 @@
   else{a.caption.textContent=text[s.id].done;a.field.classList.add('cc-completed');}
  }
  function events(a){for(const e of a.s.events.splice(0)){
-  if(e.type==='success'){window.meadowAudio?.play('care');const spark=document.createElement('i');spark.textContent='✦';spark.style.left=(20+Math.random()*60)+'%';a.field.querySelector('.cc-sparkles')?.append(spark);a.hooks.later(()=>spark.remove(),800);}
+  if(e.type==='success'){window.meadowAudio?.play('care');const spark=document.createElement('i');spark.textContent='✦';spark.style.left=(e.x!==undefined?e.x*100:20+Math.random()*60)+'%';if(e.y!==undefined)spark.style.top=e.y*100+'%';a.field.querySelector('.cc-sparkles')?.append(spark);a.hooks.later(()=>spark.remove(),800);}
   if(e.type==='word')window.meadowAudio?.speak((a.s.id==='sorting'?'harvest58-jay-word-':'produce-')+e.id);
   if(e.type==='retry'){window.meadowAudio?.play('tap');a.caption.textContent='Look for the matching picture. Try again!';}
  }}
