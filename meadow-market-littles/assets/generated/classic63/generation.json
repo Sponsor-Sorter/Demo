@@ -1,0 +1,8 @@
+{
+  "mode": "edit",
+  "tool": "image_gen.imagegen",
+  "reference": "assets/generated/minigames/dairy.webp",
+  "output": "dairy-scene.webp",
+  "prompt": "Preserve the warm polished3Dstory-book sunny dairy barn. Remove the baked-in foreground cow and pail, restoring empty matching barn floor and interior. No new animals or buckets; no text or UI. Dynamic approved Daisy and interactive milk pail are rendered in code.",
+  "source": "exec-797f26f3-3c4f-4705-8264-efd549b1cec6.png"
+}
