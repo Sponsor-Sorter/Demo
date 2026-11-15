@@ -810,6 +810,16 @@
       "voice": "Hope - upbeat and clear",
       "evidence": "classic63-generation.json"
     },
+    "classic72-jade-hint": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic72-generation.json"
+    },
+    "classic72-jay-hint": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic72-generation.json"
+    },
     "coop-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",

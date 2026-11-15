@@ -1,0 +1,9 @@
+# Littles72 — growing garden memory and market sorting
+
+Garden Memory grows from three to six seed pairs across four milestones. Market Basket Sort grows from two to four picture baskets and from six to ten foods per delivery. Both retain their hands-on garden and cart stages, full-screen illustrated farm scenes and approved farmer cast. Families can choose an easier or harder challenge through the normal intro controls.
+
+Two completed incorrect attempts on the current step offer a glowing hint. In memory, a guess is a completed mismatched pair, not the first card selection. The requested hint highlights two matching hidden cards, or the mate of one open card. Sorting highlights the correct basket; later steps highlight a watering target, harvest basket or cart. The child completes the action. Hints award no progress; correct steps clear the help. Cancelled gestures, stationary source taps and partial watering progress remain free.
+
+Cards remain stable in the DOM while flipping, and more baskets use a responsive layout with separate touch areas. The cart destination follows that layout. Existing game IDs, saved records, ordinary completion/reward limits and approved71 intro text styling are retained. The base and theme introduction styles are unchanged: readable light text directly over artwork, without dark instruction strips. Two independently generated approved Jade/Hope and Jay/Mike hint recordings are included.
+
+Mechanics72 uses the established private quality gate for native acceptance while public mechanics70 remains active. Validation includes800 progressive model rounds, the existing legacy suite,40 initial responsive level layouts, complete browser rounds and full beginner/advanced rounds in the official phone app before public activation. Final acceptance evidence and rollout details are recorded in the PR.
