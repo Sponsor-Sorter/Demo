@@ -1235,6 +1235,11 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "harvest58-rhys-generation.json"
     },
+    "harvest77-rhys-number-6": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "harvest77-generation.json"
+    },
     "journey-jade-nest-line": {
       "farmer": "jade",
       "voice": "Hope - upbeat and clear",

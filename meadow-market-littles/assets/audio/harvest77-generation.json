@@ -1,0 +1,26 @@
+{
+  "provider": "ElevenLabs authenticated Text to Speech UI",
+  "generated": "2026-11-15",
+  "model": "Eleven Multilingual v2",
+  "stability": 0.5,
+  "similarity": 0.75,
+  "style": 0,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "processing": "Loudness normalization only; no time stretching, pitch changes or guessed splits.",
+  "files": [
+    {
+      "id": "harvest77-rhys-number-6",
+      "text": "Six.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "speed": 0.89,
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "ElevenLabs_2026-11-15T21_54_49_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "c50258d5e455b8470f7c5755de2c8438981e90a3e062fd34ae0848b0ec8346ae",
+      "sha256": "cff53a5f8980dc48c8b266614b5ae17cd2abfd2419aaa8d961cca4d24b811661",
+      "bytes": 9449,
+      "verification": "Independent generation1 player visibly said Six. with Noah - YA Audiobooks Narrator and Download Audio enabled before download."
+    }
+  ]
+}
