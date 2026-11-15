@@ -1,0 +1,37 @@
+{
+  "provider": "ElevenLabs authenticated Text to Speech UI",
+  "generated": "2026-11-15",
+  "model": "Eleven Multilingual v2",
+  "stability": 0.5,
+  "similarity": 0.75,
+  "style": 0,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "processing": "Independent approved-cast recordings. Loudness normalization only; no time stretching or guessed splits.",
+  "files": [
+    {
+      "id": "classic72-jade-hint",
+      "text": "Need a little help? Tap the glowing hint button. It will show you where to look.",
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "speed": 0.91,
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "ElevenLabs_2026-11-15T04_44_24_Hope - upbeat and clear_pvc_s50_m2.mp3",
+      "sourceSha256": "fdbacad2fa26551625e866bc755786e4eb896c8ab87ca7663859471b33ce45d3",
+      "sha256": "38433e27e39a1ca5678a5d8b98dd3594dc0449bca2b3ed0b65bfb803c2672b77",
+      "bytes": 53648
+    },
+    {
+      "id": "classic72-jay-hint",
+      "text": "Need a little help? Tap the glowing hint button. It will show you where to look.",
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "speed": 0.92,
+      "model": "Eleven Multilingual v2",
+      "sourceFile": "ElevenLabs_2026-11-15T04_51_11_Mike - Animation, Explainers & Gaming_pvc_s50_m2.mp3",
+      "sourceSha256": "46e66a8b43e8d17f3cbfa5345e589ae0c66f11609dfd6adb07284d3707986f55",
+      "sha256": "e2045cefe069371a9cfa40daad559885303c0d909da33a1afcb574ac5363b1cf",
+      "bytes": 57409
+    }
+  ]
+}

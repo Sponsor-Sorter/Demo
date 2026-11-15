@@ -16,3 +16,4 @@ const f=C.create('flowers');for(let i=0;i<1000;i++)C.tick(f,.05);assert.equal(f.
 const e=C.create('eggs');for(let i=0;i<3000;i++)C.tick(e,.05);assert.equal(e.caught,0,'Unmoved basket does not automatically win');assert.equal(e.phase,'catch','Misses never punish young players');
 const sort=C.create('sorting');for(let i=0;i<100;i++)stroke(sort,{x:.25,y:.65},{x:.25,y:.65},'cart');assert.equal(sort.score,0);
 console.log('Five full farm sequences ×24 seeds ×3 levels, deliberate gestures, free retries, memory lock, cancellation and exact-once completion passed.');
+require('./check-littles-classic-help.cjs');
