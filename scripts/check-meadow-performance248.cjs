@@ -36,6 +36,7 @@ assert.equal(paint.rebuilt,0,'50,000 unchanged canonical objects retain their re
 for(let i=0;i<nodes.length;i++)assert.equal(nodes[i]._farmObject,objects[i],'Retained nodes refer to the latest canonical object');
 objects[0].name='Changed';paint.gridRender();assert.equal(paint.rebuilt,1,'A changed visible property still replaces its tile');
 objects[0].name=undefined;paint.state.selected=objects[1].id;paint.gridRender();assert.equal(paint.rebuilt,2,'Selection still updates its tile');
+const animal={id:'loose-hen',type:'chicken',kind:'animal',hunger:90,clean:90};const healthyKey=paint.objectVisualKey(animal);animal.hunger=80;assert.equal(paint.objectVisualKey(animal),healthyKey,'Ordinary healthy decay does not repaint');animal.hunger=34;assert.notEqual(paint.objectVisualKey(animal),healthyKey,'Crossing the rendered needs threshold must repaint');animal.hunger=90;animal.clean=34;assert.notEqual(paint.objectVisualKey(animal),healthyKey,'Cleaning need also invalidates the visual');
 console.log('Farm renderer: 50,000 unchanged replacements avoided; changed art and selection invalidate normally.');
 
 // A retained node's long-hold must resolve the current canonical coordinates.

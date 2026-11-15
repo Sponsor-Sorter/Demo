@@ -2,6 +2,8 @@
 
 ## 15 November 2026 — performance 248
 
+Final 249 follow-up: explicitly invalidate the cached visual when a legacy visible animal crosses its existing hunger/cleanliness attention threshold. The new actual-source test reproduces the omission on 248 and passes with the guard; healthy decay still avoids repainting. Combine with the owner-reviewed Littles 73 copy fix in one deployment; do not change its backend gate.
+
 248 retains unchanged farm DOM nodes across canonical updates, caches the exact accepted grass-cell list, resolves live long-hold coordinates, and avoids redundant worker title/covered-screen paints. The actual-source regression covers 50,000 unchanged object replacements, changed visual/selection invalidation, exact grass/map/resize behavior and worker pause/resume. Both Meadow CI checkouts now exclude unrelated game assets/archives while retaining every existing check and all public source/download files. [Scope, measurements and acceptance](MEADOW_PERFORMANCE248.md).
 
 The shared Pages artifact reduction remains a separate cross-game task; no archives were removed. Continue longer cross-map/touch/provider sessions, weekly-prize eligibility feedback, Bee Shelter edge cases, Android advisories and development-dependency review after this focused release.

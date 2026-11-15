@@ -2,6 +2,8 @@
 
 This pass reduces repeated farm painting and the checkout size of both Meadow CI jobs. Existing HD artwork, audio, download URLs, farming arithmetic, rewards and purchase authority are retained.
 
+The final 249 guard includes the existing rendered animal-needs threshold in the visual key. Its regression first failed on 248, then passed with the guard: normal healthy decay retains the node, while hunger or cleanliness crossing 35 triggers its existing attention appearance. This follow-up is combined with the independently reviewed Littles 73 copy fix in one publication; Littles owns its private mechanics gate and physical acceptance.
+
 ## Runtime changes
 
 - Canonical server updates can replace every JavaScript object without changing its appearance. The renderer now retains matching visual nodes and updates their canonical reference. A changed visual key, selection or movement still rebuilds the affected tile. Long-hold gestures resolve the current object before using its tile anchor.
