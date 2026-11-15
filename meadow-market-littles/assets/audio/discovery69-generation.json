@@ -1,0 +1,54 @@
+{
+  "provider": "ElevenLabs Text to Speech authenticated UI",
+  "generated": "2026-11-15",
+  "model": "Eleven Multilingual v2",
+  "speed": 0.93,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "style": 0,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "processing": "Each cue generated and downloaded independently. Loudness normalization only; no time stretching or guessed splits.",
+  "files": [
+    {
+      "id": "discovery69-rhys-look",
+      "text": "Let’s look at two farm pictures! Something is missing from your picture. Can you find it? Tap the missing place in either picture.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T00_53_34_Noah - YA Audiobooks Narrator_pvc_sp93_s50_sb75_se0_b_m2.mp3",
+      "sourceSha256": "b0ed02bca4abde4e799d8f71c44409ec857f8ef81cc7f75389b82b64687cef26",
+      "sha256": "057a43e28115ed209aceeadeb37beb60782b7bf3cb605b56af7316310435da7c",
+      "bytes": 82487
+    },
+    {
+      "id": "discovery69-rhys-restore",
+      "text": "You found it! Now bring the missing detail back to its place in your picture. You can drag it, or tap it and then its place.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T00_54_26_Noah - YA Audiobooks Narrator_pvc_sp93_s50_sb75_se0_b_m2.mp3",
+      "sourceSha256": "465aa1a296935540fb0cc3a26d7f4c3c7f117a6e0c4d0ac65e4d93dce98e5166",
+      "sha256": "b4c56b1b4b36c300abadf98d6089aaee9a9c0a333f37c6b75bb54ad79ca596f4",
+      "bytes": 79666
+    },
+    {
+      "id": "discovery69-rhys-page",
+      "text": "Lovely helping! Your farm picture is all together. Watch our happy farm friends! When you’re ready, let’s turn to the next picture.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T00_55_22_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "4ed71c150ef576de1d69159a4987aae00ccf3e68127e8e14e7e22f2b565a30df",
+      "sha256": "556b77115687a5fdbad980fa26aca4f2c0b6b47cc190c595b4cba86976dedb56",
+      "bytes": 111326
+    },
+    {
+      "id": "discovery69-rhys-done",
+      "text": "Wonderful work! You found the missing details and put all three farm pictures together. What a lovely farm helper you are!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T00_56_14_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "af4e0dd31a721b40a5eb234b9d86598e978071267d0a8832f090a3dd6a44f390",
+      "sha256": "d6c39e05a7fe639d75e71ece31633513a509b785607daf6a2fb38cb724ae3593",
+      "bytes": 95339
+    }
+  ]
+}
