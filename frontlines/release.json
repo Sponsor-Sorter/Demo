@@ -1,11 +1,11 @@
 {
-  "build": 104,
-  "version": "1.0.0.104",
-  "url": "https://sponsorsorter.com/frontlines/builds/104/",
-  "notes": "V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained.",
-  "networkBuild": 100,
-  "androidBuild": 104,
-  "windowsBuild": 104,
+  "build": 105,
+  "version": "1.0.0.105",
+  "url": "https://sponsorsorter.com/frontlines/builds/105/",
+  "notes": "V1.0.0.105: Locked duo/trio Teams, shared team victories and owner-authorized allied attacks. Trade territory creates persistent two-player card-trading pockets; friendly captures earn the normal one-card-per-turn reward. Approved graphics, maps, accounts and saves retained.",
+  "networkBuild": 105,
+  "androidBuild": 105,
+  "windowsBuild": 105,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93

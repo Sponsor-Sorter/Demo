@@ -127,45 +127,45 @@
       "notes": "The public download is build 8. Later test builds are not listed until accepted for release. On iPhone or iPad, use the website."
     },
     {
-      "id": "frontlines",
-      "title": "Frontlines: World in Conflict",
-      "type": "Game",
-      "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained.",
-      "image": "./frontlines/media/icon.png",
-      "imageAlt": "Frontlines: World in Conflict game artwork",
-      "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.104 · browser, Android & Windows",
-      "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
-      "instructionsTitle": "How to play",
-      "instructions": [
-        "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play and Steam are separate distributions.",
-        "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Android50+ supports in-game updates, although stock70/71 clients with the old compiled updater fault need a manual signed replacement first. Android asks you to confirm installation.",
-        "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
-        "Online players need compatible protocol100 clients for new rooms. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
-      ],
-      "actions": [
-        {
-          "label": "Play latest browser build",
-          "url": "https://sponsorsorter.com/frontlines/",
-          "primary": true
-        },
-        {
-          "label": "Download Android104 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public104/frontlines-1.0.0.104-android.apk"
-        },
-        {
-          "label": "Download Windows104 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public104/frontlines-1.0.0.104-windows-setup.exe"
-        },
-        {
-          "label": "Installation and update guide",
-          "url": "https://sponsorsorter.com/frontlines/downloads/"
-        }
-      ],
-      "notes": "V1.0.0.104: Unlockable Grandmaster AI, stronger capital strategies, asynchronous browser planning and clearer online beta guidance. Approved artwork, graphics quality, maps, account data and saves retained.",
-      "sha256": "C9C37B2FBC76997946E30EEC02D7D3C18CA2BA89AA12F86ACC4152AACF0BB1C8",
-      "releaseManifest": "./frontlines/release.json"
+  "id": "frontlines",
+  "title": "Frontlines: World in Conflict",
+  "type": "Game",
+  "tagline": "Six factions. Twelve battlefields. One world to conquer.",
+  "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.105: Locked duo/trio Teams, shared team victories and owner-authorized allied attacks. Trade territory creates persistent two-player card-trading pockets; friendly captures earn the normal one-card-per-turn reward. Approved graphics, maps, accounts and saves retained.",
+  "image": "./frontlines/media/icon.png",
+  "imageAlt": "Frontlines: World in Conflict game artwork",
+  "status": "Public testing · browser, Android & Windows",
+  "build": "V1.0.0.105 · browser, Android & Windows",
+  "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
+  "instructionsTitle": "How to play",
+  "instructions": [
+    "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play and Steam are separate distributions.",
+    "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Recent website builds support in-game updates. Older builds may need this signed APK installed manually once. Android asks you to confirm installation.",
+    "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
+    "Use the current game version for new online rooms. Updated players can also join compatible older matches. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
+  ],
+  "actions": [
+    {
+      "label": "Play latest browser build",
+      "url": "https://sponsorsorter.com/frontlines/",
+      "primary": true
+    },
+    {
+      "label": "Download Android105 APK",
+      "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public105/frontlines-1.0.0.105-android.apk"
+    },
+    {
+      "label": "Download Windows105 setup EXE",
+      "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public105/frontlines-1.0.0.105-windows-setup.exe"
+    },
+    {
+      "label": "Installation and update guide",
+      "url": "https://sponsorsorter.com/frontlines/downloads/"
     }
+  ],
+  "notes": "V1.0.0.105: Locked duo/trio Teams, shared team victories and owner-authorized allied attacks. Trade territory creates persistent two-player card-trading pockets; friendly captures earn the normal one-card-per-turn reward. Approved graphics, maps, accounts and saves retained.",
+  "sha256": "2A2F5056DA311F3EBB4F87D12432DF2D2013D6B1A117A71A0F305C41353309DB",
+  "releaseManifest": "./frontlines/release.json"
+}
   ]
 }
