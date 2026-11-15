@@ -368,7 +368,7 @@
   window.addEventListener('pointercancel',cancelPlacementGesture);window.addEventListener('blur',cancelPlacementGesture);window.addEventListener('resize',cancelPlacementGesture);document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelPlacementGesture()});
 
   const transientVisualFields=new Set(['lastHelperAt','growthSettledAt','growthBonusMs','needsAt','lastCare','hunger','clean','happy','lastProductAt','friendship','helpers']);
-  function objectVisualKey(o,growthFarm=current()){const residents=['coop','barn','paddock'].includes(o.type)?current().objects.filter(a=>a.coopId===o.id||a.barnId===o.id||a.paddockId===o.id).map(a=>[a.id,a.type,a.name,a.breedTier]):null;return JSON.stringify([o,(state.moving===o.id),(state.selected===o.id),o.type==='plot'?growth(o,growthFarm).stage:null,['tree','orchard'].includes(o.type)?fruitSprite(o):null,residents],(k,v)=>transientVisualFields.has(k)?undefined:v)}
+  function objectVisualKey(o,growthFarm=current()){const residents=['coop','barn','paddock'].includes(o.type)?current().objects.filter(a=>a.coopId===o.id||a.barnId===o.id||a.paddockId===o.id).map(a=>[a.id,a.type,a.name,a.breedTier]):null;return JSON.stringify([o,o.kind==='animal'&&(o.hunger<35||o.clean<35),(state.moving===o.id),(state.selected===o.id),o.type==='plot'?growth(o,growthFarm).stage:null,['tree','orchard'].includes(o.type)?fruitSprite(o):null,residents],(k,v)=>transientVisualFields.has(k)?undefined:v)}
   let gridRender;
   function directionalObjectArt(o,fp,farm=current()){
     const R=window.meadowRotations;if(!R)return '';const rotation=R.angle(o),phase=['tree','orchard'].includes(o.type)?fruitSprite(o).match(/apple-(leaf|blossom|fruit)/)?.[1]:null;
@@ -813,7 +813,7 @@
   });
   window.meadowMinigames?.attach({state:()=>state,canPlay:()=>!window.meadowControl?.blocked()&&!activeVisit,notify,save,reward:(item,n,gold,experience)=>{const pantry=current().inventory;pantry[item]=(pantry[item]||0)+n;state.coins+=gold;xp(experience);window.meadowAlmanac?.record(item,n);save();render()}});
   setInterval(travelGuide,1500);
-  const currentBuild=248;
+  const currentBuild=249;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost'&&!commandQA)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};
