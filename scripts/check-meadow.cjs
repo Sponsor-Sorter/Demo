@@ -11,10 +11,10 @@ const plots={clamp:(n,a,b)=>Math.max(a,Math.min(b,n))};vm.createContext(plots);f
 for(let tier=0;tier<4;tier++){assert.equal(plots.plotYield({tier},false),[3,16,45,96][tier]);assert.equal(plots.plotYield({tier},true),[4,20,54,112][tier]);assert.equal(plots.footprint({type:'plot',tier}).w,tier+1)}assert.equal(plots.plotSide({}),1);
 // Exercise the actual hold handlers with a camera swipe and deliberate holds.
 const listeners={},timers=new Map(),state={mode:'tend'},camera={pointers:new Map(),suppressClick:false};let picked=0,placed=0;
-const gesture={document:{addEventListener:()=>{}},window:{addEventListener:(n,f)=>listeners[n]=f},setTimeout:(f,ms)=>{const id=timers.size+1;timers.set(id,{f,ms});return id},clearTimeout:id=>timers.delete(id),camera,state,cameraScene:{setPointerCapture:()=>{}},render:()=>picked++,guideCollapseTray:()=>{},navigator:{vibrate:()=>{}},notify:()=>{},isoCellFromPoint:()=>({x:2,y:3}),placeAt:()=>{placed++;state.moving=null},objectClick:()=>{}};
+const gesture={obj:id=>id==='plot-test'?{id,x:2,y:3}:null,document:{addEventListener:()=>{}},window:{addEventListener:(n,f)=>listeners[n]=f},setTimeout:(f,ms)=>{const id=timers.size+1;timers.set(id,{f,ms});return id},clearTimeout:id=>timers.delete(id),camera,state,cameraScene:{setPointerCapture:()=>{}},render:()=>picked++,guideCollapseTray:()=>{},navigator:{vibrate:()=>{}},notify:()=>{},isoCellFromPoint:()=>({x:2,y:3}),placeAt:()=>{placed++;state.moving=null},objectClick:()=>{}};
 vm.runInNewContext(game.slice(game.indexOf('  const OBJECT_HOLD_MS='),game.indexOf('  let gridRender;'))+';previewPlacement=()=>{};window.bind=bindObjectGesture;',gesture);
 function element(){const handlers={},image={draggable:true};return {handlers,image,querySelectorAll:()=>[image],dataset:{},classList:{add:()=>{},remove:()=>{}},addEventListener:(n,f)=>handlers[n]=f}}
-const el=element();gesture.window.bind(el,{id:'plot-test',x:2,y:3});let prevented=0;const down=()=>el.handlers.pointerdown({pointerType:'touch',pointerId:1,clientX:100,clientY:100,preventDefault:()=>prevented++}),up=()=>listeners.pointerup({pointerId:1,clientX:120,clientY:100});
+const el=element();el.dataset.id='plot-test';gesture.window.bind(el,{id:'plot-test',x:2,y:3});let prevented=0;const down=()=>el.handlers.pointerdown({pointerType:'touch',pointerId:1,clientX:100,clientY:100,preventDefault:()=>prevented++}),up=()=>listeners.pointerup({pointerId:1,clientX:120,clientY:100});
 assert.equal(el.image.draggable,false);el.handlers.contextmenu({preventDefault:()=>prevented++});el.handlers.dragstart({preventDefault:()=>prevented++});assert.equal(prevented,2,'Browser image menus and dragging cannot cancel game holds');
 down();assert.equal([...timers.values()][0].ms,1200);listeners.pointermove({pointerId:1,clientX:120,clientY:100});assert.equal(timers.size,0);up();assert.equal(state.mode,'tend');assert.equal(picked,0,'A camera swipe must not pick up an object');
 down();[...timers.values()][0].f();up();assert.equal(state.moving,null);assert.equal(picked,1);assert.equal(placed,1,'Lifting after a hold drops onto its original tiles');
@@ -155,3 +155,5 @@ require('./check-meadow-production194.cjs');
 require('./check-meadow-safety.cjs');
 
 require('./check-meadow-ad-policy247.cjs');
+
+require('./check-meadow-performance248.cjs');

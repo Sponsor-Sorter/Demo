@@ -11,6 +11,23 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+          # Keep the full Meadow test/media closure and shared Littles code,
+          # without downloading unrelated games or their build archives.
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.gitignore
+            /.github/workflows/meadow-checks.yml
+            /package*.json
+            /deno.lock
+            /meadow-and-market/
+            /scripts/
+            /tools/
+            /supabase/
+            /assets/email/
+            /meadow-market-littles/*
+            !/meadow-market-littles/assets/
+            !/meadow-market-littles/downloads/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -60,6 +77,18 @@ jobs:
         working-directory: tools/meadow-android
     steps:
       - uses: actions/checkout@v4
+        # The native shell serves the verified live game; it needs one icon,
+        # native sources and the two native checks, not other games' archives.
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.gitignore
+            /.github/workflows/meadow-checks.yml
+            /meadow-and-market/assets/icon-512.png
+            /scripts/check-meadow-native-ads228.cjs
+            /scripts/check-meadow-optimized-bundle.cjs
+            /tools/meadow-android/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

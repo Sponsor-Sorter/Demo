@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 14 November 2026 — web 247 live; Fairplay Admin consumer qualified
+
+Main `5cd9137a97aef622d2ede62910b0279ce9b79d76` is published. Meadow/optimized Android CI `43554481809`, Littles CI `43554481784` and Pages `43554481583` passed; 23 public/protected files match reviewed source. Gateway 61 readback matches all eight reviewed files and retains JWT verification.
+
+The hash-verified public consumer passed a genuine own-account API fixture with null-policy defaults of three games and 180 seconds. Root qualified Admin's owner controls; independent database readback confirms zero accepted policies and unchanged enabled commerce/ads/production gates. No policy or advertisement was created. Play 1.7.6/code 16 is unchanged; this release has source/API acceptance, not a new physical-device or provider acceptance claim. [Final acceptance](MEADOW_AD_POLICY247_ACCEPTANCE.md). Earlier pending entries below are historical.
+
 ## 13 November 2026 — build246 native pack/transfer acceptance complete
 
 Web246 is live: main game/optimized Android CI43379924456 and Pages43379924295 passed; all nine changed public files match28f7017e. Browser and Samsung actual245→246 updates retained their separate farms. Samsung Settings confirms246. Native pack delivery/activation, both animal filters, crop tapping and cross-farm progress preservation passed. The returned chicken is in its original Back coop (7/7 residents); all90animals and695gems remain. A fresh corn plot transferred while still growing with its original planting clock.
