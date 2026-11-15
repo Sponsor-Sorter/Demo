@@ -1,10 +1,18 @@
 # Meadow Markets active work
 
-## 14 November 2026 — isolated247 numeric-ad consumer candidate
+## 15 November 2026 — performance 248
 
-Prepared on fresh-mainc79b12d4, branchcodex/meadow-ad-policy247.14focused policy cases, actual club/store popup-controller cases and existing ad221/commerce225/Premium234/command-UI210 checks pass;2Deno purchase/signed-callback cases pass. Shared canonical vector matches Fairplay. The additive adapter preserves commerce_status239() and pack_grants240(auth.uid()) before appending the fixed private reader result. Cache/resume/account races, stricter queue requirements, post-consent routing and UI-only preference authority are covered. No deployment/activation is claimed. [Candidate source, scope and joint gates](MEADOW_AD_POLICY247_CANDIDATE.md).
+248 retains unchanged farm DOM nodes across canonical updates, caches the exact accepted grass-cell list, resolves live long-hold coordinates, and avoids redundant worker title/covered-screen paints. The actual-source regression covers 50,000 unchanged object replacements, changed visual/selection invalidation, exact grass/map/resize behavior and worker pause/resume. Both Meadow CI checkouts now exclude unrelated game assets/archives while retaining every existing check and all public source/download files. [Scope, measurements and acceptance](MEADOW_PERFORMANCE248.md).
 
-Root owns central SQL/Admin and genuine approved disposable-account API acceptance. Empty-reader deployment, reciprocal SQL/ACL verification, full CI and coordinated consumer rollout remain pending. Existing live246, gates, rewards, products, downloads, workflows, archives and other-game runtimes remain unchanged.
+The shared Pages artifact reduction remains a separate cross-game task; no archives were removed. Continue longer cross-map/touch/provider sessions, weekly-prize eligibility feedback, Bee Shelter edge cases, Android advisories and development-dependency review after this focused release.
+
+## 14 November 2026 — build 247 published and Admin consumer qualified
+
+Web 247 is live from main `5cd9137a97aef622d2ede62910b0279ce9b79d76`, combined with the owner-reviewed Littles 64 narration fix in one Pages upload. Main Meadow CI `43554481809`, Littles CI `43554481784` and Pages `43554481583` passed. All 23 named public/protected file comparisons match reviewed source. Gateway 61 matches all eight source files with JWT verification enabled; its farming change is the generated rules fingerprint only.
+
+Root's fetched-public-code fixture used genuine normal Auth and the own-account commerce RPC. It returned the null-policy defaults of three completed games and 180 seconds, with pack projection preserved. Root then qualified the Admin consumer for build 247. Independent readback confirms qualification true, zero accepted policies, null active policy and existing ads/payments/production flags true. Deletion remains disabled. No policy, advertisement, purchase or new native device acceptance was performed. [Final acceptance and scope](MEADOW_AD_POLICY247_ACCEPTANCE.md). The earlier [candidate record](MEADOW_AD_POLICY247_CANDIDATE.md) retains pre-release history.
+
+Remaining priorities are the hosting/Android checkout reduction, longer cross-map worker and touch sessions, weekly-prize eligibility feedback, Bee Shelter edge cases, Android toolchain advisories and three moderate development-dependency advisories. The 79-file Android checkout candidate passed the complete local build matrix, but no hosted A/B or workflow change has shipped. Keep archive/download URLs intact. Final documentation is retained on a local closeout branch to avoid another whole-site upload; main/Pages, phone and UI leases are released.
 
 ## 13 November 2026 — build246 native pack/transfer acceptance complete
 
