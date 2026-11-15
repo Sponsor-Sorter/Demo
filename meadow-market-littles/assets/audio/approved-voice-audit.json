@@ -820,6 +820,41 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "classic72-generation.json"
     },
+    "classic74-jay-eggs-done": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jay-sorting-push": {
+      "farmer": "jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jade-milk-pump": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jade-flowers-give": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jade-memory-match": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jade-memory-harvest": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic74-generation.json"
+    },
+    "classic74-jade-flowers-match": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "classic74-generation.json"
+    },
     "coop-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",

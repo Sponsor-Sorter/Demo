@@ -5,14 +5,14 @@
  const clone=x=>JSON.parse(JSON.stringify(x));
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
  const REMEMBERED='meadow-littles-account-v1';
- let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,latest=null,timer=null,dialog=null,updateDialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
+ let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,saving=null,latest=null,timer=null,dialog=null,updateDialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
  function notify(state,code=null){status=state;lastError=code;try{options.onStatus?.({state,code,userId:user?.id||null,isGuest:!!user?.is_anonymous,revision})}catch{}updateDialog?.();return {state,code,revision};}
  function failure(code){const e=new Error(code);e.code=code;return e}
  function codeOf(e){return known.has(e?.message)?e.message:'LITTLES_CLOUD_UNAVAILABLE'}
- async function actor(){const {data,error}=await client.auth.getUser();if(error||!data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');if(user&&data.user.id!==user.id)throw failure('LITTLES_ACCOUNT_CHANGED');user=data.user;return data.user;}
+ async function actor(){const {data,error}=await client.auth.getUser();if(error)throw failure(!error.status||error.status>=500?'LITTLES_CLOUD_UNAVAILABLE':'LITTLES_SIGN_IN_REQUIRED');if(!data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');if(user&&data.user.id!==user.id)throw failure('LITTLES_ACCOUNT_CHANGED');user=data.user;return data.user;}
  async function rpc(name,body){const {data,error}=await client.rpc(name,body);if(error)throw failure(codeOf(error));if(data?.ok!==true||data.contract!=='meadow-littles-cloud-v1'||data.entitlements_verified!==false)throw failure('LITTLES_CLOUD_UNAVAILABLE');return data;}
  async function fairplay(action,data={}){
   if(!client)throw failure('LITTLES_CONTROL_UNAVAILABLE');
@@ -42,7 +42,7 @@
   if(read(prefix(user.id)+'choice')||(revision>0&&meta?.revision!==revision)){notify('choice_required');return;}
   ready=true;notify('ready');if(latest)schedule();
  }
- function schedule(){clearTimeout(timer);timer=setTimeout(()=>{flush().catch(()=>{})},1200);}
+ function schedule(){clearTimeout(timer);if(!authBusy)timer=setTimeout(()=>{flush().catch(()=>{})},1200);}
  async function init(config={}){
   options=config;store=config.storage||globalThis.localStorage;
   bindReconnect();return reconnect();
@@ -71,9 +71,9 @@
  }
  function queueSave(snapshot){try{latest=clone(snapshot);if(ready)schedule();return true}catch{notify('error','LITTLES_INVALID_SAVE');return false}}
  async function flush(){
-  clearTimeout(timer);if(!client||!user||busy)return {ok:false,state:status};
+  clearTimeout(timer);if(!client||!user||busy||authBusy)return {ok:false,state:status};
   let pending=read(prefix(user.id)+'pending');if(!ready&&!pending)return {ok:false,state:status};if(!pending&&!latest)return {ok:true,state:status};
-  busy=true;
+  busy=true;let settle;saving=new Promise(resolve=>{settle=resolve});
   try{
    await actor();
    if(!pending){const snapshot=latest;pending={p_request_id:crypto.randomUUID(),p_expected_revision:revision,p_cloud_version:1,p_save_data:clone(snapshot),p_expected_user_id:user.id};write(prefix(user.id)+'pending',pending);latest=null;}
@@ -82,7 +82,7 @@
    if(result.request_id!==pending.p_request_id||!Number.isSafeInteger(result.revision)||result.revision!==pending.p_expected_revision+1||typeof result.replayed!=='boolean')throw failure('LITTLES_CLOUD_UNAVAILABLE');
    revision=result.revision;write(prefix(user.id)+'meta',{revision});write(prefix(user.id)+'pending',null);ready=true;notify('saved');return {ok:true,revision,replayed:result.replayed};
   }catch(e){ready=false;const code=e.code||'LITTLES_CLOUD_UNAVAILABLE';notify(code==='LITTLES_BANNED'?'banned':code==='LITTLES_SAVE_REVISION_CONFLICT'||code==='LITTLES_REQUEST_BINDING_CONFLICT'?'choice_required':'retry_required',code);return {ok:false,state:status,code};}
-  finally{busy=false;if(ready&&latest)schedule();}
+  finally{busy=false;saving=null;settle();if(ready&&latest)schedule();}
  }
  async function choose(which){
   if(busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');await load();
@@ -99,11 +99,34 @@
  async function recover(email){const r=await client.auth.resetPasswordForEmail(email.trim(),{redirectTo:redirect()});if(r.error)throw failure('LITTLES_RECOVERY_UNAVAILABLE');return {ok:true};}
  async function signOut(){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(user?.is_anonymous)throw failure('LITTLES_LINK_EMAIL_BEFORE_SIGN_OUT');authBusy=true;try{const r=await client.auth.signOut({scope:'local'});if(r.error)throw failure('LITTLES_SIGN_OUT_FAILED');write(REMEMBERED,{signedOut:true});ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('signed_out');}finally{authBusy=false}}
  async function changeName(value){
-  if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');
   const name=String(value).trim();if(!name||Array.from(name).length>32||/[\u0000-\u001f\u007f-\u009f]/u.test(name))throw failure('LITTLES_INVALID_DISPLAY_NAME');
-  authBusy=true;try{const current=await actor();const data=await rpc('meadow_littles_open',{p_display_name:name});
+  if(authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');const expected=user?.id;
+  if(connecting)await connecting;if(saving)await saving;
+  if(expected&&user?.id!==expected)throw failure('LITTLES_ACCOUNT_CHANGED');
+  if(authBusy||busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');
+  if(!client||!user)throw failure(status==='offline'?'LITTLES_CLOUD_UNAVAILABLE':'LITTLES_SIGN_IN_REQUIRED');
+  authBusy=true;clearTimeout(timer);try{const current=await actor();const data=await rpc('meadow_littles_open',{p_display_name:name});
   if((await actor()).id!==current.id||data.profile?.user_id!==current.id)throw failure('LITTLES_ACCOUNT_CHANGED');
-  profile=data.profile;return {ok:true,displayName:profile.display_name};}finally{authBusy=false}
+  const confirmed=await rpc('meadow_littles_open',{});if((await actor()).id!==current.id||confirmed.profile?.user_id!==current.id)throw failure('LITTLES_ACCOUNT_CHANGED');
+  if(confirmed.profile.display_name!==name)throw failure('LITTLES_CLOUD_UNAVAILABLE');
+  profile=confirmed.profile;return {ok:true,displayName:profile.display_name};}finally{authBusy=false;if(ready&&latest)schedule();}
+ }
+ function openUsername(config={}){
+  if(dialog?.open){dialog.focus();return;}
+  const d=document.createElement('dialog');dialog=d;d.className='littles-account littles-username';d.setAttribute('aria-label','Change username');
+  const add=(tag,text,parent=d)=>{const el=document.createElement(tag);el.textContent=text;parent.append(el);return el;};
+  const close=()=>{d.close();d.remove();dialog=null;updateDialog=null;};
+  const topClose=add('button','×');topClose.type='button';topClose.className='account-close';topClose.autofocus=true;topClose.setAttribute('aria-label','Close username settings');topClose.onclick=close;
+  add('h2','Change username');add('p','Choose a farm nickname with 1–32 characters. This is the name used to find your account for Littles Plus.');
+  const form=add('form',''),nameLabel=add('label','Username',form),name=document.createElement('input');name.type='text';name.maxLength=64;name.autocomplete='nickname';name.autocapitalize='none';name.spellcheck=false;name.setAttribute('aria-label','Username');nameLabel.append(name);
+  const save=add('button','Save username',form);save.type='submit';save.className='primary-button';
+  const result=add('p','');result.setAttribute('role','status');
+  const idLabel=add('label','Account ID'),id=document.createElement('input');id.type='text';id.readOnly=true;id.className='littles-account-id';idLabel.append(id);add('p','Usernames can be shared. Your account ID identifies the exact account. Changing the name keeps your sign-in, progress and Plus access.');
+  let dirty=false,working=false,bound=user?.id||null,feedback='';
+  function refresh(){if(!d.open)return;const current=user?.id||null;if(bound&&current!==bound){save.disabled=true;result.textContent='The account changed. Close this panel and check your account before renaming it.';return;}if(!bound&&current)bound=current;if(!dirty&&!working)name.value=profile?.display_name||'';id.value=current||'Connect your account to see its ID';save.disabled=!client||!current||working;result.textContent=feedback||(status==='connecting'?'Connecting to your saved account…':!current?'Connect your account below to save a username.':status==='offline'?'Connect to the internet to save your username.':profile?.display_name?'Current username: '+profile.display_name:'Your account is connected. Choose a username.');}
+  name.oninput=()=>{dirty=true;feedback='';refresh();};
+  form.onsubmit=async e=>{e.preventDefault();if(working)return;working=true;save.disabled=true;name.disabled=true;feedback='Saving username…';result.textContent=feedback;try{const r=await changeName(name.value);if(!d.open)return;name.value=r.displayName;dirty=false;feedback='Username saved: '+r.displayName;config.onSaved?.(r);}catch(e){feedback=({LITTLES_INVALID_DISPLAY_NAME:'Use a username with 1–32 characters and no line breaks.',LITTLES_OPERATION_IN_PROGRESS:'Another account action is finishing. Please try again.',LITTLES_ACCOUNT_CHANGED:'The account changed. Close this panel and check your account.',LITTLES_SIGN_IN_REQUIRED:'Sign in to your saved account before changing its username.',LITTLES_CLOUD_UNAVAILABLE:'Could not save online. Your entered name is still here; check your connection and try again.'})[e.code]||'Could not save the username. Please try again.';}finally{working=false;name.disabled=false;refresh();}};
+  const account=add('button','Account & connection');account.type='button';account.onclick=()=>{close();openAccount();};const done=add('button','Close');done.type='button';done.onclick=close;d.addEventListener('cancel',()=>{d.remove();dialog=null;updateDialog=null});document.body.append(d);d.showModal();updateDialog=refresh;refresh();
  }
  function openAccount(){
   if(dialog?.open){dialog.focus();return;}
@@ -178,5 +201,5 @@
  }
  async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
  async function weekly(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.rpc('meadow_littles_weekly',{p_action:action,p_data:extra});if(error||data?.contract!=='littles-weekly-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
- globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
+ globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,openUsername,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
 })();
