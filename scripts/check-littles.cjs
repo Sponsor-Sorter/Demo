@@ -45,6 +45,7 @@ require('./check-littles-commerce.cjs');
 require('./check-littles-learning.cjs');
 
 require('./check-littles-harvest58.cjs');
+require('./check-littles-harvest77.cjs');
 require('./check-littles-classics.cjs');
 
 require('./check-littles-friends.cjs');
