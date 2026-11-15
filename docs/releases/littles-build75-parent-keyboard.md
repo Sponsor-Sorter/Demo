@@ -1,0 +1,5 @@
+# Littles75 · Visible grown-up entry fields
+
+The installed-phone username test exposed an existing short-screen problem: opening the keyboard could cover the grown-up answer field. Editing a grown-up or nickname form now moves it toward the top of short screens and compacts its introductory illustration/copy, keeping entered text visible. This editing state stays stable through Save, Continue and Close button focus, then resets when the panel closes. The gate layout change uses the existing private74 quality gate until native acceptance. The adult check, validation and account ownership remain unchanged.
+
+This content-only follow-up retains build74's exact classic game/core/audio/art files and the four approved game-intro stylesheets. Its eight complete installed-app game rounds remain acceptance of those unchanged bytes. The username panel only gains the editing-layout class; cloud/auth/save operations remain unchanged. The focused layouts, real username rename/server readback, cold reopen, original-name restoration and ordinary-public restart must additionally pass on final75 before public mechanics74 activation. No new Android binary is required or claimed.
