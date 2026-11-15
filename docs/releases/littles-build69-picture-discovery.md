@@ -1,0 +1,14 @@
+# Littles69 — find it and bring it back
+
+Farm Spot the Difference previously showed eight unrelated picture tokens in two busy images. Its replacement gives children a simple observation task and a visible outcome: compare the farm pictures, find a missing detail, then return that detail to its matching place.
+
+- Three farm scenes make one completed round. Beginners see four large details and two missing items; growing learners see six details and three missing items. All choices are untimed, and mistakes do not spend a round.
+- Twelve farm themes use a saved shuffle bag. The two pictures have the same scene, objects and positions; only the missing details differ. Children can tap either picture to find the change, then drag the missing piece into the second picture or use tap-then-tap.
+- Restored details celebrate with movement, stars and sound. Each completed scene waits for the child to choose the next one. The existing full-round result, records, rewards, access tickets and account saving remain in use.
+- Full-screen farm art contains the picture frames, farmer guidance and controls. Portrait phones stack the pictures; landscape phones and tablets place them alongside each other. Controls have at least44px targets, and motion respects reduced-motion settings.
+- Four independently generated ElevenLabs Multilingualv2 recordings use approved Farmer Rhys / Noah - YA Audiobooks Narrator at speed0.93. Provenance, original download hashes and text are recorded in `assets/audio/discovery69-generation.json`. No device speech synthesis or unapproved voice is used.
+- A new quiet clearing was created with built-in image_gen using the approved harvest scene as its style reference. Prompt and conversion provenance are in `assets/generated/discovery69/generation.json`. Existing approved game-preview art is preserved.
+
+The new mechanics require quality69. Normal public users retain mechanics66 until the installed-app full-round acceptance and final public rollout checks pass. Content publication alone does not activate the replacement. No native wrapper, Play Store submission, billing, ads, account or permission changes are included.
+
+Validation includes480 complete seeded rounds, free wrong moves and hints, one-use restoration, non-repeating theme rotation, pause/input cleanup and shared completion integration. A real layout regression found overlapping neighbouring touch areas; shorter detail bounds and wider row spacing keep every target separate, visible and at least44px. The final geometry check covers both find and restore phases at five screen sizes and two levels. Full browser rounds, audio decoding and native acceptance evidence are kept outside source in the private release folder. Final PR metadata records the actual deployed merge and acceptance result.

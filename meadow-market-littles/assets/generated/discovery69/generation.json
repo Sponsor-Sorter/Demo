@@ -1,0 +1,7 @@
+{
+  "provider": "Built-in image_gen",
+  "use": "Quiet preschool comparison scene",
+  "source": "exec-e82d491e-51f8-444f-84b5-ee15ad9670f5.png",
+  "sha256": "734a04bbabf0569496fc533c13dfe276ef309a663dda189d82abc6f7d53d546a",
+  "prompt": "Original wide 1536x1024 warm illustrated Meadow Market Littles clearing. Approved harvest58/home-scene.webp as style reference. Small distant red barn and fence in top third, blue sky, rounded outer trees; lower two-thirds open quiet grass for four large farm details. No animals, fruits, baskets, UI, lettering or frames. Simple ages3–6, crisp welcoming shapes. Conversion only to WebP; no image editing outside image_gen."
+}

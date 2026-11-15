@@ -1,6 +1,6 @@
 # Meadow Market Littles
 
-Standalone farm game collection for children aged roughly3–6. Updated14 November2026. Original Meadow Markets has its own folder, identity and release.
+Standalone farm game collection for children aged roughly3–6. Updated15 November2026. Original Meadow Markets has its own folder, identity and release.
 
 ## Publishing
 
@@ -16,7 +16,7 @@ Standalone farm game collection for children aged roughly3–6. Updated14 Novemb
 
 The collection includes farm activities, learning games, word finding, letter/name tracing, balloon letters, animal care, painting, picture puzzles, bee shelters, Harvest Slice, linked play and illustrated farm adventures. Controls stay inside the full-screen farm scene. New instructions use only the approved Jade/Hope, Rhys/Noah and Jay/Mike recordings. Device speech synthesis and unapproved narration are blocked.
 
-The first five classic rebuilds are public at mechanics63: egg catching/carrying/nesting, washing and milking Daisy, bee pollination/bouquets, seed memory/watering/harvesting, and sorting/loading/pushing a market cart. Content65 adds the illustrated trophy matching the other approved home controls. Content66 prepares six more rebuilds behind the existing private mechanics gate; public activation requires complete installed-app rounds, audio checks and bug fixes. See the acceptance note for this content build.
+The first five classic rebuilds are public at mechanics63: egg catching/carrying/nesting, washing and milking Daisy, bee pollination/bouquets, seed memory/watering/harvesting, and sorting/loading/pushing a market cart. Content65 adds the illustrated trophy matching the approved home controls. Six more farm-friend rebuilds are public at mechanics66 after complete installed-app rounds and the final content68 moving-target fix. Content69 prepares a hands-on Spot the Difference replacement behind the existing private quality gate; activation requires complete installed-app rounds, audio checks and bug fixes. See the acceptance note for the content build.
 
 ## Persistence
 

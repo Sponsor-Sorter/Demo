@@ -850,6 +850,26 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "coop-generation.json"
     },
+    "discovery69-rhys-look": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "discovery69-generation.json"
+    },
+    "discovery69-rhys-restore": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "discovery69-generation.json"
+    },
+    "discovery69-rhys-page": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "discovery69-generation.json"
+    },
+    "discovery69-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "discovery69-generation.json"
+    },
     "find-rhys-sheep": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
