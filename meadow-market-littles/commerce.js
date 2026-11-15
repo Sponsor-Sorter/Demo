@@ -32,9 +32,10 @@
  function gate(action){
   parentRender=null;
   if(!dialog){dialog=document.createElement('dialog');dialog.className='littles-parent';dialog.setAttribute('aria-label','Grown-up settings');dialog.addEventListener('cancel',()=>{epoch++;busy=false;store?.cancelCheckout().catch(()=>{});});document.body.append(dialog);}
+  dialog.classList.toggle('littles-parent74',(window.meadowWeeklyFair?.getQualityBuild?.()||0)>=74);dialog.classList.remove('littles-entry-focus');
   const numbers=['twenty one','twenty seven','thirty three','thirty eight','forty two','forty six'],values=[21,27,33,38,42,46],a=Math.floor(Math.random()*numbers.length),b=Math.floor(Math.random()*numbers.length),answer=values[a]+values[b];
   dialog.innerHTML='<main class="parent-paper"><button class="parent-close" data-parent-close aria-label="Back to games">×</button><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>For a grown-up</h2><form data-parent-gate><label>What is '+numbers[a]+' plus '+numbers[b]+'?<input inputmode="numeric" autocomplete="off" aria-label="Answer" maxlength="3" required></label><p data-gate-note role="status">Ask a grown-up to help with settings and purchases.</p><button class="primary-button" type="submit">Continue</button></form></main>';
-  dialog.querySelector('[data-parent-close]').onclick=close;dialog.querySelector('form').onsubmit=e=>{e.preventDefault();if(Number(dialog.querySelector('input').value)!==answer){dialog.querySelector('[data-gate-note]').textContent='That answer did not match. Please ask a grown-up.';dialog.querySelector('input').value='';return;}action();};if(!dialog.open)dialog.showModal();syncBanner();
+  dialog.querySelector('[data-parent-gate]').addEventListener('focusin',()=>dialog.classList.add('littles-entry-focus'));dialog.querySelector('[data-parent-close]').onclick=close;dialog.querySelector('form').onsubmit=e=>{e.preventDefault();if(Number(dialog.querySelector('input').value)!==answer){dialog.querySelector('[data-gate-note]').textContent='That answer did not match. Please ask a grown-up.';dialog.querySelector('input').value='';return;}dialog.classList.remove('littles-entry-focus');action();};if(!dialog.open)dialog.showModal();syncBanner();
  }
  async function parents(){
   const token=++epoch;price=null;const usernameAvailable=(window.meadowWeeklyFair?.getQualityBuild?.()||0)>=74;
