@@ -1,0 +1,97 @@
+{
+  "provider": "Built-in image_gen",
+  "generated": "2026-11-15",
+  "reference": "assets/generated/learning56/flower.webp",
+  "prompt": "Edit the Meadow Market Littles sprite: keep the same warm polished children’s storybook illustration, terracotta pot, two green leaves, soft light and front three-quarter view. Replace only the blossom with the named flower. One fully visible centred plant, generous genuine transparent padding; no landscape, ground, props, faces, text, borders or watermark. Large clean silhouette for ages3–6.",
+  "variants": {
+    "sunflower": "One large golden-yellow sunflower with dark warm-brown centre",
+    "tulip": "One red cup-shaped tulip",
+    "daisy": "One white daisy with bright yellow centre",
+    "lavender": "One compact purple lavender flower head",
+    "bluebell": "One bright blue bell-shaped blossom",
+    "pink": "One rich pink round daisy with golden centre"
+  },
+  "processing": "Alpha-preserving trim, contain resize and WebP encoding only",
+  "files": [
+    {
+      "id": "sunflower",
+      "file": "sunflower.webp",
+      "generatedSource": "exec-df6ea170-890f-45f8-9bd9-bf0665fff231.png",
+      "sha256": "94726c94d2777d503ce39404e8d7a147e9d96a9181db825201f62faf9ddc94e2",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    },
+    {
+      "id": "tulip",
+      "file": "tulip.webp",
+      "generatedSource": "exec-6cb0c120-a4c6-4320-9aca-5dbe683b5495.png",
+      "sha256": "a16c57078f21c7b34f8cc26f988776e690f8e68266d1c570a7b8a2039eb4b5e4",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    },
+    {
+      "id": "daisy",
+      "file": "daisy.webp",
+      "generatedSource": "exec-fcb02192-6114-4d9d-84f0-6ed6150bc8de.png",
+      "sha256": "ee822e86ad9bfdd4c1c47e769bd65d6496d0a6db4476f916fc79ca699bc13efe",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    },
+    {
+      "id": "lavender",
+      "file": "lavender.webp",
+      "generatedSource": "exec-d7db80b5-919d-497d-a2ba-2e59d8db62f3.png",
+      "sha256": "73581872b3204cfb350ec87a15bb321f0cb319a5d0b936848319a18a8fe8088d",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    },
+    {
+      "id": "bluebell",
+      "file": "bluebell.webp",
+      "generatedSource": "exec-59984f38-bf7b-40f1-8dfd-9ee23eba3e63.png",
+      "sha256": "81d1f09436b44a627e9bd9e47df674a0ce6d51d6d05b352838cbeb09fffacce8",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    },
+    {
+      "id": "pink",
+      "file": "pink.webp",
+      "generatedSource": "exec-7e694b26-30ad-4398-b987-ddf30f620707.png",
+      "sha256": "5d9c06d27236b23c71318b47d974766e6b254219e709175ad8c016b77a450d93",
+      "width": 384,
+      "height": 448,
+      "transparent": true
+    }
+  ],
+  "prompts": [
+    {
+      "id": "sunflower",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one large golden yellow sunflower with a dark warm brown centre. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    },
+    {
+      "id": "tulip",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one simple red tulip with a cup-shaped bloom. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    },
+    {
+      "id": "daisy",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one white daisy with a bright yellow centre. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    },
+    {
+      "id": "lavender",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one compact purple lavender flower head, with a simple cluster of small purple petals. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    },
+    {
+      "id": "bluebell",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one bright blue bell-shaped blossom. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    },
+    {
+      "id": "pink",
+      "prompt": "Use case: precise-object-edit. Edit this Meadow Market Littles game sprite into a sibling matching-game asset. Keep the same warm polished children's storybook game illustration, terracotta pot, two healthy green leaves, soft light and front three-quarter view. Replace only the flower blossom with one rich pink round daisy blossom with a golden centre. One flower plant only, fully visible and centred with generous transparent padding. Genuine transparent background, no landscape, ground, extra props, faces, letters, numbers, border or watermark. Large clean silhouette readable on a small phone. Keep the pot and foliage simple; no extra flowers. This is an in-game asset for ages3–6."
+    }
+  ]
+}
