@@ -25,6 +25,6 @@
  function tick(s,dt){if(s.done||!Number.isFinite(dt)||dt<0)return;s.time+=Math.min(.05,dt);if(s.phase==='happy'&&s.time>=s.wait){s.phase=s.restored.length===s.missing.length?'pageDone':'look';s.serial++;s.events.push({type:s.phase});}}
  function next(s,random=Math.random){if(s.phase!=='pageDone')return false;if(s.page===2){s.phase='done';s.done=true;s.serial++;s.events.push({type:'done'});return true;}s.page++;page(s,random);return true;}
  function hint(s){if(s.phase!=='look'&&s.phase!=='restore')return false;s.hint=s.phase==='restore'?s.selected:s.missing.find(i=>!s.restored.includes(i));s.events.push({type:'hint'});return true;}
- function positions(n){return n===6?[{x:20,y:45},{x:50,y:45},{x:80,y:45},{x:20,y:76},{x:50,y:76},{x:80,y:76}]:[{x:27,y:46},{x:73,y:46},{x:27,y:78},{x:73,y:78}];}
+ function positions(n){return n===6?[{x:20,y:40},{x:50,y:40},{x:80,y:40},{x:20,y:80},{x:50,y:80},{x:80,y:80}]:[{x:27,y:40},{x:73,y:40},{x:27,y:80},{x:73,y:80}];}
  window.meadowDiscoveryCore={themes,rotation,create,find,restore,tick,next,hint,positions};
 })();
