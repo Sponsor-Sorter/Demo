@@ -1,0 +1,54 @@
+{
+  "provider": "ElevenLabs Text to Speech authenticated UI",
+  "generated": "2026-11-15",
+  "model": "Eleven Multilingual v2",
+  "speed": 0.88,
+  "stability": 0.5,
+  "similarity": 0.75,
+  "style": 0,
+  "speakerBoost": true,
+  "selectedVariation": 1,
+  "processing": "Each cue generated and downloaded independently. Loudness normalization only; no time stretching or guessed splits.",
+  "files": [
+    {
+      "id": "discovery70-rhys-look",
+      "text": "Look at our two farm pictures. Can you spot what has changed?",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T02_49_32_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "45ca9fc99b1bc187d07f52fc1b9bc782c589c69d99e0fba7adabe3c90a971dcf",
+      "sha256": "d5c7c15758c6a06bbbf4e109c87b720299cb0f9d2dfb3e7e78bd4dbcefb9dd02",
+      "bytes": 45811
+    },
+    {
+      "id": "discovery70-rhys-restore",
+      "text": "Good spotting! Bring the right picture back to the glowing place.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T02_50_57_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "45507bde5ee7d6dd0755650f067a3bc303e496f5a34fd578d98cfe2e8858b55d",
+      "sha256": "1ba5c7bbcf1d599459ccc68c8475aaec6a30a0c428dd77d15a6aa42e46d2afac",
+      "bytes": 45184
+    },
+    {
+      "id": "discovery70-rhys-hint",
+      "text": "Need a little help? Tap the glowing hint button. It will show you where to look.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T02_57_21_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "86cfce66363bdde5dcca43f83a436f6ca14f0f8e23e58a73f562427af88ff25f",
+      "sha256": "b07becdd66267cc49c994310c3bc99d0fb1b790c7a99253e87d6d2e369d7760d",
+      "bytes": 55842
+    },
+    {
+      "id": "discovery70-rhys-done",
+      "text": "Brilliant helping! You matched all three farm pictures!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "sourceFile": "ElevenLabs_2026-11-15T02_57_38_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "80cec382b97244ef43143a48146708368e4e143b325ba05ebc6614c3f6621647",
+      "sha256": "6ddc270f79932d0f5b0f01328de61677e186e0d1eda281d978e9d12ee26b9cfc",
+      "bytes": 47378
+    }
+  ]
+}

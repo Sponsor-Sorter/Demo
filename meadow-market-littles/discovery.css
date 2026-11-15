@@ -1,6 +1,11 @@
 .ds-dialog .mini-stage{background-size:cover!important;background-position:center!important}
 .ds-dialog #mini-hint,.ds-dialog #mini-pause{min-height:44px!important;min-width:44px}
 .ds-pictures[data-count="6"] .ds-detail{width:clamp(44px,25%,210px)}
+.ds-pictures[data-count="8"] .ds-detail{width:clamp(44px,18%,160px)}
+.ds-hint-locked{visibility:hidden!important;pointer-events:none!important}.ds-dialog .ds-hint-ready{animation:ds-next 1.6s ease-in-out infinite;box-shadow:0 0 0 3px #ffe48b,0 0 18px #fff0a0}
+.ds-photo .ds-hint{outline:4px solid #ffe391;outline-offset:-2px;background:#fff3c633}
+.ds-level-choice{display:flex;align-items:center;justify-content:center;gap:12px;margin:9px auto 0;max-width:520px;color:#563d24;text-shadow:none}.ds-level-choice>span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;background:#fff3d9ef;border:2px solid #dbb67c;border-radius:14px;padding:6px 10px;line-height:1.2}.ds-level-choice strong{font-size:18px}.ds-level-choice small{font-size:12px}.ds-level-choice button{min-width:80px;min-height:44px;border:3px solid #edce91;border-radius:16px;background:linear-gradient(#fff7df,#ead29e);box-shadow:0 3px #ab7c3c;color:#604625;font-size:16px;font-weight:900;padding:5px 12px}.ds-level-choice button:disabled{opacity:.45;box-shadow:none}
+@media(max-width:360px){.ds-level-choice{gap:5px}.ds-level-choice>span{min-width:110px;padding:5px}.ds-level-choice button{min-width:69px;padding:4px 6px;font-size:14px}.ds-level-choice strong{font-size:16px}.ds-level-choice small{font-size:10px}}
 .ds-field{position:absolute;inset:var(--mini-safe-top,90px) 3% var(--mini-safe-bottom,45px);display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;touch-action:none;user-select:none;--ds-unit:400px;color:#4f3d23}
 .ds-pictures{min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,2vw,22px);align-items:stretch}
 .ds-photo{position:relative;min-width:0;min-height:0;border:5px solid #ddbb78;box-shadow:inset 0 0 0 3px #fff1ce,0 5px 0 #876336,0 8px 16px #33451e55;border-radius:25px;overflow:hidden;background:var(--ds-picture) center/cover;isolation:isolate}
