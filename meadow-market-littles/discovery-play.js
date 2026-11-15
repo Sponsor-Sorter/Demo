@@ -9,7 +9,8 @@
  const name=id=>({flower:'flowers',hay:'hay bale',nest:'cosy nest',basket:'harvest basket'}[id]||id);
  function variants(){let v={remaining:[],last:-1};try{v=JSON.parse(localStorage.getItem('meadow-littles-discovery-v1'))||v;}catch{}const ids=[];for(let i=0;i<3;i++){const r=C.rotation(v.remaining,v.last);ids.push(r.choice);v={remaining:r.remaining,last:r.choice};}try{localStorage.setItem('meadow-littles-discovery-v1',JSON.stringify(v));}catch{}return ids;}
  function prepare(g){if(!enabled(g.id))return g;return {...g,time:0,relaxed:true,goal:g.level>=5?18:12,text:'Look at two simple farm pictures. Find a missing detail, then bring it back to its place. Help with three little farm scenes. Take your time!'};}
- function speak(a,phase){if(active!==a||a.run.paused||document.hidden)return;a.voiceToken++;window.meadowAudio?.speak(cue(phase));}
+ const instruction=s=>s.phase==='happy'?null:s.phase==='restore'?'restore':s.phase==='pageDone'?(s.page===2?'done':'page'):'look';
+ function speak(a,phase){if(!phase||active!==a||a.run.paused||document.hidden)return;a.voiceToken++;window.meadowAudio?.speak(cue(phase));}
  function reset(a){if(a.pointer!==null&&a.field.hasPointerCapture?.(a.pointer))a.field.releasePointerCapture(a.pointer);a.pointer=null;a.ghost?.remove();a.ghost=null;a.field.classList.remove('ds-touching');}
  function render(a){const s=a.s;if(a.version===s.serial)return;a.version=s.serial;reset(a);const theme=C.themes[s.variant],pos=C.positions(s.items.length);a.field.dataset.phase=s.phase;a.field.style.setProperty('--ds-picture','url('+base+theme.scene+'.webp)');
   if(a.page!==s.page){a.page=s.page;speak(a,'look');}
@@ -18,7 +19,7 @@
   a.field.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{if(a.run.paused||performance.now()<a.ignoreClick)return;const i=+b.dataset.detail;if(s.phase==='look'){C.find(s,i);events(a);render(a);}else if(s.phase==='restore'&&b.dataset.side==='1'&&a.selected){C.restore(s,s.selected,i);events(a);render(a);}});
   a.field.querySelector('.ds-piece')?.addEventListener('click',()=>{if(a.run.paused)return;a.selected=true;a.field.querySelector('.ds-piece')?.setAttribute('aria-pressed','true');a.field.querySelector('.ds-photo-1 [data-detail="'+s.selected+'"]').classList.add('ds-hint');});
   a.field.querySelector('[data-next]')?.addEventListener('click',()=>{if(!a.run.paused){C.next(s);events(a);if(s.done){a.run.score=s.score;a.hooks.finish(true);}else render(a);}});
-  a.field.querySelector('.ds-listen').onclick=()=>speak(a,s.phase==='restore'?'restore':s.phase==='pageDone'?(s.page===2?'done':'page'):'look');
+  a.field.querySelector('.ds-listen').disabled=s.phase==='happy';a.field.querySelector('.ds-listen').onclick=()=>speak(a,instruction(s));
   a.field.querySelector('.ds-photo-1')?.classList.toggle('ds-celebrate',s.phase==='pageDone');
  }
  function events(a){for(const e of a.s.events.splice(0)){
@@ -31,7 +32,7 @@
  function layout(a){reset(a);const r=a.field.getBoundingClientRect();a.field.style.setProperty('--ds-unit',Math.min(r.width,r.height)+'px');}
  function mount(run,hooks){if(!enabled(run.game.id))return false;dispose();const dialog=hooks.actors.closest('dialog'),field=document.createElement('div'),s=C.create(run.game.level,variants());field.className='ds-field';hooks.actors.replaceChildren(field);dialog.classList.add('ds-dialog');hooks.$('.mini-stage').style.backgroundImage='url('+base+'discovery69/meadow.webp)';const a=active={s,run,hooks,dialog,field,caption:hooks.$('.mini-caption'),version:-1,page:-1,pointer:null,voiceToken:0,ignoreClick:0};run.classic=true;run.game.goal=s.goal;run.resultVoice=cue('done');run.classicLayout=()=>layout(a);hooks.$('.mini-header h2').textContent='Find it & bring it back';
   hooks.$('#mini-hint').onclick=()=>{if(!run.paused){C.hint(s);events(a);render(a);}};
-  run.classicFrame=paused=>{field.classList.toggle('ds-paused',paused);if(paused){reset(a);if(!a.wasPaused){a.voiceToken++;window.meadowAudio?.stopVoice();}}else if(a.wasPaused)speak(a,s.phase==='restore'?'restore':s.phase==='pageDone'?(s.page===2?'done':'page'):'look');a.wasPaused=paused;};
+  run.classicFrame=paused=>{field.classList.toggle('ds-paused',paused);if(paused){reset(a);if(!a.wasPaused){a.voiceToken++;window.meadowAudio?.stopVoice();}}else if(a.wasPaused)speak(a,instruction(s));a.wasPaused=paused;};
   run.classicTick=dt=>{C.tick(s,dt);events(a);render(a);};
   field.addEventListener('pointerdown',e=>{if(run.paused||document.hidden||e.isPrimary===false||e.button!==0||a.pointer!==null)return;const piece=e.target.closest('[data-restore]');if(!piece||s.phase!=='restore')return;e.preventDefault();a.pointer=e.pointerId;a.down={x:e.clientX,y:e.clientY};a.selected=true;piece.setAttribute('aria-pressed','true');field.setPointerCapture(e.pointerId);});
   field.addEventListener('pointermove',e=>{if(e.pointerId!==a.pointer||run.paused)return;e.preventDefault();if(Math.hypot(e.clientX-a.down.x,e.clientY-a.down.y)<6&&!a.ghost)return;if(!a.ghost){a.ghost=document.createElement('div');a.ghost.className='ds-ghost';a.ghost.setAttribute('aria-hidden','true');a.ghost.innerHTML=image(art(s.items[s.selected]));field.append(a.ghost);}const b=field.getBoundingClientRect();a.ghost.style.left=e.clientX-b.x+'px';a.ghost.style.top=e.clientY-b.y+'px';field.classList.add('ds-touching');});
