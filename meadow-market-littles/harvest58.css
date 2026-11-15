@@ -62,3 +62,9 @@
  .hp-dialog .hp-modern .hp-order .hp-main-basket{left:86%;top:65%;width:22%;height:58%}
  .hp-modern .hp-order .hp-helper{left:86%;top:18%;width:20%;height:24%}
 }
+
+/* Separate every sorting hit area, including touches at the lower edge of a piece. */
+@media(max-height:520px) and (min-width:501px){
+ .hp-modern .hp-sort{--hp-row-0:14%;--hp-row-1:38%}
+ .hp-modern .hp-sort .hp-harvest-piece{height:20%}
+}
