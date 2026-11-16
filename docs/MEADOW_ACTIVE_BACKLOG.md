@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 16 November 2026 — gift-code250 isolated candidate
+
+Settings redemption, strict account-bound transport and verified farm/wallet reconciliation are prepared on codex/meadow-gift-codes250. Root reviewed/applied the private helper; central catalogue readiness remains off. The consumer is not public. Focused source/VM checks pass28/28; six isolated browser layouts and invalid/unavailable/guest/pending-reopen states passed. Genuine claims and public update acceptance remain pending Root review/qualification and the normal publication window. [Candidate scope, limits and evidence](MEADOW_GIFT_CODES250_PLAN.md).
+
+The public performance249 release is complete: game/Android and Pages CI passed, public bytes matched, and the browser248→249 update retained its farm. Latest physical acceptance remains246; longer cross-map/native follow-up is still separate.
+
 ## 15 November 2026 — performance 248
 
 Final 249 follow-up: explicitly invalidate the cached visual when a legacy visible animal crosses its existing hunger/cleanliness attention threshold. The new actual-source test reproduces the omission on 248 and passes with the guard; healthy decay still avoids repainting. Combine with the owner-reviewed Littles 73 copy fix in one deployment; do not change its backend gate.
