@@ -1,0 +1,36 @@
+# Littles updater content82 — preparation and acceptance plan
+
+Status: release preparation only. No merge, Pages deployment, public promotion, gate/backend/provider/security change or phone input is authorized by this packet.
+
+## Source and distribution
+
+Fresh main baseline: `7e125c6a29337025c7015bfefe5e5dfbba636602`, including accepted Frontlines106 and the already-reviewed Littles gift81 consumer. Carry forward only the updater tail approved at `4b86b09a75be62c834e2761310d1d3a130e53e39`, its exact regression file and normal check-entry wiring. The approved source packet is `8d5a3be11a38295257d11fb3fef20c1edad66720dca3c0de8261d09a0fd85c47`.
+
+Prepare web content82, not a new Android binary or Play Store release. In `app.js`, change only the content build81→82 before the reviewed updater tail. In `index.html` and `release.json`, select `app.js?v=82`. Follow the existing release helper contract: advance the entry page’s visible label to Build82 and select `littles.css?v=82` plus `littles-cloud.js?v=82.1`, while keeping both files’ bytes unchanged. Rename the service-worker cache to `meadow-littles-v82`, and update only the app, stylesheet and cloud-script precache URLs to those82 references. Keep every other precache member and all install/activate/message/fetch handlers unchanged. Preserve the existing successful-activation cleanup policy and failed-install retention of the usable old cache.
+
+Do not change the consumer/control build, cloud fallback, gift/commerce/save/gameplay files, native wrapper, SDKs, receipts, signing, Supabase migrations/functions, Frontlines106 or other apps. Preserve Public80/Preview81 and soleQA `14d84995-9793-4051-8da2-70c4da61c765`; no gate mutation is part of release preparation. No gift issuance or account changes.
+
+Use an isolated draft branch/PR for ordinary CI, without merge or Pages publication. Run the complete Littles Node suite in the full checkout, the existing restricted-permission Deno billing tests and function type checks, and normal remote Node/billing/Android debug, production-flavor launcher, acceptance unit and production lint jobs. Seal exact source/metadata/cache pins and all check conclusions for Root review before any deployment.
+
+## Native acceptance after separate authorization
+
+The installed app's static `release.json` and worker URLs are shared by all users. Current quality gates control features; they do not make a changed release marker or service worker private. Do not claim that adding a private account silently isolates an updater release. Root must approve the content distribution/test window or supply an actually isolated native test channel before proceeding. Owner-MFA gift tests and phone coordination take precedence.
+
+The existing `capacitor.config.json` uses `https://sponsorsorter.com/meadow-market-littles/`. The acceptance/play Gradle flavors do not define another content origin. Thus the inspected existing native configurations do not provide an isolated version/cache-marker channel. No new channel or infrastructure is introduced. Root separately authorized preparing the four-file offline83 metadata overlay and its exact diff; these stay outside the source checkout and are not a standalone deployed bundle.
+
+1. Reserve the Samsung through its current owner after the gift test hold ends. Use the existing installed `com.meadowmarket.littles` app; record the current parent UID/name, stars, selected challenge, saved progress and active worker/cache. Do not log out, reinstall, clear data or modify phone settings. Baseline and end checks must identify the same account.
+2. After Root separately approves a content82 deployment, an ordinary clean reopen may bootstrap the fixed82 handler. Confirm both content82 source and active worker82 in the installed WebView, then close/reopen to confirm login and progress. Record this only as bootstrap acceptance. It is **not** evidence that the new Install button works; the old handler may still have driven that transition.
+3. Independently review a subsequent metadata-only content83 canary: the exact same approved updater/save/gameplay bytes, app build83, visible Build83, `app.js?v=83`, `littles.css?v=83`, `littles-cloud.js?v=83.1`, cachev83 and release marker83. Prepare/approve that target separately; no83 source or marker is being deployed in the current task. If distribution cannot be isolated, Root must explicitly approve the shared marker/window before any such publication.
+4. Begin with verified fixed82 already running. Record its source hash/build and current controller. Only then offer the approved83 canary, tap the actual installed-app **Install update** control once, and record immediate busy/disabled feedback, save success, installing→installed→activating→activated and controller takeover **before** the ensuing reload. Confirm content83 and active cache/controller83 afterward. A cold reopen directly into83, a version label alone or browser-only testing does not pass this criterion.
+5. Under that same controlled window, test Later during a pending installation and confirm no surprise reload. A subsequent retry should update normally. Save-full/read-only and deterministic503 failure injection remain isolated browser cases unless Root separately authorizes a scoped native fault fixture; do not fill phone storage or disrupt other apps/network settings to create faults.
+6. Reopen the installed app again. Verify the original UID/name/login, saved progress and challenge, retained drawings, Plus/ads state and gate behavior. Public80 should still omit gated gifts; soleQA retains81 where authorized. Play a full approved learning round, including two genuine errors and an opt-in hint at harder difficulty, check clear intro text and approved farmer narration, and distinguish legitimate completed-round rewards from update effects.
+7. Return the phone to a clean home screen and release the reservation. Seal timestamps, actual source/worker/cache versions, before/after account/progress and full-round evidence. Stop on a blocked save, unexpected reload, lost state, incorrect entitlement or lifecycle error. Root decides any subsequent public promotion after reviewing this evidence and the pending gift proof.
+
+## Known limits
+
+The earlier concurrent normal-success fixture exceeded its10-second observation once; serial diagnostic and unchanged-harness runs passed without extending deadlines. Preserve that record and the distinction between a reproduced source failure mode and the unconfirmed exact trigger of the original phone hang. The product update deadline remains120seconds. No present native acceptance, new Play approval or public rollout is claimed by release preparation.
+
+
+## Initial metadata contract correction
+
+The preserved initial seven-file candidate `b50e9932a3ed5bb5ecffcac47d2471c9c5032a88` failed the normal state/release check because its81 stylesheet/cloud URLs and visible label did not advance with build82. The metadata-only child follows `scripts/release-littles.cjs` without modifying or weakening that test. Its updater, regression and stylesheet/cloud/gift/save/gameplay bytes are unchanged. The initial failed CI and original offline overlay remain historical evidence; the corrected overlay is sealed separately.
