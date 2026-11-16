@@ -6,6 +6,7 @@
  const known=new Set(['LITTLES_SIGN_IN_REQUIRED','LITTLES_SESSION_EXPIRED','LITTLES_ACCOUNT_CHANGED','LITTLES_INVALID_DISPLAY_NAME','LITTLES_INVALID_SAVE','LITTLES_OPEN_REQUIRED','LITTLES_REQUEST_BINDING_CONFLICT','LITTLES_SAVE_REVISION_CONFLICT','LITTLES_SAVE_RATE_LIMIT','LITTLES_BANNED','LITTLES_CONTROL_UNAVAILABLE','LITTLES_WARNING_NOT_AVAILABLE','LITTLES_APPEAL_NOT_ACCEPTED']);
  const REMEMBERED='meadow-littles-account-v1';
  let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,saving=null,latest=null,timer=null,dialog=null,updateDialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
+ let giftAuthEpoch=0;
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
@@ -62,6 +63,7 @@
    client=options.client||client;if(!client){const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/+esm');client=createClient(CONFIG.url,CONFIG.key,{auth:{storage:store,storageKey:CONFIG.storageKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});}
    if(subscribedClient!==client){subscribedClient=client;client.auth.onAuthStateChange?.((event)=>{
     // Supabase holds its auth lock during callbacks. Reconnect outside it.
+    if(['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event))giftAuthEpoch++;
     if(event==='SIGNED_OUT'&&!authBusy){ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('auth_required','LITTLES_SIGN_IN_REQUIRED');}
     else if(['SIGNED_IN','USER_UPDATED','TOKEN_REFRESHED'].includes(event)&&!authBusy&&!connecting)resume();
    });}
@@ -95,9 +97,9 @@
  async function linkEmail(email){await actor();const r=await client.auth.updateUser({email:email.trim()},{emailRedirectTo:redirect()});if(r.error)throw failure('LITTLES_EMAIL_LINK_UNAVAILABLE');return {ok:true,verificationRequired:true};}
  async function verifyEmail(email,token){const r=await client.auth.verifyOtp({email:email.trim(),token:token.trim(),type:'email_change'});if(r.error)throw failure('LITTLES_EMAIL_VERIFICATION_FAILED');await actor();return {ok:true};}
  async function setPassword(password){const u=await actor();if(!u.email_confirmed_at||u.is_anonymous)throw failure('LITTLES_EMAIL_VERIFICATION_REQUIRED');const r=await client.auth.updateUser({password});if(r.error)throw failure('LITTLES_PASSWORD_UPDATE_FAILED');return {ok:true};}
- async function signIn(email,password){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(!client)throw failure('LITTLES_CLOUD_UNAVAILABLE');authBusy=true;clearTimeout(timer);try{const r=await client.auth.signInWithPassword({email:email.trim(),password});if(r.error)throw failure('LITTLES_SIGN_IN_FAILED');latest=null;ready=false;user=null;profile=null;remote=null;write(REMEMBERED,{userId:r.data.user.id});write(prefix(r.data.user.id)+'choice',true);try{await connect()}catch(e){notify('offline',e.code||'LITTLES_CLOUD_UNAVAILABLE');return {ok:false,state:status,code:lastError}}return {ok:true};}finally{authBusy=false;if(ready&&latest)schedule();}}
+ async function signIn(email,password){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(!client)throw failure('LITTLES_CLOUD_UNAVAILABLE');authBusy=true;giftAuthEpoch++;clearTimeout(timer);try{const r=await client.auth.signInWithPassword({email:email.trim(),password});if(r.error)throw failure('LITTLES_SIGN_IN_FAILED');latest=null;ready=false;user=null;profile=null;remote=null;write(REMEMBERED,{userId:r.data.user.id});write(prefix(r.data.user.id)+'choice',true);try{await connect()}catch(e){notify('offline',e.code||'LITTLES_CLOUD_UNAVAILABLE');return {ok:false,state:status,code:lastError}}return {ok:true};}finally{authBusy=false;if(ready&&latest)schedule();}}
  async function recover(email){const r=await client.auth.resetPasswordForEmail(email.trim(),{redirectTo:redirect()});if(r.error)throw failure('LITTLES_RECOVERY_UNAVAILABLE');return {ok:true};}
- async function signOut(){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(user?.is_anonymous)throw failure('LITTLES_LINK_EMAIL_BEFORE_SIGN_OUT');authBusy=true;try{const r=await client.auth.signOut({scope:'local'});if(r.error)throw failure('LITTLES_SIGN_OUT_FAILED');write(REMEMBERED,{signedOut:true});ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('signed_out');}finally{authBusy=false}}
+ async function signOut(){if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');if(user?.is_anonymous)throw failure('LITTLES_LINK_EMAIL_BEFORE_SIGN_OUT');authBusy=true;giftAuthEpoch++;try{const r=await client.auth.signOut({scope:'local'});if(r.error)throw failure('LITTLES_SIGN_OUT_FAILED');write(REMEMBERED,{signedOut:true});ready=false;user=null;profile=null;remote=null;latest=null;clearTimeout(timer);notify('signed_out');}finally{authBusy=false}}
  async function changeName(value){
   const name=String(value).trim();if(!name||Array.from(name).length>32||/[\u0000-\u001f\u007f-\u009f]/u.test(name))throw failure('LITTLES_INVALID_DISPLAY_NAME');
   if(authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');const expected=user?.id;
@@ -201,6 +203,21 @@
   updateDialog=()=>{if(!d.open)return;if(renderedIdentity!==accountIdentity()){d.close();d.remove();dialog=null;updateDialog=null;openAccount();return}result.textContent=stateMessage[status]||'Check your account and cloud save below.';renderSafety();};
  }
  async function commerce(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.functions.invoke('littles-play-store',{body:{action,...extra}});if(error||data?.contract!=='littles-play-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
+ function giftIdentity(){return {userId:user?.id||null,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&!authBusy&&status!=='auth_required'&&status!=='signed_out',sessionKey:String(giftAuthEpoch)};}
+ async function gift(action,extra={}){
+  if(!client||authBusy||!['status','redeem'].includes(action))throw failure('LITTLES_SIGN_IN_REQUIRED');
+  const expected=user?.id,stamp=giftAuthEpoch;if(!expected)throw failure('LITTLES_SIGN_IN_REQUIRED');
+  const current=await actor();if(authBusy||stamp!==giftAuthEpoch||current.id!==expected||current.is_anonymous||!current.email_confirmed_at)throw failure('LITTLES_ACCOUNT_CHANGED');
+  const session=await client.auth.getSession(),bound=session.data?.session;
+  if(session.error||authBusy||stamp!==giftAuthEpoch||user?.id!==expected||bound?.user?.id!==expected||typeof bound.access_token!=='string'||!bound.access_token)throw failure('LITTLES_ACCOUNT_CHANGED');
+  let body={p_app:'littles'};
+  if(action==='redeem'){if(typeof extra.code!=='string'||!/^[A-Z0-9]{8,40}$/.test(extra.code)||typeof extra.request!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(extra.request))throw failure('LITTLES_CONTROL_UNAVAILABLE');body={...body,p_code:extra.code,p_request:extra.request};}
+  // Capture the validated session bearer; an SDK lookup must not select a later account.
+  const response=await fetch(CONFIG.url+'/rest/v1/rpc/'+(action==='status'?'fairplay_gift_code_status_v1':'fairplay_gift_code_redeem_v1'),{method:'POST',credentials:'omit',cache:'no-store',headers:{apikey:CONFIG.key,Authorization:'Bearer '+bound.access_token,'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(20000)});
+  let data;try{data=await response.json();}catch{throw failure('LITTLES_CONTROL_UNAVAILABLE');}
+  const after=await actor();if(stamp!==giftAuthEpoch||authBusy||after.id!==current.id||after.is_anonymous||!after.email_confirmed_at)throw failure('LITTLES_ACCOUNT_CHANGED');
+  if(!response.ok||data?.contract!=='fairplay-gift-codes-v1'||action==='status'&&data.app!=='littles')throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;
+ }
  async function weekly(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.rpc('meadow_littles_weekly',{p_action:action,p_data:extra});if(error||data?.contract!=='littles-weekly-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
- globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,openUsername,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
+ globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,openUsername,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,gift,giftIdentity,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
 })();
