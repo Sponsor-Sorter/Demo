@@ -24,6 +24,19 @@ export function validateSubscription(purchase: any, account: string, now = Date.
 export function effectivePlus(paid: boolean, complimentary: boolean) {
   return { active: paid || complimentary, paid, complimentary };
 }
+export function proofPolicy(projection: Record<string, unknown>, parentReady: boolean, at = Date.now()) {
+  const now = Math.floor(at / 1000);
+  const end = (value: unknown) => typeof value === 'string' ? Math.floor(Date.parse(value) / 1000) : NaN;
+  const paidUntil = end(projection.paid_until);
+  const giftUntil = projection.complimentary_permanent === true ? now + 300 : end(projection.complimentary_proof_until);
+  const eligible = parentReady === true && projection.effective_plus === true;
+  const paid = eligible && projection.paid_active === true && Number.isFinite(paidUntil) && paidUntil > now;
+  const complimentary = eligible && projection.complimentary_active === true && Number.isFinite(giftUntil) && giftUntil > now;
+  const plus = effectivePlus(paid, complimentary);
+  // Preserve each source's lease cap and OR composition; an ended gift cannot shorten valid paid access.
+  const proofUntil = plus.active ? Math.max(paid ? Math.min(now + 86400, paidUntil) : 0, complimentary ? Math.min(now + 300, giftUntil) : 0) : null;
+  return { plus, now, proofUntil };
+}
 export function parseNotification(raw: string) {
   if (raw.length > 32768) throw new Error('INVALID_NOTIFICATION');
   const message = JSON.parse(raw)?.message;
