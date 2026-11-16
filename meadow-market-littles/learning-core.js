@@ -76,5 +76,74 @@
     }
     step(seconds){if(this.done||this.kind!=='freeze')return null;const s=this.state,dt=Math.max(0,Math.min(.05,Number(seconds)||0));s.elapsed+=dt;if(s.phase==='dance'){if(s.elapsed>=2&&s.distance>=.35){s.phase='freeze';s.elapsed=0;return 'freeze';}}else if(s.grace>0)s.grace=Math.max(0,s.grace-dt);else{s.still+=dt;if(s.still>=1.4){this.done=true;return 'done';}}return null;}
   }
-  globalThis.meadowLearningCore={catalog,Round,rng,shuffle,waterFlow,routeResult,rotateMask,words,families};
+  const milestones=[1,4,9,16];
+  function profile(level=1){const n=Math.max(1,Math.floor(Number(level)||1)),stage=milestones.reduce((a,v,i)=>n>=v?i:a,0);return {level:milestones[stage],stage,letterExtras:stage,rhymeExtras:stage+1,visibleShapes:stage+2,pipMoves:[1,1,2,3][stage],dance:[.35,.45,.55,.65][stage],hold:[1.4,1.7,2,2.3][stage]};}
+  const challenge=(level,direction)=>milestones[Math.max(0,Math.min(3,profile(level).stage+(direction<0?-1:1)))];
+  function routeDirections(s){const queue=[[s.start,[]]],seen=new Set([s.start]);for(let i=0;i<queue.length;i++){const [at,path]=queue[i];if(at===s.goal)return path;for(const [d,dx,dy]of [['up',0,-1],['right',1,0],['down',0,1],['left',-1,0]]){const x=at%s.size+dx,y=Math.floor(at/s.size)+dy,next=y*s.size+x;if(x<0||y<0||x>=s.size||y>=s.size||seen.has(next)||s.blocks.includes(next))continue;seen.add(next);queue.push([next,[...path,d]]);}}return [];}
+  function growingState(kind,seed,level,index){const p=profile(level),s=make(kind,seed,p.stage<2?1:2,index),random=rng(seed^0x6a09e667);
+    if(kind==='water'){const plans=p.stage<2?[[0,1,4,5,8],[0,3,4,7,8],[0,1,2,5,8],[0,3,6,7,8]]:p.stage===2?[[0,1,2,5,4,7,8],[0,3,6,7,4,5,8]]:[[0,1,2,5,4,3,6,7,8],[0,3,6,7,4,1,2,5,8]];s.route=shuffle(plans,rng(seed-index*997))[index%plans.length];s.answer=Array(9).fill(0);for(let i=0;i<s.route.length;i++){const at=s.route[i],prev=i?s.route[i-1]:at-1,next=i<s.route.length-1?s.route[i+1]:at+3,edge=b=>b===at-3?1:b===at+1?2:b===at+3?4:8;s.answer[at]=edge(prev)|edge(next);}const loose=new Set(shuffle(s.route,random).slice(0,[1,3,7,9][p.stage]));s.pipes=s.answer.map((m,i)=>{if(!m||!loose.has(i))return m;let n=m,turns=1+Math.floor(random()*3);while(turns--)n=rotateMask(n);return n===m?rotateMask(n):n;});s.flow=[];}
+    if(kind==='sounds')s.letters=shuffle([...new Set(s.word),...shuffle('abcdefghijklmnopqrstuvwxyz'.split('').filter(c=>!s.word.includes(c)),random).slice(0,p.letterExtras)],random);
+    if(kind==='shares'){s.friends=p.stage<2?2:3;s.each=[1+index%2,2,2+index%2,3][p.stage];s.animals=shuffle(['sheep','goat','cow'],random).slice(0,s.friends);s.given=Array(s.friends*s.each).fill(-1);}
+    if(kind==='rolling'){if(p.stage===3)s.heights=index%2?[1,0,1,0]:[0,1,0,1];s.locked=shuffle([0,1,2],random).slice(0,Math.max(0,2-p.stage));s.ramps=s.heights.slice(0,3).map((h,i)=>s.locked.includes(i)?s.heights[i+1]-h:null);}
+    if(kind==='patchwork'){s.visiblePieces=p.visibleShapes;for(const piece of s.pieces)piece.turn=p.stage===0?piece.angle:p.stage===1&&piece.id%2===0?piece.angle:(piece.angle+90*(1+Math.floor(random()*3)))%360;}
+    if(kind==='orchard'){if(p.stage===0){s.a=index===1?2:1;s.b=1;}else if(p.stage===1){s.a=index===1?3:2;s.b=index===2?2:1;}s.answer=s.operation==='take'?s.a-s.b:s.a+s.b;const n=p.stage===0?2:p.stage===3?4:3,candidates=Array.from({length:7},(_,i)=>i).filter(v=>v!==s.answer).sort((a,b)=>Math.abs(a-s.answer)-Math.abs(b-s.answer)||a-b);s.choices=shuffle([s.answer,...candidates.slice(0,n-1)],random);}
+    if(kind==='rhymes')s.choices=shuffle([...s.family.slice(1),...shuffle(families.flat().filter(w=>!s.family.includes(w)),random).slice(0,p.rhymeExtras)],random);
+    if(kind==='pip'){const places=shuffle(['inside','under','behind'],rng(seed-index*997));s.sequence=Array.from({length:p.pipMoves},(_,i)=>places[(index+i)%3]);s.step=0;s.place=s.sequence[0];s.locations=p.stage===0?shuffle([s.place,places.find(x=>x!==s.place)],random):places;}
+    if(kind==='coding'&&p.stage===1){s.size=3;s.start=6;s.goal=2;s.blocks=[4];s.limit=6;}
+    if(kind==='freeze'){s.requiredDance=p.dance;s.requiredHold=p.hold;s.gestureWrong=false;}
+    return s;
+  }
+  class GrowingRound extends Round {
+    constructor(kind,{seed=1,level=1,index=0}={}){super(kind,{seed,tier:1,index});this.level=profile(level).level;this.state=growingState(kind,(this.seed+index*997)>>>0,this.level,index);this.misses=0;this.hint=null;}
+    result(ok,extra={}){return {ok,done:this.done,...extra};}
+    clearHelp(){this.misses=0;this.mistakes=0;this.hint=null;}
+    miss(){this.misses++;this.mistakes=this.misses;this.hint=null;return this.result(false);}
+    ignored(){return this.result(false,{ignored:true});}
+    act(action,p={}){this.inputSerial=(this.inputSerial||0)+1;if(this.done)return this.result(false,{duplicate:true});const s=this.state,k=this.kind,integer=(n,max)=>Number.isInteger(n)&&n>=0&&n<max;let valid=false;
+      if(k==='water')valid=action==='flow'||action==='turn'&&integer(p.index,9)&&Boolean(s.pipes[p.index]);
+      if(k==='sounds')valid=action==='go'||action==='place'&&integer(p.slot,3)&&s.letters.includes(p.letter)||action==='clear'&&integer(p.slot,3)&&s.slots[p.slot]!==null;
+      if(k==='shares')valid=action==='check'||action==='give'&&integer(p.item,s.given.length)&&integer(p.friend,s.friends)&&s.given[p.item]!==p.friend;
+      if(k==='rolling')valid=action==='go'||action==='place'&&integer(p.slot,3)&&!s.locked.includes(p.slot)&&[-1,0,1].includes(p.ramp)&&s.ramps[p.slot]!==p.ramp;
+      if(k==='patchwork')valid=['place','turn'].includes(action)&&s.order.filter(i=>!s.pieces[i].used).slice(0,s.visiblePieces).includes(p.item)&&(action==='turn'||integer(p.target,s.pieces.length)&&!s.pieces[p.target].placed);
+      if(k==='orchard')valid=action==='move'&&integer(p.item,s.b)&&!s.moved.includes(p.item)||action==='answer'&&s.moved.length===s.b&&s.choices.includes(p.number);
+      if(k==='rhymes')valid=action==='place'&&integer(p.slot,3)&&p.slot>0&&!s.slots[p.slot]&&s.choices.includes(p.word)&&!s.slots.includes(p.word);
+      if(k==='pip')valid=action==='hide'&&s.locations.includes(p.place);
+      if(k==='coding')valid=action==='go'||action==='add'&&['up','down','left','right'].includes(p.direction)&&s.commands.length<s.limit||action==='remove'&&integer(p.index,s.commands.length)||action==='clear'&&s.commands.length>0;
+      if(k==='freeze'){
+        if(action==='dance'){if(s.phase==='freeze'){s.still=0;s.grace=.8;return this.miss();}s.distance+=.36;this.clearHelp();return this.result(true);}
+        if(action==='endMove'){const missed=s.gestureWrong;s.gestureWrong=false;if(missed){s.still=0;s.grace=.8;return this.miss();}return this.result(true,{ignored:true});}
+        valid=action==='move'&&Number.isFinite(p.distance)&&p.distance>0;
+      }
+      if(!valid)return this.ignored();
+      if(k==='shares'&&action==='give'&&s.given.filter(v=>v===p.friend).length>=3)return this.miss();
+      if(k==='pip'){s.attempt=p.place;if(p.place!==s.place)return this.miss();s.step++;this.done=s.step===s.sequence.length;if(!this.done)s.place=s.sequence[s.step];s.found=this.done;this.clearHelp();return this.result(true,{nextCue:!this.done});}
+      const before=JSON.stringify(s),oldWobbles=s.wobbles,r=super.act(action,p);if(!r.ok){this.miss();return r;}
+      let correct=this.done;
+      if(k==='water'&&action==='turn')correct=s.pipes[p.index]===s.answer[p.index];
+      if(k==='sounds'&&action==='place')correct=p.letter===s.word[p.slot];
+      if(k==='shares'&&action==='give')correct=s.given.filter(v=>v===p.friend).length<=s.each;
+      if(k==='rolling'&&action==='place')correct=p.ramp===s.heights[p.slot+1]-s.heights[p.slot];
+      if(k==='patchwork')correct=action==='place'||action==='turn'&&s.pieces[p.item].turn===s.pieces[p.item].angle;
+      if(k==='orchard')correct=action==='move'||this.done;
+      if(k==='rhymes')correct=true;
+      if(k==='coding'){const solution=routeDirections(s);correct=action==='add'&&s.commands.every((d,i)=>solution[i]===d)||action==='remove'||action==='clear'||this.done;}
+      if(k==='freeze'&&s.phase==='freeze'&&s.grace<=0){if(s.wobbles>oldWobbles)s.gestureWrong=true;correct=false;}
+      if(correct&&JSON.stringify(s)!==before)this.clearHelp();return r;
+    }
+    step(seconds){if(this.kind!=='freeze'||this.done)return null;const s=this.state,dt=Math.max(0,Math.min(.05,Number(seconds)||0));s.elapsed+=dt;if(s.phase==='dance'){if(s.elapsed>=2&&s.distance>=s.requiredDance){s.phase='freeze';s.elapsed=0;this.clearHelp();return 'freeze';}}else if(s.grace>0)s.grace=Math.max(0,s.grace-dt);else{s.still+=dt;if(s.still>=s.requiredHold){this.done=true;this.clearHelp();return 'done';}}return null;}
+    requestHint(){if(this.done||this.misses<2)return null;const s=this.state,k=this.kind,h={sources:[],targets:[],actions:[],caption:''};
+      if(k==='water'){const i=s.route.find(i=>s.pipes[i]!==s.answer[i]);if(i===undefined)return null;h.actions=['turn:'+i];h.pipe={index:i,mask:s.answer[i]};h.caption='Turn the glowing gutter to match the pale guide.';}
+      if(k==='sounds'){const i=s.slots.findIndex((c,i)=>c!==s.word[i]);if(i<0)return null;h.sources=['letter:'+s.word[i]];h.targets=['slot:'+i];h.caption='Bring the glowing letter to the glowing carriage.';}
+      if(k==='shares'){const item=s.given.findIndex(v=>v<0||s.given.filter(x=>x===v).length>s.each),target=Array.from({length:s.friends},(_,i)=>i).find(i=>s.given.filter(v=>v===i).length<s.each);if(item<0||target===undefined)return null;h.sources=['food:'+item];h.targets=['plate:'+target];h.caption='Bring this piece to the glowing plate so everyone has a fair share.';}
+      if(k==='rolling'){const i=s.ramps.findIndex((r,i)=>r!==s.heights[i+1]-s.heights[i]);if(i<0)return null;h.sources=['ramp:'+(s.heights[i+1]-s.heights[i])];h.targets=['gap:'+i];h.caption='Join the glowing ramp to the glowing gap.';}
+      if(k==='patchwork'){const p=s.order.map(i=>s.pieces[i]).filter(p=>!p.used).slice(0,s.visiblePieces)[0],t=s.pieces.find(t=>!t.placed&&t.shape===p.shape&&t.w===p.w&&t.h===p.h);if(!t)return null;h.sources=['shape:'+p.id];h.targets=['shape:'+t.id];const period=p.shape==='circle'?1:['oval','rect'].includes(p.shape)?180:360;if(Math.abs(p.turn-t.angle)%period)h.actions=['turn'];h.caption=h.actions.length?'Choose the glowing piece, turn it, then fit it into the glowing outline.':'Fit the glowing piece into its glowing outline.';}
+      if(k==='orchard'){const i=Array.from({length:s.b},(_,i)=>i).find(i=>!s.moved.includes(i));h.sources=[i===undefined?'number:'+s.answer:'apple:'+i];h.targets=[i===undefined?'answer':s.operation==='add'?'basket':'bunny'];h.caption=i===undefined?'Count the apples. Bring the glowing number to the basket.':'Move the glowing apple to the glowing place.';}
+      if(k==='rhymes'){h.sources=['word:'+s.family.find(w=>!s.slots.includes(w))];h.targets=['plank:'+s.slots.findIndex(w=>!w)];h.caption='Listen to the glowing picture, then fit it into the glowing bridge space.';}
+      if(k==='pip'){h.sources=['pip'];h.targets=[s.place];h.caption='Move Pip to the glowing hiding place.';}
+      if(k==='coding'){const route=routeDirections(s),bad=s.commands.findIndex((d,i)=>d!==route[i]);if(bad>=0){h.actions=['remove:'+bad];h.caption='Tap the glowing arrow in your plan to take it out.';}else{h.sources=['arrow:'+route[s.commands.length]];h.targets=['queue'];h.caption='Add the glowing arrow to the end of your plan.';}}
+      if(k==='freeze'){h.actions=['dance-key'];h.caption='Freeze! Keep your finger still while our friend rests.';}
+      this.hint=h;return h;
+    }
+  }
+  globalThis.meadowLearningCore={catalog,Round,GrowingRound,profile,challenge,milestones,routeDirections,rng,shuffle,waterFlow,routeResult,rotateMask,words,families};
 })();
