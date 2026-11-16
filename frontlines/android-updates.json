@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.105",
-  "versionCode": 105,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview105-testing/frontlines-1.0.0-preview-build-105.apk",
-  "bytes": 226878236,
-  "sha256": "2a2f5056da311f3ebb4f87d12432df2d2013d6b1a117a71a0f305c41353309db",
+  "versionName": "1.0.0.106",
+  "versionCode": 106,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview106-testing/frontlines-1.0.0-preview-build-106.apk",
+  "bytes": 226890860,
+  "sha256": "e77c674815f54dba83a016873f0a1e090b6e3cd7608b5e561e6605265c8f329b",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public105/frontlines-1.0.0.105-android.apk",
-  "notes": "V1.0.0.105: Locked duo/trio Teams, shared team victories and owner-authorized allied attacks. Trade territory creates persistent two-player card-trading pockets; friendly captures earn the normal one-card-per-turn reward. Approved graphics, maps, accounts and saves retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public106/frontlines-1.0.0.106-android.apk",
+  "notes": "V1.0.0.106: Redeem gift codes for gems and timed VIP in Commander Collection. Simple codes, account-safe retries and trusted wallet refresh. Teams, trading pockets, approved graphics, maps, accounts and saves retained."
 }

@@ -1,11 +1,11 @@
 {
-  "build": 105,
-  "version": "1.0.0.105",
-  "url": "https://sponsorsorter.com/frontlines/builds/105/",
-  "notes": "V1.0.0.105: Locked duo/trio Teams, shared team victories and owner-authorized allied attacks. Trade territory creates persistent two-player card-trading pockets; friendly captures earn the normal one-card-per-turn reward. Approved graphics, maps, accounts and saves retained.",
+  "build": 106,
+  "version": "1.0.0.106",
+  "url": "https://sponsorsorter.com/frontlines/builds/106/",
+  "notes": "V1.0.0.106: Redeem gift codes for gems and timed VIP in Commander Collection. Simple codes, account-safe retries and trusted wallet refresh. Teams, trading pockets, approved graphics, maps, accounts and saves retained.",
   "networkBuild": 105,
-  "androidBuild": 105,
-  "windowsBuild": 105,
+  "androidBuild": 106,
+  "windowsBuild": 106,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93
