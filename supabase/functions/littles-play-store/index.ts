@@ -1,4 +1,4 @@
-import { PACKAGE, PRODUCT } from './rules.ts';
+import { PACKAGE, PRODUCT, proofPolicy } from './rules.ts';
 import { signProof } from './google.ts';
 import { reconcile, rpc } from './service.ts';
 const origins = new Set(['https://sponsorsorter.com', 'https://localhost']);
@@ -23,9 +23,7 @@ Deno.serve(async request => {
     const current = body.action === 'verify' ? await rpc('meadow_littles_play_status', {}, bearer) : status;
     // Owner admin and consumer reads use the same fresh paid/gift projection.
     const projection = await rpc('meadow_littles_plus_projection', { p_user: current.user_id });
-    const eligible = current.parent_ready === true;
-    const plus = { active: eligible && projection.effective_plus === true, paid: eligible && projection.paid_active === true, complimentary: eligible && projection.complimentary_active === true }, now = Math.floor(Date.now() / 1000);
-    const proofUntil = Math.min(now + (plus.paid ? 86400 : 300), plus.paid ? Math.floor(Date.parse(projection.paid_until) / 1000) : now + 300);
+    const { plus, now, proofUntil } = proofPolicy(projection, current.parent_ready === true);
     const proof = plus.active ? await signProof({ iss: 'littles-play-v1', aud: PACKAGE, sub: current.user_id, product: PRODUCT, iat: now, exp: proofUntil, paid: plus.paid, complimentary: plus.complimentary }) : null;
     return reply(200, { contract: 'littles-play-v1', ...current, paid_active: projection.paid_active, paid_until: projection.paid_until, entitlement_verified: projection.effective_verified, plus: plus.active, sources: plus, proof });
   } catch (error) {
