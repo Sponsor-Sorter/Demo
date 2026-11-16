@@ -1,0 +1,12 @@
+.gift-code-screen{display:grid;gap:12px;color:#503b26;min-width:0}
+.gift-code-screen .sheet-head{margin-bottom:0}
+.gift-code-screen .close-button{min-width:44px;min-height:44px;flex:none}
+.gift-code-art{width:76px;height:76px;object-fit:contain;justify-self:center}
+#gift-code-form{display:grid;gap:10px;min-width:0}
+#gift-code-form label{font-weight:800}
+#gift-code-form button{min-height:44px;margin-top:0;font-size:14px}
+#gift-code-input{box-sizing:border-box;width:100%;min-width:0;min-height:48px;border:2px solid #b89769;border-radius:12px;background:#fffaf0;color:#503b26;padding:12px;font:700 18px system-ui;letter-spacing:.06em;text-transform:uppercase}
+#gift-code-input:focus-visible{outline:3px solid #ddb54a;outline-offset:2px}
+#gift-code-message{min-height:2.6em;margin:0;line-height:1.4;overflow-wrap:anywhere}
+.gift-code-screen>small{line-height:1.4}
+@media(max-height:480px){.gift-code-screen{gap:8px}.gift-code-art{display:none}#gift-code-message{min-height:1.4em}}

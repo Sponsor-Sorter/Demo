@@ -2,7 +2,11 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),crypto=r
 const currentWorker=fs.readFileSync('meadow-and-market/sw.js','utf8'),currentFiles=JSON.parse(currentWorker.match(/const FILES=([^\n]+);/)[1]),currentRelease=JSON.parse(fs.readFileSync('meadow-and-market/release.json','utf8'));assert(currentFiles.includes('./index.html?release=meadow-market-v'+currentRelease.build),'An installed update must have the exact offline launch page its navigation fallback requests');
 module.exports=(async()=>{
  const base='https://example.test/meadow-and-market/',key=x=>new URL(typeof x==='string'?x:x.url,base).href,stores=new Map();let requested=[],active=0,max=0;
- class Cache{constructor(){this.rows=new Map()}async match(r){return this.rows.get(key(r))?.clone()}async put(r,v){this.rows.set(key(r),v.clone())}}
+ // Cache Storage retains bytes and match returns a fresh response. Retaining
+ // live cloned streams here caused intermittent Undici clone/body races when
+ // the combined Node suite ran concurrently. put must consume its input like
+ // the browser API, so a real double-consumption error still fails the test.
+ class Cache{constructor(){this.rows=new Map()}async match(r){const row=this.rows.get(key(r));return row?new Response(row.bytes.slice(0),row.init):undefined}async put(r,v){const init={status:v.status,statusText:v.statusText,headers:[...v.headers]};this.rows.set(key(r),{bytes:await v.arrayBuffer(),init})}}
  const open=async name=>{assert(name.startsWith('meadow-market-v'),'Other apps caches are never opened');if(!stores.has(name))stores.set(name,new Cache());return stores.get(name)},sha=s=>crypto.createHash('sha256').update(s).digest('hex'),old=await open('meadow-market-v169');await old.put('./assets/same.webp',new Response('same'));await old.put('./assets/changed.webp',new Response('old'));
  const replies={'./assets/same.webp':'same','./assets/changed.webp':'new','./game.js?v=170':'code'};
  class Req extends Request{constructor(url,options){super(new URL(url,base),options)}}
