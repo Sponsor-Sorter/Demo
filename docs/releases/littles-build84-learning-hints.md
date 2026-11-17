@@ -1,0 +1,9 @@
+# Littles84 — keep learning hints inside the scene
+
+Phone acceptance of the growing learning activities found the picnic action partly below the screen when twelve food pieces and a hint were visible together. Expanded hint-state checks also found decorative garden plants intercepting compact gutter taps, short portrait rhyme trays clipping choices, and Orchard focus scrolling artwork under the header.
+
+The picnic action now stays beside the food tray on wide screens. Compact picnic/rhyme hint footers have room for their large choices. Decorative plants no longer intercept touches. Orchard exposes only the current apple destination as a button, preserves the number-answer target, and prevents internal focus scrolling of the illustrated board. Rules, six challenge levels, rewards, allowances, saves, approved recordings and assets are unchanged.
+
+Content84 has an explicit new footer/release/app/cache identity and version2 URLs for the adventure script and stylesheet. The existing quality gate keeps the growing activities private while acceptance continues; public82 retains its prior rules. This changes no native wrapper, store binary, billing, backend, gift or provider contract.
+
+Acceptance must retain the original findings and run hardest hint-expanded layout checks across all ten activities, all six picnic challenges, relevant initial layouts and the existing full regression suite. Corrected Water, Picnic, Rhymes and Orchard require installed-app full beginner and advanced rounds and actual two-error hints before public activation. Unaffected activity evidence may be carried forward only with exact unchanged mechanics/assets proof. Native acceptance and public activation remain pending until those records are complete. Google Play approval is independent of this content release.
