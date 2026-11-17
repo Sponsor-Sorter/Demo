@@ -26,6 +26,7 @@ const art=JSON.parse(read('assets/generated/learning56/generation.json')),artHas
 for(const file of ['learning-core.js?v=3','learning-views.js?v=3','learning-play.js?v=3','learning-play.css?v=4'])assert(cache.includes('./'+file));
 console.log(`Littles learning: ${tasks} complete tasks across ten games, both learner modes, valid routes, equal shares, sound order, real quantities, rotation, rhymes, freeze motion and duplicate protection passed.`);
 
-const entry=read('index.html'),app=read('app.js');for(const f of ['learning-core.js?v=3','learning-views.js?v=3','learning-play.js?v=3','learning-play.css?v=4'])assert(entry.includes(f));assert(app.includes('window.meadowLearning.attach('));assert(app.includes('complete(id)===false'));assert(app.includes('...learningGames'));assert(entry.includes('data-category="learning"'));assert(!fs.existsSync(root+'/learning56-preview.html'),'The isolated preview is removed once public rounds are metered');
+const entry=read('index.html'),app=read('app.js');for(const f of ['learning-core.js?v=3','learning-views.js?v=3','learning-play.js?v=4','learning-play.css?v=4','learning-adventures.js?v=1','learning-adventures.css?v=1']){assert(entry.includes(f));assert(cache.includes('./'+f));}assert(app.includes('window.meadowLearning.attach('));assert(app.includes('complete(id)===false'));assert(app.includes('...learningGames'));assert(entry.includes('data-category="learning"'));assert(!fs.existsSync(root+'/learning56-preview.html'),'The isolated preview is removed once public rounds are metered');
 
 require('./check-littles-learning80.cjs');
+require('./check-littles-learning83.cjs');

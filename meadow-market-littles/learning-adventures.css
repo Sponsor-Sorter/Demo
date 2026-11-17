@@ -1,0 +1,30 @@
+/* All controls remain inside the illustrated scene; intro lettering stays unbacked. */
+.lr-scene.lr-adventure .lr-piece-flight{position:absolute;z-index:30;pointer-events:none!important;display:grid;place-items:center;margin:0;padding:3px;border:0;background:transparent;box-shadow:none;opacity:1;min-width:0;min-height:0;transform-origin:center;filter:drop-shadow(0 5px 4px #62402055)}
+.lr-piece-flight img,.lr-piece-flight svg{width:100%;height:100%;object-fit:contain}.lr-piece-flight>span:last-child:not(:first-child){display:none}
+.lr-piece-flight strong{font-size:30px}.lr-adventure .lr-program{overflow:auto;align-content:flex-start}
+.lr-scene.lr-adventure .lr-shape-target.lr-chosen-fit{z-index:6}
+.lr-adventure .lr-task-progress{display:block;grid-column:1/-1;width:min(400px,92%);height:6px;margin:4px auto 7px;border-radius:8px;background:#d8cba7;overflow:hidden;box-shadow:inset 0 1px 2px #79562d22}
+.lr-adventure .lr-task-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#a2c860,#4d9e61);transition:width .3s ease-out}.lr-adventure .lr-task-progress[hidden]{display:none}
+.lr-scene.lr-adventure .lr-pipe-grid{grid-template-columns:repeat(var(--pipe-size,3),1fr);grid-template-rows:repeat(var(--pipe-size,3),1fr);width:max(calc(var(--pipe-size,3)*44px + 11px),min(66cqw,94cqh,460px));height:auto;max-width:none;min-width:0;padding:1px;border-width:3px;gap:1px;top:50%}
+.lr-adventure .lr-pipe svg{transform-origin:center}.lr-adventure .lr-pipe-guide{pointer-events:none}
+.lr-adventure .lr-friends[data-friends="4"]{gap:1.5%;padding-bottom:4%}.lr-adventure .lr-friends[data-friends="4"] .lr-friend{width:23.5%}
+.lr-adventure .lr-clue-leaves{position:absolute;left:43%;bottom:0;display:flex;gap:7px;color:#fff2cf;font-size:25px;text-shadow:0 2px 3px #5b3b24;pointer-events:none}.lr-adventure .lr-clue-leaves .found{color:#f7c950;animation:lr-leaf-found .45s ease-out}
+.lr-adventure .lr-resting-ring{position:absolute;left:50%;top:55%;width:clamp(120px,30cqw,240px);aspect-ratio:1;transform:translate(-50%,-50%);z-index:3;pointer-events:none;opacity:0;transition:opacity .2s}
+.lr-adventure .lr-resting-ring.is-helping{opacity:1}.lr-resting-ring:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#ffe69b var(--rest-progress,0%),#fff9d744 0);mask:radial-gradient(transparent 60%,#000 61%);filter:drop-shadow(0 0 6px #ffe9a3)}.lr-resting-ring>span{position:absolute;left:50%;top:80%;translate:-50% -50%;font-size:34px;filter:drop-shadow(0 2px 1px #704c2b)}
+.lr-scene.lr-adventure .lr-intro,.lr-scene.lr-adventure .lr-intro>small,.lr-scene.lr-adventure .lr-intro h2,.lr-scene.lr-adventure .lr-intro p,.lr-scene.lr-adventure .lr-challenges strong,.lr-scene.lr-adventure .lr-challenges small{background:none;box-shadow:none;color:#fffbed;text-shadow:0 2px 3px #342513,0 0 7px #342513}
+.lr-adventure .lr-intro>button,.lr-adventure .lr-challenges button{text-shadow:none}.lr-adventure .lr-win [data-next]{animation:lr-invite 2.4s ease-in-out infinite}.lr-adventure .lr-win [data-again]:not(.lr-primary){background:#fff6dc}
+@keyframes lr-leaf-found{0%{scale:.45;rotate:-20deg}65%{scale:1.25;rotate:7deg}100%{scale:1;rotate:0deg}}
+@media(max-width:500px){
+ .lr-adventure .lr-friends[data-friends="4"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:14px 8px;padding:0 2px 8px}
+ .lr-adventure .lr-friends[data-friends="4"] .lr-friend{width:100%;height:100%;max-width:none}.lr-adventure .lr-friends[data-friends="4"] .lr-picnic-animal{height:45%;min-height:35px}.lr-adventure .lr-friends[data-friends="4"] .lr-plate-target{top:72%;width:95%;height:70px}.lr-adventure .lr-friends[data-friends="4"] .lr-served{top:72%;height:90px}.lr-adventure .lr-friends[data-friends="4"] .lr-plate-dots{bottom:-5px}
+ .lr-adventure .lr-share-tray{gap:4px}.lr-adventure .lr-share-tray .lr-source{width:44px;height:44px;min-width:44px;min-height:44px}
+ .lr-adventure .lr-basket-apples{gap:3px;align-content:center}.lr-adventure .lr-basket-apples .lr-source{width:44px;height:44px;min-width:44px;min-height:44px;flex:none}
+ .lr-adventure .lr-picture-tray{gap:5px}.lr-adventure .lr-picture-tray .lr-source{width:62px;min-width:44px}
+}
+@media(max-height:520px) and (min-width:501px){
+ .lr-adventure .lr-task-progress{height:4px;margin:2px auto 4px}.lr-adventure .lr-footer:has([data-lr-hint]:not([hidden])) .lr-task-progress{grid-column:2}.lr-adventure .lr-footer:has([data-lr-hint]:not([hidden])) [data-lr-hint]{grid-row:1/4}
+ .lr-adventure .lr-clue-leaves{left:34%;bottom:0;font-size:21px}.lr-adventure .lr-picture-tray{gap:5px}.lr-adventure .lr-picture-tray .lr-source{width:54px}
+ .lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-footer>p{font-size:12px;margin:0 0 2px}.lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-task-progress{display:none}
+}
+@media(max-height:350px) and (min-width:501px){.lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-footer>p{display:none}.lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-footer{padding:3px 8px}}
+@media(prefers-reduced-motion:reduce){.lr-adventure .lr-task-progress i,.lr-adventure .lr-resting-ring{transition:none}.lr-adventure .lr-win [data-next]{animation:none;outline:4px solid #efc55d}}
