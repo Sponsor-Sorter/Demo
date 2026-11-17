@@ -28,3 +28,13 @@
 }
 @media(max-height:350px) and (min-width:501px){.lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-footer>p{display:none}.lr-adventure:has(.lr-pipe-grid[data-size="4"]) .lr-footer{padding:3px 8px}}
 @media(prefers-reduced-motion:reduce){.lr-adventure .lr-task-progress i,.lr-adventure .lr-resting-ring{transition:none}.lr-adventure .lr-win [data-next]{animation:none;outline:4px solid #efc55d}}
+/* Keep the picnic action beside the tray when a long hint narrows the footer. */
+@media(min-width:501px){
+ .lr-scene.lr-adventure:has(.lr-shares) .lr-dock{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+ .lr-scene.lr-adventure:has(.lr-shares) .lr-share-tray{max-width:none;min-width:0}
+}
+.lr-adventure .lr-water-plants{pointer-events:none}
+.lr-scene.lr-adventure .lr-orchard{overflow:clip}
+@media(max-width:500px){
+ .lr-scene.lr-adventure:has(.lr-shares,.lr-rhymes) .lr-footer{max-height:48vh}
+}
