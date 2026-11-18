@@ -1,0 +1,38 @@
+// Local SQL fixtures only; no production URL or credentials are accepted.
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const modulePath=process.argv[2];if(!modulePath)throw Error('Supply an existing local PGlite module path');
+const {PGlite}=require(path.resolve(modulePath));
+(async()=>{const db=new PGlite(),checks=[];const value=async sql=>(await db.query(sql)).rows[0].v;
+ try{await db.waitReady;await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;create schema meadow_private;
+ create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claims',true)::jsonb->>'sub','')::uuid$$;
+ create table public.meadow_market_profiles(user_id uuid primary key);create table meadow_private.account_deletions(user_id uuid primary key);
+ create table public.meadow_market_play_runs(user_id uuid,week date,game text,points int,verified boolean);
+ create table public.meadow_market_economy_receipts(user_id uuid,claim_key text);
+ create function meadow_private.control_guard(text,uuid default auth.uid()) returns void language plpgsql as $$begin if auth.uid() is null then raise exception 'Sign in first' using errcode='42501';end if;end$$;
+ create function meadow_private.receipt_summary237() returns jsonb language sql as $$select '{"version":237,"pending":false}'::jsonb$$;
+ create function meadow_private.play_service(text,jsonb) returns jsonb language sql as $$select jsonb_build_object('wallet',jsonb_build_object('gems',77,'premium',true),'premium_verified',true,'week',(date_trunc('week',now() at time zone 'UTC')::date-case when $2->>'period'='previous' then 7 else 0 end),'rows','[]'::jsonb)$$;
+ grant usage on schema auth,meadow_private to authenticated;`);
+ const previous=fs.readFileSync(path.resolve(__dirname,'../supabase/migrations/20261112010210_meadow_club_receipt_summary237.sql'),'utf8').replace(/\r\n/g,'\n');
+ await db.exec(previous.slice(previous.indexOf('create or replace function public.'),previous.lastIndexOf('commit;')));
+ await db.exec('revoke all on function public.meadow_market_play_service(text,jsonb) from public,anon;grant execute on function public.meadow_market_play_service(text,jsonb) to authenticated;');
+ await db.exec(fs.readFileSync(path.resolve(__dirname,'../supabase/migrations/20261118073100_meadow_weekly_prize_status251.sql'),'utf8').replace(/\r\n/g,'\n'));
+ const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002';
+ await db.exec(`insert into public.meadow_market_profiles select md5(i::text)::uuid from generate_series(1,12) i;insert into public.meadow_market_profiles values('${a}'),('${b}');
+ insert into public.meadow_market_play_runs select md5(i::text)::uuid,date_trunc('week',now() at time zone 'UTC')::date-7,'eggs',120-i,true from generate_series(1,12) i;
+ insert into public.meadow_market_play_runs values('${a}',date_trunc('week',now() at time zone 'UTC')::date-7,'eggs',200,true),('${b}',date_trunc('week',now() at time zone 'UTC')::date-7,'eggs',200,true),('${a}',date_trunc('week',now() at time zone 'UTC')::date-7,'eggs',999999,false);
+ set request.jwt.claims='{"sub":"${a}"}';`);
+ const call=game=>`select public.meadow_market_play_service('boards','{"game":"${game}","scope":"friends","period":"previous"}') as v`;
+ let r=await value(call('eggs'));assert.equal(r.weekly_prize.rank,1);assert.equal(r.weekly_prize.gems,150);assert.equal(r.weekly_prize.gold,500);assert.equal(r.weekly_prize.eligible,true);assert.equal(r.wallet.gems,77);assert.equal(r.premium_verified,true);checks.push('Same verified global dense rank and prize amounts as claim_week, irrespective of friends view and unverified scores');
+ await db.exec(`set request.jwt.claims='{"sub":"${b}"}';`);assert.equal((await value(call('eggs'))).weekly_prize.rank,1);checks.push('Tied global scores share rank');
+ r=await value(call('milk'));assert.equal(r.weekly_prize.status,'no_score');assert.equal(r.weekly_prize.eligible,false);
+ await db.exec(`set request.jwt.claims='{"sub":"${require('node:crypto').createHash('md5').update('12').digest('hex').replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/,'$1-$2-$3-$4-$5')}"}';`);r=await value(call('eggs'));assert(r.weekly_prize.rank>10);assert.equal(r.weekly_prize.status,'outside_top_ten');assert.equal(r.weekly_prize.eligible,false);checks.push('No score and outside top ten cannot claim');
+ await db.exec(`set request.jwt.claims='{"sub":"${a}"}';insert into public.meadow_market_economy_receipts values('${a}','week:'||(date_trunc('week',now() at time zone 'UTC')::date-7)||':eggs');`);
+ r=await value(call('eggs'));assert.equal(r.weekly_prize.claimed,true);assert.equal(r.weekly_prize.eligible,false);checks.push('Own-account immutable receipt marks already collected');
+ await db.exec(`set request.jwt.claims='{"sub":"${b}"}';`);assert.equal((await value(call('eggs'))).weekly_prize.claimed,false);
+ r=await value("select public.meadow_market_play_service('boards','{\"game\":\"eggs\",\"period\":\"current\"}') as v");assert.equal(r.weekly_prize.status,'in_progress');assert.equal(r.weekly_prize.eligible,false);
+ const before=await value('select count(*) as v from public.meadow_market_economy_receipts');await value(call('eggs'));assert.equal(await value('select count(*) as v from public.meadow_market_economy_receipts'),before);assert.equal((await value("select public.meadow_market_play_service('status') as v")).receipt_summary.version,237);checks.push('Read-only display preserves receipt history, wallet, Premium and existing status projection');
+ assert.equal(await value("select has_function_privilege('anon','meadow_private.weekly_prize_status251(text,date)','execute') as v"),false);assert.equal(await value("select prosecdef as v from pg_proc where oid='public.meadow_market_play_service(text,jsonb)'::regprocedure"),false);
+ await db.exec("set request.jwt.claims='{}';");await assert.rejects(()=>value(call('eggs')));await db.exec(`set request.jwt.claims='{"sub":"${b}"}';insert into meadow_private.account_deletions values('${b}');`);await assert.rejects(()=>value(call('eggs')));checks.push('Anonymous and deleted-account access denied; public wrapper stays invoker');
+ console.log(JSON.stringify({passed:true,checks},null,2));
+ }finally{await db.close();}
+})().catch(e=>{console.error(e);process.exitCode=1});
