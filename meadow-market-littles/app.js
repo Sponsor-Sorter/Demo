@@ -9,7 +9,7 @@ window.meadowClub={result:(r,won)=>{const points=Math.max(0,Math.round(r.score*1
 window.meadowMinigames.attach({state:()=>state,canPlay:()=>true,notify,reward,save});
 window.meadowCreativePlay.attach({state:()=>state,save});
 window.meadowWorldPlay.attach({state:()=>state,save});
-window.meadowSoloPlay.attach({state:()=>state});
+window.meadowSoloPlay?.attach({state:()=>state});
 window.meadowWordSearch.attach({state:()=>state,save,reward});
 const marketItems=Object.fromEntries(['apple','carrot','tomato','corn','pumpkin','strawberry'].map(id=>[id,{id,name:window.meadowPlayLevels.names[id],sell:10}]));
 window.meadowFarmersMarket.attach({practice:true,state:()=>state,current:()=>state.farms.littles,canTrade:()=>true,coins:()=>state.stars,items:marketItems,earn:n=>state.stars+=n,xp:n=>state.xp+=n,event(){state.market.deliveries=(state.market.deliveries||0)+1},save,refresh:()=>{save();render()},notify,requests:()=>{sheet('<h2>Market basket</h2><p>Your practice produce is ready for packing and weighing.</p><button id="market-restock" class="primary-button">Refill practice basket</button>');$('#market-restock').onclick=()=>{Object.keys(marketItems).forEach(id=>state.farms.littles.inventory[id]=30);save();$('#littles-sheet').close();window.meadowFarmersMarket.open()}},build:()=>notify('All market games are ready to play')});
