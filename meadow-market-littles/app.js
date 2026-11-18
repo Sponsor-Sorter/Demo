@@ -1,5 +1,5 @@
 (() => {'use strict';
-const $=s=>document.querySelector(s),key='meadow-littles-save-v1',build=84,saveRules=window.meadowLittlesSaveState;let stateLoad=saveRules.load(localStorage,key),state=stateLoad.state,stateWritable=stateLoad.writable,category='all',installPrompt,toastTimer;
+const $=s=>document.querySelector(s),key='meadow-littles-save-v1',build=85,saveRules=window.meadowLittlesSaveState;let stateLoad=saveRules.load(localStorage,key),state=stateLoad.state,stateWritable=stateLoad.writable,category='all',installPrompt,toastTimer;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3200)}
 function save(){if(!saveRules.write(localStorage,key,state,stateWritable)){if(!stateWritable)$('#save-state').textContent=stateLoad.message;else $('#save-state').textContent='Device storage is full';$('#star-total').textContent='✦ '+state.stars;return false}$('#save-state').textContent='Saved on this device';window.meadowLittlesCloud?.queueSave?.(state);$('#star-total').textContent='✦ '+state.stars;return true}
@@ -9,6 +9,7 @@ window.meadowClub={result:(r,won)=>{const points=Math.max(0,Math.round(r.score*1
 window.meadowMinigames.attach({state:()=>state,canPlay:()=>true,notify,reward,save});
 window.meadowCreativePlay.attach({state:()=>state,save});
 window.meadowWorldPlay.attach({state:()=>state,save});
+window.meadowSoloPlay.attach({state:()=>state});
 window.meadowWordSearch.attach({state:()=>state,save,reward});
 const marketItems=Object.fromEntries(['apple','carrot','tomato','corn','pumpkin','strawberry'].map(id=>[id,{id,name:window.meadowPlayLevels.names[id],sell:10}]));
 window.meadowFarmersMarket.attach({practice:true,state:()=>state,current:()=>state.farms.littles,canTrade:()=>true,coins:()=>state.stars,items:marketItems,earn:n=>state.stars+=n,xp:n=>state.xp+=n,event(){state.market.deliveries=(state.market.deliveries||0)+1},save,refresh:()=>{save();render()},notify,requests:()=>{sheet('<h2>Market basket</h2><p>Your practice produce is ready for packing and weighing.</p><button id="market-restock" class="primary-button">Refill practice basket</button>');$('#market-restock').onclick=()=>{Object.keys(marketItems).forEach(id=>state.farms.littles.inventory[id]=30);save();$('#littles-sheet').close();window.meadowFarmersMarket.open()}},build:()=>notify('All market games are ready to play')});
