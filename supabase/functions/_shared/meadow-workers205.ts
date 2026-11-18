@@ -2,6 +2,7 @@
 // it never supplies the worker's task, clock, output or offline duration.
 type Data=Record<string,any>;
 type Cell={x:number;y:number};
+type Search={allowed:Set<string>;found:Map<string,Data>;queue:Data[];cursor:number};
 const key=(p:Cell)=>p.x+','+p.y;
 export function createWorkerController(c:Data){
  const {s,W,R,now,api,fp,grass,home,animal,area,plotYield,seedCost,unlockedCrop,event,fields,fail,integer}=c;
@@ -28,11 +29,23 @@ export function createWorkerController(c:Data){
   const result:Cell[]=[];for(let x=minX;x<=maxX;x++)for(let y=minY;y<=maxY;y++)if((Number(f.expansionLevel)>=3||y<7+(Number(f.expansionLevel)||0))&&!blocked.has(key({x,y}))&&grass(x,y,map))result.push({x,y});
   terrain.set(map,result);return result;
  }
- function edges(t:Data,map:string){const p=fp(t);return cells(map).filter(q=>q.x>=t.x-1&&q.x<=t.x+p.w&&q.y>=t.y-1&&q.y<=t.y+p.h);}
+ // Request-scoped geometry only: never retain a player's objects, paths or
+ // assignments across requests/accounts. Reuse one traversal for every job
+ // considered from the same worker position, with the original BFS order.
+ const boundaries=new Map<string,Cell[]>(),searches=new Map<string,Search>(),unreachable=new Map<string,Set<string>>();
+ function edges(t:Data,map:string){const p=fp(t),id=JSON.stringify([map,t.x,t.y,p.w,p.h]);if(!boundaries.has(id))boundaries.set(id,cells(map).filter(q=>q.x>=t.x-1&&q.x<=t.x+p.w&&q.y>=t.y-1&&q.y<=t.y+p.h));return boundaries.get(id)!;}
+ function search(start:Cell,map:string){
+  const id=map+':'+key(start);if(searches.has(id))return searches.get(id)!;
+  const allowed=new Set(cells(map).map(key)),found=new Map<string,Data>(),queue:Data[]=[],field={allowed,found,queue,cursor:0};searches.set(id,field);if(!allowed.has(key(start)))return field;
+  const first={...start,distance:0,previous:'',order:0};found.set(key(start),first);queue.push(first);return field;
+ }
  function route(start:Cell,goals:Cell[],map:string):{to:Cell;distance:number;path:Cell[]}|null{
-  const allowed=new Set(cells(map).map(key)),wanted=new Set(goals.map(key));if(!allowed.has(key(start))||!wanted.size)return null;
-  const seen=new Set([key(start)]),previous=new Map<string,Cell>(),queue=[{...start,distance:0}];for(let i=0;i<queue.length;i++){const a=queue[i];if(wanted.has(key(a))){const path:Cell[]=[{x:a.x,y:a.y}];let p=previous.get(key(a));while(p){path.push(p);p=previous.get(key(p));}return{to:{x:a.x,y:a.y},distance:a.distance,path:path.reverse()};}for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){if(!dx&&!dy)continue;const b={x:a.x+dx,y:a.y+dy},k=key(b);if(seen.has(k)||!allowed.has(k)||dx&&dy&&(!allowed.has(key({x:a.x+dx,y:a.y}))||!allowed.has(key({x:a.x,y:a.y+dy}))))continue;seen.add(k);previous.set(k,{x:a.x,y:a.y});queue.push({...b,distance:a.distance+Math.hypot(dx,dy)});}}
-  return null;
+  const field=search(start,map),{allowed,found,queue}=field,wanted=new Set(goals.map(key));let end:Data|undefined;for(const goal of goals){const entry=found.get(key(goal));if(entry&&(!end||entry.order<end.order))end=entry;}
+  // Expand only as far as this route needs. A later job can continue the same
+  // queue; near, already reachable work does not require a full-map scan.
+  while(!end&&field.cursor<queue.length){const a=queue[field.cursor++];for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){if(!dx&&!dy)continue;const b={x:a.x+dx,y:a.y+dy},k=key(b);if(found.has(k)||!allowed.has(k)||dx&&dy&&(!allowed.has(key({x:a.x+dx,y:a.y}))||!allowed.has(key({x:a.x,y:a.y+dy}))))continue;const next={...b,distance:a.distance+Math.hypot(dx,dy),previous:key({x:a.x,y:a.y}),order:queue.length};found.set(k,next);queue.push(next);if(!end&&wanted.has(k))end=next;}}
+  if(!end)return null;
+  const path:Cell[]=[];let at:Data|undefined=end;while(at){path.push({x:at.x,y:at.y});at=at.previous?found.get(at.previous):undefined;}return{to:{x:end.x,y:end.y},distance:end.distance,path:path.reverse()};
  }
  function position(data:Data,map:string){const available=cells(map);if(!available.length)return null;const p={x:Math.round(data.x??well(s.farms[map])?.x??4),y:Math.round(data.y??well(s.farms[map])?.y??3)};return available.find(q=>key(q)===key(p))||available.slice().sort((a,b)=>Math.hypot(a.x-p.x,a.y-p.y)-Math.hypot(b.x-p.x,b.y-p.y))[0];}
  function onMap<T>(map:string,fn:()=>T):T{const old=s.active;s.active=map;try{return c.runOnMap(map,fn);}finally{s.active=old;}}
@@ -50,8 +63,13 @@ export function createWorkerController(c:Data){
  });}
  function candidate(role:string,map:string,data:Data,skip=new Set<string>(),preferred?:string):Data|null{
   const start=position(data,map);if(!start)return null;
-  if(preferred){const others=new Set<string>(s.farms[map].objects.filter((o:Data)=>o.id!==preferred).map((o:Data)=>o.id));const t=task(role,others,map),r=t&&route(start,edges(t,map),map);if(t&&r&&!skip.has(t.id))return{task:t,route:r,from:start};}
-  for(let i=0;i<32;i++){const t=task(role,skip,map);if(!t||skip.has(t.id))return null;const r=route(start,edges(t,map),map);if(r)return{task:t,route:r,from:start};skip.add(t.id);}return null;
+  const f=s.farms[map],blocked=new Set(skip),id=map+':'+key(start),known=unreachable.get(id);if(known)for(const target of known)blocked.add(target);
+  if(preferred&&!blocked.has(preferred)){const others=new Set<string>(f.objects.filter((o:Data)=>o.id!==preferred).map((o:Data)=>o.id));const t=task(role,others,map),r=t&&route(start,edges(t,map),map);if(t&&r)return{task:t,route:r,from:start};}
+  let t=task(role,blocked,map),r=t&&route(start,edges(t,map),map);if(t&&r)return{task:t,route:r,from:start};if(!t||known)return null;
+  // Keep the ordinary first-job path cheap. Only an inaccessible first job
+  // needs the full exclusion set; workers sharing this start reuse it.
+  const found=search(start,map).found,excluded=new Set<string>();for(const o of f.objects)if(!edges(home(o,f)||o,map).some(q=>found.has(key(q))))excluded.add(o.id);unreachable.set(id,excluded);for(const target of excluded)blocked.add(target);
+  t=task(role,blocked,map);r=t&&route(start,edges(t,map),map);return t&&r?{task:t,route:r,from:start}:null;
  }
  function perform(role:string,map:string,t:Data){return onMap(map,()=>{
   const done=W.meadowFarmWork.perform(role,t,map);
@@ -81,8 +99,11 @@ export function createWorkerController(c:Data){
    return true;
   }delete d.restBlocked;return false;
  }
- function tick(){const b=book(),out:Data[]=[],reserved=new Map<string,Set<string>>();
-  for(const w of crew()){
+ function tick(){const b=book(),out:Data[]=[],reserved=new Map<string,Set<string>>(),members=crew();
+  // Reserve existing jobs before considering an idle worker. Hired workers
+  // appear after the family; their in-flight jobs still own their targets.
+  for(const w of members){const lease=b.leases[w.id];if(!lease||lease.map!==w.map||lease.revision!==(w.data.revision||0)||well(s.farms[w.map])?.helpers?.[w.id])continue;const set=reserved.get(w.map)||new Set<string>();set.add(lease.target);reserved.set(w.map,set);}
+  for(const w of members){
    const data=w.data,paused=well(s.farms[w.map])?.helpers?.[w.id];if(paused){delete b.leases[w.id];delete data.returning;out.push({worker:w.id,map:w.map,status:'paused'});continue;}
    if(resting(w)){out.push(data.restBlocked?{worker:w.id,map:w.map,status:'blocked',reason:'Leave a clear path to the family well.'}:data.returning?{worker:w.id,map:w.map,status:'returning',...data.returning}:{worker:w.id,map:w.map,status:'drink',until:data.drinkUntil});continue;}
    let lease=b.leases[w.id];if(lease&&(lease.map!==w.map||lease.revision!==(data.revision||0))){delete b.leases[w.id];lease=null;}
@@ -128,5 +149,5 @@ export function createWorkerController(c:Data){
    default:return null;
   }
  }
- return {command,arrive:()=>{crew();},invalidate:()=>{terrain.clear();W.meadowPlanner.invalidate();}};
+ return {command,arrive:()=>{crew();},invalidate:()=>{terrain.clear();boundaries.clear();searches.clear();unreachable.clear();W.meadowPlanner.invalidate();}};
 }
