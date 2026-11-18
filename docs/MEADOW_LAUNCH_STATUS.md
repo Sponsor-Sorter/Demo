@@ -1,5 +1,13 @@
 # Meadow Markets launch status
 
+## 18 November 2026 — build 251 published and accepted
+
+Web 251 is live from main `f753f836e4c1f00452afe4ab15e6cf5ab175ca4a`. Main game/Android CI `44268911899` and Pages `44268911901` succeeded; all 26 named public/protected files match that exact merge. The own-account weekly-prize projection is deployed and gateway 65 matches all eight reviewed files with JWT verification enabled.
+
+The Samsung's installed Google Play 1.7.6/code 16 accepted the ordinary 250→251 runtime update. Settings confirms 251, and all 319 object IDs and protocol 4 are preserved. Its real previous-week board correctly shows no verified score without a Collect button. The official app opens Bee Shelter's campaign and Ridge cap with complete artwork/canvas. Isolated physical component tests already passed draft cancellation/refund, Undo and artwork failure/retry; eligible/claimed/global-versus-friends prize states also have source/SQL/component coverage. No live prize or new financial/provider test was made.
+
+The desktop browser accepted 250→251 and retained its separate farm; its original pending action reconciled via the normal receipt retry. Approved Rhys audio and Bee artwork are unchanged. Two owned Samsung QA tabs, the own loopback server and ADB reverse are cleaned up. The phone returned to the official farm; window02 closed early at 08:58:09 UTC and contingency03 was canceled without activation. Main/Pages are released. Full acceptance metadata and screenshots: `D:/Chat Gpt/workspaces/meadow-production194-evidence/polish251/final-acceptance251.json`. These closeout notes remain local to avoid another whole-site deployment for documentation alone. Earlier pending entries below are historical.
+
 ## 14 November 2026 — web 247 live; Fairplay Admin consumer qualified
 
 Main `5cd9137a97aef622d2ede62910b0279ce9b79d76` is published. Meadow/optimized Android CI `43554481809`, Littles CI `43554481784` and Pages `43554481583` passed; 23 public/protected files match reviewed source. Gateway 61 readback matches all eight reviewed files and retains JWT verification.
