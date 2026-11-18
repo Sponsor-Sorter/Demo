@@ -28,7 +28,7 @@ viewContext.dialog.dataset.owner='farm-a';viewContext.tab='missions';assert.equa
  vm.createContext(ctx);vm.runInContext(source.slice(source.indexOf(' async function loadBoard()'),source.indexOf(' function drawMissions()'))+';this.load=loadBoard;',ctx);
  const first=ctx.load();await settle();ctx.game='word_search';const second=ctx.load();await settle();
  assert(button.disabled);assert.equal(target.attributes['aria-busy'],'true');assert.equal(claim,null);
- requests[1].resolve({week:'2026-11-02',rows:[]});await second;const winningBoard=ctx.board;
+ requests[1].resolve({week:'2026-11-02',rows:[],weekly_prize:{version:251,verified:true,game:'word_search',week:'2026-11-02',status:'eligible',eligible:true,claimed:false,rank:2,gems:100,gold:300}});await second;const winningBoard=ctx.board;
  requests[0].resolve({week:'2026-10-26',rows:[]});await first;
  assert.equal(ctx.board,winningBoard,'An old response cannot overwrite the active board');assert(html.includes('2026-11-02'));assert(!html.includes('2026-10-26'));assert.equal(button.disabled,false);
  ctx.game='memory';claim.click();assert.equal(claims[0][1].game,'word_search');assert.equal(claims[0][1].week,'2026-11-02','Prize targets the game/week actually displayed');

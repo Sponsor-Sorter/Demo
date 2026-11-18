@@ -5,7 +5,7 @@
   const storage={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
   let api,owner='',dialog,canvas,ctx,sim,level=0,spent=0,draft=[],finger=null,raf=0,last=0,accumulator=0,epoch=0;
   let images={},ready=false,loadingImages=null,hint=false,usedHint=false,completed=false,paused=false,uiSecond=-1;
-  let pencil={x:300,y:180},keyboardMode=false,welcomed=false;
+  let pencil={x:300,y:180},keyboardMode=false,welcomed=false,draftStartSpent=0;
   const $=selector=>dialog.querySelector(selector);
   const sound=id=>window.meadowAudio?.play(id);
   const say=id=>window.meadowAudio?.speak(id==='intro'?'bee51-rhys-intro':id==='hint'?'bee51-rhys-map-'+C.levels[level].cue:'bee-rhys-'+id);
@@ -23,7 +23,13 @@
   }
   async function loadImages(){
     if(ready)return;
-    if(!loadingImages)loadingImages=Promise.all(Object.entries({bee:'bee',hive:'hive',friend:'cloud',post:'post',rock:'rock',ground:'ground'}).map(([id,file])=>new Promise((resolve,reject)=>{const image=new Image();image.onload=async()=>{try{await image.decode();images[id]=image;resolve();}catch(e){reject(e);}};image.onerror=reject;image.src=art+file+'.webp';}))).then(()=>{ready=true;}).finally(()=>{loadingImages=null;});
+    if(!loadingImages)loadingImages=Promise.all(Object.entries({bee:'bee',hive:'hive',friend:'cloud',post:'post',rock:'rock',ground:'ground'}).map(([id,file])=>new Promise((resolve,reject)=>{
+      const image=new Image();let settled=false;
+      const finish=error=>{if(settled)return;settled=true;clearTimeout(timer);image.onload=image.onerror=null;error?reject(Error('Artwork unavailable')):resolve([id,image]);};
+      const timer=setTimeout(()=>finish(true),12000);
+      image.onload=async()=>{try{await image.decode();finish();}catch{finish(true);}};
+      image.onerror=()=>finish(true);image.src=art+file+'.webp';
+    }))).then(entries=>{images=Object.fromEntries(entries);ready=true;}).finally(()=>{loadingImages=null;});
     await loadingImages;
   }
   async function showMaps(){
@@ -32,8 +38,8 @@
     dialog.innerHTML='<main class="bs-scene">'+header(wins+' / 20 shelters completed · personal practice')+'<section class="bs-map-page"><div class="bs-map-intro"><h2>Less ink. Bigger swarms. Stronger shelters.</h2><p>Draw a shelter for Cloud. Fixed rocks support your ink; loose drawings can be pushed away. Choose any puzzle. Earn a star for surviving, efficient ink and solving without a hint.</p><button class="bs-primary" data-bs-continue>Continue · '+C.levels[level].name+'</button><small>Best runs stay on this device for this farm. No farm goods or reward turns are used.</small></div><div class="bs-maps">'+C.levels.map((l,i)=>{const record=records.maps[i];return '<button data-bs-level="'+i+'" class="bs-map-card" aria-label="Puzzle '+(i+1)+': '+l.name+', '+l.tier+(record?', '+record.stars+' stars':'')+'"><canvas width="300" height="250" aria-hidden="true"></canvas><strong>'+(i+1)+'. '+l.name+'</strong><span>'+l.tier+' · '+l.ink+' ink · '+l.seconds+'s</span><span class="bs-map-stars">'+(record?'★'.repeat(record.stars)+' · Best '+record.score.toLocaleString():'Not completed')+'</span></button>';}).join('')+'</div></section></main>';
     bindHeader();$('[data-bs-continue]').onclick=()=>start(level);
     dialog.querySelectorAll('[data-bs-level]').forEach(button=>button.onclick=()=>start(Number(button.dataset.bsLevel)));
-    try{await loadImages();if(token!==epoch||!dialog.open)return;for(const button of dialog.querySelectorAll('[data-bs-level]')){const preview=button.querySelector('canvas'),paint=preview.getContext('2d');paint.scale(.5,.5);paint.translate(0,-35);paintMap(paint,C.levels[Number(button.dataset.bsLevel)],0);}}
-    catch{if(token===epoch)$('.bs-map-intro small').textContent='Pictures could not load. Choose a puzzle to retry.';}
+    try{await loadImages();if(token!==epoch||!dialog.open||!sameOwner())return;for(const button of dialog.querySelectorAll('[data-bs-level]')){const preview=button.querySelector('canvas'),paint=preview.getContext('2d');paint.scale(.5,.5);paint.translate(0,-35);paintMap(paint,C.levels[Number(button.dataset.bsLevel)],0);}}
+    catch{if(token===epoch&&dialog.open&&sameOwner()){$('.bs-map-intro small').textContent='Artwork could not load. Your progress is safe.';const retry=document.createElement('button');retry.textContent='Retry artwork';retry.onclick=showMaps;$('.bs-map-intro').append(retry);}}
     if(token===epoch&&!welcomed){welcomed=true;say('intro');}
   }
   async function start(index=level){
@@ -44,28 +50,28 @@
     dialog.innerHTML='<main class="bs-scene">'+header((level+1)+' / 20 · '+C.levels[level].tier+' · '+C.levels[level].name)+'<section class="bs-play"><div class="bs-board-slot"><div class="bs-field"><canvas width="1200" height="1200" tabindex="0" aria-label="Draw a shelter. Arrows move the pencil; Space starts or ends a line."></canvas><button class="bs-paused" hidden data-bs-resume>Paused · tap to resume</button></div></div><aside class="bs-dock"><p data-bs-note role="status">Use fixed rocks to hold your drawing. Launch when ready.</p><div class="bs-ink"><label for="bs-ink">Ink <b data-bs-ink></b></label><progress id="bs-ink" value="0" max="1" aria-label="Drawing ink left"></progress></div><div class="bs-count" data-bs-count aria-live="polite">'+C.levels[level].bees+' bees · survive '+C.levels[level].seconds+' seconds</div><button class="bs-go" data-bs-go disabled>Release the swarm</button><div class="bs-tools"><button data-bs-undo disabled>Undo</button><button data-bs-clear disabled>Clear</button><button data-bs-hint disabled>Hint</button><button data-bs-map>Puzzles</button><button data-bs-listen>Hear</button><button data-bs-pause disabled>Pause</button></div></aside></section></main>';
     bindHeader();$('[data-bs-listen]').onclick=()=>say(sim?.state==='swarm'?'watch':hint?'hint':'intro');$('[data-bs-map]').onclick=showMaps;
     $('[data-bs-clear]').onclick=()=>{if(sim?.state!=='draw')return;while(sim.undo()){}spent=0;draft=[];finger=null;note('Drawing cleared. Try a different support.');update();};
-    $('[data-bs-undo]').onclick=()=>{if(sim?.state!=='draw'||finger!==null)return;const stroke=sim.undo();if(stroke)spent=Math.max(0,spent-stroke.length);update();};
+    $('[data-bs-undo]').onclick=()=>{if(sim?.state!=='draw'||finger!==null)return;const stroke=sim.undo();if(stroke){spent=Math.max(0,spent-stroke.length);note('Line removed. Ink returned — keep drawing or launch when ready.');}update();};
     $('[data-bs-hint]').onclick=()=>{if(sim?.state!=='draw')return;hint=!hint;usedHint=true;note(hint?sim.level.help:'Hint hidden. This run still counts as assisted.');if(hint)say('hint');update();};
     $('[data-bs-go]').onclick=launch;$('[data-bs-pause]').onclick=togglePause;$('[data-bs-resume]').onclick=togglePause;
     canvas=$('.bs-field canvas');ctx=canvas.getContext('2d');ctx.setTransform(2,0,0,2,0,0);
     canvas.onpointerdown=down;canvas.onpointermove=move;canvas.onpointerup=up;canvas.onpointercancel=cancel;canvas.onlostpointercapture=cancel;canvas.onkeydown=keyDraw;syncPencil();
     try{await loadImages();if(token!==epoch||!dialog.open||!sameOwner())return;sim=C.create(level);update();raf=requestAnimationFrame(frame);}
-    catch{if(token!==epoch)return;note('Pictures could not load. Try again.');$('[data-bs-clear]').textContent='Retry pictures';$('[data-bs-clear]').disabled=false;$('[data-bs-clear]').onclick=()=>start();}
+    catch{if(token!==epoch||!dialog.open||!sameOwner())return;note('Artwork could not load. Your progress is safe.');$('[data-bs-clear]').textContent='Retry artwork';$('[data-bs-clear]').disabled=false;$('[data-bs-clear]').onclick=()=>start();}
   }
   function note(text){const node=$('[data-bs-note]');if(node)node.textContent=text;}
   function point(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*600/r.height};}
-  function down(e){if(e.button>0||finger!==null||sim?.state!=='draw'||spent>=sim.level.ink)return;const p=point(e);if(!C.rules.legalPoint(p,sim.level)){note('Keep ink outside Cloud and the fixed rocks.');return;}e.preventDefault();keyboardMode=false;finger=e.pointerId;draft=[p];canvas.setPointerCapture(e.pointerId);update();}
+  function down(e){if(e.button>0||e.isPrimary===false||finger!==null||sim?.state!=='draw'||spent>=sim.level.ink)return;const p=point(e);if(!C.rules.legalPoint(p,sim.level)){note('Keep ink outside Cloud and the fixed rocks.');return;}e.preventDefault();keyboardMode=false;finger=e.pointerId;draftStartSpent=spent;draft=[p];canvas.setPointerCapture(e.pointerId);update();}
   function addPoint(p){const result=C.rules.append(draft,p,sim.level.ink-spent,sim.level);spent+=result.used;if(result.blocked){finishStroke();note('The fixed terrain cannot be drawn through.');}else if(result.exhausted){finishStroke();note('Ink used. Undo a line or test your shelter.');}update();}
   function move(e){if(e.pointerId!==finger||sim?.state!=='draw')return;e.preventDefault();for(const sample of e.getCoalescedEvents?.().length?e.getCoalescedEvents():[e]){if(e.pointerId!==finger)break;addPoint(point(sample));}}
-  function finishStroke(){if(!sim)return;const length=draft.reduce((n,p,i)=>n+(i?C.rules.distance(draft[i-1],p):0),0),stroke=sim.addStroke(draft);if(!stroke)spent=Math.max(0,spent-length);draft=[];const id=finger;finger=null;if(typeof id==='number'&&canvas.hasPointerCapture?.(id))canvas.releasePointerCapture(id);update();}
+  function finishStroke(){if(!sim)return;const stroke=sim.addStroke(draft);if(!stroke)spent=draftStartSpent;draft=[];const id=finger;finger=null;if(typeof id==='number'&&canvas.hasPointerCapture?.(id))canvas.releasePointerCapture(id);update();}
   function up(e){if(e.pointerId===finger)finishStroke();}
-  function cancel(e){if(finger!==null&&e.pointerId===finger)finishStroke();}
+  function cancel(e){if(finger===null||e.pointerId!==finger)return;const id=finger;finger=null;draft=[];spent=draftStartSpent;if(canvas.hasPointerCapture?.(id))canvas.releasePointerCapture(id);note('Touch interrupted. Ink returned — draw that line again.');update();}
   function syncPencil(){canvas.dataset.pencilX=String(pencil.x);canvas.dataset.pencilY=String(pencil.y);}
   function keyDraw(e){
     if(sim?.state!=='draw'||typeof finger==='number')return;
     const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];
     if(d){e.preventDefault();keyboardMode=true;const step=e.shiftKey?25:5;pencil={x:Math.max(10,Math.min(590,pencil.x+d[0]*step)),y:Math.max(45,Math.min(495,pencil.y+d[1]*step))};if(finger==='keyboard')addPoint(pencil);syncPencil();}
-    else if(e.key===' '&&!e.repeat){e.preventDefault();keyboardMode=true;if(finger==='keyboard')finishStroke();else if(finger===null&&spent<sim.level.ink&&C.rules.legalPoint(pencil,sim.level)){finger='keyboard';draft=[{...pencil}];update();}}
+    else if(e.key===' '&&!e.repeat){e.preventDefault();keyboardMode=true;if(finger==='keyboard')finishStroke();else if(finger===null&&spent<sim.level.ink&&C.rules.legalPoint(pencil,sim.level)){finger='keyboard';draftStartSpent=spent;draft=[{...pencil}];update();}}
   }
   function launch(){if(!sim||sim.state!=='draw'||finger!==null||!sim.launch())return;hint=false;say('watch');note('Hold for '+sim.level.seconds+' seconds. Your ink is physical now.');update();}
   function togglePause(){if(sim?.state!=='swarm')return;paused=!paused;last=0;accumulator=0;$('[data-bs-resume]').hidden=!paused;$('[data-bs-pause]').textContent=paused?'Resume':'Pause';if(paused)window.meadowAudio?.stopVoice();}
@@ -74,7 +80,7 @@
     const meter=$('progress');meter.max=sim.level.ink;meter.value=Math.max(0,sim.level.ink-spent);$('[data-bs-ink]').textContent=Math.max(0,Math.floor(sim.level.ink-spent))+' / '+sim.level.ink;
     $('[data-bs-go]').disabled=!draw||!sim.strokes.length||finger!==null;
     for(const name of ['undo','clear'])$('[data-bs-'+name+']').disabled=!draw||!sim.strokes.length||finger!==null;
-    $('[data-bs-hint]').disabled=!draw;$('[data-bs-hint]').setAttribute('aria-pressed',String(hint));$('[data-bs-pause]').disabled=sim.state!=='swarm';$('[data-bs-map]').disabled=sim.state==='swarm';
+    $('[data-bs-hint]').disabled=!draw||finger!==null;$('[data-bs-hint]').setAttribute('aria-pressed',String(hint));$('[data-bs-pause]').disabled=sim.state!=='swarm';$('[data-bs-map]').disabled=sim.state==='swarm'||finger!==null;
   }
   function frame(time){
     if(!sim||!dialog.open)return;if(!sameOwner()){close();return;}

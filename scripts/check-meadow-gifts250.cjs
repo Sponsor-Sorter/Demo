@@ -114,7 +114,7 @@ let passed=0;async function test(name,fn){await fn();passed++;console.log('PASS 
   // This is a source/contract guard, not a hosted SQL atomicity claim.
  });
  await test('runtime integration, ephemeral privacy and unchanged gameplay bundle',()=>{
-  const game=fs.readFileSync('meadow-and-market/game.js','utf8'),html=fs.readFileSync('meadow-and-market/index.html','utf8');assert(game.includes('id="gift-code-settings"'));assert(game.includes("$('#gift-code-settings').onclick=()=>window.meadowGifts.open()"));assert(game.includes('window.meadowGifts?.attach(window.meadowGifts.farmAdapter('));assert(html.includes('gift-codes.css?v=250'));assert(html.indexOf('gift-codes.js?v=250')<html.indexOf('game.js?v=250'));
+  const game=fs.readFileSync('meadow-and-market/game.js','utf8'),html=fs.readFileSync('meadow-and-market/index.html','utf8');assert(game.includes('id="gift-code-settings"'));assert(game.includes("$('#gift-code-settings').onclick=()=>window.meadowGifts.open()"));assert(game.includes('window.meadowGifts?.attach(window.meadowGifts.farmAdapter('));assert(html.includes('gift-codes.css?v=250'));assert(html.indexOf('gift-codes.js?v=250')<html.indexOf(html.match(/game\.js\?v=\d+/)[0]));
   assert(!/localStorage|sessionStorage|console\.|location\.|URLSearchParams|sendBeacon/.test(source),'Raw code has no storage, URL or diagnostic path');assert(!/\b(?:coins|gems|vip_xp)\s*\+?=(?!=)/.test(source),'Consumer cannot mint resources');
  });
  console.log(`Meadow gifts250: ${passed}/${passed} source/VM checks passed. No live code, reward or hosted DDL executed.`);
