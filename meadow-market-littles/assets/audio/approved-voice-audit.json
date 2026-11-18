@@ -2895,6 +2895,21 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "word-audio-042-generation.json"
     },
+    "solo85-rhys-shapes-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "solo85-generation.json"
+    },
+    "solo85-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "solo85-generation.json"
+    },
+    "solo85-jade-first-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "solo85-generation.json"
+    },
     "together-connectfour": {
       "farmer": "jay",
       "voice": "Mike - Animation, Explainers & Gaming",

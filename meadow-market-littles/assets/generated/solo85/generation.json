@@ -1,0 +1,57 @@
+{
+  "generated": "2026-11-18",
+  "provider": "built-in image_gen",
+  "files": [
+    {
+      "file": "assets/generated/solo85/window-frame.webp",
+      "prompt": "Use case: stylized-concept. Create one production-ready transparent game sprite for Meadow Market Littles, a gentle farm learning game for ages 3–6. A beautiful chunky handmade wooden farmhouse window FRAME, straight-on front view, almost square. Rich warm honey oak wood grain, softly rounded smooth edges, substantial side posts and broad sill, a tiny simple red tiled gable above it. Friendly polished 3D storybook / hand-painted mobile game illustration, soft warm sunlight from upper left, clean crisp edges. The central opening must be genuinely fully TRANSPARENT with no glass, no colour panel, no sky or scene: it will show an animated farm animal behind it. A large clear rectangular opening centered about 50% horizontally and 52% vertically, occupying roughly 65% of sprite width and 58% of sprite height. Only the window frame and modest roof/sill, full object visible with small transparent margins. No building, background, surroundings, furniture, text, letters, numbers, characters, vines or clutter. Actual transparent background and actual transparent central hole. This is a richly illustrated physical wooden toy prop, with no UI or buttons.",
+      "reference": null,
+      "tool": "built-in image_gen",
+      "sourceFile": "exec-827969a3-49eb-49a0-8a50-792ad301c522.png",
+      "sourceSha256": "e444b851b03d10083dfac434d0e6234629dd96d1caf1a4c8ae876f8b1c5b170c",
+      "sha256": "2603b53c7be180e3a4840461b4e1cfde0fe2cf543b98c7b9ee8da503003a6af6",
+      "bytes": 1004292,
+      "width": 1293,
+      "height": 1216,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "centreAlpha": 0,
+      "visiblePixelsAndAlphaUnchanged": true,
+      "processing": "Lossless WebP encoding only; no crop, resize, painting or compositing"
+    },
+    {
+      "file": "assets/generated/solo85/seed-packet.webp",
+      "prompt": "Use case: stylized-concept. Create one production-ready transparent game sprite for Meadow Market Littles, a gentle illustrated farm learning game for ages 3–6. A single charming upright paper seed packet, front-facing with almost no perspective, entire packet visible. Thick folded cream parchment / warm kraft paper with soft rounded corners, subtly rolled or stitched edges, small folded top flap, a tiny simple green seedling emblem at the TOP ONLY. Large uncluttered blank pale cream central label occupying about 60% of the packet width and 48% of its height, centered at 53% down: the game will print a large alphabet letter there. No text, letters, numbers, question marks, decorative writing, pictures in the center, or buttons. Warm softly shaded hand-painted storybook 3D mobile farm game style, tasteful rich material detail, smooth crisp edges, soft upper-left lighting. Calm and simple, clearly readable at small mobile sizes. Background fully transparent outside the packet; the paper and central blank label are opaque. No hands, characters, desk, soil, scene or other objects.",
+      "reference": null,
+      "tool": "built-in image_gen",
+      "sourceFile": "exec-eee13952-823d-40d8-8ff0-9edaa1053b8b.png",
+      "sourceSha256": "0597ddc9e5f4b877d3b587313c1c12278ca66c84aa32e3c0d4556b32caff13f9",
+      "sha256": "d3a04bcad09af98fe0e9a14656d84426511528d14d33af8f616d2c29ae90185c",
+      "bytes": 1559920,
+      "width": 1199,
+      "height": 1312,
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "centreAlpha": 253,
+      "visiblePixelsAndAlphaUnchanged": true,
+      "processing": "Lossless WebP encoding only; no crop, resize, painting or compositing"
+    },
+    {
+      "file": "assets/generated/solo85/bridge-creek.webp",
+      "prompt": "Use case: precise-object-edit. Use the provided transparent creek sprite as the style and material reference. Create a NEW WIDE gameplay creek section for a gentle preschool farm mobile game. Keep the same beautifully illustrated turquoise rippling water, rounded mossy stones, soft grass and a few tiny daisies. Change its framing from a tall narrow creek to a WIDE nearly rectangular creek patch, landscape 3:2 composition. Water flows from the TOP edge toward the BOTTOM edge, with grassy banks along the FAR LEFT and FAR RIGHT edges. A broad clear water area takes about 75% of the width between the two banks. Keep the middle horizontal crossing lane simple and clear so the game can place wooden bridge planks and stepping stones there dynamically. NO bridge, planks, island stones in the central crossing lane, animals, people, text, controls, UI, logos or extra clutter. The top and bottom water edges continue cleanly off the image; outside the irregular left/right grass bank silhouette is genuinely transparent. Keep the entire wide creek object visible, crisp soft 3D hand-painted farm-game illustration. Do not rotate the creek: flow remains vertically top-to-bottom even though the canvas is landscape.",
+      "reference": "assets/generated/play-pieces/stream.webp",
+      "tool": "built-in image_gen",
+      "sourceFile": "exec-b3b7d342-6180-4506-ae9d-0ada5ee06d78.png",
+      "sourceSha256": "27dfafaa204761b449f5043b2e9bb74321d5f683d44e7c1f8d0106c7f0eb9bd7",
+      "sha256": "22e42f4f9dfa5f9cc2c0f206dbb5ad1a40b920cb5f3373dc59ead9871af89fc8",
+      "bytes": 2107848,
+      "width": 1536,
+      "height": 1024,
+      "alphaMin": 0,
+      "alphaMax": 253,
+      "centreAlpha": 249,
+      "visiblePixelsAndAlphaUnchanged": true,
+      "processing": "Lossless WebP encoding only; no crop, resize, painting or compositing"
+    }
+  ]
+}

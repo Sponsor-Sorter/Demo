@@ -53,3 +53,5 @@ require('./check-littles-classics.cjs');
 
 require('./check-littles-friends.cjs');
 require('./check-littles-discovery.cjs');
+
+require('./check-littles-solo.cjs');
