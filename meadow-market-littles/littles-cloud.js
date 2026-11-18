@@ -7,6 +7,7 @@
  const REMEMBERED='meadow-littles-account-v1';
  let client,store,options={},user=null,profile=null,remote=null,revision=0,ready=false,busy=false,saving=null,latest=null,timer=null,dialog=null,updateDialog=null,status='offline',lastError=null,connecting=null,authBusy=false,listening=false,subscribedClient=null,reconnectTimer=null,controlsState={moderation:null,runtime:null,build:53};
  let giftAuthEpoch=0;
+ let autosaveEpoch=0,choiceOwner=null;
  const prefix=uid=>'meadow-littles-cloud-v1:'+uid+':';
  function read(name){try{return JSON.parse(store.getItem(name)||'null')}catch{return null}}
  function write(name,value){if(value===null)store.removeItem(name);else store.setItem(name,JSON.stringify(value))}
@@ -29,7 +30,7 @@
  function validateOpen(data){const s=data?.save;if(!s||s.cloud_version!==1||!Number.isSafeInteger(s.revision)||s.revision<0||!s.data||typeof s.data!=='object'||Array.isArray(s.data)||data.profile?.user_id!==user.id)throw failure('LITTLES_CLOUD_UNAVAILABLE');return s;}
  async function load(){const state=await fairplay('status');if(state.moderation?.banned===true)throw failure('LITTLES_BANNED');await actor();const data=await rpc('meadow_littles_open',{});remote=validateOpen(data);profile=data.profile;revision=remote.revision;return data;}
  async function connect(){
-  ready=false;const session=await client.auth.getSession();if(session.error)throw failure(session.error.status>=400&&session.error.status<500&&session.error.status!==429?'LITTLES_SIGN_IN_REQUIRED':'LITTLES_CLOUD_UNAVAILABLE');
+  ready=false;cancelAutosave();const session=await client.auth.getSession();if(session.error)throw failure(session.error.status>=400&&session.error.status<500&&session.error.status!==429?'LITTLES_SIGN_IN_REQUIRED':'LITTLES_CLOUD_UNAVAILABLE');
   if(!session.data?.session){if(read(REMEMBERED))throw failure('LITTLES_SIGN_IN_REQUIRED');const signed=await client.auth.signInAnonymously();if(signed.error||!signed.data?.user)throw failure('LITTLES_SIGN_IN_REQUIRED');}
   const identity=await client.auth.getUser();if(identity.error||!identity.data?.user)throw failure(identity.error&&(!identity.error.status||identity.error.status>=500)?'LITTLES_CLOUD_UNAVAILABLE':'LITTLES_SIGN_IN_REQUIRED');
   if(user&&user.id!==identity.data.user.id){latest=null;profile=null;remote=null;clearTimeout(timer);write(prefix(identity.data.user.id)+'choice',true);}
@@ -39,11 +40,13 @@
   if(controlsState.moderation?.banned===true){remote=null;revision=0;notify('banned','LITTLES_BANNED');return;}
   remote=validateOpen(linked.account);profile=linked.account.profile;revision=remote.revision;
   const pending=read(prefix(user.id)+'pending'),meta=read(prefix(user.id)+'meta');
+  if(choiceOwner===user.id||read(prefix(user.id)+'choice')){choiceOwner=user.id;notify('choice_required');return;}
   if(pending){notify('retry_required');return;}
-  if(read(prefix(user.id)+'choice')||(revision>0&&meta?.revision!==revision)){notify('choice_required');return;}
+  if(revision>0&&meta?.revision!==revision){choiceOwner=user.id;notify('choice_required');return;}
   ready=true;notify('ready');if(latest)schedule();
  }
- function schedule(){clearTimeout(timer);if(!authBusy)timer=setTimeout(()=>{flush().catch(()=>{})},1200);}
+ function cancelAutosave(){clearTimeout(timer);timer=null;autosaveEpoch++;}
+ function schedule(){cancelAutosave();const owner=user?.id,epoch=autosaveEpoch;if(ready&&!busy&&!authBusy&&owner&&choiceOwner!==owner&&!read(prefix(owner)+'choice'))timer=setTimeout(()=>{if(epoch!==autosaveEpoch||owner!==user?.id||!ready||choiceOwner===owner||read(prefix(owner)+'choice'))return;timer=null;flush().catch(()=>{});},1200);}
  async function init(config={}){
   options=config;store=config.storage||globalThis.localStorage;
   bindReconnect();return reconnect();
@@ -73,7 +76,7 @@
  }
  function queueSave(snapshot){try{latest=clone(snapshot);if(ready)schedule();return true}catch{notify('error','LITTLES_INVALID_SAVE');return false}}
  async function flush(){
-  clearTimeout(timer);if(!client||!user||busy||authBusy)return {ok:false,state:status};
+  cancelAutosave();if(!client||!user||busy||connecting||authBusy||choiceOwner===user.id||read(prefix(user.id)+'choice'))return {ok:false,state:status};
   let pending=read(prefix(user.id)+'pending');if(!ready&&!pending)return {ok:false,state:status};if(!pending&&!latest)return {ok:true,state:status};
   busy=true;let settle;saving=new Promise(resolve=>{settle=resolve});
   try{
@@ -87,11 +90,20 @@
   finally{busy=false;saving=null;settle();if(ready&&latest)schedule();}
  }
  async function choose(which){
-  if(busy)throw failure('LITTLES_OPERATION_IN_PROGRESS');await load();
-  if(which==='cloud'&&revision>0){if(remote.data.schema!==1||options.applyState?.(clone(remote.data))!==true)throw failure('LITTLES_INVALID_SAVE');latest=null;}
-  else if(which==='device'){latest=clone(options.getState?.());if(!latest||latest.schema!==1)throw failure('LITTLES_INVALID_SAVE');}
-  else throw failure('LITTLES_INVALID_SAVE');
-  write(prefix(user.id)+'pending',null);write(prefix(user.id)+'meta',{revision});write(prefix(user.id)+'choice',null);ready=true;notify('ready');if(latest)return flush();return {ok:true,revision};
+  if(busy||connecting||authBusy)throw failure('LITTLES_OPERATION_IN_PROGRESS');
+  if(which!=='cloud'&&which!=='device')throw failure('LITTLES_INVALID_SAVE');
+  const owner=user?.id;if(!client||!owner)throw failure('LITTLES_SIGN_IN_REQUIRED');
+  ready=false;cancelAutosave();busy=true;choiceOwner=owner;
+  try{
+   write(prefix(owner)+'choice',true);await load();if(user?.id!==owner)throw failure('LITTLES_ACCOUNT_CHANGED');
+   let selected=latest;
+   if(which==='cloud'&&revision>0){if(remote.data.schema!==1||options.applyState?.(clone(remote.data))!==true)throw failure('LITTLES_INVALID_SAVE');selected=null;}
+   else if(which==='device'){selected=clone(options.getState?.());if(!selected||selected.schema!==1)throw failure('LITTLES_INVALID_SAVE');}
+   else throw failure('LITTLES_INVALID_SAVE');
+   write(prefix(owner)+'pending',null);write(prefix(owner)+'meta',{revision});write(prefix(owner)+'choice',null);latest=selected;choiceOwner=null;ready=true;notify('ready');
+  }catch(e){ready=false;const code=typeof e.code==='string'?e.code:'LITTLES_CLOUD_UNAVAILABLE';notify(code==='LITTLES_BANNED'?'banned':code==='LITTLES_SIGN_IN_REQUIRED'||code==='LITTLES_ACCOUNT_CHANGED'?'auth_required':'choice_required',code);throw e;}
+  finally{busy=false;}
+  if(latest)return flush();return {ok:true,revision};
  }
  const redirect=()=>new URL(location.pathname,location.origin).href;
  async function linkEmail(email){await actor();const r=await client.auth.updateUser({email:email.trim()},{emailRedirectTo:redirect()});if(r.error)throw failure('LITTLES_EMAIL_LINK_UNAVAILABLE');return {ok:true,verificationRequired:true};}

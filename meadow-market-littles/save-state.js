@@ -13,7 +13,7 @@
     if(Object.values(mini.records||{}).some(r=>!isObject(r)||['wins','best','bestScore','level'].some(k=>r[k]!==undefined&&(!Number.isFinite(r[k])||r[k]<0))))return null;
     if(s.inventory!==undefined&&!validNumbers(s.inventory))return null;const farms={...(s.farms||{})};if(farms.littles!==undefined&&!isObject(farms.littles))return null;
     const littles={...defaults().farms.littles,...(farms.littles||{})};
-    const oldInventory=littles.inventory??{};
+    const oldInventory=farms.littles?.inventory??{};
     if(!validNumbers(oldInventory))return null;
     littles.inventory={...defaults().farms.littles.inventory,...(s.inventory||{}),...oldInventory};
     if(littles.objects===undefined)littles.objects=[];if(!Array.isArray(littles.objects)||!littles.objects.every(isObject))return null;
