@@ -3,3 +3,9 @@ tools/meadow-android/android/gradlew text eol=lf
 
 # Preserve accepted game export and APK bytes exactly.
 frontlines/** -text
+
+# Preserve reviewed, already-deployed Meadow weekly SQL and operational bytes.
+supabase/meadow-weekly-rewards-v2-deployed.sql -text
+supabase/meadow-weekly-rewards-v2-install-inactive.sql -text
+supabase/meadow-weekly-rewards-v2-activate-first.sql -text
+supabase/meadow-weekly-rewards-v2-disable.sql -text

@@ -1,5 +1,13 @@
 # Meadow Markets launch status
 
+## 19 November 2026 — prospective weekly rewards live
+
+The live game is web 252 / Google Play 1.7.6, code 16. The Android dependency correction in PR63 is published: the locked audit reports zero advisories and Main game/optimized Android CI plus Pages passed. No replacement Play binary was needed for the development-tool lockfile change.
+
+Weekly rewards are enabled in the existing Meadow database namespace with the reviewed private permissions and original manual claim rules preserved. Job 5 runs every fifteen minutes UTC and its first natural run succeeded on 19 November at 02:45 UTC. Automatic eligibility begins with the week of 16 November; all weeks already closed at activation are excluded. The first eligible close is **23 November at 11am Sydney / 00:00 UTC**. Genuine player payout/delivery acceptance is pending that natural cutoff; no production test award was issued.
+
+Current Samsung menus/navigation were partly exercised successfully, but the remaining Build controls, registered account context and sustained clear-path worker run are still pending the documented device workflow. All Meadow device scopes are released. See the newest [active backlog](MEADOW_ACTIVE_BACKLOG.md) entry and its frozen A/B/C/D acceptance receipts. This status note is local pending the next coordinated source publication.
+
 ## 18 November 2026 — build 251 published and accepted
 
 Web 251 is live from main `f753f836e4c1f00452afe4ab15e6cf5ab175ca4a`. Main game/Android CI `44268911899` and Pages `44268911901` succeeded; all 26 named public/protected files match that exact merge. The own-account weekly-prize projection is deployed and gateway 65 matches all eight reviewed files with JWT verification enabled.
