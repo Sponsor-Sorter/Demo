@@ -5,4 +5,18 @@
 .fr-basket-target{position:absolute;left:27%;bottom:12%;width:43%!important;height:43%!important;background:#fff2cf;border:3px solid #c79c56;border-radius:50%;padding:2px}.fr-harvest-basket>b{bottom:-5%;left:62%;right:auto;white-space:nowrap;padding:3px 7px}.fr-sound-clue{width:clamp(64px,calc(var(--unit)*.27),140px);height:clamp(64px,calc(var(--unit)*.27),140px);background:#fff2d7df;border:4px solid #dbb369;border-radius:25%;padding:4px}.fr-clue-place{position:absolute;inset:0;pointer-events:none}.fr-field button[hidden]{display:none}
 .fr-field[data-phase=happy] .fr-pet-friend{animation:none}
 .fr-paused,.fr-paused *,.fr-paused *::before,.fr-paused *::after{animation-play-state:paused!important}
+/* Scoped to the unreleased progressive rules; the public88 layout stays unchanged. */
+.fr-level-choice>span{background:none!important;border:0!important;color:inherit;text-shadow:inherit}
+.fr-field[data-progressive="true"] .fr-choice{width:clamp(48px,min(16%,calc(var(--unit)*.2)),110px);height:clamp(48px,min(16vw,calc(var(--unit)*.2)),110px)}
+.fr-field[data-progressive="true"] .fr-stall{width:clamp(56px,min(18%,calc(var(--unit)*.38)),160px);height:clamp(76px,min(23vw,calc(var(--unit)*.5)),205px);box-sizing:border-box}
+.fr-field[data-progressive="true"] .fr-home,.fr-field[data-progressive="true"] .fr-friend{width:clamp(56px,min(18%,calc(var(--unit)*.34)),160px);height:clamp(56px,min(18vw,calc(var(--unit)*.34)),160px)}
+.fr-field[data-progressive="true"] .fr-engine{left:10%!important;width:clamp(44px,calc(var(--unit)*.2),100px);height:clamp(44px,calc(var(--unit)*.2),100px)}
+.fr-field[data-progressive="true"] .fr-train .fr-wagon{width:clamp(44px,min(16%,calc(var(--unit)*.32)),140px);height:clamp(44px,min(16vw,calc(var(--unit)*.32)),140px)}
+.fr-field[data-progressive="true"] .fr-rolling-food{width:clamp(52px,min(18%,calc(var(--unit)*.22)),110px);height:clamp(52px,min(18vw,calc(var(--unit)*.22)),110px)}
+.fr-field[data-progressive="true"] .fr-picture-board{grid-template-rows:repeat(var(--rows),1fr)}
+.fr-field[data-progressive="true"] .fr-picture-slot{background-size:calc(var(--cols)*100%) calc(var(--rows)*100%)}
+.fr-field[data-progressive="true"] .fr-picture-tray{grid-template-columns:repeat(var(--cols),minmax(44px,1fr))}
+.fr-field[data-progressive="true"] .fr-picture-piece{aspect-ratio:calc(1.5*var(--image-rows)/var(--image-cols));background-size:calc(var(--image-cols)*100%) calc(var(--image-rows)*100%);min-width:44px;min-height:44px;border-width:3px}
+.fr-field[data-progressive="true"] .fr-picture-slot.cc-answer{outline-offset:-4px}
+@media(orientation:landscape){.fr-field[data-progressive="true"] .fr-picture-board{left:25%;width:min(46%,calc(var(--unit)*1.2))}.fr-field[data-progressive="true"] .fr-picture-tray{left:50%;right:0;padding:4px;gap:6px}}
 @media(orientation:portrait){.fr-engine{left:10%!important;width:calc(var(--unit)*.21);height:calc(var(--unit)*.21)}.fr-wagon{left:var(--portrait-left)!important;width:calc(var(--unit)*.34);height:calc(var(--unit)*.34)}.fr-train[data-wagons="3"] .fr-wagon{width:calc(var(--unit)*.26);height:calc(var(--unit)*.26)}}
