@@ -118,3 +118,19 @@ test('Actual menu/intro/start carries Easier selection into all six mounts witho
 test('Actual quality88 route adds no difficulty UI/hint; denied play never mounts or writes',()=>{
  for(const id of C.ids){const legacy=controls(88);assert.equal(legacy.open(id),undefined);legacy.start();assert.equal(legacy.selected.level,99);assert(!legacy.dialog.innerHTML.includes('id="mini-hint"'));legacy.unchanged();const denied=controls(89,true);denied.open(id);denied.start();assert.equal(denied.selected,undefined);assert.equal(denied.starts,1);denied.unchanged();}
 });
+test('Actual picture scene renders two-row trays for every progressive stage and preserves legacy columns',()=>{
+ const source=fs.readFileSync(root+'/friends-play.js','utf8'),anchor='window.meadowFriends={';assert.equal(source.split(anchor).length,2);
+ // Expose the actual private scene function only in this disposable VM copy.
+ // This checks emitted markup, not a browser layout or installed-app acceptance.
+ const scope={window:{meadowFriendsCore:C,meadowWeeklyFair:{getQualityBuild:()=>89}},Promise};
+ vm.createContext(scope);vm.runInContext(source.replace(anchor,'window.__testScene=scene;'+anchor),scope,{filename:'friends-play.js'});
+ for(const [progressive,stages]of [[true,[[1,2,4],[4,3,6],[9,4,8],[99,4,8]]],[false,[[1,2,4],[4,2,4],[9,3,6],[99,3,6]]]])for(const [level,columns,pieces]of stages){
+  const field={dataset:{},style:{setProperty(){}},classList:{add(){},remove(){}},innerHTML:'',querySelector:s=>s==='.cc-listen'?{}:null,querySelectorAll:()=>[],getBoundingClientRect:()=>({x:0,y:0,width:390,height:600})};
+  const s=C.create('farmpicture',level,rng(7),0,{progressive}),before=progress(s);
+  scope.window.__testScene({s,field,caption:{},voiceToken:0,run:{},pointer:null,dragNode:null});
+  const tray=field.innerHTML.match(/class="fr-picture-tray" style="--cols:(\d+);--rows:(\d+)"/);assert(tray,'Actual picture scene emits tray geometry');
+  assert.equal(Number(tray[1]),columns,(progressive?'progressive':'legacy')+' level'+level+' tray columns');assert.equal(Number(tray[2]),2);
+  const renderedPieces=(field.innerHTML.match(/class="fr-picture-piece"/g)||[]).length;assert.equal(renderedPieces,pieces);assert.equal(Math.ceil(renderedPieces/Number(tray[1])),2,'Promised two-row tray must be reflected by the actual pieces and columns');
+  assert.equal(progress(s),before,'Rendering must not place a piece or award progress');
+ }
+});
