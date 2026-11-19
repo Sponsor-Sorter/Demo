@@ -52,9 +52,9 @@ class Element {
   showModal() { this.open = true; }
 }
 
-function device(bag, existingStorage) {
+function device(bag, existingStorage, quality = 88) {
   const body = new Element(), hud = new Element();
-  let dialog, saved = 0, frames = 0, selected;
+  let dialog, saved = 0, frames = 0, selected, qualityReads = 0;
   const document = {
     body,
     createElement(tag) { const element = new Element(); if (tag === 'dialog') dialog = element; return element; },
@@ -68,6 +68,9 @@ function device(bag, existingStorage) {
     requestAnimationFrame() { return ++frames; },
     cancelAnimationFrame() {},
     clearTimeout() {},
+  };
+  if (quality !== missing) scope.window.meadowWeeklyFair = {
+    getQualityBuild() { qualityReads++; return typeof quality === 'function' ? quality() : quality; },
   };
   for (const file of ['save-state.js', 'play-levels.js', 'minigames.js']) vm.runInNewContext(read(file), scope, { filename: file });
   const rules = scope.meadowLittlesSaveState;
@@ -123,7 +126,41 @@ function device(bag, existingStorage) {
     assert.deepEqual(withoutBag(JSON.parse(storage.get('save'))), withoutBag(before));
   }
   return { start, startControls, unchangedProgress, state: loaded.state, storage, scope, validBag,
-    get saved() { return saved; }, get frames() { return frames; } };
+    get saved() { return saved; }, get frames() { return frames; }, get qualityReads() { return qualityReads; } };
+}
+
+// Use the unchanged real quality provider with synthetic authenticated status
+// responses. No real account, RPC, browser storage or network is involved.
+async function realQuality(d, publicQuality, previewQuality) {
+  const values = new Map([['meadow-littles-quality-build', String(publicQuality)]]);
+  let identity = 'synthetic-quality-test-only';
+  const monday = new Date();
+  monday.setUTCHours(0, 0, 0, 0);
+  monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
+  const week = monday.toISOString().slice(0, 10);
+  d.scope.localStorage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+  d.scope.window.meadowLittlesAccess = { configure() {}, begin: () => true };
+  d.scope.window.meadowLittlesCloud = {
+    getStatus: () => ({ userId: identity }),
+    weekly: async action => {
+      assert.equal(action, 'status');
+      return { user_id: identity, enabled: true, week, public_quality_build: publicQuality, quality_build: previewQuality };
+    },
+  };
+  vm.runInNewContext(read('weekly-fair.js'), d.scope, { filename: 'weekly-fair.js' });
+  const fair = d.scope.window.meadowWeeklyFair;
+  fair.accountChanged(identity);
+  await fair.refresh();
+  return { fair, values, clearIdentity() { identity = null; fair.accountChanged(null); } };
+}
+
+function legacyBagUnchanged(d) {
+  const before = plain(d.state), stored = d.storage.get('save');
+  assert.throws(() => d.startControls(), /differenceBag\.pop is not a function/);
+  assert.deepEqual(plain(d.state), before);
+  assert.equal(d.storage.get('save'), stored);
+  assert.equal(d.saved, 0);
+  assert.equal(d.frames, 0);
 }
 
 const malformed = [
@@ -178,4 +215,74 @@ test('denied access does not consume or repair the bag or write a save', () => {
   assert.deepEqual(plain(d.state), before);
   assert.equal(d.saved, 0);
   assert.equal(d.frames, 0);
+  assert.equal(d.qualityReads, 0, 'Denied access exits before consulting the rollout gate');
+});
+
+test('public quality 87 preserves valid bag order without opting into the repair', () => {
+  const d = device([2, 5, 8], undefined, 87);
+  assert.equal(d.start(), 8);
+  assert.equal(d.state.minigames.differenceBag, d.validBag);
+  assert.deepEqual(plain(d.state.minigames.differenceBag), [2, 5]);
+  d.unchangedProgress();
+});
+
+for (const [name, bag] of malformed.slice(0, 2)) test(`public quality 87 keeps existing ${name} behavior until activation`, () => {
+  legacyBagUnchanged(device(bag, undefined, 87));
+});
+
+const unresolved = [
+  ['missing provider', missing], ['missing quality', () => undefined], ['null quality', null],
+  ['NaN quality', NaN], ['infinite quality', Infinity], ['string quality', '88'],
+  ['fractional quality', 88.5], ['throwing provider', () => { throw Error('quality unresolved'); }],
+];
+for (const [name, quality] of unresolved) test(`${name} fails closed to existing public behavior`, () => {
+  legacyBagUnchanged(device('stale', undefined, quality));
+});
+
+for (const quality of [missing, () => { throw Error('quality unresolved'); }]) test('unavailable quality still allows an existing valid scene bag', () => {
+  const d = device([2, 5, 8], undefined, quality);
+  assert.equal(d.start(), 8);
+  assert.deepEqual(plain(d.state.minigames.differenceBag), [2, 5]);
+  d.unchangedProgress();
+});
+
+test('later authoritative integer quality keeps the repair enabled', () => {
+  const d = device('stale', undefined, 89);
+  d.start();
+  assert.equal(d.state.minigames.differenceBag.length, 9);
+  d.unchangedProgress();
+});
+
+test('real quality provider enables preview 88 while retaining public 87', async () => {
+  const d = device('stale'), q = await realQuality(d, 87, 88);
+  assert.equal(q.fair.getQualityBuild(), 88);
+  assert.equal(q.values.get('meadow-littles-quality-build'), '87');
+  d.start();
+  assert.equal(d.state.minigames.differenceBag.length, 9);
+  d.unchangedProgress();
+});
+
+test('real public 87 quality keeps valid scene order unchanged', async () => {
+  const d = device([2, 5, 8]), q = await realQuality(d, 87, 87);
+  assert.equal(q.fair.getQualityBuild(), 87);
+  assert.equal(d.start(), 8);
+  assert.deepEqual(plain(d.state.minigames.differenceBag), [2, 5]);
+  d.unchangedProgress();
+});
+
+test('real quality provider drops private repair eligibility after an account change', async () => {
+  const d = device('stale'), q = await realQuality(d, 87, 88);
+  assert.equal(q.fair.getQualityBuild(), 88);
+  q.clearIdentity();
+  assert.equal(q.fair.getQualityBuild(), 87);
+  legacyBagUnchanged(d);
+});
+
+test('real public quality 88 enables the repair after promotion', async () => {
+  const d = device('stale'), q = await realQuality(d, 88, 88);
+  assert.equal(q.fair.getQualityBuild(), 88);
+  assert.equal(q.values.get('meadow-littles-quality-build'), '88');
+  d.start();
+  assert.equal(d.state.minigames.differenceBag.length, 9);
+  d.unchangedProgress();
 });
