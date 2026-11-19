@@ -1,11 +1,11 @@
 {
-  "build": 106,
-  "version": "1.0.0.106",
-  "url": "https://sponsorsorter.com/frontlines/builds/106/",
-  "notes": "V1.0.0.106: Redeem gift codes for gems and timed VIP in Commander Collection. Simple codes, account-safe retries and trusted wallet refresh. Teams, trading pockets, approved graphics, maps, accounts and saves retained.",
+  "build": 107,
+  "version": "1.0.0.107",
+  "url": "https://sponsorsorter.com/frontlines/builds/107/",
+  "notes": "V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
   "networkBuild": 105,
-  "androidBuild": 106,
-  "windowsBuild": 106,
+  "androidBuild": 107,
+  "windowsBuild": 107,
   "downloadsUrl": "https://sponsorsorter.com/frontlines/downloads/",
   "mapsManifestUrl": "https://sponsorsorter.com/frontlines/maps/visual93/manifest-final.json",
   "mapsVisualRevision": 93

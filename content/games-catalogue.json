@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.106: Redeem gift codes for gems and timed VIP in Commander Collection. Simple codes, account-safe retries and trusted wallet refresh. Teams, trading pockets, approved graphics, maps, accounts and saves retained.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.106 · browser, Android & Windows",
+      "build": "V1.0.0.107 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -151,20 +151,20 @@
           "primary": true
         },
         {
-          "label": "Download Android106 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public106/frontlines-1.0.0.106-android.apk"
+          "label": "Download Android107 APK",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public107/frontlines-1.0.0.107-android.apk"
         },
         {
-          "label": "Download Windows106 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public106/frontlines-1.0.0.106-windows-setup.exe"
+          "label": "Download Windows107 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public107/frontlines-1.0.0.107-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "V1.0.0.106: Redeem gift codes for gems and timed VIP in Commander Collection. Simple codes, account-safe retries and trusted wallet refresh. Teams, trading pockets, approved graphics, maps, accounts and saves retained.",
-      "sha256": "E77C674815F54DBA83A016873F0A1E090B6E3CD7608B5E561E6605265C8F329B",
+      "notes": "V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
+      "sha256": "FACF70CCF84E0DAB15C37B7D25A008801A9F4788C285420CA27A7B8419F2342A",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
