@@ -55,3 +55,4 @@ require('./check-littles-friends.cjs');
 require('./check-littles-discovery.cjs');
 
 require('./check-littles-solo.cjs');
+require('./check-littles-difference-bag.cjs');
