@@ -1,0 +1,123 @@
+{
+  "scope": "Source-only progression and requested hints for the six existing farm-friend activities.",
+  "baseline": "d704769b0c7db3dd1d372f07e049f09ce734b587",
+  "requirementSources": [
+    {
+      "file": "meadow-market-littles/AGENTS.md",
+      "requirements": [
+        "Full-screen illustrated farm scenes; controls within the scene and compact touch targets at least44 CSS pixels.",
+        "Clear light intro text directly over the scene, no flat/translucent backing strips.",
+        "Genuine difficulty progression and an ordinary easier option.",
+        "After two genuine wrong attempts on the current step, offer a glowing hint. Requested highlight only; no answer, progress or charge. Reset on a correct step; cancellation is free.",
+        "Preserve game IDs, existing progress/records, saves, completed-round allowances and the shared completion/reward path.",
+        "Approved Jade/Hope, Rhys/Noah, Jay/Mike audio only, aligned with each step.",
+        "Before future public activation, compact phone/tablet visual review and full installed-app easy/advanced rounds, including misses/hints, plus all existing private/public release gates."
+      ]
+    },
+    {
+      "file": "D:/Chat Gpt/workspaces/littles-gated88-qa/NEXT-OLDER-GAMES-SOURCE-AUDIT.json",
+      "status": "Existing source audit; no claim that these gaps were newly observed on a phone."
+    }
+  ],
+  "games": [
+    {
+      "id": "meadowpairs",
+      "name": "Meadow Memory Pairs",
+      "baselineGap": "3 pairs below level8 and4 thereafter; no requested two-mismatch hint.",
+      "stages": [
+        "2pairs",
+        "3pairs",
+        "4pairs"
+      ],
+      "hint": "Highlight a still-hidden matching pair, or the mate of the currently open card. During home delivery, highlight one unhomed friend and its matching home."
+    },
+    {
+      "id": "paddockchange",
+      "name": "What Changed in the Paddock?",
+      "baselineGap": "Three friends with four return choices and no two-miss counter.",
+      "stages": [
+        "3friends,2returnchoices",
+        "3friends,3returnchoices",
+        "3friends,4returnchoices"
+      ],
+      "hint": "Highlight the missing friend's return choice and the vacant position; never restore it.",
+      "audioConstraint": "Keep exactly three visible friends because the approved Rhys look recording explicitly says three. Look again preserves the same missing friend and current-step misses."
+    },
+    {
+      "id": "farmerpattern",
+      "name": "Copy the Farmer's Pattern",
+      "baselineGap": "Mostly two foods, with three only on the final train at level4+; no requested hint.",
+      "stages": [
+        "2foods,3choices",
+        "3foods,4choices",
+        "4foods,5choices"
+      ],
+      "hint": "Highlight only the next required food and next empty wagon; replay preserves current-step misses. Neighboring wagons cannot accept the answer."
+    },
+    {
+      "id": "barnyardlisten",
+      "name": "Who Made That Sound?",
+      "baselineGap": "Three doors; two misses automatically reveal a clue instead of offering the requested hint.",
+      "stages": [
+        "2doors",
+        "3doors",
+        "4doors"
+      ],
+      "hint": "Offer after two committed wrong door pulls, highlight only the correct picture door on request. No automatic picture reveal in progressive mode."
+    },
+    {
+      "id": "gentleharvest",
+      "name": "Gentle Harvest Dash",
+      "baselineGap": "Fixed three moving choices and six catches with no requested hint.",
+      "stages": [
+        "2choices,4catches,gentle motion",
+        "3choices,5catches",
+        "4choices,6catches"
+      ],
+      "hint": "Highlight the requested food and collection basket; delivery hint highlights basket and cart. Food motion remains bounded in separate lanes."
+    },
+    {
+      "id": "farmpicture",
+      "name": "Build the Farm Picture",
+      "baselineGap": "4pieces then6 at level5; wrong placements have no requested hint.",
+      "stages": [
+        "2x2=4pieces",
+        "3x2=6pieces",
+        "4x2=8pieces"
+      ],
+      "hint": "Highlight one unplaced piece and its matching slot; never place it. Keep nearest-slot acceptance for small screens.",
+      "layoutConstraint": "Two rows preserve large piece targets on compact landscape screens; advanced tray has four columns. Existing twelve illustrated pictures and rotation remain."
+    }
+  ],
+  "common": {
+    "stageLevels": [
+      1,
+      4,
+      9
+    ],
+    "minimumQualityBuild": 89,
+    "quality88KeepsLegacyRules": true,
+    "selectedDifficulty": "Session-only friendLevel; opening a new intro resets to the saved record. Ordinary shared completion preserves the highest saved record.",
+    "newAudioRequired": false,
+    "newArtRequired": false,
+    "releaseMarkerUnchanged": 88
+  },
+  "boundaries": {
+    "phoneUse": false,
+    "phoneReservation": false,
+    "deployment": false,
+    "publication": false,
+    "backendMutation": false,
+    "realAccountProgress": false
+  },
+  "remainingBeforeAnyRelease": [
+    "Independent FairPlay source review.",
+    "Actual browser/compact-phone/tablet visual acceptance, including maximum-stage hit targets and intro text.",
+    "Separately coordinated installed-phone full rounds for easy/advanced, hints/cancel/pause/audio, and saved progress retention.",
+    "Future release assembly: version/cache references, CI, private acceptance, public gate and ordinary public restart verification."
+  ],
+  "exclusions": [
+    "No new monetization, rewards, save schema, accounts, updater or shared catalogue changes.",
+    "This is a reviewable source implementation; it does not certify AAA visual/native acceptance."
+  ]
+}
