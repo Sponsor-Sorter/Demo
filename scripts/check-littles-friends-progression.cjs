@@ -88,7 +88,7 @@ test('Quality88 stays on legacy mechanics;89 selection is session-only, with app
  const manifest=JSON.parse(fs.readFileSync(root+'/assets/audio/friends66-generation.json','utf8'));
  for(const clip of manifest.files){const approved=view.window.meadowApprovedVoices.clips[clip.id];assert.equal(approved.farmer,clip.farmer);assert.equal(approved.voice,clip.voice);assert.equal(fs.statSync(root+'/assets/audio/'+clip.id+'.mp3').size,clip.bytes);}
  assert(manifest.files.find(c=>c.id==='friends66-rhys-paddockchange-look').text.includes('three farm friends'));
- assert.equal(JSON.parse(fs.readFileSync(root+'/release.json','utf8')).build,88,'Source-only batch does not advance the release');
+ // Release/app/cache version agreement is checked by check-littles.cjs; quality88/89 behavior remains covered above.
 });
 
 // Exercise the real shared menu/intro/start and real difficulty controls against
