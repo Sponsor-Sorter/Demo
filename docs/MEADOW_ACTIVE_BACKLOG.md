@@ -1,5 +1,29 @@
 # Meadow Markets active work
 
+## 19 November 2026 — weekly rewards enabled; Android dependency fix published
+
+Web 252 and Google Play 1.7.6/code 16 remain the current game. PR63 merged normally as `4b063dc607640d1b3adf84b454ab419e7ab0e538`; Main game/Android CI `44435999400` and Pages `44435999202` passed. The three moderate Android development-tool advisories are resolved, with the locked audit now reporting zero. The local Play compile and configured optimized Android checks passed. No new native binary was installed or released for this lockfile correction.
+
+The exact prospective weekly-reward migration is installed and verified in the existing Meadow namespace. Its original manual claim/wrapper, ranking, ties and prizes are preserved. The private rollout and cursor have RLS and no client grants. The separately verified scheduler is job 5, `meadow-market-weekly-awards-v2`, every fifteen minutes UTC. First activation was `2026-11-19T02:36:11.698387Z`, with start week `2026-11-16`; every already-closed week is excluded from automatic awards. The first natural run succeeded at `02:45:00.084187Z`, with zero failed runs. No manual test award or synthetic production recipient was used.
+
+The first eligible week closes **23 November 2026 at 00:00 UTC / 11am Sydney**. Actual eligible player prize/receipt delivery remains to be observed after that natural cutoff; a successful empty scheduler run does not establish payout acceptance. Existing historical manual claims remain available under their original rules. The [maintained backend manifest](../supabase/meadow-weekly-rewards-v2-manifest.json) records the exact deployed SQL, installation/activation/disable scripts and A/B/C/D receipt pins. Those files are outside the migration queue because this deployment is already applied; do not replay their first-install guards.
+
+Current Samsung checks passed Settings and roster navigation/scrolling, Market and Animals open/scroll/close, a camera pan, return to the homestead, and Build open/expand. Hired workers visibly completed jobs, then some reported no clear path to the well in the crowded test layout. Sustained physical throughput with clear paths is still pending. The current pass did not finish Build scroll/minimize/Done or the registered greeting: screenshot delivery exceeded freshness budgets, and the subsequent exact visual guard detected a changed large scroll region and stopped before input. Earlier accepted build-252 Build checks are retained; these limits are not reported as a new game regression.
+
+The earlier build-252 physical scroll/expand/minimize acceptance is pinned by `D:/Chat Gpt/workspaces/meadow-production194-evidence/automation252/runtime-acceptance252-final.json`, SHA256 `a749b5dfc11db525df4b818882ca2ae6d002201468ca128103292d87c7cbd2ee`. Retain it for the unchanged runtime; do not repeat another large animated scroll-region test merely to refresh its date.
+
+All Meadow phone phases are closed and released. The farm, session and device settings are preserved. Future device work requires a fresh exclusive/idle check and a separately admitted method. Existing HTML buttons expose Done, Minimize build items, Settings, Account & switch farm, and Return to farm names; actual Android accessibility nodes and bounds have not been probed. Do not assume their availability from the DOM alone. The source-only `backlog253/remaining-static-controls253-plan.json` uses the reviewed guarded wrapper for complete stable controls; it reserves no device and proposes no new accessibility controller.
+
+Remaining work:
+
+1. Finish the outstanding physical menu/account-context checks, then a reversible clear-well-path and sustained hired-worker check on the actual current test farm.
+2. Observe genuine weekly prize delivery after the 23 November cutoff; do not backdate, inject test scores, reset the boundary or call the award function manually.
+3. Root-owned Fairplay Admin VIP end-to-end clicks remain stopped by the Windows URL-confidence guard. Do not proxy those protected owner actions through game or SQL commands.
+4. Review the separate Android edge-to-edge/cutout and major toolchain recommendations; the development-dependency advisories above are complete.
+5. Reduce the shared hosting artifact with the other game owners while preserving runtime/archive/download URLs. The tracked-source inventory is dominated by retained Frontlines packages and is not a measurement of the deployed Pages artifact. No files were removed.
+
+Frozen local acceptance receipts are under `D:/Chat Gpt/workspaces/fairplay-admin-weekly-audit-20261119/`: `meadow-pr63-publication-closeout.json`, and `meadow253-weekly-{offstate-closeout-a01,inactive-closeout-b01,activation-closeout-c01,natural-closeout-d01}.json`. Producer phone closeouts and source-only proposals are under `D:/Chat Gpt/workspaces/meadow-production194-evidence/backlog253/`. These documentation changes are local until the next coordinated source publication; the weekly backend itself is live.
+
 ## 18 November 2026 — build 251 published and accepted
 
 Web 251 is live from main `f753f836e4c1f00452afe4ab15e6cf5ab175ca4a`. Main game/Android CI `44268911899` and Pages `44268911901` succeeded; all 26 named public/protected files match that exact merge. The own-account weekly-prize projection is deployed and gateway 65 matches all eight reviewed files with JWT verification enabled.

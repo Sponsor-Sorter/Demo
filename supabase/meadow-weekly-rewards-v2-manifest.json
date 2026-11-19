@@ -1,0 +1,98 @@
+{
+  "feature": "Meadow Markets prospective automatic weekly prizes v2",
+  "status": "deployed_and_active",
+  "recordedAt": "2026-11-19",
+  "projectRef": "ejavqlyozqhzqogflqzr",
+  "sourcePolicy": {
+    "location": "Existing supabase root convention for maintained Meadow SQL and operations",
+    "alreadyApplied": true,
+    "newPendingMigrationAdded": false,
+    "remoteMigrationHistoryVersion": "Not asserted; the managed migration applied the exact reviewed schema bytes below",
+    "frozenHeaders": "Original review-only/not-applied comments are retained to preserve accepted bytes. Deployment status comes from the A/B/C/D receipts, not those historical comments.",
+    "doNotReplay": "Schema/install/first-activation files are archival operational source for an already-applied deployment. Their strict first-install guards must not be removed or bypassed.",
+    "lineEndings": "The four SQL paths have -text attributes to preserve their reviewed bytes through Git."
+  },
+  "files": [
+    {
+      "file": "supabase/meadow-weekly-rewards-v2-deployed.sql",
+      "sha256": "8e086dad3aaf1130131b6e994ddee985d4bb9151faccac5ebcae702853c4a9ea",
+      "role": "Exact installed schema, private functions and fail-closed prospective boundary",
+      "origin": "20261118150444_meadow_weekly_awards_v2_prospective.sql",
+      "applied": true
+    },
+    {
+      "file": "supabase/meadow-weekly-rewards-v2-install-inactive.sql",
+      "sha256": "2b8e049465f1cd60fea2ddeba956efec1eb316f0eeb681a4a2deeecfe02df74e",
+      "role": "Reviewed job creation and deactivation in one transaction",
+      "applied": true
+    },
+    {
+      "file": "supabase/meadow-weekly-rewards-v2-activate-first.sql",
+      "sha256": "151ab0fde2d428846e6cde7bd7a1c5222038db9d637348ce402ec71440ba1263",
+      "role": "Reviewed first activation using one actual server-clock timestamp and its open UTC week",
+      "applied": true
+    },
+    {
+      "file": "supabase/meadow-weekly-rewards-v2-disable.sql",
+      "sha256": "20d35d19244634568e7941028445fdf17faff483053f4694aadd78e21a2137f3",
+      "role": "Future reviewed disable: exact job inactive, advisory-lock drain, rollout off; preserve dates/cursor/receipts/saves",
+      "applied": false,
+      "requiresSeparateOperationalReview": true
+    }
+  ],
+  "liveConfiguration": {
+    "jobId": 5,
+    "jobName": "meadow-market-weekly-awards-v2",
+    "schedule": "*/15 * * * *",
+    "timezone": "UTC/GMT",
+    "command": "select meadow_private.award_closed_weekly_prizes_v2(100);",
+    "database": "postgres",
+    "owner": "postgres",
+    "active": true,
+    "activatedAt": "2026-11-19T02:36:11.698387Z",
+    "startWeek": "2026-11-16",
+    "firstEligibleClose": "2026-11-23T00:00:00Z",
+    "firstEligibleCloseSydney": "2026-11-23T11:00:00+11:00",
+    "automaticHistory": "Exclude every week already closed at first activation. Earlier verified runs inside the still-open start week may count.",
+    "resume": "Retain the original start week, activation timestamp and fair cursor; never backdate or reset them. Resume needs a separately reviewed operation."
+  },
+  "deploymentReceipts": {
+    "evidenceRoot": "D:/Chat Gpt/workspaces/fairplay-admin-weekly-audit-20261119",
+    "receiptsAreExternalToRepository": true,
+    "A": {
+      "file": "meadow253-weekly-offstate-closeout-a01.json",
+      "sha256": "5bc145e56cf92d772a9fc5708cc99bde5e72bf0830866388ed5c51d9a08d6dd0",
+      "result": "Exact schema installed; 3 body-pinned private functions, 2 private RLS/no-client-ACL tables, 12 columns/11 constraints; original manual core/wrapper unchanged; rollout rows 0, initial cursor 1, named jobs 0"
+    },
+    "B": {
+      "file": "meadow253-weekly-inactive-closeout-b01.json",
+      "sha256": "dea2a7f3d763ead7b7c03fcf4b22289c2d8acf358ed8e8c12cb29dc0a1acec4e",
+      "result": "Exact job 5 installed inactive; rollout rows 0 and run count 0"
+    },
+    "C": {
+      "file": "meadow253-weekly-activation-closeout-c01.json",
+      "sha256": "42f2925cac4b7baa4e4d4fc4b41f92692b4d95ab6066e76bf2aae7597d10fc5f",
+      "result": "Atomic actual-clock configuration/job activation verified with the prospective boundary"
+    },
+    "D": {
+      "file": "meadow253-weekly-natural-closeout-d01.json",
+      "sha256": "27e0362873fe3ad213cc08977e99ef1fb5dc91c808dd516a51842ee9cd5bf629",
+      "result": "First natural job run succeeded, 02:45:00.084187Z–02:45:00.131712Z on 19 November; runs 1, succeeded 1, failed 0"
+    }
+  },
+  "validation": {
+    "retainedFocusedCases": 29,
+    "retainedBoundaryCases": 41,
+    "rerunForSourceCopy": false,
+    "manualProductionAwardCalls": 0,
+    "syntheticProductionRecipientsOrClockInjection": 0,
+    "actualEligiblePrizeDeliveryVerified": false,
+    "deliveryLimit": "Real eligible prize/receipt delivery can only be accepted after the natural 23 November cutoff. Scheduler success before that cutoff is not payout proof. pg_cron does not retain the returned award JSON counters."
+  },
+  "preserve": [
+    "Original manual claim wrapper/core, global dense-ranking ties and prize values",
+    "Existing receipt/request uniqueness, verified wallet and normal durable gold-delivery path",
+    "Existing player farms, purchases, cursor/boundary/history and other apps",
+    "No unsafe v1 fallback, historical automatic backfill, deletion, clawback, backup restore or synthetic award test"
+  ]
+}
