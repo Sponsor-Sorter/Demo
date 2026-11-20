@@ -72,7 +72,7 @@
   layout(a);
  }
  function events(a){for(const e of a.s.events.splice(0)){
-  if(e.type==='success'){window.meadowAudio?.play('care');const star=document.createElement('i');star.textContent='✦';star.style.left=(25+Math.random()*50)+'%';a.field.querySelector('.cc-sparkles')?.append(star);a.hooks.later(()=>star.remove(),800);}
+  if(e.type==='success'){if(a.s.progressive)a.caption.textContent=words[a.s.id][a.s.phase]||'';window.meadowAudio?.play('care');const star=document.createElement('i');star.textContent='✦';star.style.left=(25+Math.random()*50)+'%';a.field.querySelector('.cc-sparkles')?.append(star);a.hooks.later(()=>star.remove(),800);}
   if(e.type==='retry'){window.meadowAudio?.play('tap');a.caption.textContent='Look at the pictures. You can try again!';if(!a.s.progressive&&a.s.id==='barnyardlisten'&&a.s.phase==='listen'&&++a.soundMisses>=2){a.showClue=true;showClue(a);}}
   if(e.type==='animalName')speak(a,'friends66-jade-animal-'+e.id);
   if(e.type==='findFood')speak(a,'harvest58-jade-pick-'+e.id);
