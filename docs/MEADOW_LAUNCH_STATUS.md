@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 20 November 2026 — worker resume follow-up prepared
+
+Public web 252 and Google Play 1.7.6/code 16 remain the accepted game. Candidate 253 corrects hired-worker catch-up after closing a full-screen modal; its actual-source regression passes all eight cases and the generated server farming body is unchanged. This is a prepared source update, not a new public or native acceptance claim. Samsung account-context and sustained clear-well-path checks remain pending the coordinated idle device turn. See the current [active backlog](MEADOW_ACTIVE_BACKLOG.md).
+
 ## 19 November 2026 — prospective weekly rewards live
 
 The live game is web 252 / Google Play 1.7.6, code 16. The Android dependency correction in PR63 is published: the locked audit reports zero advisories and Main game/optimized Android CI plus Pages passed. No replacement Play binary was needed for the development-tool lockfile change.

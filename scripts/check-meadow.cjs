@@ -123,7 +123,10 @@ require('./check-meadow-compact-hud.cjs');
 require('./check-meadow-word-search.cjs');
 require('./check-meadow-bees232.cjs');
 
-require('./check-meadow-precache.cjs');
+// Keep the real Response/cache fixture in its own Node event loop. The large
+// synchronous artwork checks in this suite can interfere with pending clone
+// streams; the standalone fixture retains every byte/consumption assertion.
+require('node:child_process').execFileSync(process.execPath,[path.join(__dirname,'check-meadow-precache.cjs')],{stdio:'inherit',timeout:180000});
 
 require('./check-meadow-paddock-art.cjs');
 require('./check-meadow-auth-storage.cjs');

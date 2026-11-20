@@ -1,5 +1,13 @@
 # Meadow Markets active work
 
+## 20 November 2026 — covered-screen worker resume candidate
+
+Web 253 is a prepared candidate; public web 252 and Google Play 1.7.6/code 16 remain the accepted release. A focused actual-source regression reproduced a missing hired-worker catch-up after closing a full-screen game or modal: the published closure failed three cases, while the correction passes all eight. Covered screens still send no worker commands. Closing them uses the existing bounded hired-worker return path once, after pending receipts, pointer activity and the normal control/visit/Build safeguards permit it. The server's farming calculations are unchanged.
+
+The current build-252 isolated browser menu flow passed with its existing unregistered QA account, retained IDs and no page errors. Samsung's registered greeting and sustained clear-path worker/well cycle remain pending a released, idle device and fresh account binding; earlier productive jobs and crowded-well blockage are retained separately. The new manual visual menu method has source and offline-fixture review only, with no new phone input acceptance yet. No credentials, farm IDs, artwork, recordings or purchases are changed by this candidate.
+
+Local evidence and before/after results are retained in `D:/Chat Gpt/workspaces/meadow-production194-evidence/backlog253/`. Final publication CI, intended gateway fingerprint read-back and the ordinary retained-farm update check are required before marking 253 live. Natural weekly prize delivery remains pending the 23 November cutoff below.
+
 ## 19 November 2026 — weekly rewards enabled; Android dependency fix published
 
 Web 252 and Google Play 1.7.6/code 16 remain the current game. PR63 merged normally as `4b063dc607640d1b3adf84b454ab419e7ab0e538`; Main game/Android CI `44435999400` and Pages `44435999202` passed. The three moderate Android development-tool advisories are resolved, with the locked audit now reporting zero. The local Play compile and configured optimized Android checks passed. No new native binary was installed or released for this lockfile correction.

@@ -58,6 +58,7 @@ jobs:
       - run: node scripts/check-meadow-gifts250.cjs
       - run: node scripts/check-meadow-polish251.cjs
       - run: node scripts/check-meadow-performance237.cjs
+      - run: node --test scripts/check-meadow-modal-worker-resume.cjs
       - run: node scripts/check-meadow-worker-motion210.cjs
       - run: node scripts/check-meadow-trip-ui210.cjs
       - run: node scripts/check-meadow-navigation211.cjs
