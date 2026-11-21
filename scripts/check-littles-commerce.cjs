@@ -32,5 +32,43 @@ async function check(){
  console.log('Littles commerce: signed proofs bind account/package/product; tampering, expiry, future issuance, invalid claims and overlong gift leases denied.');
  console.log('Littles rollout policy: free allowance survives offline restart; confirmed rollback persists; private tests do not enable public limits.');
  console.log('Littles ad dock: measured scroll clearance, hidden/dialog cleanup and late callback protection passed.');
+ const NETWORK='LITTLES_UMP_INFO_NETWORK';
+ const transient=()=>Object.assign(Error('Synthetic pre-form connectivity failure'),{code:NETWORK});
+ async function fixture(initial, retry, {demo=false, proof=null, adsEnabled=true, testOnly=false}={}){
+  const hooks={},counts={calls:[],shows:0},context={dialog:false};
+  let policy=adsEnabled, entitlement=proof;
+  const env={localStorage:{getItem(){return null;},setItem(){},removeItem(){}},crypto:crypto.webcrypto,TextDecoder,TextEncoder,Uint8Array,atob,setInterval(){},
+   MutationObserver:class{observe(){}},document:{hidden:false,body:{style:{setProperty(){}}},querySelector:s=>s==='#littles-home'?{}:context.dialog?{}:null,addEventListener:(event,fn)=>hooks[event]=fn},
+   addEventListener:(event,fn)=>hooks[event]=fn,meadowLittlesCommerceConfig:config,meadowLittlesCloud:{getStatus:()=>({userId:user}),commerce:async()=>({contract:config.contract,user_id:user,parent_ready:true,proof:entitlement,ads_enabled:policy,ads_test_only:testOnly})},
+   Capacitor:{isNativePlatform:()=>true,isPluginAvailable:()=>true,Plugins:{LittlesStore:{capabilities:async()=>({contract:config.contract,package:config.package,adsDemo:demo}),addListener(){},restore:async()=>({purchases:[]})},LittlesAds:{addListener(){},async consent(opts){counts.calls.push(opts);return counts.calls.length===1?initial():retry();},async showBanner(){counts.shows++;},async hideBanner(){}}}}};
+  env.window=env; const sandbox=vm.createContext(env);
+  for(const file of ['play-access.js','commerce.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../meadow-market-littles/'+file),'utf8'),sandbox);
+  await env.meadowLittlesCommerce.init();
+  return {counts,on:hooks.online||(()=>Promise.resolve()),resume(){hooks.visibilitychange();return new Promise(r=>setImmediate(r));},context,env,setPolicy(v){policy=v;},setProof(v){entitlement=v;}};
+ }
+ const recovered=await fixture(()=>{throw transient();},async()=>({canRequestAds:true}));
+ recovered.env.document.hidden=true;await recovered.on();assert.equal(recovered.counts.calls.length,1,'not while backgrounded');
+ recovered.env.document.hidden=false;recovered.context.dialog=true;await recovered.on();assert.equal(recovered.counts.calls.length,1,'not during a game or parent dialog');
+ recovered.context.dialog=false;recovered.setPolicy(false);await recovered.on();assert.equal(recovered.counts.calls.length,1,'policy remains authoritative');
+ recovered.setPolicy(true);recovered.setProof(sign(base));await recovered.on();assert.equal(recovered.counts.calls.length,1,'not for verified Plus');
+ recovered.setProof(null);
+ await Promise.all([recovered.on(),recovered.on(),recovered.resume()]);
+ assert.equal(recovered.counts.calls.length,2,'one retry across overlapping online and foreground events');
+ assert.equal(recovered.counts.calls[1]?.refreshOnly,true,'recovery requests info only, never a form');
+ assert.equal(recovered.counts.shows,1,'only one banner request after successful retry');
+ await recovered.on();assert.equal(recovered.counts.calls.length,2,'does not retry again');
+ for(const initial of [()=>({canRequestAds:false}),()=>{throw Error('Legacy or unknown native error');},()=>{throw Object.assign(Error('Not a transient error'),{code:'POLICY_ERROR'});}]) {
+  const f=await fixture(initial,async()=>({canRequestAds:true}));await f.on();await f.resume();assert.equal(f.counts.calls.length,1);assert.equal(f.counts.shows,0);
+ }
+ for(const retry of [()=>({canRequestAds:false}),()=>{throw transient();}]){
+  const f=await fixture(()=>{throw transient();},retry);await f.on();await f.on();assert.equal(f.counts.calls.length,2);assert.equal(f.counts.shows,0,'no banner if consent remains unavailable or a form is required');
+ }
+ let finish;const wait=await fixture(()=>{throw transient();},()=>new Promise(resolve=>{finish=resolve;}));
+ const going=wait.on();await new Promise(r=>setImmediate(r));wait.context.dialog=true;await wait.on();finish({canRequestAds:true});await going;
+ assert.equal(wait.counts.calls.length,2);assert.equal(wait.counts.shows,0,'no late banner when the user is no longer home');
+ const privateOnly=await fixture(()=>{throw transient();},async()=>({canRequestAds:true}),{testOnly:true});
+ await privateOnly.on();assert.equal(privateOnly.counts.calls.length,1);assert.equal(privateOnly.counts.shows,0,'private demo policy unchanged for production native');
+ console.log('Littles consent recovery: transient-only, one in-flight info-only retry, gates, late readiness and denial/legacy fail-closed checks passed.');
+
 }
 check().catch(error=>{console.error(error);process.exitCode=1});

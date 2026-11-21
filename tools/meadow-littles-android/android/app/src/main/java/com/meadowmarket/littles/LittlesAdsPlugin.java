@@ -18,6 +18,7 @@ import com.google.android.ump.*;
 @CapacitorPlugin(name="LittlesAds")
 public class LittlesAdsPlugin extends LittlesPlayPlugin {
     private ConsentInformation consent;
+    private boolean consentInFlight, consentRetryAllowed, consentRetried;
     private LinearLayout panel;
     private AdView banner;
     private int generation=0;
@@ -26,6 +27,14 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
     };
     @Override public void load(){getBridge().getWebView().addOnLayoutChangeListener(resize);}
     @PluginMethod public void consent(PluginCall call){trusted(call,()->{
+        boolean refreshOnly=Boolean.TRUE.equals(call.getBoolean("refreshOnly",false));
+        if(consentInFlight){call.reject("Advertising check already in progress.");return;}
+        if(refreshOnly){
+            if(!consentRetryAllowed||consentRetried){call.reject("Advertising refresh is not available.");return;}
+            consentRetried=true;
+        }
+        consentRetryAllowed=false;
+        consentInFlight=true;
         // Set before SDK initialization or the first ad request. No mediation SDKs.
         MobileAds.setRequestConfiguration(new RequestConfiguration.Builder()
             .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
@@ -33,12 +42,25 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
             .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G).build());
         consent=UserMessagingPlatform.getConsentInformation(getContext());
         ConsentRequestParameters params=new ConsentRequestParameters.Builder().setTagForUnderAgeOfConsent(true).build();
-        consent.requestConsentInfoUpdate(getActivity(),params,()->UserMessagingPlatform.loadAndShowConsentFormIfRequired(getActivity(),error->{
-            JSObject value=new JSObject();value.put("canRequestAds",error==null&&consent.canRequestAds());
-            value.put("privacyOptionsRequired",consent.getPrivacyOptionsRequirementStatus()==ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
-            if(error==null&&consent.canRequestAds())MobileAds.initialize(getContext(),status->{});call.resolve(value);
-        }),error->call.reject("Advertising is unavailable. Play can continue."));
+        consent.requestConsentInfoUpdate(getActivity(),params,()->{
+            // Recovery never presents a form. If UMP still requires one, ads stay off.
+            if(refreshOnly){finishConsent(call,consent.canRequestAds());return;}
+            UserMessagingPlatform.loadAndShowConsentFormIfRequired(getActivity(),error->finishConsent(call,error==null&&consent.canRequestAds()));
+        },error->{
+            consentInFlight=false;
+            if(!refreshOnly&&!consentRetried&&(error.getErrorCode()==FormError.ErrorCode.INTERNET_ERROR||error.getErrorCode()==FormError.ErrorCode.TIME_OUT)){
+                consentRetryAllowed=true;
+                call.reject("Advertising is temporarily unavailable. Play can continue.","LITTLES_UMP_INFO_NETWORK");
+            }else call.reject("Advertising is unavailable. Play can continue.");
+        });
     });}
+    private void finishConsent(PluginCall call,boolean canRequestAds){
+        consentInFlight=false;
+        JSObject value=new JSObject();value.put("canRequestAds",canRequestAds);
+        value.put("privacyOptionsRequired",consent.getPrivacyOptionsRequirementStatus()==ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
+        if(canRequestAds)MobileAds.initialize(getContext(),status->{});
+        call.resolve(value);
+    }
     private void hide(){boolean existed=panel!=null;generation++;if(banner!=null){banner.destroy();banner=null;}if(panel!=null){ViewGroup parent=(ViewGroup)panel.getParent();if(parent!=null)parent.removeView(panel);panel=null;}if(existed)notifyListeners("bannerHidden",new JSObject());}
     @PluginMethod public void hideBanner(PluginCall call){trusted(call,()->{hide();call.resolve();});}
     @PluginMethod public void showBanner(PluginCall call){trusted(call,()->{
