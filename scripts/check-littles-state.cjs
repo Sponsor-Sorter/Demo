@@ -74,7 +74,7 @@ Promise.resolve().then(()=>cloudChoice(false)).then(()=>cloudChoice(true)).then(
 
 
 // Changed farm-friend modules must be referenced by both the page and its offline manifest.
-for(const ref of ['friends-core.js?v=2','friends-play.js?v=4','friends.css?v=2','minigames.js?v=27']){
+for(const ref of ['friends-core.js?v=2','friends-play.js?v=5','friends.css?v=2','minigames.js?v=27']){
  assert(index.includes('src="'+ref+'"')||index.includes('href="'+ref+'"'),'Current farm-friend runtime missing from page: '+ref);
  assert(fileList.includes('./'+ref),'Current farm-friend runtime missing from offline cache: '+ref);
 }
