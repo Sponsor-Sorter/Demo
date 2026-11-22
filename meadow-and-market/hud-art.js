@@ -25,7 +25,6 @@
   if(!['boards','missions','emporium','expand','helpers','roster'].includes(id)){el.innerHTML='<img class="hud-painted-art" src="assets/generated/hud/'+id+'.webp" alt="" draggable="false"><span class="hud-screenreader">'+title+'</span>';el.classList.add('hud-painted')}
  }
  document.querySelectorAll('.brand-resources .resource:not(.vip-resource)').forEach((el,i)=>{const icon=el.querySelector('span');if(icon)icon.innerHTML='<img src="assets/generated/hud/'+(i?'level':'coin')+'.webp" alt="'+(i?'Level':'Gold')+'">'});
- const brand=document.querySelector('.brand-mark');if(brand)brand.innerHTML='<img src="assets/generated/flower-patch.webp" alt="" style="width:100%;height:100%;object-fit:contain">';
  const tip=document.createElement('div');tip.id='hud-explanation';tip.hidden=true;tip.setAttribute('role','status');tip.innerHTML='<strong></strong><span></span>';document.body.append(tip);
  const HOLD_MS=250;
  let gesture=null,hold=0,voice=0,active=null,suppress=null;
