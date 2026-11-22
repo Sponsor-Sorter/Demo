@@ -39,6 +39,7 @@ try {
         if ($littlesConfig.package -ne 'com.meadowmarket.littles') { throw 'Wrong app configuration.' }
         $env:LITTLES_ADMOB_APP_ID = $littlesConfig.admobAppId
         $env:LITTLES_BANNER_AD_UNIT = $littlesConfig.bannerAdUnit
+        $env:LITTLES_REWARDED_AD_UNIT = $littlesConfig.rewardedAdUnit
     }
     Push-Location $littlesProject
     try {
@@ -50,5 +51,5 @@ try {
         Get-FileHash -LiteralPath $littlesBundle -Algorithm SHA256
     } finally { Pop-Location }
 } finally {
-    Remove-Item Env:LITTLES_UPLOAD_STORE_PASSWORD,Env:LITTLES_UPLOAD_KEY_PASSWORD,Env:LITTLES_UPLOAD_KEYSTORE,Env:LITTLES_UPLOAD_KEY_ALIAS,Env:LITTLES_ADMOB_APP_ID,Env:LITTLES_BANNER_AD_UNIT -ErrorAction SilentlyContinue
+    Remove-Item Env:LITTLES_UPLOAD_STORE_PASSWORD,Env:LITTLES_UPLOAD_KEY_PASSWORD,Env:LITTLES_UPLOAD_KEYSTORE,Env:LITTLES_UPLOAD_KEY_ALIAS,Env:LITTLES_ADMOB_APP_ID,Env:LITTLES_BANNER_AD_UNIT,Env:LITTLES_REWARDED_AD_UNIT -ErrorAction SilentlyContinue
 }

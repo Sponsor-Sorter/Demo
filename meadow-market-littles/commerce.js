@@ -8,7 +8,7 @@
  let lastPublicLimits=false;try{lastPublicLimits=localStorage.getItem(roundPolicyKey)==='enabled';}catch{}
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
- let giftController=null,giftUnmount=null;
+ let giftController=null,giftUnmount=null,rewarded=null,limitDialog=null;
  const responseSeq=new WeakMap();
  const canCheckout=()=>!!(store&&capabilities&&status?.checkout_enabled&&status?.parent_ready&&(!status?.checkout_test_only||capabilities.adsDemo===true));
  const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
@@ -24,9 +24,10 @@
  async function refresh(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id){plus=false;status=null;updateAccess();return;}
   const before=appliedSeq;let cached=false;try{const saved=localStorage.getItem(proofKey);cached=!!saved&&await validProof(saved,id);}catch{}if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId)return;if(before===appliedSeq){plus=cached;updateAccess();}
   try{await accept(await request('status'));}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}
+  if(stamp===authEpoch)await rewarded?.refresh();
  }
  async function refreshVerified(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;await accept(await request('status'));if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId||status?.user_id!==id)throw Error('Account changed');return {parentReady:status.parent_ready===true,plus};}
- function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
+ function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;rewarded?.accountChanged();limitDialog?.close();plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
  async function settle(rows=[]){let pending=false;for(const row of rows){if(row.pending){pending=true;continue;}if(typeof row.token==='string')await accept(await request('verify',{token:row.token}));}await refresh();return pending;}
  async function recover(){if(!store||!status?.parent_ready)return;try{const result=await store.restore();await settle(result.purchases);}catch{/* Parent-facing Restore remains available. */}}
  function note(text){const node=dialog?.querySelector('[data-commerce-note]');if(node)node.textContent=text;}
@@ -62,7 +63,25 @@
   if(!store){buy.textContent='Subscribe in the Android Play app';restore.disabled=true;return;}
   try{price=await store.products();if(token!==epoch||!dialog.open)return;if(price.id!==config.product||price.basePlan!==config.basePlan||price.period!=='P1M'||typeof price.price!=='string'||!price.price.trim()){price=null;return;}dialog.querySelector('[data-plus-price]').textContent=price.price+' per month, billed by Google Play.';showStatus();buy.disabled=!canCheckout()||plus;if(status?.checkout_test_only)note('Private Google license test only. Cancel if Google does not clearly label the checkout as a test.');}catch{if(token===epoch)note('The Google Play plan is not available yet. Free play remains available.');}
  }
- function limitReached(){window.meadowAudio?.stopVoice();const d=document.createElement('dialog');d.className='littles-parent littles-play-limit';d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>Let’s try another little adventure</h2><p>You’ve finished the available rounds for this game today. Your pictures and progress are safe.</p><button class="primary-button">Choose another game</button></main>';d.querySelector('button').onclick=()=>{d.close();d.remove();};d.addEventListener('cancel',()=>d.remove());document.body.append(d);d.showModal();}
+ function limitReached(game){
+  window.meadowAudio?.stopVoice();limitDialog?.close();
+  const d=document.createElement('dialog'),stamp=authEpoch;let watching=false,disposed=false,lastCue=null;
+  const name=options.gameName?.(game)||'this game';d.className='littles-parent littles-play-limit';d.setAttribute('aria-label','More play choices');
+  d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>More little adventures</h2><p>You’ve finished today’s rounds of '+esc(name)+'.</p><section data-ad-offer hidden><small>Advertisement · optional</small><p>Watch an advert for one extra round of this game. You can close it early; the extra round is earned when it finishes.</p><button data-watch class="small-button">Watch advert · 1 extra round</button></section><p data-ad-note role="status" aria-live="polite"></p><button data-ad-play class="primary-button" hidden>Play this game</button><button data-another class="primary-button">Choose another game</button></main>';
+  const active=()=>!disposed&&d.open&&stamp===authEpoch;
+  const note=d.querySelector('[data-ad-note]'),watch=d.querySelector('[data-watch]'),play=d.querySelector('[data-ad-play]'),another=d.querySelector('[data-another]');
+  function render(){if(!active())return;const ready=access.remaining(game)>0,offer=rewarded?.available(game);d.querySelector('[data-ad-offer]').hidden=ready||!offer;play.hidden=!ready;another.className=ready?'small-button':'primary-button';watch.disabled=watching;const cue=ready?'ad91-rhys-ready':offer?'ad91-rhys-offer':null;if(cue&&cue!==lastCue){lastCue=cue;window.meadowAudio?.speak(cue);}}
+  function dispose(){if(disposed)return;disposed=true;if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
+  d.addEventListener('close',dispose,{once:true});d.addEventListener('cancel',()=>{d.close();dispose();});another.onclick=()=>d.close();
+  play.onclick=()=>{if(!active()||access.remaining(game)<=0)return;d.close();options.playGame?.(game);};
+  watch.onclick=async()=>{if(!active()||watching)return;if(!rewarded?.available(game)){note.textContent='There is no advert available right now. Other games are ready to play.';render();return;}window.meadowAudio?.stopVoice();watching=true;watch.disabled=true;note.textContent='Loading the optional advert…';another.textContent='No thanks · choose another game';
+   const result=await rewarded.watch(game);if(!active())return;watching=false;
+   note.textContent=({ready:'One extra round is ready.',already_claimed:'Your extra round is ready.',pending:'Your reward is being checked. You can choose another game and return shortly.',cancelled:'Advert closed. Choose another game, or try again when you like.',unavailable:'There is no advert available right now. Other games are ready to play.',storage_unavailable:'This device could not save the extra round. Please choose another game.'})[result.status]||'No extra round was added. Other games are ready to play.';
+   another.textContent='Choose another game';render();
+  };
+  document.body.append(d);limitDialog=d;d.showModal();syncBanner();
+  rewarded?.refresh().then(()=>{if(active())render();});
+ }
  function bannerHeight(value){const height=Number(value);document.body.style.setProperty('--littles-ad-height',(Number.isFinite(height)?Math.max(0,height):0)+'px');document.body.style.paddingBottom='';}
  const bannerAllowed=()=>!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden&&!plus&&status?.ads_enabled&&adsReady&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);
  async function syncBanner(){
@@ -70,6 +89,7 @@
   if(bannerRequested)return;bannerRequested=true;try{await ads.showBanner({demoOnly:status.ads_test_only===true});}catch{bannerRequested=false;}
  }
  async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{if(bannerAllowed())bannerHeight(v.height);else syncBanner();});ads.addListener('bannerHidden',()=>{bannerRequested=false;bannerHeight(0);});try{adsReady=(await ads.consent()).canRequestAds===true;}catch{adsReady=false;}}
+  if(ads&&window.meadowLittlesRewarded)rewarded=window.meadowLittlesRewarded.create({ads,access,commerce:()=>({plus}),consentReady:()=>adsReady});
   if(store)store.addListener('purchasesUpdated',r=>settle(r.purchases).catch(()=>{}));
   new MutationObserver(syncBanner).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh().then(recover);}syncBanner();});

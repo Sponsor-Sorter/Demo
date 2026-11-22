@@ -1,0 +1,44 @@
+{
+  "provider": "ElevenLabs",
+  "generated": "2026-11-22",
+  "method": "Authenticated Text to Speech UI; independent lines using approved Farmer Rhys/Noah",
+  "processing": "Original MP3; no pitch or time changes",
+  "files": [
+    {
+      "id": "ad91-rhys-offer",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Choose another game, or watch an advert for one more round here. You can close it early. The extra round is earned when the advert finishes.",
+      "speed": 0.9,
+      "stability": 0.5,
+      "similarity": 0.75,
+      "styleExaggeration": 0,
+      "speakerBoost": true,
+      "selectedGeneration": 1,
+      "sourceFile": "ElevenLabs_2026-11-22T12_19_40_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "b6c8793527638ce9c3b54a7a6898a3719d3e7a29176085d20d99eddf50a2f55b",
+      "sha256": "b6c8793527638ce9c3b54a7a6898a3719d3e7a29176085d20d99eddf50a2f55b",
+      "bytes": 191226,
+      "verification": "Exact approved voice and Generation 1 selected in authenticated Text to Speech UI; original download retained without pitch or time changes"
+    },
+    {
+      "id": "ad91-rhys-ready",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "model": "Eleven Multilingual v2",
+      "text": "Your extra round is ready. Tap play to start, or choose another game.",
+      "speed": 0.9,
+      "stability": 0.5,
+      "similarity": 0.75,
+      "styleExaggeration": 0,
+      "speakerBoost": true,
+      "selectedGeneration": 1,
+      "sourceFile": "ElevenLabs_2026-11-22T12_20_50_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "a1215143e2b5d790e91b01db5dc90edb433d24d5fd72defbee3b421363870940",
+      "sha256": "a1215143e2b5d790e91b01db5dc90edb433d24d5fd72defbee3b421363870940",
+      "bytes": 95513,
+      "verification": "Exact approved voice and Generation 1 selected in authenticated Text to Speech UI; original download retained without pitch or time changes"
+    }
+  ]
+}

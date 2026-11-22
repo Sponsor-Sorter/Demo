@@ -231,5 +231,19 @@
   if(!response.ok||data?.contract!=='fairplay-gift-codes-v1'||action==='status'&&data.app!=='littles')throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;
  }
  async function weekly(action,extra={}){if(!client)throw failure('LITTLES_SIGN_IN_REQUIRED');const current=await actor();const {data,error}=await client.rpc('meadow_littles_weekly',{p_action:action,p_data:extra});if(error||data?.contract!=='littles-weekly-v1'||data.user_id!==current.id||(await actor()).id!==current.id)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;}
- globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,openUsername,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,gift,giftIdentity,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
+ async function rewarded(action,extra={}){
+  const identity=giftIdentity(),expected=identity.userId,stamp=giftAuthEpoch,selected=client;
+  if(!selected||!identity.parentReady||!['status','prepare','claim'].includes(action))throw failure('LITTLES_SIGN_IN_REQUIRED');
+  const current=await actor();
+  if(authBusy||stamp!==giftAuthEpoch||client!==selected||current.id!==expected||current.is_anonymous||!current.email_confirmed_at)throw failure('LITTLES_ACCOUNT_CHANGED');
+  const session=await selected.auth.getSession(),bound=session.data?.session;
+  if(session.error||authBusy||stamp!==giftAuthEpoch||client!==selected||user?.id!==expected||bound?.user?.id!==expected||typeof bound.access_token!=='string'||!bound.access_token)throw failure('LITTLES_ACCOUNT_CHANGED');
+  // Pin the validated initiating bearer; the Functions SDK must not select a later login.
+  const response=await fetch(CONFIG.url+'/functions/v1/littles-ad-rounds',{method:'POST',credentials:'omit',cache:'no-store',headers:{apikey:CONFIG.key,Authorization:'Bearer '+bound.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,data:extra}),signal:AbortSignal.timeout(20000)});
+  let data;try{data=await response.json();}catch{throw failure('LITTLES_CONTROL_UNAVAILABLE');}
+  const after=await actor();
+  if(authBusy||stamp!==giftAuthEpoch||client!==selected||after.id!==expected||after.is_anonymous||!after.email_confirmed_at)throw failure('LITTLES_ACCOUNT_CHANGED');
+  if(!response.ok||data?.contract!=='littles-ad-round-v1'||data.user_id!==expected)throw failure('LITTLES_CONTROL_UNAVAILABLE');return data;
+ }
+ globalThis.meadowLittlesCloud={init,reconnect,queueSave,flush,retryPending:flush,choose,openAccount,openUsername,linkEmail,verifyEmail,setPassword,signIn,recover,signOut,changeName,commerce,weekly,rewarded,gift,giftIdentity,getStatus:()=>({state:status,code:lastError,revision,userId:user?.id||null,displayName:profile?.display_name||null,isGuest:!!user?.is_anonymous,parentReady:!!user&&!user.is_anonymous&&!!user.email_confirmed_at&&status!=='auth_required'&&status!=='signed_out'})};
 })();

@@ -3,8 +3,9 @@ async function check(){
  const pair=crypto.generateKeyPairSync('rsa',{modulusLength:2048}),user='11111111-1111-4111-8111-111111111111';
  const config={contract:'littles-play-v1',package:'com.meadowmarket.littles',product:'ml_plus',proofKey:pair.publicKey.export({format:'jwk'})};
  const window={meadowLittlesCommerceConfig:config,meadowLittlesAccess:{configure(){}}};
- vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../meadow-market-littles/commerce.js'),'utf8'),{window,crypto:crypto.webcrypto,TextDecoder,TextEncoder,Uint8Array,atob,Date,Number,Promise,WeakMap});
- const now=Math.floor(Date.now()/1000),base={iss:config.contract,aud:config.package,sub:user,product:config.product,iat:now,exp:now+3600,paid:true,complimentary:false};
+ const proofTime=Date.now(),ProofDate=class extends Date{static now(){return proofTime;}};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../meadow-market-littles/commerce.js'),'utf8'),{window,crypto:crypto.webcrypto,TextDecoder,TextEncoder,Uint8Array,atob,Date:ProofDate,Number,Promise,WeakMap});
+ const now=Math.floor(proofTime/1000),base={iss:config.contract,aud:config.package,sub:user,product:config.product,iat:now,exp:now+3600,paid:true,complimentary:false};
  const sign=claims=>{const data=Buffer.from(JSON.stringify({alg:'RS256'})).toString('base64url')+'.'+Buffer.from(JSON.stringify(claims)).toString('base64url');return data+'.'+crypto.sign('RSA-SHA256',Buffer.from(data),pair.privateKey).toString('base64url');};
  const valid=claims=>window.meadowLittlesCommerce.validProof(sign({...base,...claims}),user);
  assert(await valid({}));assert(await valid({paid:false,complimentary:true,exp:now+300}));

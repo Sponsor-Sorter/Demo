@@ -2070,6 +2070,21 @@
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "slice-jay-generation.json"
     },
+    "solo85-rhys-shapes-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "solo85-generation.json"
+    },
+    "solo85-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "solo85-generation.json"
+    },
+    "solo85-jade-first-intro": {
+      "farmer": "jade",
+      "voice": "Hope - upbeat and clear",
+      "evidence": "solo85-generation.json"
+    },
     "ws-letter-a": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
@@ -2895,20 +2910,15 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "word-audio-042-generation.json"
     },
-    "solo85-rhys-shapes-intro": {
+    "ad91-rhys-offer": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "solo85-generation.json"
+      "evidence": "ad91-generation.json"
     },
-    "solo85-rhys-done": {
+    "ad91-rhys-ready": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "solo85-generation.json"
-    },
-    "solo85-jade-first-intro": {
-      "farmer": "jade",
-      "voice": "Hope - upbeat and clear",
-      "evidence": "solo85-generation.json"
+      "evidence": "ad91-generation.json"
     },
     "together-connectfour": {
       "farmer": "jay",
