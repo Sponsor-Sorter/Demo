@@ -21,7 +21,7 @@ test('Actual SQL migration: default-off gates, live-actor boundary, idempotency,
       create function public.meadow_littles_plus_projection(uuid) returns jsonb language sql set search_path='' as $$
         select jsonb_build_object('effective_verified',coalesce(nullif(current_setting('fixture.verified',true),'')::boolean,true),'effective_plus',coalesce(nullif(current_setting('fixture.plus',true),'')::boolean,false)) $$;
     `);
-    await db.exec(fs.readFileSync(path.resolve(__dirname, '../../supabase/migrations/20261122114713_littles_rewarded_rounds91.sql'), 'utf8'));
+    await db.exec(fs.readFileSync(path.resolve(__dirname, '../../supabase/migrations/20261122130357_littles_rewarded_rounds91.sql'), 'utf8'));
     const set = async (key, value) => db.query('select set_config($1,$2,false)', ['fixture.' + key, value]);
     const role = async value => db.exec('reset role; set role ' + value);
     const call = async (action, data = {}) => (await db.query('select public.meadow_littles_ad_rounds($1,$2::jsonb) as result', [action, JSON.stringify({ client: CLIENT, ...data })])).rows[0].result;

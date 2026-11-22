@@ -14,7 +14,7 @@ The optional offer appears only after the selected game's five daily completed r
 
 The new migration and two Edge Functions are isolated from existing saves, Plus, weekly fair and config tables. The migration creates a default-off private config, a challenge ledger, authenticated live-session RPC and service-only signed-receipt recorder. No existing rows are rewritten. The optional provider requires a verified parent, freshly verified non-Plus projection, native15, UMP consent and a matching unit. An unsupported native14 simply retains existing behavior.
 
-- Migration: `20261122114713_littles_rewarded_rounds91.sql`.
+- Migration: `20261122130357_littles_rewarded_rounds91.sql`.
 - Authenticated consumer: `littles-ad-rounds` (`verify_jwt: true`).
 - Google signed callback: `littles-ad-round-reward` (`verify_jwt: false`); it independently verifies pinned Google ECDSA keys, exact unit/reward, unique transaction and server-created opaque challenge.
 - SSV URL to configure after deployment: `https://ejavqlyozqhzqogflqzr.supabase.co/functions/v1/littles-ad-round-reward`.
