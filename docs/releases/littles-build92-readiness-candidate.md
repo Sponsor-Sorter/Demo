@@ -10,4 +10,6 @@ The candidate includes shared Main `19168466c776d7a4148b66ce6788bcaca1ead591`, p
 
 Validation: twelve new readiness and UI-flow cases, forty-seven reward/adapter/account-transport cases, and the existing commerce proof and banner-dock checks passed. The full game regression result is recorded separately in the candidate evidence.
 
+The compact quota layout keeps both Watch and Choose another game visible without scrolling at 320×568 portrait and 568×320 landscape. Five isolated browser layout views passed, including the supported recovery state, actual-offer markup and server-disabled state on a 1024×768 tablet. Active buttons measured at least 44 pixels in both dimensions. These are inert visual fixtures, not evidence of an ad view or provider approval.
+
 Public activation remains pending independent review and installed-app acceptance: actual availability recovery, own-unit test badge, SDK close timing, a genuine signed reward, one retained extra round, free abandonment and exactly one successful completion. Native 15 remains internal; its AdMob test mode must be turned off before a public native release. No Google support message was sent.
