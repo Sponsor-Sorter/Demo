@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 22 November 2026 — Google Play ad defaults, candidate 254
+
+Build 254 makes popup ads automatic for verified non-Premium Google Play accounts, including an old false opt-in preference. Web/direct builds retain the switch. Consent, Premium/gift benefits, central Admin availability and numeric pacing, account isolation and server-verified rewards remain authoritative. No saved preference, backend configuration or native version is changed. See [scope and validation](MEADOW_PLAY_ADS254.md).
+
+Web 253 is live. Play 1.7.7/code 17 was installed and account/save checked on the Samsung, then submitted for a 100% production rollout with automatic publication after approval. Code 16 was the last observed public release. All six farms and 319 object IDs were retained. Seven canonical well-rule tests passed; a complete physical hired-worker well cycle remains a follow-up because the preserved stress layout blocks that route. No farm objects were moved.
+
 ## 20 November 2026 — covered-screen worker resume candidate
 
 Web 253 is a prepared candidate; public web 252 and Google Play 1.7.6/code 16 remain the accepted release. A focused actual-source regression reproduced a missing hired-worker catch-up after closing a full-screen game or modal: the published closure failed three cases, while the correction passes all eight. Covered screens still send no worker commands. Closing them uses the existing bounded hired-worker return path once, after pending receipts, pointer activity and the normal control/visit/Build safeguards permit it. The server's farming calculations are unchanged.
