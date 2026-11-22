@@ -1,5 +1,13 @@
 # Meadow Markets active work
 
+## 23 November 2026 — public Play 17; clearer HUD candidate 255
+
+Fresh Google Play observations confirm Production **Active**, latest **1.7.7/code 17**, in the existing Australia region. The public AU listing has the ordinary install action, current release notes and “Contains ads · In-app purchases.” No submission or rollout settings were changed. Read-only commerce configuration confirms production and ads enabled; the accepted build-254 automatic Play defaults, verified Premium/gifts, consent, Admin pacing and server reward verification remain unchanged.
+
+Candidate 255 removes the main-screen game title and adjacent flower, and uses that space for aligned VIP/gold/level pills with Farm helpers immediately below. The narrow expanded Compact controls now scroll from the first icon rather than clipping controls before the scroll origin. Actual HTML/CSS/HUD modules were checked in an isolated browser fixture at desktop, 320px/360px portrait and 844px landscape sizes, including Compact expand/scroll and VIP/Settings target delivery. This is browser-layout acceptance, not a new phone, farm-account or advertising-impression claim.
+
+Evidence and the provider screenshots are in `D:/Chat Gpt/workspaces/meadow-hud255-evidence/`. Publication CI, coordinated Main/Pages release and exact public read-back remain required for this candidate. Only the generated rules build fingerprint changes; farming calculations, live gateway, native code and all Littles files are unchanged. The outstanding physical clear-path hired-worker cycle and natural weekly prize-delivery observation remain separate follow-ups.
+
 ## 22 November 2026 — Google Play ad defaults, candidate 254
 
 Build 254 makes popup ads automatic for verified non-Premium Google Play accounts, including an old false opt-in preference. Web/direct builds retain the switch. Consent, Premium/gift benefits, central Admin availability and numeric pacing, account isolation and server-verified rewards remain authoritative. No saved preference, backend configuration or native version is changed. See [scope and validation](MEADOW_PLAY_ADS254.md).

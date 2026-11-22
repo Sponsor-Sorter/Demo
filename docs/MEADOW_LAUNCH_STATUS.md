@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 23 November 2026 — Google Play 17 publicly available
+
+The refreshed Play Console now confirms **Production Active, 1.7.7/code 17** in the existing Australia region. The ordinary [public AU listing](https://play.google.com/store/apps/details?id=com.meadowandmarket.game&gl=AU) is available, updated 22 November, with the current farmer-resume release notes and ads/in-app-purchase disclosure. Managed publishing remains off. Earlier “in review” entries below are historical.
+
+Web 254 is live with automatic Play popup-ad eligibility. Current read-only production and ad gates are enabled; Premium, provider consent, Admin availability/pacing and independently verified rewards still apply. HUD-only candidate 255 removes the title/flower and aligns VIP, gold and level above Farm helpers. Its browser layout checks passed; final CI/publication/read-back remain pending. No new APK, backend configuration or account changes are needed. See the current [active backlog](MEADOW_ACTIVE_BACKLOG.md) for evidence and separate physical follow-ups.
+
 ## 22 November 2026 — code 17 submitted; ad-default follow-up
 
 Google Play 1.7.7/code 17 is submitted for a 100% production rollout in Australia, with managed publishing off so approval publishes automatically. The last observed public version remains 1.7.6/code 16. PR69 merged as `fd32013983f7b2764cbb725e97f07f7c90a4337a`; Main regression and Pages deployment passed. Live runtime 253 is unchanged by that native version-only release. Samsung retained-account and all-six-farm/319-object checks passed; the full physical hired-worker well cycle is still explicitly a follow-up.
