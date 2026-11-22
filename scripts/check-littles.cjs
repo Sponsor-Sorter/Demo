@@ -45,6 +45,7 @@ require('./check-littles-access.cjs');
 require('./check-littles-weekly.cjs');
 require('./check-littles-commerce.cjs');
 require('./check-littles-update.cjs').check().catch(error=>{console.error(error);process.exitCode=1});
+require('./check-littles-worker.cjs').check().catch(error=>{console.error(error);process.exitCode=1});
 require('./check-littles-learning.cjs');
 
 require('./check-littles-harvest58.cjs');
