@@ -26,6 +26,18 @@ test('Plus, consent, parent state and unused free rounds all suppress the offer'
     const f = fixture(); Object.assign(f.state, patch); assert.equal((await f.core.watch('harvest_slice')).status, 'unavailable'); assert.equal(f.count.show, 0);
   }
 });
+test('Readiness checks relax only consent and never prepare or show an ad', async () => {
+  const f = fixture(); f.state.canRequestAds = false;
+  assert.equal(f.core.canCheck('harvest_slice'), true);
+  assert.equal(f.core.available('harvest_slice'), false);
+  assert.equal((await f.core.watch('harvest_slice')).status, 'unavailable');
+  assert.deepEqual(f.count, { prepare: 0, show: 0, settle: 0, verify: 0 });
+  for (const patch of [{ plus: true }, { parentReady: false }, { left: 1 }, { actor: '' }]) {
+    const denied = fixture(); Object.assign(denied.state, { canRequestAds: false, ...patch });
+    assert.equal(denied.core.canCheck('harvest_slice'), false);
+  }
+  f.policy.enabled = false; assert.equal(f.core.canCheck('harvest_slice'), false);
+});
 test('A full ad plus a verified server receipt grants one completed round for the selected game only', async () => {
   const f = fixture(); assert.equal((await f.core.watch('harvest_slice')).status, 'ready');
   assert.equal(f.core.remaining('harvest_slice'), 1); assert.equal(f.core.remaining('meadowpairs'), 0);
