@@ -46,7 +46,7 @@
 
 /* Farm status replaces the old title and flower; keep the helper directly below. */
 .topbar>.brand-group{width:230px!important;flex:0 1 230px;gap:4px;max-width:100%;min-width:0}
-.brand-group .brand-resources{display:flex;flex-wrap:nowrap;align-items:center;gap:6px!important;width:max-content;max-width:100%;padding:0;margin:0}
+.brand-group .brand-resources{display:flex;flex-wrap:wrap;align-items:center;gap:6px!important;width:max-content;max-width:100%;padding:0;margin:0}
 .topbar .brand-resources .resource{min-height:36px;padding:3px 8px 3px 4px!important;gap:4px!important;flex:none}
 .topbar .brand-resources .resource b{font-size:12px;white-space:nowrap}
 .topbar .brand-resources .resource img{width:22px;height:22px}
