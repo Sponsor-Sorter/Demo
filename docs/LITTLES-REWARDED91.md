@@ -93,3 +93,9 @@ where singleton and not enabled and not serving_ready;
 ```
 
 Public enablement is a separate post-acceptance operation. Do not infer it from a private pass, the provider's store verification, or this document. App-readiness approval must be checked separately. Pending earned requests may still be claimed after the gate is cleared; clearing a test gate never removes a legitimately earned round.
+
+## Successor client transport repair
+
+The independent review of frozen2d79 reproduced an unsafe session lookup in `cloud.rewarded()`: an attempt begun by one parent could reach the Functions SDK after a new login and POST as the replacement parent, even though the response was later rejected. The successor captures the expected verified parent, auth generation and client **before** awaiting any lookup, validates the actual session, and sends a captured bearer directly to the same Edge endpoint. A new login—including another login of the same account—invalidates the attempt before POST. An ordinary same-session token refresh remains supported. An already in-flight request keeps its initiating bearer, and its result is discarded after an account change.
+
+`node --test scripts/check-littles-rewarded-transport.cjs` passes22 actual cloud-module cases across all three actions, held actor/session lookups, replacement and same-account new logins, token refresh, in-flight bearer binding, guests, unverified parents and auth-busy state. The original gift transport/code checks also pass. This is a JavaScript-only repair; the accepted backend bundles and frozen native15 AAB remain unchanged. The original2d79 packet remains available; this repair requires its own successor source acceptance before client publication.
