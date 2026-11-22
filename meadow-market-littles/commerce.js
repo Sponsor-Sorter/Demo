@@ -9,6 +9,7 @@
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
  let giftController=null,giftUnmount=null;
+ let consentInFlight=false,consentRetryPending=false,consentRetried=false;
  const responseSeq=new WeakMap();
  const canCheckout=()=>!!(store&&capabilities&&status?.checkout_enabled&&status?.parent_ready&&(!status?.checkout_test_only||capabilities.adsDemo===true));
  const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
@@ -23,7 +24,7 @@
  async function accept(answer){const user=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch,seq=responseSeq.get(answer)||0;if(answer?.user_id!==user||seq<appliedSeq)return;const verified=!!answer.proof&&await validProof(answer.proof,user);if(stamp!==authEpoch||user!==window.meadowLittlesCloud?.getStatus().userId||seq<appliedSeq)return;appliedSeq=seq;status=answer;plus=verified;if(answer.checkout_test_only===false&&typeof answer.checkout_enabled==='boolean'){lastPublicLimits=answer.checkout_enabled;try{localStorage.setItem(roundPolicyKey,lastPublicLimits?'enabled':'disabled');}catch{}}try{if(plus)localStorage.setItem(proofKey,answer.proof);else localStorage.removeItem(proofKey);}catch{}updateAccess();}
  async function refresh(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id){plus=false;status=null;updateAccess();return;}
   const before=appliedSeq;let cached=false;try{const saved=localStorage.getItem(proofKey);cached=!!saved&&await validProof(saved,id);}catch{}if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId)return;if(before===appliedSeq){plus=cached;updateAccess();}
-  try{await accept(await request('status'));}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}
+  try{await accept(await request('status'));return stamp===authEpoch&&status?.user_id===id;}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}
  }
  async function refreshVerified(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;await accept(await request('status'));if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId||status?.user_id!==id)throw Error('Account changed');return {parentReady:status.parent_ready===true,plus};}
  function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
@@ -64,15 +65,33 @@
  }
  function limitReached(){window.meadowAudio?.stopVoice();const d=document.createElement('dialog');d.className='littles-parent littles-play-limit';d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>Let’s try another little adventure</h2><p>You’ve finished the available rounds for this game today. Your pictures and progress are safe.</p><button class="primary-button">Choose another game</button></main>';d.querySelector('button').onclick=()=>{d.close();d.remove();};d.addEventListener('cancel',()=>d.remove());document.body.append(d);d.showModal();}
  function bannerHeight(value){const height=Number(value);document.body.style.setProperty('--littles-ad-height',(Number.isFinite(height)?Math.max(0,height):0)+'px');document.body.style.paddingBottom='';}
- const bannerAllowed=()=>!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden&&!plus&&status?.ads_enabled&&adsReady&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);
+ const bannerContextAllowed=()=>!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden&&!plus&&status?.ads_enabled&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);
+ const bannerAllowed=()=>bannerContextAllowed()&&adsReady;
+ async function requestAdReadiness(refreshOnly=false){
+  if(!ads||consentInFlight)return;
+  if(refreshOnly){
+   if(!consentRetryPending||consentRetried||!bannerContextAllowed())return;
+   consentRetryPending=false;consentRetried=true;
+  }
+  consentInFlight=true;
+  try{adsReady=(await (refreshOnly?ads.consent({refreshOnly:true}):ads.consent())).canRequestAds===true;}
+  catch(error){
+   adsReady=false;
+   // Only this native code denotes a connectivity failure before any form was presented.
+   if(!refreshOnly&&error?.code==='LITTLES_UMP_INFO_NETWORK')consentRetryPending=true;
+  }finally{consentInFlight=false;}
+  syncBanner();
+ }
+ async function resumeAdvertising(){if(consentRetryPending&&!document.hidden&&await refresh())await requestAdReadiness(true);}
  async function syncBanner(){
   if(!bannerAllowed()){bannerRequested=false;bannerHeight(0);try{await ads?.hideBanner();}catch{}return;}
   if(bannerRequested)return;bannerRequested=true;try{await ads.showBanner({demoOnly:status.ads_test_only===true});}catch{bannerRequested=false;}
  }
- async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{if(bannerAllowed())bannerHeight(v.height);else syncBanner();});ads.addListener('bannerHidden',()=>{bannerRequested=false;bannerHeight(0);});try{adsReady=(await ads.consent()).canRequestAds===true;}catch{adsReady=false;}}
+ async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{if(bannerAllowed())bannerHeight(v.height);else syncBanner();});ads.addListener('bannerHidden',()=>{bannerRequested=false;bannerHeight(0);});await requestAdReadiness();}
   if(store)store.addListener('purchasesUpdated',r=>settle(r.purchases).catch(()=>{}));
   new MutationObserver(syncBanner).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh().then(recover);}syncBanner();});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh().then(fresh=>{if(fresh)void requestAdReadiness(true);return recover();});}syncBanner();});
+ window.addEventListener?.('online',resumeAdvertising);
   await refresh();await recover();setInterval(()=>refresh(),60000);syncBanner();
  }
  window.meadowLittlesCommerce={init,refresh,accountChanged,open:()=>gate(parents),grownUp:action=>gate(()=>{close();action();}),validProof,getStatus:()=>({plus,checkout:status?.checkout_enabled===true})};
