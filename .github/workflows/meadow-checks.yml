@@ -52,6 +52,8 @@ jobs:
       - run: node scripts/check-meadow-command-coverage218.cjs
       - run: node scripts/check-meadow-play-thread217.cjs
       - run: node scripts/check-meadow-ads221.cjs
+      - run: node scripts/check-meadow-play-ads254.cjs
+      - run: node scripts/check-meadow-ad-policy247.cjs
       - run: node scripts/check-meadow-billing223.cjs
       - run: node scripts/check-meadow-commerce225.cjs
       - run: node scripts/check-meadow-premium234.cjs

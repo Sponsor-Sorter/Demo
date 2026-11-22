@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 22 November 2026 — code 17 submitted; ad-default follow-up
+
+Google Play 1.7.7/code 17 is submitted for a 100% production rollout in Australia, with managed publishing off so approval publishes automatically. The last observed public version remains 1.7.6/code 16. PR69 merged as `fd32013983f7b2764cbb725e97f07f7c90a4337a`; Main regression and Pages deployment passed. Live runtime 253 is unchanged by that native version-only release. Samsung retained-account and all-six-farm/319-object checks passed; the full physical hired-worker well cycle is still explicitly a follow-up.
+
+Candidate web 254 enables Play popup ads without the legacy player opt-in while preserving verified Premium/gifts, consent, central Admin controls, pacing and independent reward verification. It requires no replacement native binary or backend preference/configuration write. See [the exact scope and tests](MEADOW_PLAY_ADS254.md).
+
 ## 20 November 2026 — worker resume follow-up prepared
 
 Public web 252 and Google Play 1.7.6/code 16 remain the accepted game. Candidate 253 corrects hired-worker catch-up after closing a full-screen modal; its actual-source regression passes all eight cases and the generated server farming body is unchanged. This is a prepared source update, not a new public or native acceptance claim. Samsung account-context and sustained clear-well-path checks remain pending the coordinated idle device turn. See the current [active backlog](MEADOW_ACTIVE_BACKLOG.md).

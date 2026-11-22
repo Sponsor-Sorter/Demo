@@ -1,0 +1,44 @@
+'use strict';
+// Execute the actual Club/Store/pacing modules. SDK/RPC callbacks are simulated;
+// this does not request a provider impression or mutate a live account.
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const source=name=>fs.readFileSync('meadow-and-market/'+name,'utf8');
+function fixture(options={}){
+ let owner='a',now=1800000000000,verified=true,premium=false,statusError=false,afterConsent,showError=false;
+ const state={coins:250,level:1,active:'willow',farms:{willow:{objects:[],inventory:{}}}},timers=[],calls={show:0,consent:0,nonce:0,settings:0},notices=[];
+ const config={ads_enabled:true,test_access:false,ads_provider_test:false,account_id:'a'.repeat(64),numeric_ad_policy:null,products:[]};
+ const channel=options.channel||'play',ads={consent:async()=>{calls.consent++;if(afterConsent)await afterConsent();return{canRequestAds:options.consent!==false}},show:async data=>{calls.show++;if(showError)throw Error('No ad available');return{earned:data.rewarded===true}},capabilities:async()=>({isolatedTestAds:true})},billing={addListener(){}};
+ const document={hidden:false,addEventListener(){},getElementById:()=>null,querySelectorAll:()=>[],querySelector:()=>null};
+ const Clock=class extends Date{constructor(...args){super(...(args.length?args:[now]))}static now(){return now}};
+ const scope={window:{addEventListener(){},Capacitor:{isNativePlatform:()=>channel!=='web',isPluginAvailable:n=>channel==='play'?['MeadowStore','MeadowAds'].includes(n):channel==='ads-only'&&n==='MeadowAds',Plugins:{MeadowStore:billing,MeadowAds:ads}}},document,Date:Clock,performance:{now:()=>now},navigator:{onLine:true},crypto:crypto.webcrypto,TextEncoder,setTimeout(fn){timers.push(fn);return timers.length},clearTimeout(){},setInterval(){return 1},clearInterval(){}};
+ for(const name of ['ad-policy.js','store.js'])vm.runInNewContext(source(name),scope);
+ vm.runInNewContext(source('farm-club.js').replace('window.meadowClub={','window.clubFixture={setApi:a=>api=a,adPreferenceMarkup};window.meadowClub={'),scope);
+ const api={ready:()=>true,user:()=>({id:owner}),canPlay:()=>true,state:()=>state,current:()=>state.farms.willow,save(){},flush:async()=>{},notify:m=>notices.push(m),client:()=>({rpc:async name=>{
+  if(name==='meadow_market_commerce_status')return{data:config};
+  if(name==='meadow_market_play_service'){if(statusError)return{error:{message:'Offline'}};return{data:{wallet:{gems:0,reward_turns:0,premium,ads_enabled:options.legacyOptIn===true},premium_verified:verified,missions:[],receipt_summary:{version:237,pending:false,vip_daily_claimed:false,day:new Clock().toISOString().slice(0,10)}}};}
+  if(name==='meadow_market_start_ad_reward'){calls.nonce++;return{data:{nonce:'00000000-0000-4000-8000-000000000254'}};}
+  calls.settings++;throw Error('Unexpected RPC '+name);
+ }})};
+ scope.window.clubFixture.setApi(api);scope.window.meadowStore.attach(api);
+ const club=scope.window.meadowClub,store=scope.window.meadowStore;
+ return{club,store,state,config,calls,document,notices,markup:()=>scope.window.clubFixture.adPreferenceMarkup(),load:()=>club.refresh(),owner:v=>owner=v,premium:v=>premium=v,verified:v=>verified=v,error:v=>statusError=v,failShow:v=>showError=v,afterConsent:fn=>afterConsent=fn,tick:ms=>now+=ms,finish:async()=>{club.finished();while(timers.length)await timers.shift()();},round:n=>club.result({resultId:'round-'+n,game:{id:'eggs',goal:5,time:45,level:1},score:5,elapsed:5},true)};
+}
+const tests=[],test=(name,fn)=>tests.push({name,fn});
+test('native packaging registers the pair only in the Play flavor',()=>{const native=fs.readFileSync('tools/meadow-android/android/app/src/main/java/com/meadowandmarket/game/MainActivity.java','utf8');const block=native.slice(native.indexOf('if ("play".equals(BuildConfig.FLAVOR))'),native.indexOf('super.onCreate(state)'));for(const name of ['MeadowStorePlugin','MeadowAdsPlugin']){assert(block.includes(name));assert(fs.existsSync('tools/meadow-android/android/app/src/play/java/com/meadowandmarket/game/'+name+'.java'));}});
+test('Play legacy-false is enabled after verified account status',async()=>{const f=fixture();assert(f.store.playBuild());assert.equal(f.club.popupAdsEnabled(),false);await f.load();assert(f.club.popupAdsEnabled());assert.equal(f.club.wallet().ads_enabled,false,'Saved preference is not rewritten');await f.store.advertisement(false);assert.equal(f.calls.show,1);assert.equal(f.calls.settings,0);assert.equal(f.calls.nonce,0);});
+test('web, direct Android and ads-only capability retain legacy off',async()=>{for(const channel of ['web','direct','ads-only']){const f=fixture({channel});await f.load();assert.equal(f.store.playBuild(),false);assert.equal(f.club.popupAdsEnabled(),false);assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);}});
+test('web opt-in is preserved',async()=>{const f=fixture({channel:'web',legacyOptIn:true});await f.load();assert(f.club.popupAdsEnabled());});
+test('Premium and complimentary Premium suppress Play popups',async()=>{const f=fixture();f.premium(true);await f.load();assert(!f.club.popupAdsEnabled());assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.consent,0);assert.equal(f.calls.show,0);});
+test('unverified or failed account status never enables Play ads',async()=>{for(const unverified of [true,false]){const f=fixture();if(unverified)f.verified(false);else f.error(true);await f.load();assert(!f.club.popupAdsEnabled());assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);}});
+test('failed refresh revokes a previous non-Premium eligibility',async()=>{const f=fixture();await f.load();assert(f.club.popupAdsEnabled());f.error(true);assert((await f.store.advertisement(false)).unavailable);assert(!f.club.popupAdsEnabled());});
+test('missing, null or string Premium flags cannot enable Play ads',async()=>{for(const value of [undefined,null,'false']){const f=fixture();f.premium(value);await f.load();assert(!f.club.popupAdsEnabled());assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);}});
+test('Admin ad shutdown remains authoritative',async()=>{const f=fixture();await f.load();f.config.ads_enabled=false;assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.consent,0);assert.equal(f.calls.show,0);});
+test('consent denial blocks requests despite the Play default',async()=>{const f=fixture({consent:false});await f.load();assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);});
+test('Premium granted during consent suppresses the pending popup',async()=>{const f=fixture();await f.load();f.afterConsent(async()=>{f.premium(true);await f.load()});assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);});
+test('account switch during consent does not show an old-account popup',async()=>{const f=fixture();await f.load();f.afterConsent(()=>f.owner('b'));await assert.rejects(()=>f.store.advertisement(false),/Account changed/);assert.equal(f.calls.show,0);assert(!f.club.popupAdsEnabled());});
+test('expired Admin numeric-policy cache still blocks a pending popup',async()=>{const f=fixture();await f.load();f.afterConsent(()=>f.tick(300000));assert((await f.store.advertisement(false)).unavailable);assert.equal(f.calls.show,0);});
+test('three completed games and existing cooldown remain required',async()=>{const f=fixture();await f.load();f.round(1);f.round(2);await f.finish();assert.equal(f.calls.show,0);f.round(3);await f.finish();assert.equal(f.calls.show,1);f.round(4);f.round(5);f.round(6);await f.finish();assert.equal(f.calls.show,1);f.tick(180000);await f.finish();assert.equal(f.calls.show,2);});
+test('Play has no opt-out checkbox; web/direct retain the switch',async()=>{for(const channel of ['play','web','direct']){const f=fixture({channel});assert.equal(f.markup().includes('id="club-ads"'),channel!=='play');}assert(fixture().markup().includes('Premium'));});
+test('rewarded ads remain optional and server verified for Premium',async()=>{const f=fixture();f.premium(true);await f.load();assert((await f.store.advertisement(true)).earned);assert.equal(f.calls.nonce,1);assert.equal(f.state.coins,250);assert.equal(f.club.wallet().gems,0);});
+test('no-fill releases the existing busy guard',async()=>{const f=fixture();await f.load();f.failShow(true);await assert.rejects(()=>f.store.advertisement(false),/No ad available/);f.failShow(false);await f.store.advertisement(false);assert.equal(f.calls.show,2);});
+(async()=>{for(const t of tests){await t.fn();}console.log('Play ads254: '+tests.length+' actual-source channel/default/Premium/consent/Admin/pacing/SSV cases passed.');})().catch(e=>{console.error(e);process.exitCode=1});

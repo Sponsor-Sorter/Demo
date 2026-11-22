@@ -3,6 +3,9 @@
  const native=window.Capacitor?.isNativePlatform?.();
  const plugin=name=>native&&window.Capacitor?.isPluginAvailable?.(name)?window.Capacitor.Plugins?.[name]||window.Capacitor.registerPlugin?.(name):null;
  const billing=plugin('MeadowStore'),ads=plugin('MeadowAds');
+ // MainActivity registers this pair only in the Google Play product flavor.
+ const playBuild=!!billing&&!!ads;
+ const popupAdsAllowed=wallet=>wallet?.premium!==true&&(playBuild?window.meadowClub?.popupAdsEnabled?.()===true:wallet?.ads_enabled===true);
  let api,configuration={test_access:false,payments_enabled:false,ads_enabled:false,products:[]},prices=new Map(),owner='',loading=null,busy=false,refreshVersion=0,popup;
  const known=new Set(['starter_pack','pocket_gems','gem_chest','builders_pack','reward_tickets','pantry_pack','premium','welcome_garden','coop_charm','market_makeover']);
  async function refresh(withPrices=true){
@@ -94,15 +97,15 @@
   const sameAccount=()=>{if(who!==api.user()?.id)throw Error('Account changed. Open the reward on your own farm.');};
   try{
    await refresh(false);sameAccount();
-   if(configuration.test_access&&!configuration.ads_provider_test){if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup())return {unavailable:true};}return {test:true};}
+   if(configuration.test_access&&!configuration.ads_provider_test){if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(!popupAdsAllowed(wallet)||!popup?.snapshot().available||beforePopup&&!beforePopup())return {unavailable:true};}return {test:true};}
    const testOnly=configuration.ads_provider_test===true;
    if(!ads||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled)){api.notify('No ad is available right now. Try again later.');return {unavailable:true};}
-   if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true){if(testOnly)api.notify(wallet?.premium?'Premium is active. Popup ads are blocked.':'Optional popup ads are off.');return {unavailable:true};}}
+   if(!rewarded){await window.meadowClub?.refresh();sameAccount();const wallet=window.meadowClub?.wallet();if(!popupAdsAllowed(wallet)){if(testOnly)api.notify(wallet?.premium?'Premium is active. Popup ads are blocked.':playBuild?'Checking this account’s ad status.':'Optional popup ads are off.');return {unavailable:true};}}
    if(!rewarded&&(!popup?.snapshot().available||beforePopup&&!beforePopup(false)))return {unavailable:true};
    if(testOnly){let supported=false;try{supported=(await ads.capabilities()).isolatedTestAds===true;}catch{}sameAccount();if(!supported)throw Error('Update Meadow Markets in Google Play before running isolated test ads.');}
    const consent=await ads.consent();sameAccount();if(!consent.canRequestAds){api.notify('Advertising privacy choices are unavailable. No ad was shown.');return {unavailable:true};}
    if(testOnly!==(configuration.ads_provider_test===true)||!(testOnly?configuration.isolated_ads_enabled===true:configuration.ads_enabled))return {unavailable:true};
-   if(!rewarded){const wallet=window.meadowClub?.wallet();if(wallet?.premium||wallet?.ads_enabled!==true||!popup?.snapshot().available||beforePopup&&!beforePopup(true))return {unavailable:true};}
+   if(!rewarded){const wallet=window.meadowClub?.wallet();if(!popupAdsAllowed(wallet)||!popup?.snapshot().available||beforePopup&&!beforePopup(true))return {unavailable:true};}
    const data={rewarded};if(testOnly)data.testOnly=true;
    if(rewarded&&!testOnly){const r=await api.client().rpc('meadow_market_start_ad_reward');sameAccount();if(r.error)throw Error('No reward is available right now.');Object.assign(data,{nonce:r.data.nonce,accountId:configuration.account_id});}
    const result=await ads.show(data);sameAccount();
@@ -123,5 +126,5 @@
  const owned=sku=>owner===api?.user()?.id&&(configuration.owned_products||[]).includes(sku);
  const packGrants=()=>owner===api?.user()?.id?(configuration.pack_grants||[]):[];
  const canPurchase=sku=>!owned(sku)&&(configuration.test_access===true||!!billing&&configuration.payments_enabled===true&&configuration.products.some(p=>p.sku===sku&&prices.has(p.product_id)));
- window.meadowStore={popupPolicy:()=>popup?.snapshot()||{available:false,parameters:{popup_every_completed_games:3,popup_min_interval_seconds:180}},packGrants,offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
+ window.meadowStore={playBuild:()=>playBuild,popupPolicy:()=>popup?.snapshot()||{available:false,parameters:{popup_every_completed_games:3,popup_min_interval_seconds:180}},packGrants,offerVisible:sku=>owned(sku)||configuration.test_access===true||configuration.products.some(p=>p.sku===sku),owned,canPurchase,attach,refresh,label,purchase,restore,advertisement,settings,test:()=>configuration.test_access,providerAds:()=>configuration.ads_provider_test===true,adMode:()=>configuration.test_access&&!configuration.ads_provider_test?'preview':configuration.ads_provider_test?'test':configuration.ads_enabled&&ads?'live':'off',available:()=>!!billing,privacy:()=>ads?.privacy()};
 })();
