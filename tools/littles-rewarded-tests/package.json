@@ -1,0 +1,7 @@
+{
+  "name": "littles-rewarded-sql-tests",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": { "test": "node --test check-sql.cjs" },
+  "devDependencies": { "@electric-sql/pglite": "0.5.17" }
+}

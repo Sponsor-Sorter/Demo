@@ -1,9 +1,9 @@
 name: Meadow Market Littles checks
 on:
   push:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
   pull_request:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
 jobs:
   billing-checks:
     runs-on: ubuntu-latest
@@ -13,7 +13,8 @@ jobs:
         with:
           deno-version: v2.x
       - run: deno test --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,GOOGLE_PLAY_SERVICE_ACCOUNT supabase/functions/littles-play-store/rules_test.ts supabase/functions/littles-play-store/provider-diagnostics_test.ts supabase/functions/littles-play-store/service_test.ts
-      - run: deno check supabase/functions/littles-play-store/index.ts supabase/functions/littles-play-notifications/index.ts
+      - run: deno test supabase/functions/littles-ad-round-reward/verify_test.ts
+      - run: deno check supabase/functions/littles-play-store/index.ts supabase/functions/littles-play-notifications/index.ts supabase/functions/littles-ad-rounds/index.ts supabase/functions/littles-ad-round-reward/index.ts
   game-checks:
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +23,9 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/check-littles.cjs
+      - run: node --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs
+      - run: npm ci --ignore-scripts --prefix tools/littles-rewarded-tests
+      - run: npm test --prefix tools/littles-rewarded-tests
   android-build:
     needs: game-checks
     runs-on: ubuntu-latest
@@ -45,10 +49,12 @@ jobs:
         env:
           LITTLES_ADMOB_APP_ID: ca-app-pub-6946008351204848~9683786343
           LITTLES_BANNER_AD_UNIT: ca-app-pub-6946008351204848/8881665550
+          LITTLES_REWARDED_AD_UNIT: ca-app-pub-6946008351204848/6193791997
         run: node scripts/build-android.cjs assemblePlayDebug
       - run: node scripts/build-android.cjs testAcceptanceDebugUnitTest
       - name: Lint production release
         env:
           LITTLES_ADMOB_APP_ID: ca-app-pub-6946008351204848~9683786343
           LITTLES_BANNER_AD_UNIT: ca-app-pub-6946008351204848/8881665550
+          LITTLES_REWARDED_AD_UNIT: ca-app-pub-6946008351204848/6193791997
         run: node scripts/build-android.cjs lintPlayRelease

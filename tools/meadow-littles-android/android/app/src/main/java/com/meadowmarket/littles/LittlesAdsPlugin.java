@@ -3,6 +3,8 @@ package com.meadowmarket.littles;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,11 @@ import android.widget.TextView;
 import com.getcapacitor.*;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.android.ump.*;
+import java.util.UUID;
 
 /** One labelled home-screen banner, with child-directed requests and no AD_ID permission. */
 @CapacitorPlugin(name="LittlesAds")
@@ -21,6 +27,11 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
     private LinearLayout panel;
     private AdView banner;
     private int generation=0;
+    private int rewardGeneration=0;
+    private PluginCall rewardCall;
+    private RewardedInterstitialAd rewardAd;
+    private boolean rewardShowing=false,rewardEarned=false;
+    private final Handler rewardTimer=new Handler(Looper.getMainLooper());
     private final View.OnLayoutChangeListener resize=(view,left,top,right,bottom,oldLeft,oldTop,oldRight,oldBottom)->{
         if(panel!=null && right-left!=oldRight-oldLeft)hide();
     };
@@ -71,6 +82,58 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
         ad.loadAd(new AdRequest.Builder().build());call.resolve();
     });}
     @PluginMethod public void privacy(PluginCall call){trusted(call,()->UserMessagingPlatform.showPrivacyOptionsForm(getActivity(),error->{if(error==null)call.resolve();else call.reject("No advertising privacy choices are required right now.");}));}
+    private String rewardUnit(){return BuildConfig.LITTLES_ADS_DEMO?"ca-app-pub-3940256099942544/5354046379":BuildConfig.LITTLES_REWARDED_AD_UNIT;}
+    @PluginMethod public void rewardedCapabilities(PluginCall call){trusted(call,()->{
+        // First-party installation nonce only. Never read AAID, Android ID or hardware identifiers.
+        android.content.SharedPreferences prefs=getContext().getSharedPreferences("littles-ad-rounds",android.content.Context.MODE_PRIVATE);
+        String client=prefs.getString("client",null);
+        if(client==null){client=UUID.randomUUID().toString();if(!prefs.edit().putString("client",client).commit()){call.reject("Optional adverts are unavailable.");return;}}
+        JSObject result=new JSObject();result.put("contract","littles-ad-round-v1");result.put("package","com.meadowmarket.littles");
+        result.put("format","opt_in_skippable_rewarded_interstitial_v1");result.put("unit",rewardUnit());
+        result.put("client",client);result.put("demo",BuildConfig.LITTLES_ADS_DEMO);result.put("nativeVersion",BuildConfig.VERSION_CODE);
+        call.resolve(result);
+    });}
+    private void finishReward(int token,boolean unavailable){
+        if(token!=rewardGeneration||rewardCall==null)return;
+        PluginCall pending=rewardCall;JSObject result=new JSObject();result.put("closed",true);result.put("earned",rewardEarned);result.put("unavailable",unavailable);
+        rewardGeneration++;rewardCall=null;rewardAd=null;rewardShowing=false;rewardEarned=false;rewardTimer.removeCallbacksAndMessages(null);
+        pending.resolve(result);
+    }
+    @PluginMethod public void showRewarded(PluginCall call){trusted(call,()->{
+        String challenge=call.getString("challenge","");
+        if(!challenge.matches("^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$")){call.reject("Optional advert is not ready.");return;}
+        if(rewardCall!=null||consent==null||!consent.canRequestAds()||!rewardUnit().matches("^ca-app-pub-[0-9]+/[0-9]+$")||!getActivity().hasWindowFocus()){
+            call.reject("Optional adverts are unavailable.");return;
+        }
+        hide();final int token=++rewardGeneration;rewardCall=call;rewardEarned=false;rewardShowing=false;
+        rewardTimer.postDelayed(()->{if(token==rewardGeneration&&!rewardShowing)finishReward(token,true);},30000);
+        try{RewardedInterstitialAd.load(getContext(),rewardUnit(),new AdRequest.Builder().build(),new RewardedInterstitialAdLoadCallback(){
+            @Override public void onAdFailedToLoad(LoadAdError error){finishReward(token,true);}
+            @Override public void onAdLoaded(RewardedInterstitialAd ad){
+                if(token!=rewardGeneration||rewardCall==null)return;
+                if(getActivity()==null||getActivity().isFinishing()||getActivity().isDestroyed()||!getActivity().hasWindowFocus()){
+                    finishReward(token,true);return;
+                }
+                rewardAd=ad;
+                // Only the opaque, server-created challenge is shared with Google; no account/name/email.
+                ad.setServerSideVerificationOptions(new ServerSideVerificationOptions.Builder().setCustomData(challenge).build());
+                ad.setFullScreenContentCallback(new FullScreenContentCallback(){
+                    @Override public void onAdShowedFullScreenContent(){if(token==rewardGeneration){rewardShowing=true;rewardTimer.removeCallbacksAndMessages(null);}}
+                    @Override public void onAdFailedToShowFullScreenContent(AdError error){finishReward(token,true);}
+                    @Override public void onAdDismissedFullScreenContent(){finishReward(token,false);}
+                });
+                // The game calls this only after its explicit opt-in intro; never from a transition timer.
+                rewardShowing=true;rewardTimer.removeCallbacksAndMessages(null);
+                try{ad.show(getActivity(),reward->{if(token==rewardGeneration&&rewardCall!=null)rewardEarned=true;});}
+                catch(RuntimeException error){finishReward(token,true);}
+            }
+        });}catch(RuntimeException error){finishReward(token,true);}
+    });}
+    @PluginMethod public void cancelRewardedLoad(PluginCall call){trusted(call,()->{
+        boolean cancelled=rewardCall!=null&&!rewardShowing;
+        if(cancelled)finishReward(rewardGeneration,false);
+        JSObject result=new JSObject();result.put("cancelled",cancelled);call.resolve(result);
+    });}
     @Override protected void handleOnPause(){hide();}
-    @Override protected void handleOnDestroy(){getBridge().getWebView().removeOnLayoutChangeListener(resize);hide();}
+    @Override protected void handleOnDestroy(){getBridge().getWebView().removeOnLayoutChangeListener(resize);hide();rewardGeneration++;rewardCall=null;rewardAd=null;rewardTimer.removeCallbacksAndMessages(null);}
 }

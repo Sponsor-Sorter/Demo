@@ -2,14 +2,16 @@
 (() => {
   'use strict';
   const key='meadow-littles-rounds-v1',tickets=new Map();
-  let enabled=false,plus=false,blocked=()=>{},storage=globalThis.localStorage,onBegin=()=>null,onComplete=()=>{},bonusRemaining=()=>0;
+  let enabled=false,plus=false,blocked=()=>{},storage=globalThis.localStorage,onBegin=()=>null,onComplete=()=>{},bonusRemaining=()=>0,rewarded=null;
   const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
   function ledger(){try{const x=JSON.parse(storage.getItem(key)||'null');if(x&&/^\d{4}-\d{2}-\d{2}$/.test(x.day)&&x.counts&&typeof x.counts==='object'&&!Array.isArray(x.counts))return {day:x.day,counts:Object.fromEntries(Object.entries(x.counts).filter(([id,n])=>/^[a-z0-9_-]{1,80}$/.test(id)&&Number.isInteger(n)&&n>=0&&n<1000000))};}catch{}return {day:today(),counts:{}};}
   function read(){let x=ledger();const day=today();if(x.day<day)x={day,counts:{}};return x;}
   function extra(id){try{return Math.max(0,Math.min(10,Number(bonusRemaining(id))||0));}catch{return 0;}}
-  function remaining(id){return !enabled||plus?Infinity:Math.max(0,5-(read().counts[id]||0))+extra(id);}
-  function begin(id,onBlocked){if(typeof id!=='string'||!/^[a-z0-9_-]{1,80}$/.test(id))return false;if(remaining(id)===0){tickets.delete(id);onBlocked?.();blocked(id);return false;}let detail=null;try{detail=onBegin(id);}catch{}tickets.set(id,{done:false,detail});return true;}
-  function complete(id){const ticket=tickets.get(id);if(!ticket||ticket.done)return false;ticket.done=true;const x=read(),useBonus=enabled&&!plus&&(x.counts[id]||0)>=5;if(enabled){x.counts[id]=(x.counts[id]||0)+1;try{storage.setItem(key,JSON.stringify(x));}catch{/* Play remains available if device storage fails. */}}try{onComplete(id,ticket.detail,useBonus);}catch{}return true;}
-  function configure(options={}){if(typeof options.enabled==='boolean')enabled=options.enabled;if(typeof options.plus==='boolean')plus=options.plus;if(typeof options.onBlocked==='function')blocked=options.onBlocked;if(options.storage)storage=options.storage;for(const [k,set] of [['onBegin',v=>onBegin=v],['onComplete',v=>onComplete=v],['bonusRemaining',v=>bonusRemaining=v]])if(typeof options[k]==='function')set(options[k]);if(options.resetTickets)tickets.clear();}
-  globalThis.meadowLittlesAccess={begin,complete,remaining,configure,getStatus:()=>({enabled,plus,freeDailyRounds:5})};
+  function remainingBase(id){return !enabled||plus?Infinity:Math.max(0,5-(read().counts[id]||0))+extra(id);}
+  function adRemaining(id){try{return enabled&&!plus?Math.max(0,Math.min(1,Number(rewarded?.remaining(id))||0)):0;}catch{return 0;}}
+  function remaining(id){return remainingBase(id)+adRemaining(id);}
+  function begin(id,onBlocked){if(typeof id!=='string'||!/^[a-z0-9_-]{1,80}$/.test(id))return false;let ad=null;if(remainingBase(id)===0&&adRemaining(id)>0){try{ad=rewarded.begin(id);}catch{}}if(remaining(id)===0||remainingBase(id)===0&&!ad){tickets.delete(id);onBlocked?.();blocked(id);return false;}let detail=null;try{detail=onBegin(id);}catch{}tickets.set(id,{done:false,detail,rewarded:ad});return true;}
+  function complete(id){const ticket=tickets.get(id);if(!ticket||ticket.done)return false;const useAd=enabled&&!plus&&remainingBase(id)===0&&!!ticket.rewarded;if(useAd){try{if(rewarded.complete(ticket.rewarded)!==true)return false;}catch{return false;}}ticket.done=true;const x=read(),useBonus=enabled&&!plus&&(x.counts[id]||0)>=5&&!useAd;if(enabled){x.counts[id]=(x.counts[id]||0)+1;try{storage.setItem(key,JSON.stringify(x));}catch{/* Play remains available if device storage fails. */}}try{onComplete(id,ticket.detail,useBonus);}catch{}return true;}
+  function configure(options={}){if(typeof options.enabled==='boolean')enabled=options.enabled;if(typeof options.plus==='boolean')plus=options.plus;if(typeof options.onBlocked==='function')blocked=options.onBlocked;if(options.storage)storage=options.storage;if(options.rewarded&&['remaining','begin','complete'].every(k=>typeof options.rewarded[k]==='function'))rewarded=options.rewarded;for(const [k,set] of [['onBegin',v=>onBegin=v],['onComplete',v=>onComplete=v],['bonusRemaining',v=>bonusRemaining=v]])if(typeof options[k]==='function')set(options[k]);if(options.resetTickets)tickets.clear();}
+  globalThis.meadowLittlesAccess={begin,complete,remaining,remainingBase,configure,getStatus:()=>({enabled,plus,freeDailyRounds:5})};
 })();
