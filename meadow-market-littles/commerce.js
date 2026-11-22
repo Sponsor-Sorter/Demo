@@ -8,7 +8,20 @@
  let lastPublicLimits=false;try{lastPublicLimits=localStorage.getItem(roundPolicyKey)==='enabled';}catch{}
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
- let giftController=null,giftUnmount=null,rewarded=null,limitDialog=null;
+ let giftController=null,giftUnmount=null,rewarded=null,limitDialog=null,limitRender=null;
+ let consentCheck=null,lastConsentAttempt=-Infinity,availabilityCheck=null,lastAvailabilityAttempt=-Infinity;
+ async function consentReadiness(){
+  if(!ads||adsReady)return adsReady;if(consentCheck)return consentCheck;
+  const now=Date.now();if(now>=lastConsentAttempt&&now-lastConsentAttempt<60000)return false;lastConsentAttempt=now;
+  const pending=(async()=>{try{adsReady=(await ads.consent()).canRequestAds===true;}catch{adsReady=false;}return adsReady;})();
+  consentCheck=pending;try{return await pending;}finally{if(consentCheck===pending)consentCheck=null;}
+ }
+ async function checkAdAvailability(game){
+  const parent=window.meadowLittlesCloud?.getStatus(),actor=parent?.userId,stamp=authEpoch;if(!actor||parent.parentReady!==true||!ads||!rewarded||!rewarded.canCheck(game))return false;if(availabilityCheck)return availabilityCheck;
+  const now=Date.now();if(now>=lastAvailabilityAttempt&&now-lastAvailabilityAttempt<60000)return false;lastAvailabilityAttempt=now;
+  const pending=(async()=>{await consentReadiness();const current=window.meadowLittlesCloud?.getStatus();if(stamp!==authEpoch||actor!==current?.userId||current.parentReady!==true||!adsReady)return false;await refresh();return stamp===authEpoch&&actor===window.meadowLittlesCloud?.getStatus().userId&&!!rewarded.available(game);})();
+  availabilityCheck=pending;try{return await pending;}finally{if(availabilityCheck===pending)availabilityCheck=null;}
+ }
  const responseSeq=new WeakMap();
  const canCheckout=()=>!!(store&&capabilities&&status?.checkout_enabled&&status?.parent_ready&&(!status?.checkout_test_only||capabilities.adsDemo===true));
  const decode=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
@@ -24,10 +37,10 @@
  async function refresh(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;if(!id){plus=false;status=null;updateAccess();return;}
   const before=appliedSeq;let cached=false;try{const saved=localStorage.getItem(proofKey);cached=!!saved&&await validProof(saved,id);}catch{}if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId)return;if(before===appliedSeq){plus=cached;updateAccess();}
   try{await accept(await request('status'));}catch{/* A signed, unexpired same-account proof can bridge a short outage. */}
-  if(stamp===authEpoch)await rewarded?.refresh();
+  if(stamp===authEpoch){await rewarded?.refresh();if(stamp===authEpoch&&id===window.meadowLittlesCloud?.getStatus().userId)limitRender?.();}
  }
  async function refreshVerified(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;await accept(await request('status'));if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId||status?.user_id!==id)throw Error('Account changed');return {parentReady:status.parent_ready===true,plus};}
- function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;rewarded?.accountChanged();limitDialog?.close();plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
+ function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;availabilityCheck=null;rewarded?.accountChanged();limitDialog?.close();plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
  async function settle(rows=[]){let pending=false;for(const row of rows){if(row.pending){pending=true;continue;}if(typeof row.token==='string')await accept(await request('verify',{token:row.token}));}await refresh();return pending;}
  async function recover(){if(!store||!status?.parent_ready)return;try{const result=await store.restore();await settle(result.purchases);}catch{/* Parent-facing Restore remains available. */}}
  function note(text){const node=dialog?.querySelector('[data-commerce-note]');if(node)node.textContent=text;}
@@ -65,21 +78,22 @@
  }
  function limitReached(game){
   window.meadowAudio?.stopVoice();limitDialog?.close();
-  const d=document.createElement('dialog'),stamp=authEpoch;let watching=false,disposed=false,lastCue=null;
+  const d=document.createElement('dialog'),stamp=authEpoch;let watching=false,checking=false,disposed=false,lastCue=null;
   const name=options.gameName?.(game)||'this game';d.className='littles-parent littles-play-limit';d.setAttribute('aria-label','More play choices');
-  d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>More little adventures</h2><p>You’ve finished today’s rounds of '+esc(name)+'.</p><section data-ad-offer hidden><small>Advertisement · optional</small><p>Watch an advert for one extra round of this game. You can close it early; the extra round is earned when it finishes.</p><button data-watch class="small-button">Watch advert · 1 extra round</button></section><p data-ad-note role="status" aria-live="polite"></p><button data-ad-play class="primary-button" hidden>Play this game</button><button data-another class="primary-button">Choose another game</button></main>';
+  d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>More little adventures</h2><p>You’ve finished today’s rounds of '+esc(name)+'.</p><section data-ad-offer hidden><small>Advertisement · optional</small><p>Watch an advert for one extra round of this game. You can close it early; the extra round is earned when it finishes.</p><button data-watch class="small-button">Watch advert · 1 extra round</button></section><p data-ad-note role="status" aria-live="polite"></p><button data-ad-check class="small-button" hidden>Check for an advert</button><button data-ad-play class="primary-button" hidden>Play this game</button><button data-another class="primary-button">Choose another game</button></main>';
   const active=()=>!disposed&&d.open&&stamp===authEpoch;
-  const note=d.querySelector('[data-ad-note]'),watch=d.querySelector('[data-watch]'),play=d.querySelector('[data-ad-play]'),another=d.querySelector('[data-another]');
-  function render(){if(!active())return;const ready=access.remaining(game)>0,offer=rewarded?.available(game);d.querySelector('[data-ad-offer]').hidden=ready||!offer;play.hidden=!ready;another.className=ready?'small-button':'primary-button';watch.disabled=watching;const cue=ready?'ad91-rhys-ready':offer?'ad91-rhys-offer':null;if(cue&&cue!==lastCue){lastCue=cue;window.meadowAudio?.speak(cue);}}
-  function dispose(){if(disposed)return;disposed=true;if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
+  const note=d.querySelector('[data-ad-note]'),watch=d.querySelector('[data-watch]'),check=d.querySelector('[data-ad-check]'),play=d.querySelector('[data-ad-play]'),another=d.querySelector('[data-another]');
+  function render(){if(!active())return;const ready=access.remaining(game)>0,offer=rewarded?.available(game);d.querySelector('[data-ad-offer]').hidden=ready||!offer;check.hidden=ready||!!offer||!rewarded?.canCheck(game)||watching;check.disabled=checking;check.textContent=checking?'Checking adverts…':'Check for an advert';play.hidden=!ready;another.className=ready?'small-button':'primary-button';watch.disabled=watching||checking;const cue=ready?'ad91-rhys-ready':offer?'ad91-rhys-offer':null;if(cue&&cue!==lastCue){lastCue=cue;window.meadowAudio?.speak(cue);}}
+  function dispose(){if(disposed)return;disposed=true;if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitRender===render)limitRender=null;if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
   d.addEventListener('close',dispose,{once:true});d.addEventListener('cancel',()=>{d.close();dispose();});another.onclick=()=>d.close();
+  check.onclick=async()=>{if(!active()||watching||checking)return;checking=true;note.textContent='Checking advert availability…';render();try{await checkAdAvailability(game);}catch{}if(!active())return;checking=false;note.textContent=access.remaining(game)>0?'Your extra round is ready.':rewarded?.available(game)?'':'There is no advert available right now. Other games are ready to play.';render();};
   play.onclick=()=>{if(!active()||access.remaining(game)<=0)return;d.close();options.playGame?.(game);};
   watch.onclick=async()=>{if(!active()||watching)return;if(!rewarded?.available(game)){note.textContent='There is no advert available right now. Other games are ready to play.';render();return;}window.meadowAudio?.stopVoice();watching=true;watch.disabled=true;note.textContent='Loading the optional advert…';another.textContent='No thanks · choose another game';
    const result=await rewarded.watch(game);if(!active())return;watching=false;
    note.textContent=({ready:'One extra round is ready.',already_claimed:'Your extra round is ready.',pending:'Your reward is being checked. You can choose another game and return shortly.',cancelled:'Advert closed. Choose another game, or try again when you like.',unavailable:'There is no advert available right now. Other games are ready to play.',storage_unavailable:'This device could not save the extra round. Please choose another game.'})[result.status]||'No extra round was added. Other games are ready to play.';
    another.textContent='Choose another game';render();
   };
-  document.body.append(d);limitDialog=d;d.showModal();syncBanner();
+  document.body.append(d);limitDialog=d;limitRender=render;d.showModal();syncBanner();
   rewarded?.refresh().then(()=>{if(active())render();});
  }
  function bannerHeight(value){const height=Number(value);document.body.style.setProperty('--littles-ad-height',(Number.isFinite(height)?Math.max(0,height):0)+'px');document.body.style.paddingBottom='';}
@@ -88,7 +102,7 @@
   if(!bannerAllowed()){bannerRequested=false;bannerHeight(0);try{await ads?.hideBanner();}catch{}return;}
   if(bannerRequested)return;bannerRequested=true;try{await ads.showBanner({demoOnly:status.ads_test_only===true});}catch{bannerRequested=false;}
  }
- async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{if(bannerAllowed())bannerHeight(v.height);else syncBanner();});ads.addListener('bannerHidden',()=>{bannerRequested=false;bannerHeight(0);});try{adsReady=(await ads.consent()).canRequestAds===true;}catch{adsReady=false;}}
+ async function init(settings={}){options=settings;access.configure({onBlocked:limitReached});if(store)try{const cap=await store.capabilities();if(cap.contract===config.contract&&cap.package===config.package)capabilities=cap;}catch{}if(ads){ads.addListener('bannerVisible',v=>{if(bannerAllowed())bannerHeight(v.height);else syncBanner();});ads.addListener('bannerHidden',()=>{bannerRequested=false;bannerHeight(0);});await consentReadiness();}
   if(ads&&window.meadowLittlesRewarded)rewarded=window.meadowLittlesRewarded.create({ads,access,commerce:()=>({plus}),consentReady:()=>adsReady});
   if(store)store.addListener('purchasesUpdated',r=>settle(r.purchases).catch(()=>{}));
   new MutationObserver(syncBanner).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});

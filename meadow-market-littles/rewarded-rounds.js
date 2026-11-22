@@ -15,7 +15,7 @@
   async function refresh(){
    if(refreshing)return refreshing;const stamp=epoch,actor=cloud()?.getStatus().userId;policy={enabled:false};
    const pending=(async()=>{try{
-    if(!actor||!ads||!consentReady())return;
+    if(!actor||!ads)return;
     const result=await ads.rewardedCapabilities();
     if(!same(stamp,actor)||result.contract!=='littles-ad-round-v1'||result.package!=='com.meadowmarket.littles'||result.nativeVersion<15||result.demo||result.format!=='opt_in_skippable_rewarded_interstitial_v1')return;
     caps=result;const status=await call('status');if(!same(stamp,actor)||caps!==result||status.unit!==result.unit)return;
@@ -27,7 +27,7 @@
   async function watch(game){const stamp=epoch,actor=cloud()?.getStatus().userId;let result=await core.watch(game);for(const delay of [500,1000,1500,2000]){if(result.status!=='pending')break;await new Promise(resolve=>setTimeout(resolve,delay));if(!same(stamp,actor))return {status:'account_changed'};result=await core.recover(game);}return result;}
   function cancel(){if(core.getStatus().phase==='preparing')core.accountChanged();ads?.cancelRewardedLoad?.().catch(()=>{});}
   function accountChanged(){epoch++;caps=null;policy={enabled:false};refreshing=null;core.accountChanged();ads?.cancelRewardedLoad?.().catch(()=>{});}
-  return {refresh,watch,available:core.available,remaining:core.remaining,cancel,accountChanged};
+  return {refresh,watch,available:core.available,canCheck:core.canCheck,remaining:core.remaining,cancel,accountChanged};
  }
  window.meadowLittlesRewarded={create};
 })();

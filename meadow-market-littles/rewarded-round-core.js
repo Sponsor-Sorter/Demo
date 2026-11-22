@@ -39,13 +39,15 @@
       if (!s || !value || context().plus) return 0;
       return value.grants.filter(r => r.actor === s.actor && r.game === game && !r.used).length;
     }
-    function available(game) {
+    function availability(game, requireConsent) {
       const s = scope(game), c = context(), p = policy(), value = read();
-      return !!(s && value && !busy && !c.plus && c.parentReady && c.canRequestAds && c.remainingBaseRounds(game) === 0 &&
+      return !!(s && value && !busy && !c.plus && c.parentReady && (!requireConsent || c.canRequestAds) && c.remainingBaseRounds(game) === 0 &&
         eligiblePolicy(p) &&
         typeof prepare === 'function' && typeof show === 'function' && typeof settle === 'function' && typeof verifyGrant === 'function' &&
         remaining(game) === 0 && !value.pending.some(r => r.actor === s.actor && r.game === game && r.expiresAt > now()));
     }
+    const available = game => availability(game, true);
+    const canCheck = game => availability(game, false);
     function removePending(s, challenge) {
       const value = read(); if (!value) return false;
       value.pending = value.pending.filter(r => !(r.actor === s.actor && r.game === s.game && r.challenge === challenge));
@@ -116,7 +118,7 @@
       grant.used = true; return write(value);
     }
     const pendingGames = () => [...new Set((read()?.pending || []).filter(r => r.actor === context().actor).map(r => r.game))];
-    return { available, watch, recover, remaining, begin, complete, pendingGames, accountChanged: () => { generation++; }, getStatus: () => ({ busy, phase }) };
+    return { available, canCheck, watch, recover, remaining, begin, complete, pendingGames, accountChanged: () => { generation++; }, getStatus: () => ({ busy, phase }) };
   }
   return { create, CONTRACT, KEY };
 });
