@@ -113,6 +113,7 @@ require('./check-meadow-mission-claims.cjs');
 require('./check-meadow-rotations.cjs');
 
 require('./check-meadow-build-actions.cjs');
+require('./check-meadow-build-layout.cjs');
 
 require('./check-meadow-directional-assets.cjs');
 

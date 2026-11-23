@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 24 November 2026 — Layout view candidate 257
+
+Optional Build Layout view fades tall unselected art and reveals its actual ground footprint, so overlapping canopies do not intercept neighbouring crop taps. Crops keep their soil/growth size; selected/moving items and placement ghosts remain readable. The button shares the existing two-row control height, yields to rotation controls and resets on leaving Build. It changes no farm/save/resource data. Actual-module lifecycle and existing Build checks pass; isolated HD-art portrait/landscape overlap checks passed with identical tile rectangles and normal artwork restored. Final release review, CI/publication and native acceptance remain separate.
+
+Web 256 and gateway 72 are live. Samsung normal 255→256 installation, visible Settings 256 and final Done→Tend passed. All 53 Coast objects and both hired-worker assignments were retained; no layout move or manual purchase was made. The original well remains unreachable in the dense stress layout, with both hires reaching twelve jobs and a blocked-rest state. The full physical work/walk/drink/resume cycle and owned-map switching remain incomplete. The phone is released; Layout view is intended to make the conditional crop/well clearance unambiguous before that acceptance is retried.
+
 ## 24 November 2026 — named Build selection candidate 256
 
 The selected-item toolbar now names the actual crop/buildable and its footprint before Details, Move, Rotate or Sell. Its accessible name and item identity follow selection; hiding or clearing selection removes the old label. The four existing actions, hold-to-pick-up, placement checks and authoritative commands retain their behavior. Focused Build checks pass, and the actual toolbar module passed isolated 360×740 and 844×390 browser layouts, selection switching, Move-target delivery and clearing. This is component acceptance, not a complete new farm or phone pass. Publication is pending normal review and CI.

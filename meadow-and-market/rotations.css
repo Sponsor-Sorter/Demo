@@ -31,3 +31,17 @@
 
 /* Identify the selected item before any move, rotation or sale. */
 .object-action-label{grid-column:1/-1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 8px;border:1px solid #fff4d1;border-radius:9px;background:#fff7e8f2;color:#68431f;text-align:center;font:700 11px/1.3 system-ui;pointer-events:none}
+
+/* Optional construction view reveals occupied ground without changing the map. */
+#build-tray:has(#build-layout-toggle:not([hidden])) .tray-head-actions{grid-template-columns:44px 54px}
+#build-tray:has(#build-layout-toggle:not([hidden])) #build-done,#build-tray:has(#build-layout-toggle:not([hidden])) #build-minimize{grid-column:2}
+#build-tray #build-layout-toggle{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:44px;padding:6px 3px;font:700 10px/1.2 system-ui;touch-action:manipulation}
+#build-layout-toggle[hidden]{display:none!important}
+#build-layout-toggle svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#build-tray #build-layout-toggle[aria-pressed=true]{background:#f2d390;border-color:#9e7748}
+#build-layout-toggle:focus-visible{outline:2px solid #9e7748;outline-offset:2px}
+.building-mode.layout-view .farm-grid>.farm-object:not(.plot):not(.selected):not(.movable):not(.placement-ghost)>:not(.object-footprint){opacity:.15!important;pointer-events:none!important}
+.building-mode.layout-view .farm-grid>.farm-object:not(.plot):not(.selected):not(.movable):not(.placement-ghost)>:not(.object-footprint) *{pointer-events:none!important}
+.building-mode.layout-view .farm-grid>.farm-object:not(.plot)>.object-footprint{opacity:1!important;background:#fff0c36b!important}
+.building-mode.layout-view .farm-grid>.farm-object.selected>.object-footprint{opacity:1!important;background:#f4cc7573!important}
+.building-mode.layout-view .crop-need-layer{display:none}
