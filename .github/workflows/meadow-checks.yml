@@ -1,10 +1,44 @@
 name: Meadow Markets regression checks
 on:
   push:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-security-tests/**', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
   pull_request:
-    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+    paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-security-tests/**', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+concurrency:
+  group: meadow-checks-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
 jobs:
+  security-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.gitignore
+            /deno.lock
+            /supabase/
+            /scripts/
+            /tools/meadow-security-tests/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/meadow-security-tests/package-lock.json
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Verify frozen central evidence contract
+        run: node tools/meadow-security-tests/check-contract.cjs
+      - name: Exercise trusted runtime and commerce boundaries
+        run: deno test --no-config --allow-env=MEADOW_SECURITY_CONTRACT --allow-read=tools/meadow-security-tests/fixtures scripts/check-meadow-security-v1.ts scripts/check-meadow-commerce-security-v1.ts scripts/check-meadow-store194.ts scripts/check-meadow-gateway204.ts scripts/check-meadow-control222.ts
+      - name: Install pinned in-memory PostgreSQL test engine
+        run: npm ci --ignore-scripts --no-audit --no-fund --prefix tools/meadow-security-tests
+      - name: Exercise actual SQL rollback and reward invariants
+        run: node --test tools/meadow-security-tests/check-sql.cjs tools/meadow-security-tests/check-commerce-sql.cjs
   game-checks:
     runs-on: ubuntu-latest
     steps:

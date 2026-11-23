@@ -1,10 +1,12 @@
 import {createFarmBaseline} from '../_shared/meadow-farm-origin212.ts';
 import {applyFarmCommands,FarmActionError} from '../_shared/meadow-farm-actions204.ts';
+import {CommandReceiptConflictError,commandReceiptConflictDetail,createCommandSecurityObserver,type SecurityEmitter,type HeartbeatEmitter,type FailureReporter} from '../_shared/meadow-security-v1.ts';
 type Data=Record<string,any>;
-export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>;requireSession?:boolean;event?:(user:string,id:string,code:string)=>Promise<unknown>};
+export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>;requireSession?:boolean;event?:(user:string,id:string,code:string)=>Promise<unknown>;securitySignal?:SecurityEmitter;securityHeartbeat?:HeartbeatEmitter;securityFailure?:FailureReporter;securityNow?:()=>number;securityTimeoutMs?:number};
 const uuid=(x:unknown)=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
 const origins=new Set(['https://sponsorsorter.com','https://localhost','http://localhost:8771','http://127.0.0.1:8773']);
-export function farmDatabaseError(code:unknown,message:unknown=''){
+export function farmDatabaseError(code:unknown,message:unknown='',details:unknown=''){
+ if(code==='22023'&&message==='Command receipt reused for different actions'&&details===commandReceiptConflictDetail)return new CommandReceiptConflictError();
  if(String(code)==='28000')return new FarmActionError('SESSION_EXPIRED','Sign in again to reconnect this farm.');
  if(['MEADOW_BANNED','MEADOW_SOCIAL_RESTRICTED','MEADOW_MAINTENANCE'].includes(String(message)))return new FarmActionError(String(message),'Open Settings → Community & blocked farms to review this notice. Your saved farm is retained.');
  return ['22023','22P02'].includes(String(code))?new FarmActionError('INVALID_REQUEST','Reopen your saved farm before retrying this action.'):new Error('FARM_UNAVAILABLE');
@@ -17,7 +19,9 @@ async function read(req:Request){
  const bytes=new Uint8Array(length);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
  try{return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{throw new FarmActionError('INVALID_REQUEST','Choose a valid farm action.');}
 }
-export function farmHandler(services:Services){return async(req:Request)=>{
+export function farmHandler(services:Services){
+ const observer=createCommandSecurityObserver({emit:services.securitySignal,heartbeat:services.securityHeartbeat,onFailure:services.securityFailure,now:services.securityNow,timeoutMs:services.securityTimeoutMs});
+ return async(req:Request)=>{
  let actor='',requestId='';
  const origin=req.headers.get('origin')||'',headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin','Access-Control-Allow-Origin':origins.has(origin)?origin:'https://sponsorsorter.com','Access-Control-Allow-Headers':'authorization,apikey,content-type,x-client-info','Access-Control-Allow-Methods':'POST,OPTIONS'};
  const reply=(status:number,body:unknown)=>new Response(JSON.stringify(body),{status,headers});
@@ -30,6 +34,7 @@ export function farmHandler(services:Services){return async(req:Request)=>{
   const body=await read(req);
   if(!body||Array.isArray(body)||typeof body!=='object'||Object.keys(body).some(k=>!['request_id','expected_revision','commands'].includes(k))||!uuid(body.request_id)||!Number.isSafeInteger(body.expected_revision)||body.expected_revision<0||!Array.isArray(body.commands)||!body.commands.length||body.commands.length>32)throw new FarmActionError('INVALID_REQUEST','Reopen the saved farm before trying again.');
   requestId=body.request_id;
+  if(services.requireSession)await observer.heartbeat();
   const args={p_user:user!.id,...(services.requireSession?{p_session:user!.session_id}:{}),p_request_id:body.request_id,p_body:{expected_revision:body.expected_revision,commands:body.commands}};
   const context=await services.rpc('meadow_market_read_farm_command',args);
   if(context.enabled===false)return reply(409,{error:'COMMAND_ROLLOUT_PENDING'});
@@ -43,6 +48,7 @@ export function farmHandler(services:Services){return async(req:Request)=>{
   return reply(answer.conflict?409:200,answer);
  }catch(error){
   if(error instanceof FarmActionError){
+   if(error instanceof CommandReceiptConflictError&&actor&&requestId)await observer.report(actor,requestId);
    if(actor&&requestId&&error.code.startsWith('MEADOW_'))try{await services.event?.(actor,requestId,error.code)}catch{/* Telemetry cannot change action outcome. */}
    return reply(error.code==='SESSION_EXPIRED'?401:error.code.startsWith('MEADOW_')?403:error.code==='REQUEST_TOO_LARGE'?413:422,{error:error.code,message:error.message});
   }
