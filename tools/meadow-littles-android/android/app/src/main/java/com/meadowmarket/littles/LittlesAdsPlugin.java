@@ -24,6 +24,7 @@ import java.util.UUID;
 @CapacitorPlugin(name="LittlesAds")
 public class LittlesAdsPlugin extends LittlesPlayPlugin {
     private ConsentInformation consent;
+    private boolean adsInitialized=false;
     private LinearLayout panel;
     private AdView banner;
     private int generation=0;
@@ -44,12 +45,21 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
             .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G).build());
         consent=UserMessagingPlatform.getConsentInformation(getContext());
         ConsentRequestParameters params=new ConsentRequestParameters.Builder().setTagForUnderAgeOfConsent(true).build();
-        consent.requestConsentInfoUpdate(getActivity(),params,()->UserMessagingPlatform.loadAndShowConsentFormIfRequired(getActivity(),error->{
-            JSObject value=new JSObject();value.put("canRequestAds",error==null&&consent.canRequestAds());
-            value.put("privacyOptionsRequired",consent.getPrivacyOptionsRequirementStatus()==ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
-            if(error==null&&consent.canRequestAds())MobileAds.initialize(getContext(),status->{});call.resolve(value);
-        }),error->call.reject("Advertising is unavailable. Play can continue."));
+        consent.requestConsentInfoUpdate(getActivity(),params,
+            ()->UserMessagingPlatform.loadAndShowConsentFormIfRequired(getActivity(),error->resolveConsent(call,"form",error)),
+            error->resolveConsent(call,"update",error));
     });}
+    private void resolveConsent(PluginCall call,String stage,FormError error){
+        // UMP may still permit ads using valid prior-session consent after a refresh error.
+        // Always use the SDK's current decision; never infer consent from success or failure.
+        boolean allowed=consent.canRequestAds();
+        JSObject value=new JSObject();value.put("canRequestAds",allowed);
+        value.put("privacyOptionsRequired",consent.getPrivacyOptionsRequirementStatus()==ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
+        value.put("consentErrorStage",error==null?"none":stage);
+        value.put("consentErrorCode",error==null?0:error.getErrorCode());
+        if(allowed&&!adsInitialized){MobileAds.initialize(getContext(),status->{});adsInitialized=true;}
+        call.resolve(value);
+    }
     private void hide(){boolean existed=panel!=null;generation++;if(banner!=null){banner.destroy();banner=null;}if(panel!=null){ViewGroup parent=(ViewGroup)panel.getParent();if(parent!=null)parent.removeView(panel);panel=null;}if(existed)notifyListeners("bannerHidden",new JSObject());}
     @PluginMethod public void hideBanner(PluginCall call){trusted(call,()->{hide();call.resolve();});}
     @PluginMethod public void showBanner(PluginCall call){trusted(call,()->{

@@ -74,6 +74,8 @@ jobs:
           distribution: temurin
           java-version: '21'
       - run: npm ci --ignore-scripts
+      - name: Check native consent success and error callbacks
+        run: node scripts/check-ad-consent-callbacks.cjs
       - run: npm run android:debug
       - name: Check compiled production-flavor launcher
         env:
