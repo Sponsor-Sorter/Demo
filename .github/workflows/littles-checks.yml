@@ -56,6 +56,8 @@ jobs:
       - run: node --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs scripts/check-littles-rewarded-transport.cjs
       - run: npm ci --ignore-scripts --prefix tools/littles-rewarded-tests
       - run: npm test --prefix tools/littles-rewarded-tests
+      - name: Check actual native-version admission SQL
+        run: node scripts/check-littles-ad-native97-sql.cjs
   android-build:
     needs: game-checks
     runs-on: ubuntu-latest
@@ -74,6 +76,10 @@ jobs:
           distribution: temurin
           java-version: '21'
       - run: npm ci --ignore-scripts
+      - name: Check native consent success and error callbacks
+        run: node scripts/check-ad-consent-callbacks.cjs
+      - name: Check actual reward callbacks and diagnostic trace
+        run: node scripts/check-ad-reward-callbacks.cjs
       - run: npm run android:debug
       - name: Check compiled production-flavor launcher
         env:
