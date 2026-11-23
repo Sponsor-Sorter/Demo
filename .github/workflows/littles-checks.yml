@@ -1,10 +1,39 @@
 name: Meadow Market Littles checks
 on:
   push:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
   pull_request:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
+permissions:
+  contents: read
 jobs:
+  security-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /deno.lock
+            /supabase/
+            /tools/littles-cloud-security95.test.cjs
+            /meadow-market-littles/littles-cloud.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Verify frozen central evidence contract
+        run: node -e "require('node:assert/strict').equal(require('node:crypto').createHash('sha256').update(require('node:fs').readFileSync('supabase/functions/_shared/fairplay-security-contract-v1.mjs')).digest('hex'),'6571d640574024bbd40af8b1e3ce6a69b57ab1b3b3be2e2bffa3c136427e821f')"
+      - name: Exercise unchanged client retries and explicit save choices
+        run: node tools/littles-cloud-security95.test.cjs
+      - name: Exercise authenticated save evidence and ordinary restore exclusions
+        run: deno test --node-modules-dir=none --frozen --allow-env=SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_PUBLISHABLE_KEY,SUPABASE_SERVICE_ROLE_KEY,GOOGLE_PLAY_SERVICE_ACCOUNT --deny-net supabase/functions/_shared/littles-security95_test.ts supabase/functions/meadow-littles-fairplay/security95_test.ts supabase/functions/littles-play-store/security95_test.ts supabase/functions/littles-play-store/service_test.ts supabase/functions/littles-play-store/rules_test.ts supabase/functions/meadow-littles-fairplay/contracts_test.ts
+      - name: Typecheck both backend entrypoints
+        run: deno check --node-modules-dir=none --frozen supabase/functions/meadow-littles-fairplay/index.ts supabase/functions/littles-play-store/index.ts
   billing-checks:
     runs-on: ubuntu-latest
     steps:

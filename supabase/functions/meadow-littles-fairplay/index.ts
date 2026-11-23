@@ -1,5 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4'
 import { invalid, isObject, parseBody, type Json } from './contracts.ts'
+import { createLittlesEvidence } from '../_shared/littles-security95.ts'
 
 const APP = 'littles'
 const BUILD = 53
@@ -28,6 +29,7 @@ function emptyModeration() {
 const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
 const publicKey = Deno.env.get('SUPABASE_ANON_KEY') ?? Deno.env.get('SUPABASE_PUBLISHABLE_KEY') ?? ''
 const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+let evidence: ReturnType<typeof createLittlesEvidence> | undefined
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS })
@@ -57,6 +59,9 @@ Deno.serve(async (req) => {
     const service = createClient(supabaseUrl, serviceKey, {
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     })
+    evidence ??= createLittlesEvidence(async (name, args) =>
+      await service.rpc(name, args).abortSignal(AbortSignal.timeout(1000)), 'littles-cloud-save')
+    await evidence.heartbeat()
 
     async function isMember() {
       const { data, error } = await service.from('meadow_littles_profiles').select('user_id').eq('user_id', userId).maybeSingle()
@@ -129,7 +134,10 @@ Deno.serve(async (req) => {
         p_save_data: input.p_save_data,
         p_expected_user_id: userId,
       })
-      if (error) return reply(error.message === 'LITTLES_BANNED' ? 403 : 409, { code: error.message.startsWith('LITTLES_') ? error.message : 'LITTLES_CLOUD_UNAVAILABLE' })
+      if (error) {
+        await evidence.rejectedSave(userId, input.p_request_id, error.code, error.message)
+        return reply(error.message === 'LITTLES_BANNED' ? 403 : 409, { code: error.message.startsWith('LITTLES_') ? error.message : 'LITTLES_CLOUD_UNAVAILABLE' })
+      }
       return reply(200, { ok: true, result: data })
     }
 

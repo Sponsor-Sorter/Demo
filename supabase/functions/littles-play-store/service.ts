@@ -1,8 +1,9 @@
 import { acknowledge, sha, subscription } from './google.ts';
 import { subscriptionAccount, validateSubscription } from './rules.ts';
-export async function rpc(name: string, body: unknown, bearer?: string) {
+import { createLittlesEvidence } from '../_shared/littles-security95.ts';
+export async function rpc(name: string, body: unknown, bearer?: string, timeoutMs = 12000) {
   const secret = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, base = Deno.env.get('SUPABASE_URL')!;
-  const response = await fetch(base + '/rest/v1/rpc/' + name, { method: 'POST', signal: AbortSignal.timeout(12000), headers: { apikey: secret, Authorization: 'Bearer ' + (bearer || secret), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const response = await fetch(base + '/rest/v1/rpc/' + name, { method: 'POST', signal: AbortSignal.timeout(timeoutMs), headers: { apikey: secret, Authorization: 'Bearer ' + (bearer || secret), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (!response.ok) throw new Error('LITTLES_STORE_UNAVAILABLE');
   // PostgREST returns 204 for this void write. It has no JSON body to decode.
   if (response.status === 204) {
@@ -11,6 +12,9 @@ export async function rpc(name: string, body: unknown, bearer?: string) {
   }
   return response.json();
 }
+// A wrong-account restore is ordinary billing behavior and emits no player accusation.
+const evidence = createLittlesEvidence((name, body) => rpc(name, body, undefined, 1000), 'littles-play-store');
+export const noteStoreRuntime = () => evidence.heartbeat();
 export async function reconcile(token: string, expectedOwner?: string) {
   // The start timestamp prevents a slower earlier lookup overwriting a later lookup.
   const observed = new Date().toISOString(), purchase = await subscription(token);
