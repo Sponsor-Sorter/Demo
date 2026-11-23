@@ -10,5 +10,6 @@ Deno.serve(farmHandler({requireSession:true,
  identity:bearer=>call('/rest/v1/rpc/meadow_market_control_session',{},bearer),
  rpc:(name,body)=>call('/rest/v1/rpc/'+(controlledRoutes[name]||name),body),
  event:(user,id,code)=>call('/rest/v1/rpc/meadow_market_control_event',{p_user:user,p_event:id,p_code:code}),
- securitySignal:(body,signal)=>call('/rest/v1/rpc/fairplay_game_security_signal_v1',body,secret,signal)
+ securitySignal:(body,signal)=>call('/rest/v1/rpc/fairplay_game_security_signal_v1',body,secret,signal),
+ securityHeartbeat:(body,signal)=>call('/rest/v1/rpc/fairplay_game_detector_heartbeat_v1',body,secret,signal)
 }));
