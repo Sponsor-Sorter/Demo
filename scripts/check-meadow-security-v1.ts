@@ -168,7 +168,7 @@ Deno.test('Heartbeat outage preserves a genuine reducer/commit result without an
  equal(writes,['meadow_market_read_farm_command','meadow_market_commit_farm_command']);assert(!f.signals.length&&f.failures.length===1);
 });
 Deno.test('The emitted request passes the actual central contract; forbidden context is rejected',async()=>{
- const url=Deno.env.get('MEADOW_SECURITY_CONTRACT');if(!url)throw Error('Set MEADOW_SECURITY_CONTRACT to the frozen central security-contract.mjs file URL');
+ const url=Deno.env.get('MEADOW_SECURITY_CONTRACT')||new URL('../tools/meadow-security-tests/fixtures/security-contract-v1.mjs',import.meta.url).href;
  const {validateSecuritySignal}=await import(url);const s=await commandReceiptSignal(actor,requestId);
  const packet={app:s.p_app,actor:s.p_actor,event_id:s.p_event_id,source:s.p_source,code:s.p_code,context:s.p_context};
  equal(validateSecuritySignal(packet),s);

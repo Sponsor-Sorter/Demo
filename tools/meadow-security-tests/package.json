@@ -1,0 +1,11 @@
+{
+  "name": "meadow-security-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test check-sql.cjs check-commerce-sql.cjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.16"
+  }
+}

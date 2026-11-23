@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "contract_version": 1,
+  "source": "FairplayAdmin/cloud/security-contract.mjs",
+  "sha256": "6571d640574024bbd40af8b1e3ce6a69b57ab1b3b3be2e2bffa3c136427e821f",
+  "scope": "Test-only frozen service contract. No runtime imports. Refresh deliberately after central contract review."
+}

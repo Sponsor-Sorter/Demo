@@ -111,7 +111,7 @@ Deno.test('Actual ECDSA verifier gates SSV handler; tampered signed actor never 
  }finally{globalThis.fetch=original;}
 });
 Deno.test('Commerce evidence matches frozen central contract and remains immutable on repeated verified conflicts',async()=>{
- const url=Deno.env.get('MEADOW_SECURITY_CONTRACT');if(!url)throw Error('Set MEADOW_SECURITY_CONTRACT to frozen contract URL');const {validateSecuritySignal}=await import(url);
+ const url=Deno.env.get('MEADOW_SECURITY_CONTRACT')||new URL('../tools/meadow-security-tests/fixtures/security-contract-v1.mjs',import.meta.url).href;const {validateSecuritySignal}=await import(url);
  for(const source of ['meadow-market-store','meadow-market-ad-reward'] as const){
   const f=observer(source),field=source==='meadow-market-store'?'receipt_owner':'nonce_transaction';await f.instance.signal(actor,['a'.repeat(64)],field);await f.instance.signal(actor,['a'.repeat(64)],field);
   const [a,b]=f.signals().map(x=>x.body);same(a,b);same(validateSecuritySignal({app:a.p_app,actor:a.p_actor,event_id:a.p_event_id,source:a.p_source,code:a.p_code,context:a.p_context}),a);
