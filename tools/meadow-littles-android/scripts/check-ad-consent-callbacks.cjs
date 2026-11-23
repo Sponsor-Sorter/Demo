@@ -20,19 +20,20 @@ public class ConsentHarness {
  static class JSObject extends HashMap<String,Object> {}
  static class PluginCall {JSObject result;String rejected;int resolves;void resolve(JSObject v){result=v;resolves++;}void reject(String s){rejected=s;}}
  static class FormError {int code;FormError(int c){code=c;}int getErrorCode(){return code;}String getMessage(){throw new AssertionError("Raw SDK error text must not be read");}}
+ enum AgeRestrictedTreatment {CHILD,TEEN,UNSPECIFIED}
  static class RequestConfiguration {
   static final int TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE=1,TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE=1;static final String MAX_AD_CONTENT_RATING_G="G";
-  int child,under;String rating;
-  static class Builder {RequestConfiguration v=new RequestConfiguration();Builder setTagForChildDirectedTreatment(int x){v.child=x;return this;}Builder setTagForUnderAgeOfConsent(int x){v.under=x;return this;}Builder setMaxAdContentRating(String x){v.rating=x;return this;}RequestConfiguration build(){return v;}}
+  int child,under;String rating;AgeRestrictedTreatment ageRestrictedTreatment;
+  static class Builder {RequestConfiguration v=new RequestConfiguration();Builder setAgeRestrictedTreatment(AgeRestrictedTreatment x){v.ageRestrictedTreatment=x;return this;}Builder setTagForChildDirectedTreatment(int x){v.child=x;return this;}Builder setTagForUnderAgeOfConsent(int x){v.under=x;return this;}Builder setMaxAdContentRating(String x){v.rating=x;return this;}RequestConfiguration build(){return v;}}
  }
  static class ConsentRequestParameters {boolean under;static class Builder {ConsentRequestParameters v=new ConsentRequestParameters();Builder setTagForUnderAgeOfConsent(boolean x){v.under=x;return this;}ConsentRequestParameters build(){return v;}}}
- static class MobileAds {static RequestConfiguration config;static int initialized;static void setRequestConfiguration(RequestConfiguration x){config=x;}static void initialize(Object c,Consumer<Object> callback){check(UserMessagingPlatform.info.allow,"SDK permission required for initialization");initialized++;callback.accept(null);}}
+ static class MobileAds {static RequestConfiguration config;static int initialized;static void setRequestConfiguration(RequestConfiguration x){config=x;}static void initialize(Object c,Consumer<Object> callback){check(UserMessagingPlatform.info.allow,"SDK permission required for initialization");check(MobileAds.config.ageRestrictedTreatment==AgeRestrictedTreatment.CHILD,"Explicit CHILD precedes SDK initialization");initialized++;callback.accept(null);}}
  static class ConsentInformation {
   enum PrivacyOptionsRequirementStatus {REQUIRED,NOT_REQUIRED}
   boolean allow,privacy;Runnable success;Consumer<FormError> failure;int requests;
   boolean canRequestAds(){return allow;}
   PrivacyOptionsRequirementStatus getPrivacyOptionsRequirementStatus(){return privacy?PrivacyOptionsRequirementStatus.REQUIRED:PrivacyOptionsRequirementStatus.NOT_REQUIRED;}
-  void requestConsentInfoUpdate(Object activity,ConsentRequestParameters p,Runnable ok,Consumer<FormError> fail){check(MobileAds.config!=null&&MobileAds.config.child==1&&MobileAds.config.under==1&&"G".equals(MobileAds.config.rating)&&p.under,"Child/G settings precede consent and SDK init");success=ok;failure=fail;requests++;}
+  void requestConsentInfoUpdate(Object activity,ConsentRequestParameters p,Runnable ok,Consumer<FormError> fail){check(MobileAds.config!=null&&MobileAds.config.ageRestrictedTreatment==AgeRestrictedTreatment.CHILD&&MobileAds.config.child==1&&MobileAds.config.under==1&&"G".equals(MobileAds.config.rating)&&p.under,"Child/G settings precede consent and SDK init");success=ok;failure=fail;requests++;}
  }
  static class UserMessagingPlatform {static ConsentInformation info;static Consumer<FormError> form;static int gathers;static ConsentInformation getConsentInformation(Object c){return info;}static void loadAndShowConsentFormIfRequired(Object a,Consumer<FormError> done){form=done;gathers++;}}
  static ConsentHarness fresh(boolean allow){MobileAds.config=null;MobileAds.initialized=0;UserMessagingPlatform.info=new ConsentInformation();UserMessagingPlatform.info.allow=allow;UserMessagingPlatform.form=null;UserMessagingPlatform.gathers=0;return new ConsentHarness();}

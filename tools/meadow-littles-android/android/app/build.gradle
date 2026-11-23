@@ -23,15 +23,18 @@ android {
         acceptance {
             dimension 'distribution'
             buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'true'
+            buildConfigField 'boolean', 'LITTLES_AD_DIAGNOSTICS', 'true'
             buildConfigField 'String', 'LITTLES_BANNER_AD_UNIT', '""'
             buildConfigField 'String', 'LITTLES_REWARDED_AD_UNIT', '""'
         }
         play {
             dimension 'distribution'
-            versionCode 16
-            versionName '1.0.3'
+            versionCode 17
+            versionName '1.0.4'
             manifestPlaceholders = [admobAppId: System.getenv('LITTLES_ADMOB_APP_ID') ?: 'ca-app-pub-3940256099942544~3347511713']
             buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'false'
+            // Internal candidate only; release/default builds compile out the diagnostic surface.
+            buildConfigField 'boolean', 'LITTLES_AD_DIAGNOSTICS', System.getenv('LITTLES_INTERNAL_AD_QA') == '1' ? 'true' : 'false'
             buildConfigField 'String', 'LITTLES_BANNER_AD_UNIT', '"' + (System.getenv('LITTLES_BANNER_AD_UNIT') ?: '') + '"'
             buildConfigField 'String', 'LITTLES_REWARDED_AD_UNIT', '"' + (System.getenv('LITTLES_REWARDED_AD_UNIT') ?: '') + '"'
         }

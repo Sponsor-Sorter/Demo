@@ -9,6 +9,7 @@
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
  let giftController=null,giftUnmount=null,rewarded=null,limitDialog=null,limitRender=null;
+ let adTimingRequest=0,lastAdTimingSequence=0;
  let consentCheck=null,lastConsentAttempt=-Infinity,availabilityCheck=null,lastAvailabilityAttempt=-Infinity;
  async function consentReadiness(){
   if(!ads||adsReady)return adsReady;if(consentCheck)return consentCheck;
@@ -83,6 +84,21 @@
   d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>More little adventures</h2><p>You’ve finished today’s rounds of '+esc(name)+'.</p><section data-ad-offer hidden><small>Advertisement · optional</small><p>Watch an advert for one extra round of this game. You can close it early; the extra round is earned when it finishes.</p><button data-watch class="small-button">Watch advert · 1 extra round</button></section><p data-ad-note role="status" aria-live="polite"></p><button data-ad-check class="small-button" hidden>Check for an advert</button><button data-ad-play class="primary-button" hidden>Play this game</button><button data-another class="primary-button">Choose another game</button></main>';
   const active=()=>!disposed&&d.open&&stamp===authEpoch;
   const note=d.querySelector('[data-ad-note]'),watch=d.querySelector('[data-watch]'),check=d.querySelector('[data-ad-check]'),play=d.querySelector('[data-ad-play]'),another=d.querySelector('[data-another]');
+  // The native release/default build compiles this capability out. Never cover SDK content.
+  let timing=null;
+  function renderTimingControl(){
+   if(timing||!rewarded?.diagnosticsAvailable?.())return;
+   const section=document.createElement('section'),button=document.createElement('button'),output=document.createElement('output');
+   section.setAttribute('data-internal-ad-timing','');button.className='small-button';button.textContent='Internal QA · sample ad timing';button.setAttribute('data-sample-ad-timing','');output.setAttribute('data-ad-timing','');
+   button.onclick=async()=>{if(!active()||watching||button.disabled||adTimingRequest>=1000000)return;const request=++adTimingRequest;button.disabled=true;output.textContent='Sampling request '+request+'…';try{const value=await rewarded.diagnostics(request);if(!active())return;const allowed=['started','shown','impression','earned','dismissed','unavailable','load_cancelled','destroyed'];if(value?.contract!=='littles-ad-timing-v1'||value.request!==request||!Number.isSafeInteger(value.sequence)||value.sequence<=lastAdTimingSequence||value.sequence>1000000||!Number.isSafeInteger(value.generation)||value.generation<0||!['none','publisher','demo'].includes(value.kind)||typeof value.terminal!=='boolean'||!Number.isSafeInteger(value.sampledMs)||value.sampledMs<0||!Array.isArray(value.events)||value.events.length>8||new Set(value.events.map(e=>e.code)).size!==value.events.length||value.events.some(e=>!allowed.includes(e.code)||!Number.isSafeInteger(e.ms)||e.ms<0||e.ms>value.sampledMs))throw Error('Invalid timing');lastAdTimingSequence=value.sequence;output.textContent='request '+request+'; snapshot '+value.sequence+'; generation '+value.generation+'; kind '+value.kind+'; sample '+value.sampledMs+' ms; '+value.events.map(e=>e.code+' '+e.ms+' ms').join('; ');}catch{if(active())output.textContent='Timing unavailable.';}finally{button.disabled=false;}};
+   section.append(button,output);
+   if(rewarded.diagnosticAdAvailable?.()){
+    const sample=document.createElement('button');sample.className='small-button';sample.textContent='Internal QA · official sample ad';sample.setAttribute('data-sample-ad','');
+    sample.onclick=async()=>{if(!active()||watching||checking)return;watching=true;sample.disabled=true;window.meadowAudio?.stopVoice();render();try{await rewarded.diagnosticAd();if(active())output.textContent='Sample closed. No game round was added.';}catch{if(active())output.textContent='Sample unavailable. No game round was added.';}finally{watching=false;sample.disabled=false;if(active())render();}};
+    section.append(sample);
+   }
+   d.querySelector('main').append(section);timing=section;
+  }
   function render(){if(!active())return;const ready=access.remaining(game)>0,offer=rewarded?.available(game);d.querySelector('[data-ad-offer]').hidden=ready||!offer;check.hidden=ready||!!offer||!rewarded?.canCheck(game)||watching;check.disabled=checking;check.textContent=checking?'Checking adverts…':'Check for an advert';play.hidden=!ready;another.className=ready?'small-button':'primary-button';watch.disabled=watching||checking;const cue=ready?'ad91-rhys-ready':offer?'ad91-rhys-offer':null;if(cue&&cue!==lastCue){lastCue=cue;window.meadowAudio?.speak(cue);}}
   function dispose(){if(disposed)return;disposed=true;if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitRender===render)limitRender=null;if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
   d.addEventListener('close',dispose,{once:true});d.addEventListener('cancel',()=>{d.close();dispose();});another.onclick=()=>d.close();
@@ -94,7 +110,7 @@
    another.textContent='Choose another game';render();
   };
   document.body.append(d);limitDialog=d;limitRender=render;d.showModal();syncBanner();
-  rewarded?.refresh().then(()=>{if(active())render();});
+  rewarded?.refresh().then(()=>{if(active()){render();renderTimingControl();}});
  }
  function bannerHeight(value){const height=Number(value);document.body.style.setProperty('--littles-ad-height',(Number.isFinite(height)?Math.max(0,height):0)+'px');document.body.style.paddingBottom='';}
  const bannerAllowed=()=>!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden&&!plus&&status?.ads_enabled&&adsReady&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);

@@ -32,6 +32,8 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
     private PluginCall rewardCall;
     private RewardedInterstitialAd rewardAd;
     private boolean rewardShowing=false,rewardEarned=false;
+    private AdLifecycle rewardTrace;
+    private int rewardDiagnosticSequence=0;
     private final Handler rewardTimer=new Handler(Looper.getMainLooper());
     private final View.OnLayoutChangeListener resize=(view,left,top,right,bottom,oldLeft,oldTop,oldRight,oldBottom)->{
         if(panel!=null && right-left!=oldRight-oldLeft)hide();
@@ -40,6 +42,7 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
     @PluginMethod public void consent(PluginCall call){trusted(call,()->{
         // Set before SDK initialization or the first ad request. No mediation SDKs.
         MobileAds.setRequestConfiguration(new RequestConfiguration.Builder()
+            .setAgeRestrictedTreatment(AgeRestrictedTreatment.CHILD)
             .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
             .setTagForUnderAgeOfConsent(RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE)
             .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G).build());
@@ -101,23 +104,46 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
         JSObject result=new JSObject();result.put("contract","littles-ad-round-v1");result.put("package","com.meadowmarket.littles");
         result.put("format","opt_in_skippable_rewarded_interstitial_v1");result.put("unit",rewardUnit());
         result.put("client",client);result.put("demo",BuildConfig.LITTLES_ADS_DEMO);result.put("nativeVersion",BuildConfig.VERSION_CODE);
+        result.put("diagnostics",BuildConfig.LITTLES_AD_DIAGNOSTICS);
         call.resolve(result);
+    });}
+    @PluginMethod public void rewardedDiagnostics(PluginCall call){trusted(call,()->{
+        if(!BuildConfig.LITTLES_AD_DIAGNOSTICS){call.reject("Ad diagnostics are unavailable.");return;}
+        Integer request=call.getInt("request",0);
+        if(request==null||request<1||request>1000000||rewardDiagnosticSequence>=1000000){call.reject("Ad diagnostics are unavailable.");return;}
+        JSObject value=new JSObject();value.put("contract","littles-ad-timing-v1");value.put("request",request);value.put("sequence",++rewardDiagnosticSequence);
+        value.put("generation",rewardTrace==null?0:rewardTrace.generation());value.put("kind",rewardTrace==null?"none":rewardTrace.kind());
+        JSArray events=new JSArray();
+        if(rewardTrace!=null){long[] times=rewardTrace.times();for(int i=0;i<times.length;i++)if(times[i]>=0){JSObject event=new JSObject();event.put("code",AdLifecycle.CODES[i]);event.put("ms",times[i]);events.put(event);}value.put("sampledMs",rewardTrace.sampledMs());value.put("terminal",rewardTrace.terminal());}
+        else{value.put("sampledMs",0);value.put("terminal",false);}
+        value.put("events",events);call.resolve(value);
     });}
     private void finishReward(int token,boolean unavailable){
         if(token!=rewardGeneration||rewardCall==null)return;
+        if(rewardTrace!=null)rewardTrace.mark(unavailable?AdLifecycle.UNAVAILABLE:AdLifecycle.DISMISSED);
         PluginCall pending=rewardCall;JSObject result=new JSObject();result.put("closed",true);result.put("earned",rewardEarned);result.put("unavailable",unavailable);
+        if(rewardTrace!=null){result.put("diagnosticGeneration",rewardTrace.generation());result.put("diagnosticKind",rewardTrace.kind());}
         rewardGeneration++;rewardCall=null;rewardAd=null;rewardShowing=false;rewardEarned=false;rewardTimer.removeCallbacksAndMessages(null);
         pending.resolve(result);
     }
     @PluginMethod public void showRewarded(PluginCall call){trusted(call,()->{
         String challenge=call.getString("challenge","");
         if(!challenge.matches("^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$")){call.reject("Optional advert is not ready.");return;}
-        if(rewardCall!=null||consent==null||!consent.canRequestAds()||!rewardUnit().matches("^ca-app-pub-[0-9]+/[0-9]+$")||!getActivity().hasWindowFocus()){
+        showRewardedUnit(call,rewardUnit(),challenge);
+    });}
+    @PluginMethod public void showDiagnosticRewarded(PluginCall call){trusted(call,()->{
+        if(!BuildConfig.LITTLES_AD_DIAGNOSTICS){call.reject("Ad diagnostics are unavailable.");return;}
+        // Official fixed sample only. No prepare, challenge, custom SSV data, claim or game credit.
+        showRewardedUnit(call,"ca-app-pub-3940256099942544/5354046379",null);
+    });}
+    private void showRewardedUnit(PluginCall call,String unit,String challenge){
+        if(rewardCall!=null||consent==null||!consent.canRequestAds()||!unit.matches("^ca-app-pub-[0-9]+/[0-9]+$")||!getActivity().hasWindowFocus()){
             call.reject("Optional adverts are unavailable.");return;
         }
         hide();final int token=++rewardGeneration;rewardCall=call;rewardEarned=false;rewardShowing=false;
+        rewardTrace=BuildConfig.LITTLES_AD_DIAGNOSTICS?new AdLifecycle(android.os.SystemClock::elapsedRealtime,token,challenge==null?AdLifecycle.DEMO:AdLifecycle.PUBLISHER):null;
         rewardTimer.postDelayed(()->{if(token==rewardGeneration&&!rewardShowing)finishReward(token,true);},30000);
-        try{RewardedInterstitialAd.load(getContext(),rewardUnit(),new AdRequest.Builder().build(),new RewardedInterstitialAdLoadCallback(){
+        try{RewardedInterstitialAd.load(getContext(),unit,new AdRequest.Builder().build(),new RewardedInterstitialAdLoadCallback(){
             @Override public void onAdFailedToLoad(LoadAdError error){finishReward(token,true);}
             @Override public void onAdLoaded(RewardedInterstitialAd ad){
                 if(token!=rewardGeneration||rewardCall==null)return;
@@ -126,24 +152,25 @@ public class LittlesAdsPlugin extends LittlesPlayPlugin {
                 }
                 rewardAd=ad;
                 // Only the opaque, server-created challenge is shared with Google; no account/name/email.
-                ad.setServerSideVerificationOptions(new ServerSideVerificationOptions.Builder().setCustomData(challenge).build());
+                if(challenge!=null)ad.setServerSideVerificationOptions(new ServerSideVerificationOptions.Builder().setCustomData(challenge).build());
                 ad.setFullScreenContentCallback(new FullScreenContentCallback(){
-                    @Override public void onAdShowedFullScreenContent(){if(token==rewardGeneration){rewardShowing=true;rewardTimer.removeCallbacksAndMessages(null);}}
+                    @Override public void onAdShowedFullScreenContent(){if(token==rewardGeneration&&rewardCall!=null){if(rewardTrace!=null)rewardTrace.mark(AdLifecycle.SHOWN);rewardShowing=true;rewardTimer.removeCallbacksAndMessages(null);}}
+                    @Override public void onAdImpression(){if(token==rewardGeneration&&rewardCall!=null&&rewardTrace!=null)rewardTrace.mark(AdLifecycle.IMPRESSION);}
                     @Override public void onAdFailedToShowFullScreenContent(AdError error){finishReward(token,true);}
                     @Override public void onAdDismissedFullScreenContent(){finishReward(token,false);}
                 });
                 // The game calls this only after its explicit opt-in intro; never from a transition timer.
                 rewardShowing=true;rewardTimer.removeCallbacksAndMessages(null);
-                try{ad.show(getActivity(),reward->{if(token==rewardGeneration&&rewardCall!=null)rewardEarned=true;});}
+                try{ad.show(getActivity(),reward->{if(token==rewardGeneration&&rewardCall!=null){if(rewardTrace!=null)rewardTrace.mark(AdLifecycle.EARNED);rewardEarned=true;}});}
                 catch(RuntimeException error){finishReward(token,true);}
             }
         });}catch(RuntimeException error){finishReward(token,true);}
-    });}
+    }
     @PluginMethod public void cancelRewardedLoad(PluginCall call){trusted(call,()->{
         boolean cancelled=rewardCall!=null&&!rewardShowing;
-        if(cancelled)finishReward(rewardGeneration,false);
+        if(cancelled){if(rewardTrace!=null)rewardTrace.mark(AdLifecycle.LOAD_CANCELLED);finishReward(rewardGeneration,false);}
         JSObject result=new JSObject();result.put("cancelled",cancelled);call.resolve(result);
     });}
     @Override protected void handleOnPause(){hide();}
-    @Override protected void handleOnDestroy(){getBridge().getWebView().removeOnLayoutChangeListener(resize);hide();rewardGeneration++;rewardCall=null;rewardAd=null;rewardTimer.removeCallbacksAndMessages(null);}
+    @Override protected void handleOnDestroy(){getBridge().getWebView().removeOnLayoutChangeListener(resize);hide();if(rewardTrace!=null)rewardTrace.mark(AdLifecycle.DESTROYED);rewardGeneration++;rewardCall=null;rewardAd=null;rewardTimer.removeCallbacksAndMessages(null);}
 }

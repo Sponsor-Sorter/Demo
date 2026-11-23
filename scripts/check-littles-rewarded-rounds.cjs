@@ -54,6 +54,57 @@ test('An early ad dismissal grants nothing and does not contact settlement', asy
   assert.equal((await f.core.watch('harvest_slice')).status, 'cancelled'); assert.equal(f.core.remaining('harvest_slice'), 0);
   assert.equal(f.count.settle, 0); assert.equal(JSON.parse(f.files.get(KEY)).pending.length, 0);
 });
+
+test('A cancelled ad stays cancelled across refresh, reopen and a late server receipt', async () => {
+  const f=fixture();f.hooks.show=async()=>({earned:false,closed:true});
+  assert.equal((await f.core.watch('harvest_slice')).status,'cancelled');
+  // Stress a late VERIFIED server response: recovery must not even request it after cancellation.
+  f.hooks.settle=async()=>f.receipt;
+  for(const core of [f.core,create(f.options),create(f.options)]){
+    assert.equal((await core.recover('harvest_slice')).status,'nothing_pending');
+    assert.deepEqual(core.pendingGames(),[]);assert.equal(core.remaining('harvest_slice'),0);
+  }
+  assert.equal(f.count.settle,0);assert.equal(f.count.verify,0);
+});
+
+test('Concurrent recovery during an unearned close cannot start a claim', async () => {
+  const f=fixture();let close;f.hooks.show=()=>new Promise(resolve=>close=resolve);
+  const watching=f.core.watch('harvest_slice');await new Promise(resolve=>setImmediate(resolve));
+  assert.equal((await f.core.recover('harvest_slice')).status,'unavailable');
+  close({earned:false,closed:true});assert.equal((await watching).status,'cancelled');
+  assert.equal((await f.core.recover('harvest_slice')).status,'nothing_pending');assert.equal(f.count.settle,0);
+});
+
+test('Native load refusal is terminal locally and a late receipt is never polled', async () => {
+  const f=fixture();f.hooks.show=async()=>({closed:true,earned:false,unavailable:true});
+  assert.equal((await f.core.watch('harvest_slice')).status,'unavailable');
+  assert.equal((await create(f.options).recover('harvest_slice')).status,'nothing_pending');
+  assert.equal(f.core.remaining('harvest_slice'),0);assert.equal(f.count.settle,0);
+});
+
+test('Failed cancellation storage removal cannot invent a reward without a signed completion',async()=>{
+  const f=fixture(),save=f.storage.setItem;let blocked=false;
+  f.storage.setItem=(...args)=>{if(blocked)throw Error('synthetic storage failure');return save(...args);};
+  f.hooks.show=async()=>{blocked=true;return{closed:true,earned:false};};
+  f.hooks.settle=async()=>({status:'pending'});
+  assert.equal((await f.core.watch('harvest_slice')).status,'storage_unavailable');
+  blocked=false;const reopened=create(f.options);
+  assert.equal((await reopened.recover('harvest_slice')).status,'pending');assert.equal(reopened.remaining('harvest_slice'),0);
+  f.state.now+=86460001;
+  assert.equal((await create(f.options).recover('harvest_slice')).status,'nothing_pending');assert.equal(create(f.options).remaining('harvest_slice'),0);
+});
+
+test('A valid signed completion remains authoritative after lost or inconsistent native outcome and failed storage removal',async()=>{
+  const f=fixture(),save=f.storage.setItem;let blocked=false;
+  f.storage.setItem=(...args)=>{if(blocked)throw Error('synthetic storage failure');return save(...args);};
+  f.hooks.show=async()=>{blocked=true;return{closed:true,earned:false};};
+  assert.equal((await f.core.watch('harvest_slice')).status,'storage_unavailable');
+  // This is NOT a true forfeit fixture: a valid signed completion is deliberately supplied.
+  blocked=false;const reopened=create(f.options);
+  assert.equal((await reopened.recover('harvest_slice')).status,'ready');assert.equal(reopened.remaining('harvest_slice'),1);
+  assert.equal((await reopened.recover('harvest_slice')).status,'nothing_pending');
+  assert.equal(reopened.complete(reopened.begin('harvest_slice')),true);assert.equal(reopened.remaining('harvest_slice'),0);
+});
 test('A client earned callback without server verification grants nothing', async () => {
   const f = fixture(); f.hooks.verify = async () => false;
   assert.equal((await f.core.watch('harvest_slice')).status, 'unverified'); assert.equal(f.core.remaining('harvest_slice'), 0);
