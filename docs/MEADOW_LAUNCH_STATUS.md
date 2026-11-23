@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 24 November 2026 — gateway 71 live; Build selection 256 prepared
+
+The reviewed saved-worker-route repair is live in `meadow-market-farm-actions` version 71, with JWT verification and exact closure read-back. Web 255 / public Google Play 1.7.7 (17) remain the released clients. The registered-browser work, full well break, resumed job and owned-map return were observed. Samsung hired-worker-cycle/map-switch acceptance is still pending: the preserved dense farm was opened, but the selected object could not be identified reliably enough to move. Its farm, assignments and settings were preserved and the phone released.
+
+Candidate 256 adds a compact selected-item name to the existing Build toolbar, with matching accessible name and cleared stale identity. Focused Build checks and isolated portrait/landscape component layouts passed. Source review, publication CI, live-byte/update verification and the remaining physical automation checks are separate requirements; this entry does not mark them complete.
+
 ## 23 November 2026 — Google Play 17 publicly available
 
 The refreshed Play Console now confirms **Production Active, 1.7.7/code 17** in the existing Australia region. The ordinary [public AU listing](https://play.google.com/store/apps/details?id=com.meadowandmarket.game&gl=AU) is available, updated 22 November, with the current farmer-resume release notes and ads/in-app-purchase disclosure. Managed publishing remains off. Earlier “in review” entries below are historical.
