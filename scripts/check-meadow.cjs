@@ -161,3 +161,4 @@ require('./check-meadow-safety.cjs');
 require('./check-meadow-ad-policy247.cjs');
 
 require('./check-meadow-performance248.cjs');
+require('./check-meadow-grid-registration.cjs');
