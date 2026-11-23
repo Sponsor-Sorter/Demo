@@ -1,6 +1,6 @@
 import { PACKAGE, PRODUCT, proofPolicy } from './rules.ts';
 import { signProof } from './google.ts';
-import { reconcile, rpc } from './service.ts';
+import { reconcile, rpc, noteStoreRuntime } from './service.ts';
 const origins = new Set(['https://sponsorsorter.com', 'https://localhost']);
 Deno.serve(async request => {
   const origin = request.headers.get('origin') || '';
@@ -15,6 +15,7 @@ Deno.serve(async request => {
     const raw = await request.text();
     if (raw.length > 8192) return reply(413, { error: 'REQUEST_TOO_LARGE' });
     const body = JSON.parse(raw), status = await rpc('meadow_littles_play_status', {}, bearer);
+    await noteStoreRuntime();
     if (body.action === 'verify') {
       if (!status.parent_ready) return reply(403, { error: 'PARENT_SIGN_IN_REQUIRED' });
       if (typeof body.token !== 'string') return reply(400, { error: 'INVALID_PURCHASE' });
