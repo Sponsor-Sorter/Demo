@@ -1,6 +1,7 @@
 import {purchaseVerifier,type StoreServices} from '../supabase/functions/meadow-market-store/service.ts';
 import {adRewardHandler} from '../supabase/functions/meadow-market-ad-reward/handler.ts';
 import {verifyCallback} from '../supabase/functions/meadow-market-ad-reward/verify.ts';
+import {rewardRpcTransport} from '../supabase/functions/meadow-market-ad-reward/transport.ts';
 import {createCommerceObserver,storeDatabaseError,rewardDatabaseDenial,securityHash,type CommerceObserver} from '../supabase/functions/_shared/meadow-commerce-security-v1.ts';
 const actor='10000000-0000-4000-8000-000000000001',other='20000000-0000-4000-8000-000000000002',nonce='30000000-0000-4000-8000-000000000003',reference='40000000-0000-4000-8000-000000000004';
 const ack={accepted:true,duplicate:false,reference,flag_id:null};
@@ -86,6 +87,20 @@ Deno.test('SSV normal/idempotent success stays OK; expiry/caps are non-fraud and
   const q=reward({finish:async()=>({ok:false,error:{code:'P0001',message}})});assert((await q.handler(new Request('https://fixture.invalid'))).status===503);assert(!q.signals().length);
   assert(q.logs.length===(message==='Ad account mismatch'?1:0));if(q.logs.length)assert(q.logs[0].event==='security_rejection_unattributed'&&!JSON.stringify(q.logs).includes(actor));
  }
+});
+Deno.test('Actual SSV HTTP transport preserves retryable non-JSON failures without inventing typed evidence',async()=>{
+ for(const status of [400,429,503,200]){
+  let requests=0;const rpc=rewardRpcTransport('https://fixture.invalid','fixture-service-key',async(input,init)=>{
+   requests++;assert(String(input)==='https://fixture.invalid/rest/v1/rpc/meadow_market_finish_ad_reward');
+   assert(JSON.parse(String(init?.body)).p_nonce===nonce);return new Response('<html>upstream response</html>',{status});
+  });
+  const f=reward({finish:async body=>{const result=await rpc('meadow_market_finish_ad_reward',body);assert(result.value===null);return {ok:result.response.ok,error:result.value};}});
+  const response=await f.handler(new Request('https://fixture.invalid'));
+  assert(response.status===(status===200?200:503));assert(await response.text()===(status===200?'OK':'Reward not delivered'));assert(requests===1&&!f.signals().length&&!f.logs.length);
+ }
+ const rpc=rewardRpcTransport('https://fixture.invalid','fixture-service-key',async()=>{throw Error('fixture network failure');});
+ const network=reward({finish:async body=>{const result=await rpc('meadow_market_finish_ad_reward',body);return {ok:result.response.ok,error:result.value};}});
+ assert((await network.handler(new Request('https://fixture.invalid'))).status===403&&!network.signals().length);
 });
 Deno.test('Unverified or unconfigured callbacks and setup probes cannot reach delivery, heartbeat or player evidence',async()=>{
  const invalid=reward({verify:async()=>{throw Error('INVALID_SIGNATURE');}});assert((await invalid.handler(new Request('https://fixture.invalid'))).status===403);assert(!invalid.finished.length&&!invalid.calls.length);
