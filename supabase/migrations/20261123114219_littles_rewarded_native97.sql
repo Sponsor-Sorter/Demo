@@ -1,3 +1,21 @@
+-- Root reviewed against the actual live private function and ACL. Serving stays OFF.
+begin;
+do $littles97_baseline$
+declare f pg_proc; c meadow_littles_private.ad_round_config;
+begin
+ select * into strict f from pg_proc where oid=to_regprocedure('meadow_littles_private.ad_rounds(text,jsonb)');
+ if f.proowner::regrole::text<>'postgres' or not f.prosecdef
+  or f.proconfig is distinct from array['search_path=""']::text[]
+  or f.proacl::text<>'{postgres=X/postgres,authenticated=X/postgres}'
+  or encode(sha256(convert_to(replace(f.prosrc,chr(13)||chr(10),chr(10)),'UTF8')),'hex')<>'4c3abb8918ddcbf00d0bd2a4dc8f141f410b226a462f77f765f104681101962c' then
+  raise exception 'Littles ad admission baseline drift';
+ end if;
+ select * into strict c from meadow_littles_private.ad_round_config where singleton for update;
+ if c.enabled or c.serving_ready or c.format_reviewed or cardinality(c.private_users)<>0 or c.private_until is not null
+  or c.unit_id<>'ca-app-pub-6946008351204848/6193791997' then
+  raise exception 'Littles ad serving must be held off before admission update';
+ end if;
+end $littles97_baseline$;
 -- New offers require the accepted native candidate; historical signed claims are unchanged.
 -- Private native17 diagnostics, public native18 with diagnostic surface compiled out.
 -- This migration never enables serving or changes an existing reward, allowance or save.
@@ -74,3 +92,5 @@ begin
  end if;
  raise exception using errcode='22023',message='INVALID_AD_ACTION';
 end $$;
+
+commit;

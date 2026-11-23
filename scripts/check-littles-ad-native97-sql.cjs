@@ -2,7 +2,8 @@
 // Actual PostgreSQL/WASM, in memory. Local Auth adapters only; never connects to Supabase.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'..');
-const runtime=process.env.PGLITE_MODULE_ROOT||'D:/Chat Gpt/workspaces/frontlines-build/frontlines-gift106-20261116/node_modules/@electric-sql/pglite';
+const localRuntime=path.join(root,'tools/littles-rewarded-tests/node_modules/@electric-sql/pglite');
+const runtime=process.env.PGLITE_MODULE_ROOT||(fs.existsSync(localRuntime)?localRuntime:null)||'D:/Chat Gpt/workspaces/frontlines-build/frontlines-gift106-20261116/node_modules/@electric-sql/pglite';
 const A='b1000000-0000-4000-8000-000000000001',B='b1000000-0000-4000-8000-000000000002',client='b2000000-0000-4000-8000-000000000001',otherClient='b2000000-0000-4000-8000-000000000002';
 const unit='ca-app-pub-6946008351204848/6193791997',results=[];let db;
 const one=async(sql,args=[])=>(await db.query(sql,args)).rows[0];
@@ -13,7 +14,7 @@ async function test(name,run){await run();results.push({name,pass:true});console
 async function prepared(version=18){return call('prepare',{nativeVersion:version,game:'memory',requestId:crypto.randomUUID()});}
 async function record(item,transaction='tx_'+crypto.randomUUID().replaceAll('-','')){await role('service_role',()=>db.query('select public.meadow_littles_record_ad_round($1::uuid,$2,$3,clock_timestamp())',[item.challenge,transaction,unit]));return transaction;}
 (async()=>{
- const pkg=JSON.parse(fs.readFileSync(runtime+'/package.json'));assert.equal(pkg.version,'0.5.16');
+ const pkg=JSON.parse(fs.readFileSync(runtime+'/package.json'));assert(['0.5.16','0.5.17'].includes(pkg.version));
  const {PGlite}=await import(pathToFileURL(runtime+'/dist/index.js').href);db=new PGlite();
  await db.exec(`create role anon;create role authenticated;create role service_role;
  create schema auth;create schema fixture;create schema meadow_littles_private;
@@ -24,7 +25,7 @@ async function record(item,transaction='tx_'+crypto.randomUUID().replaceAll('-',
  create function public.meadow_littles_plus_projection(uuid) returns jsonb language sql as $$select jsonb_build_object('effective_verified',true,'effective_plus',plus) from fixture.context$$;
  grant usage on schema meadow_littles_private to authenticated,service_role;`);
  const base=fs.readFileSync(path.join(root,'supabase/migrations/20261122130357_littles_rewarded_rounds91.sql'),'utf8');
- const candidate=fs.readFileSync(path.join(root,'supabase/migrations/20261123113000_littles_rewarded_native97.sql'),'utf8');
+ const candidate=fs.readFileSync(path.join(root,'supabase/migrations/20261123114219_littles_rewarded_native97.sql'),'utf8');
  await db.exec(base);await db.exec(candidate);
  await test('actual migration remains default-off with no request or credit',async()=>{assert.equal((await call('status',{nativeVersion:18})).enabled,false);assert.equal((await one('select count(*)::int as n from meadow_littles_private.ad_round_requests')).n,0);});
  await db.exec('update meadow_littles_private.ad_round_config set enabled=true,serving_ready=true,format_reviewed=true,max_prepares_per_hour=30');
@@ -80,6 +81,6 @@ async function record(item,transaction='tx_'+crypto.randomUUID().replaceAll('-',
   await denied(()=>role('authenticated',()=>db.query('select * from meadow_littles_private.ad_round_requests')));
   await denied(()=>role('anon',()=>db.query('select public.meadow_littles_ad_rounds($1,$2::jsonb)',['status',JSON.stringify({client,nativeVersion:18})])));
  });
- console.log(JSON.stringify({runtime:'PGlite0.5.16 actual PostgreSQL in-memory',tests:results.length,pass:results.length,fail:0,realNetwork:0,phoneIo:0,productionWrites:0,auth:'explicit isolated local adapter',signedWebhook:'service boundary only; ECDSA is tested separately',results}));
+ console.log(JSON.stringify({runtime:'PGlite'+pkg.version+' actual PostgreSQL in-memory',tests:results.length,pass:results.length,fail:0,realNetwork:0,phoneIo:0,productionWrites:0,auth:'explicit isolated local adapter',signedWebhook:'service boundary only; ECDSA is tested separately',results}));
  await db.close();
 })().catch(async error=>{console.error(error);await db?.close();process.exitCode=1;});
