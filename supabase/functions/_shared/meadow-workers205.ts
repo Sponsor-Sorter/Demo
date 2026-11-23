@@ -83,10 +83,24 @@ export function createWorkerController(c:Data){
   if(previous?.map&&previous.map!==s.active){delete s.farms[previous.map]?.helperStamina?.[id]?.returning;delete b.leases[id];}
   f.helperStamina[id]||=previous?.map===s.active?previous:{jobs:0,drinkUntil:0};
   const data=f.helperStamina[id];data.map=s.active;b.family[id]=data;return{id,role:id,map:s.active,data};}),...W.meadowRoster.owned().filter((w:Data)=>w.map&&s.farms[w.map]).map((w:Data)=>({id:w.id,role:'all',map:w.map,data:s.workforce[w.key]}))];}
+ function revalidateReturn(w:Data,target:Data){
+  const d=w.data,r=d.returning,path=r.path||[],open=search(r.from||position(d,w.map)||r.to,w.map).allowed;
+  const clear=(a:Cell,b:Cell)=>{const dx=b.x-a.x,dy=b.y-a.y;return Math.abs(dx)<=1&&Math.abs(dy)<=1&&!!(dx||dy)&&open.has(key(b))&&(!dx||!dy||open.has(key({x:b.x,y:a.y}))&&open.has(key({x:a.x,y:b.y})));};
+  const end=path.at(-1);
+  if(path.length&&open.has(key(path[0]))&&path.every((p:Cell,i:number)=>!i||clear(path[i-1],p))&&end.x===r.to.x&&end.y===r.to.y&&edges(target,w.map).some(p=>key(p)===key(end)))return;
+  // Building while a saved walk is in flight can occupy its destination,
+  // a path cell or a diagonal corner. Keep only the elapsed, still-clear
+  // prefix, then plan a fresh walk; never arrive inside the new obstacle.
+  let reached:Cell|undefined=path[0]&&open.has(key(path[0]))?path[0]:undefined,distance=0;
+  for(let i=1;reached&&i<path.length;i++){const a=path[i-1],b=path[i];distance+=Math.hypot(b.x-a.x,b.y-a.y);if(!clear(a,b)||distance*960>Math.max(0,now-r.startedAt))break;reached=b;}
+  if(reached)Object.assign(d,{x:reached.x,y:reached.y});
+  delete d.returning;
+ }
  function resting(w:Data){const target=well(s.farms[w.map]),p=W.meadowWells.stats(target),d=w.data,wellKey=target?[target.id,target.x,target.y].join(':'):'';
   if(d.drinkUntil>now)return true;
   if(d.drinkUntil){d.drinkUntil=0;d.jobs=0;}
   if(d.returning&&d.returning.well!==wellKey)delete d.returning;
+  if(d.returning)revalidateReturn(w,target);
   if(d.returning){
    if(d.returning.readyAt>now)return true;
    Object.assign(d,{x:d.returning.to.x,y:d.returning.to.y,drinkUntil:now+p.drink*1000});delete d.returning;return true;
