@@ -4,6 +4,9 @@ on:
     paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-security-tests/**', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
   pull_request:
     paths: ['meadow-and-market/**', 'scripts/check-meadow*', 'tools/build-meadow-server-rules.cjs', 'tools/meadow-security-tests/**', 'tools/meadow-android/**', 'tools/meadow-email/**', 'assets/email/**', 'supabase/functions/_shared/meadow-*', 'supabase/functions/meadow-market-*/**', 'supabase/meadow-*.sql', 'supabase/migrations/**', '.github/workflows/meadow-checks.yml']
+concurrency:
+  group: meadow-checks-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
 jobs:
   security-checks:
     runs-on: ubuntu-latest
