@@ -1,10 +1,12 @@
 import {createFarmBaseline} from '../_shared/meadow-farm-origin212.ts';
 import {applyFarmCommands,FarmActionError} from '../_shared/meadow-farm-actions204.ts';
+import {CommandReceiptConflictError,commandReceiptConflictDetail,reportCommandReceiptConflict,type SecurityEmitter} from '../_shared/meadow-security-v1.ts';
 type Data=Record<string,any>;
-export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>;requireSession?:boolean;event?:(user:string,id:string,code:string)=>Promise<unknown>};
+export type Services={identity:(bearer:string)=>Promise<Data|null>;rpc:(name:string,body:Data)=>Promise<Data>;requireSession?:boolean;event?:(user:string,id:string,code:string)=>Promise<unknown>;securitySignal?:SecurityEmitter};
 const uuid=(x:unknown)=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
 const origins=new Set(['https://sponsorsorter.com','https://localhost','http://localhost:8771','http://127.0.0.1:8773']);
-export function farmDatabaseError(code:unknown,message:unknown=''){
+export function farmDatabaseError(code:unknown,message:unknown='',details:unknown=''){
+ if(code==='22023'&&message==='Command receipt reused for different actions'&&details===commandReceiptConflictDetail)return new CommandReceiptConflictError();
  if(String(code)==='28000')return new FarmActionError('SESSION_EXPIRED','Sign in again to reconnect this farm.');
  if(['MEADOW_BANNED','MEADOW_SOCIAL_RESTRICTED','MEADOW_MAINTENANCE'].includes(String(message)))return new FarmActionError(String(message),'Open Settings → Community & blocked farms to review this notice. Your saved farm is retained.');
  return ['22023','22P02'].includes(String(code))?new FarmActionError('INVALID_REQUEST','Reopen your saved farm before retrying this action.'):new Error('FARM_UNAVAILABLE');
@@ -43,6 +45,7 @@ export function farmHandler(services:Services){return async(req:Request)=>{
   return reply(answer.conflict?409:200,answer);
  }catch(error){
   if(error instanceof FarmActionError){
+   if(error instanceof CommandReceiptConflictError&&actor&&requestId)await reportCommandReceiptConflict(services.securitySignal,actor,requestId);
    if(actor&&requestId&&error.code.startsWith('MEADOW_'))try{await services.event?.(actor,requestId,error.code)}catch{/* Telemetry cannot change action outcome. */}
    return reply(error.code==='SESSION_EXPIRED'?401:error.code.startsWith('MEADOW_')?403:error.code==='REQUEST_TOO_LARGE'?413:422,{error:error.code,message:error.message});
   }
