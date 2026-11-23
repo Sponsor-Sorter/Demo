@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 24 November 2026 — 256 physically updated; 257 Layout view prepared
+
+Web 256/gateway 72 and exact public/backend read-back are complete, with main/Pages and game/security/Android checks passed. Native Google Play 17 is unchanged. Samsung completed the normal 255→256 update, visibly reported Game build 256 and returned to Tend with all 53 Coast objects and hired-worker assignments retained. Its full worker-cycle/map checks remain incomplete: overlapping artwork prevented reliable target-plot selection, and the existing well route is blocked. No guessed move was made.
+
+Candidate 257 adds optional Build Layout view while preserving actual map/grid/collision, crop geometry, preview ghosts, normal art and two-row control height. Focused checks and isolated portrait/landscape overlap tests pass. Final review, publication CI/live-byte verification and physical acceptance remain required; none is inferred from the component tests.
+
 ## 24 November 2026 — gateway 71 live; Build selection 256 prepared
 
 The reviewed saved-worker-route repair is live in `meadow-market-farm-actions` version 71, with JWT verification and exact closure read-back. Web 255 / public Google Play 1.7.7 (17) remain the released clients. The registered-browser work, full well break, resumed job and owned-map return were observed. Samsung hired-worker-cycle/map-switch acceptance is still pending: the preserved dense farm was opened, but the selected object could not be identified reliably enough to move. Its farm, assignments and settings were preserved and the phone released.
