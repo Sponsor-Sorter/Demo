@@ -69,3 +69,47 @@ Deno.test('Play observer cannot produce save or wrong-account accusations', asyn
   await observer.rejectedSave(actor, request, 'PURCHASE_ACCOUNT_MISMATCH', 'PURCHASE_ACCOUNT_MISMATCH');
   assert(calls === 0);
 });
+Deno.test('heartbeat errors and invalid acknowledgements report constant diagnostics', async () => {
+  for (const reply of [{ data: { accepted: true }, error: { message: 'private' } },
+    { accepted: false }, { data: {} }, null]) {
+    const logs: unknown[] = [];
+    const observer = createLittlesEvidence(async () => reply, 'littles-cloud-save', () => 0, code => logs.push(code));
+    await observer.heartbeat();
+    assert(JSON.stringify(logs) === '["LITTLES_SECURITY95_HEARTBEAT_UNAVAILABLE"]');
+  }
+});
+Deno.test('signal delivery and invalid acknowledgements report no payload or error body', async () => {
+  for (const failure of ['throw', 'invalid', 'error']) {
+    const logs: unknown[] = [];
+    const observer = createLittlesEvidence(async () => {
+      if (failure === 'throw') throw Error('private credentials and payload');
+      return failure === 'invalid' ? { data: {} } : { data: { accepted: true }, error: { message: 'private' } };
+    }, 'littles-cloud-save', () => 0, code => logs.push(code));
+    const result = await observer.rejectedSave(actor, request, 'PT409', 'LITTLES_REQUEST_BINDING_CONFLICT');
+    assert(result.accepted === false && result.unavailable === true);
+    assert(JSON.stringify(logs) === '["LITTLES_SECURITY95_SIGNAL_UNAVAILABLE"]');
+  }
+});
+Deno.test('failure diagnostics are independently bounded to one constant per minute', async () => {
+  let at = 0; const logs: string[] = [];
+  const observer = createLittlesEvidence(async () => { throw Error('private'); }, 'littles-cloud-save', () => at, code => logs.push(code));
+  for (at of [0, 1, 30000, 59999, 60000]) {
+    await observer.heartbeat();
+    await observer.rejectedSave(actor, request, 'PT409', 'LITTLES_REQUEST_BINDING_CONFLICT');
+  }
+  assert(logs.length === 4);
+  assert(logs.filter(code => code === 'LITTLES_SECURITY95_HEARTBEAT_UNAVAILABLE').length === 2);
+  assert(logs.filter(code => code === 'LITTLES_SECURITY95_SIGNAL_UNAVAILABLE').length === 2);
+});
+Deno.test('synchronous and asynchronous diagnostic failures cannot affect outcomes', async t => {
+  for (const asynchronous of [false, true]) await t.step(asynchronous ? 'async logger' : 'sync logger', async () => {
+    const observer = createLittlesEvidence(async () => { throw Error('unavailable'); }, 'littles-cloud-save', () => 0, () => {
+      if (asynchronous) return Promise.reject(Error('private logger failure'));
+      throw Error('private logger failure');
+    });
+    await observer.heartbeat();
+    const result = await observer.rejectedSave(actor, request, 'PT409', 'LITTLES_REQUEST_BINDING_CONFLICT');
+    assert(result.accepted === false && result.unavailable === true);
+    await Promise.resolve();
+  });
+});
