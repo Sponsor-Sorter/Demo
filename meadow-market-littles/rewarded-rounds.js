@@ -9,7 +9,7 @@
   const core=window.meadowRewardedRoundCore.create({
    storage:localStorage,context:()=>({actor:cloud()?.getStatus().userId,plus:commerce().plus,parentReady:cloud()?.getStatus().parentReady===true,canRequestAds:consentReady(),remainingBaseRounds:id=>access.remainingBase(id)}),
    policy:()=>caps?policy:{enabled:false},prepare:data=>call('prepare',data),
-   show:async({unit,challenge})=>{if(unit!==caps?.unit)throw Error('AD_UNAVAILABLE');diagnosticBinding=null;try{return bindDiagnostics(await ads.showRewarded({challenge}),'publisher');}catch(error){if(['Optional adverts are unavailable.','Optional advert is not ready.'].includes(error?.message))return {closed:true,earned:false,unavailable:true};throw error;}},
+   show:async({unit,challenge})=>{if(unit!==caps?.unit)throw Error('AD_UNAVAILABLE');const stamp=epoch,actor=cloud()?.getStatus().userId;diagnosticBinding=null;try{const result=await ads.showRewarded({challenge});return same(stamp,actor)?bindDiagnostics(result,'publisher'):result;}catch(error){if(['Optional adverts are unavailable.','Optional advert is not ready.'].includes(error?.message))return {closed:true,earned:false,unavailable:true};throw error;}},
    settle:data=>call('claim',data),verifyGrant:async receipt=>receipt.verified===true&&receipt.client===caps?.client&&receipt.unit===caps?.unit,
   });
   access.configure({rewarded:core});
@@ -28,11 +28,11 @@
   }
   async function watch(game){const stamp=epoch,actor=cloud()?.getStatus().userId;let result=await core.watch(game);for(const delay of [500,1000,1500,2000]){if(result.status!=='pending')break;await new Promise(resolve=>setTimeout(resolve,delay));if(!same(stamp,actor))return {status:'account_changed'};result=await core.recover(game);}return result;}
   function cancel(){if(core.getStatus().phase==='preparing')core.accountChanged();ads?.cancelRewardedLoad?.().catch(()=>{});}
-  function accountChanged(){epoch++;caps=null;policy={enabled:false};refreshing=null;core.accountChanged();ads?.cancelRewardedLoad?.().catch(()=>{});}
+  function accountChanged(){epoch++;caps=null;policy={enabled:false};refreshing=null;diagnosticBinding=null;core.accountChanged();ads?.cancelRewardedLoad?.().catch(()=>{});}
   const diagnosticsAvailable=()=>caps?.diagnostics===true&&typeof ads?.rewardedDiagnostics==='function';
-  const diagnostics=async request=>{if(!diagnosticsAvailable()||!Number.isSafeInteger(request)||request<1||request>1000000)throw Error('AD_UNAVAILABLE');const value=await ads.rewardedDiagnostics({request});if(diagnosticBinding&&(value?.kind!==diagnosticBinding.kind||value?.generation!==diagnosticBinding.generation))throw Error('AD_UNAVAILABLE');return value;};
+  const diagnostics=async request=>{if(!diagnosticsAvailable()||!Number.isSafeInteger(request)||request<1||request>1000000)throw Error('AD_UNAVAILABLE');const stamp=epoch,actor=cloud()?.getStatus().userId,binding=diagnosticBinding;const value=await ads.rewardedDiagnostics({request});if(!same(stamp,actor)||binding!==diagnosticBinding||binding&&(value?.kind!==binding.kind||value?.generation!==binding.generation))throw Error('AD_UNAVAILABLE');return value;};
   const diagnosticAdAvailable=()=>diagnosticsAvailable()&&typeof ads?.showDiagnosticRewarded==='function';
-  const diagnosticAd=async()=>{if(!diagnosticAdAvailable())throw Error('AD_UNAVAILABLE');diagnosticBinding=null;return bindDiagnostics(await ads.showDiagnosticRewarded(),'demo');};
+  const diagnosticAd=async()=>{if(!diagnosticAdAvailable())throw Error('AD_UNAVAILABLE');const stamp=epoch,actor=cloud()?.getStatus().userId;diagnosticBinding=null;const result=await ads.showDiagnosticRewarded();return same(stamp,actor)?bindDiagnostics(result,'demo'):result;};
   return {refresh,watch,available:core.available,canCheck:core.canCheck,remaining:core.remaining,cancel,accountChanged,diagnosticsAvailable,diagnostics,diagnosticAdAvailable,diagnosticAd};
  }
  window.meadowLittlesRewarded={create};

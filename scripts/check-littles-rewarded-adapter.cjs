@@ -51,6 +51,20 @@ test('A publisher outcome rejects demo or other-generation timing and accepts on
  for(const patch of [{kind:'demo',generation:7},{kind:'publisher',generation:8}]){f.ads.rewardedDiagnostics=async({request})=>({request,...patch});await assert.rejects(f.adapter.diagnostics(1));}
  f.ads.rewardedDiagnostics=async({request})=>({request,kind:'publisher',generation:7});assert.equal((await f.adapter.diagnostics(2)).generation,7);
 });
+
+test('Late publisher or sample results cannot rebind diagnostics after an account change',async()=>{
+ for(const kind of ['publisher','demo']){
+  const f=fixture();f.caps.diagnostics=true;f.ads.rewardedDiagnostics=async({request})=>({request,kind:'publisher',generation:8});let release;
+  if(kind==='publisher')f.hooks.show=()=>new Promise(resolve=>release=resolve);else f.ads.showDiagnosticRewarded=()=>new Promise(resolve=>release=resolve);
+  await f.adapter.refresh();const pending=kind==='publisher'?f.adapter.watch('memory'):f.adapter.diagnosticAd();while(!release)await Promise.resolve();
+  f.state.actor=B;f.adapter.accountChanged();await f.adapter.refresh();release({closed:true,earned:false,diagnosticKind:kind,diagnosticGeneration:7});await pending;
+  assert.equal((await f.adapter.diagnostics(1)).generation,8,'The old generation must not rebind after switching actor');
+ }
+});
+
+test('A held timing response is discarded across an actor or same-actor login epoch change',async()=>{
+ for(const next of [A,B]){const f=fixture();f.caps.diagnostics=true;let release;f.ads.rewardedDiagnostics=()=>new Promise(resolve=>release=resolve);await f.adapter.refresh();const pending=f.adapter.diagnostics(1);f.state.actor=next;f.adapter.accountChanged();release({kind:'publisher',generation:1});await assert.rejects(pending);}
+});
 test('Consent can become ready after an early refresh; native pre-load refusal never leaves a pending reward',async()=>{
  const f=fixture();f.state.consent=false;await f.adapter.refresh();f.state.consent=true;await f.adapter.refresh();assert(f.adapter.available('memory'));
  f.hooks.show=async()=>{throw Error('Optional adverts are unavailable.');};assert.equal((await f.adapter.watch('memory')).status,'unavailable');assert(f.adapter.available('memory'));assert.equal(f.adapter.remaining('memory'),0);
