@@ -1,27 +1,14 @@
 import {googlePurchase,settle,sha} from './google.ts';
-import {validatePurchase} from './rules.ts';
+import {purchaseVerifier} from './service.ts';
+import {createCommerceObserver,storeDatabaseError} from '../_shared/meadow-commerce-security-v1.ts';
 const base=Deno.env.get('SUPABASE_URL')!,secret=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const origins=new Set(['https://sponsorsorter.com','https://localhost']);
-const keepsakes=new Set(['mm_welcome_garden','mm_coop_charm','mm_market_makeover']);
-const consumables=new Set(['mm_pocket_gems','mm_gem_chest','mm_starter_pack','mm_builders_pack','mm_reward_tickets','mm_pantry_pack']);
-async function db(path:string,body?:unknown,bearer=secret){
- const r=await fetch(base+path,{method:body===undefined?'GET':'POST',signal:AbortSignal.timeout(12000),headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
- if(!r.ok)throw Error('STORE_DELIVERY_UNAVAILABLE');return r.json();
+async function db(path:string,body?:unknown,bearer=secret,signal=AbortSignal.timeout(12000)){
+ const r=await fetch(base+path,{method:body===undefined?'GET':'POST',signal,headers:{apikey:secret,Authorization:'Bearer '+bearer,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+ if(!r.ok){if(path==='/rest/v1/rpc/meadow_market_deliver_store_purchase'){const error=await r.json();throw storeDatabaseError(error?.code,error?.message,error?.details);}throw Error('STORE_DELIVERY_UNAVAILABLE');}return r.json();
 }
-export async function verify(user:string,product:string,purchaseToken:string,testOnly=false){
- if(!consumables.has(product)&&product!=='mm_premium'&&!keepsakes.has(product))throw Error('UNKNOWN_PRODUCT');
- if(purchaseToken.length<10||purchaseToken.length>4096)throw Error('INVALID_PURCHASE');
- const purchase=await googlePurchase(product,purchaseToken);
- const checked=validatePurchase(purchase,await sha('meadow-markets:'+user),testOnly);
- const hash=await sha(purchaseToken);
- const delivered=await db('/rest/v1/rpc/meadow_market_deliver_store_purchase',{p_user:user,p_product:product,p_token_hash:hash,p_order:purchase.orderId||null,p_test:checked.test});
- // Credit first, then acknowledge. A retry uses the same global token hash.
- if(!delivered.settled){
-  if(consumables.has(product)?purchase.consumptionState!==1:purchase.acknowledgementState!==1)await settle(product,purchaseToken,consumables.has(product));
-  await db('/rest/v1/rpc/meadow_market_settle_store_purchase',{p_token_hash:hash});
- }
- return {verified:true,receipt_id:delivered.receipt_id,duplicate:delivered.duplicate};
-}
+const observer=createCommerceObserver('meadow-market-store',(name,body,signal)=>db('/rest/v1/rpc/'+name,body,secret,signal));
+export const verify=purchaseVerifier({purchase:googlePurchase,hash:sha,deliver:body=>db('/rest/v1/rpc/meadow_market_deliver_store_purchase',body),settle,markSettled:hash=>db('/rest/v1/rpc/meadow_market_settle_store_purchase',{p_token_hash:hash}),observer});
 Deno.serve(async req=>{
  const origin=req.headers.get('origin')||'';
  const headers={'Content-Type':'application/json','Cache-Control':'no-store','Access-Control-Allow-Origin':origins.has(origin)?origin:'https://sponsorsorter.com','Access-Control-Allow-Headers':'authorization,apikey,content-type,x-client-info','Access-Control-Allow-Methods':'POST,OPTIONS','Vary':'Origin'};
