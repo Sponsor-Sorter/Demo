@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 24 November 2026 — named Build selection candidate 256
+
+The selected-item toolbar now names the actual crop/buildable and its footprint before Details, Move, Rotate or Sell. Its accessible name and item identity follow selection; hiding or clearing selection removes the old label. The four existing actions, hold-to-pick-up, placement checks and authoritative commands retain their behavior. Focused Build checks pass, and the actual toolbar module passed isolated 360×740 and 844×390 browser layouts, selection switching, Move-target delivery and clearing. This is component acceptance, not a complete new farm or phone pass. Publication is pending normal review and CI.
+
+The worker-route repair is already live in farm-actions gateway 71 (PR79), with the exact worker-only closure verified. Registered-browser observations passed work → well walk → full drink → resumed work and owned-map return. Samsung native 17/web 255 was opened and the preserved stress farm checked. One selection tap was acknowledged; a later frame showed an anonymous selection toolbar, so its target could not be verified and no move was made. All 53 Coast objects, worker assignments and save revision were retained. Physical hired-worker work/drink/resume and owned-map switching remain pending a released idle phone and positively identified controls. The phone session is closed; no lasting device settings were changed.
+
 ## 23 November 2026 — public Play 17; clearer HUD candidate 255
 
 Fresh Google Play observations confirm Production **Active**, latest **1.7.7/code 17**, in the existing Australia region. The public AU listing has the ordinary install action, current release notes and “Contains ads · In-app purchases.” No submission or rollout settings were changed. Read-only commerce configuration confirms production and ads enabled; the accepted build-254 automatic Play defaults, verified Premium/gifts, consent, Admin pacing and server reward verification remain unchanged.
