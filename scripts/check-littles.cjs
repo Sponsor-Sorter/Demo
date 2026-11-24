@@ -64,3 +64,5 @@ require('./check-littles-friends-feedback.cjs');
 require('./check-littles-bug-smash-core.cjs');
 require('./check-littles-bug-smash-host.cjs');
 require('./check-littles-bug-smash-assets.cjs');
+
+require('./check-littles-internal-ad-testing.cjs');
