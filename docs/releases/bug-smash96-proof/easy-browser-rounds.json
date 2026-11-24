@@ -1,0 +1,18 @@
+{
+  "scope": "Actual local browser pointer rounds, not installed phone acceptance",
+  "levels": [
+    1,
+    2,
+    3
+  ],
+  "mechanics": [
+    "acorn taps then tummy",
+    "actual bubble swipe; pause/resize preserves tummy HP",
+    "stationary tap does not tickle; three real drags then tummy"
+  ],
+  "last": {
+    "result": "Completed local rounds: 3",
+    "voice": "bug-rhys-done",
+    "win": "You splashed 10 ants and Tickle Tank.What a colourful garden!"
+  }
+}

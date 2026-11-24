@@ -1,0 +1,123 @@
+{
+  "build": 96,
+  "name": "Rainbow Bug Smash",
+  "branch": "codex/littles-bug-smash",
+  "base": "9843c95b1755f1de4b777f2dd89d643f29d51098",
+  "status": "Candidate only. Not publicly activated. No connected migration applied.",
+  "userDirection": "No hints; larger armoured ants need repeated taps; bosses have simple kid-friendly touch mechanics.",
+  "game": {
+    "id": "bug_smash",
+    "trails": 12,
+    "colours": 6,
+    "bosses": {
+      "acorn": "Tap three shiny acorn clasps, then tummy",
+      "bubble": "Pop a bubble shield with real taps/swipes, then tummy",
+      "tickle": "Actually rub the belly to fill its ring, then tummy"
+    },
+    "progression": "8–18 ants; up to6 at once where space permits; armour2–4 taps; clasps/bubbles1–2 layers; boss tummy3–6 taps; longer tickling",
+    "failedOrAbandoned": "Free; missed ants respawn; no timer, loss penalty or hint counter",
+    "completion": "Existing shared completion path, five daily free completed rounds per game, existing weekly/Plus paths, exact-once local awards, existing daily star cap"
+  },
+  "art": {
+    "tool": "Built-in image_gen",
+    "prompts": "docs/releases/bug-smash-art-prompts.json",
+    "files": [
+      "meadow-market-littles/assets/generated/bug-smash/garden.webp",
+      "meadow-market-littles/assets/generated/bug-smash/garden-portrait.webp",
+      "meadow-market-littles/assets/generated/bug-smash/preview.webp"
+    ]
+  },
+  "audio": {
+    "farmer": "Rhys",
+    "voice": "Noah - YA Audiobooks Narrator",
+    "model": "Eleven Multilingual v2",
+    "newCues": 7,
+    "manifest": "meadow-market-littles/assets/audio/bug-rhys-generation.json",
+    "existingApprovedClipsUnchanged": 588,
+    "existingRedirectsUnchanged": 41,
+    "subjectiveListening": "Approved provider/cast/model and browser clip routing/durations verified; installed-phone audibility/tone acceptance remains pending"
+  },
+  "validation": {
+    "fullLittlesRegression": {
+      "command": "node scripts/check-littles.cjs",
+      "exit": 0,
+      "completedAt": "2026-11-24T05:47:18Z"
+    },
+    "targetedAfterFinalEdits": [
+      "check-littles-bug-smash-host.cjs",
+      "check-littles-bug-smash-assets.cjs",
+      "check-littles-weekly.cjs"
+    ],
+    "rules": "144 complete tap/swipe/rub rounds across12trails/4sizes +3keyboard rounds",
+    "weekly": {
+      "command": "npm test --prefix tools/littles-local/weekly96-fixtures",
+      "exit": 0,
+      "checks": 114,
+      "previousIdsPreserved": 84,
+      "scope": "Actual pinned live PL/pgSQL in ephemeral PGlite memory; explicit auth/fairplay/quality stubs. Not real RLS, concurrency or live acceptance."
+    },
+    "browser": {
+      "fullRounds": [
+        1,
+        2,
+        3,
+        10,
+        11,
+        12
+      ],
+      "finalRepeat": 12,
+      "inputs": "Actual browser coordinate taps and native drags; no private game-state/progress injection",
+      "sizes": [
+        "320x568",
+        "390x844",
+        "844x390",
+        "768x1024",
+        "1024x768"
+      ],
+      "checks": [
+        "44px+ separated controls",
+        "clear scene-overlaid intro text",
+        "preview shows full artwork",
+        "ants stay on farm dirt",
+        "armour visibly counts down",
+        "real bubble swipes",
+        "stationary tap does not tickle",
+        "31% tickle survives pause/resize",
+        "current-stage approved farmer cue",
+        "one completion per win",
+        "next/replay/no thanks"
+      ],
+      "newConsoleWarningsOrErrors": 0,
+      "evidence": "docs/releases/bug-smash96-proof/"
+    },
+    "installedPhone": {
+      "status": "PENDING. No Littles device window currently admitted; shared Samsung held by Meadow W06 until its closeout.",
+      "requiredRounds": [
+        1,
+        2,
+        3,
+        10,
+        11,
+        12
+      ]
+    }
+  },
+  "backend": {
+    "contract": "docs/releases/bug-smash-weekly96-contract.json",
+    "liveSource": "docs/releases/bug-smash-weekly96-live-source.json",
+    "migration": "supabase/migrations/20261124053333_littles_bug_smash_weekly96.sql",
+    "status": "Prepared and tested only. Root review/fresh source pin required before application."
+  },
+  "rollout": {
+    "privateQualityBuild": 96,
+    "publicActivation": "Only after installed phone full-round and audio/layout acceptance",
+    "preserved": [
+      "native18 artifact",
+      "security95 ownership",
+      "all previous games/saves",
+      "ad/provider/native configuration",
+      "all rewarded gatesOFF",
+      "account progress; no real QA play yet"
+    ]
+  }
+}

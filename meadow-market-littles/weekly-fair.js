@@ -8,11 +8,13 @@
  const tiers=[{at:3,bonus:2,name:'Bronze',color:'#b97945'},{at:8,bonus:3,name:'Silver',color:'#879ba5'},{at:15,bonus:5,name:'Gold',color:'#e5a91f'}];
  const weekNow=()=>{const d=new Date();d.setUTCHours(0,0,0,0);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10);};
  const current=()=>state&&state.enabled===true&&state.week===weekNow()&&account===cloud()?.getStatus().userId;
+ const qualityBuild=()=>Math.max(publicQuality,current()?Number(state.quality_build)||62:62);
+ const qualityChanged=()=>{if(typeof window.dispatchEvent==='function'&&typeof Event==='function')window.dispatchEvent(new Event('meadow-quality-change'));};
  const remaining=id=>current()?Math.max(0,state.bonus_per_game-(state.bonus_spent?.[id]||0)-(spending[id]||0)):0;
- function accept(answer,stamp,seq){if(stamp!==epoch||answer.user_id!==account||seq<applied)return false;applied=seq;state=answer;if(Number.isInteger(answer.public_quality_build)&&answer.public_quality_build>=62){publicQuality=answer.public_quality_build;try{localStorage.setItem('meadow-littles-quality-build',String(publicQuality));}catch{}}render();return true;}
+ function accept(answer,stamp,seq){if(stamp!==epoch||answer.user_id!==account||seq<applied)return false;const previousQuality=qualityBuild();applied=seq;state=answer;if(Number.isInteger(answer.public_quality_build)&&answer.public_quality_build>=62){publicQuality=answer.public_quality_build;try{localStorage.setItem('meadow-littles-quality-build',String(publicQuality));}catch{}}render();if(previousQuality!==qualityBuild())qualityChanged();return true;}
  async function request(action,data={}){const stamp=epoch,id=account,seq=++sequence;if(!id)throw Error('offline');const task=chain.catch(()=>{}).then(async()=>{if(stamp!==epoch||id!==account)throw Error('account changed');const answer=await cloud().weekly(action,data);if(stamp!==epoch||id!==account)throw Error('account changed');return {answer,stamp,seq};});chain=task;return task;}
  async function refresh(){if(refreshing)return refreshing;const stamp=epoch;refreshing=(async()=>{try{const r=await request('status');accept(r.answer,r.stamp,r.seq);if(stamp===epoch)notice='';}catch{if(stamp===epoch)notice='Connect to the internet to see this week’s farm fair. Your games are ready to play.';}finally{if(stamp===epoch){refreshing=null;render();}}})();return refreshing;}
- function accountChanged(id){if(id===account)return;account=id;epoch++;state=null;applied=0;refreshing=null;spending={};notice='';chain=Promise.resolve();access.configure({resetTickets:true});render();if(id)refresh();}
+ function accountChanged(id){if(id===account)return;account=id;epoch++;state=null;applied=0;refreshing=null;spending={};notice='';chain=Promise.resolve();access.configure({resetTickets:true});render();qualityChanged();if(id)refresh();}
  function begin(id){if(!current())return null;const stamp=epoch,user=account;return {stamp,user,promise:request('begin',{game:id,request_id:crypto.randomUUID()}).then(r=>r.answer).catch(()=>null)};}
  async function completed(id,ticket,useBonus){
   if(!ticket||ticket.stamp!==epoch||ticket.user!==account)return;
@@ -41,5 +43,5 @@
  window.addEventListener?.('resize',()=>{if(dialog?.open)render();});
  window.addEventListener?.('online',()=>{if(account)refresh();});
  window.setInterval?.(()=>{if(account&&!document.hidden)refresh();},300000);
- window.meadowWeeklyFair={getQualityBuild:()=>Math.max(publicQuality,current()?Number(state.quality_build)||62:62),open,accountChanged,refresh,remaining,setGames:games=>{names=Object.fromEntries(games.map(g=>[g.id,g.name]));}};
+ window.meadowWeeklyFair={getQualityBuild:qualityBuild,open,accountChanged,refresh,remaining,setGames:games=>{names=Object.fromEntries(games.map(g=>[g.id,g.name]));}};
 })();
