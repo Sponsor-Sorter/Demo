@@ -67,7 +67,7 @@
       if(e.type==='armour-hit'&&!s.armourHeard){s.armourHeard=true;speak(s,'armour');}
       if(e.type==='boss-enter'){s.fingers.clear();announce(s,bossNames[e.boss]+'!');s.voice=e.boss;speak(s,s.voice);}
       if(e.type==='shell-open'){s.fingers.clear();s.voice='tummy';speak(s,'tummy');sound('care');announce(s,'Shell open!');}
-      if(e.type==='won'){s.phase='finishing';s.finishIn=s.reduced?.35:1.1;s.fingers.clear();sound('reward');}
+      if(e.type==='won'){s.voice='done';s.phase='finishing';s.finishIn=s.reduced?.35:1.1;s.fingers.clear();sound('reward');}
     }
     if(changed){update(s);targets(s);}
   }
@@ -89,7 +89,7 @@
   }
   function pause(s){
     if(session!==s||!['playing','finishing'].includes(s.phase))return;s.resumePhase=s.phase;s.phase='paused';s.game.paused=true;s.fingers.clear();cancelAnimationFrame(s.frame);s.frame=0;stopVoice();s.buttons.forEach(n=>n.disabled=true);
-    const overlay=document.createElement('section');overlay.className='bs-overlay';overlay.innerHTML='<div class="bs-intro-content bs-pause"><h2>A little pause</h2><p>Your paint parade will wait.</p><button class="bs-primary" data-bs-resume>Keep splashing</button><button class="bs-secondary" data-bs-done>Back to games</button></div>';dialog.querySelector('.bs-scene').append(overlay);overlay.querySelector('[data-bs-done]').onclick=close;overlay.querySelector('[data-bs-resume]').onclick=()=>{if(document.hidden||session!==s)return;overlay.remove();s.phase=s.resumePhase;s.game.paused=false;s.last=0;speak(s,s.voice);s.frame=requestAnimationFrame(t=>tick(s,t));};overlay.querySelector('[data-bs-resume]').focus({preventScroll:true});
+    const overlay=document.createElement('section');overlay.className='bs-overlay';overlay.innerHTML='<div class="bs-intro-content bs-pause"><h2>A little pause</h2><p>Your paint parade will wait.</p><button class="bs-primary" data-bs-resume>Keep splashing</button><button class="bs-secondary" data-bs-done>Back to games</button></div>';dialog.querySelector('.bs-scene').append(overlay);overlay.querySelector('[data-bs-done]').onclick=close;overlay.querySelector('[data-bs-resume]').onclick=()=>{if(document.hidden||session!==s)return;overlay.remove();s.phase=s.resumePhase;s.game.paused=false;s.last=0;if(s.phase==='playing')speak(s,s.voice);s.frame=requestAnimationFrame(t=>tick(s,t));};overlay.querySelector('[data-bs-resume]').focus({preventScroll:true});
   }
   function win(s){
     if(session!==s||s.phase!=='finishing')return;s.phase='won';s.game.paused=true;s.frame=0;s.buttons.forEach(n=>n.disabled=true);dialog.querySelector('[data-bs-pause]').disabled=true;const accepted=completed(s.level)!==false;s.voice='done';speak(s,'done');

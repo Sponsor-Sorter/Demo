@@ -66,3 +66,5 @@ require('./check-littles-bug-smash-host.cjs');
 require('./check-littles-bug-smash-assets.cjs');
 
 require('./check-littles-internal-ad-testing.cjs');
+
+require('./check-littles-bug-smash-finish.cjs');
