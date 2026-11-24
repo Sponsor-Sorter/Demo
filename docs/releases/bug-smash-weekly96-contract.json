@@ -1,0 +1,17 @@
+{
+  "purpose": "Register exactly one game ID using pinned CURRENT deployed definition; no gate/grant/wrapper/ads/entitlement/resource-rule changes",
+  "sourceEvidence": "bug-smash-weekly96-live-source.json",
+  "migration": "supabase/migrations/20261124053333_littles_bug_smash_weekly96.sql",
+  "before": {
+    "bodySha256": "6f25923fdc6451ddd7d50d9bd394c037953c1f46b00335028fc61f0fdd65060b",
+    "definitionSha256": "e1efa90dc55f7ea9b3c052a66ee152dd8fc6933c93cdd63d8c740be108131a23"
+  },
+  "after": {
+    "bodySha256": "e4c125b55d6533e20f8b69eddd842daba2bb791d9b8d561991803e16f5872a84",
+    "definitionSha256": "27bb0ebf1bcf0100ef6f6de163afd7529ef56dfab0b6cb7b90c1b2968ad48005"
+  },
+  "anchor": "'bee_shelter','harvest_slice','meadow_kitchen'",
+  "replacement": "'bee_shelter','harvest_slice','bug_smash','meadow_kitchen'",
+  "wrapperUnchanged": "e1880a0dbe3d6ec48c1b03e943a9ec630e93d5339f083335deba79455431c3dd",
+  "execution": "CANDIDATE ONLY. Not applied to any connected database. Root review and fresh live source check required."
+}

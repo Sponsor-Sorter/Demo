@@ -1,0 +1,21 @@
+{
+  "tool": "Built-in image_gen",
+  "generated": "2026-11-24",
+  "assets": [
+    {
+      "file": "meadow-market-littles/assets/generated/bug-smash/garden.webp",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-a41a11f4-931f-479b-b5d2-712c3d0e45e3.png",
+      "prompt": "Use case: illustration-story. Asset type: full-screen landscape background for Meadow Market Littles, a polished preschool mobile game for ages 3–6. Create a beautiful high-quality 16:9 storybook farm garden floor seen from a close, slightly elevated overhead angle, matching premium rounded, warmly lit 3D-painted children's farm illustrations. A broad, gently textured honey-beige dirt play area fills the middle 75% of the frame and continues naturally to the bottom; it must be uncluttered and easy to see colourful animated ants against. Around the outer edges only: lush soft green grass, a few oversized clover leaves and daisies, smooth rounded stepping stones, a wooden fence, a small cheerful red barn far back near the top, and warm golden late-afternoon light. Make it feel like a real charming farm scene, not an arena or a blank panel. Keep the centre calm, open and evenly readable, including a central portrait-safe crop. Rich professional children's-game illustration, tactile wood, soft clean shading, no grain or painterly noise, appealing rounded forms, coherent perspective. No ants, insects, characters, text, logos, lettering, buttons, borders, interface, scoreboards or watermarks; gameplay is composited in code. Do not make a busy scene."
+    },
+    {
+      "file": "meadow-market-littles/assets/generated/bug-smash/garden-portrait.webp",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-dfca01b5-8b65-4aac-8153-67981e304482.png",
+      "prompt": "Use case: illustration-story. Asset type: full-screen PORTRAIT 9:16 background for Meadow Market Littles, a premium preschool farm mobile game. Recompose the reference farm garden as a tall portrait scene. Preserve its warm polished rounded 3D-painted storybook style, honey-beige ground, wooden fence, soft grass and daisies, small red barn, tree shade and golden sunshine. The broad calm dirt play space should cover the middle and lower 75%, large and uncluttered for colourful animated ants. Put scenery at the outer edges, not across the play space. The distant barn and fence should remain recognisable near the top of the portrait. No ants, characters, words, logos, UI, panels, scoreboards, borders or watermark. Crisp professional game art, soft shading and coherent perspective."
+    },
+    {
+      "file": "meadow-market-littles/assets/generated/bug-smash/preview.webp",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-9f315bfe-2177-45dd-a08d-96c4dd4df24b.png",
+      "prompt": "Use case: illustration-story. Asset type: clear illustrated landscape game-library preview for a preschool game called Rainbow Bug Smash in Meadow Market Littles. Use the reference farm garden's professional rounded 3D-painted storybook style and warm farm setting. Show a close, clear playable moment: three adorable glossy colourful ants (coral red, sunny yellow and sky blue) crawling on the farm dirt, each with three rounded body segments, six cute legs, curved antennae, large kind expressive eyes, and cheerful smiles. One noticeably bigger green armoured ant wears a beautifully illustrated acorn-and-leaf shell with three large golden acorn clasps. A friendly large lavender boss ant sits behind three shiny soap-bubble shields. A bright rainbow paint splash with a few star sparkles at the foreground makes the tap-and-splat activity unmistakable. Farm fence, clover and a small red barn remain visible in the background. Compose large readable subjects with breathing room; a simple, joyful children's mobile game scene, crisp, tactile and premium quality, not a busy poster. The ants are magical paint creatures: no gore, injury or realistic insects. No hands, humans, lettering, text, logos, UI panels, borders or watermarks."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "scope": "Actual local browser pointer rounds; installed phone acceptance remains required",
+  "levels": [
+    10,
+    11,
+    12
+  ],
+  "mechanics": [
+    "four-tap armour",
+    "two-hit acorn clasps and six tummy taps",
+    "actual two-layer bubble swipe and six tummy taps",
+    "actual rub to31%; pause and resize preserves31%; rub to64%/96%/open; six tummy taps"
+  ],
+  "last": {
+    "result": "Completed local rounds: 3",
+    "voice": "bug-rhys-done",
+    "win": "You splashed 18 ants and Tickle Tank.What a colourful garden!"
+  }
+}

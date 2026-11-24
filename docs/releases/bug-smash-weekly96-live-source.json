@@ -1,0 +1,252 @@
+{
+  "at": "2026-11-24T05:26:55Z",
+  "project": "ejavqlyozqhzqogflqzr",
+  "mode": "Read-only pg_catalog inspection; no real user rows or changes",
+  "query": "select n.nspname as schema,p.proname,pg_get_function_identity_arguments(p.oid) as identity_arguments,p.proowner::regrole::text as owner,p.prosecdef as security_definer,p.proconfig as settings,p.proacl::text as acl,encode(sha256(convert_to(p.prosrc,'UTF8')),'hex') as body_sha256,encode(sha256(convert_to(pg_get_functiondef(p.oid),'UTF8')),'hex') as definition_sha256,pg_get_functiondef(p.oid) as definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname='meadow_littles_private' and p.proname='weekly' or n.nspname='public' and p.proname='meadow_littles_weekly') and pg_get_function_identity_arguments(p.oid)='p_action text, p_data jsonb' order by n.nspname;",
+  "functions": [
+    {
+      "schema": "meadow_littles_private",
+      "proname": "weekly",
+      "identity_arguments": "p_action text, p_data jsonb",
+      "owner": "postgres",
+      "security_definer": true,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "acl": "{postgres=X/postgres,authenticated=X/postgres}",
+      "body_sha256": "6f25923fdc6451ddd7d50d9bd394c037953c1f46b00335028fc61f0fdd65060b",
+      "definition_sha256": "e1efa90dc55f7ea9b3c052a66ee152dd8fc6933c93cdd63d8c740be108131a23",
+      "definition": "CREATE OR REPLACE FUNCTION meadow_littles_private.weekly(p_action text, p_data jsonb DEFAULT '{}'::jsonb)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\ndeclare\n actor uuid:=meadow_littles_private.require_actor();\n stamp timestamptz:=clock_timestamp();\n day date:=(stamp at time zone 'UTC')::date;\n start_week date:=date_trunc('week',stamp at time zone 'UTC')::date;\n entry meadow_littles_private.weekly_fair;\n run meadow_littles_private.weekly_rounds;\n ticket_id uuid;\n game_id text;\n parent_ready boolean;\n counted integer;\n spent integer;\n bonus_total integer;\n leaders jsonb;\n spent_map jsonb;\n place bigint;\n hash text;\n previous_shared boolean;\n enabled boolean;\n answer jsonb;\nbegin\n perform meadow_littles_private.guard_read(actor);\n select c.enabled or actor=any(c.preview_users) into enabled from meadow_littles_private.weekly_config c where singleton;\n if not coalesce(enabled,false) then\n  if p_action is distinct from 'status' then raise exception 'LITTLES_WEEKLY_NOT_RELEASED';end if;\n  return jsonb_build_object('contract','littles-weekly-v1','user_id',actor,'enabled',false,'week',start_week,'rounds',0,'completed',0,'points',0,'days',array[0,0,0,0,0,0,0],'bonus_per_game',0,'bonus_spent','{}'::jsonb,'shared',false,'leaders','[]'::jsonb);\n end if;\n if not exists(select 1 from public.meadow_littles_profiles where user_id=actor) then raise exception 'LITTLES_OPEN_REQUIRED';end if;\n if p_action not in ('status','begin','finish','sharing') or jsonb_typeof(p_data)<>'object' then raise exception 'LITTLES_WEEKLY_INVALID';end if;\n -- Serialises completion/bonus spending and all devices of one account.\n perform pg_advisory_xact_lock(hashtextextended('littles-weekly:'||actor::text,0));\n select shared into previous_shared from meadow_littles_private.weekly_fair where user_id=actor order by week desc limit 1;\n hash:=encode(sha256(convert_to(actor::text||start_week::text,'UTF8')),'hex');\n insert into meadow_littles_private.weekly_fair(user_id,week,nickname,shared)\n values(actor,start_week,\n (array['Sunny','Happy','Cosy','Little','Bouncy','Smiley','Kind','Clever'])[1+get_byte(decode(hash,'hex'),0)%8]||' '||\n (array['Lamb','Duck','Hen','Calf','Pony','Bee','Bunny','Goat'])[1+get_byte(decode(hash,'hex'),1)%8]||' '||\n (1000+(('x'||substr(hash,5,6))::bit(24)::integer)%9000)::text,coalesce(previous_shared,false))\n on conflict(user_id,week) do nothing;\n select * into entry from meadow_littles_private.weekly_fair where user_id=actor and week=start_week;\n bonus_total:=(case when entry.completed>=3 then 2 else 0 end)+(case when entry.completed>=8 then 3 else 0 end)+(case when entry.completed>=15 then 5 else 0 end);\n if p_action='sharing' then\n  select not coalesce(is_anonymous,false) and email_confirmed_at is not null into parent_ready from auth.users where id=actor;\n  if not coalesce(parent_ready,false) or jsonb_typeof(p_data->'enabled')<>'boolean' then raise exception 'LITTLES_PARENT_REQUIRED';end if;\n  update meadow_littles_private.weekly_fair set shared=(p_data->>'enabled')::boolean where user_id=actor;\n elsif p_action='begin' then\n  game_id:=p_data->>'game';\n  if game_id is null or not game_id=any(array[\n   'market_pretend','shape_shadows','together_animalrescue','together_picnicpartners','together_gardenhelpers','eggs','milk','sheep','goat','cow','lambcare','flowers','memory','sorting','tractorrepair','drawing','colourbynumber','matchpainting','coopmath','differences',\n   'listenharvest','meadowpairs','spokenorder','paddockchange','farmerpattern','animalhome','barnyardlisten','applecartsort','harvestcount','gentleharvest','farmpicture','fullbasket',\n   'letter_tracing','name_tracing','balloon_letters','word_search','sliding_picture','bee_shelter','harvest_slice','meadow_kitchen','farm_band','first_sounds',\n   'meadow_story','little_farm_builder','hiding_friend','seed_to_snack','farm_weather','market_neighbours','farm_shapes','sound_garden','tractor_trail','meadow_keepsakes',\n   'kindness_meadow','windmill_workshop','little_bridge_builders','haystack_tower','nest_builder','rainy_day_clothesline','pond_balance','orchard_seasons','barnyard_action_parade','farm_post_office',\n   'learning_water','learning_sounds','learning_shares','learning_rolling','learning_patchwork','learning_orchard','learning_rhymes','learning_pip','learning_coding','learning_freeze',\n   'together_connectfour','together_tictactoe','together_meadowrace','together_harvestbasket','together_memoryduel','together_memorygarden','together_rps',\n   'together_picnic','together_planting','together_cozyhome','together_animalband','together_storywagon'\n  ]) then raise exception 'LITTLES_WEEKLY_GAME';end if;\n  ticket_id:=(p_data->>'request_id')::uuid;\n  if ticket_id is null then raise exception 'LITTLES_WEEKLY_INVALID';end if;\n  select * into run from meadow_littles_private.weekly_rounds where ticket=ticket_id;\n  if found then\n   if run.user_id<>actor or run.game<>game_id or run.week<>start_week then raise exception 'LITTLES_WEEKLY_CONFLICT';end if;\n  else\n   if (select count(*) from meadow_littles_private.weekly_rounds where user_id=actor and started_at>stamp-interval '1 minute')>=30 then raise exception 'LITTLES_WEEKLY_RATE_LIMIT';end if;\n   insert into meadow_littles_private.weekly_rounds(ticket,user_id,game,week,started_at) values(ticket_id,actor,game_id,start_week,stamp);\n  end if;\n  return jsonb_build_object('contract','littles-weekly-v1','user_id',actor,'ticket',ticket_id);\n elsif p_action='finish' then\n  ticket_id:=(p_data->>'ticket')::uuid;\n  select * into run from meadow_littles_private.weekly_rounds where ticket=ticket_id and user_id=actor for update;\n  if not found then raise exception 'LITTLES_WEEKLY_TICKET';end if;\n  if run.finished_at is null then\n   if run.week<>start_week or run.started_at>stamp-interval '2 seconds' or run.started_at<stamp-interval '2 hours' then raise exception 'LITTLES_WEEKLY_EXPIRED';end if;\n   select count(*) into counted from meadow_littles_private.weekly_rounds where user_id=actor and week=start_week and game=run.game and scored and (finished_at at time zone 'UTC')::date=day;\n   if coalesce((p_data->>'use_bonus')::boolean,false) then\n    select count(*) into spent from meadow_littles_private.weekly_rounds where user_id=actor and week=start_week and game=run.game and bonus;\n    if spent>=bonus_total then raise exception 'LITTLES_WEEKLY_NO_BONUS';end if;\n   end if;\n   update meadow_littles_private.weekly_rounds set finished_at=stamp,scored=counted<5,bonus=coalesce((p_data->>'use_bonus')::boolean,false) where ticket=ticket_id;\n   update meadow_littles_private.weekly_fair set rounds=rounds+(case when counted<5 then 1 else 0 end),completed=completed+1,days[extract(isodow from day)::integer]=days[extract(isodow from day)::integer]+1 where user_id=actor and week=start_week;\n  end if;\n end if;\n select * into entry from meadow_littles_private.weekly_fair where user_id=actor and week=start_week;\n bonus_total:=(case when entry.completed>=3 then 2 else 0 end)+(case when entry.completed>=8 then 3 else 0 end)+(case when entry.completed>=15 then 5 else 0 end);\n select coalesce(jsonb_object_agg(game,n),'{}') into spent_map from(select game,count(*) n from meadow_littles_private.weekly_rounds where user_id=actor and week=start_week and bonus group by game) b;\n with ranked as (\n  select user_id,nickname,rounds*10 points,dense_rank() over(order by rounds desc) position from meadow_littles_private.weekly_fair\n  where week=start_week and shared and rounds>0\n  -- Remove currently moderated participants without leaking decisions to the public board.\n  and not coalesce((meadow_littles_private.fairplay_status(user_id)->>'banned')::boolean,false)\n ), top_rows as(select * from ranked order by points desc,nickname limit 20)\n select coalesce(jsonb_agg(jsonb_build_object('nickname',nickname,'points',points,'rank',position,'you',user_id=actor) order by points desc,nickname),'[]') into leaders from top_rows;\n if entry.shared and entry.rounds>0 then\n  select count(distinct rounds)+1 into place from meadow_littles_private.weekly_fair where week=start_week and shared and rounds>entry.rounds and not coalesce((meadow_littles_private.fairplay_status(user_id)->>'banned')::boolean,false);\n end if;\n return jsonb_build_object('contract','littles-weekly-v1','user_id',actor,'week',start_week,'ends_at',(start_week+7)::text||'T00:00:00Z',\n 'enabled',true,'rounds',entry.rounds,'completed',entry.completed,'points',entry.rounds*10,'days',entry.days,'bonus_per_game',bonus_total,'bonus_spent',spent_map,'shared',entry.shared,'nickname',entry.nickname,'rank',place,'leaders',leaders);\nend $function$\n"
+    },
+    {
+      "schema": "public",
+      "proname": "meadow_littles_weekly",
+      "identity_arguments": "p_action text, p_data jsonb",
+      "owner": "postgres",
+      "security_definer": false,
+      "settings": [
+        "search_path=\"\""
+      ],
+      "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+      "body_sha256": "44dbcc4b967f397cea49f15d7e15abed866fa46d48f6ce16b42715825c66ff1c",
+      "definition_sha256": "e1880a0dbe3d6ec48c1b03e943a9ec630e93d5339f083335deba79455431c3dd",
+      "definition": "CREATE OR REPLACE FUNCTION public.meadow_littles_weekly(p_action text, p_data jsonb DEFAULT '{}'::jsonb)\n RETURNS jsonb\n LANGUAGE sql\n SET search_path TO ''\nAS $function$ select meadow_littles_private.weekly(p_action,p_data)||meadow_littles_private.quality_status() $function$\n"
+    }
+  ],
+  "columns": [
+    {
+      "schema": "auth",
+      "relname": "users",
+      "attname": "id",
+      "type": "uuid",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "auth",
+      "relname": "users",
+      "attname": "email_confirmed_at",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "default_expression": null
+    },
+    {
+      "schema": "auth",
+      "relname": "users",
+      "attname": "is_anonymous",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "singleton",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "true"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "enabled",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "preview_users",
+      "type": "uuid[]",
+      "not_null": true,
+      "default_expression": "'{}'::uuid[]"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "quality_build",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "62"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "quality_preview_build",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "63"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_config",
+      "attname": "quality_preview_users",
+      "type": "uuid[]",
+      "not_null": true,
+      "default_expression": "'{}'::uuid[]"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "user_id",
+      "type": "uuid",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "week",
+      "type": "date",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "nickname",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "shared",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "rounds",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "days",
+      "type": "integer[]",
+      "not_null": true,
+      "default_expression": "ARRAY[0, 0, 0, 0, 0, 0, 0]"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_fair",
+      "attname": "completed",
+      "type": "integer",
+      "not_null": true,
+      "default_expression": "0"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "ticket",
+      "type": "uuid",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "user_id",
+      "type": "uuid",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "game",
+      "type": "text",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "week",
+      "type": "date",
+      "not_null": true,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "started_at",
+      "type": "timestamp with time zone",
+      "not_null": true,
+      "default_expression": "now()"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "finished_at",
+      "type": "timestamp with time zone",
+      "not_null": false,
+      "default_expression": null
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "scored",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false"
+    },
+    {
+      "schema": "meadow_littles_private",
+      "relname": "weekly_rounds",
+      "attname": "bonus",
+      "type": "boolean",
+      "not_null": true,
+      "default_expression": "false"
+    },
+    {
+      "schema": "public",
+      "relname": "meadow_littles_profiles",
+      "attname": "user_id",
+      "type": "uuid",
+      "not_null": true,
+      "default_expression": null
+    }
+  ],
+  "schemaGrants": [
+    {
+      "schema": "meadow_littles_private",
+      "anon_usage": false,
+      "authenticated_usage": true,
+      "service_usage": true
+    },
+    {
+      "schema": "public",
+      "anon_usage": true,
+      "authenticated_usage": true,
+      "service_usage": true
+    }
+  ]
+}

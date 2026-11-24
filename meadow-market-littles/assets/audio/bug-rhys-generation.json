@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-11-24",
+  "authorisation": "User requested new approved farmer instructions as needed; approved Rhys/Noah cast only",
+  "files": [
+    {
+      "id": "bug-rhys-intro",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "Let's make a rainbow! Tap the colourful ants to make a paint splash. Big armoured ants need a few taps. Take your time!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_10_44_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "9fd2f0e4fd9bf4467bb987bf81e11d383b31fdb88a135831956e2672b8ac2850",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 103803,
+      "sha256": "ac10113163615c329bac2de7a699789a1b42ec21176b8f01b1b2dc4d67e9dfbd",
+      "durationSeconds": 8.62
+    },
+    {
+      "id": "bug-rhys-armour",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "This ant has a strong shell. Tap it a few times to crack it open!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_14_00_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "ae767920d07d84f8bcb35b2c38021c0bdaceb72187a04be8e7fb28000b2dfd51",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 56783,
+      "sha256": "cafd2577581aa8ef9683299b21748946b36d0c8d927bd3d34bc233062044ea46",
+      "durationSeconds": 4.7
+    },
+    {
+      "id": "bug-rhys-acorn",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "Captain Acorn is here! Tap the three shiny acorns to open his shell. Then tap his tummy!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_18_01_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "1be3e9cb1d2d39f115c8460513ea2ba35c5ac515bb06d09625a843cfb36777ed",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 98787,
+      "sha256": "d7d6f8f69b0a2e4f8b176cd59850418662836117e93a0f0b5c921571e87e23a4",
+      "durationSeconds": 8.2
+    },
+    {
+      "id": "bug-rhys-bubble",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "It's the Bubble Boss! Pop the bubbles with your finger. Then tap that big tummy!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_18_44_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "11bd1051d9f5d4f4485720777a41ab147e5c91e849869ee3e2d3c88d5b42446e",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 70889,
+      "sha256": "548f20e66ba932f92757b1d9206c0669a8eb794e436aa6d5d8a5c63a7acf85b3",
+      "durationSeconds": 5.88
+    },
+    {
+      "id": "bug-rhys-tickle",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "Here comes Tickle Tank! Rub your finger back and forth over his glowing tummy. Make him wiggle!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_28_39_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "e51c69a02326eeab919c1bcc54539df89c4f52dffde55d1d6cc13f14b677d567",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 71829,
+      "sha256": "5665604477e7a6530f6cdec933d4f0617d2390abf020a439232c0d6792652546",
+      "durationSeconds": 5.96
+    },
+    {
+      "id": "bug-rhys-tummy",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "The shell is open! Tap that big tummy for a rainbow splash!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_38_05_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "30b634577fd0c8a1236f5df8f286efb66e439073709759266dd413b2a855b871",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 46125,
+      "sha256": "2d02c979cd547fac0b905a8a3454a5d0d6ff527dfb57b960b9c4f1d85c1087cf",
+      "durationSeconds": 3.81
+    },
+    {
+      "id": "bug-rhys-done",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "text": "Wow, look at those colours! You finished the bug parade. Brilliant splashing!",
+      "sourceFilename": "ElevenLabs_2026-11-24T05_38_34_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "a29ba3e4b36aee01880855e555aa7d090902b12b7397c2ee49717480920c8b69",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 68694,
+      "sha256": "2e3664ccedde981167cd0e099f51c86e082da4b30127e1af4d32f1b613565096",
+      "durationSeconds": 5.69
+    }
+  ]
+}

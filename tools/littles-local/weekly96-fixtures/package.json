@@ -1,0 +1,12 @@
+{
+  "name": "littles-weekly96-isolated-fixtures",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ephemeral in-memory PostgreSQL fixture runner; never a production dependency",
+  "scripts": {
+    "test": "node verify.cjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.6.0"
+  }
+}

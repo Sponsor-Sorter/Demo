@@ -60,3 +60,11 @@ require('./check-littles-solo.cjs');
 require('./check-littles-difference-bag.cjs');
 
 require('./check-littles-friends-feedback.cjs');
+
+require('./check-littles-bug-smash-core.cjs');
+require('./check-littles-bug-smash-host.cjs');
+require('./check-littles-bug-smash-assets.cjs');
+
+require('./check-littles-internal-ad-testing.cjs');
+
+require('./check-littles-bug-smash-finish.cjs');

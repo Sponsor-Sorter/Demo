@@ -40,7 +40,7 @@ test('Malformed legacy capability cannot bind claim recovery',async()=>{
 });
 
 test('Official sample diagnostics are independent of core and backend rewards and absent without native capability',async()=>{
- const f=fixture();let samples=0;f.ads.rewardedDiagnostics=async()=>({contract:'littles-ad-timing-v1',sampledMs:0,events:[]});f.ads.showDiagnosticRewarded=async(...args)=>{assert.equal(args.length,0);samples++;return{closed:true,earned:true};};
+ const f=fixture();let samples=0;f.ads.rewardedDiagnostics=async()=>({contract:'littles-ad-timing-v1',sampledMs:0,events:[]});f.ads.showDiagnosticRewarded=async(...args)=>{assert.equal(args.length,0);samples++;return{closed:true,earned:true,diagnosticKind:'demo',diagnosticGeneration:1};};
  await f.adapter.refresh();assert(!f.adapter.diagnosticAdAvailable());await assert.rejects(f.adapter.diagnosticAd());assert.equal(samples,0);
  f.caps.diagnostics=true;assert(f.adapter.diagnosticAdAvailable());const before=f.requests.length;await f.adapter.diagnosticAd();assert.equal(samples,1);assert.equal(f.requests.length,before);assert.equal(f.counts.prepare,0);assert.equal(f.counts.show,0);assert.equal(f.adapter.remaining('memory'),0);
 });
@@ -57,9 +57,34 @@ test('Late publisher or sample results cannot rebind diagnostics after an accoun
   const f=fixture();f.caps.diagnostics=true;f.ads.rewardedDiagnostics=async({request})=>({request,kind:'publisher',generation:8});let release;
   if(kind==='publisher')f.hooks.show=()=>new Promise(resolve=>release=resolve);else f.ads.showDiagnosticRewarded=()=>new Promise(resolve=>release=resolve);
   await f.adapter.refresh();const pending=kind==='publisher'?f.adapter.watch('memory'):f.adapter.diagnosticAd();while(!release)await Promise.resolve();
-  f.state.actor=B;f.adapter.accountChanged();await f.adapter.refresh();release({closed:true,earned:false,diagnosticKind:kind,diagnosticGeneration:7});await pending;
+  f.state.actor=B;f.adapter.accountChanged();await f.adapter.refresh();release({closed:true,earned:false,diagnosticKind:kind,diagnosticGeneration:7});if(kind==='demo')await assert.rejects(pending);else await pending;
   assert.equal((await f.adapter.diagnostics(1)).generation,8,'The old generation must not rebind after switching actor');
  }
+});
+
+test('Internal capability discovery requires no actor, paid offer, backend status or game round',async()=>{
+ const f=fixture();f.state.actor=null;f.state.parent=false;f.state.left=5;f.policy.enabled=false;f.caps.diagnostics=true;
+ f.hooks.status=async()=>{throw Error('Backend must not be called');};
+ f.ads.rewardedDiagnostics=async({request})=>({request,kind:'demo',generation:7});
+ f.ads.showDiagnosticRewarded=async(...args)=>{assert.equal(args.length,0);return{closed:true,earned:true,diagnosticKind:'demo',diagnosticGeneration:7};};
+ await f.adapter.refreshDiagnostics();assert(f.adapter.diagnosticAdAvailable());assert(!f.adapter.available('memory'));
+ const before=JSON.stringify([...f.files]);await f.adapter.diagnosticAd();assert.equal((await f.adapter.diagnostics(1)).generation,7);
+ assert.equal(f.requests.length,0);assert.equal(f.counts.prepare,0);assert.equal(f.counts.show,0);assert.equal(f.adapter.remaining('memory'),0);assert.equal(JSON.stringify([...f.files]),before);
+ f.ads.rewardedDiagnostics=async()=>({kind:'demo',generation:9});await assert.rejects(f.adapter.diagnostics(2));
+});
+
+test('Production diagnostics=false and delayed independent discovery never enable an old account',async()=>{
+ const f=fixture();f.caps.nativeVersion=18;f.caps.diagnostics=false;f.ads.rewardedDiagnostics=async()=>({});f.ads.showDiagnosticRewarded=async()=>({});
+ await f.adapter.refreshDiagnostics();assert(!f.adapter.diagnosticsAvailable());await assert.rejects(f.adapter.diagnosticAd());assert.equal(f.requests.length,0);
+ let release;f.hooks.caps=()=>new Promise(r=>release=r);const pending=f.adapter.refreshDiagnostics();f.state.actor=B;f.adapter.accountChanged();release({...f.caps,diagnostics:true});await pending;assert(!f.adapter.diagnosticsAvailable());
+});
+
+test('Sample timing rejects concurrent samples, stale snapshots and missing generation bindings',async()=>{
+ const f=fixture();f.caps.diagnostics=true;f.ads.rewardedDiagnostics=async()=>({kind:'demo',generation:7});let release;
+ f.ads.showDiagnosticRewarded=()=>new Promise(r=>release=r);await f.adapter.refreshDiagnostics();const pending=f.adapter.diagnosticAd();
+ await assert.rejects(f.adapter.diagnosticAd());await assert.rejects(f.adapter.diagnostics(1));release({closed:true,diagnosticKind:'demo',diagnosticGeneration:7});await pending;
+ let snapshot;f.ads.rewardedDiagnostics=()=>new Promise(r=>snapshot=r);const stale=f.adapter.diagnostics(2);const another=f.adapter.diagnosticAd();snapshot({kind:'demo',generation:7});await assert.rejects(stale);release({closed:true});await assert.rejects(another);
+ assert.equal(f.requests.length,0);assert.equal(f.adapter.remaining('memory'),0);
 });
 
 test('A held timing response is discarded across an actor or same-actor login epoch change',async()=>{

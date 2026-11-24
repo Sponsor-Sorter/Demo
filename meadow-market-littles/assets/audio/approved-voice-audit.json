@@ -2944,6 +2944,41 @@
       "farmer": "jay",
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "together-generation.json"
+    },
+    "bug-rhys-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-armour": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-acorn": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-bubble": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-tickle": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-tummy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
     }
   },
   "aliases": {

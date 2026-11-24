@@ -9,7 +9,7 @@
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let status=null,plus=false,dialog=null,epoch=0,authEpoch=0,account=null,parentMarker=null,busy=false,price=null,adsReady=false,bannerRequested=false,options={},capabilities=null,parentRender=null,requestSeq=0,appliedSeq=0,requestChain=Promise.resolve();
  let giftController=null,giftUnmount=null,rewarded=null,limitDialog=null,limitRender=null;
- let adTimingRequest=0,lastAdTimingSequence=0;
+ let diagnosticUnmount=null;
  let consentCheck=null,lastConsentAttempt=-Infinity,availabilityCheck=null,lastAvailabilityAttempt=-Infinity;
  async function consentReadiness(){
   if(!ads||adsReady)return adsReady;if(consentCheck)return consentCheck;
@@ -41,25 +41,26 @@
   if(stamp===authEpoch){await rewarded?.refresh();if(stamp===authEpoch&&id===window.meadowLittlesCloud?.getStatus().userId)limitRender?.();}
  }
  async function refreshVerified(){const id=window.meadowLittlesCloud?.getStatus().userId,stamp=authEpoch;await accept(await request('status'));if(stamp!==authEpoch||id!==window.meadowLittlesCloud?.getStatus().userId||status?.user_id!==id)throw Error('Account changed');return {parentReady:status.parent_ready===true,plus};}
- function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;availabilityCheck=null;rewarded?.accountChanged();limitDialog?.close();plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
+ function accountChanged(id,ready){giftController?.accountChanged();if(id===account&&ready===parentMarker)return;const switched=account!==null&&account!==id;account=id;parentMarker=ready;authEpoch++;epoch++;diagnosticUnmount?.();diagnosticUnmount=null;availabilityCheck=null;rewarded?.accountChanged();limitDialog?.close();plus=false;status=null;price=null;busy=false;if(switched){try{localStorage.removeItem(proofKey);}catch{}store?.cancelCheckout().catch(()=>{});}updateAccess();if(dialog?.open&&dialog.querySelector('[data-buy]'))parents();else refresh();}
  async function settle(rows=[]){let pending=false;for(const row of rows){if(row.pending){pending=true;continue;}if(typeof row.token==='string')await accept(await request('verify',{token:row.token}));}await refresh();return pending;}
  async function recover(){if(!store||!status?.parent_ready)return;try{const result=await store.restore();await settle(result.purchases);}catch{/* Parent-facing Restore remains available. */}}
  function note(text){const node=dialog?.querySelector('[data-commerce-note]');if(node)node.textContent=text;}
- function close(){giftUnmount?.();giftUnmount=null;epoch++;busy=false;parentRender=null;store?.cancelCheckout().catch(()=>{});dialog?.close();syncBanner();}
+ function close(){diagnosticUnmount?.();diagnosticUnmount=null;giftUnmount?.();giftUnmount=null;epoch++;busy=false;parentRender=null;store?.cancelCheckout().catch(()=>{});dialog?.close();syncBanner();}
  function gate(action){
-  giftUnmount?.();giftUnmount=null;
+  diagnosticUnmount?.();diagnosticUnmount=null;giftUnmount?.();giftUnmount=null;
   parentRender=null;
-  if(!dialog){dialog=document.createElement('dialog');dialog.className='littles-parent';dialog.setAttribute('aria-label','Grown-up settings');dialog.addEventListener('cancel',()=>{giftUnmount?.();giftUnmount=null;epoch++;busy=false;store?.cancelCheckout().catch(()=>{});});document.body.append(dialog);}
+  if(!dialog){dialog=document.createElement('dialog');dialog.className='littles-parent';dialog.setAttribute('aria-label','Grown-up settings');dialog.addEventListener('cancel',()=>{diagnosticUnmount?.();diagnosticUnmount=null;giftUnmount?.();giftUnmount=null;epoch++;busy=false;store?.cancelCheckout().catch(()=>{});});document.body.append(dialog);}
   dialog.classList.toggle('littles-parent74',(window.meadowWeeklyFair?.getQualityBuild?.()||0)>=74);dialog.classList.remove('littles-entry-focus');
   const numbers=['twenty one','twenty seven','thirty three','thirty eight','forty two','forty six'],values=[21,27,33,38,42,46],a=Math.floor(Math.random()*numbers.length),b=Math.floor(Math.random()*numbers.length),answer=values[a]+values[b];
   dialog.innerHTML='<main class="parent-paper"><button class="parent-close" data-parent-close aria-label="Back to games">×</button><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>For a grown-up</h2><form data-parent-gate><label>What is '+numbers[a]+' plus '+numbers[b]+'?<input inputmode="numeric" autocomplete="off" aria-label="Answer" maxlength="3" required></label><p data-gate-note role="status">Ask a grown-up to help with settings and purchases.</p><button class="primary-button" type="submit">Continue</button></form></main>';
   dialog.querySelector('[data-parent-gate]').addEventListener('focusin',event=>{if(event.target!==dialog.querySelector('[data-parent-gate] input')||!dialog.classList.contains('littles-parent74'))return;dialog.classList.add('littles-entry-focus');dialog.scrollTop=0;});dialog.querySelector('[data-parent-close]').onclick=close;dialog.querySelector('form').onsubmit=e=>{e.preventDefault();if(Number(dialog.querySelector('input').value)!==answer){dialog.querySelector('[data-gate-note]').textContent='That answer did not match. Please ask a grown-up.';dialog.querySelector('input').value='';return;}dialog.classList.remove('littles-entry-focus');action();};if(!dialog.open)dialog.showModal();syncBanner();
  }
  async function parents(){
-  giftUnmount?.();giftUnmount=null;
+  diagnosticUnmount?.();diagnosticUnmount=null;giftUnmount?.();giftUnmount=null;
   const token=++epoch;price=null;const usernameAvailable=(window.meadowWeeklyFair?.getQualityBuild?.()||0)>=74;
   dialog.innerHTML='<main class="parent-paper"><button class="parent-close" data-parent-close aria-label="Back to games">×</button><h2>Grown-up settings</h2>'+(usernameAvailable?'<section class="parent-username"><h3>Username</h3><p data-username-preview>'+esc(window.meadowLittlesCloud.getStatus().displayName||'Connect your account to choose a farm nickname.')+'</p><button data-username class="small-button">Change username</button></section>':'')+window.meadowAudio.settings()+'<section class="parent-plus"><h3>Meadow Littles Plus</h3><p>Ad-free play and unlimited completed rounds. Free play includes five completed rounds per game each day. Weekly farm-fair trophies can add bonus rounds. Failed attempts do not count.</p><p data-plus-status role="status">Checking Plus…</p><p data-plus-price>Monthly plan: A$4.99 reference price. The Google Play checkout shows your actual local price.</p><p>Renews monthly until cancelled. Cancel in Google Play. Access continues until the paid period ends.</p><button data-buy class="primary-button" disabled>Loading Google Play price…</button><button data-restore class="small-button">Restore purchases</button><button data-manage class="small-button">Manage Google Play subscription</button></section><section data-gifts></section><p data-commerce-note role="status"></p><button data-account class="small-button">Grown-up account &amp; cloud save</button><button data-install class="small-button">Install Littles</button><button data-privacy class="small-button">Advertising privacy choices</button><p><a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a> · <a href="subscription-terms.html" target="_blank" rel="noopener">Subscription terms</a> · <a href="delete-data.html" target="_blank" rel="noopener">Delete Littles data</a></p><small>Purchases are for grown-ups. Children are never asked to buy during a game.</small></main>';
   window.meadowAudio.bind();dialog.querySelector('[data-parent-close]').onclick=close;
+  const diagnosticStamp=authEpoch;diagnosticUnmount=window.meadowLittlesAdTesting?.mount(dialog.querySelector('main'),rewarded,{entry:true,active:()=>token===epoch&&diagnosticStamp===authEpoch&&dialog.open,stopVoice:()=>window.meadowAudio?.stopVoice()});
   const buy=dialog.querySelector('[data-buy]'),restore=dialog.querySelector('[data-restore]'),manage=dialog.querySelector('[data-manage]');
   dialog.querySelector('[data-account]').onclick=()=>window.meadowLittlesCloud.openAccount();
   const rename=dialog.querySelector('[data-username]');if(rename)rename.onclick=()=>window.meadowLittlesCloud.openUsername({onSaved:r=>{const preview=dialog.querySelector('[data-username-preview]');if(preview)preview.textContent=r.displayName;}});
@@ -84,23 +85,10 @@
   d.innerHTML='<main class="parent-paper"><img class="parent-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>More little adventures</h2><p>You’ve finished today’s rounds of '+esc(name)+'.</p><section data-ad-offer hidden><small>Advertisement · optional</small><p>Watch an advert for one extra round of this game. You can close it early; the extra round is earned when it finishes.</p><button data-watch class="small-button">Watch advert · 1 extra round</button></section><p data-ad-note role="status" aria-live="polite"></p><button data-ad-check class="small-button" hidden>Check for an advert</button><button data-ad-play class="primary-button" hidden>Play this game</button><button data-another class="primary-button">Choose another game</button></main>';
   const active=()=>!disposed&&d.open&&stamp===authEpoch;
   const note=d.querySelector('[data-ad-note]'),watch=d.querySelector('[data-watch]'),check=d.querySelector('[data-ad-check]'),play=d.querySelector('[data-ad-play]'),another=d.querySelector('[data-another]');
-  // The native release/default build compiles this capability out. Never cover SDK content.
-  let timing=null;
-  function renderTimingControl(){
-   if(timing||!rewarded?.diagnosticsAvailable?.())return;
-   const section=document.createElement('section'),button=document.createElement('button'),output=document.createElement('output');
-   section.setAttribute('data-internal-ad-timing','');button.className='small-button';button.textContent='Internal QA · sample ad timing';button.setAttribute('data-sample-ad-timing','');output.setAttribute('data-ad-timing','');
-   button.onclick=async()=>{if(!active()||watching||button.disabled||adTimingRequest>=1000000)return;const request=++adTimingRequest;button.disabled=true;output.textContent='Sampling request '+request+'…';try{const value=await rewarded.diagnostics(request);if(!active())return;const allowed=['started','shown','impression','earned','dismissed','unavailable','load_cancelled','destroyed'];if(value?.contract!=='littles-ad-timing-v1'||value.request!==request||!Number.isSafeInteger(value.sequence)||value.sequence<=lastAdTimingSequence||value.sequence>1000000||!Number.isSafeInteger(value.generation)||value.generation<0||!['none','publisher','demo'].includes(value.kind)||typeof value.terminal!=='boolean'||!Number.isSafeInteger(value.sampledMs)||value.sampledMs<0||!Array.isArray(value.events)||value.events.length>8||new Set(value.events.map(e=>e.code)).size!==value.events.length||value.events.some(e=>!allowed.includes(e.code)||!Number.isSafeInteger(e.ms)||e.ms<0||e.ms>value.sampledMs))throw Error('Invalid timing');lastAdTimingSequence=value.sequence;output.textContent='request '+request+'; snapshot '+value.sequence+'; generation '+value.generation+'; kind '+value.kind+'; sample '+value.sampledMs+' ms; '+value.events.map(e=>e.code+' '+e.ms+' ms').join('; ');}catch{if(active())output.textContent='Timing unavailable.';}finally{button.disabled=false;}};
-   section.append(button,output);
-   if(rewarded.diagnosticAdAvailable?.()){
-    const sample=document.createElement('button');sample.className='small-button';sample.textContent='Internal QA · official sample ad';sample.setAttribute('data-sample-ad','');
-    sample.onclick=async()=>{if(!active()||watching||checking)return;watching=true;sample.disabled=true;window.meadowAudio?.stopVoice();render();try{await rewarded.diagnosticAd();if(active())output.textContent='Sample closed. No game round was added.';}catch{if(active())output.textContent='Sample unavailable. No game round was added.';}finally{watching=false;sample.disabled=false;if(active())render();}};
-    section.append(sample);
-   }
-   d.querySelector('main').append(section);timing=section;
-  }
+  // Same native-only diagnostic panel is available here and in grown-up Settings.
+  let timingUnmount=null;
   function render(){if(!active())return;const ready=access.remaining(game)>0,offer=rewarded?.available(game);d.querySelector('[data-ad-offer]').hidden=ready||!offer;check.hidden=ready||!!offer||!rewarded?.canCheck(game)||watching;check.disabled=checking;check.textContent=checking?'Checking adverts…':'Check for an advert';play.hidden=!ready;another.className=ready?'small-button':'primary-button';watch.disabled=watching||checking;const cue=ready?'ad91-rhys-ready':offer?'ad91-rhys-offer':null;if(cue&&cue!==lastCue){lastCue=cue;window.meadowAudio?.speak(cue);}}
-  function dispose(){if(disposed)return;disposed=true;if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitRender===render)limitRender=null;if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
+  function dispose(){if(disposed)return;disposed=true;timingUnmount?.();if(watching)rewarded?.cancel();window.meadowAudio?.stopVoice();if(limitRender===render)limitRender=null;if(limitDialog===d)limitDialog=null;d.remove();syncBanner();}
   d.addEventListener('close',dispose,{once:true});d.addEventListener('cancel',()=>{d.close();dispose();});another.onclick=()=>d.close();
   check.onclick=async()=>{if(!active()||watching||checking)return;checking=true;note.textContent='Checking advert availability…';render();try{await checkAdAvailability(game);}catch{}if(!active())return;checking=false;note.textContent=access.remaining(game)>0?'Your extra round is ready.':rewarded?.available(game)?'':'There is no advert available right now. Other games are ready to play.';render();};
   play.onclick=()=>{if(!active()||access.remaining(game)<=0)return;d.close();options.playGame?.(game);};
@@ -110,7 +98,8 @@
    another.textContent='Choose another game';render();
   };
   document.body.append(d);limitDialog=d;limitRender=render;d.showModal();syncBanner();
-  rewarded?.refresh().then(()=>{if(active()){render();renderTimingControl();}});
+  timingUnmount=window.meadowLittlesAdTesting?.mount(d.querySelector('main'),rewarded,{active,canRun:()=>!watching&&!checking,stopVoice:()=>window.meadowAudio?.stopVoice(),onBusy:value=>{watching=value;render();}});
+  rewarded?.refresh().then(()=>{if(active())render();});
  }
  function bannerHeight(value){const height=Number(value);document.body.style.setProperty('--littles-ad-height',(Number.isFinite(height)?Math.max(0,height):0)+'px');document.body.style.paddingBottom='';}
  const bannerAllowed=()=>!!document.querySelector('#littles-home')&&!document.querySelector('dialog[open]')&&!document.hidden&&!plus&&status?.ads_enabled&&adsReady&&ads&&capabilities&&(!status.ads_test_only||capabilities.adsDemo===true);
