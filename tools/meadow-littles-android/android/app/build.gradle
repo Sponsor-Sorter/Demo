@@ -29,8 +29,8 @@ android {
         }
         play {
             dimension 'distribution'
-            versionCode 18
-            versionName '1.0.5'
+            versionCode 19
+            versionName '1.0.6'
             manifestPlaceholders = [admobAppId: System.getenv('LITTLES_ADMOB_APP_ID') ?: 'ca-app-pub-3940256099942544~3347511713']
             buildConfigField 'boolean', 'LITTLES_ADS_DEMO', 'false'
             // Production Play builds always disable the internal ad diagnostic surface.
