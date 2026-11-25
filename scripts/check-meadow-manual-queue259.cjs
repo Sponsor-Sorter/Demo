@@ -57,5 +57,85 @@ async function test(name,fn){if(filters.length&&!filters.some(prefix=>name.start
  await test('receipt refresh follows the reserved manual tap without deadlock',async()=>{
   const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('plot.harvest','p');const refresh=f.c.refreshReceipts();f.finish(0);await bg;await turn();assert.equal(f.calls[1].commands[0].type,'plot.harvest');f.finish(1);await turn();assert.equal(f.calls[2].commands[0].type,'shop.check');f.finish(2);await refresh;await f.c.flush();
  });
- assert.equal(passed,filters.length||21);clearTimeout(guard);console.log(JSON.stringify({passed,filtered:filters.length>0,actualDeviceCalls:0,liveServerCalls:0,rewardsOnlyFromSyntheticVerifiedReplies:true}));
+ await test('owned travel waits for the confirmed revision and keeps one cloned destination',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true}),data={destination:'coast'};let after=0;
+  f.c.route('map.visit',null,data,'willow',{after:()=>after++});data.destination='pine';
+  assert.equal(f.calls.length,1);assert.equal(f.state().active,'willow');assert.equal(f.c.status().queuedManual,true);
+  f.finish(0);await bg;await turn();assert.equal(f.calls.length,2);assert.equal(f.calls[1].expected_revision,2);
+  assert.deepEqual(f.calls[1].commands,[{type:'map.visit',map:'willow',data:{destination:'coast'}}]);assert.equal(after,0);assert.equal(f.state().active,'willow');
+  f.finish(1,s=>{s.active='coast';});await f.c.flush();assert.equal(f.state().active,'coast');assert.equal(f.state().coins,100);assert.equal(after,1);
+ });
+ await test('owned travel reserves only one tap and prevents another worker poll taking its slot',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.c.route('map.visit',null,{destination:'coast'});
+  await assert.rejects(f.c.run([{type:'workers.tick'}],{quiet:true}));f.finish(0);await bg;await turn();assert.equal(f.calls.length,2);f.finish(1,s=>{s.active='coast';});await f.c.flush();assert.equal(f.calls.length,2);
+ });
+ await test('owned travel retains the actual map-picker screen identity until its confirmed callback',async()=>{
+  const f=fixture(),dialog={mapPicker:true};let screen=dialog,after=0;f.a.screen=()=>screen;
+  const bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'},'willow',{after:()=>{after++;screen='farm';}});
+  f.finish(0);await bg;await turn();assert.equal(screen,dialog);assert.equal(after,0);f.finish(1,s=>{s.active='coast';});await f.c.flush();assert.equal(after,1);assert.equal(screen,'farm');
+ });
+ for(const [name,start] of [
+  ['maintenance',f=>f.c.maintenance([{type:'workers.return'}])],
+  ['receipt refresh',f=>f.c.refreshReceipts()]
+ ])await test('owned travel follows quiet '+name,async()=>{
+  const f=fixture(),bg=start(f);f.c.route('map.visit',null,{destination:'coast'});assert.equal(f.c.status().queuedManual,true);
+  f.finish(0);await bg;await turn();assert.equal(f.calls[1].commands[0].type,'map.visit');f.finish(1,s=>{s.active='coast';});await f.c.flush();assert.equal(f.state().active,'coast');
+ });
+ await test('owned travel waits for all previously reserved background receipts without deadlock',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true}),maintenance=f.c.maintenance([{type:'workers.return'}]),refresh=f.c.refreshReceipts();
+  f.c.route('map.visit',null,{destination:'coast'});f.finish(0);await bg;await turn();assert.equal(f.calls[1].commands[0].type,'workers.return');
+  f.finish(1);await maintenance;await turn();assert.equal(f.calls[2].commands[0].type,'shop.check');f.finish(2);await refresh;await turn();assert.equal(f.calls[3].commands[0].type,'map.visit');
+  f.finish(3,s=>{s.active='coast';});await f.c.flush();assert.equal(f.state().active,'coast');
+ });
+ await test('owned travel runs before later maintenance and receipt refresh without deadlock',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});
+  const maintenance=f.c.maintenance([{type:'workers.return'}]),refresh=f.c.refreshReceipts();f.finish(0);await bg;await turn();assert.equal(f.calls[1].commands[0].type,'map.visit');
+  f.finish(1,s=>{s.active='coast';});await turn();assert.equal(f.calls[2].commands[0].type,'workers.return');f.finish(2);await maintenance;await turn();assert.equal(f.calls[3].commands[0].type,'shop.check');f.finish(3);await refresh;await f.c.flush();
+ });
+ for(const [name,change] of [
+  ['source map changes',f=>{f.state().active='coast';}],
+  ['screen changes',f=>{f.state().view='animals';}],
+  ['build mode starts',f=>{f.state().mode='build';}],
+  ['an item move starts',f=>{f.state().moving='p';}],
+  ['item placement starts',f=>{f.state().placing='tree';}],
+  ['intent expires',f=>f.time(15001)],
+  ['destination disappears locally',f=>{delete f.state().farms.coast;}],
+  ['app is hidden',f=>{f.context.document.hidden=true;}],
+  ['account control blocks',f=>{f.context.window.meadowControl={blocked:()=>true};}]
+ ])await test('owned travel cancels when '+name,async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.finish(0);change(f);await bg;await f.c.flush();assert.equal(f.calls.length,1);assert.equal(f.state().coins,100);
+ });
+ await test('owned travel cancels if the confirmed destination no longer exists',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.finish(0,s=>{delete s.farms.coast;});await bg;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel cancels if the background reply already changed maps',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.finish(0,s=>{s.active='coast';});await bg;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel never follows an account switch',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.owner('other');f.finish(0);await assert.rejects(bg);await turn();assert.equal(f.calls.length,1);assert.equal(f.persisted.length,0);
+ });
+ await test('owned travel stops with the controller',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});f.c.stop();f.finish(0);await assert.rejects(bg);await turn();assert.equal(f.calls.length,1);
+ });
+ for(const [name,data] of [
+  ['unowned farm',{destination:'pine'}],['inherited key',{destination:'constructor'}],['current farm',{destination:'willow'}],['non-string destination',{destination:5}],
+  ['extra money field',{destination:'coast',coins:1}],['missing destination',{}],['unlock field',{destination:'coast',unlock:true}]
+ ])await test('owned travel rejects '+name,async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,data);assert.equal(f.c.status().queuedManual,false);f.finish(0);await bg;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel rejects an unexpected object target',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit','p',{destination:'coast'});assert.equal(f.c.status().queuedManual,false);f.finish(0);await bg;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel rejects a farm present only in unconfirmed local state',async()=>{
+  const f=fixture(),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.state().farms.pine={objects:[]};f.c.route('map.visit',null,{destination:'pine'});
+  assert.equal(f.c.status().queuedManual,false);f.finish(0,s=>{delete s.farms.pine;});await bg;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel never queues behind a foreground transaction',async()=>{
+  const f=fixture(),manual=f.c.run([{type:'plot.till',target:'p'}]);f.c.route('map.visit',null,{destination:'coast'});assert.equal(f.c.status().queuedManual,false);f.finish(0);await manual;await f.c.flush();assert.equal(f.calls.length,1);
+ });
+ await test('owned travel never creates a new request after an uncertain background save',async()=>{
+  const f=fixture(true),bg=f.c.run([{type:'workers.tick'}],{quiet:true});f.c.route('map.visit',null,{destination:'coast'});await assert.rejects(bg);await turn();
+  assert.equal(f.calls.length,3);assert.equal(new Set(f.calls.map(c=>c.request_id)).size,1);assert(f.calls.every(c=>c.commands[0].type==='workers.tick'));assert.equal(f.state().active,'willow');assert.equal(f.c.status().pending,true);
+ });
+ assert.equal(passed,filters.length||52);clearTimeout(guard);console.log(JSON.stringify({passed,filtered:filters.length>0,actualDeviceCalls:0,liveServerCalls:0,rewardsOnlyFromSyntheticVerifiedReplies:true}));
 })().catch(error=>{clearTimeout(guard);console.error(error);process.exitCode=1;});

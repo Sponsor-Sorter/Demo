@@ -52,7 +52,7 @@
   function apply(save,revision,summary){
    if(!same())throw Error('Farm account changed.');
    if(!Number.isSafeInteger(save.coins)||save.coins<0||!Number.isSafeInteger(save.level)||save.level<1||!save.farms?.willow||!save.farms[save.active])throw Error('Your online farm needs review.');
-   if(queuedManual&&(a.state().active!==queuedManual.map||a.screen&&a.screen()!==queuedManual.screen||targetVersion(queuedManual.target,queuedManual.map)!==queuedManual.version))queuedManual.cancelled=true;
+   if(queuedManual&&(a.state().active!==queuedManual.map||a.screen&&a.screen()!==queuedManual.screen||intentVersion(queuedManual)!==queuedManual.version))queuedManual.cancelled=true;
    const next=merge(save,a.state());next._cloudRevision=revision;
    writeUI(next);a.persist(next,revision,account); // Synchronous, before display or receipt removal.
    canonical=clone(save);canonical._cloudRevision=revision;canonicalHash=fingerprint(canonical);a.apply(next,revision,account);a.onResult?.(summary);a.render();
@@ -84,32 +84,43 @@
    }finally{background=false;quietConflict=null;busy=false;a.pending?.(false);}
   }
   function launch(fn){const promise=fn();inFlight=promise;promise.catch(e=>{if(same()){a.onProblem?.(e,transport.status());a.notify(e.name==='QuotaExceededError'?'This device cannot save your farm. Free space or export a backup, then retry.':e.message||'Your saved action is waiting for a connection.');}}).finally(()=>{if(inFlight===promise)inFlight=null;});return promise;}
-  // One free, explicit tap may wait behind a quiet worker poll. Never create
-  // its durable request until the earlier receipt is confirmed. Paid actions,
-  // building, stale targets and uncertain receipts retain explicit recovery.
+  // One free, explicit tap may wait behind quiet background work. Owned-farm
+  // travel also waits for already-reserved maintenance and receipt refreshes.
+  // Never create its durable request before those receipts are confirmed.
+  // Paid actions, new farms, building and uncertain receipts retain recovery.
   const freeTapTypes=new Set(['plot.till','plot.harvest','fruit.harvest','flowers.harvest','craft.collect','hive.collect']);
   const intentNow=()=>a.now?.()??Date.now();
   function targetVersion(target,map){
    const objects=a.state().farms?.[map]?.objects||[],matches=objects.filter(o=>o.id===target);if(matches.length!==1)return null;
    const o=matches[0];return JSON.stringify([o.id,o.type,o.x,o.y,o.rotation||0,o.tier||0,o.crop,o.stage,o.plantedAt,o.lastFruitAt,o.lastProductAt,o.lastCare,(o.jobs||[]).map(j=>[j.id,j.startAt,j.finishAt])]);
   }
+  function ownedDestination(destination,map){
+   return typeof destination==='string'&&destination!==map&&own(canonical.farms||{},destination)&&own(a.state().farms||{},destination)&&
+    Array.isArray(canonical.farms[destination]?.objects)&&Array.isArray(a.state().farms[destination]?.objects);
+  }
+  function intentVersion(intent){
+   return intent.type==='map.visit'?(ownedDestination(intent.data.destination,intent.map)?JSON.stringify([intent.data.destination,a.state().mode??null,a.state().moving??null,a.state().placing??null]):null):targetVersion(intent.target,intent.map);
+  }
   function queueFreeTap(type,target,data,map,options){
    if(!data||typeof data!=='object'||Array.isArray(data))return false;
    const free=freeTapTypes.has(type)&&Object.keys(data).length===0||type==='animal.care'&&Object.keys(data).length===1&&['feed','brush','play','all','collect'].includes(data.action);
-   if(!free||!background||!inFlight||maintenancePromise||refreshPromise||queuedManual||manualQueuePromise||!same()||a.state().active!==map||typeof target!=='string')return false;
-   const version=targetVersion(target,map);if(version===null)return false;
-   const intent={type,target,data:clone(data),map,options,screen:a.screen?.(),version,expiresAt:intentNow()+5000},earlier=inFlight;queuedManual=intent;
+   const visit=type==='map.visit'&&target==null&&Object.keys(data).length===1&&own(data,'destination')&&ownedDestination(data.destination,map);
+   if(!free&&!visit||!background||queuedManual||manualQueuePromise||!same()||a.state().active!==map)return false;
+   if(visit?(!inFlight&&!maintenancePromise&&!refreshPromise):(!inFlight||maintenancePromise||refreshPromise||typeof target!=='string'))return false;
+   const intent={type,target,data:clone(data),map,options,screen:a.screen?.(),expiresAt:intentNow()+5000};
+   intent.version=intentVersion(intent);if(intent.version===null)return false;
+   const earlier=visit?Promise.all([inFlight,maintenancePromise,refreshPromise].filter(Boolean)):inFlight;queuedManual=intent;
    a.notify('Your tap is next · finishing the farmer update.');
    const task=(async()=>{
     try{
      await earlier;
      if(!same())return;
      const status=transport.status();
-     if(queuedManual!==intent||intent.cancelled||intentNow()>intent.expiresAt||a.state().active!==map||a.screen&&a.screen()!==intent.screen||targetVersion(target,map)!==version||status.pending||status.conflict||typeof document!=='undefined'&&document.hidden||window.meadowControl?.blocked()){
+     if(queuedManual!==intent||intent.cancelled||intentNow()>intent.expiresAt||a.state().active!==map||a.screen&&a.screen()!==intent.screen||intentVersion(intent)!==intent.version||status.pending||status.conflict||typeof document!=='undefined'&&document.hidden||window.meadowControl?.blocked()){
       a.notify('That queued tap was cancelled. Choose the item again.');return;
      }
      queuedManual=null;
-     return await execute([{type,map,target,data:intent.data}],options);
+     return await execute([{type,map,...(target==null?{}:{target}),data:intent.data}],options);
     }catch(error){
      if(same()){a.onProblem?.(error,transport.status());a.notify('The queued tap was not completed. Check the saved action before trying again.');}
     }finally{if(queuedManual===intent)queuedManual=null;}
