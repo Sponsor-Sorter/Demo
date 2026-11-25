@@ -1,5 +1,9 @@
 # Meadow Markets launch status
 
+## 26 November 2026 — candidate 262 prepared, automation verification ongoing
+
+The last verified public game is web 261, Google Play native 17 and farm-actions gateway 75. Candidate 262 fixes Jay’s missed healthy-animal produce collection and the oversized map chooser. Its targeted before/after actual-engine tests reproduce eight failures on the original scheduler and pass all fifteen cases on the candidate; the wider 42-case worker suite and gateway/client checks pass. Physical full-cycle acceptance, reviewed backend deployment, final CI, publication and retained-farm update checks are still required. Existing player farms and purchases remain intact. No production change is claimed by this source entry.
+
 ## 24 November 2026 — 257 live; map registration correction 258 prepared
 
 Web 257 and farm-actions gateway 73 are live, with exact public/backend read-back and successful Main/Pages CI. Samsung accepted the normal update, visibly reported Game build 257 and confirmed Build Layout view. Its 53 Coast objects and hired-worker assignments are retained. The full physical worker cycle and owned-map switching remain incomplete; the test farm still has a blocked well route. The final observed phone scene was unarmed Build with a lavender plot selected, not an accepted Done→Tend result.
