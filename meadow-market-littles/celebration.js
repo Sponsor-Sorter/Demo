@@ -9,7 +9,7 @@
     if(root.matches('.care-sheet')&&!/lovely caring/i.test(heading))return;
     if(/try again|another try|retry|try this delivery/i.test(heading))return;
     seen.add(root);if(getComputedStyle(root).position==='static')root.style.position='relative';root.classList.add('meadow-celebration');
-    let stars=root.querySelector('.fa-win-stars,.mini-result-stars,.pip-result-stars,.find-result-stars,.coop-result-stars,.ws-win-stars,.writing-stars');
+    let stars=root.querySelector('.fa-win-stars,.mini-result-stars,.pip-result-stars,.find-result-stars,.coop-result-stars,.ws-win-stars,.writing-stars,.bsm-win-stars');
     if(!stars){stars=document.createElement('div');stars.className='meadow-win-stars';stars.setAttribute('aria-hidden','true');stars.textContent='★ ★ ★';root.querySelector('h2,h3')?.after(stars);}
     if(!stars.children.length&&/^[★✦✧\s]+$/.test(stars.textContent)){const symbols=[...stars.textContent].filter(s=>/★|✦|✧/.test(s));stars.textContent='';symbols.forEach((symbol,i)=>{const star=document.createElement('span');star.className='meadow-earned-star';star.style.setProperty('--star-order',i);star.textContent=symbol;stars.append(star);});}
     stars.classList.add('meadow-stars-arrive');
