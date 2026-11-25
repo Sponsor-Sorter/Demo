@@ -44,7 +44,7 @@ Deno.test('Other maps automate against their own objects and caps, sharing only 
 });
 Deno.test('Drink breaks and missing paths block work; clients cannot forge walkable terrain',()=>{
  let s=hired(state());Object.assign(s.workforce.rowan,{jobs:12,x:3,y:3});s=run(s,'workers.tick').save;eq(s.workforce.rowan.drinkUntil,now+12000);assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+11000).save;assert(!s._serverWorkers.leases['hire-rowan']);s=run(s,'workers.tick',undefined,{},now+12000).save;eq(s.workforce.rowan.jobs,0);assert(s._serverWorkers.leases['hire-rowan']);
- const blocked=hired(state());blocked.farms.willow.objects[1].x=45;blocked.farms.willow.objects[1].y=45;blocked.farms.willow.workerTerrain=[{x:45,y:45}];const out=run(blocked,'workers.tick');eq(out.results[0].workers.find((w:any)=>w.worker==='hire-rowan').status,'idle');
+ const blocked=hired(state());blocked.farms.willow.objects[1].x=45;blocked.farms.willow.objects[1].y=45;blocked.farms.willow.workerTerrain=[{x:45,y:45}];const out=run(blocked,'workers.tick');eq(out.results[0].workers.find((w:any)=>w.worker==='hire-rowan').status,'blocked_work');assert(out.save.workforce.rowan.workBlocked===true);eq(out.save.farms.willow.inventory.carrot,0);
 });
 Deno.test('Family roles use all three farmers; leases are cancelled when they are paused or moved',()=>{
  let s=state();s.farms.willow.objects[0].helpers={jade:false,rhys:false,jay:false};let r=run(s,'workers.tick');s=r.save;eq(s._serverWorkers.leases.jade.action,'harvest');assert(!s._serverWorkers.leases.rhys);

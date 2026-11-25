@@ -118,7 +118,7 @@ export function createWorkerController(c:Data){
   // appear after the family; their in-flight jobs still own their targets.
   for(const w of members){const lease=b.leases[w.id];if(!lease||lease.map!==w.map||lease.revision!==(w.data.revision||0)||well(s.farms[w.map])?.helpers?.[w.id])continue;const set=reserved.get(w.map)||new Set<string>();set.add(lease.target);reserved.set(w.map,set);}
   for(const w of members){
-   const data=w.data,paused=well(s.farms[w.map])?.helpers?.[w.id];if(paused){delete b.leases[w.id];delete data.returning;out.push({worker:w.id,map:w.map,status:'paused'});continue;}
+   const data=w.data,paused=well(s.farms[w.map])?.helpers?.[w.id];delete data.workBlocked;if(paused){delete b.leases[w.id];delete data.returning;out.push({worker:w.id,map:w.map,status:'paused'});continue;}
    if(resting(w)){out.push(data.restBlocked?{worker:w.id,map:w.map,status:'blocked',reason:'Leave a clear path to the family well.'}:data.returning?{worker:w.id,map:w.map,status:'returning',...data.returning}:{worker:w.id,map:w.map,status:'drink',until:data.drinkUntil});continue;}
    let lease=b.leases[w.id];if(lease&&(lease.map!==w.map||lease.revision!==(data.revision||0))){delete b.leases[w.id];lease=null;}
    if(lease&&now>=lease.readyAt){
@@ -129,7 +129,12 @@ export function createWorkerController(c:Data){
    }
    if(lease){const set=reserved.get(w.map)||new Set();set.add(lease.target);reserved.set(w.map,set);out.push({worker:w.id,...lease,status:'working'});continue;}
    if(data.cooldownUntil>now){out.push({worker:w.id,map:w.map,status:'waiting',until:data.cooldownUntil});continue;}
-   const skip=reserved.get(w.map)||new Set<string>(),found=candidate(w.role,w.map,data,new Set(skip));if(!found){out.push({worker:w.id,map:w.map,status:'idle'});continue;}
+   const skip=reserved.get(w.map)||new Set<string>(),found=candidate(w.role,w.map,data,new Set(skip));if(!found){
+    // An available job behind an obstacle is not an empty work list. Keep the
+    // original path/rest rules and tell the player what needs to be cleared.
+    const blocked=!!task(w.role,new Set(skip),w.map);if(blocked)data.workBlocked=true;
+    out.push({worker:w.id,map:w.map,status:blocked?'blocked_work':'idle',...(blocked?{reason:'Leave a clear walking path to available farm jobs.'}:{})});continue;
+   }
    const duration=1600+Math.ceil(found.route.distance*960);
    lease={map:w.map,revision:data.revision||0,target:found.task.id,action:found.task.helperAction,signature:signature(w.map,found.task.id),from:found.from,to:found.route.to,path:found.route.path,startedAt:now,readyAt:now+(w.role==='all'?Math.max(12000,duration):duration)};b.leases[w.id]=lease;
    skip.add(lease.target);reserved.set(w.map,skip);out.push({worker:w.id,...lease,status:'working'});
