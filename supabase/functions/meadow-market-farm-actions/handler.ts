@@ -23,7 +23,7 @@ export function farmHandler(services:Services){
  const observer=createCommandSecurityObserver({emit:services.securitySignal,heartbeat:services.securityHeartbeat,onFailure:services.securityFailure,now:services.securityNow,timeoutMs:services.securityTimeoutMs});
  return async(req:Request)=>{
  let actor='',requestId='';
- const origin=req.headers.get('origin')||'',headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin','Access-Control-Allow-Origin':origins.has(origin)?origin:'https://sponsorsorter.com','Access-Control-Allow-Headers':'authorization,apikey,content-type,x-client-info','Access-Control-Allow-Methods':'POST,OPTIONS'};
+ const origin=req.headers.get('origin')||'',headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin','Access-Control-Allow-Origin':origins.has(origin)?origin:'https://sponsorsorter.com','Access-Control-Allow-Headers':'authorization,apikey,content-type,x-client-info','Access-Control-Allow-Methods':'POST,OPTIONS','Access-Control-Max-Age':'600'};
  const reply=(status:number,body:unknown)=>new Response(JSON.stringify(body),{status,headers});
  if(origin&&!origins.has(origin))return reply(403,{error:'UNSUPPORTED_ORIGIN'});
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers});

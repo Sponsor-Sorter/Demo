@@ -46,12 +46,13 @@
  function create(a){
   if(typeof a.send!=='function'||typeof a.persist!=='function'||typeof a.apply!=='function')throw Error('The online farm connection is incomplete.');
   const account=a.owner(),key='meadow-ui-v1:'+account;
-  let canonical=clone(a.canonical),canonicalHash=fingerprint(canonical),busy=false,inFlight=null,refreshPromise=null,maintenancePromise=null,stopped=false,storageWarning=false,background=false,quietConflict=null;
+  let canonical=clone(a.canonical),canonicalHash=fingerprint(canonical),busy=false,inFlight=null,refreshPromise=null,maintenancePromise=null,stopped=false,storageWarning=false,background=false,quietConflict=null,queuedManual=null,manualQueuePromise=null;
   const same=()=>!stopped&&a.owner()===account;
   function writeUI(s){const p=preferences(s);for(const k of ['selected','moving','placing','view','mode'])delete p.root[k];a.storage.setItem(key,JSON.stringify({version:1,owner:account,preferences:p}));return p;}
   function apply(save,revision,summary){
    if(!same())throw Error('Farm account changed.');
    if(!Number.isSafeInteger(save.coins)||save.coins<0||!Number.isSafeInteger(save.level)||save.level<1||!save.farms?.willow||!save.farms[save.active])throw Error('Your online farm needs review.');
+   if(queuedManual&&(a.state().active!==queuedManual.map||a.screen&&a.screen()!==queuedManual.screen||targetVersion(queuedManual.target,queuedManual.map)!==queuedManual.version))queuedManual.cancelled=true;
    const next=merge(save,a.state());next._cloudRevision=revision;
    writeUI(next);a.persist(next,revision,account); // Synchronous, before display or receipt removal.
    canonical=clone(save);canonical._cloudRevision=revision;canonicalHash=fingerprint(canonical);a.apply(next,revision,account);a.onResult?.(summary);a.render();
@@ -83,6 +84,38 @@
    }finally{background=false;quietConflict=null;busy=false;a.pending?.(false);}
   }
   function launch(fn){const promise=fn();inFlight=promise;promise.catch(e=>{if(same()){a.onProblem?.(e,transport.status());a.notify(e.name==='QuotaExceededError'?'This device cannot save your farm. Free space or export a backup, then retry.':e.message||'Your saved action is waiting for a connection.');}}).finally(()=>{if(inFlight===promise)inFlight=null;});return promise;}
+  // One free, explicit tap may wait behind a quiet worker poll. Never create
+  // its durable request until the earlier receipt is confirmed. Paid actions,
+  // building, stale targets and uncertain receipts retain explicit recovery.
+  const freeTapTypes=new Set(['plot.till','plot.harvest','fruit.harvest','flowers.harvest','craft.collect','hive.collect']);
+  const intentNow=()=>a.now?.()??Date.now();
+  function targetVersion(target,map){
+   const objects=a.state().farms?.[map]?.objects||[],matches=objects.filter(o=>o.id===target);if(matches.length!==1)return null;
+   const o=matches[0];return JSON.stringify([o.id,o.type,o.x,o.y,o.rotation||0,o.tier||0,o.crop,o.stage,o.plantedAt,o.lastFruitAt,o.lastProductAt,o.lastCare,(o.jobs||[]).map(j=>[j.id,j.startAt,j.finishAt])]);
+  }
+  function queueFreeTap(type,target,data,map,options){
+   if(!data||typeof data!=='object'||Array.isArray(data))return false;
+   const free=freeTapTypes.has(type)&&Object.keys(data).length===0||type==='animal.care'&&Object.keys(data).length===1&&['feed','brush','play','all','collect'].includes(data.action);
+   if(!free||!background||!inFlight||maintenancePromise||refreshPromise||queuedManual||manualQueuePromise||!same()||a.state().active!==map||typeof target!=='string')return false;
+   const version=targetVersion(target,map);if(version===null)return false;
+   const intent={type,target,data:clone(data),map,options,screen:a.screen?.(),version,expiresAt:intentNow()+5000},earlier=inFlight;queuedManual=intent;
+   a.notify('Your tap is next · finishing the farmer update.');
+   const task=(async()=>{
+    try{
+     await earlier;
+     if(!same())return;
+     const status=transport.status();
+     if(queuedManual!==intent||intent.cancelled||intentNow()>intent.expiresAt||a.state().active!==map||a.screen&&a.screen()!==intent.screen||targetVersion(target,map)!==version||status.pending||status.conflict||typeof document!=='undefined'&&document.hidden||window.meadowControl?.blocked()){
+      a.notify('That queued tap was cancelled. Choose the item again.');return;
+     }
+     queuedManual=null;
+     return await execute([{type,map,target,data:intent.data}],options);
+    }catch(error){
+     if(same()){a.onProblem?.(error,transport.status());a.notify('The queued tap was not completed. Check the saved action before trying again.');}
+    }finally{if(queuedManual===intent)queuedManual=null;}
+   })();
+   manualQueuePromise=task;const clear=()=>{if(manualQueuePromise===task)manualQueuePromise=null;};task.then(clear,clear);return true;
+  }
   function restoreUI(){
    let data;try{data=JSON.parse(a.storage.getItem(key)||'null');}catch{return;}
    if(data?.version!==1||data.owner!==account||!data.preferences)return;
@@ -90,19 +123,19 @@
    a.apply(next,a.revision,account);a.render();
   }
   return {
-   route(type,target,data={},map=a.state().active,options={}){if(busy||inFlight||maintenancePromise||refreshPromise){a.notify('Wait for your saved farm action.');return true;}launch(()=>execute([{type,map,...(target==null?{}:{target}),data}],options));return true;},
-   run(commands,options){if(busy||inFlight||maintenancePromise||refreshPromise)return Promise.reject(Error('Wait for your saved farm action.'));return launch(()=>execute(commands,options));},
+   route(type,target,data={},map=a.state().active,options={}){if(busy||inFlight||maintenancePromise||refreshPromise||manualQueuePromise){if(queueFreeTap(type,target,data,map,options))return true;a.notify(queuedManual?'Your tap is already waiting for the farmer update.':'Wait for your saved farm action.');return true;}launch(()=>execute([{type,map,...(target==null?{}:{target}),data}],options));return true;},
+   run(commands,options){if(busy||inFlight||maintenancePromise||refreshPromise||manualQueuePromise)return Promise.reject(Error('Wait for your saved farm action.'));return launch(()=>execute(commands,options));},
    maintenance(commands){
-    const previous=maintenancePromise,earlierRefresh=refreshPromise,earlierFlight=inFlight;
-    const task=(async()=>{if(previous)await previous;if(earlierFlight)await earlierFlight;if(earlierRefresh)await earlierRefresh;if(!same())throw Error('Farm account changed.');if(transport.status().pending)await transport.retry();return execute(commands,{quiet:true});})();
+    const previous=maintenancePromise,earlierRefresh=refreshPromise,earlierFlight=inFlight,earlierManual=manualQueuePromise;
+    const task=(async()=>{if(previous)await previous;if(earlierFlight)await earlierFlight;if(earlierRefresh)await earlierRefresh;if(earlierManual)await earlierManual;if(!same())throw Error('Farm account changed.');if(transport.status().pending)await transport.retry();return execute(commands,{quiet:true});})();
     maintenancePromise=task;task.catch(e=>{if(same())a.notify(e.message||'Reconnect to save this farm action.');}).finally(()=>{if(maintenancePromise===task)maintenancePromise=null;});return task;
    },
-   async retry(){if(busy)throw Error('Wait for your saved farm action.');busy=true;a.pending?.(true);try{return await transport.retry();}finally{busy=false;a.pending?.(false);}},
-   async flush(){let reply;if(maintenancePromise)reply=await maintenancePromise;if(inFlight)reply=await inFlight;if(refreshPromise)reply=await refreshPromise;if(transport.status().pending)reply=await this.retry();return reply;},
+   async retry(){if(busy||manualQueuePromise)throw Error('Wait for your saved farm action.');busy=true;a.pending?.(true);try{return await transport.retry();}finally{busy=false;a.pending?.(false);}},
+   async flush(){let reply;if(manualQueuePromise)reply=await manualQueuePromise;if(maintenancePromise)reply=await maintenancePromise;if(inFlight)reply=await inFlight;if(refreshPromise)reply=await refreshPromise;if(transport.status().pending)reply=await this.retry();return reply;},
    refreshReceipts(){
     if(refreshPromise)return refreshPromise;
-    const earlier=maintenancePromise;
-    refreshPromise=(async()=>{if(earlier)await earlier;if(inFlight)await inFlight;if(transport.status().pending)await transport.retry();if(!same())return;return execute([{type:'shop.check',map:a.state().active}],{quiet:true});})().finally(()=>{refreshPromise=null;});
+    const earlier=maintenancePromise,earlierManual=manualQueuePromise;
+    refreshPromise=(async()=>{if(earlier)await earlier;if(earlierManual)await earlierManual;if(inFlight)await inFlight;if(transport.status().pending)await transport.retry();if(!same())return;return execute([{type:'shop.check',map:a.state().active}],{quiet:true});})().finally(()=>{refreshPromise=null;});
     return refreshPromise;
    },
    async useRemote(){return transport.useRemote();},
@@ -118,8 +151,8 @@
      writeUI(a.state());a.persist(a.state(),canonical._cloudRevision??a.revision,account);storageWarning=false;
     }catch{if(!storageWarning){storageWarning=true;a.notify('This device cannot save your farm. Free space or export a backup, then retry.');}}return true;
    },
-   restoreUI,stop(){stopped=true;transport.stop();},
-   status:()=>({...transport.status(),busy:busy||!!maintenancePromise||!!refreshPromise,stopped}),
+   restoreUI,stop(){stopped=true;queuedManual=null;transport.stop();},
+   status:()=>({...transport.status(),busy:busy||!!maintenancePromise||!!refreshPromise||!!manualQueuePromise,queuedManual:!!queuedManual,stopped}),
    isCanonical:()=>fingerprint(a.state())===canonicalHash,
    ownsState:s=>s===a.state(),
    canonical:()=>clone(canonical)

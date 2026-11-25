@@ -10,6 +10,12 @@ function fixture(context:Record<string,unknown>={ok:true,enabled:true,revision:5
  const services:Services={identity:async()=>({id:user,is_anonymous:true}),rpc:async(name,data)=>{calls.push({name,data});return name==='meadow_market_read_farm_command'?context:{ok:true,revision:6,save_data:data.p_save_data};}};
  return {calls,services,handler:farmHandler(services)};
 }
+Deno.test('Trusted preflight is cached for ten minutes without changing origins or authentication',async()=>{
+ const f=fixture(),r=await f.handler(new Request('https://game.invalid',{method:'OPTIONS',headers:{origin:'https://localhost'}}));
+ assert(r.status===204);assert(r.headers.get('Access-Control-Max-Age')==='600');assert(r.headers.get('Access-Control-Allow-Origin')==='https://localhost');assert(f.calls.length===0);
+ assert((await f.handler(new Request('https://game.invalid',{method:'OPTIONS',headers:{origin:'https://wrong.invalid'}}))).status===403);
+ assert((await f.handler(req(body,''))).status===401);assert(f.calls.length===0);
+});
 Deno.test('Command gateway derives owner from verified identity and clock/state from database',async()=>{
  const f=fixture(),r=await f.handler(req());assert(r.status===200);const answer=await r.json();assert(answer.save_data.farms.willow.objects[0].stage===1);
  assert(f.calls.length===2);const args=f.calls[1].data;assert(args.p_user===user&&args.p_request_id===id);assert(args.p_save_data.coins===250);assert(args.p_save_data.seen===now);assert(args.p_summary.rules.length===64);
