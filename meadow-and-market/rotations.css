@@ -40,6 +40,10 @@
 #build-layout-toggle svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #build-tray #build-layout-toggle[aria-pressed=true]{background:#f2d390;border-color:#9e7748}
 #build-layout-toggle:focus-visible{outline:2px solid #9e7748;outline-offset:2px}
+/* Keep 44px preview rotation beside Layout and Done while an item is moving. */
+#build-tray:has(#build-layout-toggle:not([hidden])):has(.build-turn-controls>button:not(:disabled)) .tray-head-actions{grid-template-columns:44px 44px 54px}
+#build-tray:has(#build-layout-toggle:not([hidden])):has(.build-turn-controls>button:not(:disabled)) .build-turn-controls>button{grid-column:2}
+#build-tray:has(#build-layout-toggle:not([hidden])):has(.build-turn-controls>button:not(:disabled)) #build-done,#build-tray:has(#build-layout-toggle:not([hidden])):has(.build-turn-controls>button:not(:disabled)) #build-minimize{grid-column:3}
 .building-mode.layout-view .farm-grid>.farm-object:not(.plot):not(.selected):not(.movable):not(.placement-ghost)>:not(.object-footprint){opacity:.15!important;pointer-events:none!important}
 .building-mode.layout-view .farm-grid>.farm-object:not(.plot):not(.selected):not(.movable):not(.placement-ghost)>:not(.object-footprint) *{pointer-events:none!important}
 .building-mode.layout-view .farm-grid>.farm-object:not(.plot)>.object-footprint{opacity:1!important;background:#fff0c36b!important}
