@@ -11,8 +11,14 @@ for(const name of ['intro','armour','acorn','bubble','tickle','tummy','done']){
  assert(sw.includes('./assets/audio/'+id+'.mp3?v=56'),'Exact runtime audio request is cached: '+id);
  assert(record.durationSeconds>1&&record.durationSeconds<20,'Instruction duration is bounded: '+id);
 }
-for(const file of ['bug-smash-core.js','bug-smash-paint.js','bug-smash.js','bug-smash.css']){assert(index.includes(file+'?v=1'));assert(sw.includes('./'+file+'?v=1'));}
+for(const [file,version] of [['bug-smash-core.js',1],['bug-smash-paint.js',1],['bug-smash.js',2],['bug-smash.css',2]]){assert(index.includes(file+'?v='+version));assert(sw.includes('./'+file+'?v='+version));}
 for(const file of ['garden.webp','garden-portrait.webp','preview.webp']){assert(fs.statSync(path.join(root,'assets/generated/bug-smash',file)).size>10000);assert(sw.includes('./assets/generated/bug-smash/'+file));}
 assert(index.includes('weekly-fair.js?v=4')&&sw.includes('./weekly-fair.js?v=4'));
 assert(index.includes('approved-voices.js?v=19')&&sw.includes('./approved-voices.js?v=19'));
+// Both activities are loaded together in production; their component classes must not overlap.
+const classes=css=>new Set([...css.matchAll(/\.([a-z][a-z0-9]*-[\w-]+)/g)].map(m=>m[1]));
+const beeClasses=classes(read('bee-shelter.css'));
+assert.deepEqual([...classes(read('bug-smash.css'))].filter(name=>beeClasses.has(name)),[],'Bug Smash must not inherit Bee Shelter component rules');
+const fixture=fs.readFileSync(path.resolve(root,'../tools/littles-local/bug-smash-qa.html'),'utf8');
+for(const match of index.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g))assert(fixture.includes(match[0]),'The local QA page must exercise every production stylesheet: '+match[0]);
 console.log('Bug Smash assets: all7 approved Rhys recordings have exact byte/hash provenance; complete scene/code/audio offline request closure and version agreement passed.');
