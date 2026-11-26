@@ -68,3 +68,6 @@ require('./check-littles-bug-smash-assets.cjs');
 require('./check-littles-internal-ad-testing.cjs');
 
 require('./check-littles-bug-smash-finish.cjs');
+require('./check-littles-bug-picnic-core.cjs');
+require('./check-littles-bug-picnic-finish.cjs');
+require('./check-littles-bug-picnic-assets.cjs');

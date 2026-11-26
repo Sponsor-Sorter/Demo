@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Picnic Patrol responsive preview</title>
+<style>body{margin:0;background:#e6e9df;color:#25432c;font:16px system-ui}header{padding:12px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}h1{font-size:18px;margin:0 16px 0 0}button{min-height:44px;padding:8px 14px;border:2px solid #426d49;border-radius:12px;background:#fff;color:#25432c;font:inherit}button[aria-pressed=true]{background:#426d49;color:#fff}output{padding:8px}main{padding:12px;width:max-content;min-width:100%;box-sizing:border-box}iframe{display:block;border:0;width:390px;height:844px;background:#e5ba67;box-shadow:0 3px 16px #29412f40}</style></head>
+<body><header><h1>Isolated picnic preview</h1><button data-width="320" data-height="568" aria-pressed="false">Small phone</button><button data-width="390" data-height="844" aria-pressed="true">Phone portrait</button><button data-width="800" data-height="360" aria-pressed="false">Phone landscape</button><button data-width="1024" data-height="768" aria-pressed="false">Tablet landscape</button><button data-width="768" data-height="1024" aria-pressed="false">Tablet portrait</button><output>390 × 844</output></header>
+<main><iframe title="Bug Smash responsive game" src="/qa/bug-picnic"></iframe></main>
+<script>
+  const frame=document.querySelector('iframe'),output=document.querySelector('output');
+  for(const button of document.querySelectorAll('button'))button.addEventListener('click',()=>{
+    frame.style.width=button.dataset.width+'px';frame.style.height=button.dataset.height+'px';
+    output.textContent=button.dataset.width+' × '+button.dataset.height;
+    for(const other of document.querySelectorAll('button'))other.setAttribute('aria-pressed',String(other===button));
+  });
+</script></body></html>

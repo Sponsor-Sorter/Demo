@@ -1,0 +1,12 @@
+/* The new overhead picnic is isolated from the public legacy game until quality99 acceptance. */
+.bsm-dialog.bsm-picnic .bsm-scene{background-image:url('assets/generated/bug-picnic/ground.webp')}
+.bsm-dialog.bsm-picnic .bsm-field{margin-top:0}
+.bsm-picnic .bsm-waves{display:flex;gap:5px;align-items:center;flex:none}
+.bsm-picnic .bsm-waves i{width:16px;height:22px;border:2px solid #fff5bc;border-radius:70% 25% 65% 30%;background:#9c7448;box-shadow:0 2px 2px #76512355;transform:rotate(-25deg)}
+.bsm-picnic .bsm-waves .bsm-wave-active{background:#fbd55f;animation:bsm-picnic-leaf 1.8s ease-in-out infinite}
+.bsm-picnic .bsm-waves .bsm-wave-done{background:#7bcc65}
+.bsm-dialog.bsm-picnic .bsm-intro-art{aspect-ratio:16/9}
+.bsm-picnic .bsm-counter{font-size:clamp(16px,2vw,22px)}
+@keyframes bsm-picnic-leaf{50%{filter:brightness(1.2);transform:rotate(-25deg) scale(1.14)}}
+@media(max-width:370px){.bsm-picnic .bsm-waves{gap:3px}.bsm-picnic .bsm-waves i{width:12px;height:18px}}
+@media(prefers-reduced-motion:reduce){.bsm-picnic .bsm-waves .bsm-wave-active{animation:none}}

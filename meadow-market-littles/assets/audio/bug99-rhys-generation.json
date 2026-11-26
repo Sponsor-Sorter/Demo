@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-11-26T04:08:23.112Z",
+  "authorisation": "User requested a picnic-protection introduction and standing approved farmer voices; Root admitted existing approved Noah clip preparation",
+  "files": [
+    {
+      "id": "bug99-rhys-intro",
+      "text": "Let's protect our picnic! Tap the ants before they reach our food. Big shells need a few more taps. Ready? Let's help!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "ElevenLabs_2026-11-26T04_04_44_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "7eadbc204acba5ee4b13fa94837291008d7d0d0d29de6dca3ac87a6aa7f1b442",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 98787,
+      "sha256": "a0aa6aef61362f2ed01770cd87d3aadddbb9e067f08657339759d7a00bbd8dcf",
+      "durationSeconds": 8.18
+    },
+    {
+      "id": "bug99-rhys-wave",
+      "text": "Great helping! Here comes another group. Let's keep our picnic safe!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "ElevenLabs_2026-11-26T04_05_34_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "7d10e47f4cddc09d00ba3079a58230647941712673d0785ac65e7d2b3bfed57a",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 45811,
+      "sha256": "80700bd6465033480bf9e564e1fa9387746e5074a327b934d7f8b70d69a46b89",
+      "durationSeconds": 3.76
+    },
+    {
+      "id": "bug99-rhys-done",
+      "text": "Wonderful! You protected our picnic through three busy waves, and splashed the big boss. Great teamwork!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "ElevenLabs_2026-11-26T04_07_02_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "sourceSha256": "92d119637deabebc6a2bc66751013261552c30297b5fa3d1de5a1cb0322506b1",
+      "processing": "loudnorm I=-18 TP=-2 LRA=7; mono44100Hz MP396kbps; no pitch/speed/trim changes",
+      "bytes": 105370,
+      "sha256": "d92ce055ca61cad2125b05f143be5da5be22178a58e24c795c6402835b9c9388",
+      "durationSeconds": 8.72
+    }
+  ]
+}

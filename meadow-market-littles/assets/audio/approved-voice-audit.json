@@ -210,6 +210,16 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "generation-prompts.json:voices"
     },
+    "ad91-rhys-offer": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "ad91-generation.json"
+    },
+    "ad91-rhys-ready": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "ad91-generation.json"
+    },
     "world-meadow_story": {
       "farmer": "jade",
       "voice": "Hope - upbeat and clear",
@@ -709,6 +719,41 @@
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "bee51-rhys-generation.json"
+    },
+    "bug-rhys-intro": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-armour": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-acorn": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-bubble": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-tickle": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-tummy": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
+    },
+    "bug-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug-rhys-generation.json"
     },
     "classic63-jay-eggs-catch": {
       "farmer": "jay",
@@ -2910,15 +2955,20 @@
       "voice": "Noah - YA Audiobooks Narrator",
       "evidence": "word-audio-042-generation.json"
     },
-    "ad91-rhys-offer": {
+    "bug99-rhys-intro": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "ad91-generation.json"
+      "evidence": "bug99-rhys-generation.json"
     },
-    "ad91-rhys-ready": {
+    "bug99-rhys-wave": {
       "farmer": "rhys",
       "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "ad91-generation.json"
+      "evidence": "bug99-rhys-generation.json"
+    },
+    "bug99-rhys-done": {
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "evidence": "bug99-rhys-generation.json"
     },
     "together-connectfour": {
       "farmer": "jay",
@@ -2944,41 +2994,6 @@
       "farmer": "jay",
       "voice": "Mike - Animation, Explainers & Gaming",
       "evidence": "together-generation.json"
-    },
-    "bug-rhys-intro": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-armour": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-acorn": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-bubble": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-tickle": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-tummy": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
-    },
-    "bug-rhys-done": {
-      "farmer": "rhys",
-      "voice": "Noah - YA Audiobooks Narrator",
-      "evidence": "bug-rhys-generation.json"
     }
   },
   "aliases": {
