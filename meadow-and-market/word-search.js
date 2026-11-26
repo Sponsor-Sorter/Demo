@@ -16,7 +16,7 @@
   const pick = (list) => list[Math.floor(Math.random() * list.length)];
   const shuffle = (list) => { const result = list.slice(); for (let i = result.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [result[i], result[j]] = [result[j], result[i]]; } return result; };
   const image = (word) => word.asset ? '<img src="' + esc(word.asset) + '" alt="">' : '<span class="ws-object-emoji" aria-hidden="true">' + word.icon + '</span>';
-  const sceneUrl = () => topic.scene;
+  const sceneUrl = () => 'assets/generated/minigames/word-search-desk264.png';
   const appState = () => api?.state?.();
   function speakText(text) {
     window.meadowAudio?.stopVoice();
@@ -81,6 +81,7 @@
     dialog.querySelector('[data-options]').onclick=()=>showOptions(dialog.querySelector('.ws-options').hidden);
     dialog.querySelector('[data-options-close]').onclick=()=>showOptions(false);
     const grid = dialog.querySelector('.ws-grid');
+    const ink=document.createElementNS('http://www.w3.org/2000/svg','svg');ink.classList.add('ws-ink');ink.setAttribute('viewBox','0 0 '+size*100+' '+size*100);ink.setAttribute('preserveAspectRatio','none');ink.setAttribute('aria-hidden','true');grid.prepend(ink);
     grid.addEventListener('pointerdown', (event) => { const cell = event.target.closest('[data-cell]'); if (!cell || event.button > 0) return;if(!dialog.querySelector('.ws-options').hidden||dialog.querySelector('.ws-window').classList.contains('ws-words-open')){showWords(false);showOptions(false);skipCellClick=true;setTimeout(()=>{skipCellClick=false;},500);return;} event.preventDefault(); drag = event.pointerId; skipCellClick = true; setTimeout(() => { skipCellClick = false; }, 500); grid.setPointerCapture?.(event.pointerId); path = [Number(cell.dataset.cell)]; renderCells(); });
     grid.addEventListener('pointermove', (event) => { if (drag !== event.pointerId) return; const cell = document.elementFromPoint(event.clientX, event.clientY)?.closest?.('[data-cell]'); if (cell && grid.contains(cell)) extendPath(Number(cell.dataset.cell)); });
     grid.addEventListener('pointerup', (event) => { if (drag !== event.pointerId) return; drag = null; if (grid.hasPointerCapture?.(event.pointerId)) grid.releasePointerCapture(event.pointerId); finishPath(); });
@@ -105,13 +106,15 @@
   function sizeBoard() {
     const wrap = dialog?.querySelector('.ws-board-wrap'), grid = dialog?.querySelector('.ws-grid');
     if (!wrap || !grid) return;
-    const width=wrap.clientWidth,height=wrap.clientHeight,gap=1,padding=6;
-    const cell = Math.min((width - padding - gap * (size - 1)) / size, (height - padding - gap * (size - 1)) / size);
+    const width=wrap.clientWidth,height=wrap.clientHeight,gap=0,padding=12;
+    const boardWidth=Math.min(width,height*1.18),boardHeight=Math.min(height,width*1.18);
+    const cell = Math.min((boardWidth-padding)/size,(boardHeight-padding)/size);
     if (!Number.isFinite(cell)) return;
     const fitCell = Math.max(1,cell);
     grid.style.setProperty('--ws-cols', size);
     grid.style.setProperty('--ws-cell', fitCell + 'px');
     grid.style.setProperty('--ws-gap', gap + 'px');
+    grid.style.setProperty('--ws-board-width',boardWidth+'px');grid.style.setProperty('--ws-board-height',boardHeight+'px');
   }
   function extendPath(end) {
     if (!path.length || path.at(-1)===end) return;
@@ -129,6 +132,12 @@
       cell.classList.toggle('is-selecting', selected.has(index)); cell.classList.toggle('is-found', !!win);
       if (win) { cell.style.setProperty('--found-bg', win.color[0]); cell.style.setProperty('--found-line', win.color[1]); } else { cell.style.removeProperty('--found-bg'); cell.style.removeProperty('--found-line'); }
     });
+    renderInk();
+  }
+  function renderInk(){
+    const ink=dialog?.querySelector('.ws-ink');if(!ink)return;
+    const segments=[...found.values()].map(value=>({indices:value.indices,color:value.color[1]}));if(path.length)segments.push({indices:path,color:'#da9b13'});
+    ink.replaceChildren(...segments.map(({indices,color})=>{const first=indices[0],last=indices.at(-1),line=document.createElementNS('http://www.w3.org/2000/svg','line');for(const [key,value]of Object.entries({x1:(first%size+.5)*100,y1:(Math.floor(first/size)+.5)*100,x2:(last%size+.5)*100,y2:(Math.floor(last/size)+.5)*100,stroke:color,'stroke-width':76,'stroke-linecap':'round'}))line.setAttribute(key,value);return line;}));
   }
   function finishPath() {
     if (path.length < 3) { if (path.length) say('Follow the word to its last letter.'); path = []; renderCells(); return; }

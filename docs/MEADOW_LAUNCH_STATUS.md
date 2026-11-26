@@ -1,5 +1,16 @@
 # Meadow Markets launch status
 
+## 26 November 2026 — guidance and word-search candidate 264
+
+Candidate 264 extends the crop-style, borderless map indicators to animal homes/roaming animals, apples, honey, nectar, idle workspaces and empty shop shelves. Care is grouped at the home and urgent needs take priority. Growing flowers already serving a hive remain quiet. The existing overlay update is reused; presentation never settles timers, changes tasks or grants goods.
+
+The Harvest Fair now connects all twelve existing chapters with character motivations, chapter outcomes, a single next step and routes into the appropriate activity. Goal IDs, measurements, existing rewards, eligibility and verified story.claim commands are preserved. Original approved farmer clips and pack entry points are reused. Word search matches its illustrated preview with parchment, serif lettering, fine rules and continuous highlighter strokes; all 25 themes, 20 words, eight directions and the verified 16×16 board contract remain. One new HD desk background is included.
+
+Local functional checks passed for grouped/readonly needs, story contracts and protected claim routing, 125 word boards, retained 50-object rendering/30 crop anchors, worker depth and cache scope. A final quiet-waiting hive edge case and navigation refinements are pending normal CI and rendered acceptance. Complete precache verification could not finish in the sparse checkout; the unchanged version checker hit a local Git-read timeout. Both remain remote full-checkout CI gates, not passes or game failures. Browser viewport/pointer acceptance, final CI, publication and normal update checks remain pending. No new native binary or backend deployment is required; generated farming body is unchanged.
+
+Web 263 / native 17 / gateway 76 remain live. Samsung normal update, farmer-above-soil on Pine/Coast and Pine→Coast→Willow travel were accepted by independent review. Strict same-cycle/full-duration checks for every named farmer remain partial. Farms, counts, placements, well tiers and worker assignments are preserved.
+
+
 ## 26 November 2026 — farmer ground-depth candidate 263
 
 Large crop plots previously sorted their entire soil-and-plant group at the front edge, hiding farmers within or behind a field. The candidate keeps soil on the ground plane and gives each crop its own world depth. Worker motion, building depth, crop anchors, field footprints and farm data are preserved. The actual rendered baseline/candidate matrix passes 36 cases in both orientations: eight baseline ground occlusions become zero, all 16 plot target/click checks pass in Tend/Build, and near/far crops plus barns keep the expected paint order. Existing worker-layout and performance/30-anchor checks pass. This is component rendering proof; a new physical layer check remains pending.

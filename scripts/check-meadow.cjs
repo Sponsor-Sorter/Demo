@@ -164,3 +164,4 @@ require('./check-meadow-performance248.cjs');
 require('./check-meadow-grid-registration.cjs');
 
 require('./check-meadow-map-chooser262.cjs');
+require('./check-meadow-guidance264.cjs');

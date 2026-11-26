@@ -1,0 +1,9 @@
+#farm-help-slot{display:flex;align-items:center;gap:5px;max-width:100%}
+#story-next-step{display:block;max-width:160px;min-width:38px;min-height:36px;padding:4px 9px;border:1px solid #dfd0ad;border-radius:20px;background:#fff8e9ed;color:#654521;font:700 11px/1.2 system-ui;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px #35221520}
+#story-next-step[hidden]{display:none}
+#story-next-step.story-reward-ready{border-color:#d5a949;box-shadow:0 0 0 2px #ffdf8c66}
+.story-guided .campaign-narrative>div{width:100%}.story-guided .campaign-goal>p{font-size:16px;line-height:1.5}
+.story-guided .campaign-goal details{margin:10px 0}.story-guided .campaign-goal summary{font-size:13px;font-weight:700;cursor:pointer}
+.story-guided .campaign-upcoming article small{line-height:1.45}.story-guided .campaign-actions button{min-height:44px}
+@media(max-width:700px){#story-next-step{max-width:118px;min-height:32px;padding-inline:7px;font-size:10px}.story-guided .campaign-goal>p{font-size:14px}}
+@media(max-width:380px){#story-next-step{max-width:96px}}
