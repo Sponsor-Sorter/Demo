@@ -1,14 +1,14 @@
 {
   "packageId": "com.frontlines.worldinconflict",
-  "versionName": "1.0.0.107",
-  "versionCode": 107,
-  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview107-testing/frontlines-1.0.0-preview-build-107.apk",
-  "bytes": 226899392,
-  "sha256": "facf70ccf84e0dab15c37b7d25a008801a9f4788c285420ca27a7b8419f2342a",
+  "versionName": "1.0.0.109",
+  "versionCode": 109,
+  "apkUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-preview109-testing/frontlines-1.0.0-preview-build-109.apk",
+  "bytes": 226903488,
+  "sha256": "7be4f664e04838638cfebbbe6333975c21a3e873661798c0b60236d8ac6299f7",
   "certSHA": "47a74708896b299d59899fd8afdff17ebe8742491e2bf6af7bb78b69bdeb08b6",
   "minSdk": 24,
   "targetSdk": 36,
   "minimumAutoUpdateClientBuild": 50,
-  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public107/frontlines-1.0.0.107-android.apk",
-  "notes": "V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained."
+  "manualSetupForOlderClientsUrl": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public109/frontlines-1.0.0.109-android.apk",
+  "notes": "V1.0.0.109: Prepares battle dice earlier, corrects pending-occupation troop totals, improves shop scrolling and saved age-choice feedback, and centres menu return arrows. Existing artwork, audio, assets and graphics settings are retained."
 }

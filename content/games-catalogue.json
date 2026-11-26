@@ -131,11 +131,11 @@
       "title": "Frontlines: World in Conflict",
       "type": "Game",
       "tagline": "Six factions. Twelve battlefields. One world to conquer.",
-      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
+      "description": "Play Frontlines in your browser, on Android or on Windows. V1.0.0.109: Prepares battle dice earlier, corrects pending-occupation troop totals, improves shop scrolling and saved age-choice feedback, and centres menu return arrows. Existing artwork, audio, assets and graphics settings are retained.",
       "image": "./frontlines/media/icon.png",
       "imageAlt": "Frontlines: World in Conflict game artwork",
       "status": "Public testing · browser, Android & Windows",
-      "build": "V1.0.0.107 · browser, Android & Windows",
+      "build": "V1.0.0.109 · browser, Android & Windows",
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
@@ -155,15 +155,15 @@
           "url": "https://play.google.com/store/apps/details?id=com.frontlines.worldinconflict"
         },
         {
-          "label": "Download Windows107 setup EXE",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public107/frontlines-1.0.0.107-windows-setup.exe"
+          "label": "Download Windows109 setup EXE",
+          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public109/frontlines-1.0.0.109-windows-setup.exe"
         },
         {
           "label": "Installation and update guide",
           "url": "https://sponsorsorter.com/frontlines/downloads/"
         }
       ],
-      "notes": "V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
+      "notes": "V1.0.0.109: Prepares battle dice earlier, corrects pending-occupation troop totals, improves shop scrolling and saved age-choice feedback, and centres menu return arrows. Existing artwork, audio, assets and graphics settings are retained.",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
