@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-11-26",
+  "tool": "Built-in image_gen",
+  "purpose": "Bug Smash overhead farm picnic rebuild",
+  "files": [
+    {
+      "id": "ground",
+      "file": "assets/generated/bug-picnic/ground.webp",
+      "source": "exec-8e183c69-7684-4881-adb1-539a42b81b4f.png",
+      "prompt": "Strict 90-degree overhead sunny farm picnic patch. Calm light honey earth centre, sparse clover, daisies and pebbles on the extreme edges. Premium rounded hand-painted preschool farm style, no horizon, perspective, ants, food, text or UI."
+    },
+    {
+      "id": "food",
+      "file": "assets/generated/bug-picnic/food.webp",
+      "source": "exec-52cbbbb9-38bd-47a4-a915-8b6e2c710fa9.png",
+      "prompt": "Genuinely transparent 90-degree overhead picnic snack sprite. Red and cream gingham napkin, round cream plate with sandwich triangles, one apple, carrot sticks. Clean large rounded polished hand-painted shapes, no perspective, insects, text or UI."
+    },
+    {
+      "id": "preview",
+      "file": "assets/generated/bug-picnic/preview.webp",
+      "source": "exec-ee2b4af4-9ec2-46ae-a250-63856bd5800d.png",
+      "prompt": "16:9 premium preschool game illustration of protecting a farm picnic from colourful top-down ants. Honey dirt, clover corners, overhead red gingham snack plate, six friendly ants including leaf-armoured and bubble bosses, cheerful paint splash. Strict consistent overhead view, clear simple activity, no text or UI."
+    }
+  ],
+  "processing": "WebP quality88; ground1536px, food512px alpha100, preview1280px; no semantic edits"
+}

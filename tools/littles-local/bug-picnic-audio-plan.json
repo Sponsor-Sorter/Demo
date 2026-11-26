@@ -1,0 +1,35 @@
+{
+  "status": "GENERATED_APPROVED_VARIATION1",
+  "farmer": "rhys",
+  "voice": "Noah - YA Audiobooks Narrator",
+  "model": "Eleven Multilingual v2",
+  "settings": {
+    "speed": 0.9,
+    "stability": 0.5,
+    "similarity": 0.75,
+    "style": 0,
+    "speakerBoost": true
+  },
+  "files": [
+    {
+      "id": "bug99-rhys-intro",
+      "text": "Let's protect our picnic! Tap the ants before they reach our food. Big shells need a few more taps. Ready? Let's help!"
+    },
+    {
+      "id": "bug99-rhys-wave",
+      "text": "Great helping! Here comes another group. Let's keep our picnic safe!"
+    },
+    {
+      "id": "bug99-rhys-done",
+      "text": "Wonderful! You protected our picnic through three busy waves, and splashed the big boss. Great teamwork!"
+    }
+  ],
+  "existingUnchanged": [
+    "bug-rhys-armour",
+    "bug-rhys-acorn",
+    "bug-rhys-bubble",
+    "bug-rhys-tickle",
+    "bug-rhys-tummy"
+  ],
+  "manifest": "meadow-market-littles/assets/audio/bug99-rhys-generation.json"
+}
