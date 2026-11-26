@@ -1,5 +1,11 @@
 # Meadow Markets active work
 
+## 26 November 2026 — farmer ground-depth candidate 263
+
+Large crop plots previously sorted their entire soil-and-plant group at the front edge, hiding farmers within or behind a field. The candidate keeps soil on the ground plane and gives each crop its own world depth. Worker motion, building depth, crop anchors, field footprints and farm data are preserved. The actual rendered baseline/candidate matrix passes 36 cases in both orientations: eight baseline ground occlusions become zero, all 16 plot target/click checks pass in Tend/Build, and near/far crops plus barns keep the expected paint order. Existing worker-layout and performance/30-anchor checks pass. This is component rendering proof; a new physical layer check remains pending.
+
+Web 262 / native 17 / gateway 76 are live. Samsung Settings 262 and Hello,test_phone, normal Willow-to-Pine travel, autonomous harvesting/replanting and productive family/hired work were verified. Three bounded own-account reads confirmed Jay collecting healthy ready sheep produce, off-map progress and unchanged Pine geometry/all map object counts. Full named RETURNING/drinking/resume cycles remain partial; the phone session closed early when the soil-occlusion defect was raised. No layout, hire, upgrade, purchase or account changes were made. Candidate 263 is not published yet. Evidence: `D:/Chat Gpt/workspaces/meadow-worker-cycle256-evidence/DEPTH263-RENDERED-RAW-V4.json` and `AUTO262-PHONE-RESULT-V1.json`.
+
 ## 26 November 2026 — automation and travel candidate 262
 
 A focused actual-command regression reproduced Farmer Jay ignoring healthy animals with ready produce unless a Farm Desk project prioritized them. Candidate 262 removes that extra requirement in both client fallback selection and canonical worker scheduling. The existing 45-second care cooldown, pause controls, target reservations, exact-once rewards and well breaks remain. The immutable baseline failed eight of fifteen focused cases; the candidate passes all fifteen, covering five animal types and all three family roles through walking, full drinking and resumed productive work at three well stages. The wider 42-case worker/route/long-session suite passes. These are simulated actual-engine results, not new Samsung cycle acceptance.
