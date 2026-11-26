@@ -621,7 +621,7 @@
     let html='<span class="art field-soil '+(o.plantedAt?'planted':soil)+'"><img src="assets/generated/plots/soil-'+soil+'-'+side+(soilRotation?'-r'+soilRotation:'')+'.svg" alt="'+side+' by '+side+' soil plot"></span>';
     if(o.plantedAt){html+='<span class="plot-plants">';for(let y=0;y<side;y++)for(let x=0;x<side;x++){
       const cx=50+(x-y)*50/side,cy=(x+y+1)*50/side,plantWidth=84/side,plantHeight=(growthCrops.has(o.crop||'carrot')?128:106)/side,rootY=growthCrops.has(o.crop||'carrot')? .935 : 1;
-      html+='<span class="art crop-art crop-'+(o.crop||'carrot')+(growthCrops.has(o.crop||'carrot')?' has-growth-strip':'')+' stage-'+stage+(plotWatered(o)?' watered':'')+'" style="--plant-left:'+(cx-plantWidth/2)+'%;--plant-top:'+(cy-plantHeight*rootY)+'%;--plant-width:'+plantWidth+'%;--plant-height:'+plantHeight+'%;--growth:'+percent+'%;--scale-growth:'+percent/100+';z-index:'+(2+x+y)+'">'+(growthCrops.has(o.crop||'carrot')?growthPlant(o.crop||'carrot',percent/100):'<img src="assets/generated/crop-plants/'+(o.crop||'carrot')+'.png" alt="" loading="lazy">')+cropNeedBadge(o,stage)+'</span>';
+      html+='<span class="art crop-art crop-'+(o.crop||'carrot')+(growthCrops.has(o.crop||'carrot')?' has-growth-strip':'')+' stage-'+stage+(plotWatered(o)?' watered':'')+'" style="--plant-left:'+(cx-plantWidth/2)+'%;--plant-top:'+(cy-plantHeight*rootY)+'%;--plant-width:'+plantWidth+'%;--plant-height:'+plantHeight+'%;--growth:'+percent+'%;--scale-growth:'+percent/100+';--plant-depth:'+(20+((o.x||0)+(o.y||0)+x+y)*2)+'">'+(growthCrops.has(o.crop||'carrot')?growthPlant(o.crop||'carrot',percent/100):'<img src="assets/generated/crop-plants/'+(o.crop||'carrot')+'.png" alt="" loading="lazy">')+cropNeedBadge(o,stage)+'</span>';
     }html+='</span><span class="crop-stats" title="'+(stage===3?'Harvest '+plotYield(o):remaining+' minutes remaining')+'"><i style="width:'+percent+'%"></i></span>'}
     else html+=cropNeedBadge(o,stage);
     return html;
@@ -822,7 +822,7 @@
     client:()=>cloudClient,command:()=>window.meadowCommandUI?.active()?window.meadowCommandUI:null,
     club:()=>window.meadowClub,uuid:()=>crypto.randomUUID(),modal:openModal
   }));
-  const currentBuild=262;
+  const currentBuild=263;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost'&&!commandQA)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

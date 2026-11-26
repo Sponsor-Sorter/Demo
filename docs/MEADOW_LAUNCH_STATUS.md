@@ -1,5 +1,11 @@
 # Meadow Markets launch status
 
+## 26 November 2026 — farmer ground-depth candidate 263
+
+Large crop plots previously sorted their entire soil-and-plant group at the front edge, hiding farmers within or behind a field. The candidate keeps soil on the ground plane and gives each crop its own world depth. Worker motion, building depth, crop anchors, field footprints and farm data are preserved. The actual rendered baseline/candidate matrix passes 36 cases in both orientations: eight baseline ground occlusions become zero, all 16 plot target/click checks pass in Tend/Build, and near/far crops plus barns keep the expected paint order. Existing worker-layout and performance/30-anchor checks pass. This is component rendering proof; a new physical layer check remains pending.
+
+Web 262 / native 17 / gateway 76 are live. Samsung Settings 262 and Hello,test_phone, normal Willow-to-Pine travel, autonomous harvesting/replanting and productive family/hired work were verified. Three bounded own-account reads confirmed Jay collecting healthy ready sheep produce, off-map progress and unchanged Pine geometry/all map object counts. Full named RETURNING/drinking/resume cycles remain partial; the phone session closed early when the soil-occlusion defect was raised. No layout, hire, upgrade, purchase or account changes were made. Candidate 263 is not published yet. Evidence: `D:/Chat Gpt/workspaces/meadow-worker-cycle256-evidence/DEPTH263-RENDERED-RAW-V4.json` and `AUTO262-PHONE-RESULT-V1.json`.
+
 ## 26 November 2026 — candidate 262 prepared, automation verification ongoing
 
 The last verified public game is web 261, Google Play native 17 and farm-actions gateway 75. Candidate 262 fixes Jay’s missed healthy-animal produce collection and the oversized map chooser. Its targeted before/after actual-engine tests reproduce eight failures on the original scheduler and pass all fifteen cases on the candidate; the wider 42-case worker suite and gateway/client checks pass. Physical full-cycle acceptance, reviewed backend deployment, final CI, publication and retained-farm update checks are still required. Existing player farms and purchases remain intact. No production change is claimed by this source entry.
