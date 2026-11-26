@@ -1,5 +1,10 @@
 # Meadow Markets active work
 
+## 26 November 2026 — final guidance candidate 265
+
+Candidate 265 keeps the completed 264 guidance/artwork and corrects the advanced-field story Find route: a 4×4 goal now locates an existing unplanted tier1/2 plot, while the introductory 2×2 goal keeps its tier0 threshold. A focused actual-callback regression covers a tier2 field and both introductory outcomes. The new exact-head CI and rendered acceptance remain required. Candidate 264 passed all three PR CI jobs; its attempted rendered window was denied by an expiry-format guard before any browser/server opened (zero cases). No product failure or rendered pass is inferred from that setup result.
+
+
 ## 26 November 2026 — guidance and word-search candidate 264
 
 Candidate 264 extends the crop-style, borderless map indicators to animal homes/roaming animals, apples, honey, nectar, idle workspaces and empty shop shelves. Care is grouped at the home and urgent needs take priority. Growing flowers already serving a hive remain quiet. The existing overlay update is reused; presentation never settles timers, changes tasks or grants goods.
