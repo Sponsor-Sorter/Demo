@@ -1,5 +1,13 @@
 # Meadow Markets active work
 
+## 26 November 2026 — automation and travel candidate 262
+
+A focused actual-command regression reproduced Farmer Jay ignoring healthy animals with ready produce unless a Farm Desk project prioritized them. Candidate 262 removes that extra requirement in both client fallback selection and canonical worker scheduling. The existing 45-second care cooldown, pause controls, target reservations, exact-once rewards and well breaks remain. The immutable baseline failed eight of fifteen focused cases; the candidate passes all fifteen, covering five animal types and all three family roles through walking, full drinking and resumed productive work at three well stages. The wider 42-case worker/route/long-session suite passes. These are simulated actual-engine results, not new Samsung cycle acceptance.
+
+The same candidate keeps map names/Visit controls above responsive whole-farm previews, fits the complete saved-item scene inside both dimensions and protects vertical scrolling from preview artwork hit targets. Fourteen layout-function/lifecycle bounds pass; actual viewport/touch acceptance remains pending.
+
+Web 261 / native 17 / gateway 75 are the last verified live versions. Candidate 262 is not published. The worker predicate change requires deployment of the reviewed nine-file farm-actions closure with JWT verification, followed by web publication and native update testing; no database migration or native binary is needed. Previous W05 retained all 54 Pine objects, tiers, animal homes and crop/fruit clocks through the seven approved moves, and showed productive family/hired work. Complete named live drink-phase sampling and Coast attribution remain partial. Evidence: `D:/Chat Gpt/workspaces/meadow-worker-cycle256-evidence/AUTO262-SOURCE-REVIEW-PACKET-V1.json`.
+
 ## 24 November 2026 — map registration correction candidate 258
 
 The main scene is `#farm-land.farm-scene`, but the five non-Willow map-specific grid rules targeted only `.farm-land`. Actual live Eastbank used the Willow fallback (26.5% top, 3.5% bottom), while its preview and canonical server bounds use 15% top and 9% bottom. Candidate 258 adds the five main-scene selectors beside the unchanged preview/visitor selectors. Saved logical coordinates, assets, crop growth and farming arithmetic stay intact; the incorrectly registered main-map screen positions necessarily change. A 72-case actual-CSS browser component matrix reproduces ten baseline failures and passes all 36 candidate cases across six maps, three surfaces and portrait/landscape. A source contract also checks 48 canonical bounds and rejects the deployed baseline. This is not native 258 acceptance.
