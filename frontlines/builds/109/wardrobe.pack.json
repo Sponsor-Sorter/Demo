@@ -1,0 +1,67 @@
+{
+  "format": 1,
+  "bytes": 99443116,
+  "sha256": "78824394bfc4d4a41862c2a95b76517c486dcf3fe653d475e5355331ba6ec7ff",
+  "chunks": [
+    {
+      "file": "wardrobe.pck.part-00",
+      "bytes": 8388608,
+      "sha256": "5b66665315fd3ca96f37a60490b37e3cefaaca722b6824b8bf05e885f99eed07"
+    },
+    {
+      "file": "wardrobe.pck.part-01",
+      "bytes": 8388608,
+      "sha256": "dca9cb1f8d37bca05e60e055be91d6f5c48cc201e590fab6d2cb20276508f901"
+    },
+    {
+      "file": "wardrobe.pck.part-02",
+      "bytes": 8388608,
+      "sha256": "d55ef5b799965a1fe11f5c77708595d042a860aa6c347dd180e8fbf18d088cb8"
+    },
+    {
+      "file": "wardrobe.pck.part-03",
+      "bytes": 8388608,
+      "sha256": "bc95748e581b2d82d86162de323f2ba3193673b4c9aec980a5a6cfd277fc7da4"
+    },
+    {
+      "file": "wardrobe.pck.part-04",
+      "bytes": 8388608,
+      "sha256": "cd26fae3ee2114d2bf7c679bcfc44986dd00b7b7fca387858c7a8768988d7c7c"
+    },
+    {
+      "file": "wardrobe.pck.part-05",
+      "bytes": 8388608,
+      "sha256": "123ab6da354f2ea229bfd6f0562b851a5adc4d1603a7fd8c6f2442fa1cf7cbff"
+    },
+    {
+      "file": "wardrobe.pck.part-06",
+      "bytes": 8388608,
+      "sha256": "840cd7c576cf5eb187b239ed87e02c0cec3b0195c1df61efd2079daca3546100"
+    },
+    {
+      "file": "wardrobe.pck.part-07",
+      "bytes": 8388608,
+      "sha256": "1056fec967e153b2809300f2210622eb9c552dc5a8803128e7e2c6a1a557e9d3"
+    },
+    {
+      "file": "wardrobe.pck.part-08",
+      "bytes": 8388608,
+      "sha256": "c6016ac5cfaaad90bc01b4c2b437408749d961ff0892315c3d489947530bb77a"
+    },
+    {
+      "file": "wardrobe.pck.part-09",
+      "bytes": 8388608,
+      "sha256": "4a4979d2388d5f69aa25a50aefae03dbebc2bf77aa23eda8c60c580cf832c9cf"
+    },
+    {
+      "file": "wardrobe.pck.part-10",
+      "bytes": 8388608,
+      "sha256": "297fcf57179e8e5bb3388ae304477271bed04627673f31e414e1ae3af6abc775"
+    },
+    {
+      "file": "wardrobe.pck.part-11",
+      "bytes": 7168428,
+      "sha256": "811a18e3764df748de2ad5d63c353dbf8fa2980fc6c79a474eb75787aaa38e62"
+    }
+  ]
+}
