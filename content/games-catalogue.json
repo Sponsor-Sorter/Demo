@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-26",
   "entries": [
     {
       "id": "meadow-markets",
@@ -12,7 +12,7 @@
       "status": "Early access",
       "build": "Browser build 74",
       "releaseManifest": "./meadow-and-market/release.json",
-      "requirements": "Modern browser on phone, tablet or computer, or the Android testing package. Internet access is needed for online features.",
+      "requirements": "Modern browser on phone, tablet or computer, or the Android app from Google Play. Internet access is needed for online features.",
       "instructionsTitle": "How to play",
       "instructions": [
         "Open Play in browser and follow the farm introduction.",
@@ -27,11 +27,11 @@
           "primary": true
         },
         {
-          "label": "Download Android APK",
-          "url": "https://sponsorsorter.com/meadow-and-market/meadow-and-market.apk"
+          "label": "Get it on Google Play",
+          "url": "https://play.google.com/store/apps/details?id=com.meadowandmarket.game"
         }
       ],
-      "notes": "Early access. Browser and Android releases update separately; the browser build shown here is not an Android package build number. For Android, open the downloaded APK and confirm installation if your device requests it."
+      "notes": "Early access. Browser and Android releases update separately; the browser build shown here is not an Android package build number. Install and update the Android app through Google Play."
     },
     {
       "id": "meadow-market-littles",
@@ -44,13 +44,13 @@
       "status": "Early access",
       "build": "Browser build 5",
       "releaseManifest": "./meadow-market-littles/release.json",
-      "requirements": "Modern browser on phone, tablet or computer, or the Android testing package. Works in portrait or landscape. Internet access is needed for cloud saves and updates.",
+      "requirements": "Modern browser on phone, tablet or computer, or the Android app from Google Play. Works in portrait or landscape. Internet access is needed for cloud saves and updates.",
       "instructionsTitle": "How to play and install",
       "instructions": [
         "Open Play in browser and choose an activity.",
         "Follow the farmers’ spoken instructions and on-screen controls.",
         "Explore animal games, puzzles and the art studio at your own pace.",
-        "On Android, download the APK, open the downloaded file and confirm installation if your device requests it.",
+        "On Android, choose Get it on Google Play to install or update the app.",
         "For a browser app, open game settings for installation. On iPad, use Safari Share, then Add to Home Screen."
       ],
       "actions": [
@@ -60,11 +60,11 @@
           "primary": true
         },
         {
-          "label": "Download Android APK",
-          "url": "https://sponsorsorter.com/meadow-market-littles/meadow-market-littles.apk"
+          "label": "Get it on Google Play",
+          "url": "https://play.google.com/store/apps/details?id=com.meadowmarket.littles"
         }
       ],
-      "notes": "Early access. Android test package version 0.2.0, build 2. Local two-player games use QR pairing on the same Wi-Fi, without an internet game server. Open and cache the game before going offline. Some guest networks block device-to-device connections. Game progress remains separate from Meadow Markets."
+      "notes": "Early access. Install and update the Android app through Google Play. Local two-player games use QR pairing on the same Wi-Fi, without an internet game server. Open and cache the game before going offline. Some guest networks block device-to-device connections. Game progress remains separate from Meadow Markets."
     },
     {
       "id": "bargain-barge",
@@ -139,8 +139,8 @@
       "requirements": "WebGL2 and WebAssembly browser, Android7.0+ (64-bit ARM), or Windows10/11 (64-bit Intel/AMD). Internet is needed for first load, online play and updates. Phone play is best in landscape.",
       "instructionsTitle": "How to play",
       "instructions": [
-        "Choose Play in browser, or download the Android APK or Windows setup EXE for your device. Google Play and Steam are separate distributions.",
-        "Install Android updates over the existing app using the same signing identity; do not uninstall or reset app data. Recent website builds support in-game updates. Older builds may need this signed APK installed manually once. Android asks you to confirm installation.",
+        "Choose Play in browser, install the Android app through Google Play, or download the Windows setup EXE for your device.",
+        "Install and update the Android app through Google Play. Keep the existing app installed when updating to retain its local data.",
         "On Windows, use the setup EXE. The ZIP is an internal update payload verified by signed update metadata, not a portable game. The installer is not Authenticode certified and may show an unknown-publisher warning.",
         "Use the current game version for new online rooms. Updated players can also join compatible older matches. After a completed online game, select a player card to open the report menu. Reports are reviewed; an allegation does not automatically punish a player."
       ],
@@ -151,8 +151,8 @@
           "primary": true
         },
         {
-          "label": "Download Android107 APK",
-          "url": "https://github.com/Sponsor-Sorter/Demo/releases/download/frontlines-public107/frontlines-1.0.0.107-android.apk"
+          "label": "Get it on Google Play",
+          "url": "https://play.google.com/store/apps/details?id=com.frontlines.worldinconflict"
         },
         {
           "label": "Download Windows107 setup EXE",
@@ -164,7 +164,6 @@
         }
       ],
       "notes": "V1.0.0.107: Capital preparation, HUD dice and visibility optimisations; safer optional-map cache recovery; AI capital protection. Teams, trading pockets, gift codes and approved graphics retained.",
-      "sha256": "FACF70CCF84E0DAB15C37B7D25A008801A9F4788C285420CA27A7B8419F2342A",
       "releaseManifest": "./frontlines/release.json"
     }
   ]
