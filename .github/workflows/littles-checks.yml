@@ -52,6 +52,8 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/check-littles.cjs
+      - name: Check real browser Bug Smash input gestures
+        run: node scripts/check-littles-bug-input-browser.cjs
       - run: node scripts/check-littles-ad-readiness.cjs
       - run: node --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs scripts/check-littles-rewarded-transport.cjs
       - run: npm ci --ignore-scripts --prefix tools/littles-rewarded-tests
