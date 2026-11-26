@@ -6,11 +6,19 @@
   const icon={sound:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12h6l7-6v20l-7-6H5Z"/><path d="M23 10q7 6 0 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>',pause:'<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="6" width="6" height="20" rx="2"/><rect x="19" y="6" width="6" height="20" rx="2"/></svg>',close:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="m9 9 14 14M23 9 9 23" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>'};
   let dialog,session=null,completed=()=>true,getLevel=()=>1,returnFocus;
   const qualityReady=()=>{try{const n=globalThis.meadowWeeklyFair?.getQualityBuild?.();return Number.isSafeInteger(n)&&n>=99;}catch{return false;}};
+  // Accessibility activation can have detail=1 without a pointer sequence.
+  // Suppress only a matching pointer gesture that already performed the action.
+  function activationOrigin(s,e,control=null,allowActive=false){
+    if(e.detail===0)return null;
+    if(Number.isInteger(e.pointerId)&&e.pointerId>=0){const origin=s.pointerOrigins.get(e.pointerId);return origin&&(allowActive||origin.ended)?origin:null;}
+    const matches=[...s.pointerOrigins.values()].filter(origin=>origin.ended&&origin.control===control);
+    return matches.length===1?matches[0]:null;
+  }
   const sound=id=>globalThis.meadowAudio?.play(id),stopVoice=()=>globalThis.meadowAudio?.stopVoice();
   function speak(s,id){if(session===s&&!document.hidden)globalThis.meadowAudio?.speak((['intro','wave','done'].includes(id)?'bug99-rhys-':'bug-rhys-')+id);}
   function image(url){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(Error('Bug artwork unavailable'));img.src=url;});}
   function close(){
-    const s=session;if(s){s.abort.abort();cancelAnimationFrame(s.frame);s.resize.disconnect();s.fingers.clear();session=null;}
+    const s=session;if(s){s.abort.abort();cancelAnimationFrame(s.frame);s.resize.disconnect();s.fingers.clear();s.pointerOrigins.clear();session=null;}
     stopVoice();dialog?.close();const target=returnFocus?.isConnected?returnFocus:document.querySelector('[data-play="bug_smash"]');target?.focus?.({preventScroll:true});
   }
   async function open(){
@@ -18,21 +26,30 @@
     close();returnFocus=document.activeElement;
     if(!dialog){dialog=document.createElement('dialog');dialog.className='bsm-dialog bsm-picnic';dialog.setAttribute('aria-label','Rainbow Bug Smash');document.body.append(dialog);dialog.addEventListener('cancel',e=>{e.preventDefault();close();});}
     dialog.innerHTML='<main class="bsm-scene"><header class="bsm-header"><img class="bsm-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>Rainbow <br>Bug Smash</h2><button data-bsm-listen aria-label="Hear the farmer">'+icon.sound+'</button><button data-bsm-pause aria-label="Pause game" disabled>'+icon.pause+'</button><button data-bsm-close aria-label="Back to games">'+icon.close+'</button></header><div class="bsm-field"><canvas aria-hidden="true"></canvas><div class="bsm-bug-controls" role="group" aria-label="Colourful ants and boss targets"></div><div class="bsm-announcement" aria-live="polite"></div></div><footer class="bsm-footer"><div class="bsm-waves" aria-label="Three picnic waves"><i></i><i></i><i></i></div><div class="bsm-task"><strong data-bsm-task>Make a rainbow!</strong><span data-bsm-detail>Tap colourful ants. Big shells need a few taps.</span><div class="bsm-progress" role="progressbar" aria-label="Bug parade progress" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0"><i></i></div></div><b class="bsm-counter" aria-live="polite">0 / 9</b></footer><section class="bsm-overlay bsm-start"><div class="bsm-intro-content"><small>FARMER RHYS’S PICNIC PATROL</small><h2>Protect our picnic!</h2><img class="bsm-intro-art" src="'+base+'preview.webp" alt="Top-down picnic food with colourful ants, an armoured ant and a bubble boss"><p>Tap the ants before they reach our food.<br>Three busy waves, then a big boss!</p><div class="bsm-level-picker"><button data-bsm-easier aria-label="Previous level">−</button><span><b data-bsm-level>Trail 1</b><small data-bsm-boss>Captain Acorn</small></span><button data-bsm-harder aria-label="Next level">+</button></div><button class="bsm-primary" data-bsm-start disabled>Packing the picnic…</button><button class="bsm-secondary" data-bsm-no>No thanks</button></div></section></main>';
-    dialog.showModal();const field=dialog.querySelector('.bsm-field'),canvas=field.querySelector('canvas'),s={field,canvas,c:canvas.getContext('2d'),abort:new AbortController(),phase:'loading',level:core.settings(getLevel()).level,game:null,frame:0,last:0,finishIn:0,armourHeard:false,buttons:new Map(),fingers:new Map(),voice:'intro',reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,resize:null};session=s;
-    const on=(node,event,fn)=>node.addEventListener(event,fn,{signal:s.abort.signal});
+    dialog.showModal();const field=dialog.querySelector('.bsm-field'),canvas=field.querySelector('canvas'),s={field,canvas,c:canvas.getContext('2d'),abort:new AbortController(),phase:'loading',level:core.settings(getLevel()).level,game:null,frame:0,last:0,finishIn:0,armourHeard:false,buttons:new Map(),fingers:new Map(),pointerOrigins:new Map(),voice:'intro',reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,resize:null};session=s;
+    const on=(node,event,fn,options={})=>node.addEventListener(event,fn,{...options,signal:s.abort.signal});
+    on(dialog,'pointerdown',e=>{s.pointerOrigins.set(e.pointerId,{target:e.target,control:e.target.closest?.('.bsm-ant-key')||null,consumed:false,ended:false,cancelled:false});},{capture:true});
+    const finishOrigin=e=>{
+      if(e.type==='lostpointercapture'&&field.hasPointerCapture?.(e.pointerId))return;
+      const origin=s.pointerOrigins.get(e.pointerId);if(!origin)return;
+      if(e.type==='pointerup')origin.ended=true;else if(!origin.ended){origin.ended=true;origin.cancelled=true;}
+      // Keep the matching origin through its compatibility click, then retire it.
+      setTimeout(()=>{if(s.pointerOrigins.get(e.pointerId)===origin)s.pointerOrigins.delete(e.pointerId);},0);
+    };
+    for(const type of ['pointerup','pointercancel','lostpointercapture'])on(dialog,type,finishOrigin,{capture:true});
     s.resize=new ResizeObserver(()=>resize(s));s.resize.observe(field);resize(s);
     globalThis.addEventListener?.('meadow-quality-change',()=>{if(!qualityReady())close();},{signal:s.abort.signal});
     const levelChange=delta=>{if(session!==s||s.phase!=='intro')return;s.level=core.settings(s.level+delta).level;levelLabel(s);sound('tap');};
     on(dialog.querySelector('[data-bsm-easier]'),'click',()=>levelChange(-1));on(dialog.querySelector('[data-bsm-harder]'),'click',()=>levelChange(1));
     on(dialog.querySelector('[data-bsm-close]'),'click',close);on(dialog.querySelector('[data-bsm-no]'),'click',close);on(dialog.querySelector('[data-bsm-listen]'),'click',()=>speak(s,s.voice));on(dialog.querySelector('[data-bsm-pause]'),'click',()=>pause(s));
-    on(document,'visibilitychange',()=>{if(document.hidden)pause(s);});
+    on(document,'visibilitychange',()=>{if(document.hidden){s.pointerOrigins.clear();pause(s);}});
     on(field,'pointerdown',e=>{
-      if(session!==s||s.phase!=='playing'||e.button>0)return;e.preventDefault();const p=point(s,e);s.fingers.set(e.pointerId,p);try{field.setPointerCapture(e.pointerId);}catch{}s.game.tap(p);events(s);
+      if(session!==s||s.phase!=='playing'||e.button>0)return;e.preventDefault();const p=point(s,e);s.fingers.set(e.pointerId,p);try{field.setPointerCapture(e.pointerId);}catch{}const used=s.game.tap(p),origin=s.pointerOrigins.get(e.pointerId);if(used&&origin)origin.consumed=true;events(s);
     });
     on(field,'pointermove',e=>{
-      let previous=s.fingers.get(e.pointerId);if(!previous||s.phase!=='playing')return;e.preventDefault();const samples=e.getCoalescedEvents?.()||[e];for(const sample of samples.length?samples:[e]){const p=point(s,sample);s.game.stroke(previous,p);previous=p;}s.fingers.set(e.pointerId,previous);events(s);
+      let previous=s.fingers.get(e.pointerId);if(!previous||s.phase!=='playing')return;e.preventDefault();const samples=e.getCoalescedEvents?.()||[e];for(const sample of samples.length?samples:[e]){const p=point(s,sample);const used=s.game.stroke(previous,p),origin=s.pointerOrigins.get(e.pointerId);if(used&&origin)origin.consumed=true;previous=p;}s.fingers.set(e.pointerId,previous);events(s);
     });
-    const end=e=>{s.fingers.delete(e.pointerId);};for(const type of ['pointerup','pointercancel','lostpointercapture'])on(field,type,end);
+    const end=e=>{if(e.type==='lostpointercapture'&&field.hasPointerCapture?.(e.pointerId))return;s.fingers.delete(e.pointerId);};for(const type of ['pointerup','pointercancel','lostpointercapture'])on(field,type,end);
     try{
       await Promise.all([image(base+'ground.webp'),image(base+'preview.webp'),image(base+'food.webp').then(img=>s.food=img)]);if(session!==s)return;s.phase='intro';levelLabel(s);const start=dialog.querySelector('[data-bsm-start]');start.disabled=false;start.textContent='Protect the picnic!';on(start,'click',()=>startRound(s));speak(s,'intro');start.focus({preventScroll:true});
     }catch{
@@ -48,7 +65,7 @@
     if(session!==s||!['intro','won'].includes(s.phase))return;
     if(!qualityReady()){close();return;}
     if(globalThis.meadowLittlesAccess?.begin('bug_smash',close)===false)return;
-    resize(s);s.game=new core.Game(s.width,s.height,{level:s.level});s.phase='playing';s.last=0;s.armourHeard=false;s.voice='intro';s.fingers.clear();s.buttons.forEach(n=>n.remove());s.buttons.clear();const announcement=dialog.querySelector('.bsm-announcement');announcement.textContent='';announcement.classList.remove('bsm-bounce');s.announceUntil=0;dialog.querySelector('.bsm-overlay')?.remove();dialog.querySelector('[data-bsm-pause]').disabled=false;speak(s,'intro');update(s);cancelAnimationFrame(s.frame);s.frame=requestAnimationFrame(t=>tick(s,t));
+    resize(s);s.game=new core.Game(s.width,s.height,{level:s.level});s.phase='playing';s.last=0;s.armourHeard=false;s.voice='intro';s.fingers.clear();s.pointerOrigins.clear();s.buttons.forEach(n=>n.remove());s.buttons.clear();const announcement=dialog.querySelector('.bsm-announcement');announcement.textContent='';announcement.classList.remove('bsm-bounce');s.announceUntil=0;dialog.querySelector('.bsm-overlay')?.remove();dialog.querySelector('[data-bsm-pause]').disabled=false;speak(s,'intro');update(s);cancelAnimationFrame(s.frame);s.frame=requestAnimationFrame(t=>tick(s,t));
   }
   function update(s){
     const g=s.game,b=g.boss,goal=g.config.goal+1,progress=g.hits+(g.done?1:0),task=dialog.querySelector('[data-bsm-task]'),detail=dialog.querySelector('[data-bsm-detail]');
@@ -85,21 +102,27 @@
       else if(b.stage==='body')live.push({id:'boss-body',x:b.x-b.r*1.65,y:b.y-b.r*1.1,w:b.r*3.3,h:b.r*2.2,label:'Tap '+bossNames[b.type]+'’s tummy · '+b.hp+' taps left'});
     }
     const ids=new Set(live.map(t=>t.id));for(const[id,n]of s.buttons)if(!ids.has(id)){n.remove();s.buttons.delete(id);}
-    for(const t of live){let n=s.buttons.get(t.id);if(!n){n=document.createElement('button');n.className='bsm-ant-key';n.type='button';n.onclick=e=>{if(e.detail!==0||s.phase!=='playing')return;s.game.accessible(t.id);events(s);};dialog.querySelector('.bsm-bug-controls').append(n);s.buttons.set(t.id,n);}if(n.getAttribute('aria-label')!==t.label)n.setAttribute('aria-label',t.label);n.style.transform='translate3d('+t.x+'px,'+t.y+'px,0)';n.style.width=t.w+'px';n.style.height=t.h+'px';n.disabled=s.phase!=='playing';}
+    for(const t of live){let n=s.buttons.get(t.id);if(!n){n=document.createElement('button');n.className='bsm-ant-key';n.type='button';n.onclick=e=>{
+        if(session!==s||s.phase!=='playing'||!n.isConnected||s.buttons.get(t.id)!==n)return;
+        const origin=activationOrigin(s,e,n);
+        if(origin&&(origin.cancelled||origin.control!==n))return;
+        if(origin?.consumed){origin.consumed=false;return;}
+        s.game.accessible(t.id);events(s);
+      };dialog.querySelector('.bsm-bug-controls').append(n);s.buttons.set(t.id,n);}if(n.getAttribute('aria-label')!==t.label)n.setAttribute('aria-label',t.label);n.style.transform='translate3d('+t.x+'px,'+t.y+'px,0)';n.style.width=t.w+'px';n.style.height=t.h+'px';n.disabled=s.phase!=='playing';}
   }
   function tick(s,time){
     if(session!==s||!['playing','finishing'].includes(s.phase))return;const dt=s.last?Math.min(.05,(time-s.last)/1000):0;s.last=time;s.game.step(dt);events(s);if(s.announceUntil&&s.game.elapsed>=s.announceUntil){s.announceUntil=0;const node=dialog.querySelector('.bsm-announcement');node.textContent='';node.classList.remove('bsm-bounce');}paint.draw(s.c,s.game,{food:s.food});targets(s);
     if(s.phase==='finishing'){s.finishIn-=dt;if(s.finishIn<=0){win(s);return;}}s.frame=requestAnimationFrame(t=>tick(s,t));
   }
   function pause(s){
-    if(session!==s||!['playing','finishing'].includes(s.phase))return;s.resumePhase=s.phase;s.phase='paused';s.game.paused=true;s.fingers.clear();cancelAnimationFrame(s.frame);s.frame=0;stopVoice();s.buttons.forEach(n=>n.disabled=true);
+    if(session!==s||!['playing','finishing'].includes(s.phase))return;s.resumePhase=s.phase;s.phase='paused';s.game.paused=true;s.fingers.clear();s.pointerOrigins.clear();cancelAnimationFrame(s.frame);s.frame=0;stopVoice();s.buttons.forEach(n=>n.disabled=true);
     const overlay=document.createElement('section');overlay.className='bsm-overlay';overlay.innerHTML='<div class="bsm-intro-content bsm-pause"><h2>A little pause</h2><p>Your picnic patrol will wait.</p><button class="bsm-primary" data-bsm-resume>Keep protecting</button><button class="bsm-secondary" data-bsm-done>Back to games</button></div>';dialog.querySelector('.bsm-scene').append(overlay);overlay.querySelector('[data-bsm-done]').onclick=close;overlay.querySelector('[data-bsm-resume]').onclick=()=>{if(document.hidden||session!==s)return;overlay.remove();s.phase=s.resumePhase;s.game.paused=false;s.last=0;if(s.phase==='playing')speak(s,s.voice);s.frame=requestAnimationFrame(t=>tick(s,t));};overlay.querySelector('[data-bsm-resume]').focus({preventScroll:true});
   }
   function win(s){
     if(session!==s||s.phase!=='finishing')return;s.phase='won';s.game.paused=true;s.frame=0;s.buttons.forEach(n=>n.disabled=true);dialog.querySelector('[data-bsm-pause]').disabled=true;const accepted=completed(s.level)!==false;s.voice='done';speak(s,'done');
     const overlay=document.createElement('section');overlay.className='bsm-overlay bsm-win';overlay.innerHTML='<div class="bsm-intro-content bsm-win-card"><img class="bsm-win-farmer" src="assets/generated/guides/rhys.webp" alt="Farmer Rhys"><h2>Picnic protected!</h2><div class="bsm-win-stars" aria-label="Three meadow stars">★ ★ ★</div><p>Three waves · '+s.game.hits+' ants · '+Math.floor(s.game.elapsed/60)+'m '+Math.floor(s.game.elapsed%60)+'s<br>You stopped '+bossNames[s.game.boss.type]+'!</p>'+(accepted?'<button class="bsm-primary" data-bsm-next>'+(s.level<12?'Next picnic · '+(s.level+1):'Another picnic patrol')+'</button><button class="bsm-secondary" data-bsm-again>Play this picnic again</button>':'')+'<button class="bsm-secondary" data-bsm-done>No thanks</button></div>';
     // A finishing finger cannot activate a newly appeared play button underneath it.
-    let fresh=false;overlay.addEventListener('pointerdown',()=>fresh=true,true);overlay.addEventListener('click',e=>{if(e.detail>0&&!fresh){e.preventDefault();e.stopImmediatePropagation();}},true);dialog.querySelector('.bsm-scene').append(overlay);
+    overlay.addEventListener('click',e=>{const origin=activationOrigin(s,e,null,true);if(origin&&(origin.cancelled||!overlay.contains(origin.target))){e.preventDefault();e.stopImmediatePropagation();}},true);dialog.querySelector('.bsm-scene').append(overlay);
     overlay.querySelector('[data-bsm-next]')?.addEventListener('click',()=>{s.level=s.level<12?s.level+1:10;startRound(s);});overlay.querySelector('[data-bsm-again]')?.addEventListener('click',()=>startRound(s));overlay.querySelector('[data-bsm-done]').onclick=close;globalThis.meadowCelebration?.decorate(overlay.firstElementChild);overlay.querySelector('[data-bsm-next], [data-bsm-done]').focus({preventScroll:true});
   }
   globalThis.meadowBugPicnic={open,close,attach:({completed:fn,level}={})=>{completed=fn||(()=>true);getLevel=level||(()=>1);}};

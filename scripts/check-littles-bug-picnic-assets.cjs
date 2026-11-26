@@ -10,7 +10,7 @@ for(const clip of audio.files){
  assert.equal(clip.farmer,'rhys');assert.equal(clip.model,'Eleven Multilingual v2');assert.equal(voices.window.meadowApprovedVoices.clips[clip.id].farmer,'rhys');
  assert(clip.durationSeconds>2&&clip.durationSeconds<12);assert(sw.includes('./assets/audio/'+clip.id+'.mp3?v=56'));
 }
-for(const file of ['bug-picnic-core.js','bug-picnic-paint.js','bug-picnic.js','bug-picnic.css']){assert(index.includes(file+'?v=1'));assert(sw.includes('./'+file+'?v=1'));}
+for(const file of ['bug-picnic-core.js','bug-picnic-paint.js','bug-picnic.js','bug-picnic.css']){const version=file==='bug-picnic.js'?2:1;assert(index.includes(file+'?v='+version));assert(sw.includes('./'+file+'?v='+version));}
 for(const name of ['ground','food','preview']){const file='assets/generated/bug-picnic/'+name+'.webp';assert(fs.statSync(path.join(root,file)).size>10000);assert(sw.includes('./'+file));}
 const fixture=fs.readFileSync(path.resolve(root,'../tools/littles-local/bug-picnic-qa.html'),'utf8');
 for(const css of index.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g))assert(fixture.includes(css[0]));
