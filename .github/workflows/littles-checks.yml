@@ -1,9 +1,9 @@
 name: Meadow Market Littles checks
 on:
   push:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/littles-local/**', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
   pull_request:
-    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
+    paths: ['meadow-market-littles/**', 'scripts/check-littles*.cjs', 'tools/littles-local/**', 'tools/meadow-littles-android/**', 'supabase/functions/littles-play-*/**', 'supabase/functions/littles-ad-round*/**', 'supabase/functions/meadow-littles-fairplay/**', 'supabase/functions/_shared/littles-security95*', 'supabase/functions/_shared/fairplay-security-contract-v1.mjs', 'tools/littles-cloud-security95.test.cjs', 'tools/littles-rewarded-tests/**', 'supabase/migrations/*littles*', 'deno.lock', '.github/workflows/littles-checks.yml']
 permissions:
   contents: read
 jobs:
@@ -51,15 +51,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify QA cannot reach production authentication
+        run: node scripts/check-littles-qa-network.cjs
       - run: node scripts/check-littles.cjs
       - name: Check real browser Bug Smash input gestures
         run: node scripts/check-littles-bug-input-browser.cjs
-      - run: node scripts/check-littles-ad-readiness.cjs
-      - run: node --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs scripts/check-littles-rewarded-transport.cjs
+      - run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-ad-readiness.cjs
+      - run: node --require ./tools/littles-local/qa-network.cjs --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs scripts/check-littles-rewarded-transport.cjs
       - run: npm ci --ignore-scripts --prefix tools/littles-rewarded-tests
       - run: npm test --prefix tools/littles-rewarded-tests
+        env:
+          NODE_OPTIONS: --require ${{ github.workspace }}/tools/littles-local/qa-network.cjs
       - name: Check actual native-version admission SQL
-        run: node scripts/check-littles-ad-native97-sql.cjs
+        run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-ad-native97-sql.cjs
   android-build:
     needs: game-checks
     runs-on: ubuntu-latest

@@ -1,3 +1,4 @@
+require('../tools/littles-local/qa-network.cjs');
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict'),cp=require('child_process'),root=path.resolve(__dirname,'../meadow-market-littles');
 const read=f=>fs.readFileSync(root+'/'+f,'utf8');for(const f of fs.readdirSync(root).filter(f=>f.endsWith('.js')))new vm.Script(read(f),{filename:f});
 const sandbox={window:{addEventListener(){}},document:{addEventListener(){}},console};for(const f of ['play-levels.js','tractor-repair.js','art-scenes.js','art-core.js','art-studio.js','next-games.js','minigames.js','animal-care.js'])vm.runInNewContext(read(f),sandbox,{filename:f});
