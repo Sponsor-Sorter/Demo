@@ -1,3 +1,7 @@
+## 28 November 2026 — Christmas candidate267
+
+December event implementation and focused isolated rule/SQL tests are complete. Six HD buildables, an illustrated courtyard, four story chapters, daily presents, deliveries and two fixed gem bundles are documented in `MEADOW_CHRISTMAS267.md`. Correct Hope/Noah/Mike recordings are included. Responsive render, full CI, intended backend deployment/read-back and hosted update verification remain release gates. Current accepted public release remains266/native17/gateway76; no new native binary is required. No production QA signup, account deletion or farm reset is part of this update.
+
 ## Candidate266 — native story reward repair (not published)
 
 Native265 accepted the real update, retained test_phone, and passed word selection/list/options checks. Its story reward tap exposed a stale render-state fallback: a background canonical replacement made the consumer use the legacy path, then the existing drift guard safely rejected it. Phone W01 and its sole helper are closed; Find/collection acceptance remains pending. Candidate266 resolves state/account and eligibility at tap time, always uses verified commands for protected farms, and restores retryability after busy/rejected requests. Actual command UI/transport/reducer integration and real DOM lifecycle checks are being prepared; no266 acceptance or backend deployment is claimed. Public stays265/native17/gateway76.

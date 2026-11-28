@@ -10,6 +10,9 @@ export function progressionCommand(type:string,target:unknown,d:Data,c:Data):Dat
  // A map-qualified command never silently applies its per-farm focus elsewhere.
  const previous=s.active;s.active=map;
  try{switch(type){
+  case 'christmas.gift':case 'christmas.deliver':case 'christmas.chapter':case 'christmas.redeem':{
+   fields(d,[]);const result=W.meadowChristmas.act(s,type,id(),now,s.collectionState?.owned||[]);
+   if(!result.ok)fail(result.error);return award(result);}
   case 'journey.restore':{const r=success(J.restore(s,id(),expected()));event('upgrade');return r;}
   case 'customer.deliver':{fields(d,['serial']);if(!Number.isSafeInteger(d.serial)||d.serial<0)fail('Reopen this customer’s current order.');const r=success(J.deliver(s,id(),d.serial,R.crops,now));event('sell');return r;}
   case 'career.train':return success(J.train(s,id(),expected()));
