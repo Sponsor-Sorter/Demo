@@ -35,7 +35,7 @@
   catalog.push({id:'workshop',name:'Craft shed',emoji:'🧶',price:420,unlock:4,kind:'building',description:'Turn wool, lavender and flower nectar into handmade goods.'});
   catalog.push({id:'hive',name:'Beehive',emoji:'🐝',price:220,unlock:3,kind:'building',description:'Blooming flowers within four tiles help bees make honey. Upgrade for more jars and faster production.'});
   catalog.push({id:'packingbench',name:'Packing Bench',emoji:'📦',price:180,unlock:2,kind:'building',description:'Premium Farmers Market sales pay 65% above the usual price instead of 50%.'},{id:'marketcart',name:'Market Cart',emoji:'🛒',price:240,unlock:2,kind:'building',description:'Carry premium Farmers Market batches of up to six goods instead of three.'});
-  catalog.push(...[...(window.meadowCollectionCatalog||[]),...(window.meadowPackCatalog||[])].map(i=>({...i,kind:'collection',price:0,unlock:1})));
+  catalog.push(...[...(window.meadowCollectionCatalog||[]),...(window.meadowPackCatalog||[]),...(window.meadowChristmas?.catalog||[])].map(i=>({...i,kind:'collection',price:0,unlock:1})));
   const crops = {
     carrot:{name:'Carrots',emoji:'🥕',seed:3,sell:8,time:45000,seedEmoji:'🌱'},wheat:{name:'Wheat',emoji:'🌾',seed:4,sell:11,time:60000,seedEmoji:'🌿'},
     strawberry:{name:'Strawberries',emoji:'🍓',seed:6,sell:17,time:90000,seedEmoji:'🌿'},corn:{name:'Sweet corn',emoji:'🌽',seed:7,sell:19,time:110000,seedEmoji:'🌱'},
@@ -840,7 +840,7 @@
     client:()=>cloudClient,command:()=>window.meadowCommandUI?.active()?window.meadowCommandUI:null,
     club:()=>window.meadowClub,uuid:()=>crypto.randomUUID(),modal:openModal
   }));
-  const currentBuild=266;
+  const currentBuild=267;
   window.meadowNativeUpdates?.attach({save,notify,canPrompt:()=>gameUpdateCanPrompt({hidden:document.hidden,modal:$('dialog[open]').length>0,build:state.mode==='build',pointers:uiPointers.size,visit:!!activeVisit,travelling:cameraScene.classList.contains('travelling'),busy:replacingFarm,snoozedUntil:0})});
   if('serviceWorker'in navigator&&location.hostname!=='localhost'&&!commandQA)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?build='+currentBuild,{scope:'./',updateViaCache:'none'}).then(reg=>{
     let acceptedUpdate=false,availableBuild=currentBuild,reloading=false,snoozedUntil=0;const reloadUpdatedBuild=()=>{if(reloading)return;reloading=true;const url=new URL(location.href);url.searchParams.set('release',String(availableBuild));location.replace(url.href)};

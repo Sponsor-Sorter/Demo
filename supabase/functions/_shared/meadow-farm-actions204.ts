@@ -16,7 +16,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
  const s=copy(input),R:Data=createGameRules(now),W=R.window as Data,items=R.crops as Data,catalog=R.catalog as Data[],vendors=R.vendorDefs as Data[];
  if(!s.farms?.willow||!validID(s.active)||!Object.hasOwn(s.farms,s.active)||!R.maps.some((m:Data)=>m.id===s.active)||!integer(s.coins,0,1e12)||!integer(s.level,1,1e6))fail('The saved farm needs review.');
  W.meadowPantry.connect(s);
- s.collectionState||={};s.collectionState.owned=[...(context.ownedCollections||[])];
+ s.collectionState||={};s.collectionState.owned=[...new Set([...(context.ownedCollections||[]),...W.meadowChristmas.owned(s)])];
  W.meadowPackBoosts.bind({state:()=>s,items});W.meadowPackBoosts.sync(s,context.packGrants||[],now);
  const events:Data[]=[],messages:string[]=[],results:Data[]=[],marketSales:Data[]=[];
  let map=s.active;
@@ -207,7 +207,7 @@ export function applyFarmCommands(input:Data,commands:FarmCommand[],now:number,c
     s.keepsakeLabels||={};s.keepsakeLabels[command.target]=d.text.trim().normalize('NFC');break;}
    case 'build.place':{
     fields(d,['id','item','x','y','rotation','home']);const def=catalog.find(c=>c.id===d.item);if(!def||!validID(d.id)||Object.values(farms()).some((f:any)=>f.objects.some((o:Data)=>o.id===d.id))||!integer(d.rotation??0,0,3))fail('Choose a new valid farm item.');if(s.level<(def.unlock||1))fail('This item is not unlocked yet.');
-    if(def.kind==='collection'&&(!(context.ownedCollections||[]).includes(def.id)||Object.values(farms()).some((f:any)=>f.objects.some((o:Data)=>o.type===def.id))))fail('Own this decoration and put away its placed copy first.');
+    if(def.kind==='collection'&&(![...(context.ownedCollections||[]),...W.meadowChristmas.owned(s)].includes(def.id)||Object.values(farms()).some((f:any)=>f.objects.some((o:Data)=>o.type===def.id))))fail('Own this decoration and put away its placed copy first.');
     const created:Data={id:d.id,type:def.id,x:d.x,y:d.y,rotation:d.rotation||0};
     const automaticHome=animal(created)&&!d.home?f.objects.find((h:Data)=>W.meadowHousing.canHouse(f,created.type,h)):null;
     if(animal(created)&&(d.home||automaticHome)){const h=d.home?requireObject(d.home):automaticHome;if(!W.meadowHousing.canHouse(f,created.type,h))fail('Choose a matching home with a free space.');W.meadowHousing.assign(f,created,h);}
