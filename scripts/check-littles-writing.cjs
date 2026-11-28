@@ -2,6 +2,14 @@
 require('../tools/littles-local/qa-network.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),T=require('../meadow-market-littles/tracing-core.js');
 let cases=0;
+// Exact boundary and a real finger path: five percentage points more forgiving.
+const coverageHits=n=>Uint8Array.from({length:100},(_,i)=>i>0&&i<99&&i%7===0&&i/7<=100-n?0:1);
+for(const [n,relaxedPass,strictPass]of [[86,false,false],[87,true,false],[91,true,false],[92,true,true]]){const hits=coverageHits(n);assert.equal(hits.reduce((a,b)=>a+b,0),n);assert.equal(T.strokeDone(hits,.87),relaxedPass);assert.equal(T.strokeDone(hits),strictPass);cases++;}
+for(const end of [0,99]){const hits=coverageHits(100);hits[end]=0;assert(!T.strokeDone(hits,.87),'Both stroke ends remain required');cases++;}
+const missingSection=coverageHits(100);missingSection.fill(0,10,23);assert(!T.strokeDone(missingSection,.87),'A large untouched section still blocks completion');cases++;
+const {gappedStroke}=require('../tools/littles-local/tracing104-gestures.cjs');
+for(const relaxed of [false,true]){const m=T.create('milk',{relaxed});for(const s of m.strokes)T.mark(m,s.letter==='l'?gappedStroke(s):s.points);const l=m.strokes.findIndex(s=>s.letter==='l');assert.equal(m.hits[l].reduce((a,b)=>a+b,0)/m.hits[l].length,.875);assert.equal(T.complete(m),relaxed);assert.equal(T.completedLetters(m)[2],relaxed);cases++;}
+for(const letter of T.alphabet){const m=T.create(letter,{relaxed:true});for(let omit=0;omit<m.strokes.length;omit++){T.reset(m);m.strokes.forEach((s,i)=>{if(i!==omit)T.mark(m,s.points);});assert(!T.complete(m),'Gentler tracing still needs every stroke '+letter+' '+omit);cases++;}T.reset(m);m.strokes.forEach(s=>T.mark(m,s.points));assert(T.complete(m));cases++;}
 for(const letter of T.alphabet){
   const m=T.create(letter);assert(m&&m.strokes.length,'Guide for '+letter);assert(!T.complete(m),'Blank guide cannot pass '+letter);
   for(const s of m.strokes)T.mark(m,s.points);
