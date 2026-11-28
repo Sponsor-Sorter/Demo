@@ -5,9 +5,10 @@
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const ready=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=101&&n<=9999;}catch{return false;}};
   const moreReady=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=103&&n<=9999;}catch{return false;}};
-  const availableWords=()=>moreReady()?[...(window.meadowExtraStickerWords||[]),...window.meadowStickerWords]:window.meadowStickerWords;
+  const newestReady=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=105&&n<=9999;}catch{return false;}};
+  const availableWords=()=>[...(newestReady()?window.meadowNewestStickerWords||[]:[]),...(moreReady()?window.meadowExtraStickerWords||[]:[]),...window.meadowStickerWords];
   const warmed=new Set();
-  function warmPictures(){if(!moreReady())return;for(const item of window.meadowExtraStickerWords||[]){const src=item.sheet||item.image;if(warmed.has(src))continue;warmed.add(src);const image=new Image();image.decoding='async';image.src=src;}}
+  function warmPictures(){if(!moreReady())return;for(const item of availableWords()){const src=item.sheet||item.image;if(warmed.has(src))continue;warmed.add(src);const image=new Image();image.decoding='async';image.src=src;}}
   window.addEventListener('meadow-quality-change',warmPictures);warmPictures();
   const relaxedReady=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=104&&n<=9999;}catch{return false;}};
   let onCompleted=()=>{};
