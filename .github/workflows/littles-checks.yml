@@ -56,6 +56,19 @@ jobs:
       - run: node scripts/check-littles.cjs
       - name: Check real browser Bug Smash input gestures
         run: node scripts/check-littles-bug-input-browser.cjs
+      - name: Check writing strokes and full rounds with real browser touches
+        run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-writing-browser.cjs
+        env:
+          WRITING_QA_OUTPUT: ${{ runner.temp }}/littles-writing101
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: writing101-touch-layout
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/littles-writing101/*.png
+            ${{ runner.temp }}/littles-writing101/result.json
+            ${{ runner.temp }}/littles-writing101/failure.txt
       - run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-ad-readiness.cjs
       - run: node --require ./tools/littles-local/qa-network.cjs --test scripts/check-littles-rewarded-rounds.cjs scripts/check-littles-rewarded-adapter.cjs scripts/check-littles-rewarded-transport.cjs
       - run: npm ci --ignore-scripts --prefix tools/littles-rewarded-tests

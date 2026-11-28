@@ -5,8 +5,8 @@ const root=path.resolve(__dirname,'../meadow-market-littles'),run=f=>fs.readFile
 const bag=new Map(),storage={getItem:k=>bag.has(k)?bag.get(k):null,setItem:(k,v)=>bag.set(k,v),removeItem:k=>bag.delete(k)},nodes=new Map(),listeners=new Map();
 class N{constructor(){this.innerHTML='';this.textContent='';this.dataset={};this.classList={add(){},remove(){}};}querySelector(s){return node(s);}setAttribute(){}removeAttribute(){}addEventListener(){}showModal(){this.open=true;}close(){this.open=false;}}
 const node=s=>{if(!nodes.has(s))nodes.set(s,new N());return nodes.get(s);};
-let quality=95,bugHooks,picnicHooks,registeredGames,opens=0,picnicOpens=0;
-const noop=()=>{},attach={attach:noop},window={addEventListener:(name,fn)=>listeners.set(name,fn),meadowMinigames:{games:[],attach:noop},meadowCreativePlay:attach,meadowWorldPlay:{games:[],attach:noop},meadowSoloPlay:attach,meadowWordSearch:attach,meadowFarmersMarket:attach,meadowPlayLevels:{names:{}},meadowSlidingPicture:attach,meadowBeeShelter:attach,meadowHarvestSlice:attach,meadowLearning:{games:[],attach:noop},meadowTogetherCore:{games:{}},meadowPlayGuide:attach,meadowLittlesCommerce:{init:noop},meadowWeeklyFair:{setGames:games=>registeredGames=games,getQualityBuild:()=>quality},meadowBugPicnic:{attach:hooks=>picnicHooks=hooks,open:()=>picnicOpens++},meadowBugSmash:{attach:hooks=>bugHooks=hooks,open:()=>opens++}};
+let quality=95,bugHooks,picnicHooks,registeredGames,opens=0,picnicOpens=0,writingComplete,wordOpens=0;
+const noop=()=>{},attach={attach:noop},window={addEventListener:(name,fn)=>listeners.set(name,fn),meadowMinigames:{games:[],attach:noop},meadowCreativePlay:attach,meadowWorldPlay:{games:[],attach:noop},meadowSoloPlay:attach,meadowWordSearch:attach,meadowStickerWriting:{attach:callback=>writingComplete=callback,open:()=>wordOpens++},meadowFarmersMarket:attach,meadowPlayLevels:{names:{}},meadowSlidingPicture:attach,meadowBeeShelter:attach,meadowHarvestSlice:attach,meadowLearning:{games:[],attach:noop},meadowTogetherCore:{games:{}},meadowPlayGuide:attach,meadowLittlesCommerce:{init:noop},meadowWeeklyFair:{setGames:games=>registeredGames=games,getQualityBuild:()=>quality},meadowBugPicnic:{attach:hooks=>picnicHooks=hooks,open:()=>picnicOpens++},meadowBugSmash:{attach:hooks=>bugHooks=hooks,open:()=>opens++}};
 const ctx={window,document:{querySelector:node,querySelectorAll:()=>[],addEventListener:noop},navigator:{},localStorage:storage,console,Date,URL,setTimeout:()=>1,clearTimeout:noop,setInterval:()=>1,location:{reload:noop}};
 vm.runInNewContext(run('save-state.js'),ctx);window.meadowLittlesSaveState=ctx.meadowLittlesSaveState;vm.runInNewContext(run('play-access.js'),ctx);window.meadowLittlesAccess=ctx.meadowLittlesAccess;
 const original=window.meadowLittlesSaveState.defaults();original.stars=41;original.minigames.records.memory={wins:7,level:3};storage.setItem('meadow-littles-save-v1',JSON.stringify(original));
@@ -25,6 +25,15 @@ for(let level=2;level<=5;level++){assert(access.begin('bug_smash'));assert(bugHo
 assert.equal(state.minigames.records.bug_smash.wins,5);assert.equal(state.stars,50,'Existing daily star cap is preserved');assert.equal(access.remaining('bug_smash'),0);assert.equal(access.begin('bug_smash'),false);assert.equal(bugHooks.completed(12),false);assert.equal(state.minigames.records.bug_smash.wins,5);
 assert.equal(state.minigames.records.memory.wins,7,'An older game record stays intact');assert.equal(access.remaining('harvest_slice'),5,'The new game does not spend another game’s rounds');
 quality=95;listeners.get('meadow-quality-change')();assert(!node('#game-library').innerHTML.includes('data-play="bug_smash"'));bug.open();assert.equal(opens,1,'Removing private quality closes the catalogue/open path');
+// Writing uses its normal completion ticket and retains the existing per-game daily caps.
+quality=100;listeners.get('meadow-quality-change')();assert(!node('#game-library').innerHTML.includes('data-play="sticker_words"'));
+quality=101;listeners.get('meadow-quality-change')();assert(node('#game-library').innerHTML.includes('data-play="sticker_words"'));
+const words=registeredGames.find(g=>g.id==='sticker_words');words.open();assert.equal(wordOpens,1);
+for(let round=0;round<5;round++){assert(access.begin('sticker_words'));assert(access.complete('sticker_words'));writingComplete('sticker_words');}
+assert.equal(state.minigames.records.sticker_words.wins,5);assert.equal(state.stars,59);assert.equal(access.begin('sticker_words'),false);
+assert.equal(access.remaining('letter_tracing'),5);assert.equal(state.minigames.records.memory.wins,7);
+for(const invalid of [undefined,null,'101',NaN,Infinity,101.5]){quality=invalid;listeners.get('meadow-quality-change')();assert(!node('#game-library').innerHTML.includes('data-play="sticker_words"'));}
+const writingModule=window.meadowStickerWriting;window.meadowStickerWriting=undefined;quality=101;listeners.get('meadow-quality-change')();assert(!node('#game-library').innerHTML.includes('data-play="sticker_words"'));window.meadowStickerWriting=writingModule;
 // Close while the real view is still decoding images: no late start, voice or animation may escape.
 async function lifecycle(){
  const pending=[],map=new Map();let created=0,disconnects=0,frames=0,spoken=0,quality=95;

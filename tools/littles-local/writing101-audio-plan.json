@@ -1,0 +1,14 @@
+{
+  "farmer": "rhys",
+  "approvedVoice": "Noah - YA Audiobooks Narrator",
+  "provider": "ElevenLabs",
+  "model": "Eleven Multilingual v2",
+  "settings": {"speed": 0.9, "stability": 0.5, "similarity": 0.75, "style": 0, "speakerBoost": true},
+  "cues": [
+    {"id": "writing101-rhys-intro", "text": "Pick a picture sticker. I'll say its name and spell the word. Follow every dotted letter with your finger. Remember the little lines and dots. Let's make rainbow writing!"},
+    {"id": "writing101-rhys-done", "text": "You wrote the whole word! Look at your rainbow writing. Great job! Would you like to choose another picture?"},
+    {"id": "ws-word-boy", "text": "Boy."},
+    {"id": "ws-word-girl", "text": "Girl."}
+  ],
+  "notes": "Reuse all other approved word names and isolated alphabet spellings. Warm natural delivery; listen to each generated clip. No browser speech synthesis or substitute voices."
+}

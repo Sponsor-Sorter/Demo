@@ -14,7 +14,8 @@ for(const name of ['intro','armour','acorn','bubble','tickle','tummy','done']){
 for(const [file,version] of [['bug-smash-core.js',1],['bug-smash-paint.js',1],['bug-smash.js',2],['bug-smash.css',3],['celebration.js',2]]){assert(index.includes(file+'?v='+version));assert(sw.includes('./'+file+'?v='+version));}
 for(const file of ['garden.webp','garden-portrait.webp','preview.webp']){assert(fs.statSync(path.join(root,'assets/generated/bug-smash',file)).size>10000);assert(sw.includes('./assets/generated/bug-smash/'+file));}
 assert(index.includes('weekly-fair.js?v=4')&&sw.includes('./weekly-fair.js?v=4'));
-assert(index.includes('approved-voices.js?v=20')&&sw.includes('./approved-voices.js?v=20'));
+const voiceScript=index.match(/src="(approved-voices\.js\?v=(\d+))"/);
+assert(voiceScript&&Number(voiceScript[2])>=20&&sw.includes('./'+voiceScript[1]),'Current approved voice registry is cached with the same version');
 // Both activities are loaded together in production; their component classes must not overlap.
 const classes=css=>new Set([...css.matchAll(/\.([a-z][a-z0-9]*-[\w-]+)/g)].map(m=>m[1]));
 const beeClasses=classes(read('bee-shelter.css'));
