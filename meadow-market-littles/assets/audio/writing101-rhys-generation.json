@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-11-28T04:59:37.836Z",
+  "authorisation": "User requested approved farmer narration and auditioned all four takes",
+  "files": [
+    {
+      "id": "writing101-rhys-intro",
+      "text": "Pick a picture sticker. I'll say its name and spell the word. Follow every dotted letter with your finger. Remember the little lines and dots. Let's make rainbow writing!",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "writing101-rhys-intro.mp3",
+      "sourceSha256": "b63aa5914bfd6c781c4b9c0f615b0a4aa12425f34b8bbd6a77ce48668504e706",
+      "processing": "Original user-approved provider MP3, copied byte-for-byte; delivery and loudness unchanged",
+      "bytes": 242634,
+      "sha256": "b63aa5914bfd6c781c4b9c0f615b0a4aa12425f34b8bbd6a77ce48668504e706",
+      "durationSeconds": 14.106122,
+      "listened": true,
+      "listeningReview": {
+        "reviewer": "user",
+        "quote": "Yes, use all four",
+        "reviewedAt": "2026-11-28T04:59:37.5691101Z",
+        "scope": "Four concrete raw MP3 previews in this Littles chat"
+      }
+    },
+    {
+      "id": "writing101-rhys-done",
+      "text": "You wrote the whole word! Look at your rainbow writing. Great job! Would you like to choose another picture?",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "writing101-rhys-done.mp3",
+      "sourceSha256": "071223de03afa46798c0177fa851523c5b20f83f27a269d3a25a8c3bf6b4526c",
+      "processing": "Original user-approved provider MP3, copied byte-for-byte; delivery and loudness unchanged",
+      "bytes": 125188,
+      "sha256": "071223de03afa46798c0177fa851523c5b20f83f27a269d3a25a8c3bf6b4526c",
+      "durationSeconds": 6.765714,
+      "listened": true,
+      "listeningReview": {
+        "reviewer": "user",
+        "quote": "Yes, use all four",
+        "reviewedAt": "2026-11-28T04:59:37.5691101Z",
+        "scope": "Four concrete raw MP3 previews in this Littles chat"
+      }
+    },
+    {
+      "id": "ws-word-boy",
+      "text": "Boy.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "ws-word-boy.mp3",
+      "sourceSha256": "55704f0fb9c3b6cf7523bb928b406a95be3e2c3c1da1affa7b3c80be18e861c6",
+      "processing": "Original user-approved provider MP3, copied byte-for-byte; delivery and loudness unchanged",
+      "bytes": 29475,
+      "sha256": "55704f0fb9c3b6cf7523bb928b406a95be3e2c3c1da1affa7b3c80be18e861c6",
+      "durationSeconds": 0.783673,
+      "listened": true,
+      "listeningReview": {
+        "reviewer": "user",
+        "quote": "Yes, use all four",
+        "reviewedAt": "2026-11-28T04:59:37.5691101Z",
+        "scope": "Four concrete raw MP3 previews in this Littles chat"
+      }
+    },
+    {
+      "id": "ws-word-girl",
+      "text": "Girl.",
+      "farmer": "rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "provider": "ElevenLabs authenticated web Text to Speech",
+      "model": "Eleven Multilingual v2",
+      "settings": {
+        "speed": 0.9,
+        "stability": 0.5,
+        "similarity": 0.75,
+        "style": 0,
+        "speakerBoost": true
+      },
+      "selectedVariation": 1,
+      "sourceFilename": "ws-word-girl.mp3",
+      "sourceSha256": "20e3713a56c6df8c6f00e4fac1bd6adbf046be43a7b5e518f33ba686ea84530c",
+      "processing": "Original user-approved provider MP3, copied byte-for-byte; delivery and loudness unchanged",
+      "bytes": 29475,
+      "sha256": "20e3713a56c6df8c6f00e4fac1bd6adbf046be43a7b5e518f33ba686ea84530c",
+      "durationSeconds": 0.783673,
+      "listened": true,
+      "listeningReview": {
+        "reviewer": "user",
+        "quote": "Yes, use all four",
+        "reviewedAt": "2026-11-28T04:59:37.5691101Z",
+        "scope": "Four concrete raw MP3 previews in this Littles chat"
+      }
+    }
+  ]
+}

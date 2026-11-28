@@ -1,0 +1,48 @@
+.trace-dialog{background:#9a6030}
+.trace-desk{background:#9a6030 url('assets/generated/writing/parchment-desk.webp') center/cover no-repeat;overflow:hidden;padding:calc(env(safe-area-inset-top) + 5px) max(8px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 18px) max(8px,env(safe-area-inset-left));gap:clamp(4px,1.5vh,14px)}
+.trace-dialog .writing-head{width:min(1160px,96%);min-height:48px;color:#fffbea;text-shadow:0 2px 3px #523016,0 1px 6px #523016}
+.trace-dialog .writing-head h1{font-size:clamp(17px,3vw,28px)}
+.trace-page{width:min(1160px,95%);border:0;border-radius:0;background:none;box-shadow:none;padding:clamp(6px,1vh,14px) clamp(8px,1.5vw,22px);overflow:hidden;gap:clamp(4px,1vh,12px)}
+.trace-picker-title{text-align:center;color:#365f43;flex:none;width:100%;min-width:0}.trace-picker-title h2{margin:0;font-size:clamp(24px,4vw,36px)}.trace-picker-title p{margin:3px 0;font-size:clamp(14px,2vw,19px);font-weight:750;color:#654c31}
+.trace-filters{display:flex;justify-content:center;gap:7px;flex:none;width:100%}.trace-filters .writing-button{min-width:0;min-height:44px;flex:1;max-width:180px;padding:7px 8px;font-size:clamp(13px,2vw,17px)}
+.trace-filters .selected{background:#3c7953;color:#fffbea;border-color:#2a5d3b;box-shadow:0 3px 0 #244d33}
+.trace-stickers{box-sizing:border-box;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(9px,2vw,24px);padding:12px 9px 20px;overflow:auto;overscroll-behavior:contain;min-height:0;flex:1;width:100%;max-width:1000px;align-content:start;scrollbar-color:#a68551 transparent}
+.trace-sticker{position:relative;display:grid;place-items:center;aspect-ratio:1;min-height:82px;width:100%;max-height:190px;padding:12px;border:0;background:none;cursor:pointer;touch-action:manipulation;transform:rotate(var(--tilt));transition:transform .18s ease,filter .18s ease;-webkit-tap-highlight-color:transparent}
+.trace-sticker:active{transform:rotate(0) scale(.92)}.trace-sticker:focus-visible{outline:4px solid #367c53;outline-offset:-3px;border-radius:22px}
+.trace-picture{display:block;width:100%;height:100%;object-fit:contain;user-select:none;pointer-events:none;filter:drop-shadow(3px 0 0 #fffdf6) drop-shadow(-3px 0 0 #fffdf6) drop-shadow(0 3px 0 #fffdf6) drop-shadow(0 -3px 0 #fffdf6) drop-shadow(0 4px 2px #7b4e3a44)}
+.trace-atlas{background-image:url('assets/generated/writing/sticker-people-car.webp');background-size:300% 100%;background-position:var(--picture-position) center;background-repeat:no-repeat}
+.trace-sticker-shine{position:absolute;right:9%;top:8%;width:14px;height:14px;background:#fff9c3;clip-path:polygon(50% 0,62% 37%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 37%);opacity:0;animation:trace-sticker-shine 4s ease-in-out infinite}
+.trace-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:55px;flex:none}.trace-topline>div{flex:1;min-width:0;text-align:center}.trace-topline .writing-progress{color:#426844;font-size:clamp(12px,2vw,17px)}
+.trace-dialog .writing-instruction{color:#654c31;background:none;border:0;padding:0;font-size:clamp(14px,2.2vw,20px)}
+.trace-small-sticker{border:0;background:none;padding:6px;width:clamp(55px,9vw,95px);height:clamp(55px,9vw,95px);cursor:pointer;flex:none;touch-action:manipulation}.trace-case{min-width:50px;min-height:46px;padding:7px 9px;font-size:19px}
+.trace-pair{font-size:clamp(22px,5vw,42px);font-weight:900;white-space:nowrap;color:#7a613e}
+.trace-letter-progress{display:flex;justify-content:center;gap:7px;flex:none;min-height:34px}.trace-letter-progress span{display:grid;place-items:center;width:31px;height:31px;border:2px solid #b9a174;border-radius:50%;color:#78613d;font:800 20px system-ui;transition:transform .3s,background .3s}.trace-letter-progress .traced{background:#3e8055;border-color:#2d6742;color:#fffef3;transform:scale(1.08)}
+.trace-canvas-wrap{border:0;border-radius:0;background:none;min-height:110px;flex:1;width:100%;max-width:none;overflow:hidden;touch-action:none}
+.trace-dialog .writing-canvas{min-height:0;height:100%;width:100%;touch-action:none}
+.trace-dialog .writing-message{color:#426844;font-size:clamp(13px,2vw,18px);max-width:100%;flex:none;min-height:2.4em;display:grid;place-items:center;line-height:1.2}
+.trace-dialog .writing-actions{flex:none;width:100%;gap:7px}.trace-dialog .writing-actions .writing-button{flex:1;max-width:200px;min-width:0;min-height:46px;padding:7px 8px;font-size:clamp(13px,2vw,17px)}
+.trace-guide-spark{position:absolute;z-index:2;color:#eab13a;font-size:32px;text-shadow:0 0 5px #fff,0 0 15px #f7cf63;transform:translate(-50%,-50%);pointer-events:none}
+.trace-dialog .writing-name-form input{max-width:100%}.trace-dialog .writing-intro{overflow:auto;max-height:100%;padding:4px;box-sizing:border-box}
+.trace-result{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:min(720px,100%);height:100%;min-height:0;overflow:hidden;padding:4px}
+.trace-result .writing-stars{flex:none;font-size:clamp(32px,6vh,56px);line-height:1.1;margin:0}.trace-result h2{flex:none;margin:2px;font-size:clamp(23px,3.3vh,34px)}
+.trace-result .trace-made-by-you{flex:none;margin:2px 0;font-size:clamp(13px,1.9vh,18px)}
+.trace-result-actions{flex:none;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;width:100%;margin-top:4px}.trace-dialog .trace-result-actions .writing-button{margin:0;min-height:46px}
+.trace-result .writing-primary,.trace-dialog .writing-congrats .writing-primary{animation:trace-next-glow 1.8s ease-in-out infinite}
+.trace-earned-sticker{flex:none;width:clamp(58px,12vh,125px);height:clamp(58px,12vh,125px);margin:2px auto;animation:trace-sticker-award .9s cubic-bezier(.2,.9,.2,1.2) both}
+.trace-word-result{display:block;flex:0 1 auto;min-height:80px;width:min(650px,100%);height:clamp(80px,25vh,280px);margin:0 auto;border:0;background:none}
+.trace-result .writing-result-letter{background:none;border:0;width:clamp(32px,calc(82vw / var(--name-letters,6)),160px);height:clamp(80px,22vh,220px)}
+@keyframes trace-sticker-award{0%{opacity:0;transform:translateY(-35px) rotate(-18deg) scale(.2)}65%{opacity:1;transform:translateY(4px) rotate(5deg) scale(1.15)}100%{transform:translateY(0) rotate(-3deg) scale(1)}}
+@keyframes trace-next-glow{50%{box-shadow:0 3px 0 #215434,0 0 0 5px #f8dc7977;transform:scale(1.025)}}
+@keyframes trace-sticker-shine{0%,70%,100%{opacity:0;transform:scale(.4)}82%{opacity:1;transform:scale(1.1)}}
+@media(min-width:700px){.trace-stickers{grid-template-columns:repeat(5,minmax(0,1fr))}.trace-desk{padding-bottom:4vh}.trace-page{width:min(1160px,94%)}.trace-canvas-wrap{min-height:240px}.trace-dialog .writing-guide{width:54px;height:54px}}
+@media(max-height:560px){.trace-desk{gap:1px;padding-bottom:8px}.trace-dialog .writing-head{min-height:38px}.trace-dialog .writing-head small{display:none}.trace-dialog .writing-guide{width:34px;height:34px}.trace-page{gap:2px;padding:3px 8px}.trace-topline{min-height:42px}.trace-small-sticker{width:44px;height:44px}.trace-letter-progress{min-height:25px}.trace-letter-progress span{height:23px;width:23px;font-size:16px}.trace-dialog .writing-message{min-height:1.25em;font-size:12px}.trace-dialog .writing-actions .writing-button{min-height:44px}.trace-canvas-wrap{min-height:80px}.trace-stickers{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;padding-top:4px}.trace-sticker{min-height:65px}.trace-picker-title h2{font-size:22px}.trace-picker-title p{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.trace-sticker,.trace-letter-progress span{transition:none}.trace-sticker-shine,.trace-earned-sticker,.trace-result .writing-primary,.trace-dialog .writing-congrats .writing-primary{animation:none}}
+@media(max-height:640px){.trace-result{gap:5px}.trace-result>.trace-made-by-you{display:none}}
+@media(max-height:560px) and (max-width:599px){.trace-stickers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-height:560px) and (min-width:600px){
+ .trace-desk{background-size:100% 100%}.trace-dialog .writing-head h1{font-size:20px}
+ .trace-word-win{display:grid;grid-template-columns:120px minmax(0,1fr);grid-template-rows:42px minmax(90px,1fr) 54px;gap:5px 18px;align-items:center;justify-items:center}
+ .trace-word-win>.writing-stars{grid-column:1;grid-row:1;font-size:34px}.trace-word-win>h2{grid-column:2;grid-row:1;font-size:26px}
+ .trace-word-win>.trace-earned-sticker{grid-column:1;grid-row:2;width:90px;height:90px}.trace-word-win>.trace-word-result{grid-column:2;grid-row:2;width:100%;height:clamp(80px,35vh,140px);min-height:80px}
+ .trace-word-win>.trace-result-actions{grid-column:1 / -1;grid-row:3}
+}

@@ -1,0 +1,62 @@
+{
+  "method": "built-in image_gen",
+  "purpose": "Picture stickers, blank fullscreen farm desk and word-tracing activity preview",
+  "assets": [
+    {
+      "file": "sticker-people-car.webp",
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-99bab91a-4a31-4853-897e-cfccc31765cf.png",
+      "originalSize": [
+        2172,
+        724
+      ],
+      "size": [
+        1536,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 163090,
+      "sha256": "ad39eac6726d4beec2137cfb6cbb7151acaa06626e9e979b9ff688374d84f33c",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/sticker-people-car.webp"
+    },
+    {
+      "file": "parchment-desk.webp",
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-bcfa4a56-b0fc-4460-afd7-2874a03cc943.png",
+      "originalSize": [
+        1672,
+        941
+      ],
+      "size": [
+        1600,
+        900
+      ],
+      "mode": "RGB",
+      "bytes": 163972,
+      "sha256": "c8116e7bbd80ee874d5ddcd0d8843427e0a94383397d010d933acd84615c7aef",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/parchment-desk.webp"
+    },
+    {
+      "file": "sticker-writing-preview.webp",
+      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-c47bf05e-4530-4fd8-898a-d31b4573ac85.png",
+      "originalSize": [
+        1448,
+        1086
+      ],
+      "size": [
+        720,
+        540
+      ],
+      "mode": "RGB",
+      "bytes": 100476,
+      "sha256": "4f23e47a21048aae96c3e371b8cb1cb7d26d2d6bb6a95885dc6369dcce5b3aad",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/sticker-writing-preview.webp"
+    }
+  ],
+  "constraints": [
+    "picture choices are images, not word labels",
+    "transparent car/boy/girl atlas",
+    "one large blank parchment on wooden desk",
+    "preview exact word cat with single-storey a"
+  ],
+  "previewCorrection": "Middle a corrected to closed oval with right-hand stem; original preview retained in image generation outputs.",
+  "promptFile": "tools/littles-local/writing101-image-prompts.json"
+}
