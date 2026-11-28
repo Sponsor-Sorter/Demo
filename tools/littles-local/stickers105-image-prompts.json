@@ -1,0 +1,55 @@
+{
+  "method": "built-in image_gen",
+  "jobs": [
+    {
+      "file": "farm-friends-a105.png",
+      "words": [
+        "lamb",
+        "calf",
+        "horse",
+        "goose"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent picture-sticker sprite sheet for Meadow Market Littles, a polished farm game for ages3–6. A SQUARE image containing EXACTLY TWO COLUMNS and TWO ROWS of equal square cells. Four completely isolated illustrations, one centred in each cell. Each entire subject fits within the middle75 percent of its own cell; leave at least50 pixels of completely transparent padding around every subject, including its thick cream-white die-cut sticker rim. No subject or shadow touches a cell edge. True transparent alpha background, no scenery, no coloured tile backgrounds, no grid lines. Premium rounded hand-painted cartoon farm storybook style: warm smooth shading, crisp tidy brown outlines, bold instantly readable silhouettes, friendly kind eyes where appropriate. Match the existing cosy farm sticker style, with rich natural colours and a clean cream-white sticker edge. Simple clear shapes for little children. No text, labels, letters, numbers, brands, logos, watermark or decorative stars. No extra objects. Exactly these four subjects in this exact arrangement: TOP LEFT one small fluffy white LAMB, friendly baby sheep with short legs, tiny ears and no horns; TOP RIGHT one black-and-white baby CALF standing, round soft face and no horns; BOTTOM LEFT one full-grown chestnut HORSE standing in side three-quarter view, clearly longer legs than a pony, dark mane and tail, no rider or tack; BOTTOM RIGHT one white farm GOOSE standing with a long neck and orange bill and feet. Whole bodies entirely visible. Keep every subject separated from all cell edges."
+    },
+    {
+      "file": "farm-friends-b105.png",
+      "words": [
+        "ram",
+        "mouse",
+        "snail",
+        "ant"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent picture-sticker sprite sheet for Meadow Market Littles, a polished farm game for ages3–6. A SQUARE image containing EXACTLY TWO COLUMNS and TWO ROWS of equal square cells. Four completely isolated illustrations, one centred in each cell. Each entire subject fits within the middle75 percent of its own cell; leave at least50 pixels of completely transparent padding around every subject, including its thick cream-white die-cut sticker rim. No subject or shadow touches a cell edge. True transparent alpha background, no scenery, no coloured tile backgrounds, no grid lines. Premium rounded hand-painted cartoon farm storybook style: warm smooth shading, crisp tidy brown outlines, bold instantly readable silhouettes, friendly kind eyes where appropriate. Match the existing cosy farm sticker style, with rich natural colours and a clean cream-white sticker edge. Simple clear shapes for little children. No text, labels, letters, numbers, brands, logos, watermark or decorative stars. No extra objects. Exactly these four subjects in this exact arrangement: TOP LEFT one friendly adult woolly RAM standing, thick sheep fleece and clearly curled round horns beside its ears; TOP RIGHT one cute small grey MOUSE with big round ears, a pink nose and long thin pink tail, no cheese; BOTTOM LEFT one cheerful garden SNAIL with a round spiral brown shell, soft green body and two eye stalks; BOTTOM RIGHT one friendly brown garden ANT, three clear body segments, exactly six legs and two antennae, no armour or stinger. Not scary. Whole subjects entirely visible. Keep all extremities separated from cell edges."
+    },
+    {
+      "file": "farm-things105.png",
+      "words": [
+        "bug",
+        "deer",
+        "hay",
+        "gate"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent picture-sticker sprite sheet for Meadow Market Littles, a polished farm game for ages3–6. A SQUARE image containing EXACTLY TWO COLUMNS and TWO ROWS of equal square cells. Four completely isolated illustrations, one centred in each cell. Each entire subject fits within the middle75 percent of its own cell; leave at least50 pixels of completely transparent padding around every subject, including its thick cream-white die-cut sticker rim. No subject or shadow touches a cell edge. True transparent alpha background, no scenery, no coloured tile backgrounds, no grid lines. Premium rounded hand-painted cartoon farm storybook style: warm smooth shading, crisp tidy brown outlines, bold instantly readable silhouettes, friendly kind eyes where appropriate. Match the existing cosy farm sticker style, with rich natural colours and a clean cream-white sticker edge. Simple clear shapes for little children. No text, labels, letters, numbers, brands, logos, watermark or decorative stars. No extra objects. Exactly these four subjects in this exact arrangement: TOP LEFT one cheerful red spotted ladybird BUG, round red wing covers, black spots, small dark head and six tiny legs; TOP RIGHT one friendly brown DEER standing, cream muzzle and small antlers, whole body and four legs visible; BOTTOM LEFT one tidy square golden HAY bale with two brown ties and a few clear dry-grass strands, not a stack; BOTTOM RIGHT one simple closed wooden farm field GATE with horizontal rails and two short side posts, no fence extending beyond the gate and no surrounding scene. Entire subjects visible and well inside each cell."
+    },
+    {
+      "file": "everyday-c105.png",
+      "words": [
+        "cart",
+        "home",
+        "hand",
+        "nose"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent picture-sticker sprite sheet for Meadow Market Littles, a polished farm game for ages3–6. A SQUARE image containing EXACTLY TWO COLUMNS and TWO ROWS of equal square cells. Four completely isolated illustrations, one centred in each cell. Each entire subject fits within the middle75 percent of its own cell; leave at least50 pixels of completely transparent padding around every subject, including its thick cream-white die-cut sticker rim. No subject or shadow touches a cell edge. True transparent alpha background, no scenery, no coloured tile backgrounds, no grid lines. Premium rounded hand-painted cartoon farm storybook style: warm smooth shading, crisp tidy brown outlines, bold instantly readable silhouettes, friendly kind eyes where appropriate. Match the existing cosy farm sticker style, with rich natural colours and a clean cream-white sticker edge. Simple clear shapes for little children. No text, labels, letters, numbers, brands, logos, watermark or decorative stars. No extra objects. Exactly these four subjects in this exact arrangement: TOP LEFT one small empty wooden two-wheel farm hand CART with a handle, whole object visible; TOP RIGHT one cosy little farmhouse HOME, a single simple cream cottage with a red roof, one front door and two windows, no garden or surrounding ground; BOTTOM LEFT one friendly cartoon HAND showing an open palm, exactly one thumb and four fingers clearly separated, warm skin tone, short wrist, no arm or sleeve; BOTTOM RIGHT one simple friendly stylized cartoon human NOSE, a rounded peach-pink nose with tiny nostrils and a short bridge, unmistakably a nose, no eyes, mouth or other face parts. Smooth illustrated toy-like treatment, not photoreal anatomy. Every subject entirely inside its cell."
+    },
+    {
+      "file": "everyday-d105.png",
+      "words": [
+        "eyes",
+        "baby",
+        "bath",
+        "train"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent picture-sticker sprite sheet for Meadow Market Littles, a polished farm game for ages3–6. A SQUARE image containing EXACTLY TWO COLUMNS and TWO ROWS of equal square cells. Four completely isolated illustrations, one centred in each cell. Each entire subject fits within the middle75 percent of its own cell; leave at least50 pixels of completely transparent padding around every subject, including its thick cream-white die-cut sticker rim. No subject or shadow touches a cell edge. True transparent alpha background, no scenery, no coloured tile backgrounds, no grid lines. Premium rounded hand-painted cartoon farm storybook style: warm smooth shading, crisp tidy brown outlines, bold instantly readable silhouettes, friendly kind eyes where appropriate. Match the existing cosy farm sticker style, with rich natural colours and a clean cream-white sticker edge. Simple clear shapes for little children. No text, labels, letters, numbers, brands, logos, watermark or decorative stars. No extra objects. Exactly these four subjects in this exact arrangement: TOP LEFT one PAIR OF EYES together as a single sticker, two friendly wide cartoon eyes with warm brown irises, bright whites and gentle small eyebrows, no other face parts and no glasses; TOP RIGHT one happy seated BABY fully dressed in a soft green sleepsuit and booties, rosy cheeks, tiny tuft of hair, waving, no toys or accessories; BOTTOM LEFT one small pastel-blue BATH tub with white bubbles inside and four rounded feet, no person, shower or bath toys; BOTTOM RIGHT one cheerful simple red-and-blue toy steam TRAIN engine with large round wheels, no driver, tracks, smoke or extra carriages. Entire subjects visible with generous transparent padding."
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "method": "built-in image_gen",
+  "promptFile": "tools/littles-local/stickers105-image-prompts.json",
+  "files": [
+    {
+      "file": "farm-friends-a105.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-93d86edc-5159-40c5-bb9f-bf891fd60ad6.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/farm-friends-a105.png",
+      "bytes": 1220038,
+      "sha256": "734c968b9adf20454f6a34bc97e0c3026faaca132ce2223c3799389e4e2a7646",
+      "width": 1254,
+      "height": 1254,
+      "columns": 2,
+      "rows": 2,
+      "words": [
+        "lamb",
+        "calf",
+        "horse",
+        "goose"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "farm-friends-b105.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-ba82a738-aa5f-4bf4-9fd1-0a200e2432f0.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/farm-friends-b105.png",
+      "bytes": 1573167,
+      "sha256": "497ad11ecba3c7288bfdaadcf3ded9a4c79f8b4c46716948bd5b889c7ac84250",
+      "width": 1254,
+      "height": 1254,
+      "columns": 2,
+      "rows": 2,
+      "words": [
+        "ram",
+        "mouse",
+        "snail",
+        "ant"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "farm-things105.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-07dd3120-c9a0-42f5-97f1-6a4454f182c0.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/farm-things105.png",
+      "bytes": 1311393,
+      "sha256": "4780f36a1b73c8395dbd4f7f33d51a5f72713d60caf230635fda3dcb780213df",
+      "width": 1254,
+      "height": 1254,
+      "columns": 2,
+      "rows": 2,
+      "words": [
+        "bug",
+        "deer",
+        "hay",
+        "gate"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "everyday-c105.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-b1c787a2-0d25-4e25-86b5-32c43c653e45.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/everyday-c105.png",
+      "bytes": 1223845,
+      "sha256": "d8818f3142ff66dd7c1ce6c6fa9fb5328558d87e884b65852975b1155a523d75",
+      "width": 1254,
+      "height": 1254,
+      "columns": 2,
+      "rows": 2,
+      "words": [
+        "cart",
+        "home",
+        "hand",
+        "nose"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "everyday-d105.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-3e65fca5-ac56-4d53-9134-32b6f222b009.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/everyday-d105.png",
+      "bytes": 1328592,
+      "sha256": "da6b7fd818480f69e731e490ca7d60bdccc164e965d9aa19c1b5d1df6c37b6af",
+      "width": 1254,
+      "height": 1254,
+      "columns": 2,
+      "rows": 2,
+      "words": [
+        "eyes",
+        "baby",
+        "bath",
+        "train"
+      ],
+      "alphaVerified": true
+    }
+  ]
+}

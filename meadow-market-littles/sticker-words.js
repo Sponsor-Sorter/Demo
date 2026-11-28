@@ -16,3 +16,12 @@ window.meadowExtraStickerWords = [
   {word:'goat',image:'assets/generated/goat.webp'},
   {word:'sheep',image:'assets/generated/sheep.webp'}
 ];
+
+/* Renderer5 unlocks these at quality105; older cached clients keep their43. */
+window.meadowNewestStickerWords = [
+  ...['lamb','calf','horse','goose'].map((word,frame)=>({word,sheet:'assets/generated/writing/farm-friends-a105.png',frame,columns:2,rows:2})),
+  ...['ram','mouse','snail','ant'].map((word,frame)=>({word,sheet:'assets/generated/writing/farm-friends-b105.png',frame,columns:2,rows:2})),
+  ...['bug','deer','hay','gate'].map((word,frame)=>({word,sheet:'assets/generated/writing/farm-things105.png',frame,columns:2,rows:2})),
+  ...['cart','home','hand','nose'].map((word,frame)=>({word,sheet:'assets/generated/writing/everyday-c105.png',frame,columns:2,rows:2})),
+  ...['eyes','baby','bath','train'].map((word,frame)=>({word,sheet:'assets/generated/writing/everyday-d105.png',frame,columns:2,rows:2}))
+];
