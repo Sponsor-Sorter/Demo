@@ -1,3 +1,7 @@
+## 29 November 2026 — Christmas268 phone layout follow-up
+
+The installed native17 game accepted the normal266→267 update and retained the existing test farm. Christmas story, presents, deliveries and all six decoration previews were exercised on the idle Samsung in both orientations. Scrolling, close/back navigation and the December preview locks responded. The original free-rotation setting was restored. Long ingredient counts wrapped in the narrow portrait delivery layout; candidate268 stacks these cards and keeps quantities on one line. Isolated actual UI rendering at393×852 and320×568 confirms readable counts without horizontal overflow. Six authoritative Christmas reducer tests pass; generated gameplay arithmetic is unchanged. Normal CI, backend fingerprint read-back, publication and final native268 recheck remain pending. Live December reward/purchase completion is not claimed before the event opens.
+
 ## 28 November 2026 — Christmas candidate267
 
 December event implementation and focused isolated rule/SQL tests are complete. Six HD buildables, an illustrated courtyard, four story chapters, daily presents, deliveries and two fixed gem bundles are documented in `MEADOW_CHRISTMAS267.md`. Correct Hope/Noah/Mike recordings are included. Responsive render, full CI, intended backend deployment/read-back and hosted update verification remain release gates. Current accepted public release remains266/native17/gateway76; no new native binary is required. No production QA signup, account deletion or farm reset is part of this update.

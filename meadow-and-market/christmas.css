@@ -3,6 +3,10 @@
 @media(max-height:500px) and (min-width:721px){.xmas-header h1{font-size:25px}.xmas-tabs{margin-top:6px}.xmas-tabs button{padding:8px 15px}.xmas-status{margin:4px 0}.xmas-story-grid{margin-top:0;gap:12px}.xmas-paper{padding:14px}.xmas-guide img{width:64px;height:68px}.xmas-present-art{height:85px}.xmas-paper p{font-size:13px}.xmas-calendar{grid-template-columns:repeat(10,minmax(0,1fr))}.xmas-calendar button{min-height:100px}.xmas-calendar img{height:44px}}
 @media(prefers-reduced-motion:reduce){.xmas-dialog *{scroll-behavior:auto!important}}
 
+/* Keep ingredient quantities readable beside long basket titles on phones. */
+.xmas-ingredients strong{white-space:nowrap;flex-shrink:0}
+@media(max-width:480px){.xmas-orders article{grid-template-columns:minmax(0,1fr)}.xmas-orders .xmas-guide{min-width:0}.xmas-orders .xmas-guide>div{min-width:0}.xmas-orders h2{font-size:20px;overflow-wrap:anywhere}.xmas-orders .xmas-ingredients{margin-top:8px}.xmas-orders .xmas-ingredients li{padding:9px 0}.xmas-orders .xmas-ingredients li>span{flex-shrink:0}}
+
 .xmas-listen{width:36px;height:36px;border:1px solid #fff0ce;border-radius:50%;background:#fff5dfe8;font-size:19px;cursor:pointer}.xmas-header-actions{gap:8px}
 
 .xmas-seals{white-space:nowrap;flex-shrink:0}.xmas-header>div:first-child{min-width:0}.xmas-header-actions{flex-shrink:0}@media(max-width:720px){.xmas-header h1{font-size:21px}.xmas-header-actions{gap:6px}.xmas-close{width:36px;height:36px}.xmas-listen{width:32px;height:32px;font-size:17px}.xmas-guide>img{width:72px;height:85px}.xmas-seals{padding:7px 9px}}@media(max-height:500px) and (min-width:721px){.xmas-header>div:first-child>small{display:none}.xmas-header h1{display:inline;margin:0 12px 0 0}.xmas-header p{display:inline;font-size:11px}.xmas-header{min-height:38px}.xmas-scene{padding-top:max(8px,env(safe-area-inset-top))}.xmas-status{font-size:12px;min-height:15px}.xmas-tabs{margin-top:4px}}
