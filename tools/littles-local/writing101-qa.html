@@ -4,6 +4,6 @@
 window.qa={voices:[],unapproved:[],completions:[],quality:103};window.meadowWeeklyFair={getQualityBuild:()=>qa.quality};
 window.meadowAudio={stopVoice(){},play(){},speak(ids){ids=Array.isArray(ids)?ids:[ids];for(const id of ids)if(!window.meadowApprovedVoices.clips[id])qa.unapproved.push(id);qa.voices.push(...ids);return Promise.resolve(0);}};
 window.meadowLittlesAccess.configure({enabled:false,onComplete:id=>qa.completions.push(id)});
-</script><script src="/writing-game.js?v=6"></script><script src="/tracing-core.js?v=1"></script><script src="/sticker-words.js?v=2"></script><script src="/writing-trace.js?v=3"></script><script>
+</script><script src="/writing-game.js?v=6"></script><script src="/tracing-core.js?v=2"></script><script src="/sticker-words.js?v=2"></script><script src="/writing-trace.js?v=4"></script><script>
 document.querySelector('#qa-word').onclick=()=>meadowStickerWriting.open();document.querySelector('#qa-name').onclick=()=>meadowWritingGame.open('name');document.querySelector('#qa-alphabet').onclick=()=>meadowWritingGame.open('alphabet');
 </script></html>

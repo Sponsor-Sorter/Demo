@@ -98,7 +98,7 @@
     }
     return {width:original.width,strokes};
   }
-  function create(text) {
+  function create(text,{relaxed=false}={}) {
     const letters=[],strokes=[];let cursor=0;
     for(const letter of [...String(text)]){
       const shape=glyph(letter);if(!shape)return null;
@@ -108,22 +108,22 @@
     }
     if(!strokes.length)return null;
     const all=strokes.flatMap(s=>s.points),minY=Math.min(...all.map(p=>p.y)),maxY=Math.max(...all.map(p=>p.y));
-    return {text,letters,strokes,width:cursor-.16,minY,maxY,hits:strokes.map(s=>new Uint8Array(s.points.length))};
+    return {text,letters,strokes,width:cursor-.16,minY,maxY,coverage:relaxed===true?.87:.92,hits:strokes.map(s=>new Uint8Array(s.points.length))};
   }
   function segmentDistance(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/(dx*dx+dy*dy||1)));return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);}
   function mark(model,path,radius=.082){
     if(!path.length)return;
     model.strokes.forEach((s,i)=>s.points.forEach((p,j)=>{if(model.hits[i][j])return;for(let k=0;k<path.length;k++){if(segmentDistance(p,path[Math.max(0,k-1)],path[k])<=radius){model.hits[i][j]=1;break;}}}));
   }
-  function strokeDone(hits){
+  function strokeDone(hits,coverage=.92){
     if(hits.length===1)return !!hits[0];
-    if(!hits[0]||!hits.at(-1)||hits.reduce((a,b)=>a+b,0)/hits.length<.92)return false;
+    if(!hits[0]||!hits.at(-1)||hits.reduce((a,b)=>a+b,0)/hits.length<coverage)return false;
     const chunk=Math.max(1,Math.ceil(hits.length/4));
     for(let start=0;start<hits.length;start+=chunk){const part=hits.slice(start,start+chunk);if(part.reduce((a,b)=>a+b,0)/part.length<.8)return false;}
     return true;
   }
-  const completedLetters = model => model.letters.map(l=>model.hits.slice(l.first,l.first+l.count).every(strokeDone));
-  const complete = model => !!model&&model.hits.every(strokeDone);
+  const completedLetters = model => model.letters.map(l=>model.hits.slice(l.first,l.first+l.count).every(h=>strokeDone(h,model.coverage)));
+  const complete = model => !!model&&model.hits.every(h=>strokeDone(h,model.coverage));
   function near(model,p,radius=.11){return model.strokes.some(s=>s.points.some((b,i)=>segmentDistance(p,s.points[Math.max(0,i-1)],b)<=radius));}
   function layout(model,width,height,padding={x:14,y:12}){const scale=Math.min((width-padding.x*2)/(model.width+.12),(height-padding.y*2)/(model.maxY-model.minY+.2));return {scale,x:(width-model.width*scale)/2,y:(height-(model.maxY+model.minY)*scale)/2};}
   const reset=model=>model.hits.forEach(h=>h.fill(0));
