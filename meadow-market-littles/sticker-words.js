@@ -7,3 +7,12 @@ window.meadowStickerWords = [
   {word:'duck',image:'assets/generated/play-pieces/duck.webp'},
   {word:'apple',image:'assets/generated/minigames/produce/apple.webp'}
 ];
+
+/* Separate export keeps cached renderer2 clients on their original 23 pictures. */
+window.meadowExtraStickerWords = [
+  ...['cup','egg','bag','box','teddy','ball'].map((word,frame)=>({word,sheet:'assets/generated/writing/everyday-a103.png',frame,columns:3,rows:2})),
+  ...['book','milk','sock','shoe','barn','corn'].map((word,frame)=>({word,sheet:'assets/generated/writing/everyday-b103.png',frame,columns:3,rows:2})),
+  ...['fish','fox','owl','bunny','pony','chick'].map((word,frame)=>({word,sheet:'assets/generated/writing/animal-friends103.png',frame,columns:3,rows:2})),
+  {word:'goat',image:'assets/generated/goat.webp'},
+  {word:'sheep',image:'assets/generated/sheep.webp'}
+];

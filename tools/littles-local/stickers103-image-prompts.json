@@ -1,0 +1,41 @@
+{
+  "method": "built-in image_gen",
+  "jobs": [
+    {
+      "file": "everyday-a103.png",
+      "words": [
+        "cup",
+        "egg",
+        "bag",
+        "box",
+        "teddy",
+        "ball"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent sprite atlas of six picture stickers for the premium preschool farm game Meadow Market Littles, ages3–6. Composition: EXACTLY THREE COLUMNS and TWO ROWS, six equal square cells, overall3:2 landscape. Place exactly one complete subject centred in each cell with generous transparent padding; no subject crosses its cell. All are charming hand-painted rounded cartoon illustrations with warm soft shading, tidy dark-brown outlines, bold readable silhouettes and a crisp thick cream-white die-cut sticker rim. Match a cosy polished farm storybook game, not flat generic icons. True transparent alpha outside each isolated sticker. No scenery, background, grid lines, labels, text, letters, numbers, logos, decorative extras or watermarks. Keep all objects easy to identify for a young child. Subjects in exact reading order: TOP LEFT a simple bright blue drinking CUP with one handle and no saucer; TOP MIDDLE one whole cream chicken EGG, uncracked; TOP RIGHT a small red cloth market BAG with two handles, empty; BOTTOM LEFT a plain brown cardboard BOX with open flaps, empty; BOTTOM MIDDLE a cuddly honey-brown TEDDY bear sitting with a kind face, no clothing; BOTTOM RIGHT a round colourful toy BALL with simple broad coloured panels, no writing. Whole objects entirely visible."
+    },
+    {
+      "file": "everyday-b103.png",
+      "words": [
+        "book",
+        "milk",
+        "sock",
+        "shoe",
+        "barn",
+        "corn"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent sprite atlas of six picture stickers for the premium preschool farm game Meadow Market Littles, ages3–6. Composition: EXACTLY THREE COLUMNS and TWO ROWS, six equal square cells, overall3:2 landscape. Place exactly one complete subject centred in each cell with generous transparent padding; no subject crosses its cell. All are charming hand-painted rounded cartoon illustrations with warm soft shading, tidy dark-brown outlines, bold readable silhouettes and a crisp thick cream-white die-cut sticker rim. Match a cosy polished farm storybook game, not flat generic icons. True transparent alpha outside each isolated sticker. No scenery, background, grid lines, labels, text, letters, numbers, logos, decorative extras or watermarks. Keep all objects easy to identify for a young child. Subjects in exact reading order: TOP LEFT an open colourful picture BOOK with completely blank cream pages; TOP MIDDLE a clear drinking glass filled with white MILK, no other objects; TOP RIGHT one cosy red and cream striped SOCK; BOTTOM LEFT one small blue child's SHOE, simple sneaker with rounded toe; BOTTOM MIDDLE one small classic red farm BARN with cream trim and closed double doors, no surrounding land or fence; BOTTOM RIGHT one bright yellow CORN cob with a partly open green husk. Whole objects entirely visible."
+    },
+    {
+      "file": "animal-friends103.png",
+      "words": [
+        "fish",
+        "fox",
+        "owl",
+        "bunny",
+        "pony",
+        "chick"
+      ],
+      "prompt": "Use case: illustration-story. Asset type: transparent sprite atlas of six picture stickers for the premium preschool farm game Meadow Market Littles, ages3–6. Composition: EXACTLY THREE COLUMNS and TWO ROWS, six equal square cells, overall3:2 landscape. Place exactly one complete subject centred in each cell with generous transparent padding; no subject crosses its cell. All are charming hand-painted rounded cartoon illustrations with warm soft shading, tidy dark-brown outlines, bold readable silhouettes and a crisp thick cream-white die-cut sticker rim. Match a cosy polished farm storybook game, not flat generic icons. True transparent alpha outside each isolated sticker. No scenery, background, grid lines, labels, text, letters, numbers, logos, decorative extras or watermarks. Keep all objects easy to identify for a young child. Subjects in exact reading order: TOP LEFT one friendly orange FISH in clear side view, visible tail and fins, no water or bowl; TOP MIDDLE one cute orange FOX sitting, white chest and fluffy white-tipped tail; TOP RIGHT one cute brown OWL sitting upright with big kind eyes and two visible feet, no branch; BOTTOM LEFT one friendly cream BUNNY sitting with two long upright ears; BOTTOM MIDDLE one small chestnut PONY standing side view, short mane and tail, no tack or rider; BOTTOM RIGHT one fluffy yellow baby CHICK standing, two orange feet and tiny wings. Whole characters entirely visible, expressive kind eyes, no accessories."
+    }
+  ]
+}

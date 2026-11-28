@@ -4,6 +4,11 @@
   const colours=['#ee655e','#f5a544','#e8bf35','#5eaf69','#48a9cd','#7c72c5','#d870aa'];
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const ready=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=101&&n<=9999;}catch{return false;}};
+  const moreReady=()=>{try{const n=window.meadowWeeklyFair?.getQualityBuild?.();return Number.isInteger(n)&&n>=103&&n<=9999;}catch{return false;}};
+  const availableWords=()=>moreReady()?[...(window.meadowExtraStickerWords||[]),...window.meadowStickerWords]:window.meadowStickerWords;
+  const warmed=new Set();
+  function warmPictures(){if(!moreReady())return;for(const item of window.meadowExtraStickerWords||[]){const src=item.sheet||item.image;if(warmed.has(src))continue;warmed.add(src);const image=new Image();image.decoding='async';image.src=src;}}
+  window.addEventListener('meadow-quality-change',warmPictures);warmPictures();
   let onCompleted=()=>{};
   let committedCanvas,liveCanvas,cachedInk=-1,livePainted=0,guidePaths=[];
   let dialog,mode='words',narrator='rhys',pageToken=0,observer,canvas,ctx,maskCanvas,inkCanvas,model,view,ink=[],points=[],pointer=null,finished=false,queue=[],index=0,childName='',results=[],choice,capitals=false,group='all',helpTimer,animationFrame;
@@ -18,11 +23,11 @@
   function close(){cleanup();dialog?.close();if(dialog)dialog.innerHTML='';childName='';queue=[];results=[];ink=[];for(const layer of [canvas,maskCanvas,inkCanvas,committedCanvas,liveCanvas])if(layer){layer.width=layer.height=1;}view=null;model=null;guidePaths=[];}
   function ensure(){if(dialog)return;dialog=document.createElement('dialog');dialog.className='writing-dialog trace-dialog';dialog.setAttribute('aria-label','Meadow Market Littles rainbow writing');dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',cleanup);document.body.append(dialog);}
   function page(title,body){cleanup();dialog.innerHTML=`<main class="writing-desk trace-desk"><header class="writing-head"><img class="writing-guide" src="assets/generated/guides/${narrator}.webp" alt="Farmer ${narrator[0].toUpperCase()+narrator.slice(1)}"><div><small>MEADOW MARKET LITTLES</small><h1>${title}</h1></div><button class="writing-close" aria-label="Back to games">×</button></header><section class="writing-page trace-page">${body}</section></main>`;$('.writing-close').onclick=close;if(!dialog.open)dialog.showModal();}
-  function picture(item,extra=''){return item.sheet?`<span class="trace-picture trace-atlas ${extra}" style="--picture-position:${item.frame*50}%" aria-hidden="true"></span>`:`<img class="trace-picture ${extra}" src="${item.image}" alt="" draggable="false">`;}
+  function picture(item,extra=''){const cols=item.columns||3,rows=item.rows||1,x=item.frame%cols,y=Math.floor(item.frame/cols);return item.sheet?`<span class="trace-picture trace-atlas ${extra}" style="background-image:url('${item.sheet}');--picture-size:${cols*100}% ${rows*100}%;--picture-position:${cols>1?x*100/(cols-1):50}% ${rows>1?y*100/(rows-1):50}%" aria-hidden="true"></span>`:`<img class="trace-picture ${extra}" src="${item.image}" alt="" draggable="false">`;}
   function picker(){
-    const words=window.meadowStickerWords.filter(item=>group==='all'||(group==='little'?item.word.length===3:item.word.length>3));
+    const words=availableWords().filter(item=>group==='all'||(group==='little'?item.word.length===3:item.word.length>3));
     page('Picture sticker writing',`<div class="trace-picker-title"><h2>Pick a picture!</h2><p>Then trace its whole word in rainbow colours.</p></div><nav class="trace-filters" aria-label="Word length"><button class="writing-button ${group==='little'?'selected':''}" data-group="little" aria-pressed="${group==='little'}">Little words</button><button class="writing-button ${group==='longer'?'selected':''}" data-group="longer" aria-pressed="${group==='longer'}">More letters</button><button class="writing-button ${group==='all'?'selected':''}" data-group="all" aria-pressed="${group==='all'}">All pictures</button></nav><div class="trace-stickers" aria-label="Choose a picture to write">${words.map((item,i)=>`<button class="trace-sticker" data-word="${item.word}" aria-label="Write ${item.word}" style="--tilt:${i%2?3:-3}deg">${picture(item)}<span class="trace-sticker-shine" aria-hidden="true"></span></button>`).join('')}</div>`);
-    dialog.querySelectorAll('[data-word]').forEach(button=>button.onclick=()=>{choice=window.meadowStickerWords.find(item=>item.word===button.dataset.word);if(window.meadowLittlesAccess?.begin('sticker_words',close)===false)return;queue=[capitals?choice.word.toUpperCase():choice.word];index=0;results=[];showTrace();});
+    dialog.querySelectorAll('[data-word]').forEach(button=>button.onclick=()=>{choice=availableWords().find(item=>item.word===button.dataset.word);if(!choice){picker();return;}if(window.meadowLittlesAccess?.begin('sticker_words',close)===false)return;queue=[capitals?choice.word.toUpperCase():choice.word];index=0;results=[];showTrace();});
     dialog.querySelectorAll('[data-group]').forEach(button=>button.onclick=()=>{group=button.dataset.group;picker();});
     speak('writing101-rhys-intro');
   }
