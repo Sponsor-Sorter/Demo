@@ -80,6 +80,6 @@
     page(word?'My picture word!':mode==='name'?'My name!':'Alphabet star!',`<div class="writing-name-result trace-result ${word?'trace-word-win':mode==='name'?'trace-name-win':'trace-alphabet-win'}"><div class="writing-stars" aria-hidden="true">✦ ✦ ✦</div>${body}<p class="trace-made-by-you">Every rainbow stroke was made by you!</p><div class="trace-result-actions"><button class="writing-button writing-primary" data-again>${word?'Choose another picture':mode==='name'?'Write my name again':'Trace again'}</button><button class="writing-button" data-close>Back to games</button></div></div>`);
     if(word)thumbnail($('.trace-word-result'),results[0]);else if(mode==='name'){const bounds={width:Math.max(...results.map(r=>r.model.width)),minY:Math.min(...results.map(r=>r.model.minY)),maxY:Math.max(...results.map(r=>r.model.maxY))};dialog.querySelectorAll('[data-result]').forEach((c,i)=>thumbnail(c,results[i],bounds));}$('[data-again]').onclick=()=>begin(mode);$('[data-close]').onclick=close;speak(word?'writing101-rhys-done':'letter-'+narrator+'-'+(mode==='name'?'namedone':'alphabetdone'));
   }
-  window.meadowStickerWriting={open:()=>{if(ready())begin('words');},attach:callback=>{onCompleted=callback;}};
+  window.meadowStickerWriting={rendererVersion:2,open:()=>{if(ready())begin('words');},attach:callback=>{onCompleted=callback;}};
   window.meadowWritingGame={open(which){if(which==='balloons'||!ready())return legacy.open(which);begin(which==='name'?'name':'alphabet');}};
 })();
