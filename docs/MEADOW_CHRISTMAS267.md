@@ -24,4 +24,6 @@ Local isolated tests cover opening/closing boundaries, forged payloads, daily an
 
 Existing story, pack-boost, command transport, command UI and game-only cache checks are retained. Full CI, responsive rendered acceptance, live function read-back and actual hosted build checks are publication gates. This implementation note alone is not a claim that deployment or native acceptance has completed.
 
+The isolated browser render passed at 1280×720, 393×852 and 852×393. Daily gift → delivery → chapter gift → owned decoration, the gem confirmation/owned transition (isolated callback), all 31 calendar days, approved-voice routing and November claim/purchase locks were checked. The landscape layout was tightened until its main actions fit without scrolling. No console errors were observed. The fixture used no production account and is not a physical Samsung test. Its exact server and temporary tabs were closed and the viewport reset afterward.
+
 Artwork prompts: `MEADOW_CHRISTMAS267_ART_PROMPTS.json`. Voice scripts, selected voices, output hashes and measured levels: `meadow-and-market/assets/audio/christmas267-generation.json`.
