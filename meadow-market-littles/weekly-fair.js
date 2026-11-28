@@ -1,17 +1,20 @@
 /* Weekly farm fair. Public rows contain only server-generated, weekly farm nicknames. */
 (() => {
  'use strict';
- let publicQuality=62;try{publicQuality=Math.max(62,Number(localStorage.getItem('meadow-littles-quality-build'))||62);}catch{}
+ const rendererV2=()=>window.meadowStickerWriting?.rendererVersion===2;
+ const validQuality=n=>Number.isInteger(n)&&n>=62&&n<=9999;
+ const legacyQuality=n=>validQuality(n)?Math.min(99,n):62;
+ let publicQuality=62,publicQualityV2=62;try{publicQuality=legacyQuality(Number(localStorage.getItem('meadow-littles-quality-build')));const v2=Number(localStorage.getItem('meadow-littles-quality-build-v2'));if(validQuality(v2))publicQualityV2=v2;localStorage.setItem('meadow-littles-quality-build',String(publicQuality));}catch{}
  const access=window.meadowLittlesAccess,cloud=()=>window.meadowLittlesCloud;
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let account=null,epoch=0,state=null,dialog=null,sequence=0,applied=0,refreshing=null,spending={},notice='',returnFocus=null,chain=Promise.resolve(),names={};
  const tiers=[{at:3,bonus:2,name:'Bronze',color:'#b97945'},{at:8,bonus:3,name:'Silver',color:'#879ba5'},{at:15,bonus:5,name:'Gold',color:'#e5a91f'}];
  const weekNow=()=>{const d=new Date();d.setUTCHours(0,0,0,0);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10);};
  const current=()=>state&&state.enabled===true&&state.week===weekNow()&&account===cloud()?.getStatus().userId;
- const qualityBuild=()=>Math.max(publicQuality,current()?Number(state.quality_build)||62:62);
+ const qualityBuild=()=>rendererV2()?Math.max(publicQualityV2,publicQuality,current()?(validQuality(state.quality_build_v2)?state.quality_build_v2:legacyQuality(state.quality_build)):62):Math.max(publicQuality,current()?legacyQuality(state.quality_build):62);
  const qualityChanged=()=>{if(typeof window.dispatchEvent==='function'&&typeof Event==='function')window.dispatchEvent(new Event('meadow-quality-change'));};
  const remaining=id=>current()?Math.max(0,state.bonus_per_game-(state.bonus_spent?.[id]||0)-(spending[id]||0)):0;
- function accept(answer,stamp,seq){if(stamp!==epoch||answer.user_id!==account||seq<applied)return false;const previousQuality=qualityBuild();applied=seq;state=answer;if(Number.isInteger(answer.public_quality_build)&&answer.public_quality_build>=62){publicQuality=answer.public_quality_build;try{localStorage.setItem('meadow-littles-quality-build',String(publicQuality));}catch{}}render();if(previousQuality!==qualityBuild())qualityChanged();return true;}
+ function accept(answer,stamp,seq){if(stamp!==epoch||answer.user_id!==account||seq<applied)return false;const previousQuality=qualityBuild();applied=seq;state=answer;if(validQuality(answer.public_quality_build)){publicQuality=legacyQuality(answer.public_quality_build);try{localStorage.setItem('meadow-littles-quality-build',String(publicQuality));}catch{}}if(validQuality(answer.public_quality_build_v2)){publicQualityV2=answer.public_quality_build_v2;try{localStorage.setItem('meadow-littles-quality-build-v2',String(publicQualityV2));}catch{}}render();if(previousQuality!==qualityBuild())qualityChanged();return true;}
  async function request(action,data={}){const stamp=epoch,id=account,seq=++sequence;if(!id)throw Error('offline');const task=chain.catch(()=>{}).then(async()=>{if(stamp!==epoch||id!==account)throw Error('account changed');const answer=await cloud().weekly(action,data);if(stamp!==epoch||id!==account)throw Error('account changed');return {answer,stamp,seq};});chain=task;return task;}
  async function refresh(){if(refreshing)return refreshing;const stamp=epoch;refreshing=(async()=>{try{const r=await request('status');accept(r.answer,r.stamp,r.seq);if(stamp===epoch)notice='';}catch{if(stamp===epoch)notice='Connect to the internet to see this week’s farm fair. Your games are ready to play.';}finally{if(stamp===epoch){refreshing=null;render();}}})();return refreshing;}
  function accountChanged(id){if(id===account)return;account=id;epoch++;state=null;applied=0;refreshing=null;spending={};notice='';chain=Promise.resolve();access.configure({resetTickets:true});render();qualityChanged();if(id)refresh();}

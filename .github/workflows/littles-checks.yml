@@ -75,6 +75,8 @@ jobs:
       - run: npm test --prefix tools/littles-rewarded-tests
         env:
           NODE_OPTIONS: --require ${{ github.workspace }}/tools/littles-local/qa-network.cjs
+      - name: Check writing renderer rollout with actual PostgreSQL
+        run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-writing-sql.cjs
       - name: Check actual native-version admission SQL
         run: node --require ./tools/littles-local/qa-network.cjs scripts/check-littles-ad-native97-sql.cjs
   android-build:
