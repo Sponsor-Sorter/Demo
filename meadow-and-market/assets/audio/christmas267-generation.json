@@ -1,0 +1,62 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_multilingual_v2",
+  "generated": "2026-11-28",
+  "settings": {
+    "stability": 0.5,
+    "similarity": 0.75,
+    "style": 0,
+    "speakerBoost": true
+  },
+  "normalization": {
+    "integratedLufs": -18,
+    "truePeakDb": -2.5,
+    "sampleRate": 44100,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "clips": [
+    {
+      "id": "rhys-christmas267",
+      "character": "Farmer Rhys",
+      "voice": "Noah - YA Audiobooks Narrator",
+      "source": "ElevenLabs_2026-11-28T12_21_41_Noah - YA Audiobooks Narrator_pvc_s50_m2.mp3",
+      "speed": 0.9,
+      "script": "We’re dressing the village for Christmas! Deliver farm goods to earn seals, then choose decorations to keep. Open Decorations, pick your favourite, and place it on clear grass. The gem bundles show exactly what is inside before you buy.",
+      "bytes": 260851,
+      "sha256": "f31e7e81a4739f49a090929d29c6665b1e75be8c4eff1a23ae1d197f6df1c801",
+      "measured": {
+        "integratedLufs": -19.64,
+        "truePeakDb": -2.72
+      }
+    },
+    {
+      "id": "jade-christmas267",
+      "character": "Farmer Jade",
+      "voice": "Hope - upbeat and clear",
+      "source": "ElevenLabs_2026-11-28T12_22_53_Hope - upbeat and clear_pvc_s50_m2.mp3",
+      "speed": 0.91,
+      "script": "Welcome to our Meadow Christmas! Farmer Rhys, Farmer Jay and I are filling baskets for the village. Grow the goods on the Deliveries page, then bring them here for gold and Christmas seals. Your story gifts and decorations are yours to keep.",
+      "bytes": 163989,
+      "sha256": "aa7014b2bbb44e1b5e00eec320e6609a0e6fdb44577b2cc1a037c353627bbd3f",
+      "measured": {
+        "integratedLufs": -18.82,
+        "truePeakDb": -2.88
+      }
+    },
+    {
+      "id": "jay-christmas267",
+      "character": "Farmer Jay",
+      "voice": "Mike - Animation, Explainers & Gaming",
+      "source": "ElevenLabs_2026-11-28T12_25_35_Mike - Animation, Explainers & Gaming_pvc_s50_m2.mp3",
+      "speed": 0.9,
+      "script": "There’s a free Christmas present waiting each day in December. Open Presents and tap today’s gift. You don’t need to keep a streak, and missing a day never takes your rewards away. Come back on Christmas Day for an extra special present!",
+      "bytes": 165556,
+      "sha256": "716f0fb81bda823f05b903f1d807226a427842e29de4b02c987882b0be3e1e7c",
+      "measured": {
+        "integratedLufs": -18.72,
+        "truePeakDb": -2.57
+      }
+    }
+  ]
+}
