@@ -15,7 +15,7 @@ test('Christmas gem bundles are scoped, exact, atomic, durable and idempotent',a
    insert into public.meadow_market_profiles values('00000000-0000-4000-8000-000000000001'),('00000000-0000-4000-8000-000000000002');
    insert into public.meadow_market_wallets(user_id,gems)select user_id,100 from public.meadow_market_profiles;
    select set_config('test.actor','00000000-0000-4000-8000-000000000001',false),set_config('test.now','2026-11-30T23:59:59Z',false);`);
-  const migration=fs.readFileSync(require('node:path').resolve(__dirname,'../../supabase/migrations/20261128121347_meadow_christmas267.sql'),'utf8');
+  const migration=fs.readFileSync(require('node:path').resolve(__dirname,'../../supabase/migrations/20261128124632_meadow_christmas267.sql'),'utf8');
   assert.equal((migration.match(/clock_timestamp\(\)/g)||[]).length,1);
   await db.exec(migration.replace('clock_timestamp()',"current_setting('test.now')::timestamptz"));
   const buy=(id='collection_xmas_globe',request='10000000-0000-4000-8000-000000000001')=>db.query('select public.meadow_market_christmas_purchase267($1,$2) as result',[id,request]);
