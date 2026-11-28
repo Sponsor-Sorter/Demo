@@ -35,20 +35,16 @@
       "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/parchment-desk.webp"
     },
     {
-      "file": "sticker-writing-preview.webp",
-      "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-c47bf05e-4530-4fd8-898a-d31b4573ac85.png",
-      "originalSize": [
-        1448,
-        1086
-      ],
+      "file": "sticker-writing-preview-v2.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-02c46bb6-724d-4a15-944d-39c552c0c9c5.png",
       "size": [
-        720,
-        540
+        1895,
+        830
       ],
       "mode": "RGB",
-      "bytes": 100476,
-      "sha256": "4f23e47a21048aae96c3e371b8cb1cb7d26d2d6bb6a95885dc6369dcce5b3aad",
-      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/sticker-writing-preview.webp"
+      "bytes": 2119424,
+      "sha256": "cf1d299bc50b24f4d82d198e6ce00f9269fef9b088ca031a0f5c67ab71a7fc9b",
+      "savedPath": "D:\\Chat Gpt\\workspaces\\littles-bug-input100\\meadow-market-littles\\assets\\generated\\writing\\sticker-writing-preview-v2.png"
     }
   ],
   "constraints": [
@@ -57,6 +53,22 @@
     "one large blank parchment on wooden desk",
     "preview exact word cat with single-storey a"
   ],
-  "previewCorrection": "Middle a corrected to closed oval with right-hand stem; original preview retained in image generation outputs.",
-  "promptFile": "tools/littles-local/writing101-image-prompts.json"
+  "previewCorrection": "Wide16:7 composition: stickers left, entire word cat right; closed rainbow a and dotted t. Original preview retained for existing101 clients.",
+  "promptFile": "tools/littles-local/writing101-image-prompts.json",
+  "previousPreview": {
+    "file": "sticker-writing-preview.webp",
+    "source": "C:\\Users\\jrbwi\\.codex\\generated_images\\01a15c4c-ab18-7e71-b610-3ae086f39918\\exec-c47bf05e-4530-4fd8-898a-d31b4573ac85.png",
+    "originalSize": [
+      1448,
+      1086
+    ],
+    "size": [
+      720,
+      540
+    ],
+    "mode": "RGB",
+    "bytes": 100476,
+    "sha256": "4f23e47a21048aae96c3e371b8cb1cb7d26d2d6bb6a95885dc6369dcce5b3aad",
+    "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/sticker-writing-preview.webp"
+  }
 }
