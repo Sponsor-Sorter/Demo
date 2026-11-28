@@ -22,6 +22,7 @@ for(const text of ['cat','dog','car','boy','girl','pig','apple','Amy','Éva','Zo
 }
 const scope={window:{}};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../meadow-market-littles/sticker-words.js'),'utf8'),scope);const words=scope.window.meadowStickerWords;
 assert.equal(words.length,23);assert.equal(new Set(words.map(w=>w.word)).size,words.length);
+const more=scope.window.meadowExtraStickerWords;assert.equal(more.length,20);const all=[...words,...more];assert.equal(new Set(all.map(w=>w.word)).size,43);
 for(const word of ['car','dog','cat','boy','girl','pig'])assert(words.some(w=>w.word===word),'Requested picture '+word);
-for(const item of words){assert(/^[a-z]{3,5}$/.test(item.word));assert(item.image||item.sheet);assert(T.create(item.word));}
-console.log(JSON.stringify({pass:true,cases,letters:T.alphabet.length,pictureWords:words.length,crossbarsAndDotsRequired:true,preschoolToleranceAccepted:true,realAccounts:false}));
+for(const item of all){assert(/^[a-z]{3,5}$/.test(item.word));assert(item.image||item.sheet);for(const text of [item.word,item.word.toUpperCase()]){const m=T.create(text);assert(m);for(const stroke of m.strokes)T.mark(m,stroke.points);assert(T.complete(m),'Whole word '+text);T.reset(m);for(const stroke of m.strokes.filter(s=>s.letter!==text.at(-1)))T.mark(m,stroke.points);assert(!T.complete(m),'Final letter must be traced '+text);cases++;}if(item.rows){assert.equal(item.columns,3);assert.equal(item.rows,2);assert(item.frame>=0&&item.frame<6);}}
+console.log(JSON.stringify({pass:true,cases,letters:T.alphabet.length,pictureWords:all.length,newPictures:more.length,crossbarsAndDotsRequired:true,preschoolToleranceAccepted:true,realAccounts:false}));

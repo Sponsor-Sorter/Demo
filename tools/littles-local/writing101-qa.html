@@ -1,9 +1,9 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="/"><title>Writing101 local QA</title><!-- LITTLES_QA_STYLES --><style>body{margin:0;font:18px system-ui;background:#e4f0d8}#qa-controls{padding:20px;display:flex;gap:12px;flex-wrap:wrap}#qa-controls button{padding:15px;font:inherit}#qa-results{white-space:pre-wrap}button{cursor:pointer}</style>
 <div id="qa-controls"><button id="qa-word">Picture writing</button><button id="qa-name">Name writing</button><button id="qa-alphabet">Alphabet writing</button></div><pre id="qa-results">Local fixtures only. No production auth.</pre>
 <script src="/approved-voices.js?v=21"></script><script src="/play-access.js?v=3"></script><script>
-window.qa={voices:[],unapproved:[],completions:[],quality:101};window.meadowWeeklyFair={getQualityBuild:()=>qa.quality};
+window.qa={voices:[],unapproved:[],completions:[],quality:103};window.meadowWeeklyFair={getQualityBuild:()=>qa.quality};
 window.meadowAudio={stopVoice(){},play(){},speak(ids){ids=Array.isArray(ids)?ids:[ids];for(const id of ids)if(!window.meadowApprovedVoices.clips[id])qa.unapproved.push(id);qa.voices.push(...ids);return Promise.resolve(0);}};
 window.meadowLittlesAccess.configure({enabled:false,onComplete:id=>qa.completions.push(id)});
-</script><script src="/writing-game.js?v=6"></script><script src="/tracing-core.js?v=1"></script><script src="/sticker-words.js?v=1"></script><script src="/writing-trace.js?v=2"></script><script>
+</script><script src="/writing-game.js?v=6"></script><script src="/tracing-core.js?v=1"></script><script src="/sticker-words.js?v=2"></script><script src="/writing-trace.js?v=3"></script><script>
 document.querySelector('#qa-word').onclick=()=>meadowStickerWriting.open();document.querySelector('#qa-name').onclick=()=>meadowWritingGame.open('name');document.querySelector('#qa-alphabet').onclick=()=>meadowWritingGame.open('alphabet');
 </script></html>

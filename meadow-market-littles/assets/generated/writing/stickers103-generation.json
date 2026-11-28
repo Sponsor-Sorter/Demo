@@ -1,0 +1,66 @@
+{
+  "method": "built-in image_gen",
+  "promptFile": "tools/littles-local/stickers103-image-prompts.json",
+  "files": [
+    {
+      "file": "everyday-a103.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-30cea6b6-6f35-483e-a02a-6a7ec8b2ab6a.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/everyday-a103.png",
+      "bytes": 2330180,
+      "sha256": "9622f536151736c2800b45befeb97b52880fb1535c500ef6176966d1927f1383",
+      "width": 1536,
+      "height": 1024,
+      "columns": 3,
+      "rows": 2,
+      "words": [
+        "cup",
+        "egg",
+        "bag",
+        "box",
+        "teddy",
+        "ball"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "everyday-b103.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-ca570171-da0e-4637-863c-4cb188ddbdd0.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/everyday-b103.png",
+      "bytes": 2248562,
+      "sha256": "732f3df2e3556c577a336671c58dd498c30ff5d4f86f34f82a3deb001aa71955",
+      "width": 1536,
+      "height": 1024,
+      "columns": 3,
+      "rows": 2,
+      "words": [
+        "book",
+        "milk",
+        "sock",
+        "shoe",
+        "barn",
+        "corn"
+      ],
+      "alphaVerified": true
+    },
+    {
+      "file": "animal-friends103.png",
+      "source": "C:/Users/jrbwi/.codex/generated_images/01a15c4c-ab18-7e71-b610-3ae086f39918/exec-8f1e045f-538c-4aa2-9a60-d0f1a202e888.png",
+      "savedPath": "D:/Chat Gpt/workspaces/littles-bug-input100/meadow-market-littles/assets/generated/writing/animal-friends103.png",
+      "bytes": 2355861,
+      "sha256": "8e3c4f1a7ebbd91033c432b3196465a490141c0fa52377076e9906ad9179a3f8",
+      "width": 1536,
+      "height": 1024,
+      "columns": 3,
+      "rows": 2,
+      "words": [
+        "fish",
+        "fox",
+        "owl",
+        "bunny",
+        "pony",
+        "chick"
+      ],
+      "alphaVerified": true
+    }
+  ]
+}
